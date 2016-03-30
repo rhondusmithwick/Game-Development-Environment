@@ -5,13 +5,15 @@ import java.util.Collection;
 
 
 public interface IEntity {
-    File getXML ();
+    File serialize ();
+
+    Collection<IComponent> getAllComponents ();
 
     void addComponent (IComponent component);
 
     void addComponents (Collection<IComponent> components);
 
-    void getComponents (Class<? extends IComponent> c);
+    Collection<?> getComponents (Class<? extends IComponent> c);
 
-    void removeComponent (Class<? extends IComponent> c);
+    boolean removeComponent (Class<? extends IComponent> c);
 }
