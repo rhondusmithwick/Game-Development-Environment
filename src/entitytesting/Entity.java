@@ -2,6 +2,7 @@ package entitytesting;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,12 +14,10 @@ import java.util.Map;
  */
 public class Entity implements Serializable {
     private final Integer ID;
-    private transient final EntitySystem entitySystem;
     private final Map<Class<? extends Component>, List<Component>> components = new HashMap<>();
 
     public Entity(int ID, EntitySystem entitySystem) {
         this.ID = ID;
-        this.entitySystem = entitySystem;
     }
 
 
@@ -26,7 +25,15 @@ public class Entity implements Serializable {
         return ID;
     }
 
-    public <T extends Component> void addComponent(Component component, Entity entity) {
+    public void addComponent(Component... components) {
+        addComponent(Arrays.asList(components));
+    }
+
+    public void addComponent(List<Component> components) {
+        components.stream().forEach(this::addComponent);
+    }
+
+    public void addComponent(Component component) {
         Class<? extends Component> theClass = component.getClass();
         if (!components.containsKey(theClass)) {
             components.put(theClass, new ArrayList<>());

@@ -9,8 +9,16 @@ public class Position implements Component {
     private Double x;
     private Double y;
 
+    public Position() {
+        setPosition(0, 0);
+    }
+
     public Position(double x, double y) {
         setPosition(x, y);
+    }
+
+    public Position(String[] inputs) {
+        this(Double.parseDouble(inputs[0]), Double.parseDouble(inputs[1]));
     }
 
     public void setPosition(double x, double y) {
@@ -43,4 +51,5 @@ public class Position implements Component {
     public boolean unique() {
         return true;
     }
+
 }
