@@ -8,6 +8,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * Created by rhondusmithwick on 3/30/16.
@@ -24,33 +25,24 @@ public class Main {
 
     public void test() {
         EntitySystem entitySystem = new EntitySystem();
-        entitySystem.createEntity("player");
-        Entity entity = entitySystem.getEntity(1);
-        Position position = entity.getComponent(Position.class);
-        System.out.println("Created: " + position);
-        writeToXML(position);
+        Entity entity1 = entitySystem.createEntity("player");
+        Position position1 = entity1.getComponent(Position.class);
+        System.out.println("Created: " + position1);
+
+        Entity entity2 = entitySystem.createEntity("player");
+        Position position2 = entity2.getComponent(Position.class);
+        writeToXML(position1, position2);
         readFromXML();
     }
 
-    private void writeToXML(Serializable ser) {
-        XMLEncoder encoder = null;
-        try {
-            encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(SERIALIZED_FILE_NAME)));
-        } catch (FileNotFoundException fileNotFound) {
-            System.out.println("ERROR: While Creating or Opening the File " + SERIALIZED_FILE_NAME);
-        }
-        encoder.writeObject(ser);
-        encoder.close();
+    private void writeToXML(Serializable... ser) {
+       XMLWriter writer = new XMLWriter(SERIALIZED_FILE_NAME);
+        writer.writeAll(ser);
     }
 
     private void readFromXML() {
-        XMLDecoder decoder=null;
-        try {
-            decoder=new XMLDecoder(new BufferedInputStream(new FileInputStream(SERIALIZED_FILE_NAME)));
-        } catch (FileNotFoundException e) {
-            System.out.println("ERROR: While Opening the File " + SERIALIZED_FILE_NAME);
-        }
-        Object obj =  decoder.readObject();
-        System.out.println(String.format("Read from %s: %s", SERIALIZED_FILE_NAME, obj));
+        XMLReader reader = new XMLReader(SERIALIZED_FILE_NAME);
+        List<Component> components = reader.readAll(Component.class);
+        System.out.println(String.format("Read from %s: %s", SERIALIZED_FILE_NAME, components));
     }
 }
