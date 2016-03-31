@@ -15,6 +15,7 @@ import java.util.List;
 public class XMLReader {
     private final String myFile;
     private XMLDecoder decoder = null;
+
     public XMLReader(String myFile) {
         this.myFile = myFile;
         try {
@@ -40,7 +41,7 @@ public class XMLReader {
     }
 
     public <T> T read(Class<T> theClass) {
-        Object obj =  decoder.readObject();
+        Object obj = decoder.readObject();
         return theClass.cast(obj);
     }
 }

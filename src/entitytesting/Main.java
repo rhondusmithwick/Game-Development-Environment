@@ -1,12 +1,5 @@
 package entitytesting;
 
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.Serializable;
 import java.util.List;
 
@@ -36,7 +29,7 @@ public class Main {
     }
 
     private void writeToXML(Serializable... ser) {
-       XMLWriter writer = new XMLWriter(SERIALIZED_FILE_NAME);
+        XMLWriter writer = new XMLWriter(SERIALIZED_FILE_NAME);
         writer.writeAll(ser);
     }
 

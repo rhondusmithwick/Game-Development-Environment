@@ -1,15 +1,10 @@
 package entitytesting;
 
-import java.beans.XMLDecoder;
 import java.beans.XMLEncoder;
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by rhondusmithwick on 3/31/16.
@@ -29,8 +24,8 @@ public class XMLWriter {
         }
     }
 
-    public void  writeAll(Serializable... serializables) {
-        for (Serializable ser: serializables) {
+    public void writeAll(Serializable... serializables) {
+        for (Serializable ser : serializables) {
             encoder.writeObject(ser);
         }
         encoder.close();
