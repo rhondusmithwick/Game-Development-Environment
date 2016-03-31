@@ -11,7 +11,7 @@ import java.util.Objects;
  * @author Rhondu Smithwick
  */
 public class EntitySystem {
-    private final int maxID = 0;
+    private int maxID = 0;
     private final Map<Integer, Entity> entities = new HashMap<>();
     private final ComponentFactory componentFactory = new ComponentFactory();
 
@@ -27,6 +27,7 @@ public class EntitySystem {
             List<Component> components = componentFactory.readFromPropertyFile(defaultType);
             entity.addComponent(components);
         }
+        maxID++;
         return entity;
     }
 
