@@ -2,20 +2,23 @@ package api;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.List;
 
 
 public interface IEntity {
-    File serialize();
+    File serialize ();
 
-    void evaluate(File xml);
+    Collection<IComponent> getAllComponents ();
 
-    Collection<IComponent> getAllComponents();
+    boolean addComponent (IComponent component);
 
-    void addComponent(IComponent component);
+    List<Boolean> addComponents (IComponent ... components);
 
-    void addComponents(Collection<IComponent> components);
+    List<Boolean> addComponents (List<IComponent> components);
 
-    Collection<?> getComponents(Class<? extends IComponent> c);
+    <T extends IComponent> Collection<T> getComponents (Class<T> c);
 
-    boolean removeComponent(Class<? extends IComponent> c);
+    boolean removeComponent (Class<IComponent> c);
+
+    void setComponentQuantityRestriction (Class<? extends IComponent> c, int n);
 }

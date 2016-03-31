@@ -2,32 +2,39 @@ package api;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.List;
 
 
 public interface ISystem {
-    File serialize();
+    File evaluate (File f);
 
-    void evaluate(File xml);
+    void update ();
+
+    File serialize ();
 
     // Entities
-    Collection<IEntity> getAllEntities();
+    Collection<IEntity> getAllEntities ();
 
-    void addEntity(IEntity entity);
+    boolean addEntity (IEntity entity);
 
-    void addEntities(Collection<IEntity> entities);
+    List<Boolean> addEntities (IEntity ... entities);
 
-    Collection<?> getEntities(Class<? extends IEntity> c);
+    List<Boolean> addEntities (List<IEntity> entities);
 
-    boolean removeEntity(Class<? extends IEntity> c);
+    <T extends IEntity> Collection<T> getEntities (Class<T> c);
+
+    boolean removeEntity (Class<IEntity> c);
 
     // Events
-    Collection<IEvent> getAllEvents();
+    Collection<IEvent> getAllEvents ();
 
-    void addEvent(IEvent event);
+    boolean addEvent (IEvent event);
 
-    void addEvents(Collection<IEvent> events);
+    List<Boolean> addEvents (IEvent ... events);
 
-    Collection<?> getEvents(Class<? extends IEvent> c);
+    List<Boolean> addEvents (List<IEvent> events);
 
-    boolean removeEvent(Class<? extends IEvent> c);
+    <T extends IEvent> Collection<T> getEvents (Class<T> c);
+
+    boolean removeEvent (Class<IEvent> c);
 }
