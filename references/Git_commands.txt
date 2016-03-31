@@ -1,0 +1,23 @@
+Useful git commands:
+
+Step 1: (While still on your own branch <myBranch>, stage and commit changes.)
+git add -A (or <path/filenames> separated by spaces)
+git commit -m "Message"
+
+Step 2: (Resolve conflicts, repeat until no new conflicts arise.)
+git pull origin master
+git add -A
+git commit -m "merged conflicts"
+
+Step 3: (Merge changes onto master and push.)
+git push origin <myBranch>
+git checkout master
+git merge <myBranch>
+git push origin master
+(You may need to repeat step 2 again if someone else has coincidentally pushed right before you.)
+
+Step 4: (Return to <myBranch>.)
+git checkout <myBranch>
+(The two commands below are only necessary if you ran into conflicts during the last step.)
+git merge master (There should not be any new conflicts.)
+git push origin <myBranch>
