@@ -10,13 +10,13 @@ public interface IEntity {
 
     Collection<IComponent> getAllComponents ();
 
+    <T extends IComponent> Collection<T> getComponents (Class<T> c);
+
     boolean addComponent (IComponent component);
 
     List<Boolean> addComponents (IComponent ... components);
 
     List<Boolean> addComponents (List<IComponent> components);
-
-    <T extends IComponent> Collection<T> getComponents (Class<T> c);
 
     boolean removeComponent (Class<IComponent> c);
 

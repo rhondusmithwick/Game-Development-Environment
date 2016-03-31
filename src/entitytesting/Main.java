@@ -7,9 +7,9 @@ package entitytesting;
  */
 public class Main {
 
-    public static void main(String[] args) {
+    public static void main (String[] args) {
         EntitySystem entitySystem = new EntitySystem();
-        entitySystem.createEntity("player");
+        entitySystem.createEntity("resources/player");
         Entity entity = entitySystem.getEntity(1);
         Position position = entity.getComponent(Position.class);
         System.out.println(position);
