@@ -15,6 +15,7 @@ import java.util.ResourceBundle;
  */
 public class ComponentFactory {
     private static final String DEFAULT_LOCATIONS = "componentLocations";
+    private static final String DEFAULT_DELIMITER = "; ";
     private final ResourceBundle componentLocations = ResourceBundle.getBundle(DEFAULT_LOCATIONS);
 
     public List<Component> getDefaultComponents(String fileName) {
@@ -29,7 +30,7 @@ public class ComponentFactory {
     }
 
     public Component createComponent(String componentName, ResourceBundle bundle) {
-        String[] inputs = bundle.getString(componentName).split("; ");
+        String[] inputs = bundle.getString(componentName).split(DEFAULT_DELIMITER);
         try {
             Class<?> theClass = Class.forName(componentLocations.getString(componentName));
             Constructor<?> theConstructor = theClass.getConstructor(String[].class);
