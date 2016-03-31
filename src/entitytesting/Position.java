@@ -37,4 +37,9 @@ public class Position implements Component {
     public String toString() {
         return String.format("(%s, %s)", getX(), getY());
     }
+
+    @Override
+    public boolean unique() {
+        return true;
+    }
 }

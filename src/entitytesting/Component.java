@@ -8,4 +8,7 @@ import java.io.Serializable;
  * @author Rhondu Smithwick
  */
 public interface Component extends Serializable {
+    default boolean unique() {
+        return false;
+    }
 }

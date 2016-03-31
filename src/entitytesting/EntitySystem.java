@@ -13,7 +13,7 @@ import java.util.Map;
 public class EntitySystem {
     private final int maxID = 0;
     private final Map<Integer, Entity> entities = new HashMap<>();
-    private final Map<Class<? extends Component>, Map<Entity, Component>> components = new HashMap<>();
+
 
     public int getNextAvailableID() {
         return maxID + 1;
@@ -35,26 +35,9 @@ public class EntitySystem {
     }
 
     public void killEntity(int ID) {
-        Entity entity = entities.remove(ID);
-        components.values().stream().forEach(map -> map.remove(entity));
+        entities.remove(ID);
     }
 
-    public <T extends Component> void addComponent(Component component,  Entity entity) {
-        Class<? extends Component> theClass = component.getClass();
-        if (!components.containsKey(theClass)) {
-            components.put(theClass, new HashMap<>());
-        }
-        components.get(theClass).put(entity, component);
 
-    }
-
-    public <T extends Component> T getComponent(Entity entity, Class<T> componentClass) {
-        Map<Entity, Component> componentStorage = components.get(componentClass);
-        T queriedComponent = (T) componentStorage.get(entity); // nasty
-        if (queriedComponent == null) {
-//            throw new NoComponentFoundException();
-        }
-        return queriedComponent;
-    }
 
 }
