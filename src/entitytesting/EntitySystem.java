@@ -1,7 +1,5 @@
 package entitytesting;
 
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +35,6 @@ public class EntitySystem {
     public void killEntity(int ID) {
         entities.remove(ID);
     }
-
 
 
 }

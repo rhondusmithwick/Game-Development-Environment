@@ -12,8 +12,8 @@ import java.util.Map;
  * @author Rhondu Smithwick
  */
 public class Entity implements Serializable {
-    private final int ID;
-    private final EntitySystem entitySystem;
+    private final Integer ID;
+    private transient final EntitySystem entitySystem;
     private final Map<Class<? extends Component>, List<Component>> components = new HashMap<>();
 
     public Entity(int ID, EntitySystem entitySystem) {
@@ -26,7 +26,7 @@ public class Entity implements Serializable {
         return ID;
     }
 
-    public <T extends Component> void addComponent(Component component,  Entity entity) {
+    public <T extends Component> void addComponent(Component component, Entity entity) {
         Class<? extends Component> theClass = component.getClass();
         if (!components.containsKey(theClass)) {
             components.put(theClass, new ArrayList<>());

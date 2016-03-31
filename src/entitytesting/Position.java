@@ -8,6 +8,7 @@ package entitytesting;
 public class Position implements Component {
     private Double x;
     private Double y;
+
     public Position(double x, double y) {
         setPosition(x, y);
     }
@@ -17,20 +18,20 @@ public class Position implements Component {
         setY(y);
     }
 
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public void setY(double y) {
-        this.y = y;
-    }
-
     public double getX() {
         return x;
     }
 
+    public void setX(double x) {
+        this.x = x;
+    }
+
     public double getY() {
         return y;
+    }
+
+    public void setY(double y) {
+        this.y = y;
     }
 
     @Override

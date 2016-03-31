@@ -1,7 +1,7 @@
 package api;
 
 public interface IEvent {
-    IEventListener getEventListener ();
+    IEventListener getEventListener();
 
-    IEventHandler getEventHandler ();
+    IEventHandler getEventHandler();
 }
