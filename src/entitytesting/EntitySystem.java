@@ -1,4 +1,7 @@
+package entitytesting;
 
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,17 +39,12 @@ public class EntitySystem {
         components.values().stream().forEach(map -> map.remove(entity));
     }
 
-    public <T extends Component> void addComponent(Class<? extends Component> componentClass, Entity entity) {
-        Component component;
-        try {
-            component = componentClass.newInstance();
-            if (!components.containsKey(componentClass)) {
-                components.put(componentClass, new HashMap<>());
-            }
-            components.get(componentClass).put(entity, component);
-        } catch (InstantiationException | IllegalAccessException e) {
-            e.printStackTrace();
+    public <T extends Component> void addComponent(Component component,  Entity entity) {
+        Class<? extends Component> theClass = component.getClass();
+        if (!components.containsKey(theClass)) {
+            components.put(theClass, new HashMap<>());
         }
+        components.get(theClass).put(entity, component);
 
     }
 

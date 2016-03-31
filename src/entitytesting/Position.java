@@ -1,3 +1,5 @@
+package entitytesting;
+
 /**
  * Created by rhondusmithwick on 3/30/16.
  *
@@ -6,8 +8,8 @@
 public class Position implements Component {
     private Double x;
     private Double y;
-    public Position() {
-        setPosition(0, 0);
+    public Position(double x, double y) {
+        setPosition(x, y);
     }
 
     public void setPosition(double x, double y) {
@@ -29,5 +31,10 @@ public class Position implements Component {
 
     public double getY() {
         return y;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("(%s, %s)", getX(), getY());
     }
 }

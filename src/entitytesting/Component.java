@@ -1,3 +1,5 @@
+package entitytesting;
+
 import java.io.Serializable;
 
 /**
