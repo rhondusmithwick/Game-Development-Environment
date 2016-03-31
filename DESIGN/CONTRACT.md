@@ -14,7 +14,7 @@ e) Promise to communicate with the team regularly (through Slack) to keep everyo
 
 If someone on our team breaks one or more of these promises, the team may have a meeting and ask the person to follow this agreement. If the person still breaks these promises, we will ask Professor Duvall to help ﬁnd a solution.
 
-Signatures:
+## Signatures:
 
 Melissa Zhang (mfz2)
 
