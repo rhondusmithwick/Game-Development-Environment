@@ -13,11 +13,9 @@ import java.util.List;
  * @author Rhondu Smithwick
  */
 public class XMLReader {
-    private final String myFile;
     private XMLDecoder decoder = null;
 
     public XMLReader(String myFile) {
-        this.myFile = myFile;
         try {
             decoder = new XMLDecoder(new BufferedInputStream(new FileInputStream(myFile)));
         } catch (FileNotFoundException e) {
@@ -27,11 +25,9 @@ public class XMLReader {
 
     public <T> List<T> readAll(Class<T> theClass) {
         List<T> objects = new ArrayList<>();
-        Object obj;
         while (true) {
             try {
-                obj = decoder.readObject();
-                objects.add(theClass.cast(obj));
+                objects.add(read(theClass));
             } catch (ArrayIndexOutOfBoundsException e) {
                 break;
             }

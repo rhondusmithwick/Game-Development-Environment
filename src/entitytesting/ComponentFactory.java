@@ -18,7 +18,11 @@ public class ComponentFactory {
     private static final String DEFAULT_DELIMITER = "; ";
     private final ResourceBundle componentLocations = ResourceBundle.getBundle(DEFAULT_LOCATIONS);
 
-    public List<Component> getDefaultComponents(String fileName) {
+    public List<Component> readFromXML(String fileName) {
+        return new XMLReader(fileName).readAll(Component.class);
+    }
+
+    public List<Component> readFromPropertyFile(String fileName) {
         List<Component> components = new ArrayList<>();
         ResourceBundle bundle = ResourceBundle.getBundle(fileName);
         Enumeration<String> iter = bundle.getKeys();

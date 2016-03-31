@@ -59,4 +59,9 @@ public class Entity implements Serializable {
         return queriedComponent;
     }
 
+    @Override
+    public String toString() {
+        return String.format("ID: %d, Components: %s", ID,components.toString());
+    }
+
 }

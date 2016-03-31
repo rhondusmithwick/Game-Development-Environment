@@ -12,11 +12,9 @@ import java.io.Serializable;
  * @author Rhondu Smithwick
  */
 public class XMLWriter {
-    private final String myFile;
     private XMLEncoder encoder = null;
 
     public XMLWriter(String myFile) {
-        this.myFile = myFile;
         try {
             encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(myFile)));
         } catch (FileNotFoundException e) {
