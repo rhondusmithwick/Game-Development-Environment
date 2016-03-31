@@ -7,6 +7,8 @@ import java.util.Collection;
 public interface ISystem {
     File serialize ();
 
+    void evaluate (File xml);
+
     // Entities
     Collection<IEntity> getAllEntities ();
 
