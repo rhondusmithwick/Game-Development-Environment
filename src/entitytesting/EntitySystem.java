@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+
 /**
  * Created by rhondusmithwick on 3/30/16.
  *
@@ -40,12 +41,11 @@ public class EntitySystem {
             return entities.get(ID);
         }
         return null;
-//        throw new EntityNotFoundException();
+        // throw new EntityNotFoundException();
     }
 
     public void killEntity(int ID) {
         entities.remove(ID);
     }
-
 
 }

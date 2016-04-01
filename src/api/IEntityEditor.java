@@ -5,7 +5,7 @@ import java.util.Properties;
 
 import entitytesting.Component;
 
-public interface EntityEditorInterface {
+public interface IEntityEditor {
 	
 	List<Component> getComponents();
 	

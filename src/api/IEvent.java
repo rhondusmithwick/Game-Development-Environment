@@ -1,7 +1,5 @@
 package api;
 
-public interface IEvent {
-    IEventListener getEventListener();
-
-    IEventHandler getEventHandler();
+public interface IEvent<L> {
+    void notify (final L listener); // why use final?
 }

@@ -18,7 +18,7 @@ public class ComponentFactory {
     private static final String DEFAULT_DELIMITER = "; ";
     private final ResourceBundle componentLocations = ResourceBundle.getBundle(DEFAULT_LOCATIONS);
 
-    public List<Component> readFromPropertyFile(String fileName) {
+    public List<Component> readFromPropertyFile (String fileName) {
         List<Component> components = new ArrayList<>();
         ResourceBundle bundle = ResourceBundle.getBundle(fileName);
         Enumeration<String> iter = bundle.getKeys();
@@ -29,18 +29,19 @@ public class ComponentFactory {
         return components;
     }
 
-    public Component createComponent(String componentName, ResourceBundle bundle) {
+    public Component createComponent (String componentName, ResourceBundle bundle) {
         String[] inputs = bundle.getString(componentName).split(DEFAULT_DELIMITER);
         try {
             Class<?> theClass = Class.forName(componentLocations.getString(componentName));
             Constructor<?> theConstructor = theClass.getConstructor(String[].class);
-            Object[] passed = {inputs};
+            Object[] passed = { inputs };
             return (Component) theConstructor.newInstance(passed);
-        } catch (ClassNotFoundException | InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+        }
+        catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+                | NoSuchMethodException | InvocationTargetException e) {
             e.printStackTrace();
         }
         return null;
     }
-
 
 }

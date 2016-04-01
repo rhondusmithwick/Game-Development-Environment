@@ -8,7 +8,11 @@ import java.util.List;
 public interface IEntity {
     File serialize ();
 
+    void update ();
+
     Collection<IComponent> getAllComponents ();
+
+    <T extends IComponent> Collection<T> getComponents (Class<T> c);
 
     boolean addComponent (IComponent component);
 
@@ -16,9 +20,9 @@ public interface IEntity {
 
     List<Boolean> addComponents (List<IComponent> components);
 
-    <T extends IComponent> Collection<T> getComponents (Class<T> c);
-
     boolean removeComponent (Class<IComponent> c);
 
-    void setComponentQuantityRestriction (Class<? extends IComponent> c, int n);
+    void setComponentQuantityRestriction (Class<IComponent> c, int n);
+
+    void setComponentQuantityRestriction (Class<IComponent> c, int min, int max);
 }

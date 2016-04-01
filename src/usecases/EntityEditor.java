@@ -1,10 +1,10 @@
 package usecases;
 
 import java.util.List;
-import api.EntityEditorInterface;
+import api.IEntityEditor;
 import entitytesting.Component;
 
-public class EntityEditor implements EntityEditorInterface {
+public class EntityEditor implements IEntityEditor {
 
 	@Override
 	public List<Component> getComponents() {

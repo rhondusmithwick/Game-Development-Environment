@@ -3,7 +3,7 @@ package api;
 import java.util.List;
 import entitytesting.Component;
 
-public interface EnvironmentEditorInterface {
+public interface IEnvironmentEditor {
 
 	List<Component> getComponents();
 	
