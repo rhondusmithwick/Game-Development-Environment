@@ -25,5 +25,5 @@ public interface IEntity extends Serializable {
 
     void setComponentQuantityRestriction (Class<IComponent> c, int n);
 
-    void setComponentQuantityRestriction (Class<IComponent> c, int min, int max);
+    int getComponentQuantityRestriction (Class<IComponent> c);
 }
