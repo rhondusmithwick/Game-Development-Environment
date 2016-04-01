@@ -1,18 +1,54 @@
 # Introduction
 
-This section describes the problem your team is trying to solve by writing this program, the primary design goals of the project (i.e., where is it most flexible), and the primary architecture of the design (i.e., what is closed and what is open). Describe your chosen game genre and what qualities make it unique that your design will need to support. Discuss the design at a high-level (i.e., without referencing specific classes, data structures, or code).
+The goal of this project is to create a program that allows users to create and then play their own games. The user should have ample choice in the visual look of their game, including everything from the game’s environment to how characters move and interact. 
+
+Our chosen game genre is the Fighting Game Genre. We chose this genre because while its mechanics are simple (IE you die when health is 0 and win when your enemy’s is 0), it has a lot of potential for user customization. The user will be able to create their own characters and design the moves that these characters will execute, along with designating exactly what exactly defines a match in their game. Our design will need to support these aspects of character creation and match generation, along with providing ample opportunity for the user to define what enemy characters’ artificial intelligence looks like. Additionally, our design will need to be entirely data-driven to make the back-end as flexible as possible and to help make the process of networking easier (since the network will just have to receive data and will not need to know any information about specific classes).
+
 
 # Overview
 
-This section serves as a map of your design for other programmers to gain a general understanding of how and why the program was divided up, and how the individual parts work together to provide the desired functionality. Describe specific modules you intend to create, their purpose with regards to the program's functionality, and how they collaborate with each other, focusing specifically on each one's API. Include a picture of how the modules are related (these pictures can be hand drawn and scanned in, created with a standard drawing program, or screen shots from a UML design program). Discuss specific classes, methods, and data structures, but not individual lines of code.
+We divided the design based on three components- logic, data, and visualization. Across all these components, we will have an Authoring Environment and Game Play. We use the Entity-Component-System model to define our framework. As a user defines the game through interacting with the GUI, the front end will continually write into an XML configuration file. On game launch,  a Game Builder will build the game through composition, creating Entities and adding Components. These Entities and Components will be managed by Systems that define their logic. The Front End accesses the Back End API and updates after every frame. 
+
+Event handling will be handled by a central event manager based on this reference: http://stackoverflow.com/questions/937302/simple-java-message-dispatching-system. The event dispatcher system consists of listeners that can have access to any aspect of the game (entities, components, systems, etc.). The hope is that we can provide a script editor for Groovy that will allow users to script their own events handlers.
 
 # User Interface
 
-This section describes how the user will interact with your program (keep it simple to start). Describe the overall appearance of program's user interface components and how users interact with these components (especially those specific to your program, i.e., means of input other than menus or toolbars). Include one or more pictures of the user interface (these pictures can be hand drawn and scanned in, created with a standard drawing program, or screen shots from a dummy program that serves as a exemplar). Describe how a game is represented to the designer and what support is provided to make it easy to create a game. Finally, describe any erroneous situations that are reported to the user (i.e., bad input data, empty data, etc.).
+Authoring Environment will have a game screen that allows the user to enter a name, description and icon for their game. It will also describe a game timeline that allows the user to edit the order of their environments.  The environment creation view will have a large display area where the user can see the progress as they build their environment and also interact with the objects and characters and drag them around to place them, and click them to edit their properties. The can also add buttons to the environment and specify actions for them .The area will also have a toolbar with buttons that allow the user to open various menus which will allow them to create new objects or characters, or to change various aspects of the level’s environment such as background image or background music.  Pressing a button will bring up a menu in a new tab or popup that will allow the user to create a new character or a new powerup or object and add it to the currently created level.  The toolbar will also allow them to see all the available objects and place them into the level. The user should be able to define different actions that can then be associated with characters. The user will also be able to define losing and winning conditions for each level. The user will also be able to edit the event manager that specifies what action occurs when two entities collide.
+
+Game player will essentially just consist of a screen that will display the graphical representation of the game. There will be a game status screen that shows the current games status and stats.
 
 # Design Details 
 
-This section describes each module introduced in the Overview in detail (as well as any other sub-modules that may be needed but are not significant to include in a high-level description of the program). Describe how each module handles specific features given in the assignment specification, what resources it might use, how it collaborates with other modules, and how each could be extended to include additional requirements (from the assignment specification or discussed by your team). Note, each sub-team should have its own API for others in the overall team or for new team members to write extensions. Finally, justify the decision to create each module with respect to the design's key goals, principles, and abstractions.
+Frontend Classes
+* Authoring Environment View -> contain and control the other views
+    - Contains all sub views in a data structure such as a tab pane
+    - Manages the creation of new sub views based on user input in other sub views
+        + Example: user presses new environment button in game view which prompts the authoring environment view to open a new environment view instance
+* Game View -> Edit game details 
+    - Allows user to edit game name, description, and icon. It also allows the user to open instances of the timeline editor and the entity editor to create components for their game.
+* Environment View -> Allows the user to create specific environments/levels
+    - Will allow user to see all entities created using the entity editor and allow them to be placed
+* Editor Abstract Class -> Sets up editor environment hierarchy 
+    - Sets use the basic layout of an editor 
+    - Contains add methods and display methods common among all editors
+    - Contains components to allow for and save user input
+* Entity Editor -> Allows user to add a game entity (ie. character, power up, etc..)
+    - Allows user to add components to an entity
+    - Displays necessary parameters the user must fill in
+    - THROWS EXCEPTION when the user fails to specify necessary fields
+    - THROWS EXCEPTION when the user enters unfeasible values 
+* Environment Editor -> Allows user to define an environment (ie. a level, a mode, a menu/screen)
+    - Will show the user all currently created entities that they can use and allow them to place them on the game screen. Will allow them to click on the entity’s image to open up an entity editor and edit the entity.
+* Event Editor -> Allows the user to edit events that occur within the flow of the game such as what happens when two objects collide
+* Timeline Editor -> allow user to edit the flow of levels to create games that encompass multiple number of levels and to add in character selection menus or upgrade menus in between combat levels
+    - Allows users to define a series of environments that will be displayed or played through
+    - User will define conditions to transition from environment to environment 
+* Data writer -> write created environments, entities, and game details to data files in specified format
+* Data reader -> read game files to recreate previously saved games and allow further editing
+* Button Factory -> allows users to create new buttons on an environment with user defined function
+* HeadsUpDisplay Factory -> allows users to create new HeadsUpDisplays to display stats or conditions
+* GamePlayer →  Reads the finished data of a game, and in conjunction with the Game Engine, allows the player to effectively play the created game
+
 
 # Example games
 
