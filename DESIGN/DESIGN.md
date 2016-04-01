@@ -85,8 +85,80 @@ Backend
 
 # Example games
 
-Describe three example games from your genre in detail that differ significantly. Clearly identify how the functional differences in these games is supported by your design and enabled by your authoring environment. Use these examples to help make concrete the abstractions in your design.
+* BOXING-esque Game:  This game has two characters playing against each other.  After a certain amount of time, a winner is declared based on who has inflicted the most damage. The authoring environment will allow for the user to create characters and the timer as “entities” with various “components.”  For example, a game timer entity would likely have a component (maybe TimeComponent) that sets how long a round is supposed to last.  Character entities may have components like DamageComponent, ImageComponent, MoveComponent, etc.  Win conditions are decided based on the state of each of the entities (comparing the damage inflicted by each entity when the timer is 0, having a player win when the other player’s health reaches 0, etc.).
+
+
+* MORTAL KOMBAT-esque Game:  This type of game is a traditional 2D fighter.  There are two characters playing against each other, and the game finishes when one character’s health is fully depleted.  The player character progresses through a series of levels in order to win.The differing Win Conditions will be handled by setting an event handler based on the state of the components of the various entities (to be set by the user).  
+
+* SMASH-esque Game:  This type of game is a “platformer”-type of fighting game.  There can be more than two players, items, and a more intricate stage with platforms (rather than just a simple stage of the likes of Mortal Kombat/Street Fighter).  Again, this is handled by the entity/component system of the back-end.  There’s no inherent limit to the number of characters that can be added by the user, and “Items” can be an entity of their own (with Components that specify what the item does).  Similarly, “Platforms” can also be entities of their own and added freely to the game.
 
 # Design Considerations 
 
-This section describes any issues which need to be addressed or resolved before attempting to devise a complete design solution. Include any design decisions that each sub-team discussed at length (include pros and cons from all sides of the discussion) as well as any ambiguities, assumptions, or dependencies regarding the program that impact the overall design.
+* All classes implement Serializable and should be able to written and loaded
+    - Use Serializable or XML
+    - Benefits of XML: readable, user can edit
+    - Benefits of Serializable: know it works
+    - JSON? For networking?
+    - Network is “dumb”: only passes messages, wrapped passages 
+    - Where are those messages formed? 
+* We think controllers will give us more flexibility than observables (bc with Observables there is only one update method, and we need to typecast) 
+    - Entity Component System 
+    - Id -> Component
+    - Example of a component is Health (has its own class)
+* Internal API’s 
+   - Physics 
+       + Collision type (collidable or no) component 
+   - Component Interface (get or set a certain game character properties)
+       + Getter + Setter, generic type value for Component class
+       + We can add complexity to the components (Moves might be one complex component)
+       + Resource files to keep track of which components a character/sprite needs + which generic types to take in  
+   - Adding a new component
+       + It is basically just adding to resource files.
+       + Check out the Strategy Design Pattern.
+
+Frontend
+* Authoring Environment
+    - Inheritance Hierarchy for objects/characters or some way to abstract them since they will be mostly the same but differ in details
+        + Need to be able to set the properties of these objects based on user input/randomly generate certain ones
+    - An action object/ some way to assign a certain keys input for a character to a certain action. Ex. assign right arrow to move character right - > will be a component 
+    - Probably will be mostly menus so an inheritance hierarchy to create new menus to allow more customization makes sense
+        + Create characters
+        + Create objects that characters can interact with
+        + Create the game environment
+        + Define the flow of the game by switching the order of levels
+        + Define End conditions for each level, winning and losing
+    - Allow user to load previous games using a menu that pops up at begining or allow them to start with blank slate
+    - Allow them to create char selection screen that will display all characters and allow them to choose
+        + Provide framework for one type to start, eg Super Smash Bros selection screen type
+        + Display this before all user created levels
+    - Potential Classes:
+        + Utilities Classes -> Enums, Useful Abstractions, Reused general functions
+        + PlayView 
+        + CreateMenu
+        + Menu -> abstract, allow for easy creation of new menu types
+        + MainView
+        + DefineRules -> define end conditions, losing winning
+        + DefineTournament -> Define level order
+        + DefineCharacters 
+        + DefineObjects
+        + DefineEnvironment -> Set background, theme music, health bars, timers etc.
+        + The four above could possibly be abstracted into a hierarchy
+        + Action Class -> allow input to be assigned to action
+* Player
+    - Menu to load game first thing that is shown
+    - From data file, create all needed objects, place them on screen
+    - After reading the datafile and loading the game, all the code to run the game should hopefully be contained within the objects (e.g. all the actions should be set up so if the user enter anything, the program automatically reacts)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
