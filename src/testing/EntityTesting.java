@@ -13,7 +13,7 @@ import serialization.SerializableWriter;
  */
 class EntityTesting implements Tester {
     private static final String SERIALIZED_DEFAULT_FILE_NAME = "resources/playerDefault.ser";
-    private static final String SERIALIZED_LOAD_FILE_NAME = "resources/plaer.ser";
+    private static final String SERIALIZED_LOAD_FILE_NAME = "resources/player.ser";
 
     private final EntitySystem entitySystem = new EntitySystem();
 

@@ -23,6 +23,10 @@ public class OneValueContainer<A> implements Serializable {
         this.value1 = value1;
     }
 
+    protected String toStringHelp(String name1) {
+        return String.format("%s: %s", name1, getValue1());
+    }
+
     @Override
     public String toString() {
         return String.format("Value1: %s", getValue1());

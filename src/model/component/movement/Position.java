@@ -35,4 +35,14 @@ public class Position extends TwoDoubleComponent {
     public void setY(Double y) {
         setValue2(y);
     }
+
+    @Override
+    public String toString() {
+        return toStringHelp("X", "Y");
+    }
+
+    @Override
+    public boolean unique() {
+        return true;
+    }
 }
