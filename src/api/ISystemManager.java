@@ -17,6 +17,7 @@ public interface ISystemManager {
 
     /**
      * This will build the game's loop.
+     *
      * @return the game's loop
      */
     Timeline buildLoop();
@@ -28,6 +29,7 @@ public interface ISystemManager {
 
     /**
      * Get all systems.
+     *
      * @return a list of the systems
      */
     List<ISystem> getSystems();

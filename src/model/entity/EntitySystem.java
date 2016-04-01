@@ -1,9 +1,11 @@
-package entitytesting;
+package model.entity;
+
+import model.component.base.Component;
+import serialization.SerializableReader;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 
 /**
@@ -12,23 +14,26 @@ import java.util.Objects;
  * @author Rhondu Smithwick
  */
 public class EntitySystem {
-    private int maxID = 0;
     private final Map<Integer, Entity> entities = new HashMap<>();
-    private final ComponentFactory componentFactory = new ComponentFactory();
+    private int maxID = 0;
 
-    public int getNextAvailableID() {
-        return maxID + 1;
-    }
-
-    public Entity createEntity(String defaultType) {
+    public Entity createEntity() {
         int ID = getNextAvailableID();
         Entity entity = new Entity(ID);
-        entities.put(ID, entity);
-        if (!Objects.equals(defaultType, "")) {
-            List<Component> components = componentFactory.readFromPropertyFile(defaultType);
-            entity.addComponent(components);
-        }
         maxID++;
+        return entity;
+    }
+
+    public Entity createEntityFromLoad(String fileName) {
+        Entity entity = new SerializableReader<Entity>(fileName).readSingle();
+        addEntity(entity);
+        return entity;
+    }
+
+    public Entity createEntityFromDefault(String defaultFileName) {
+        Entity entity = createEntity();
+        List<Component> components = new SerializableReader<Component>(defaultFileName).read();
+        entity.addComponentList(components);
         return entity;
     }
 
@@ -46,6 +51,10 @@ public class EntitySystem {
 
     public void killEntity(int ID) {
         entities.remove(ID);
+    }
+
+    private int getNextAvailableID() {
+        return maxID + 1;
     }
 
 }

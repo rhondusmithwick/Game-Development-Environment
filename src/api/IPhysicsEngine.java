@@ -1,5 +1,5 @@
 package api;
 
 public interface IPhysicsEngine {
-    void update (ISystem system);
+    void update(ISystem system);
 }

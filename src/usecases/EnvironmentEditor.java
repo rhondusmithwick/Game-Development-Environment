@@ -1,7 +1,7 @@
 package usecases;
 
 import api.IEnvironmentEditor;
-import entitytesting.Component;
+import model.component.base.Component;
 
 import java.util.List;
 

@@ -1,9 +1,9 @@
 package usecases;
 
-import entitytesting.Entity;
-import entitytesting.EntitySystem;
-import entitytesting.Position;
-import entitytesting.SerializableReader;
+import model.component.movement.Position;
+import model.entity.Entity;
+import model.entity.EntitySystem;
+import serialization.SerializableReader;
 
 /**
  * Created by rhondusmithwick on 3/31/16.
@@ -28,8 +28,8 @@ public class UseCase6 {
 
     // create own player entity
     void doUseCaseBuild() {
-        Entity entity = entitySystem.createEntity("");
-        entity.addComponent(new Position(500, 500));
+        Entity entity = entitySystem.createEntityFromDefault("");
+        entity.addComponent(new Position(500.0, 500.0));
         // other add compeontns
     }
 }
