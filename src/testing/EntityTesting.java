@@ -17,6 +17,10 @@ class EntityTesting implements Tester {
 
     private final EntitySystem entitySystem = new EntitySystem();
 
+    public static void main(String[] args) {
+        new EntityTesting().test();
+    }
+
     public void test() {
         Entity entity = loadDefault();
         new SerializableWriter(SERIALIZED_LOAD_FILE_NAME).write(entity);
@@ -38,10 +42,6 @@ class EntityTesting implements Tester {
         Entity entity = entitySystem.createEntityFromLoad(SERIALIZED_LOAD_FILE_NAME);
         System.out.println("Entity read from load file: " + entity);
         System.out.println("Testing get Component: " + entity.getComponent(Position.class));
-    }
-
-    public static void main(String[] args) {
-        new EntityTesting().test();
     }
 
 }

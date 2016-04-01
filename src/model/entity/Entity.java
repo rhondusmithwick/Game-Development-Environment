@@ -1,18 +1,12 @@
 package model.entity;
 
 import customobjects.SerializableObservableMap;
-import javafx.collections.FXCollections;
-import javafx.collections.MapChangeListener;
-import javafx.collections.ObservableMap;
 import model.component.base.Component;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.NoSuchElementException;
 
 /**
  * Created by rhondusmithwick on 4/1/16.
