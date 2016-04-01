@@ -19,6 +19,10 @@ public class SerializableReader<T> {
     }
 
 
+    public T readSingle() {
+        return read().get(0);
+    }
+
     public List<T> read() {
         List<T> objects = new ArrayList<>();
         try {

@@ -19,13 +19,16 @@ public class UseCase6 {
         this.entitySystem = entitySystem;
     }
 
+    // get a preloaded player entity from a file
     void doUseCasePreloaded() {
-        Entity entity = new  SerializableReader<Entity>("player.ser").read().get(0);
+        Entity entity = new  SerializableReader<Entity>("player.ser").readSingle();
         entitySystem.addEntity(entity);
     }
 
+    // create own player entity
     void doUseCaseBuild() {
         Entity entity = entitySystem.createEntity("");
         entity.addComponent(new Position(500, 500));
+        // other add compeontns
     }
 }
