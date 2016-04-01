@@ -7,8 +7,9 @@ import entitytesting.SerializableReader;
 
 /**
  * Created by rhondusmithwick on 3/31/16.
- *
+ * <p>
  * A game creator adds either a built or preloaded character to a level
+ *
  * @author Rhondu Smithwick
  */
 public class UseCase6 {
@@ -21,7 +22,7 @@ public class UseCase6 {
 
     // get a preloaded player entity from a file
     void doUseCasePreloaded() {
-        Entity entity = new  SerializableReader<Entity>("player.ser").readSingle();
+        Entity entity = new SerializableReader<Entity>("player.ser").readSingle();
         entitySystem.addEntity(entity);
     }
 
