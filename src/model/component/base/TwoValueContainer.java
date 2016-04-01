@@ -30,4 +30,8 @@ public class TwoValueContainer<A, B> extends OneValueContainer<A> {
     public String toString() {
         return String.format("%s, Value2: %s", super.toString(), getValue2());
     }
+
+    protected String toStringHelp(String name1, String name2) {
+        return String.format("%s, %s: %s: %s", name1, getValue1(), name2, getValue2());
+    }
 }

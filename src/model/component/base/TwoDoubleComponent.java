@@ -25,4 +25,6 @@ public abstract class TwoDoubleComponent extends TwoValueContainer<Double, Doubl
         Double value2 = Double.parseDouble(args[1]);
         setBoth(value1, value2);
     }
+
+
 }

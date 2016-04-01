@@ -35,4 +35,15 @@ public class Velocity extends TwoDoubleComponent {
     public void setAcceleration(Double acceleration) {
         setValue2(acceleration);
     }
+
+    @Override
+    public String toString() {
+        return toStringHelp("Velocity", "Acceleration");
+    }
+
+
+    @Override
+    public boolean unique() {
+        return true;
+    }
 }
