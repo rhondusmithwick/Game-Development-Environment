@@ -1,5 +1,6 @@
 package model.entity;
 
+import customobjects.SerializableObservableMap;
 import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableMap;
@@ -20,9 +21,8 @@ import java.util.NoSuchElementException;
  */
 public class Entity implements Serializable {
     private final Integer ID;
-    private final Map<Class<? extends Component>, List<Component>> components = new HashMap<>();
 
-    private final transient ObservableMap<Class<? extends Component>, List<Component>> observableMap = FXCollections.observableMap(components);
+    private final SerializableObservableMap<Class<? extends Component>, List<Component>> observableMap = new SerializableObservableMap<>();
 
     public Entity(int ID) {
         this.ID = ID;
@@ -41,10 +41,6 @@ public class Entity implements Serializable {
 
     public boolean hasComponent(Class<? extends Component> componentClass) {
         return observableMap.containsKey(componentClass);
-    }
-
-    public void addListener(MapChangeListener<Class<? extends Component>, List<Component>> listener) {
-        observableMap.addListener(listener);
     }
 
     @SuppressWarnings("unchecked")
@@ -66,16 +62,17 @@ public class Entity implements Serializable {
         return ID;
     }
 
-    public void addComponent(Component... components) {
-        addComponentList(Arrays.asList(components));
-    }
-
     public void addComponentList(List<Component> components) {
         components.stream().forEach(this::addComponent);
     }
 
+    public void addComponent(Component... components) {
+        addComponentList(Arrays.asList(components));
+    }
+
+
     @Override
     public String toString() {
-        return String.format("ID: %d, Components: %s", ID, components.toString());
+        return String.format("ID: %d, Components: %s", ID, observableMap.toString());
     }
 }
