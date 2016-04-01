@@ -8,6 +8,8 @@ import java.util.List;
 public interface IEntity {
     File serialize ();
 
+    void update ();
+
     Collection<IComponent> getAllComponents ();
 
     <T extends IComponent> Collection<T> getComponents (Class<T> c);
