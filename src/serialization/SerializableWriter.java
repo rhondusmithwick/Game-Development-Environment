@@ -1,4 +1,4 @@
-package entitytesting;
+package serialization;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,7 +21,7 @@ public class SerializableWriter {
         try {
             FileOutputStream fileOut = new FileOutputStream(myFile);
             ObjectOutputStream out = new ObjectOutputStream(fileOut);
-            for (Serializable ser: serializables) {
+            for (Serializable ser : serializables) {
                 out.writeObject(ser);
             }
             out.close();

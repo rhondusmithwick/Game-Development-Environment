@@ -5,15 +5,15 @@ import java.util.List;
 
 
 public interface IEntitySystem extends ISystem {
-    Collection<IEntity> getAllEntities ();
+    Collection<IEntity> getAllEntities();
 
-    <T extends IEntity> Collection<T> getEntities (Class<T> c);
+    <T extends IEntity> Collection<T> getEntities(Class<T> c);
 
-    boolean addEntity (IEntity entity);
+    boolean addEntity(IEntity entity);
 
-    List<Boolean> addEntities (IEntity ... entities);
+    List<Boolean> addEntities(IEntity... entities);
 
-    List<Boolean> addEntities (List<IEntity> entities);
+    List<Boolean> addEntities(List<IEntity> entities);
 
-    boolean removeEntity (Class<IEntity> c);
+    boolean removeEntity(Class<IEntity> c);
 }
