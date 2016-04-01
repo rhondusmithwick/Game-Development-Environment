@@ -4,6 +4,8 @@ import javafx.collections.FXCollections;
 import javafx.collections.MapChangeListener;
 import javafx.collections.ObservableMap;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.HashMap;
@@ -20,7 +22,7 @@ public class SerializableObservableMap<K, V> implements Serializable {
 
     private final Map<K, V> map = new HashMap<>();
 
-    private transient final ObservableMap<K, V> observableMap = FXCollections.observableMap(map);
+    private transient ObservableMap<K, V> observableMap = FXCollections.observableMap(map);
 
     public V get(K key) {
         return observableMap.get(key);
@@ -64,6 +66,15 @@ public class SerializableObservableMap<K, V> implements Serializable {
 
     public boolean containsValue(V value) {
         return observableMap.containsValue(value);
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException {
+        try {
+            in.defaultReadObject();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        observableMap = FXCollections.observableMap(map);
     }
 
     @Override
