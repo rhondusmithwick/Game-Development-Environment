@@ -1,13 +1,13 @@
 package usecases;
 
-import api.EntityEditorInterface;
-import api.EnvironmentEditorInterface;
+import api.IEntityEditor;
+import api.IEnvironmentEditor;
 
 public class UseCase24 {
 
 	// game creator adds music to an environment
 		void doUseCase(){
-		EnvironmentEditorInterface myEditor = new EnvironmentEditor();
+		IEnvironmentEditor myEditor = new EnvironmentEditor();
 		myEditor.show();
 		//waiting for user to enter data and press create button
 		//once create button is pressed

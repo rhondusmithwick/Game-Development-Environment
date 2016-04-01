@@ -20,5 +20,7 @@ public interface IEntity {
 
     boolean removeComponent (Class<IComponent> c);
 
-    void setComponentQuantityRestriction (Class<? extends IComponent> c, int n);
+    void setComponentQuantityRestriction (Class<IComponent> c, int n);
+
+    void setComponentQuantityRestriction (Class<IComponent> c, int min, int max);
 }

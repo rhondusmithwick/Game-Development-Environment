@@ -2,7 +2,7 @@ package api;
 
 import javafx.event.Event;
 
-public interface EventEditor {
+public interface IEventEditor {
 	
 	void editEvent(Event myEvent);
 	

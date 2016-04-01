@@ -2,10 +2,10 @@ package usecases;
 
 import java.util.List;
 
-import api.EnvironmentEditorInterface;
+import api.IEnvironmentEditor;
 import entitytesting.Component;
 
-public class EnvironmentEditor implements EnvironmentEditorInterface {
+public class EnvironmentEditor implements IEnvironmentEditor {
 
 	@Override
 	public List<Component> getComponents() {
