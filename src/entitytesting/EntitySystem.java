@@ -31,6 +31,10 @@ public class EntitySystem {
         return entity;
     }
 
+    public void addEntity(Entity entity) {
+        entities.put(entity.getID(), entity);
+    }
+
     public Entity getEntity(int ID) {
         if (entities.containsKey(ID)) {
             return entities.get(ID);
