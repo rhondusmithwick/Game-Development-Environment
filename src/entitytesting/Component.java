@@ -11,4 +11,8 @@ public interface Component extends Serializable {
     default boolean unique() {
         return false;
     }
+
+    default Class<? extends Component> getClassForComponentMap() {
+        return getClass();
+    }
 }

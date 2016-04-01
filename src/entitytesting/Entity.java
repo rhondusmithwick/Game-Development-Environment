@@ -16,7 +16,7 @@ public class Entity implements Serializable {
     private final Integer ID;
     private final Map<Class<? extends Component>, List<Component>> components = new HashMap<>();
 
-    public Entity(int ID, EntitySystem entitySystem) {
+    public Entity(int ID) {
         this.ID = ID;
     }
 
@@ -34,7 +34,7 @@ public class Entity implements Serializable {
     }
 
     public void addComponent(Component component) {
-        Class<? extends Component> theClass = component.getClass();
+        Class<? extends Component> theClass = component.getClassForComponentMap();
         if (!components.containsKey(theClass)) {
             components.put(theClass, new ArrayList<>());
         }
@@ -57,6 +57,11 @@ public class Entity implements Serializable {
 //            throw new NoComponentFoundException();
         }
         return queriedComponent;
+    }
+
+    @Override
+    public String toString() {
+        return String.format("ID: %d, Components: %s", ID,components.toString());
     }
 
 }
