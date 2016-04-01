@@ -1,11 +1,12 @@
 package api;
 
 import java.io.File;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
 
-public interface IEntity {
+public interface IEntity extends Serializable {
     File serialize ();
 
     void update ();
