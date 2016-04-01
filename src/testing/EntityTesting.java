@@ -35,6 +35,7 @@ class EntityTesting implements Tester {
     private void loadFromBuilt() {
         Entity entity = entitySystem.createEntityFromLoad(SERIALIZED_LOAD_FILE_NAME);
         System.out.println("Entity read from load file: " + entity);
+        System.out.println(entity.getComponent(Position.class));
     }
 
     public static void main(String[] args) {

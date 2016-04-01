@@ -15,6 +15,7 @@ import java.util.Map;
  */
 public class EntitySystem {
     private final Map<Integer, Entity> entities = new HashMap<>();
+
     private int maxID = 0;
 
     public Entity createEntity() {
