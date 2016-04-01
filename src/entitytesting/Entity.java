@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * Created by rhondusmithwick on 3/30/16.
  *
@@ -15,6 +16,7 @@ import java.util.Map;
 public class Entity implements Serializable {
     private final Integer ID;
     private final Map<Class<? extends Component>, List<Component>> components = new HashMap<>();
+
 
     public Entity(int ID) {
         this.ID = ID;

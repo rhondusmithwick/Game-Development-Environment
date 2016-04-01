@@ -21,7 +21,7 @@ public class EntitySystem {
 
     public Entity createEntity(String defaultType) {
         int ID = getNextAvailableID();
-        Entity entity = new Entity(ID, this);
+        Entity entity = new Entity(ID);
         entities.put(ID, entity);
         if (!Objects.equals(defaultType, "")) {
             List<Component> components = componentFactory.readFromPropertyFile(defaultType);

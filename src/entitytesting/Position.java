@@ -5,6 +5,7 @@ package entitytesting;
  *
  * @author Rhondu Smithwick
  */
+
 public class Position implements Component {
     private Double x;
     private Double y;
