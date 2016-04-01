@@ -49,6 +49,39 @@ Frontend Classes
 * HeadsUpDisplay Factory -> allows users to create new HeadsUpDisplays to display stats or conditions
 * GamePlayer →  Reads the finished data of a game, and in conjunction with the Game Engine, allows the player to effectively play the created game
 
+Backend
+
+* Entity-Component-Systems architecture
+    - Entity contains components which define its data (Model)
+    - Components contain specific data (Model)
+    - Systems act on components as logic (Controllers)
+* Entity - only one class
+    - Contains list of components and unique ID
+    - Allows to get a component based on class Type and index of which component to get if there are multiple
+    - Managed by an EntitySystem 
+    - Only one Entity class because this will allow users to dynamically generate different types of entities based on what type of components an entity is composed of
+* Components - implement Component interface
+    - Contain data
+    - Held by Entities (containers) and systems (which act on them)
+    - Some Components only allow their entity to have on of them
+        + EX: Position 
+    - Others allow multiple
+        + EX: Attack
+* Systems - implment ISystem
+    - Act on components as logic 
+        + Examples include MovementSystem, SpriteSystem, etc
+    - Held in a SystemsManager 
+    - Three systems
+        + EntitySystem: contains all the entities
+        + PhysicsSystem: contains physics components
+        + EventsSystem: contains event dispatcher and listeners 
+        + Entities map Component classes to their instances of that Component class
+        + When a system runs, it grabs the instances that it needs
+        + EX: CollisionSystem would get the Collision.class entries from the map
+* Frontend and authoring environment will need to be able to create components that an entity needs
+* Game Authoring environment will need to be able to save the entity system, which the game engine will need to load up
+* Will rely on both properties files to specify locations of classes for reflection and serialization files to load up and save objects
+
 
 # Example games
 
