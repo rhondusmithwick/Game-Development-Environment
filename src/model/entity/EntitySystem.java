@@ -6,6 +6,10 @@ import serialization.SerializableReader;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 
 /**
@@ -40,6 +44,17 @@ public class EntitySystem {
 
     public void addEntity(Entity entity) {
         entities.put(entity.getID(), entity);
+    }
+
+
+    public <T extends Component> List<T> getAllComponentsOfType(Class<T> componentType) {
+        return entities.values().stream().map(e -> e.getCompoWnentList(componentType))
+                .flatMap(List::stream).filter(Objects::nonNull).collect(Collectors.toList());
+    }
+
+    public <T extends Component> Set<Entity> getEntitiesWithComponentType(Class<T> componentType) {
+        Predicate<Entity> hasComponent = (e) -> e.hasComponent(componentType);
+        return entities.values().stream().filter(hasComponent).collect(Collectors.toSet());
     }
 
     public Entity getEntity(int ID) {

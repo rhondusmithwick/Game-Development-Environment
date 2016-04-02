@@ -7,8 +7,10 @@ import javafx.collections.ObservableMap;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -21,6 +23,7 @@ import java.util.Set;
 public class SerializableObservableMap<K, V> implements Serializable {
 
     private final Map<K, V> map = new HashMap<>();
+    private final List<MapChangeListener<? super K, ? super V>> listeners = new ArrayList<>();
 
     private transient ObservableMap<K, V> observableMap = FXCollections.observableMap(map);
 
@@ -41,6 +44,7 @@ public class SerializableObservableMap<K, V> implements Serializable {
     }
 
     public void addListener(MapChangeListener<? super K, ? super V> listener) {
+        listeners.add(listener);
         observableMap.addListener(listener);
     }
 
@@ -75,6 +79,7 @@ public class SerializableObservableMap<K, V> implements Serializable {
             e.printStackTrace();
         }
         observableMap = FXCollections.observableMap(map);
+        listeners.stream().forEach(this::addListener);
     }
 
     @Override
