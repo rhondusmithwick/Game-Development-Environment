@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by rhondusmithwick on 4/1/16.
@@ -37,19 +38,22 @@ public class Entity implements Serializable {
         return observableMap.containsKey(componentClass);
     }
 
-    @SuppressWarnings("unchecked")
-    public <T extends Component> T getComponent(Class<T> componentClass, int... index) {
+    public <T extends Component> List<T> getComponentList(Class<T> componentClass) {
         if (!hasComponent(componentClass)) {
             return null;
         }
-        List<Component> componentStorage = observableMap.get(componentClass);
-        T queriedComponent;
+        return observableMap.get(componentClass).stream()
+                .map(componentClass::cast).collect(Collectors.toList());
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T extends Component> T getComponent(Class<T> componentClass, int... index) {
+        List<T> componentStorage = getComponentList(componentClass);
         if (index.length == 0) {
-            queriedComponent = (T) componentStorage.get(0);
+            return componentStorage.get(0);
         } else {
-            queriedComponent = (T) componentStorage.get(index[0]);
+            return componentStorage.get(index[0]);
         }
-        return queriedComponent;
     }
 
     public int getID() {
