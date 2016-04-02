@@ -1,18 +1,19 @@
 package api;
 
+import model.component.base.Component;
+
 import java.util.List;
-import entitytesting.Component;
 
 public interface IEnvironmentEditor {
 
-	List<Component> getComponents();
-	
-	List<System> getSystems(); // These will be our defined systems class
+    List<Component> getComponents();
 
-	void show();
+    List<System> getSystems(); // These will be our defined systems class
 
-	void writeToFile(String musicURL);
+    void show();
 
-	void close(); 
-	
+    void writeToFile(String musicURL);
+
+    void close();
+
 }

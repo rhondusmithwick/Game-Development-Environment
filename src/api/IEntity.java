@@ -1,16 +1,12 @@
 package api;
 
-import java.io.File;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 
 public interface IEntity extends Serializable {
-    File serialize ();
-
-    void update ();
-
     Collection<IComponent> getAllComponents ();
 
     <T extends IComponent> Collection<T> getComponents (Class<T> c);
@@ -23,7 +19,11 @@ public interface IEntity extends Serializable {
 
     boolean removeComponent (Class<IComponent> c);
 
-    void setComponentQuantityRestriction (Class<IComponent> c, int n);
+    Map<Class<IComponent>, Integer> getSpecs ();
 
-    int getComponentQuantityRestriction (Class<IComponent> c);
+    void setSpecs (Map<Class<IComponent>, Integer> map);
+
+    int getSpec (Class<IComponent> c);
+
+    void setSpec (Class<IComponent> c, int n);
 }

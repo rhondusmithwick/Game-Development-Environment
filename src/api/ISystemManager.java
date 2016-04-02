@@ -1,8 +1,8 @@
 package api;
 
+import java.util.List;
 import javafx.animation.Timeline;
 
-import java.util.List;
 
 /**
  * Created by rhondusmithwick on 3/31/16.
@@ -13,23 +13,29 @@ public interface ISystemManager {
     /**
      * This will pause the game loop.
      */
-    void pauseLoop();
+    void pauseLoop ();
 
     /**
      * This will build the game's loop.
+     *
      * @return the game's loop
      */
-    Timeline buildLoop();
+    Timeline buildLoop ();
 
     /**
      * This will step the game's loop.
      */
-    void step();
+    void step ();
 
     /**
      * Get all systems.
+     *
      * @return a list of the systems
      */
-    List<ISystem> getSystems();
+    @Deprecated
+    List<ISystem> getSystems ();
 
+    IEntitySystem getEntitySystem ();
+
+    IEventSystem getEventSystem ();
 }
