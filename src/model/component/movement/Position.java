@@ -38,7 +38,7 @@ public class Position extends TwoDoubleComponent {
 
     @Override
     public String toString() {
-        return toStringHelp("X", "Y");
+        return "Position: [" + toStringHelp("X", "Y") + "]";
     }
 
     @Override

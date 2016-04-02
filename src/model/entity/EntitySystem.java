@@ -1,7 +1,7 @@
 package model.entity;
 
 import model.component.base.Component;
-import serialization.SerializableReader;
+import serialization.XMLReader;
 
 import java.util.HashMap;
 import java.util.List;
@@ -30,14 +30,14 @@ public class EntitySystem {
     }
 
     public Entity createEntityFromLoad(String fileName) {
-        Entity entity = new SerializableReader<Entity>(fileName).readSingle();
+        Entity entity = new XMLReader<Entity>().readSingleFromFile(fileName);
         addEntity(entity);
         return entity;
     }
 
     public Entity createEntityFromDefault(String defaultFileName) {
         Entity entity = createEntity();
-        List<Component> components = new SerializableReader<Component>(defaultFileName).read();
+        List<Component> components = new XMLReader<Component>().readFromFile(defaultFileName);
         entity.addComponentList(components);
         return entity;
     }

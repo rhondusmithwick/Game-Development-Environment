@@ -1,6 +1,8 @@
 package model.entity;
 
-import customobjects.SerializableObservableMap;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 import model.component.base.Component;
 
 import java.io.Serializable;
@@ -15,9 +17,12 @@ import java.util.stream.Collectors;
  * @author Rhondu Smithwick
  */
 public class Entity implements Serializable {
+    @XStreamAlias("ID")
     private final Integer ID;
 
-    private final SerializableObservableMap<Class<? extends Component>, List<Component>> observableMap = new SerializableObservableMap<>();
+    @XStreamAlias("components")
+    private final ObservableMap<Class<? extends Component>, List<Component>> observableMap = FXCollections.observableHashMap();
+
 
     public Entity(int ID) {
         this.ID = ID;

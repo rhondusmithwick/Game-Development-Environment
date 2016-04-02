@@ -1,35 +1,32 @@
-//package serialization;
-//
-//import javax.xml.bind.JAXBContext;
-//import javax.xml.bind.JAXBException;
-//import javax.xml.bind.Marshaller;
-//import java.io.File;
-//
-///**
-// * Created by rhondusmithwick on 4/1/16.
-// *
-// * @author Rhondu Smithwick
-// */
-//public class XMLWriter<T> {
-//    public final String myFile;
-//
-//    public XMLWriter(String myFile) {
-//        this.myFile = myFile;
-//    }
-//
-//    public void write(Class<T> theClass, T... objects) {
-//        try {
-//            File file = new File(myFile);
-//            JAXBContext jaxbContext = JAXBContext.newInstance(theClass);
-//            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
-//            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
-//            for (T obj: objects) {
-//                jaxbMarshaller.marshal(obj, file);
-//                jaxbMarshaller.marshal(obj, System.out);
-//            }
-//        } catch (JAXBException e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//}
+package serialization;
+
+
+import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.io.xml.StaxDriver;
+
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+
+/**
+ * Created by rhondusmithwick on 4/1/16.
+ *
+ * @author Rhondu Smithwick
+ */
+public class XMLWriter<T> {
+
+    public void writeToFile(String fileName, T... objs) {
+        XStream xstream = new XStream(new StaxDriver());
+        xstream.autodetectAnnotations(true);
+        try {
+            ObjectOutputStream out = xstream.createObjectOutputStream(new FileOutputStream(fileName));
+            for (T obj : objs) {
+                out.writeObject(obj);
+            }
+            out.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+}
