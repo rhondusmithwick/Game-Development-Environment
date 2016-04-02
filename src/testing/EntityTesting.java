@@ -1,13 +1,11 @@
 package testing;
 
+import model.component.base.Component;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.entity.Entity;
 import model.entity.EntitySystem;
-import serialization.SerializableWriter;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
+import serialization.XMLWriter;
 
 /**
  * Created by rhondusmithwick on 4/1/16.
@@ -15,8 +13,8 @@ import javax.script.ScriptEngineManager;
  * @author Rhondu Smithwick
  */
 class EntityTesting implements Tester {
-    private static final String SERIALIZED_DEFAULT_FILE_NAME = "resources/playerDefault.ser";
-    private static final String SERIALIZED_LOAD_FILE_NAME = "resources/player.ser";
+    private static final String DEFAULT_FILE_NAME = "resources/playerDefault.xml";
+    private static final String LOAD_FILE_NAME = "resources/player.xml";
 
     private final EntitySystem entitySystem = new EntitySystem();
 
@@ -26,24 +24,23 @@ class EntityTesting implements Tester {
 
     public void test() {
         Entity entity = loadDefault();
-        new SerializableWriter().writeToFile(SERIALIZED_LOAD_FILE_NAME, entity);
+        new XMLWriter<Entity>().writeToFile(LOAD_FILE_NAME, entity);
         loadFromBuilt();
     }
 
     private Entity loadDefault() {
-        ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
         System.out.println("DEFAULT:");
         Position position = new Position(50.0, 40.0);
         Velocity velocity = new Velocity(100.0, 10.0);
-        new SerializableWriter().writeToFile(SERIALIZED_DEFAULT_FILE_NAME, position, velocity);
-        Entity entity = entitySystem.createEntityFromDefault(SERIALIZED_DEFAULT_FILE_NAME);
+        new XMLWriter<Component>().writeToFile(DEFAULT_FILE_NAME, position, velocity);
+        Entity entity = entitySystem.createEntityFromDefault(DEFAULT_FILE_NAME);
         System.out.println("Entity read from default file: " + entity);
         return entity;
     }
 
     private void loadFromBuilt() {
         System.out.println("PRELOADED:");
-        Entity entity = entitySystem.createEntityFromLoad(SERIALIZED_LOAD_FILE_NAME);
+        Entity entity = entitySystem.createEntityFromLoad(LOAD_FILE_NAME);
         System.out.println("Entity read from load file: " + entity);
         System.out.println("Testing get Component: " + entity.getComponent(Position.class));
     }
