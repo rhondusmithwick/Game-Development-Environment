@@ -6,6 +6,9 @@ import model.entity.Entity;
 import model.entity.EntitySystem;
 import serialization.SerializableWriter;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+
 /**
  * Created by rhondusmithwick on 4/1/16.
  *
@@ -28,6 +31,7 @@ class EntityTesting implements Tester {
     }
 
     private Entity loadDefault() {
+        ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
         System.out.println("DEFAULT:");
         Position position = new Position(50.0, 40.0);
         Velocity velocity = new Velocity(100.0, 10.0);
