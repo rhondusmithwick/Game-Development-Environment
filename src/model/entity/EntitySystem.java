@@ -48,7 +48,7 @@ public class EntitySystem {
 
 
     public <T extends Component> List<T> getAllComponentsOfType(Class<T> componentType) {
-        return entities.values().stream().map(e -> e.getCompoWnentList(componentType))
+        return entities.values().stream().map(e -> e.getComponentList(componentType))
                 .flatMap(List::stream).filter(Objects::nonNull).collect(Collectors.toList());
     }
 
