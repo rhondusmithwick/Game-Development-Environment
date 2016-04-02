@@ -23,7 +23,7 @@ class EntityTesting implements Tester {
 
     public void test() {
         Entity entity = loadDefault();
-        new SerializableWriter(SERIALIZED_LOAD_FILE_NAME).write(entity);
+        new SerializableWriter().writeToFile(SERIALIZED_LOAD_FILE_NAME, entity);
         loadFromBuilt();
     }
 
@@ -31,7 +31,7 @@ class EntityTesting implements Tester {
         System.out.println("DEFAULT:");
         Position position = new Position(50.0, 40.0);
         Velocity velocity = new Velocity(100.0, 10.0);
-        new SerializableWriter(SERIALIZED_DEFAULT_FILE_NAME).write(position, velocity);
+        new SerializableWriter().writeToFile(SERIALIZED_DEFAULT_FILE_NAME, position, velocity);
         Entity entity = entitySystem.createEntityFromDefault(SERIALIZED_DEFAULT_FILE_NAME);
         System.out.println("Entity read from default file: " + entity);
         return entity;
