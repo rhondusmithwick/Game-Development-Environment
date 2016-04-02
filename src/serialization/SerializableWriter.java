@@ -1,5 +1,6 @@
 package serialization;
 
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
@@ -7,7 +8,6 @@ import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
 import java.io.Serializable;
-import java.io.StringWriter;
 
 /**
  * Created by rhondusmithwick on 3/31/16.
@@ -15,6 +15,7 @@ import java.io.StringWriter;
  * @author Rhondu Smithwick
  */
 public class SerializableWriter {
+
 
     public File writeToFile(String fileName, Serializable... serializables) {
         try {
@@ -40,7 +41,7 @@ public class SerializableWriter {
         return null;
     }
 
-    public void doWrite(OutputStream writeTo, Serializable... serializables) throws IOException{
+    public void doWrite(OutputStream writeTo, Serializable... serializables) throws IOException {
         ObjectOutputStream out = new ObjectOutputStream(writeTo);
         for (Serializable ser : serializables) {
             out.writeObject(ser);

@@ -52,7 +52,7 @@ public class Entity implements Serializable {
         if (index.length == 0) {
             return componentStorage.get(0);
         } else {
-           return  componentStorage.get(index[0]);
+            return componentStorage.get(index[0]);
         }
     }
 
