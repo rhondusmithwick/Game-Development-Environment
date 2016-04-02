@@ -1,6 +1,5 @@
 package api;
 
-import java.io.File;
 import java.util.List;
 import javafx.animation.Timeline;
 
@@ -10,7 +9,7 @@ import javafx.animation.Timeline;
  *
  * @author Rhondu Smithwick
  */
-public interface ISystemManager {
+public interface ISystemManager extends ISerializable {
     /**
      * This will pause the game loop.
      */
@@ -39,6 +38,4 @@ public interface ISystemManager {
     IEntitySystem getEntitySystem ();
 
     IEventSystem getEventSystem ();
-
-    File evaluate (File f);
 }

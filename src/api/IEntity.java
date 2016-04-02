@@ -1,12 +1,11 @@
 package api;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
 
-public interface IEntity extends Serializable {
+public interface IEntity extends ISerializable {
     Collection<IComponent> getAllComponents ();
 
     <T extends IComponent> Collection<T> getComponents (Class<T> c);
