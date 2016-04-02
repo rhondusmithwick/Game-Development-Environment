@@ -1,5 +1,6 @@
 package api;
 
+import java.io.File;
 import java.util.List;
 import javafx.animation.Timeline;
 
@@ -38,4 +39,6 @@ public interface ISystemManager {
     IEntitySystem getEntitySystem ();
 
     IEventSystem getEventSystem ();
+
+    File evaluate (File f);
 }

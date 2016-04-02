@@ -5,9 +5,7 @@ import java.io.Serializable;
 
 
 public interface ISystem extends Serializable {
-    File evaluate(File f);
+    void update ();
 
-    void update();
-
-    File serialize();
+    File serialize ();
 }
