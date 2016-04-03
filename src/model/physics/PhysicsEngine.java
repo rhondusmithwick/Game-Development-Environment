@@ -1,7 +1,9 @@
 package model.physics;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 import api.IEntity;
 import api.IEntitySystem;
@@ -41,7 +43,7 @@ public class PhysicsEngine implements IPhysicsEngine {
         }
     }
 
-    public boolean areColliding (IEntity e1, IEntity e2) {
+    public boolean areCollidingEntities (IEntity e1, IEntity e2) {
         List<Collision> cList1 = e1.getComponentList(Collision.class);
         List<Collision> cList2 = e2.getComponentList(Collision.class);
         for (Collision c1 : cList1) {
@@ -50,12 +52,21 @@ public class PhysicsEngine implements IPhysicsEngine {
             for (Collision c2 : cList2) {
                 Shape mask2 = c2.getMask();
                 Collection<String> IDList2 = c2.getIDs();
+                if (!this.areIntersectingIDLists(IDList1, IDList2)) {
+                    // TODO
+                }
             }
         }
 
         return false;
     }
 
-    // private containsID(Collection)
+    private boolean areIntersectingIDLists (Collection<String> IDList1,
+                                            Collection<String> IDList2) {
+        Set<String> IDSet = new HashSet<String>();
+        IDSet.addAll(IDList1);
+        IDSet.addAll(IDList2);
+        return (IDSet.size() < IDList1.size() + IDList2.size());
+    }
 
 }
