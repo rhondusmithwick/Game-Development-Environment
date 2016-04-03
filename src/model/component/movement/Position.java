@@ -38,4 +38,13 @@ public class Position extends Value<List<Double>> {
         this.setXY(getX() + dx, getY() + dy);
     }
 
+    // @Override
+    // public String toString () {
+    // return "Position: [" + toStringHelp("X", "Y") + "]";
+    // }
+
+    @Override
+    public boolean unique () {
+        return true;
+    }
 }

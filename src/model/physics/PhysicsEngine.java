@@ -19,8 +19,7 @@ public class PhysicsEngine implements IPhysicsEngine {
     @Override
     public IEntitySystem update (IEntitySystem universe, double dt) {
         Collection<IEntity> dynamicEntities = universe.getAllEntities().stream()
-                .filter(p -> p.hasComponents(Position.class, Velocity.class))
-                .collect(Collectors.toSet());
+                .filter(p -> p.hasComponents(Position.class, Velocity.class)).collect(Collectors.toSet());
         dynamicEntities.stream().forEach(p -> {
             Position pos = p.getComponent(Position.class);
             Velocity velocity = p.getComponent(Velocity.class);

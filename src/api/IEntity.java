@@ -13,7 +13,7 @@ public interface IEntity extends ISerializable {
     <T extends IComponent> List<T> getComponentList (Class<T> componentClass);
 
     boolean hasComponent (Class<? extends IComponent> c);
-
+    
     boolean hasComponents (Class<? extends IComponent> ... c);
 
     boolean addComponent (IComponent component);

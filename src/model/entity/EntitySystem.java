@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 import api.IComponent;
-import serialization.SerializableReader;
+import serialization.XMLReader;
 
 
 /**
@@ -29,14 +29,14 @@ public class EntitySystem {
     }
 
     public Entity createEntityFromLoad (String fileName) {
-        Entity entity = new SerializableReader<Entity>(fileName).readSingle();
+        Entity entity = new XMLReader<Entity>().readSingleFromFile(fileName);
         addEntity(entity);
         return entity;
     }
 
     public Entity createEntityFromDefault (String defaultFileName) {
         Entity entity = createEntity();
-        List<IComponent> components = new SerializableReader<IComponent>(defaultFileName).read();
+        List<IComponent> components = new XMLReader<IComponent>().readFromFile(defaultFileName);
         entity.addComponentList(components);
         return entity;
     }

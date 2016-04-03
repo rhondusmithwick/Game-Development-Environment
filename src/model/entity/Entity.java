@@ -5,8 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import api.IComponent;
-import customobjects.SerializableObservableMap;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
 
 
 /**
@@ -15,10 +17,12 @@ import customobjects.SerializableObservableMap;
  * @author Rhondu Smithwick
  */
 public class Entity implements Serializable {
+    @XStreamAlias("ID")
     private final Integer ID;
 
-    private final SerializableObservableMap<Class<? extends IComponent>, List<IComponent>> observableMap =
-            new SerializableObservableMap<>();
+    @XStreamAlias("components")
+    private final ObservableMap<Class<? extends IComponent>, List<IComponent>> observableMap =
+            FXCollections.observableHashMap();
 
     public Entity (int ID) {
         this.ID = ID;
