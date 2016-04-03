@@ -1,4 +1,6 @@
-package serialization;
+package datamanagement;
+
+import api.IDataReader;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -11,23 +13,14 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
-public class SerializableReader<T> {
-    private final String myFile;
+public class SerializableReader<T> implements IDataReader<T> {
 
-    public SerializableReader(String myFile) {
-        this.myFile = myFile;
-    }
-
-
-    public T readSingle() {
-        return read().get(0);
-    }
-
-    public List<T> read() {
+    @Override
+    public List<T> readFromFile(String fileName) {
         List<T> objects = new ArrayList<>();
         try {
-            FileInputStream fileIn = new FileInputStream(myFile);
-            ObjectInputStream in = new ObjectInputStream(fileIn);
+            FileInputStream fileIn = new FileInputStream(fileName);
+            ObjectInputStream in = new ObjectInputStream(new FileInputStream(fileName));
             addAll(in, objects);
             in.close();
             fileIn.close();
@@ -35,6 +28,11 @@ public class SerializableReader<T> {
             i.printStackTrace();
         }
         return objects;
+    }
+
+    @Override
+    public List<T> readFromString(String stringInput) {
+        return null;
     }
 
     @SuppressWarnings("unchecked")

@@ -1,6 +1,6 @@
 package api;
 
-import java.io.Serializable;
+import java.io.File;
 
 /**
  * Created by rhondusmithwick on 3/31/16.
@@ -9,12 +9,20 @@ import java.io.Serializable;
  *
  * @author Rhondu Smithwick
  */
-public interface ISerializableWriter {
+public interface IDataWriter<T> {
 
     /**
      * Writes all these serializables to a file.
      *
      * @param serializables the serializables to be written
      */
-    void write(Serializable... serializables);
+    File writeToFile(String fileName, T... objects);
+
+    /**
+     * Write the specified objects to a string.
+     *
+     * @param objects to be written
+     * @return
+     */
+    String writeToString(T... objects);
 }

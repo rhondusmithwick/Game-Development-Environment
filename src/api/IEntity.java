@@ -6,29 +6,29 @@ import java.util.Map;
 
 
 public interface IEntity extends ISerializable {
-    Collection<IComponent> getAllComponents ();
+    Collection<IComponent> getAllComponents();
 
-    <T extends IComponent> T getComponent (Class<T> c);
+    <T extends IComponent> T getComponent(Class<T> c);
 
-    <T extends IComponent> List<T> getComponentList (Class<T> componentClass);
+    <T extends IComponent> List<T> getComponentList(Class<T> componentClass);
 
-    boolean hasComponent (Class<? extends IComponent> c);
-    
-    boolean hasComponents (Class<? extends IComponent> ... c);
+    boolean hasComponent(Class<? extends IComponent> c);
 
-    boolean addComponent (IComponent component);
+    boolean hasComponents(Class<? extends IComponent>... c);
 
-    List<Boolean> addComponents (IComponent ... components);
+    boolean addComponent(IComponent component);
 
-    List<Boolean> addComponents (List<IComponent> components);
+    List<Boolean> addComponents(IComponent... components);
 
-    boolean removeComponent (Class<? extends IComponent> c);
+    List<Boolean> addComponents(List<IComponent> components);
 
-    Map<Class<? extends IComponent>, Integer> getSpecs ();
+    boolean removeComponent(Class<? extends IComponent> c);
 
-    void setSpecs (Map<Class<? extends IComponent>, Integer> map);
+    Map<Class<? extends IComponent>, Integer> getSpecs();
 
-    int getSpec (Class<? extends IComponent> c);
+    void setSpecs(Map<Class<? extends IComponent>, Integer> map);
 
-    void setSpec (Class<? extends IComponent> c, int n);
+    int getSpec(Class<? extends IComponent> c);
+
+    void setSpec(Class<? extends IComponent> c, int n);
 }

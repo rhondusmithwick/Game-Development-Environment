@@ -1,9 +1,11 @@
-package serialization;
+package datamanagement;
 
 
+import api.IDataWriter;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
@@ -13,13 +15,16 @@ import java.io.ObjectOutputStream;
  *
  * @author Rhondu Smithwick
  */
-public class XMLWriter<T> {
+public class XMLWriter<T> implements IDataWriter<T> {
 
-    public void writeToFile(String fileName, T... objs) {
+    @SafeVarargs
+    @Override
+    public final File writeToFile(String fileName, T... objs) {
+        File file = new File(fileName);
         XStream xstream = new XStream(new StaxDriver());
         xstream.autodetectAnnotations(true);
         try {
-            ObjectOutputStream out = xstream.createObjectOutputStream(new FileOutputStream(fileName));
+            ObjectOutputStream out = xstream.createObjectOutputStream(new FileOutputStream(file));
             for (T obj : objs) {
                 out.writeObject(obj);
             }
@@ -27,6 +32,12 @@ public class XMLWriter<T> {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return file;
     }
 
+    @SafeVarargs
+    @Override
+    public final String writeToString(T... objects) {
+        return null;
+    }
 }

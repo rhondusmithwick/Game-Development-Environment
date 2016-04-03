@@ -1,5 +1,6 @@
-package serialization;
+package datamanagement;
 
+import api.IDataReader;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
@@ -14,19 +15,31 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
-public class XMLReader<T> {
+public class XMLReader<T> implements IDataReader<T> {
+
+    @Override
+    public List<T> readFromString(String stringInput) {
+        return null;
+    }
+
+    @Override
+    public T readSingleFromString(String stringInput) {
+        return null;
+    }
 
     public List<T> readFromFile(String fileName) {
         XStream xstream = new XStream(new StaxDriver());
         xstream.autodetectAnnotations(true);
-        List<T> objs = new ArrayList<>();
+        List<T> objects = new ArrayList<>();
         try {
-            ObjectInputStream in = xstream.createObjectInputStream(new FileInputStream(fileName));
-            doRead(in, objs);
+            FileInputStream fileIn = new FileInputStream(fileName);
+            ObjectInputStream in = xstream.createObjectInputStream(fileIn);
+            doRead(in, objects);
+            fileIn.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        return objs;
+        return objects;
     }
 
     public T readSingleFromFile(String fileName) {
@@ -34,11 +47,11 @@ public class XMLReader<T> {
     }
 
     @SuppressWarnings("unchecked")
-    private void doRead(ObjectInputStream in, List<T> objs) {
+    private void doRead(ObjectInputStream in, List<T> objects) {
         while (true) {
             try {
                 T obj = (T) in.readObject();
-                objs.add(obj);
+                objects.add(obj);
             } catch (ClassNotFoundException e) {
                 e.printStackTrace();
             } catch (IOException e) {

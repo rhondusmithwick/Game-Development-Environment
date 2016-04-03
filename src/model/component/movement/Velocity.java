@@ -1,11 +1,7 @@
 package model.component.movement;
 
-import java.util.Arrays;
-import java.util.List;
-
 import api.IComponent;
 import javafx.beans.property.SimpleDoubleProperty;
-import model.component.base.Value;
 
 
 /**
@@ -17,40 +13,40 @@ public class Velocity implements IComponent {
     private final SimpleDoubleProperty speed = new SimpleDoubleProperty(this, "speed", 0);
     private final SimpleDoubleProperty direction = new SimpleDoubleProperty(this, "direction", 0);
 
-    public Velocity () {
+    public Velocity() {
     }
 
-    public Velocity (Double speed, Double direction) {
+    public Velocity(Double speed, Double direction) {
         setSpeed(speed);
         setDirection(direction);
     }
 
-    public Velocity (Double vx, Double vy, boolean flag) {
+    public Velocity(Double vx, Double vy, boolean flag) {
         setSpeed(Math.sqrt(vx * vx + vy * vy));
         setDirection(Math.atan2(vy, vx));
     }
 
-    public double getSpeed () {
+    public double getSpeed() {
         return speed.get();
     }
 
-    public void setSpeed (double speed) {
+    public void setSpeed(double speed) {
         this.speed.set(speed);
     }
 
-    public double getDirection () {
+    public double getDirection() {
         return direction.get();
     }
 
-    public void setDirection (double direction) {
+    public void setDirection(double direction) {
         this.direction.set(direction);
     }
 
-    public double getVX () {
+    public double getVX() {
         return getSpeed() * Math.cos(Math.toRadians(getDirection()));
     }
 
-    public double getVY () {
+    public double getVY() {
         return getSpeed() * Math.sin(Math.toRadians(getDirection()));
     }
 

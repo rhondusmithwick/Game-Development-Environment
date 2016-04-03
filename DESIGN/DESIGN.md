@@ -80,7 +80,7 @@ Backend
         + EX: CollisionSystem would get the Collision.class entries from the map
 * Frontend and authoring environment will need to be able to create components that an entity needs
 * Game Authoring environment will need to be able to save the entity system, which the game engine will need to load up
-* Will rely on both properties files to specify locations of classes for reflection and serialization files to load up and save objects
+* Will rely on both properties files to specify locations of classes for reflection and datamanagement files to load up and save objects
 
 
 # Example games

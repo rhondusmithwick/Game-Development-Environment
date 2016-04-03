@@ -1,8 +1,8 @@
 //package entitytesting;
 //
 //import model.entity.EntitySystem;
-//import serialization.SerializableReader;
-//import serialization.SerializableWriter;
+//import datamanagement.SerializableReader;
+//import datamanagement.SerializableWriter;
 //
 //import java.util.List;
 //

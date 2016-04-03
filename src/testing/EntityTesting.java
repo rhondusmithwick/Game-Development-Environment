@@ -5,7 +5,7 @@ import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.entity.Entity;
 import model.entity.EntitySystem;
-import serialization.XMLWriter;
+import datamanagement.XMLWriter;
 
 
 /**
@@ -19,17 +19,17 @@ class EntityTesting implements Tester {
 
     private final EntitySystem entitySystem = new EntitySystem();
 
-    public static void main (String[] args) {
+    public static void main(String[] args) {
         new EntityTesting().test();
     }
 
-    public void test () {
+    public void test() {
         Entity entity = loadDefault();
         new XMLWriter<Entity>().writeToFile(LOAD_FILE_NAME, entity);
         loadFromBuilt();
     }
 
-    private Entity loadDefault () {
+    private Entity loadDefault() {
         System.out.println("DEFAULT:");
         Position position = new Position(50.0, 40.0);
         Velocity velocity = new Velocity(100.0, 10.0);
@@ -39,7 +39,7 @@ class EntityTesting implements Tester {
         return entity;
     }
 
-    private void loadFromBuilt () {
+    private void loadFromBuilt() {
         System.out.println("PRELOADED:");
         Entity entity = entitySystem.createEntityFromLoad(LOAD_FILE_NAME);
         System.out.println("Entity read from load file: " + entity);
