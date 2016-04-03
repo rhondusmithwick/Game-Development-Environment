@@ -1,38 +1,38 @@
 package usecases;
 
-import api.IEnvironmentEditor;
-import model.component.base.Component;
-
 import java.util.List;
+import api.IComponent;
+import api.IEnvironmentEditor;
+
 
 public class EnvironmentEditor implements IEnvironmentEditor {
 
     @Override
-    public List<Component> getComponents() {
+    public List<IComponent> getComponents () {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public List<System> getSystems() {
+    public List<System> getSystems () {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public void show() {
+    public void show () {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void writeToFile(String musicURL) {
+    public void writeToFile (String musicURL) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void close() {
+    public void close () {
         // TODO Auto-generated method stub
 
     }

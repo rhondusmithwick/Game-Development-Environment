@@ -8,7 +8,13 @@ import java.util.Map;
 public interface IEntity extends ISerializable {
     Collection<IComponent> getAllComponents ();
 
-    <T extends IComponent> Collection<T> getComponents (Class<T> c);
+    <T extends IComponent> T getComponent (Class<T> c);
+
+    <T extends IComponent> List<T> getComponentList (Class<T> componentClass);
+
+    boolean hasComponent (Class<? extends IComponent> c);
+
+    boolean hasComponents (Class<? extends IComponent> ... c);
 
     boolean addComponent (IComponent component);
 
@@ -16,13 +22,13 @@ public interface IEntity extends ISerializable {
 
     List<Boolean> addComponents (List<IComponent> components);
 
-    boolean removeComponent (Class<IComponent> c);
+    boolean removeComponent (Class<? extends IComponent> c);
 
-    Map<Class<IComponent>, Integer> getSpecs ();
+    Map<Class<? extends IComponent>, Integer> getSpecs ();
 
-    void setSpecs (Map<Class<IComponent>, Integer> map);
+    void setSpecs (Map<Class<? extends IComponent>, Integer> map);
 
-    int getSpec (Class<IComponent> c);
+    int getSpec (Class<? extends IComponent> c);
 
-    void setSpec (Class<IComponent> c, int n);
+    void setSpec (Class<? extends IComponent> c, int n);
 }

@@ -1,19 +1,18 @@
 package api;
 
-import model.component.base.Component;
-
 import java.util.List;
+
 
 public interface IEnvironmentEditor {
 
-    List<Component> getComponents();
+    List<IComponent> getComponents ();
 
-    List<System> getSystems(); // These will be our defined systems class
+    List<System> getSystems (); // These will be our defined systems class
 
-    void show();
+    void show ();
 
-    void writeToFile(String musicURL);
+    void writeToFile (String musicURL);
 
-    void close();
+    void close ();
 
 }

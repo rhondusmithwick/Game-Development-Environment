@@ -1,44 +1,44 @@
 package usecases;
 
-import api.IEntityEditor;
-import model.component.base.Component;
-
 import java.util.List;
+import api.IComponent;
+import api.IEntityEditor;
+
 
 public class EntityEditor implements IEntityEditor {
 
     @Override
-    public List<Component> getComponents() {
+    public List<IComponent> getComponents () {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Component editComponent(Component myComp) {
+    public IComponent editComponent (IComponent myComp) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public Component getSingleComponent(Component myComp) {
+    public IComponent getSingleComponent (IComponent myComp) {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public void show() {
+    public void show () {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void close() {
+    public void close () {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void writeToFile(String filename) {
+    public void writeToFile (String filename) {
         // TODO Auto-generated method stub
 
     }

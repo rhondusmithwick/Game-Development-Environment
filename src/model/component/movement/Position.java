@@ -1,48 +1,41 @@
 package model.component.movement;
 
-import model.component.base.TwoDoubleComponent;
+import java.util.Arrays;
+import java.util.List;
+import model.component.base.Value;
+
 
 /**
  * Created by rhondusmithwick on 4/1/16.
  *
  * @author Rhondu Smithwick
  */
-public class Position extends TwoDoubleComponent {
-    public Position() {
-        super();
+public class Position extends Value<List<Double>> {
+
+    public Position () {
+        super(Arrays.asList(0.0, 0.0));
     }
 
-    public Position(String[] args) {
-        super(args);
+    public Position (Double x, Double y) {
+        super(Arrays.asList(x, y));
     }
 
-    public Position(Double value1, Double value2) {
-        super(value1, value2);
+    public double getX () {
+        return this.getValue().get(0);
     }
 
-    public Double getX() {
-        return getValue1();
+    public double getY () {
+        return this.getValue().get(1);
     }
 
-    public void setX(Double x) {
-        setValue1(x);
+    public void setXY (double x, double y) {
+        List<Double> pos = this.getValue();
+        pos.set(0, x);
+        pos.set(1, y);
     }
 
-    public Double getY() {
-        return getValue2();
+    public void add (double dx, double dy) {
+        this.setXY(getX() + dx, getY() + dy);
     }
 
-    public void setY(Double y) {
-        setValue2(y);
-    }
-
-    @Override
-    public String toString() {
-        return toStringHelp("X", "Y");
-    }
-
-    @Override
-    public boolean unique() {
-        return true;
-    }
 }

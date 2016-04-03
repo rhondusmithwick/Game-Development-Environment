@@ -5,7 +5,11 @@ import java.io.Serializable;
 
 
 public interface ISerializable extends Serializable {
-    void evaluate (File f);
+    default void evaluate (File f) {
+        // TODO
+    }
 
-    File serialize ();
+    default File serialize () {
+        return null; // TODO
+    }
 }
