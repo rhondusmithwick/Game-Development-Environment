@@ -43,8 +43,25 @@ public class Velocity extends Value<List<Double>> {
         return this.getSpeed() * Math.cos(Math.toRadians(this.getDirection()));
     }
 
+    public void setVX (double vx) {
+        this.getValue().set(0, vx);
+    }
+
     public double getVY () {
         return this.getSpeed() * Math.sin(Math.toRadians(this.getDirection()));
+    }
+
+    public void setVY (double vy) {
+        this.getValue().set(1, vy);
+    }
+
+    public void setV (double vx, double vy) {
+        this.setVX(vx);
+        this.setVY(vy);
+    }
+
+    public void add (double dvx, double dvy) {
+        this.setV(getVX() + dvx, getVY() + dvy);
     }
 
 }

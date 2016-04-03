@@ -24,14 +24,21 @@ public class Position extends Value<List<Double>> {
         return this.getValue().get(0);
     }
 
+    public void setX (double x) {
+        this.getValue().set(0, x);
+    }
+
     public double getY () {
         return this.getValue().get(1);
     }
 
+    public void setY (double y) {
+        this.getValue().set(1, y);
+    }
+
     public void setXY (double x, double y) {
-        List<Double> pos = this.getValue();
-        pos.set(0, x);
-        pos.set(1, y);
+        this.setX(x);
+        this.setY(y);
     }
 
     public void add (double dx, double dy) {
