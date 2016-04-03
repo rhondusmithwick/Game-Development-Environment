@@ -37,6 +37,7 @@ public class SerializableWriter<T> implements IDataWriter<T> {
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             doWrite(bos, objects);
+            bos.close();
             return bos.toString();
         } catch (IOException e) {
             e.printStackTrace();

@@ -24,11 +24,13 @@ public class XMLWriter<T> implements IDataWriter<T> {
         XStream xstream = new XStream(new StaxDriver());
         xstream.autodetectAnnotations(true);
         try {
-            ObjectOutputStream out = xstream.createObjectOutputStream(new FileOutputStream(file));
+            FileOutputStream fileOut = new FileOutputStream(file);
+            ObjectOutputStream out = xstream.createObjectOutputStream(fileOut);
             for (T obj : objs) {
                 out.writeObject(obj);
             }
             out.close();
+            fileOut.close();
         } catch (IOException e) {
             e.printStackTrace();
         }

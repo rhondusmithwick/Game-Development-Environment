@@ -22,11 +22,6 @@ public class XMLReader<T> implements IDataReader<T> {
         return null;
     }
 
-    @Override
-    public T readSingleFromString(String stringInput) {
-        return null;
-    }
-
     public List<T> readFromFile(String fileName) {
         XStream xstream = new XStream(new StaxDriver());
         xstream.autodetectAnnotations(true);
@@ -35,6 +30,7 @@ public class XMLReader<T> implements IDataReader<T> {
             FileInputStream fileIn = new FileInputStream(fileName);
             ObjectInputStream in = xstream.createObjectInputStream(fileIn);
             doRead(in, objects);
+            in.close();
             fileIn.close();
         } catch (IOException e) {
             e.printStackTrace();
