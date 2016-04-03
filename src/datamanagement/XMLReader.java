@@ -8,6 +8,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -46,36 +47,26 @@ public class XMLReader<T> implements IDataReader<T> {
         return objects;
     }
 
-    public T readSingleFromFile(String fileName) {
-        return readFromFile(fileName).get(0);
-    }
-
-    @SuppressWarnings("unchecked")
     private void doRead(Reader reader) {
-        ObjectInputStream in = null;
         try {
-            in = xstream.createObjectInputStream(reader);
-            while (true) {
-                try {
-                    T obj = (T) in.readObject();
-                    objects.add(obj);
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    break;
-                }
-            }
-        } catch (IOException e) {
+            ObjectInputStream in = xstream.createObjectInputStream(reader);
+            continueReading(in);
+            reader.close();
+            in.close();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                reader.close();
-                in.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
 
-
+    }
+    @SuppressWarnings("unchecked")
+    private void continueReading(ObjectInputStream in) throws  ClassNotFoundException{
+        while (true) {
+            try {
+                T obj = (T) in.readObject();
+                objects.add(obj);
+            } catch (IOException e) {
+                break;
+            }
+        }
     }
 }

@@ -46,9 +46,8 @@ public class XMLWriter<T> implements IDataWriter<T> {
     }
 
     private void doWrite(Writer writer, T... objects) {
-        ObjectOutputStream out = null;
         try {
-            out = xstream.createObjectOutputStream(writer);
+            ObjectOutputStream out = xstream.createObjectOutputStream(writer);
             for (T obj : objects) {
                 out.writeObject(obj);
             }
@@ -56,12 +55,6 @@ public class XMLWriter<T> implements IDataWriter<T> {
             writer.close();
         } catch (IOException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                out.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
         }
     }
 }
