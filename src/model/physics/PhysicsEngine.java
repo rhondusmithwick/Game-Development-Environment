@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import api.IEntity;
 import api.IEntitySystem;
 import api.IPhysicsEngine;
+import javafx.scene.shape.Shape;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.Collision;
@@ -34,12 +35,27 @@ public class PhysicsEngine implements IPhysicsEngine {
     }
 
     public void applyImpulse (IEntity body, Impulse J) {
-        Velocity v = body.getComponent(Velocity.class);
-        v.add(J.getJx(), J.getJy());
+        if (body.hasComponent(Velocity.class)) {
+            Velocity v = body.getComponent(Velocity.class);
+            v.add(J.getJx(), J.getJy());
+        }
     }
 
     public boolean areColliding (IEntity e1, IEntity e2) {
-        List<Collision> collisionComponents = e1.getComponentList(Collision.class);
+        List<Collision> cList1 = e1.getComponentList(Collision.class);
+        List<Collision> cList2 = e2.getComponentList(Collision.class);
+        for (Collision c1 : cList1) {
+            Shape mask1 = c1.getMask();
+            Collection<String> IDList1 = c1.getIDs();
+            for (Collision c2 : cList2) {
+                Shape mask2 = c2.getMask();
+                Collection<String> IDList2 = c2.getIDs();
+            }
+        }
+
+        return false;
     }
+
+    // private containsID(Collection)
 
 }
