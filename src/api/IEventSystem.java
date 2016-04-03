@@ -10,15 +10,15 @@ public interface IEventSystem extends ISerializable {
     /**
      * Add a listener to an event class
      **/
-    <L> void listen (Class<IEvent<L>> eventClass, L listener);
+    <L> void listen(Class<IEvent<L>> eventClass, L listener);
 
     /**
      * Stop sending an event class to a given listener
      **/
-    <L> void mute (Class<IEvent<L>> eventClass, L listener);
+    <L> void mute(Class<IEvent<L>> eventClass, L listener);
 
     /**
      * Gets listeners for a given event class
      **/
-    <L> Collection<L> listenersOf (Class<IEvent<L>> eventClass);
+    <L> Collection<L> listenersOf(Class<IEvent<L>> eventClass);
 }

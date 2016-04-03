@@ -6,20 +6,20 @@ import api.IComponent;
 public class Value<V> implements IComponent {
     private V value;
 
-    public Value (V value) {
+    public Value(V value) {
         this.value = value;
     }
 
-    public V getValue () {
+    public V getValue() {
         return value;
     }
 
-    public void setValue (V value) {
+    public void setValue(V value) {
         this.value = value;
     }
 
     @Override
-    public String toString () {
+    public String toString() {
         return this.getValue().toString();
     }
 

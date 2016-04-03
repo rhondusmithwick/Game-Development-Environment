@@ -1,7 +1,8 @@
 package api;
 
-import java.util.List;
 import javafx.animation.Timeline;
+
+import java.util.List;
 
 
 /**
@@ -13,19 +14,19 @@ public interface ISystemManager extends ISerializable {
     /**
      * This will pause the game loop.
      */
-    void pauseLoop ();
+    void pauseLoop();
 
     /**
      * This will build the game's loop.
      *
      * @return the game's loop
      */
-    Timeline buildLoop ();
+    Timeline buildLoop();
 
     /**
      * This will step the game's loop.
      */
-    void step ();
+    void step();
 
     /**
      * Get all systems.
@@ -33,9 +34,9 @@ public interface ISystemManager extends ISerializable {
      * @return a list of the systems
      */
     @Deprecated
-    List<ISystem> getSystems ();
+    List<ISystem> getSystems();
 
-    IEntitySystem getEntitySystem ();
+    IEntitySystem getEntitySystem();
 
-    IEventSystem getEventSystem ();
+    IEventSystem getEventSystem();
 }

@@ -1,12 +1,13 @@
 package usecases;
 
-import java.io.File;
-import java.util.List;
 import api.IEntitySystem;
 import api.IEventSystem;
 import api.ISystem;
 import api.ISystemManager;
 import javafx.animation.Timeline;
+
+import java.io.File;
+import java.util.List;
 
 
 /**
@@ -16,45 +17,45 @@ import javafx.animation.Timeline;
  */
 public class SystemManager implements ISystemManager {
     @Override
-    public void pauseLoop () {
+    public void pauseLoop() {
 
     }
 
     @Override
-    public Timeline buildLoop () {
+    public Timeline buildLoop() {
         return null;
     }
 
     @Override
-    public void step () {
+    public void step() {
 
     }
 
     @Override
-    public List<ISystem> getSystems () {
+    public List<ISystem> getSystems() {
         return null;
     }
 
     @Override
-    public void evaluate (File f) {
+    public void evaluate(File f) {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public File serialize () {
+    public File serialize() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public IEntitySystem getEntitySystem () {
+    public IEntitySystem getEntitySystem() {
         // TODO Auto-generated method stub
         return null;
     }
 
     @Override
-    public IEventSystem getEventSystem () {
+    public IEventSystem getEventSystem() {
         // TODO Auto-generated method stub
         return null;
     }

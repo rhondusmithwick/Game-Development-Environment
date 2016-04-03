@@ -1,8 +1,7 @@
 package model.component.movement;
 
-import java.util.Arrays;
-import java.util.List;
-import model.component.base.Value;
+import api.IComponent;
+import javafx.beans.property.SimpleDoubleProperty;
 
 
 /**
@@ -10,58 +9,60 @@ import model.component.base.Value;
  *
  * @author Rhondu Smithwick
  */
-public class Velocity extends Value<List<Double>> {
+public class Velocity implements IComponent {
+    private final SimpleDoubleProperty speed = new SimpleDoubleProperty(this, "speed", 0);
+    private final SimpleDoubleProperty direction = new SimpleDoubleProperty(this, "direction", 0);
+
     public Velocity () {
-        super(Arrays.asList(0.0, 0.0));
     }
 
     public Velocity (Double speed, Double direction) {
-        super(Arrays.asList(speed, direction));
+        setSpeed(speed);
+        setDirection(direction);
     }
 
     public Velocity (Double vx, Double vy, boolean flag) {
-        super(Arrays.asList(Math.sqrt(vx * vx + vy * vy), Math.atan2(vy, vx)));
+        setVXY(vx, vy);
     }
 
     public double getSpeed () {
-        return getValue().get(0);
+        return speed.get();
     }
 
     public void setSpeed (double speed) {
-        this.getValue().set(0, speed);
+        this.speed.set(speed);
     }
 
     public double getDirection () {
-        return this.getValue().get(1);
+        return direction.get();
     }
 
     public void setDirection (double direction) {
-        this.getValue().set(1, direction);
+        this.direction.set(direction);
     }
 
     public double getVX () {
-        return this.getSpeed() * Math.cos(Math.toRadians(this.getDirection()));
-    }
-
-    public void setVX (double vx) {
-        this.getValue().set(0, vx);
+        return getSpeed() * Math.cos(Math.toRadians(getDirection()));
     }
 
     public double getVY () {
-        return this.getSpeed() * Math.sin(Math.toRadians(this.getDirection()));
+        return getSpeed() * Math.sin(Math.toRadians(getDirection()));
     }
 
-    public void setVY (double vy) {
-        this.getValue().set(1, vy);
-    }
-
-    public void setV (double vx, double vy) {
-        this.setVX(vx);
-        this.setVY(vy);
+    public void setVXY (double vx, double vy) {
+        setSpeed(Math.sqrt(vx * vx + vy * vy));
+        setDirection(Math.toDegrees(Math.atan2(vy, vx)));
     }
 
     public void add (double dvx, double dvy) {
-        this.setV(getVX() + dvx, getVY() + dvy);
+        setVXY(getVX() + dvx, getVY() + dvy);
     }
 
+    public SimpleDoubleProperty speedProperty () {
+        return speed;
+    }
+
+    public SimpleDoubleProperty directionProperty () {
+        return direction;
+    }
 }

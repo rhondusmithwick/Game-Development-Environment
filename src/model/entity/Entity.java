@@ -1,14 +1,15 @@
 package model.entity;
 
+import api.IComponent;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableMap;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-import api.IComponent;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableMap;
 
 
 /**
@@ -24,11 +25,11 @@ public class Entity implements Serializable {
     private final ObservableMap<Class<? extends IComponent>, List<IComponent>> observableMap =
             FXCollections.observableHashMap();
 
-    public Entity (int ID) {
+    public Entity(int ID) {
         this.ID = ID;
     }
 
-    public void addComponent (IComponent component) {
+    public void addComponent(IComponent component) {
         Class<? extends IComponent> theClass = component.getClassForComponentMap();
         if (!observableMap.containsKey(theClass)) {
             observableMap.put(theClass, new ArrayList<>());
@@ -39,11 +40,11 @@ public class Entity implements Serializable {
         observableMap.get(theClass).add(component);
     }
 
-    public boolean hasComponent (Class<? extends IComponent> componentClass) {
+    public boolean hasComponent(Class<? extends IComponent> componentClass) {
         return observableMap.containsKey(componentClass);
     }
 
-    public <T extends IComponent> List<T> getComponentList (Class<T> componentClass) {
+    public <T extends IComponent> List<T> getComponentList(Class<T> componentClass) {
         if (!hasComponent(componentClass)) {
             return null;
         }
@@ -52,30 +53,29 @@ public class Entity implements Serializable {
     }
 
     @SuppressWarnings("unchecked")
-    public <T extends IComponent> T getComponent (Class<T> componentClass, int ... index) {
+    public <T extends IComponent> T getComponent(Class<T> componentClass, int... index) {
         List<T> componentStorage = getComponentList(componentClass);
         if (index.length == 0) {
             return componentStorage.get(0);
-        }
-        else {
+        } else {
             return componentStorage.get(index[0]);
         }
     }
 
-    public int getID () {
+    public int getID() {
         return ID;
     }
 
-    public void addComponentList (List<IComponent> components) {
+    public void addComponentList(List<IComponent> components) {
         components.stream().forEach(this::addComponent);
     }
 
-    public void addComponent (IComponent ... components) {
+    public void addComponent(IComponent... components) {
         addComponentList(Arrays.asList(components));
     }
 
     @Override
-    public String toString () {
+    public String toString() {
         return String.format("ID: %d, Components: %s", ID, observableMap.toString());
     }
 }
