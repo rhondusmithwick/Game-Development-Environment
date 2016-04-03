@@ -8,10 +8,10 @@ import javafx.beans.property.SimpleStringProperty;
  *
  * @author Rhondu Smithwick
  */
-public class Sprite implements IComponent {
+public class ImagePath implements IComponent {
     private final SimpleStringProperty imagePath = new SimpleStringProperty(this, "imagePath", "");
 
-    public Sprite(String imagePath) {
+    public ImagePath(String imagePath) {
         setImagePath(imagePath);
     }
 
