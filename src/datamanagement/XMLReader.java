@@ -4,9 +4,12 @@ import api.IDataReader;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
-import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.Reader;
+import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,22 +20,27 @@ import java.util.List;
  */
 public class XMLReader<T> implements IDataReader<T> {
 
-    @Override
-    public List<T> readFromString(String stringInput) {
-        return null;
+    private final List<T> objects = new ArrayList<>();
+
+    private final XStream xstream = new XStream(new StaxDriver());
+
+    public XMLReader() {
+        xstream.autodetectAnnotations(true);
     }
 
+    @Override
+    public List<T> readFromString(String stringInput) {
+        Reader reader = new StringReader(stringInput);
+        doRead(reader);
+        return objects;
+    }
+
+    @Override
     public List<T> readFromFile(String fileName) {
-        XStream xstream = new XStream(new StaxDriver());
-        xstream.autodetectAnnotations(true);
-        List<T> objects = new ArrayList<>();
         try {
-            FileInputStream fileIn = new FileInputStream(fileName);
-            ObjectInputStream in = xstream.createObjectInputStream(fileIn);
-            doRead(in, objects);
-            in.close();
-            fileIn.close();
-        } catch (IOException e) {
+            Reader reader = new FileReader(fileName);
+            doRead(reader);
+        } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
         return objects;
@@ -43,16 +51,31 @@ public class XMLReader<T> implements IDataReader<T> {
     }
 
     @SuppressWarnings("unchecked")
-    private void doRead(ObjectInputStream in, List<T> objects) {
-        while (true) {
+    private void doRead(Reader reader) {
+        ObjectInputStream in = null;
+        try {
+            in = xstream.createObjectInputStream(reader);
+            while (true) {
+                try {
+                    T obj = (T) in.readObject();
+                    objects.add(obj);
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    break;
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
             try {
-                T obj = (T) in.readObject();
-                objects.add(obj);
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
+                reader.close();
+                in.close();
             } catch (IOException e) {
-                break;
+                e.printStackTrace();
             }
         }
+
+
     }
 }
