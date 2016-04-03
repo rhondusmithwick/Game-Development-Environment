@@ -57,4 +57,5 @@ public class XMLWriter<T> implements IDataWriter<T> {
             e.printStackTrace();
         }
     }
+
 }

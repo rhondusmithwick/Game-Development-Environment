@@ -8,7 +8,6 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Reader;
 import java.io.StringReader;
 import java.util.ArrayList;
@@ -58,8 +57,9 @@ public class XMLReader<T> implements IDataReader<T> {
         }
 
     }
+
     @SuppressWarnings("unchecked")
-    private void continueReading(ObjectInputStream in) throws  ClassNotFoundException{
+    private void continueReading(ObjectInputStream in) throws ClassNotFoundException {
         while (true) {
             try {
                 T obj = (T) in.readObject();
