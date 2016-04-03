@@ -1,14 +1,16 @@
 package model.entity;
 
 import api.IComponent;
+import api.IEntity;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 
-import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -17,7 +19,8 @@ import java.util.stream.Collectors;
  *
  * @author Rhondu Smithwick
  */
-public class Entity implements Serializable {
+public class Entity implements IEntity {
+
     @XStreamAlias("ID")
     private final Integer ID;
 
@@ -25,23 +28,22 @@ public class Entity implements Serializable {
     private final ObservableMap<Class<? extends IComponent>, List<IComponent>> observableMap =
             FXCollections.observableHashMap();
 
+    @XStreamAlias("Specs")
+    private final Map<Class<? extends IComponent>, Integer> specs = new HashMap<>();
+
     public Entity(int ID) {
         this.ID = ID;
     }
 
-    public void addComponent(IComponent component) {
-        Class<? extends IComponent> theClass = component.getClassForComponentMap();
-        if (!observableMap.containsKey(theClass)) {
-            observableMap.put(theClass, new ArrayList<>());
-        }
-        if (component.unique()) {
-            observableMap.get(theClass).clear();
-        }
-        observableMap.get(theClass).add(component);
+    @Override
+    public int getID() {
+        return ID;
     }
 
-    public boolean hasComponent(Class<? extends IComponent> componentClass) {
-        return observableMap.containsKey(componentClass);
+    @Override
+    public Collection<IComponent> getAllComponents() {
+        return observableMap.values().stream()
+                .flatMap(Collection::stream).collect(Collectors.toList());
     }
 
     public <T extends IComponent> List<T> getComponentList(Class<T> componentClass) {
@@ -52,26 +54,36 @@ public class Entity implements Serializable {
                 .map(componentClass::cast).collect(Collectors.toList());
     }
 
-    @SuppressWarnings("unchecked")
-    public <T extends IComponent> T getComponent(Class<T> componentClass, int... index) {
-        List<T> componentStorage = getComponentList(componentClass);
-        if (index.length == 0) {
-            return componentStorage.get(0);
-        } else {
-            return componentStorage.get(index[0]);
+
+    @Override
+    public boolean hasComponent(Class<? extends IComponent> componentClass) {
+        return observableMap.containsKey(componentClass);
+    }
+
+    @Override
+    public boolean addComponent(IComponent component) {
+        Class<? extends IComponent> theClass = component.getClassForComponentMap();
+        if (!observableMap.containsKey(theClass)) {
+            observableMap.put(theClass, new ArrayList<>());
         }
+        if (component.unique()) {
+            observableMap.get(theClass).clear();
+        }
+        return observableMap.get(theClass).add(component);
     }
 
-    public int getID() {
-        return ID;
+    @Override
+    public boolean removeComponent(Class<? extends IComponent> componentClass) {
+        if (observableMap.containsKey(componentClass)) {
+            observableMap.remove(componentClass);
+            return true;
+        }
+        return false;
     }
 
-    public void addComponentList(List<IComponent> components) {
-        components.stream().forEach(this::addComponent);
-    }
-
-    public void addComponent(IComponent... components) {
-        addComponentList(Arrays.asList(components));
+    @Override
+    public Map<Class<? extends IComponent>, Integer> getSpecs() {
+        return specs;
     }
 
     @Override
