@@ -9,8 +9,8 @@ public class Impulse {
     }
 
     public Impulse (double magnitude, double direction, boolean flag) {
-        this.Jx = magnitude * Math.cos(direction);
-        this.Jy = magnitude * Math.sin(direction);
+        this.Jx = magnitude * Math.cos(Math.toRadians(direction));
+        this.Jy = magnitude * Math.sin(Math.toRadians(direction));
     }
 
     public double getJx () {
