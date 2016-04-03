@@ -39,7 +39,6 @@ public interface IEntitySystem extends ISerializable {
 
     int getNextAvailableID();
 
-
     default IEntity createEntityFromLoad(String fileName) {
         IEntity entity = new XMLReader<IEntity>().readSingleFromFile(fileName);
         addEntity(entity);
@@ -55,7 +54,7 @@ public interface IEntitySystem extends ISerializable {
 
     default <T extends IComponent> List<T> getAllComponentsOfType(Class<T> componentType) {
         return getAllEntities().stream().map(e -> e.getComponentList(componentType))
-                .flatMap(List::stream).filter(Objects::nonNull).collect(Collectors.toList());
+                .filter(Objects::nonNull).flatMap(List::stream).collect(Collectors.toList());
     }
 
     default <T extends IComponent> Set<IEntity> getEntitiesWithComponentType(Class<T> componentType) {

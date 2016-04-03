@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 
@@ -25,13 +26,13 @@ public interface IEntity extends ISerializable {
 
     boolean hasComponent(Class<? extends IComponent> c);
 
+    default boolean hasComponents(List<Class<? extends IComponent>> componentsClasses) {
+        Predicate<Class<? extends IComponent>> doesNotHave = (c) -> (!hasComponent(c));
+        return componentsClasses.stream().noneMatch(doesNotHave);
+    }
+
     default boolean hasComponents(Class<? extends IComponent>... componentClasses) {
-        for (Class<? extends IComponent> c : componentClasses) {
-            if (!hasComponent(c)) {
-                return false;
-            }
-        }
-        return true;
+        return hasComponents(Arrays.asList(componentClasses));
     }
 
     boolean addComponent(IComponent component);

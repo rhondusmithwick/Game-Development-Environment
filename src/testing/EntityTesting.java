@@ -24,6 +24,7 @@ class EntityTesting implements Tester {
         new EntityTesting().test();
     }
 
+    @Override
     public void test() {
         IEntity entity = loadDefault();
         new XMLWriter<IEntity>().writeToFile(LOAD_FILE_NAME, entity);
