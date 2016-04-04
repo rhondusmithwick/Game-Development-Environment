@@ -61,7 +61,10 @@ public class PhysicsEngine implements IPhysicsEngine {
         return false; // TODO
     }
 
-    // public
+    public Collection<IEntity> getEntitiesCollidingWith (IEntity e) {
+
+        return null; // TODO
+    }
 
     private boolean areIntersectingIDLists (Collection<String> IDList1,
                                             Collection<String> IDList2) {

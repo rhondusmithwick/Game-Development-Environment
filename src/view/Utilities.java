@@ -1,4 +1,4 @@
-package model.vooga;
+package view;
 
 	import javafx.collections.ObservableList;
 	import javafx.event.ActionEvent;
