@@ -1,7 +1,7 @@
 package model.component.movement;
 
-import api.IComponent;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import model.component.base.Pair;
 
 
 /**
@@ -9,37 +9,37 @@ import javafx.beans.property.SimpleDoubleProperty;
  *
  * @author Rhondu Smithwick
  */
-public class Velocity implements IComponent {
-    private final SimpleDoubleProperty speed = new SimpleDoubleProperty(this, "speed", 0);
-    private final SimpleDoubleProperty direction = new SimpleDoubleProperty(this, "direction", 0);
+public class Velocity extends Pair<Double, Double> {
 
     public Velocity() {
+        super(0.0, 0.0);
     }
 
     public Velocity(Double speed, Double direction) {
-        setSpeed(speed);
-        setDirection(direction);
+        super(speed, direction);
     }
 
     public Velocity(Double vx, Double vy, boolean flag) {
+
         setVXY(vx, vy);
     }
 
     public double getSpeed() {
-        return speed.get();
+        return getValue1();
     }
 
     public void setSpeed(double speed) {
-        this.speed.set(speed);
+        setValue1(speed);
     }
 
     public double getDirection() {
-        return direction.get();
+        return getValue2();
     }
 
     public void setDirection(double direction) {
-        this.direction.set(direction);
+        setValue2(direction);
     }
+
 
     public double getVX() {
         return getSpeed() * Math.cos(Math.toRadians(getDirection()));
@@ -58,12 +58,12 @@ public class Velocity implements IComponent {
         setVXY(getVX() + dvx, getVY() + dvy);
     }
 
-    public SimpleDoubleProperty speedProperty() {
-        return speed;
+    public SimpleObjectProperty<Double> speedProperty() {
+        return value1Property();
     }
 
-    public SimpleDoubleProperty directionProperty() {
-        return direction;
+    public SimpleObjectProperty<Double> directionProperty() {
+        return value2Property();
     }
 
     @Override
