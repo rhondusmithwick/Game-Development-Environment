@@ -1,30 +1,34 @@
 package model.component.character;
 
-import api.IComponent;
+import model.component.IComponent;
 import javafx.beans.property.SimpleDoubleProperty;
+import utility.Unit;
 
 
 /**
  * @author Roxanne Baker
  */
-public class Attack implements IComponent {
+public class Attack extends Unit<SimpleDoubleProperty> implements IComponent {
 
-    private final SimpleDoubleProperty attack = new SimpleDoubleProperty(this, "attack", 0);
+    public Attack() {
+        setValue1(new SimpleDoubleProperty(this, "attack", 0));
+    }
 
     public Attack(Double attack) {
+        this();
         setAttack(attack);
     }
 
     public SimpleDoubleProperty attackProperty() {
-        return attack;
+        return getValue1();
     }
 
     public double getAttack() {
-        return attack.get();
+        return attackProperty().get();
     }
 
     public void setAttack(double attack) {
-        this.attack.set(attack);
+        getValue1().set(attack);
     }
 
     @Override

@@ -3,33 +3,35 @@ package model.vooga;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
-public class Main extends Application{
+public class Main extends Application {
 
-		private Stage myStage;
+    private Stage myStage;
 
-		/**
-		 * Sets up a stage to launch our window and initializes the splash screen.
-		 * @param stage
-		 */
+    /**
+     * Launches our program.
+     *
+     * @param args
+     */
 
-		public void start (Stage stage) {
+    public static void main(String[] args) {
+        launch(args);
+    }
 
-			myStage = stage;
-			myStage.setTitle("main screen");
+    /**
+     * Sets up a stage to launch our window and initializes the splash screen.
+     *
+     * @param stage
+     */
 
-			SplashScreen splash = new SplashScreen(myStage);
-			myStage.setScene(splash.init());
-			myStage.setResizable(false);
-			myStage.show();
-		}
+    public void start(Stage stage) {
 
-		/**
-		 * Launches our program.
-		 * @param args
-		 */
+        myStage = stage;
+        myStage.setTitle("main screen");
 
-		public static void main (String[] args) {
-			launch(args);
-		}
+        SplashScreen splash = new SplashScreen(myStage);
+        myStage.setScene(splash.init());
+        myStage.setResizable(false);
+        myStage.show();
+    }
 
 }

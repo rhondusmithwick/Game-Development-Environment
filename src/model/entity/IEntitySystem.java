@@ -1,5 +1,8 @@
-package api;
+package model.entity;
 
+import model.component.IComponent;
+import api.ISerializable;
+import datamanagement.IDataReader;
 import datamanagement.XMLReader;
 
 import java.util.Arrays;

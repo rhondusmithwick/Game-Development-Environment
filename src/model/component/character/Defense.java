@@ -1,31 +1,34 @@
 package model.component.character;
 
-import api.IComponent;
+import model.component.IComponent;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
-import model.component.base.Unit;
+import utility.Unit;
 
 
 /**
  * @author Roxanne Baker
  */
-public class Defense extends Unit<Double> implements IComponent {
+public class Defense extends Unit<SimpleDoubleProperty> implements IComponent {
 
+    public Defense() {
+        setValue1(new SimpleDoubleProperty(this, "defense", 0));
+    }
 
     public Defense(Double defense) {
+        this();
         setDefense(defense);
     }
 
-    public SimpleObjectProperty<Double> defenseProperty() {
-        return value1Property();
-    }
-
-    public double getDefense() {
+    public SimpleDoubleProperty defenseProperty() {
         return getValue1();
     }
 
+    public double getDefense() {
+        return defenseProperty().get();
+    }
+
     public void setDefense(double defense) {
-        setValue1(defense);
+        defenseProperty().set(defense);
     }
 
     @Override

@@ -1,8 +1,8 @@
 package model.component.movement;
 
-import api.IComponent;
-import javafx.beans.property.SimpleObjectProperty;
-import model.component.base.Triple;
+import model.component.IComponent;
+import javafx.beans.property.SimpleDoubleProperty;
+import utility.Triple;
 
 
 /**
@@ -10,10 +10,18 @@ import model.component.base.Triple;
  *
  * @author Rhondu Smithwick
  */
-public class Position extends Triple<Double, Double, Double> implements IComponent {
+public class Position extends Triple<SimpleDoubleProperty, SimpleDoubleProperty, SimpleDoubleProperty> implements IComponent {
+
+    public Position() {
+        setValue1(new SimpleDoubleProperty(this, "x", 0));
+        setValue2(new SimpleDoubleProperty(this, "y", 0));
+        setValue3(new SimpleDoubleProperty(this, "orientation", 0));
+    }
 
     public Position(Double x, Double y) {
-        super(x, y, 0.0);
+        this();
+        setXY(x, y);
+        setOrientation(0);
     }
 
     public Position(Double x, Double y, Double orientation) {
@@ -21,29 +29,28 @@ public class Position extends Triple<Double, Double, Double> implements ICompone
         setOrientation(orientation);
     }
 
-
     public double getX() {
-        return getValue1();
+        return xProperty().get();
     }
 
     public void setX(double x) {
-        setValue1(x);
+        xProperty().set(x);
     }
 
-    public SimpleObjectProperty<Double> xProperty() {
-        return value1Property();
+    public SimpleDoubleProperty xProperty() {
+        return getValue1();
     }
 
     public double getY() {
-        return getValue2();
+        return getValue2().get();
     }
 
     public void setY(double y) {
-        setValue2(y);
+        yProperty().set(y);
     }
 
-    public SimpleObjectProperty<Double> yProperty() {
-        return value2Property();
+    public SimpleDoubleProperty yProperty() {
+        return getValue2();
     }
 
     public void setXY(double x, double y) {
@@ -51,17 +58,16 @@ public class Position extends Triple<Double, Double, Double> implements ICompone
         setY(y);
     }
 
-
     public double getOrientation() {
-        return getValue3();
+        return orientationProperty().get();
     }
 
     public void setOrientation(double orientation) {
-        setValue3(orientation);
+        orientationProperty().set(orientation);
     }
 
-    public SimpleObjectProperty<Double> orientationProperty() {
-        return value3Property();
+    public SimpleDoubleProperty orientationProperty() {
+        return getValue3();
     }
 
     public void add(double dx, double dy) {
