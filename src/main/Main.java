@@ -1,4 +1,4 @@
-package model.vooga;
+package main;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
@@ -16,8 +16,8 @@ public class Main extends Application{
 
 			myStage = stage;
 			myStage.setTitle("main screen");
-			SplashScreen splash = new SplashScreen(myStage);
-			myStage.setScene(splash.init());
+			Vooga vooga = new Vooga(myStage);
+			myStage.setScene(vooga.init());
 			myStage.show();
 		}
 
