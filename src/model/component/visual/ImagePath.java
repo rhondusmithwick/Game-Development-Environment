@@ -1,6 +1,6 @@
 package model.component.visual;
 
-import api.IComponent;
+import model.component.IComponent;
 import javafx.beans.property.SimpleStringProperty;
 
 /**
@@ -19,11 +19,11 @@ public class ImagePath implements IComponent {
         return imagePath.get();
     }
 
-    public SimpleStringProperty imagePathProperty() {
-        return imagePath;
-    }
-
     public void setImagePath(String imagePath) {
         this.imagePath.set(imagePath);
+    }
+
+    public SimpleStringProperty imagePathProperty() {
+        return imagePath;
     }
 }

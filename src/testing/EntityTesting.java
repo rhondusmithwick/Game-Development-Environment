@@ -1,8 +1,8 @@
 package testing;
 
-import api.IComponent;
-import api.IEntity;
-import api.IEntitySystem;
+import model.component.IComponent;
+import model.entity.IEntity;
+import model.entity.IEntitySystem;
 import datamanagement.XMLWriter;
 import model.component.movement.Position;
 import model.component.movement.Velocity;

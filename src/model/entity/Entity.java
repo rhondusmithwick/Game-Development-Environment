@@ -1,7 +1,6 @@
 package model.entity;
 
-import api.IComponent;
-import api.IEntity;
+import model.component.IComponent;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import javafx.collections.FXCollections;

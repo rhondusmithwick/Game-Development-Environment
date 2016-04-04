@@ -1,7 +1,5 @@
 package model.entity;
 
-import api.IEntity;
-import api.IEntitySystem;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import java.util.Collection;
