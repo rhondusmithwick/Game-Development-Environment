@@ -1,4 +1,4 @@
-package model.vooga;
+package main;
 
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -7,6 +7,8 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import view.Authoring;
+import view.Utilities;
 
 public class Vooga {
 
