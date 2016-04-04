@@ -20,7 +20,6 @@ public class Velocity extends Pair<Double, Double> {
     }
 
     public Velocity(Double vx, Double vy, boolean flag) {
-
         setVXY(vx, vy);
     }
 
