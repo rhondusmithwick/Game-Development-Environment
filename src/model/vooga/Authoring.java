@@ -1,5 +1,6 @@
 package model.vooga;
 
+import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 
@@ -20,8 +21,10 @@ public class Authoring {
 		 * @return the splash screen scene
 		 */
 		
-		public static Scene init(){
+		public static Scene init(ReadOnlyDoubleProperty height, ReadOnlyDoubleProperty width){
 			GridPane display = createDisplay();
+			display.prefHeightProperty().bind(height);
+			display.prefWidthProperty().bind(width);
 			myScene = new Scene(display,500, 500);
 			return myScene;
 		}
