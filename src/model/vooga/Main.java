@@ -16,8 +16,8 @@ public class Main extends Application{
 
 			myStage = stage;
 			myStage.setTitle("main screen");
-			SplashScreen splash = new SplashScreen(myStage);
-			myStage.setScene(splash.init());
+			Vooga vooga = new Vooga(myStage);
+			myStage.setScene(vooga.init());
 			myStage.show();
 		}
 

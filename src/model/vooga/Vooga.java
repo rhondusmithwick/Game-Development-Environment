@@ -8,7 +8,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
-public class SplashScreen {
+public class Vooga {
 
 	private Stage myStage;
 	private VBox myVBox;
@@ -17,7 +17,7 @@ public class SplashScreen {
 	 * @param stage
 	 */
 	
-	public SplashScreen(Stage stage) {
+	public Vooga(Stage stage) {
 		myStage = stage;
 	}
 
