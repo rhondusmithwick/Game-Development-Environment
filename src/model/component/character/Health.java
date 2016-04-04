@@ -7,13 +7,21 @@ import api.IComponent;
 public class Health implements IComponent{
 	
 	@XStreamAlias("health")
-	private final SimpleDoubleProperty health;
+	private final SimpleDoubleProperty health = new SimpleDoubleProperty(this, "health", 0);;
 
-	public Health(SimpleDoubleProperty health) {
+	public Health(double health) {
 		setHealth(health);
 	}
 
-	public SimpleDoubleProperty getHealth() {
-		
+	public void setHealth(double health) {
+		this.health.set(health);
+	}
+	
+	public double getHealth() {
+		return health.get();
+	}
+	
+	public void add(double dHealth) {
+		setHealth(getHealth() + dHealth);
 	}
 }
