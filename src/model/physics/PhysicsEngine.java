@@ -62,7 +62,6 @@ public class PhysicsEngine implements IPhysicsEngine {
         return false; // TODO
     }
 
-<<<<<<< HEAD
     public Collection<IEntity> getEntitiesCollidingWith (IEntity e) {
 
         return null; // TODO
@@ -70,10 +69,6 @@ public class PhysicsEngine implements IPhysicsEngine {
 
     private boolean areIntersectingIDLists (Collection<String> IDList1,
                                             Collection<String> IDList2) {
-=======
-    private boolean areIntersectingIDLists(Collection<String> IDList1,
-                                           Collection<String> IDList2) {
->>>>>>> 7482a2c93b027f3897be1bd32d6e7e437c4753a8
         Set<String> IDSet = new HashSet<String>();
         IDSet.addAll(IDList1);
         IDSet.addAll(IDList2);
