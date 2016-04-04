@@ -40,14 +40,16 @@ public interface IEntitySystem extends ISerializable {
     int getNextAvailableID();
 
     default IEntity createEntityFromLoad(String fileName) {
-        IEntity entity = new XMLReader<IEntity>().readSingleFromFile(fileName);
+        IDataReader<IEntity> reader = new XMLReader<>();
+        IEntity entity = reader.readSingleFromFile(fileName);
         addEntity(entity);
         return entity;
     }
 
     default IEntity createEntityFromDefault(String defaultFileName) {
         IEntity entity = createEntity();
-        List<IComponent> components = new XMLReader<IComponent>().readFromFile(defaultFileName);
+        IDataReader<IComponent> reader = new XMLReader<>();
+        List<IComponent> components = reader.readFromFile(defaultFileName);
         entity.addComponents(components);
         return entity;
     }
@@ -62,4 +64,7 @@ public interface IEntitySystem extends ISerializable {
         return getAllEntities().stream().filter(hasComponent).collect(Collectors.toSet());
     }
 
+    default <T extends IComponent> List<T> getComponentOfEntity(int id, Class<T> componentType) {
+        return getEntity(id).getComponentList(componentType);
+    }
 }

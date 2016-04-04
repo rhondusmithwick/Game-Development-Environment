@@ -44,6 +44,7 @@ class EntityTesting implements Tester {
     private void loadFromBuilt() {
         System.out.println("PRELOADED:");
         IEntity entity = entitySystem.createEntityFromLoad(LOAD_FILE_NAME);
+        entity.getComponent(Velocity.class).setSpeed(5000);
         System.out.println("Entity read from load file: " + entity);
         System.out.println("Testing get Component: " + entity.getComponent(Position.class));
     }

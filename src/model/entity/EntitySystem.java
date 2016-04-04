@@ -2,6 +2,7 @@ package model.entity;
 
 import api.IEntity;
 import api.IEntitySystem;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import java.util.Collection;
 import java.util.HashMap;
@@ -13,8 +14,11 @@ import java.util.Map;
  * @author Rhondu Smithwick
  */
 public class EntitySystem implements IEntitySystem {
+
+    @XStreamAlias("entities")
     private final Map<Integer, IEntity> entities = new HashMap<>();
 
+    @XStreamAlias("maxID")
     private int maxID = 0;
 
     @Override
