@@ -1,27 +1,33 @@
 package model.component.character;
 
-import javafx.beans.property.SimpleDoubleProperty;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import model.component.base.Unit;
 import api.IComponent;
 
-public class Health implements IComponent{
-	
-	@XStreamAlias("health")
-	private final SimpleDoubleProperty health = new SimpleDoubleProperty(this, "health", 0);;
+/***
+ * Created by Anirudh Jonnavithula on 04/03/16
+ * 
+ * @author aj168
+ *
+ */
+public class Health extends Unit<Double> implements IComponent{
 
+	public Health() {
+		super(0.0);
+	}
+	
 	public Health(double health) {
-		setHealth(health);
+		super(health);
 	}
 
 	public void setHealth(double health) {
-		this.health.set(health);
+		setValue1(health);
 	}
 	
 	public double getHealth() {
-		return health.get();
+		return getValue1();
 	}
 	
 	public void add(double dHealth) {
-		setHealth(getHealth() + dHealth);
+		setValue1(getValue1() + dHealth);
 	}
 }

@@ -1,27 +1,34 @@
 package model.component.character;
 
-import javafx.beans.property.SimpleDoubleProperty;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
+import model.component.base.Unit;
+import api.IComponent;
 
-public class Score {
-
-	@XStreamAlias("score")
-	private final SimpleDoubleProperty score = new SimpleDoubleProperty(this, "score", 0);;
-
+/***
+ * Created by Anirudh Jonnavithula on 04/03/16
+ * 
+ * @author aj168
+ *
+ */
+public class Score extends Unit<Double> implements IComponent{
+	
+	public Score() {
+		super(0.0);
+	}
+	
 	public Score(double score) {
-		setScore(score);
+		super(score);
 	}
 
 	public void setScore(double score) {
-		this.score.set(score);
+		setValue1(score);
 	}
 	
 	public double getScore() {
-		return score.get();
+		return getValue1();
 	}
 	
 	public void add(double dScore) {
-		setScore(getScore() + dScore);
+		setValue1(getValue1() + dScore);
 	}
 
 }
