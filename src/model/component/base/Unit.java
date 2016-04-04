@@ -10,14 +10,12 @@ import javafx.beans.property.SimpleObjectProperty;
  */
 public class Unit<A> implements IComponent {
 
-    private final SimpleObjectProperty<A> value1;
+    private final SimpleObjectProperty<A> value1 = new SimpleObjectProperty<>(this, "value1", null);
 
-    public Unit(String name1) {
-        value1 = new SimpleObjectProperty<>(this, name1, null);
+    public Unit() {
     }
 
-    public Unit(String name1, A value1) {
-        this(name1);
+    public Unit(A value1) {
         setValue1(value1);
     }
 
