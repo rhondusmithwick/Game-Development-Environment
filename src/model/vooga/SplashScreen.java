@@ -49,7 +49,7 @@ public class SplashScreen {
 
 		myVBox = new VBox(30);
 		myVBox.setAlignment(Pos.CENTER);
-		myVBox.getChildren().add(done);
+		myVBox.getChildren().add(createGame);
 		root.getChildren().add(myVBox);
 
 		BorderPane splash = new BorderPane();
