@@ -46,36 +46,27 @@ public class XMLReader<T> implements IDataReader<T> {
         return objects;
     }
 
-    public T readSingleFromFile(String fileName) {
-        return readFromFile(fileName).get(0);
+    private void doRead(Reader reader) {
+        try {
+            ObjectInputStream in = xstream.createObjectInputStream(reader);
+            continueReading(in);
+            reader.close();
+            in.close();
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @SuppressWarnings("unchecked")
-    private void doRead(Reader reader) {
-        ObjectInputStream in = null;
-        try {
-            in = xstream.createObjectInputStream(reader);
-            while (true) {
-                try {
-                    T obj = (T) in.readObject();
-                    objects.add(obj);
-                } catch (ClassNotFoundException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    break;
-                }
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
+    private void continueReading(ObjectInputStream in) throws ClassNotFoundException {
+        while (true) {
             try {
-                reader.close();
-                in.close();
+                T obj = (T) in.readObject();
+                objects.add(obj);
             } catch (IOException e) {
-                e.printStackTrace();
+                break;
             }
         }
-
-
     }
 }

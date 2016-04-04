@@ -1,74 +1,66 @@
 package model.entity;
 
-import api.IComponent;
-import datamanagement.XMLReader;
+import api.IEntity;
+import api.IEntitySystem;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
 
 /**
- * Created by rhondusmithwick on 3/30/16.
+ * Created by rhondusmithwick on 4/3/16.
  *
  * @author Rhondu Smithwick
  */
-public class EntitySystem {
-    private final Map<Integer, Entity> entities = new HashMap<>();
+public class EntitySystem implements IEntitySystem {
 
+    @XStreamAlias("entities")
+    private final Map<Integer, IEntity> entities = new HashMap<>();
+
+    @XStreamAlias("maxID")
     private int maxID = 0;
 
-    public Entity createEntity() {
+    @Override
+    public IEntity createEntity() {
         int ID = getNextAvailableID();
         Entity entity = new Entity(ID);
         maxID++;
-        return entity;
-    }
-
-    public Entity createEntityFromLoad(String fileName) {
-        Entity entity = new XMLReader<Entity>().readSingleFromFile(fileName);
         addEntity(entity);
         return entity;
     }
 
-    public Entity createEntityFromDefault(String defaultFileName) {
-        Entity entity = createEntity();
-        List<IComponent> components = new XMLReader<IComponent>().readFromFile(defaultFileName);
-        entity.addComponentList(components);
-        return entity;
+    @Override
+    public IEntity addEntity(IEntity entity) {
+        return entities.put(entity.getID(), entity);
     }
 
-    public void addEntity(Entity entity) {
-        entities.put(entity.getID(), entity);
+    @Override
+    public IEntity getEntity(int id) {
+        return entities.get(id);
     }
 
-    public <T extends IComponent> List<T> getAllComponentsOfType(Class<T> componentType) {
-        return entities.values().stream().map(e -> e.getComponentList(componentType))
-                .flatMap(List::stream).filter(Objects::nonNull).collect(Collectors.toList());
+    @Override
+    public Collection<IEntity> getAllEntities() {
+        return entities.values();
     }
 
-    public <T extends IComponent> Set<Entity> getEntitiesWithComponentType(Class<T> componentType) {
-        Predicate<Entity> hasComponent = (e) -> e.hasComponent(componentType);
-        return entities.values().stream().filter(hasComponent).collect(Collectors.toSet());
+    @Override
+    public boolean containsID(int id) {
+        return entities.containsKey(id);
     }
 
-    public Entity getEntity(int ID) {
-        if (entities.containsKey(ID)) {
-            return entities.get(ID);
+    @Override
+    public boolean removeEntity(int id) {
+        if (containsID(id)) {
+            entities.remove(id);
+            return true;
         }
-        return null;
-        // throw new EntityNotFoundException();
+        return false;
     }
 
-    public void killEntity(int ID) {
-        entities.remove(ID);
-    }
-
-    private int getNextAvailableID() {
+    @Override
+    public int getNextAvailableID() {
         return maxID + 1;
     }
 

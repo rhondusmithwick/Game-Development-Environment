@@ -6,7 +6,7 @@ import java.io.Serializable;
 
 public interface ISerializable extends Serializable {
     default void evaluate(File f) {
-        // TODO
+        //
     }
 
     default File serialize() {

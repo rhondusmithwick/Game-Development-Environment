@@ -1,1 +1,54 @@
-<?xml version="1.0" ?><object-stream><model.entity.Entity><ID>1</ID><components class="com.sun.javafx.collections.ObservableMapWrapper"><backingMap><entry><java-class>model.component.movement.Position</java-class><list><model.component.movement.Position><x><value>50.0</value><valid>true</valid><bean class="model.component.movement.Position" reference="../.."></bean><name>x</name></x><y><value>40.0</value><valid>true</valid><bean class="model.component.movement.Position" reference="../.."></bean><name>y</name></y></model.component.movement.Position></list></entry><entry><java-class>model.component.movement.Velocity</java-class><list><model.component.movement.Velocity><speed><value>100.0</value><valid>false</valid><bean class="model.component.movement.Velocity" reference="../.."></bean><name>speed</name></speed><direction><value>10.0</value><valid>false</valid><bean class="model.component.movement.Velocity" reference="../.."></bean><name>direction</name></direction></model.component.movement.Velocity></list></entry></backingMap></components></model.entity.Entity></object-stream>
+<?xml version="1.0" ?>
+<object-stream>
+    <model.entity.Entity ID="1">
+        <components class="com.sun.javafx.collections.ObservableMapWrapper">
+            <backingMap>
+                <entry>
+                    <java-class>model.component.movement.Velocity</java-class>
+                    <list>
+                        <model.component.movement.Velocity>
+                            <speed>
+                                <value>100.0</value>
+                                <valid>true</valid>
+                                <bean class="model.component.movement.Velocity" reference="../.."></bean>
+                                <name>speed</name>
+                            </speed>
+                            <direction>
+                                <value>10.0</value>
+                                <valid>true</valid>
+                                <bean class="model.component.movement.Velocity" reference="../.."></bean>
+                                <name>direction</name>
+                            </direction>
+                        </model.component.movement.Velocity>
+                    </list>
+                </entry>
+                <entry>
+                    <java-class>model.component.movement.Position</java-class>
+                    <list>
+                        <model.component.movement.Position>
+                            <x>
+                                <value>50.0</value>
+                                <valid>true</valid>
+                                <bean class="model.component.movement.Position" reference="../.."></bean>
+                                <name>x</name>
+                            </x>
+                            <y>
+                                <value>40.0</value>
+                                <valid>true</valid>
+                                <bean class="model.component.movement.Position" reference="../.."></bean>
+                                <name>y</name>
+                            </y>
+                            <orientation>
+                                <value>0.0</value>
+                                <valid>true</valid>
+                                <bean class="model.component.movement.Position" reference="../.."></bean>
+                                <name>orientation</name>
+                            </orientation>
+                        </model.component.movement.Position>
+                    </list>
+                </entry>
+            </backingMap>
+        </components>
+        <Specs></Specs>
+    </model.entity.Entity>
+</object-stream>

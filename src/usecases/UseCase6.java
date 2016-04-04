@@ -2,7 +2,7 @@
 //
 //import model.component.movement.Position;
 //import model.entity.Entity;
-//import model.entity.EntitySystem;
+//import model.entity.EntitySystemod;
 //import datamanagement.SerializableReader;
 //
 ///**
@@ -14,9 +14,9 @@
 // */
 //public class UseCase6 {
 //
-//    private final EntitySystem entitySystem;
+//    private final EntitySystemod entitySystem;
 //
-//    public UseCase6(EntitySystem entitySystem) {
+//    public UseCase6(EntitySystemod entitySystem) {
 //        this.entitySystem = entitySystem;
 //    }
 //
