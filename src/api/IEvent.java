@@ -1,7 +1,8 @@
 package api;
 
-public interface IEvent {
-    IEventListener getEventListener();
+import java.io.Serializable;
 
-    IEventHandler getEventHandler();
+
+public interface IEvent<L> extends Serializable {
+    void notify(final L listener); // why use final?
 }
