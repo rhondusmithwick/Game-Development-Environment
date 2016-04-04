@@ -38,7 +38,7 @@ public class SplashScreen {
 	 */
 	private BorderPane createDisplay() {
 		Group root = new Group();
-		Button createGame = Utilities.makeButton("Create Game", e -> myStage.setScene(Authoring.init()));
+		Button createGame = Utilities.makeButton("Create Game", e -> myStage.setScene(Authoring.init(myStage.widthProperty(), myStage.heightProperty())));
 
 		myVBox = new VBox(30);
 		myVBox.setAlignment(Pos.CENTER);

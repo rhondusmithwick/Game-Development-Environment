@@ -16,10 +16,8 @@ public class Main extends Application{
 
 			myStage = stage;
 			myStage.setTitle("main screen");
-
 			SplashScreen splash = new SplashScreen(myStage);
 			myStage.setScene(splash.init());
-			myStage.setResizable(false);
 			myStage.show();
 		}
 

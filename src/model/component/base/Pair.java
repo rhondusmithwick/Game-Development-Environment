@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleObjectProperty;
  *
  * @author Rhondu Smithwick
  */
-public class Pair<A, B> extends Unit {
+public class Pair<A, B> extends Unit<A> {
     private final SimpleObjectProperty<B> value2;
 
     public Pair(String name1, String name2) {
