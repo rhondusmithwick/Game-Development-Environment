@@ -8,16 +8,13 @@ import javafx.beans.property.SimpleObjectProperty;
  * @author Rhondu Smithwick
  */
 public class Pair<A, B> extends Unit<A> {
-    private final SimpleObjectProperty<B> value2;
+    private final SimpleObjectProperty<B> value2 = new SimpleObjectProperty<>(this, "value2", null);
 
-    public Pair(String name1, String name2) {
-        super(name1);
-        value2 = new SimpleObjectProperty<B>(this, name2, null);
+    public Pair() {
     }
 
-    public Pair(String name1, A value1, String name2, B value2) {
-        this(name1, name2);
-        setValue1(value1);
+    public Pair(A value1, B value2) {
+        super(value1);
         setValue2(value2);
     }
 
