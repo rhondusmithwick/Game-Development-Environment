@@ -1,5 +1,6 @@
 package model.component.base;
 
+
 import javafx.beans.property.SimpleObjectProperty;
 
 /**
