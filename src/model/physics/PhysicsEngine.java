@@ -61,6 +61,8 @@ public class PhysicsEngine implements IPhysicsEngine {
         return false; // TODO
     }
 
+    // public
+
     private boolean areIntersectingIDLists (Collection<String> IDList1,
                                             Collection<String> IDList2) {
         Set<String> IDSet = new HashSet<String>();
