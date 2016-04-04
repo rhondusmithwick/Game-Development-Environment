@@ -1,4 +1,4 @@
-package model.vooga;
+package view;
 
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.Scene;

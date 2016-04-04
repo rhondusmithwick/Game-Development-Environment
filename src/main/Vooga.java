@@ -1,4 +1,4 @@
-package model.vooga;
+package main;
 
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -7,8 +7,10 @@ import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import view.Authoring;
+import view.Utilities;
 
-public class SplashScreen {
+public class Vooga {
 
 	private Stage myStage;
 	private VBox myVBox;
@@ -17,7 +19,7 @@ public class SplashScreen {
 	 * @param stage
 	 */
 	
-	public SplashScreen(Stage stage) {
+	public Vooga(Stage stage) {
 		myStage = stage;
 	}
 

@@ -1,5 +1,6 @@
 package model.component.movement;
 
+import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 import model.component.base.Pair;
 
@@ -9,7 +10,7 @@ import model.component.base.Pair;
  *
  * @author Rhondu Smithwick
  */
-public class Velocity extends Pair<Double, Double> {
+public class Velocity extends Pair<Double, Double> implements IComponent {
 
     public Velocity() {
         super(0.0, 0.0);
@@ -20,7 +21,6 @@ public class Velocity extends Pair<Double, Double> {
     }
 
     public Velocity(Double vx, Double vy, boolean flag) {
-
         setVXY(vx, vy);
     }
 
