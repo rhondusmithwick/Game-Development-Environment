@@ -6,7 +6,7 @@ import api.IComponent;
 /***
  * Created by Anirudh Jonnavithula on 04/03/16
  * 
- * @author aj168
+ * @author ajonnav
  *
  */
 public class Score extends Unit<Double> implements IComponent{
