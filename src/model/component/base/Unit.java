@@ -1,6 +1,5 @@
 package model.component.base;
 
-import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 
 /**
@@ -8,7 +7,7 @@ import javafx.beans.property.SimpleObjectProperty;
  *
  * @author Rhondu Smithwick
  */
-public class Unit<A> implements IComponent {
+public class Unit<A>  {
 
     private final SimpleObjectProperty<A> value1 = new SimpleObjectProperty<>(this, "value1", null);
 

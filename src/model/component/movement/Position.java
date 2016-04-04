@@ -1,7 +1,8 @@
 package model.component.movement;
 
 import api.IComponent;
-import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import model.component.base.Triple;
 
 
 /**
@@ -9,14 +10,10 @@ import javafx.beans.property.SimpleDoubleProperty;
  *
  * @author Rhondu Smithwick
  */
-public class Position implements IComponent {
-
-    private final SimpleDoubleProperty x = new SimpleDoubleProperty(this, "x", 0);
-    private final SimpleDoubleProperty y = new SimpleDoubleProperty(this, "y", 0);
-    private final SimpleDoubleProperty orientation = new SimpleDoubleProperty(this, "orientation", 0);
+public class Position extends Triple<Double, Double, Double> implements IComponent {
 
     public Position(Double x, Double y) {
-        setXY(x, y);
+        super(x, y, 0.0);
     }
 
     public Position(Double x, Double y, Double orientation) {
@@ -26,37 +23,45 @@ public class Position implements IComponent {
 
 
     public double getX() {
-        return x.get();
+        return getValue1();
     }
 
-    public SimpleDoubleProperty xProperty() {
-        return x;
+    public void setX(double x) {
+        setValue1(x);
+    }
+
+    public SimpleObjectProperty<Double> xProperty() {
+        return value1Property();
     }
 
     public double getY() {
-        return y.get();
+        return getValue2();
     }
 
-    public SimpleDoubleProperty yProperty() {
-        return y;
+    public void setY(double y) {
+        setValue2(y);
+    }
+
+    public SimpleObjectProperty<Double> yProperty() {
+        return value2Property();
     }
 
     public void setXY(double x, double y) {
-        this.x.set(x);
-        this.y.set(y);
+        setX(x);
+        setY(y);
     }
 
 
     public double getOrientation() {
-        return orientation.get();
+        return getValue3();
     }
 
     public void setOrientation(double orientation) {
-        this.orientation.set(orientation);
+        setValue3(orientation);
     }
 
-    public SimpleDoubleProperty orientationProperty() {
-        return orientation;
+    public SimpleObjectProperty<Double> orientationProperty() {
+        return value3Property();
     }
 
     public void add(double dx, double dy) {
