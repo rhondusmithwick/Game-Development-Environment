@@ -9,6 +9,7 @@ import javafx.beans.property.SimpleObjectProperty;
  * @author Rhondu Smithwick
  */
 public class Unit<A> implements IComponent {
+
     private final SimpleObjectProperty<A> value1;
 
     public Unit(String name1) {
