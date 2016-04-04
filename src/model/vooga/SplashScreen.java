@@ -1,23 +1,16 @@
 package model.vooga;
 
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class SplashScreen {
 
 	private Stage myStage;
-	private String myLanguage = "English";
-	private ComboBox<String> myLanguageChooser;
 	private VBox myVBox;
 	/**
 	 * Constructor that takes in a stage to display the graphics.
