@@ -1,14 +1,14 @@
 package model.entity;
 
-import model.component.IComponent;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
+import model.component.IComponent;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -25,11 +25,12 @@ public class Entity implements IEntity {
     private final Integer ID;
 
     @XStreamAlias("components")
-    private final ObservableMap<Class<? extends IComponent>, List<IComponent>> observableMap =
+    private final ObservableMap<Class<? extends IComponent>, List<IComponent>> componentMap =
             FXCollections.observableHashMap();
 
+
     @XStreamAlias("Specs")
-    private final Map<Class<? extends IComponent>, Integer> specs = new HashMap<>();
+    private final Map<Class<? extends IComponent>, Integer> specs = Maps.newLinkedHashMap();
 
     public Entity(int ID) {
         this.ID = ID;
@@ -42,7 +43,7 @@ public class Entity implements IEntity {
 
     @Override
     public Collection<IComponent> getAllComponents() {
-        return observableMap.values().stream()
+        return componentMap.values().stream()
                 .flatMap(Collection::stream).collect(Collectors.toList());
     }
 
@@ -51,32 +52,32 @@ public class Entity implements IEntity {
         if (!hasComponent(componentClass)) {
             return null;
         }
-        return observableMap.get(componentClass).stream()
-                .map(componentClass::cast).collect(Collectors.toList());
+        List<IComponent> currentComponents = componentMap.get(componentClass);
+        return Lists.transform(currentComponents, componentClass::cast);
     }
 
 
     @Override
     public boolean hasComponent(Class<? extends IComponent> componentClass) {
-        return observableMap.containsKey(componentClass);
+        return componentMap.containsKey(componentClass);
     }
 
     @Override
     public boolean addComponent(IComponent component) {
         Class<? extends IComponent> theClass = component.getClassForComponentMap();
-        if (!observableMap.containsKey(theClass)) {
-            observableMap.put(theClass, new ArrayList<>());
+        if (!componentMap.containsKey(theClass)) {
+            componentMap.put(theClass, Lists.newArrayList());
         }
         if (component.unique()) {
-            observableMap.get(theClass).clear();
+            componentMap.get(theClass).clear();
         }
-        return observableMap.get(theClass).add(component);
+        return componentMap.get(theClass).add(component);
     }
 
     @Override
     public boolean removeComponent(Class<? extends IComponent> componentClass) {
-        if (observableMap.containsKey(componentClass)) {
-            observableMap.remove(componentClass);
+        if (componentMap.containsKey(componentClass)) {
+            componentMap.remove(componentClass);
             return true;
         }
         return false;
@@ -89,6 +90,6 @@ public class Entity implements IEntity {
 
     @Override
     public String toString() {
-        return String.format("ID: %d, Components: %s", ID, observableMap.toString());
+        return String.format("ID: %d, Components: %s", ID, componentMap.toString());
     }
 }

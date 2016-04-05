@@ -1,12 +1,12 @@
 package testing;
 
-import model.component.IComponent;
-import model.entity.IEntity;
-import model.entity.IEntitySystem;
 import datamanagement.XMLWriter;
+import model.component.IComponent;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.entity.EntitySystem;
+import model.entity.IEntity;
+import model.entity.IEntitySystem;
 
 
 /**
@@ -30,6 +30,7 @@ class EntityTesting implements Tester {
         new XMLWriter<IEntity>().writeToFile(LOAD_FILE_NAME, entity);
         loadFromBuilt();
     }
+
 
     private IEntity loadDefault() {
         System.out.println("DEFAULT:");
