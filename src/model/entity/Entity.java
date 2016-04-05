@@ -28,7 +28,6 @@ public class Entity implements IEntity {
     private final ObservableMap<Class<? extends IComponent>, List<IComponent>> componentMap =
             FXCollections.observableHashMap();
 
-
     @XStreamAlias("Specs")
     private final Map<Class<? extends IComponent>, Integer> specs = Maps.newLinkedHashMap();
 
