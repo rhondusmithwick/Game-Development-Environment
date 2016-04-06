@@ -1,9 +1,6 @@
 package api;
 
-import java.util.Collection;
-
-import com.google.common.collect.BiMap;
-
+import com.google.common.collect.ImmutableBiMap;
 /**
  * Might be scrapped in the future! Reference:
  * http://stackoverflow.com/questions/937302/simple-java-message-dispatching-
@@ -33,8 +30,7 @@ public interface IEventSystem extends ISerializable {
 
 	/**
 	 * Get all trigger(s)
-	 * @return bidirectional map of triggers
+	 * @return immutable bidirectional map of triggers
 	 */
-	BiMap<IEvent, IEventListener> getTriggers();
-	
+	ImmutableBiMap<IEvent, IEventListener> getTriggers();
 }

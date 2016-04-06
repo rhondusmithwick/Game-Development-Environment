@@ -1,3 +1,5 @@
+// Blame Tom for mistakes in this class.
+
 package model.physics;
 
 import java.util.Collection;
@@ -36,10 +38,14 @@ public class PhysicsEngine implements IPhysicsEngine {
 		return universe;
 	}
 
-	public void applyImpulse(IEntity body, Impulse J) {
+	@Override
+	public boolean applyImpulse(IEntity body, Impulse J) {
 		if (body.hasComponent(Velocity.class)) {
 			Velocity v = body.getComponent(Velocity.class);
 			v.add(J.getJx(), J.getJy());
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -72,6 +78,12 @@ public class PhysicsEngine implements IPhysicsEngine {
 		Set<String> s1 = new HashSet<String>(IDList1);
 		Set<String> s2 = new HashSet<String>(IDList2);
 		return (Sets.intersection(s1, s2).size() > 0);
+	}
+
+	@Override
+	public IEntitySystem updateCollisions(IEntitySystem universe, boolean dynamicsOn) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

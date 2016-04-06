@@ -1,10 +1,10 @@
 package model.entity;
 
-import com.google.common.collect.Maps;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-
 import java.util.Collection;
 import java.util.Map;
+
+import com.google.common.collect.Maps;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * Created by rhondusmithwick on 4/3/16.
@@ -13,54 +13,53 @@ import java.util.Map;
  */
 public class EntitySystem implements IEntitySystem {
 
-    @XStreamAlias("entities")
-    private final Map<Integer, IEntity> entities = Maps.newLinkedHashMap();
+	@XStreamAlias("entities")
+	private final Map<Integer, IEntity> entities = Maps.newLinkedHashMap();
 
-    @XStreamAlias("maxID")
-    private int maxID = 0;
+	@XStreamAlias("maxID")
+	private int maxID = 0;
 
-    @Override
-    public IEntity createEntity() {
-        int ID = getNextAvailableID();
-        Entity entity = new Entity(ID);
-        maxID++;
-        addEntity(entity);
-        return entity;
-    }
+	@Override
+	public IEntity createEntity() {
+		int ID = getNextAvailableID();
+		Entity entity = new Entity(ID);
+		maxID++;
+		addEntity(entity);
+		return entity;
+	}
 
-    @Override
-    public IEntity addEntity(IEntity entity) {
-        return entities.put(entity.getID(), entity);
-    }
+	@Override
+	public IEntity addEntity(IEntity entity) {
+		return entities.put(entity.getID(), entity);
+	}
 
-    @Override
-    public IEntity getEntity(int id) {
-        return entities.get(id);
-    }
+	@Override
+	public IEntity getEntity(int id) {
+		return entities.get(id);
+	}
 
-    @Override
-    public Collection<IEntity> getAllEntities() {
-        return entities.values();
-    }
+	@Override
+	public Collection<IEntity> getAllEntities() {
+		return entities.values();
+	}
 
-    @Override
-    public boolean containsID(int id) {
-        return entities.containsKey(id);
-    }
+	@Override
+	public boolean containsID(int id) {
+		return entities.containsKey(id);
+	}
 
-    @Override
-    public boolean removeEntity(int id) {
-        if (containsID(id)) {
-            entities.remove(id);
-            return true;
-        }
-        return false;
-    }
+	@Override
+	public boolean removeEntity(int id) {
+		if (containsID(id)) {
+			entities.remove(id);
+			return true;
+		}
+		return false;
+	}
 
-    @Override
-    public int getNextAvailableID() {
-        return maxID + 1;
-    }
-
+	@Override
+	public int getNextAvailableID() {
+		return maxID + 1;
+	}
 
 }
