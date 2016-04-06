@@ -1,16 +1,18 @@
 package model.component.character;
 
-import model.component.IComponent;
 import javafx.beans.property.SimpleDoubleProperty;
+import model.component.IComponent;
 import utility.Unit;
 
 /**
  * @author Rhondu Smithwick
  */
-public class Health extends Unit<SimpleDoubleProperty> implements IComponent {
+public class Health implements IComponent {
+
+    private final Unit<SimpleDoubleProperty> unit;
 
     public Health() {
-        setValue1(new SimpleDoubleProperty(this, "health", 0));
+        unit = new Unit<>(new SimpleDoubleProperty(this, "health", 0.0));
     }
 
     public Health(Double health) {
@@ -19,7 +21,7 @@ public class Health extends Unit<SimpleDoubleProperty> implements IComponent {
     }
 
     public SimpleDoubleProperty healthProperty() {
-        return getValue1();
+        return unit._1();
     }
 
     public double getHealth() {
@@ -29,5 +31,5 @@ public class Health extends Unit<SimpleDoubleProperty> implements IComponent {
     public void setHealth(double health) {
         healthProperty().set(health);
     }
-    
+
 }

@@ -1,17 +1,19 @@
 package model.component.character;
 
-import model.component.IComponent;
 import javafx.beans.property.SimpleDoubleProperty;
+import model.component.IComponent;
 import utility.Unit;
 
 
 /**
  * @author Roxanne Baker
  */
-public class Attack extends Unit<SimpleDoubleProperty> implements IComponent {
+public class Attack implements IComponent {
+
+    private final Unit<SimpleDoubleProperty> unit;
 
     public Attack() {
-        setValue1(new SimpleDoubleProperty(this, "attack", 0));
+        unit = new Unit<>(new SimpleDoubleProperty(this, "attack", 0.0));
     }
 
     public Attack(Double attack) {
@@ -20,7 +22,7 @@ public class Attack extends Unit<SimpleDoubleProperty> implements IComponent {
     }
 
     public SimpleDoubleProperty attackProperty() {
-        return getValue1();
+        return unit._1();
     }
 
     public double getAttack() {
@@ -28,7 +30,7 @@ public class Attack extends Unit<SimpleDoubleProperty> implements IComponent {
     }
 
     public void setAttack(double attack) {
-        getValue1().set(attack);
+        attackProperty().set(attack);
     }
 
     @Override
@@ -40,5 +42,4 @@ public class Attack extends Unit<SimpleDoubleProperty> implements IComponent {
     public boolean unique() {
         return true;
     }
-
 }

@@ -4,7 +4,6 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import com.google.common.collect.Sets;
 
@@ -23,10 +22,10 @@ public class PhysicsEngine implements IPhysicsEngine {
 		this.settings = settings;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public IEntitySystem update(IEntitySystem universe, double dt) {
-		Collection<IEntity> dynamicEntities = universe.getAllEntities().stream()
-				.filter(p -> p.hasComponents(Position.class, Velocity.class)).collect(Collectors.toSet());
+		Collection<IEntity> dynamicEntities = universe.getEntitiesWithComponents(Position.class, Velocity.class);
 		dynamicEntities.stream().forEach(p -> {
 			Position pos = p.getComponent(Position.class);
 			Velocity velocity = p.getComponent(Velocity.class);

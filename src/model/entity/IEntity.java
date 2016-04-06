@@ -18,16 +18,16 @@ public interface IEntity extends ISerializable {
 
     <T extends IComponent> List<T> getComponentList(Class<T> componentClass);
 
-    default <T extends IComponent> T getComponent(Class<T> componentClass, int... index) {
-        List<T> componentStorage = getComponentList(componentClass);
-        if (index.length == 0) {
-            return componentStorage.get(0);
-        } else {
-            return componentStorage.get(index[0]);
-        }
+    default <T extends IComponent> T getComponent(Class<T> componentClass) {
+        return getComponent(componentClass, 0);
     }
 
-    boolean hasComponent(Class<? extends IComponent> c);
+    default <T extends IComponent> T getComponent(Class<T> componentClass, int index) {
+        List<T> componentStorage = getComponentList(componentClass);
+        return componentStorage.get(index);
+    }
+
+    <T extends IComponent> boolean hasComponent(Class<T> componentClass);
 
     default boolean hasComponents(List<Class<? extends IComponent>> componentsClasses) {
         Predicate<Class<? extends IComponent>> doesNotHave = (c) -> (!hasComponent(c));
@@ -38,24 +38,37 @@ public interface IEntity extends ISerializable {
         return hasComponents(Arrays.asList(componentClasses));
     }
 
-    boolean addComponent(IComponent component);
+    boolean forceAddComponent(IComponent componentToAdd, boolean forceAdd);
 
-    default List<Boolean> addComponents(List<IComponent> components) {
-        return components.stream().map(this::addComponent).collect(Collectors.toList());
+
+    default List<Boolean> forceAddComponents(List<IComponent> components, boolean forceAdd) {
+        return components.stream().map(c -> forceAddComponent(c, forceAdd)).collect(Collectors.toList());
     }
 
-    default List<Boolean> addComponents(IComponent... components) {
-        return addComponents(Arrays.asList(components));
+    default List<Boolean> forceAddComponents(boolean forceAdd, IComponent... components) {
+        return forceAddComponents(Arrays.asList(components), forceAdd);
     }
 
-    boolean removeComponent(Class<? extends IComponent> componentClass);
-
-    default List<Boolean> removeComponents(List<Class<? extends IComponent>> componentsClasses) {
-        return componentsClasses.stream().map(this::removeComponent).collect(Collectors.toList());
+    default boolean addComponent(IComponent componentToAdd) {
+        return forceAddComponent(componentToAdd, false);
     }
 
-    default List<Boolean> removeComponents(Class<? extends IComponent>... componentClasses) {
-        return removeComponents(Arrays.asList(componentClasses));
+    default List<Boolean> addComponents(List<IComponent> componentsToAdd) {
+        return forceAddComponents(componentsToAdd, false);
+    }
+
+    default List<Boolean> addComponents(IComponent... componentsToAdd) {
+        return addComponents(Arrays.asList(componentsToAdd));
+    }
+
+    <T extends IComponent> boolean removeComponent(Class<T> componentClassToRemove);
+
+    default List<Boolean> removeComponents(List<Class<? extends IComponent>> componentClassesToRemove) {
+        return componentClassesToRemove.stream().map(this::removeComponent).collect(Collectors.toList());
+    }
+
+    default List<Boolean> removeComponents(Class<? extends IComponent>... componentClassesToRemove) {
+        return removeComponents(Arrays.asList(componentClassesToRemove));
     }
 
     Map<Class<? extends IComponent>, Integer> getSpecs();
@@ -69,7 +82,7 @@ public interface IEntity extends ISerializable {
         return getSpecs().get(componentClass);
     }
 
-    default void setSpec(Class<? extends IComponent> compnentClass, int n) {
-        getSpecs().put(compnentClass, n);
+    default <T extends IComponent> void setSpec(Class<T> componentClass, int numToHave) {
+        getSpecs().put(componentClass, numToHave);
     }
 }
