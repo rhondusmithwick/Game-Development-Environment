@@ -8,14 +8,24 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
- * Created by rhondusmithwick on 4/6/16.
+ * A SpecLoader for resource files.
  *
  * @author Rhondu Smithwick
  */
 public class ResourceFileSpecLoader implements SpecLoader<Class<? extends IComponent>> {
 
+    /**
+     * The resource Bundle for component locations.
+     */
     private final ResourceBundle locationsBundle = ResourceBundle.getBundle("resources/componentLocations");
 
+    /**
+     * {@inheritDoc}
+     * An implementation for resource bundles.
+     *
+     * @param resourceFile the resource file.
+     * @return the specs map
+     */
     @Override
     public Map<Class<? extends IComponent>, Integer> loadSpecs(String resourceFile) {
         ResourceBundle bundle = ResourceBundle.getBundle(resourceFile);

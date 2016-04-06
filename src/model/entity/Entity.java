@@ -16,7 +16,7 @@ import javafx.collections.ObservableMap;
 import model.component.IComponent;
 
 /**
- * Created by rhondusmithwick on 4/1/16.
+ * Implementation of an IEntity.
  *
  * @author Rhondu Smithwick
  */
