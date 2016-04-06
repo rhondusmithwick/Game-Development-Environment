@@ -1,6 +1,4 @@
-package model.component;
-
-import api.ISystem;
+package api;
 
 /**
  * The interface for an active component.

@@ -1,6 +1,4 @@
-package model.component;
-
-import api.ISerializable;
+package api;
 
 /**
  * This is the interface for all components, which hold data.

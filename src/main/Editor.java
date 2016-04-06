@@ -1,12 +1,13 @@
-package api;
+package main;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import api.IEditor;
+import api.IEntity;
 import model.entity.EntitySystem;
-import model.entity.IEntity;
 
-public abstract class Editor implements IEditor{
+public abstract class Editor implements IEditor {
 	private List<IEntity> entityList;
 	
 	public Editor(){

@@ -1,7 +1,4 @@
-package model.entity;
-
-import api.ISerializable;
-import model.component.IComponent;
+package api;
 
 import java.util.Arrays;
 import java.util.Collection;
