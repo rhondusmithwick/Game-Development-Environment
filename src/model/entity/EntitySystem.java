@@ -8,15 +8,21 @@ import java.util.Map;
 
 /**
  * Implementation of an entity system.
+ * This implementation is focused on the IDs. It spawns entities based on the nextavilable ID and adds them to the sysstem.
  *
  * @author Rhondu Smithwick
- * @see IEntitySystem
  */
 public class EntitySystem implements IEntitySystem {
 
+    /**
+     * The entities in this system.
+     */
     @XStreamAlias("entities")
     private final Map<Integer, IEntity> entities = Maps.newLinkedHashMap();
 
+    /**
+     * The maxID of this sytem.
+     */
     @XStreamAlias("maxID")
     private int maxID = 0;
 

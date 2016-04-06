@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 
 
 /**
- * Created by rhondusmithwick on 4/1/16.
+ * Implementation of an IEntity.
  *
  * @author Rhondu Smithwick
  */
