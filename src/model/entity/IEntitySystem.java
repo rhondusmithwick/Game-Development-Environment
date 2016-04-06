@@ -63,9 +63,14 @@ public interface IEntitySystem extends ISerializable {
                 .filter(Objects::nonNull).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
-    default <T extends IComponent> Set<IEntity> getEntitiesWithComponentType(Class<T> componentType) {
+    default <T extends IComponent> Set<IEntity> getEntitiesWithComponent(Class<T> componentType) {
         Predicate<IEntity> hasComponent = (e) -> e.hasComponent(componentType);
         return getAllEntities().stream().filter(hasComponent).collect(Collectors.toSet());
+    }
+
+    default <T extends IComponent> Set<IEntity> getEntitiesWithComponent(Class<T>... componentSlasses) {
+        Predicate<IEntity> hasComponents = (e) -> e.hasComponents(componentSlasses);
+        return getAllEntities().stream().filter(hasComponents).collect(Collectors.toSet());
     }
 
     default <T extends IComponent> List<T> getComponentOfEntity(int id, Class<T> componentType) {
