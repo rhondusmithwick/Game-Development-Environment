@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
- * Created by rhondusmithwick on 4/6/16.
  * <p>
  * {@inheritDoc}
  * A SpecLoader for resource files.
