@@ -1,7 +1,7 @@
 package model.entity;
 
-import model.component.IComponent;
 import api.ISerializable;
+import model.component.IComponent;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -49,6 +49,14 @@ public interface IEntity extends ISerializable {
     }
 
     boolean removeComponent(Class<? extends IComponent> componentClass);
+
+    default List<Boolean> removeComponents(List<Class<? extends IComponent>> componentsClasses) {
+        return componentsClasses.stream().map(this::removeComponent).collect(Collectors.toList());
+    }
+
+    default List<Boolean> removeComponents(Class<? extends IComponent>... componentClasses) {
+        return removeComponents(Arrays.asList(componentClasses));
+    }
 
     Map<Class<? extends IComponent>, Integer> getSpecs();
 
