@@ -1,7 +1,10 @@
-// Blame Tom for mistakes in this class.
-
 package model.physics;
 
+/**
+ * Vector representation of an impulse
+ *
+ * @author Tom Wu
+ */
 public class Impulse {
 	private double Jx, Jy;
 

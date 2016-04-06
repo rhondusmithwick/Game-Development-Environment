@@ -4,6 +4,11 @@ import model.entity.IEntity;
 import model.entity.IEntitySystem;
 import model.physics.Impulse;
 
+/**
+ * Interface for the physics engine
+ *
+ * @author Tom Wu
+ */
 public interface IPhysicsEngine {
 	/**
 	 * Update Positions of IEntities in universe based on dt and their Velocities

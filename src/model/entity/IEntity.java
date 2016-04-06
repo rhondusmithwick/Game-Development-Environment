@@ -22,7 +22,6 @@ public interface IEntity extends ISerializable {
 	 */
     int getID();
 
-    @Deprecated
     /**
      * Get all the components of this entity.
      *

@@ -3,7 +3,11 @@ package api;
 import java.io.File;
 import java.io.Serializable;
 
-
+/**
+ * Interface for serializable objects
+ *
+ * @author Tom Wu
+ */
 public interface ISerializable extends Serializable {
 	/**
 	 * Evaluates the File f

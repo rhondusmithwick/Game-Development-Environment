@@ -1,5 +1,3 @@
-// Blame Tom for mistakes in this class.
-
 package model.physics;
 
 import java.util.Collection;
@@ -17,6 +15,11 @@ import model.component.physics.Collision;
 import model.entity.IEntity;
 import model.entity.IEntitySystem;
 
+/**
+ * Implementation of the physics engine
+ *
+ * @author Tom Wu
+ */
 public class PhysicsEngine implements IPhysicsEngine {
 	IEntitySystem settings;
 

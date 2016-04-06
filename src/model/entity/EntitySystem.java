@@ -8,8 +8,8 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 /**
  * Implementation of an entity system. This implementation is focused on the
- * IDs. It spawns entities based on the nextavilable ID and adds them to the
- * sysstem.
+ * IDs. It spawns entities based on the next available ID and adds them to the
+ * system.
  *
  * @author Rhondu Smithwick
  */
@@ -22,7 +22,7 @@ public class EntitySystem implements IEntitySystem {
 	private final Map<Integer, IEntity> entities = Maps.newLinkedHashMap();
 
 	/**
-	 * The maxID of this sytem.
+	 * The maxID of this system.
 	 */
 	@XStreamAlias("maxID")
 	private int maxID = 0;
