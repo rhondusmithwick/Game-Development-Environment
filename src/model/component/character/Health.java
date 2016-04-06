@@ -29,4 +29,5 @@ public class Health extends Unit<SimpleDoubleProperty> implements IComponent {
     public void setHealth(double health) {
         healthProperty().set(health);
     }
+    
 }
