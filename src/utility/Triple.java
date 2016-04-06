@@ -9,14 +9,14 @@ package utility;
  */
 public class Triple<A, B, C> extends Pair<A, B> {
 
-    private final C value3;
+    private final C _3;
 
-    public Triple(A value1, B value2, C value3) {
-        super(value1, value2);
-        this.value3 = value3;
+    public Triple(A _1, B _2, C _3) {
+        super(_1, _2);
+        this._3 = _3;
     }
 
     public C _3() {
-        return value3;
+        return _3;
     }
 }

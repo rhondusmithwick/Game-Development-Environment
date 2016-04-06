@@ -9,14 +9,14 @@ package utility;
  */
 public class Pair<A, B> extends Unit<A> {
 
-    private final B value2;
+    private final B _2;
 
-    public Pair(A value1, B value2) {
-        super(value1);
-        this.value2 = value2;
+    public Pair(A _1, B _2) {
+        super(_1);
+        this._2 = _2;
     }
 
     public B _2() {
-        return value2;
+        return _2;
     }
 }
