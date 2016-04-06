@@ -1,0 +1,16 @@
+api
+datamanagement
+enums
+main
+model.component
+model.component.character
+model.component.movement
+model.component.physics
+model.component.visual
+model.entity
+model.physics
+model.vooga
+testing
+usecases
+utility
+view
