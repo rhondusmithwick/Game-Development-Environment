@@ -8,7 +8,6 @@ import model.component.IComponent;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -22,12 +21,14 @@ public interface IEntitySystem extends ISerializable {
 
     /**
      * Creates an entity.
+     *
      * @return the entity created
      */
     IEntity createEntity();
 
     /**
      * Adds an entity.
+     *
      * @param entity the entity to be added
      * @return the added entity
      */
@@ -35,6 +36,7 @@ public interface IEntitySystem extends ISerializable {
 
     /**
      * Get an entity based on its id.
+     *
      * @param id of the entity
      * @return entity wtih provided id
      */
@@ -42,12 +44,14 @@ public interface IEntitySystem extends ISerializable {
 
     /**
      * Get all entites in the system.
+     *
      * @return collection of entities
      */
     Collection<IEntity> getAllEntities();
 
     /**
      * Check whether this system contains an entity with provided ID.
+     *
      * @param id to check
      * @return true if system contains this entity
      */
@@ -55,6 +59,7 @@ public interface IEntitySystem extends ISerializable {
 
     /**
      * Check if system contains this entity.
+     *
      * @param entity to check
      * @return true if system contains this entity
      * @see #containsID(int)
@@ -66,6 +71,7 @@ public interface IEntitySystem extends ISerializable {
 
     /**
      * Add list of entities.
+     *
      * @param entities list of entities to add
      * @return list of entities
      * @see #addEntity(IEntity)
@@ -76,6 +82,7 @@ public interface IEntitySystem extends ISerializable {
 
     /**
      * Add array/varargs of entities.
+     *
      * @param entities to add
      * @return list of entities
      * @see #addEntities(List)
@@ -86,6 +93,7 @@ public interface IEntitySystem extends ISerializable {
 
     /**
      * Remove entity with this ID.
+     *
      * @param id to remove
      * @return true if removed
      */
@@ -98,6 +106,7 @@ public interface IEntitySystem extends ISerializable {
 
     /**
      * Created an entity from a file containing an entity.
+     *
      * @param fileName of file with the entity
      * @return the entity loaded
      * @see IDataReader#readSingleFromFile(String)
@@ -111,6 +120,7 @@ public interface IEntitySystem extends ISerializable {
 
     /**
      * Create an entity from a file of components.
+     *
      * @param defaultFileName of the file
      * @return entity with components in this file
      * @see IDataReader#readFromFile(String)
@@ -119,27 +129,30 @@ public interface IEntitySystem extends ISerializable {
         IEntity entity = createEntity();
         IDataReader<IComponent> reader = new XMLReader<>();
         List<IComponent> components = reader.readFromFile(defaultFileName);
-        entity.addComponents(components);
+        entity.forceAddComponents(components, true);
         addEntity(entity);
         return entity;
     }
 
     /**
      * Get all the components of a type.
+     *
      * @param componentType class to get
-     * @param <T> the type of component
+     * @param <T>           the type of component
      * @return all the components of the type
      * @see IEntity#getComponentList(Class)
      */
     default <T extends IComponent> Collection<T> getAllComponentsOfType(Class<T> componentType) {
+        Predicate<List<T>> nonEmpty = l -> !l.isEmpty();
         return getAllEntities().stream().map(e -> e.getComponentList(componentType))
-                .filter(Objects::nonNull).flatMap(Collection::stream).collect(Collectors.toList());
+                .filter(nonEmpty).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
     /**
-     * Get all the entities with this component Type
+     * Get all the entities with this component Type.
+     *
      * @param componentType the component type
-     * @param <T> the type of component
+     * @param <T>           the type of component
      * @return all the entities with this component type
      * @see IEntity#hasComponent(Class)
      */
@@ -149,22 +162,34 @@ public interface IEntitySystem extends ISerializable {
     }
 
     /**
-     * Get entities with all these components (array or varargs).
-     * @param componentSlasses components to checkk
-     * @param <T> type of components
+     * Get entities with all these components (list).
+     *
+     * @param componentClasses components to checkk
      * @return all entities with these components
      * @see IEntity#hasComponents(List)
      */
-    default <T extends IComponent> Set<IEntity> getEntitiesWithComponent(Class<T>... componentSlasses) {
-        Predicate<IEntity> hasComponents = (e) -> e.hasComponents(componentSlasses);
+    default Set<IEntity> getEntitiesWithComponents(List<Class<? extends IComponent>> componentClasses) {
+        Predicate<IEntity> hasComponents = (e) -> e.hasComponents(componentClasses);
         return getAllEntities().stream().filter(hasComponents).collect(Collectors.toSet());
     }
 
     /**
+     * Get entities with all these components (array or varargs).
+     *
+     * @param componentClasses components to check
+     * @return all entities with these components
+     * @see IEntity#hasComponents(List)
+     */
+    default Set<IEntity> getEntitiesWithComponents(Class<? extends IComponent>... componentClasses) {
+        return getEntitiesWithComponents(Arrays.asList(componentClasses));
+    }
+
+    /**
      * Get component using an id
-     * @param id of the entity
+     *
+     * @param id            of the entity
      * @param componentType the type of component
-     * @param <T> type of component
+     * @param <T>           type of component
      * @return component with type T of entity with id id
      * @see IEntity#getComponentList(Class)
      */

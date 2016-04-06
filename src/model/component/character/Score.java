@@ -11,7 +11,7 @@ import model.component.IComponent;
  *
  */
 public class Score extends Unit<SimpleDoubleProperty> implements IComponent{
-	
+
 	public Score() {
 		setValue1(new SimpleDoubleProperty(this, "score", 0));
 	}

@@ -11,7 +11,7 @@ public class Pair<A, B> extends Unit<A> {
 
     private B value2;
 
-    protected Pair() {
+    public Pair() {
     }
 
     public Pair(A value1, B value2) {

@@ -12,7 +12,7 @@ public class Unit<A> {
 
     private A value1;
 
-    protected Unit() {
+    public Unit() {
     }
 
     public Unit(A value1) {
