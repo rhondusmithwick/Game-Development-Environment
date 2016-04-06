@@ -1,7 +1,7 @@
 package model.component.character;
 
 import javafx.beans.property.SimpleDoubleProperty;
-import model.component.IComponent;
+import api.IComponent;
 import utility.Unit;
 
 
@@ -10,14 +10,12 @@ import utility.Unit;
  */
 public class Attack implements IComponent {
 
-    private final Unit<SimpleDoubleProperty> unit;
+    private final Unit<SimpleDoubleProperty> unit = new Unit<>(new SimpleDoubleProperty(this, "attack", 0.0));
 
     public Attack() {
-        unit = new Unit<>(new SimpleDoubleProperty(this, "attack", 0.0));
     }
 
     public Attack(Double attack) {
-        this();
         setAttack(attack);
     }
 

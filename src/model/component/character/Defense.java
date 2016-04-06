@@ -1,7 +1,7 @@
 package model.component.character;
 
 import javafx.beans.property.SimpleDoubleProperty;
-import model.component.IComponent;
+import api.IComponent;
 import utility.Unit;
 
 

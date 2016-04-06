@@ -21,10 +21,7 @@ import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
-import model.entity.EntitySystem;
-import model.entity.IEntity;
-import model.entity.IEntitySystem;
-import model.physics.PhysicsEngine;
+import api.IEntity;
 
 public class BenTester extends Application {
 	private Vooga vooga;

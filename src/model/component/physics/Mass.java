@@ -2,7 +2,7 @@ package model.component.physics;
 
 import com.google.common.base.Preconditions;
 import javafx.beans.property.SimpleDoubleProperty;
-import model.component.IComponent;
+import api.IComponent;
 import utility.Unit;
 
 /**
@@ -12,14 +12,12 @@ import utility.Unit;
  */
 public class Mass implements IComponent {
 
-    private final Unit<SimpleDoubleProperty> unit;
+    private final Unit<SimpleDoubleProperty> unit = new Unit<>(new SimpleDoubleProperty(this, "mass", 0.0));
 
     public Mass() {
-        unit = new Unit<>(new SimpleDoubleProperty(this, "mass", 0.0));
     }
 
     public Mass(double mass) {
-        this();
         setMass(mass);
     }
 

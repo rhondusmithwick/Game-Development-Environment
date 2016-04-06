@@ -3,7 +3,6 @@ package api;
 import java.util.List;
 
 import javafx.animation.Timeline;
-import model.entity.IEntitySystem;
 
 /**
  * Created by rhondusmithwick on 3/31/16.

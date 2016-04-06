@@ -1,6 +1,4 @@
-package model.component;
-
-import api.ISystem;
+package api;
 
 /**
  * The interface for an active component.
@@ -8,9 +6,10 @@ import api.ISystem;
  * @author Tom Wu
  */
 public interface IActiveComponent extends IComponent {
-	/**
-	 * Can act on anything in the system
-	 * @param system might need to be restricted later!
-	 */
+    /**
+     * Can act on anything in the system
+     *
+     * @param system might need to be restricted later!
+     */
     void act(ISystem system);
 }
