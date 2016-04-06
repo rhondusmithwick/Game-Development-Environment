@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
 /**
  * The interface for an EntitySystem, which holds all the entities.
  *
- * @author Tom Wu, Rhondu Smithwick
+ * @author Rhondu Smithwick, Tom Wu
  */
 public interface IEntitySystem extends ISerializable {
 
@@ -38,7 +38,7 @@ public interface IEntitySystem extends ISerializable {
      * Get an entity based on its id.
      *
      * @param id of the entity
-     * @return entity wtih provided id
+     * @return entity with provided id
      */
     IEntity getEntity(int id);
 
@@ -178,8 +178,9 @@ public interface IEntitySystem extends ISerializable {
      *
      * @param componentClasses components to check
      * @return all entities with these components
-     * @see IEntity#hasComponents(List)
+     * @see #getEntitiesWithComponents(List)
      */
+    @SuppressWarnings("unchecked")
     default Set<IEntity> getEntitiesWithComponents(Class<? extends IComponent>... componentClasses) {
         return getEntitiesWithComponents(Arrays.asList(componentClasses));
     }
