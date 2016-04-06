@@ -164,7 +164,7 @@ public interface IEntitySystem extends ISerializable {
     /**
      * Get entities with all these components (list).
      *
-     * @param componentClasses components to checkk
+     * @param componentClasses components to check
      * @return all entities with these components
      * @see IEntity#hasComponents(List)
      */

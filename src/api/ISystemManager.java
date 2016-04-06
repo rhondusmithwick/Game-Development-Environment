@@ -1,10 +1,9 @@
 package api;
 
-import javafx.animation.Timeline;
-import model.entity.IEntitySystem;
-
 import java.util.List;
 
+import javafx.animation.Timeline;
+import model.entity.IEntitySystem;
 
 /**
  * Created by rhondusmithwick on 3/31/16.
@@ -12,32 +11,42 @@ import java.util.List;
  * @author Rhondu Smithwick
  */
 public interface ISystemManager extends ISerializable {
-    /**
-     * This will pause the game loop.
-     */
-    void pauseLoop();
+	/**
+	 * This will pause the game loop.
+	 */
+	void pauseLoop();
 
-    /**
-     * This will build the game's loop.
-     *
-     * @return the game's loop
-     */
-    Timeline buildLoop();
+	/**
+	 * This will build the game's loop.
+	 *
+	 * @return the game's loop
+	 */
+	Timeline buildLoop();
 
-    /**
-     * This will step the game's loop.
-     */
-    void step();
+	/**
+	 * This will step the game's loop.
+	 */
+	void step();
 
-    /**
-     * Get all systems.
-     *
-     * @return a list of the systems
-     */
-    @Deprecated
-    List<ISystem> getSystems();
+	/**
+	 * Get all systems.
+	 *
+	 * @return a list of the systems
+	 */
+	@Deprecated
+	List<ISystem> getSystems();
 
-    IEntitySystem getEntitySystem();
+	/**
+	 * Get the current entity system
+	 *
+	 * @return IEntitySystem-type entity system
+	 */
+	IEntitySystem getEntitySystem();
 
-    IEventSystem getEventSystem();
+	/**
+	 * Get the current event system
+	 *
+	 * @return IEventSystem-type event system
+	 */
+	IEventSystem getEventSystem();
 }
