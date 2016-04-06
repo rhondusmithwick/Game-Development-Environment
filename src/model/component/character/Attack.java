@@ -16,7 +16,7 @@ public class Attack extends Unit<SimpleDoubleProperty> implements IComponent {
 
     public Attack(Double attack) {
         this();
-        setAttack(attack);
+        setValue1(new SimpleDoubleProperty(this, "attack", 0));
     }
 
     public SimpleDoubleProperty attackProperty() {
@@ -40,5 +40,4 @@ public class Attack extends Unit<SimpleDoubleProperty> implements IComponent {
     public boolean unique() {
         return true;
     }
-
 }

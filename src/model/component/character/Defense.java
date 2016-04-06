@@ -16,7 +16,7 @@ public class Defense extends Unit<SimpleDoubleProperty> implements IComponent {
 
     public Defense(Double defense) {
         this();
-        setDefense(defense);
+        setValue1(new SimpleDoubleProperty(this, "defense", 0));
     }
 
     public SimpleDoubleProperty defenseProperty() {
@@ -28,17 +28,16 @@ public class Defense extends Unit<SimpleDoubleProperty> implements IComponent {
     }
 
     public void setDefense(double defense) {
-        defenseProperty().set(defense);
+        getValue1().set(defense);
     }
 
     @Override
     public String toString() {
-        return String.format("Attack: %s", getDefense());
+        return String.format("Defense: %s", getDefense());
     }
 
     @Override
     public boolean unique() {
         return true;
     }
-
 }
