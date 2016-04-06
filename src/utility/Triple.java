@@ -11,7 +11,7 @@ public class Triple<A, B, C> extends Pair<A, B> {
 
     private C value3;
 
-    protected Triple() {
+    public Triple() {
     }
 
     public Triple(A value1, B value2, C value3) {

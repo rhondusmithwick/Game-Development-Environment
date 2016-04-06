@@ -23,6 +23,7 @@ public class PhysicsEngine implements IPhysicsEngine {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public IEntitySystem update(IEntitySystem universe, double dt) {
         Collection<IEntity> dynamicEntities = universe.getAllEntities().stream()
                 .filter(p -> p.hasComponents(Position.class, Velocity.class))
