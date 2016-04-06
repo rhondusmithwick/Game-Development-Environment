@@ -1,7 +1,7 @@
 package model.component.physics;
 
-import model.component.IComponent;
 import javafx.beans.property.SimpleDoubleProperty;
+import model.component.IComponent;
 import utility.Unit;
 
 /**
@@ -9,10 +9,12 @@ import utility.Unit;
  *
  * @author Rhondu Smithwick
  */
-public class Mass extends Unit<SimpleDoubleProperty> implements IComponent {
+public class Mass implements IComponent {
+
+    private final Unit<SimpleDoubleProperty> unit;
 
     public Mass() {
-        setValue1(new SimpleDoubleProperty(this, "mass", 0.0));
+        unit = new Unit<>(new SimpleDoubleProperty(this, "mass", 0.0));
     }
 
     public Mass(double mass) {
@@ -31,6 +33,6 @@ public class Mass extends Unit<SimpleDoubleProperty> implements IComponent {
     }
 
     public SimpleDoubleProperty massProperty() {
-        return getValue1();
+        return unit.getValue1();
     }
 }

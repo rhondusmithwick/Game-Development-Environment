@@ -1,26 +1,28 @@
 package model.component.character;
 
-import model.component.IComponent;
 import javafx.beans.property.SimpleDoubleProperty;
+import model.component.IComponent;
 import utility.Unit;
 
 
 /**
  * @author Roxanne Baker
  */
-public class Defense extends Unit<SimpleDoubleProperty> implements IComponent {
+public class Defense implements IComponent {
+
+    private final Unit<SimpleDoubleProperty> unit;
 
     public Defense() {
-        setValue1(new SimpleDoubleProperty(this, "defense", 0));
+        unit = new Unit<>(new SimpleDoubleProperty(this, "defense", 0.0));
     }
 
     public Defense(Double defense) {
         this();
-        setValue1(new SimpleDoubleProperty(this, "defense", 0));
+        setDefense(defense);
     }
 
     public SimpleDoubleProperty defenseProperty() {
-        return getValue1();
+        return unit.getValue1();
     }
 
     public double getDefense() {
@@ -28,7 +30,7 @@ public class Defense extends Unit<SimpleDoubleProperty> implements IComponent {
     }
 
     public void setDefense(double defense) {
-        getValue1().set(defense);
+        defenseProperty().set(defense);
     }
 
     @Override
