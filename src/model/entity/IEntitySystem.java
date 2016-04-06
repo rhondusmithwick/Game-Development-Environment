@@ -1,6 +1,9 @@
-package api;
+package model.entity;
 
+import api.ISerializable;
+import datamanagement.IDataReader;
 import datamanagement.XMLReader;
+import model.component.IComponent;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -27,12 +30,12 @@ public interface IEntitySystem extends ISerializable {
         return containsID(entity.getID());
     }
 
-    default List<IEntity> addEntities(IEntity... entities) {
-        return addEntities(Arrays.asList(entities));
-    }
-
     default List<IEntity> addEntities(List<IEntity> entities) {
         return entities.stream().map(this::addEntity).collect(Collectors.toList());
+    }
+
+    default List<IEntity> addEntities(IEntity... entities) {
+        return addEntities(Arrays.asList(entities));
     }
 
     boolean removeEntity(int id);
@@ -51,12 +54,13 @@ public interface IEntitySystem extends ISerializable {
         IDataReader<IComponent> reader = new XMLReader<>();
         List<IComponent> components = reader.readFromFile(defaultFileName);
         entity.addComponents(components);
+        addEntity(entity);
         return entity;
     }
 
-    default <T extends IComponent> List<T> getAllComponentsOfType(Class<T> componentType) {
+    default <T extends IComponent> Collection<T> getAllComponentsOfType(Class<T> componentType) {
         return getAllEntities().stream().map(e -> e.getComponentList(componentType))
-                .filter(Objects::nonNull).flatMap(List::stream).collect(Collectors.toList());
+                .filter(Objects::nonNull).flatMap(Collection::stream).collect(Collectors.toList());
     }
 
     default <T extends IComponent> Set<IEntity> getEntitiesWithComponentType(Class<T> componentType) {

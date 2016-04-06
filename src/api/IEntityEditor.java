@@ -1,5 +1,7 @@
 package api;
 
+import model.component.IComponent;
+
 import java.util.List;
 
 

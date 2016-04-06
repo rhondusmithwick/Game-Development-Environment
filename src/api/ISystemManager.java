@@ -1,6 +1,7 @@
 package api;
 
 import javafx.animation.Timeline;
+import model.entity.IEntitySystem;
 
 import java.util.List;
 

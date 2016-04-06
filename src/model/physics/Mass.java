@@ -1,6 +1,6 @@
 package model.physics;
 
-import api.IComponent;
+import model.component.IComponent;
 import javafx.beans.property.SimpleDoubleProperty;
 
 /**
@@ -12,7 +12,6 @@ public class Mass implements IComponent {
     private final SimpleDoubleProperty mass = new SimpleDoubleProperty(this, "mass");
 
 
-
     public Mass(double mass) {
         setMass(mass);
     }
@@ -22,12 +21,12 @@ public class Mass implements IComponent {
         return mass.get();
     }
 
-    public SimpleDoubleProperty massProperty() {
-        return mass;
-    }
-
     public void setMass(double mass) {
         assert mass != 0;
         this.mass.set(mass);
+    }
+
+    public SimpleDoubleProperty massProperty() {
+        return mass;
     }
 }
