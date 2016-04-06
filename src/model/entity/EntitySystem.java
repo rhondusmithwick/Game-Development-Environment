@@ -7,9 +7,10 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- * Created by rhondusmithwick on 4/3/16.
+ * Implementation of an entity system.
  *
  * @author Rhondu Smithwick
+ * @see IEntitySystem
  */
 public class EntitySystem implements IEntitySystem {
 

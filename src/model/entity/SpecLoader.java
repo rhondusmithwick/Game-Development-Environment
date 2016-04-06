@@ -3,8 +3,6 @@ package model.entity;
 import java.util.Map;
 
 /**
- * Created by rhondusmithwick on 4/6/16.
- * <p>
  * Load the specs from some resource (XML, properties file etc).
  *
  * @author Rhondu Smithwick
