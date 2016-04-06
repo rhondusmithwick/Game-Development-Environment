@@ -1,7 +1,13 @@
 package model.component.movement;
 
-import api.IComponent;
 import javafx.beans.property.SimpleDoubleProperty;
+<<<<<<< HEAD
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
+=======
+import model.component.IComponent;
+import utility.Triple;
+>>>>>>> master
 
 
 /**
@@ -11,12 +17,18 @@ import javafx.beans.property.SimpleDoubleProperty;
  */
 public class Position implements IComponent {
 
-    private final SimpleDoubleProperty x = new SimpleDoubleProperty(this, "x", 0);
-    private final SimpleDoubleProperty y = new SimpleDoubleProperty(this, "y", 0);
-    private final SimpleDoubleProperty orientation = new SimpleDoubleProperty(this, "orientation", 0);
+    private final Triple<SimpleDoubleProperty, SimpleDoubleProperty, SimpleDoubleProperty> triple;
+
+    public Position() {
+        triple = new Triple<>(new SimpleDoubleProperty(this, "x", 0),
+                new SimpleDoubleProperty(this, "y", 0),
+                new SimpleDoubleProperty(this, "orientation", 0));
+    }
 
     public Position(Double x, Double y) {
+        this();
         setXY(x, y);
+        setOrientation(0);
     }
 
     public Position(Double x, Double y, Double orientation) {
@@ -24,39 +36,45 @@ public class Position implements IComponent {
         setOrientation(orientation);
     }
 
-
     public double getX() {
-        return x.get();
+        return xProperty().get();
+    }
+
+    public void setX(double x) {
+        xProperty().set(x);
     }
 
     public SimpleDoubleProperty xProperty() {
-        return x;
+        return triple._1();
     }
 
     public double getY() {
-        return y.get();
+        return triple._2().get();
+    }
+
+    public void setY(double y) {
+        yProperty().set(y);
     }
 
     public SimpleDoubleProperty yProperty() {
-        return y;
+        return triple._2();
     }
 
     public void setXY(double x, double y) {
-        this.x.set(x);
-        this.y.set(y);
+        setX(x);
+        setY(y);
     }
 
-
     public double getOrientation() {
-        return orientation.get();
+        return orientationProperty().get();
     }
 
     public void setOrientation(double orientation) {
-        this.orientation.set(orientation);
+        orientationProperty().set(orientation);
     }
 
     public SimpleDoubleProperty orientationProperty() {
-        return orientation;
+        return triple._3();
     }
 
     public void add(double dx, double dy) {

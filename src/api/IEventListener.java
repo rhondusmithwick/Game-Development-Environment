@@ -1,8 +1,10 @@
 package api;
 
-import java.io.Serializable;
-
-
-public interface IEventListener extends Serializable {
+/**
+ * Interface for an event listener/handler
+ *
+ * @author Tom Wu
+ */
+public interface IEventListener extends ISerializable {
 
 }

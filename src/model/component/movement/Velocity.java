@@ -1,7 +1,8 @@
 package model.component.movement;
 
-import api.IComponent;
 import javafx.beans.property.SimpleDoubleProperty;
+import model.component.IComponent;
+import utility.Pair;
 
 
 /**
@@ -10,35 +11,47 @@ import javafx.beans.property.SimpleDoubleProperty;
  * @author Rhondu Smithwick
  */
 public class Velocity implements IComponent {
-    private final SimpleDoubleProperty speed = new SimpleDoubleProperty(this, "speed", 0);
-    private final SimpleDoubleProperty direction = new SimpleDoubleProperty(this, "direction", 0);
+
+    private final Pair<SimpleDoubleProperty, SimpleDoubleProperty> pair;
 
     public Velocity() {
+        pair = new Pair<>(new SimpleDoubleProperty(this, "speed", 0),
+                new SimpleDoubleProperty(this, "direction", 0));
     }
 
     public Velocity(Double speed, Double direction) {
+        this();
         setSpeed(speed);
         setDirection(direction);
     }
 
     public Velocity(Double vx, Double vy, boolean flag) {
+        this();
         setVXY(vx, vy);
     }
 
     public double getSpeed() {
-        return speed.get();
+        return speedProperty().get();
     }
 
     public void setSpeed(double speed) {
-        this.speed.set(speed);
+        speedProperty().set(speed);
+    }
+
+    public SimpleDoubleProperty speedProperty() {
+        return pair._1();
     }
 
     public double getDirection() {
-        return direction.get();
+        return directionProperty().get();
     }
 
     public void setDirection(double direction) {
-        this.direction.set(direction);
+        directionProperty().set(direction);
+    }
+
+    public SimpleDoubleProperty directionProperty() {
+        return pair._2();
     }
 
     public double getVX() {
@@ -56,14 +69,6 @@ public class Velocity implements IComponent {
 
     public void add(double dvx, double dvy) {
         setVXY(getVX() + dvx, getVY() + dvy);
-    }
-
-    public SimpleDoubleProperty speedProperty() {
-        return speed;
-    }
-
-    public SimpleDoubleProperty directionProperty() {
-        return direction;
     }
 
     @Override

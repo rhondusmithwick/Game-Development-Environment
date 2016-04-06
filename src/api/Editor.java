@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import model.entity.EntitySystem;
+import model.entity.IEntity;
 
 public abstract class Editor implements IEditor{
 	private List<IEntity> entityList;
