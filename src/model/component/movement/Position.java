@@ -2,6 +2,8 @@ package model.component.movement;
 
 import api.IComponent;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 
 
 /**
@@ -17,6 +19,14 @@ public class Position implements IComponent {
 
     public Position(Double x, Double y) {
         setXY(x, y);
+    	orientation.addListener(new ChangeListener<Object>(){
+
+			@Override
+			public void changed(ObservableValue<? extends Object> ov,
+					Object oldValue, Object newValue) {
+				System.out.println(getOrientation());
+			}
+		});
     }
 
     public Position(Double x, Double y, Double orientation) {

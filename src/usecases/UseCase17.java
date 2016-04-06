@@ -1,12 +1,12 @@
 package usecases;
 
-import api.IEntityEditor;
+import api.EditorEntity;
 
 public class UseCase17 {
 
     // game creator adds power up
     void doUseCase() {
-        IEntityEditor myEditor = new EntityEditor();
+        EditorEntity myEditor = new EntityEditor();
         myEditor.show();
         //waiting for user to enter data and press create button
         //once create button is pressed

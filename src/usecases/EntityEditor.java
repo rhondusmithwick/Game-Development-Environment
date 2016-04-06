@@ -1,12 +1,12 @@
 package usecases;
 
 import api.IComponent;
-import api.IEntityEditor;
+import api.EditorEntity;
 
 import java.util.List;
 
 
-public class EntityEditor implements IEntityEditor {
+public class EntityEditor implements EditorEntity {
 
     @Override
     public List<IComponent> getComponents() {
