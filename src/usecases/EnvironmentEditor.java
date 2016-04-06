@@ -1,6 +1,6 @@
 package usecases;
 
-import model.component.IComponent;
+import api.IComponent;
 import api.IEnvironmentEditor;
 
 import java.util.List;

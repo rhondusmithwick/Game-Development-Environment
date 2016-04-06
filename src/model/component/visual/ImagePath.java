@@ -1,6 +1,6 @@
 package model.component.visual;
 
-import model.component.IComponent;
+import api.IComponent;
 import javafx.beans.property.SimpleStringProperty;
 import utility.Unit;
 
@@ -11,14 +11,9 @@ import utility.Unit;
  */
 public class ImagePath implements IComponent {
 
-    private final Unit<SimpleStringProperty> unit;
-
-    private ImagePath() {
-        unit = new Unit<>(new SimpleStringProperty(this, "imagePath", ""));
-    }
+    private final Unit<SimpleStringProperty> unit = new Unit<>(new SimpleStringProperty(this, "imagePath"));
 
     public ImagePath(String imagePath) {
-        this();
         setImagePath(imagePath);
     }
 

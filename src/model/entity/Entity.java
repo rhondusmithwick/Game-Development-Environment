@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import api.IEntity;
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
@@ -13,7 +14,7 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
-import model.component.IComponent;
+import api.IComponent;
 
 /**
  * Implementation of an IEntity.

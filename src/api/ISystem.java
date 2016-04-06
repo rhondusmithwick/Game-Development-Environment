@@ -1,7 +1,5 @@
 package api;
 
-import model.entity.IEntitySystem;
-
 /**
  * Interface for a system, mainly for back-end use
  *

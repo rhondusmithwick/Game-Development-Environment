@@ -1,7 +1,7 @@
 package model.component.movement;
 
 import javafx.beans.property.SimpleDoubleProperty;
-import model.component.IComponent;
+import api.IComponent;
 import utility.Triple;
 
 
@@ -12,16 +12,14 @@ import utility.Triple;
  */
 public class Position implements IComponent {
 
-    private final Triple<SimpleDoubleProperty, SimpleDoubleProperty, SimpleDoubleProperty> triple;
+    private final Triple<SimpleDoubleProperty, SimpleDoubleProperty, SimpleDoubleProperty> triple = new Triple<>(new SimpleDoubleProperty(this, "x", 0),
+            new SimpleDoubleProperty(this, "y", 0),
+            new SimpleDoubleProperty(this, "orientation", 0));
 
     public Position() {
-        triple = new Triple<>(new SimpleDoubleProperty(this, "x", 0),
-                new SimpleDoubleProperty(this, "y", 0),
-                new SimpleDoubleProperty(this, "orientation", 0));
     }
 
     public Position(Double x, Double y) {
-        this();
         setXY(x, y);
         setOrientation(0);
     }

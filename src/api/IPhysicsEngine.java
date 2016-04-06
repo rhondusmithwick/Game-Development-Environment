@@ -1,7 +1,5 @@
 package api;
 
-import model.entity.IEntity;
-import model.entity.IEntitySystem;
 import model.physics.Impulse;
 
 /**

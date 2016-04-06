@@ -1,7 +1,8 @@
 package model.entity;
 
+import api.SpecLoader;
 import com.google.common.collect.Maps;
-import model.component.IComponent;
+import api.IComponent;
 
 import java.util.Enumeration;
 import java.util.Map;

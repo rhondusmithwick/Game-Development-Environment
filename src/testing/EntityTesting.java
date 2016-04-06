@@ -1,12 +1,12 @@
 package testing;
 
 import datamanagement.XMLWriter;
-import model.component.IComponent;
+import api.IComponent;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.entity.EntitySystem;
-import model.entity.IEntity;
-import model.entity.IEntitySystem;
+import api.IEntity;
+import api.IEntitySystem;
 
 
 /**

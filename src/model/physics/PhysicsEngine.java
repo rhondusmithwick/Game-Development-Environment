@@ -12,8 +12,8 @@ import javafx.scene.shape.Shape;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.Collision;
-import model.entity.IEntity;
-import model.entity.IEntitySystem;
+import api.IEntity;
+import api.IEntitySystem;
 
 /**
  * Implementation of the physics engine
