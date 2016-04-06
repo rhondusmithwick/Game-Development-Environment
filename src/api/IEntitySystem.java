@@ -1,6 +1,5 @@
 package api;
 
-import datamanagement.IDataReader;
 import datamanagement.XMLReader;
 
 import java.util.Arrays;
