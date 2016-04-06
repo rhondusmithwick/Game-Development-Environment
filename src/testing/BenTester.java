@@ -5,6 +5,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
+import api.IEntity;
+import api.IEntitySystem;
 import api.IPhysicsEngine;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -21,7 +23,8 @@ import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
-import api.IEntity;
+import model.entity.EntitySystem;
+import model.physics.PhysicsEngine;
 
 public class BenTester extends Application {
 	private Vooga vooga;
