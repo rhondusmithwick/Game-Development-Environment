@@ -1,33 +1,33 @@
 package model.component.character;
 
-import model.component.base.Unit;
-import api.IComponent;
+import model.component.IComponent;
+import javafx.beans.property.SimpleDoubleProperty;
+import utility.Unit;
 
-/***
- * Created by Anirudh Jonnavithula on 04/03/16
- * 
- * @author ajonnav
- *
+/**
+ * @author Rhondu Smithwick
  */
-public class Health extends Unit<Double> implements IComponent{
+public class Health extends Unit<SimpleDoubleProperty> implements IComponent {
 
-	public Health() {
-		super(0.0);
-	}
-	
-	public Health(double health) {
-		super(health);
-	}
+    public Health() {
+        setValue1(new SimpleDoubleProperty(this, "health", 0));
+    }
 
-	public void setHealth(double health) {
-		setValue1(health);
-	}
-	
-	public double getHealth() {
-		return getValue1();
-	}
-	
-	public void add(double dHealth) {
-		setValue1(getValue1() + dHealth);
-	}
+    public Health(Double health) {
+        this();
+        setHealth(health);
+    }
+
+    public SimpleDoubleProperty healthProperty() {
+        return getValue1();
+    }
+
+    public double getHealth() {
+        return healthProperty().get();
+    }
+
+    public void setHealth(double health) {
+        healthProperty().set(health);
+    }
+    
 }

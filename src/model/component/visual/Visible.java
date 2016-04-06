@@ -1,6 +1,6 @@
 package model.component.visual;
 
-import api.IComponent;
+import model.component.IComponent;
 import javafx.beans.property.SimpleBooleanProperty;
 
 /**
@@ -20,11 +20,11 @@ public class Visible implements IComponent {
         return visible.get();
     }
 
-    public SimpleBooleanProperty visibleProperty() {
-        return visible;
-    }
-
     public void setVisible(boolean visible) {
         this.visible.set(visible);
+    }
+
+    public SimpleBooleanProperty visibleProperty() {
+        return visible;
     }
 }

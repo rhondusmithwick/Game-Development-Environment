@@ -1,7 +1,8 @@
 package model.component.character;
 
-import model.component.base.Unit;
-import api.IComponent;
+import javafx.beans.property.SimpleDoubleProperty;
+import utility.Unit;
+import model.component.IComponent;
 
 /***
  * Created by Anirudh Jonnavithula on 04/03/16
@@ -9,26 +10,27 @@ import api.IComponent;
  * @author ajonnav
  *
  */
-public class Score extends Unit<Double> implements IComponent{
+public class Score extends Unit<SimpleDoubleProperty> implements IComponent{
 	
 	public Score() {
-		super(0.0);
+		setValue1(new SimpleDoubleProperty(this, "score", 0));
 	}
 	
 	public Score(double score) {
-		super(score);
+		this();
+		setScore(score);
 	}
 
-	public void setScore(double score) {
-		setValue1(score);
-	}
-	
-	public double getScore() {
+	public SimpleDoubleProperty scoreProperty() {
 		return getValue1();
 	}
 	
-	public void add(double dScore) {
-		setValue1(getValue1() + dScore);
+	public void setScore(double score) {
+		scoreProperty().set(score);
+	}
+	
+	public double getScore() {
+		return scoreProperty().get();
 	}
 
 }

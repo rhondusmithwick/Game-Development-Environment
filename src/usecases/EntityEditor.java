@@ -1,6 +1,6 @@
 package usecases;
 
-import api.IComponent;
+import model.component.IComponent;
 import api.IEntityEditor;
 
 import java.util.List;

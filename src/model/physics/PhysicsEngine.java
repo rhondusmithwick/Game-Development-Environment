@@ -1,28 +1,29 @@
 package model.physics;
 
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-import java.util.stream.Collectors;
-import api.IEntity;
-import api.IEntitySystem;
+import model.entity.IEntity;
+import model.entity.IEntitySystem;
 import api.IPhysicsEngine;
 import javafx.scene.shape.Shape;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.Collision;
 
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
+import java.util.stream.Collectors;
+
 
 public class PhysicsEngine implements IPhysicsEngine {
     IEntitySystem settings;
 
-    public PhysicsEngine (IEntitySystem settings) {
+    public PhysicsEngine(IEntitySystem settings) {
         this.settings = settings;
     }
 
     @Override
-    public IEntitySystem update (IEntitySystem universe, double dt) {
+    public IEntitySystem update(IEntitySystem universe, double dt) {
         Collection<IEntity> dynamicEntities = universe.getAllEntities().stream()
                 .filter(p -> p.hasComponents(Position.class, Velocity.class))
                 .collect(Collectors.toSet());
@@ -36,14 +37,14 @@ public class PhysicsEngine implements IPhysicsEngine {
         return universe;
     }
 
-    public void applyImpulse (IEntity body, Impulse J) {
+    public void applyImpulse(IEntity body, Impulse J) {
         if (body.hasComponent(Velocity.class)) {
             Velocity v = body.getComponent(Velocity.class);
             v.add(J.getJx(), J.getJy());
         }
     }
 
-    public boolean areCollidingEntities (IEntity e1, IEntity e2) {
+    public boolean areCollidingEntities(IEntity e1, IEntity e2) {
         List<Collision> cList1 = e1.getComponentList(Collision.class);
         List<Collision> cList2 = e2.getComponentList(Collision.class);
         for (Collision c1 : cList1) {
@@ -59,6 +60,11 @@ public class PhysicsEngine implements IPhysicsEngine {
         }
 
         return false; // TODO
+    }
+
+    public Collection<IEntity> getEntitiesCollidingWith (IEntity e) {
+
+        return null; // TODO
     }
 
     private boolean areIntersectingIDLists (Collection<String> IDList1,

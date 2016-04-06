@@ -1,8 +1,8 @@
 package model.component.movement;
 
-import api.IComponent;
-import javafx.beans.property.SimpleObjectProperty;
-import model.component.base.Pair;
+import model.component.IComponent;
+import javafx.beans.property.SimpleDoubleProperty;
+import utility.Pair;
 
 
 /**
@@ -10,36 +10,47 @@ import model.component.base.Pair;
  *
  * @author Rhondu Smithwick
  */
-public class Velocity extends Pair<Double, Double> implements IComponent {
+public class Velocity extends Pair<SimpleDoubleProperty, SimpleDoubleProperty> implements IComponent {
 
     public Velocity() {
-        super(0.0, 0.0);
+        setValue1(new SimpleDoubleProperty(this, "speed", 0));
+        setValue2(new SimpleDoubleProperty(this, "direction", 0));
     }
 
     public Velocity(Double speed, Double direction) {
-        super(speed, direction);
+        this();
+        setSpeed(speed);
+        setDirection(direction);
     }
 
     public Velocity(Double vx, Double vy, boolean flag) {
+        this();
         setVXY(vx, vy);
     }
 
     public double getSpeed() {
-        return getValue1();
+        return speedProperty().get();
     }
 
     public void setSpeed(double speed) {
-        setValue1(speed);
+        speedProperty().set(speed);
+    }
+
+    public SimpleDoubleProperty speedProperty() {
+        return getValue1();
     }
 
     public double getDirection() {
-        return getValue2();
+        return directionProperty().get();
     }
 
     public void setDirection(double direction) {
-        setValue2(direction);
+        directionProperty().set(direction);
     }
 
+    public SimpleDoubleProperty directionProperty() {
+        return getValue2();
+    }
 
     public double getVX() {
         return getSpeed() * Math.cos(Math.toRadians(getDirection()));
@@ -56,14 +67,6 @@ public class Velocity extends Pair<Double, Double> implements IComponent {
 
     public void add(double dvx, double dvy) {
         setVXY(getVX() + dvx, getVY() + dvy);
-    }
-
-    public SimpleObjectProperty<Double> speedProperty() {
-        return value1Property();
-    }
-
-    public SimpleObjectProperty<Double> directionProperty() {
-        return value2Property();
     }
 
     @Override
