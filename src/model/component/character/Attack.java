@@ -22,7 +22,7 @@ public class Attack implements IComponent {
     }
 
     public SimpleDoubleProperty attackProperty() {
-        return unit.getValue1();
+        return unit._1();
     }
 
     public double getAttack() {

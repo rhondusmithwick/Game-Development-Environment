@@ -39,7 +39,7 @@ public class Velocity implements IComponent {
     }
 
     public SimpleDoubleProperty speedProperty() {
-        return pair.getValue1();
+        return pair._1();
     }
 
     public double getDirection() {
@@ -51,7 +51,7 @@ public class Velocity implements IComponent {
     }
 
     public SimpleDoubleProperty directionProperty() {
-        return pair.getValue2();
+        return pair._2();
     }
 
     public double getVX() {

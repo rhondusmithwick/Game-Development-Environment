@@ -22,7 +22,7 @@ public class Defense implements IComponent {
     }
 
     public SimpleDoubleProperty defenseProperty() {
-        return unit.getValue1();
+        return unit._1();
     }
 
     public double getDefense() {

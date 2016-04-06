@@ -16,7 +16,7 @@ public class Unit<A> {
         this.value1 = value1;
     }
 
-    public A getValue1() {
+    public A _1() {
         return value1;
     }
 

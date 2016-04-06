@@ -40,11 +40,11 @@ public class Position implements IComponent {
     }
 
     public SimpleDoubleProperty xProperty() {
-        return triple.getValue1();
+        return triple._1();
     }
 
     public double getY() {
-        return triple.getValue2().get();
+        return triple._2().get();
     }
 
     public void setY(double y) {
@@ -52,7 +52,7 @@ public class Position implements IComponent {
     }
 
     public SimpleDoubleProperty yProperty() {
-        return triple.getValue2();
+        return triple._2();
     }
 
     public void setXY(double x, double y) {
@@ -69,7 +69,7 @@ public class Position implements IComponent {
     }
 
     public SimpleDoubleProperty orientationProperty() {
-        return triple.getValue3();
+        return triple._3();
     }
 
     public void add(double dx, double dy) {

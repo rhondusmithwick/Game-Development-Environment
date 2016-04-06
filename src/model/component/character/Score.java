@@ -23,7 +23,7 @@ public class Score implements IComponent {
     }
 
     public SimpleDoubleProperty scoreProperty() {
-        return unit.getValue1();
+        return unit._1();
     }
 
     public double getScore() {

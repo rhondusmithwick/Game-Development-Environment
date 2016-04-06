@@ -35,6 +35,6 @@ public class Mass implements IComponent {
     }
 
     public SimpleDoubleProperty massProperty() {
-        return unit.getValue1();
+        return unit._1();
     }
 }

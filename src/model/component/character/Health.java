@@ -21,7 +21,7 @@ public class Health implements IComponent {
     }
 
     public SimpleDoubleProperty healthProperty() {
-        return unit.getValue1();
+        return unit._1();
     }
 
     public double getHealth() {

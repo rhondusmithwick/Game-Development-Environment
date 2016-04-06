@@ -16,7 +16,7 @@ public class Pair<A, B> extends Unit<A> {
         this.value2 = value2;
     }
 
-    public B getValue2() {
+    public B _2() {
         return value2;
     }
 }

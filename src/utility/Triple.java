@@ -16,7 +16,7 @@ public class Triple<A, B, C> extends Pair<A, B> {
         this.value3 = value3;
     }
 
-    public C getValue3() {
+    public C _3() {
         return value3;
     }
 }
