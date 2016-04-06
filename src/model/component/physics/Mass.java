@@ -1,5 +1,6 @@
 package model.component.physics;
 
+import com.google.common.base.Preconditions;
 import javafx.beans.property.SimpleDoubleProperty;
 import model.component.IComponent;
 import utility.Unit;
@@ -28,7 +29,8 @@ public class Mass implements IComponent {
     }
 
     public void setMass(double mass) {
-        assert mass != 0;
+        boolean valid = mass > 0;
+        Preconditions.checkArgument(valid, "Mass not greater than 0");
         massProperty().set(mass);
     }
 

@@ -15,8 +15,8 @@ import model.entity.IEntitySystem;
  * @author Rhondu Smithwick
  */
 class EntityTesting implements Tester {
-    private static final String DEFAULT_FILE_NAME = "resources/playerDefault.xml";
-    private static final String LOAD_FILE_NAME = "resources/player.xml";
+    private static final String DEFAULT_FILE_NAME = "resources/savedComponents/playerDefault.xml";
+    private static final String LOAD_FILE_NAME = "resources/savedEntities/player.xml";
 
     private final IEntitySystem entitySystem = new EntitySystem();
 
