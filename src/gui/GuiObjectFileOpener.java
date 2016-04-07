@@ -9,21 +9,33 @@ import java.util.Observable;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 
 
 public class GuiObjectFileOpener extends GuiObject{
 	private Button button;
 	private String fileToOpen;
 	private static final String FILE_DIR = "files/";
-	public GuiObjectFileOpener(String name, String resourceBundle,Observable obs, String fileName) {
-		super(name, resourceBundle, obs);
-		fileToOpen = fileName;
+	public GuiObjectFileOpener(String name, String resourceBundle) {
+		super(name, resourceBundle);
+		fileToOpen = getResourceBundle().getString(name+"file");
+		button = new Button(getResourceBundle().getString(getObjectName()+"Button"));
+
 		
 	}
 
 	@Override
-	public Object createObjectAndReturnObject() {
-		button = new Button(getResourceBundle().getString(getObjectName()+"BUTTON"));
+	public Object getCurrentValue() {
+		return null;
+	}
+
+	@Override
+	public Control getControl() {
+		return button;
+	}
+
+	@Override
+	public Object getGuiNode() {
 		button.setOnAction(new EventHandler() {
             public void handle(Event t) {
 

@@ -1,13 +1,8 @@
 package model.component.movement;
 
 import javafx.beans.property.SimpleDoubleProperty;
-<<<<<<< HEAD
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-=======
 import model.component.IComponent;
 import utility.Triple;
->>>>>>> master
 
 
 /**

@@ -2,49 +2,48 @@ package gui;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Observable;
-import java.util.function.BiConsumer;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.geometry.Insets;
+
+import javafx.beans.property.Property;
+
+import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import model.Agent;
 
 public class GuiObjectRadioButton extends GuiObject{
-	private String initialToggle;
 	private ArrayList<RadioButton> buttonList;
-	private ToggleGroup radioButtonGroup;
 	private List<String> radioOptions;
-	protected boolean isNewSelection;
 	private Label errorLabel;
-	private BiConsumer<Observable,String> setValue;
 	private Label radioLabel;
+	private ToggleGroup radioButtonGroup;
+	private int initialToggle;
 	public GuiObjectRadioButton(String name,
-			String resourceBundle, Agent obs, String startToggle, List<String> options, BiConsumer<Observable,String> myFunction) {
-		super(name, resourceBundle, obs);
-		initialToggle = startToggle;
+			String resourceBundle, List<String> options, Property property) {
+		super(name, resourceBundle);
+		buttonList = new ArrayList<RadioButton>();
+		radioButtonGroup = new ToggleGroup();
 		radioOptions = options;
-		isNewSelection = false;
-		setValue = myFunction;
+		initialToggle = Integer.parseInt(getResourceBundle().getString(name+"Default"));
+		radioLabel = new Label(getResourceBundle().getString(getObjectName()+"LABEL"));
+
+		initializeRadioButtons();
+		bindProperty(property);
 	
 	}
+	public void bindProperty(Property property){
+		((Property) radioButtonGroup.selectedToggleProperty()).bindBidirectional(property);
+	}
+	
+	public void initializeRadioButtons() {
 
-	@Override
-	public Object createObjectAndReturnObject() {
-		buttonList = new ArrayList<RadioButton>();
-
-		radioButtonGroup = new ToggleGroup();
 		
-		buttonList = new ArrayList<RadioButton>();
 		for (int index = 0; index < radioOptions.size(); index++){
 			Toggle curToggle = new RadioButton(radioOptions.get(index));
-			if (radioOptions.get(index).equals(initialToggle)){
+			if (index==initialToggle){
 				curToggle.setSelected(true);
 			}
 			buttonList.add((RadioButton) curToggle);
@@ -55,30 +54,7 @@ public class GuiObjectRadioButton extends GuiObject{
 			
 		}
 		
-		
-		radioButtonGroup.selectedToggleProperty().addListener(new ChangeListener<Toggle>() {
-	        @Override
-			public void changed(ObservableValue<? extends Toggle> ov, Toggle t, Toggle t1) {
 
-	            RadioButton chk = (RadioButton)t1.getToggleGroup().getSelectedToggle(); // Cast object to radio button
-	            isNewSelection = true;
-	            if (setValue!=null){
-	            setValue.accept(getSerializable(), chk.getText());
-	            }
-	        }
-	    });
-		
-		radioLabel = new Label(getResourceBundle().getString(getObjectName()+"LABEL"));
-		VBox stateControls = new VBox();
-		stateControls.getChildren().add(radioLabel);
-		for(RadioButton button: buttonList){
-			stateControls.getChildren().add(button);
-		}
-		
-		errorLabel = new Label("");
-		stateControls.getChildren().add(errorLabel);
-		errorLabel.setVisible(false);
-		return stateControls;
 	}
 		
 
@@ -95,12 +71,7 @@ public class GuiObjectRadioButton extends GuiObject{
 	}
 
 
-	public void setIsNewSelection(boolean b){
-		isNewSelection = false;
-	}
-	public boolean isNewSelected() {
-		return isNewSelection;
-	}
+
 	public void setToggle(String newToggle){
 		for (int index = 0; index < radioOptions.size(); index++){
 			Toggle curToggle = new RadioButton(radioOptions.get(index));
@@ -108,6 +79,30 @@ public class GuiObjectRadioButton extends GuiObject{
 				curToggle.setSelected(true);
 			}
 		}
+	}
+	@Override
+	public Object getCurrentValue() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	@Override
+	public Control getControl() {
+		return null;
+	}
+	@Override
+	public Object getGuiNode() {
+		
+		
+		VBox stateControls = new VBox();
+		stateControls.getChildren().add(radioLabel);
+		for(RadioButton button: buttonList){
+			stateControls.getChildren().add(button);
+		}
+		
+		errorLabel = new Label("");
+		stateControls.getChildren().add(errorLabel);
+		errorLabel.setVisible(false);
+		return stateControls;
 	}
 
 

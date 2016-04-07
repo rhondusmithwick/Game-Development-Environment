@@ -4,25 +4,25 @@ import java.awt.Desktop;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.util.Observable;
 
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
+import javafx.scene.control.Control;
 
 public class GuiObjectURLOpener extends GuiObject{
 		private Button button;
 		private URI urlToOpen;
-		public GuiObjectURLOpener(String name, String resourceBundle,Observable obs, String urlName) {
-			super(name, resourceBundle, obs);
+		public GuiObjectURLOpener(String name, String resourceBundle) {
+			super(name, resourceBundle);
 			
-			urlToOpen = URI.create(urlName);
+			urlToOpen = URI.create(getResourceBundle().getString(name+"URL"));
+			button = new Button(getResourceBundle().getString(getObjectName()+"Button"));
+			addHandler();
 			
 		}
 
-		@Override
-		public Object createObjectAndReturnObject() {
-			button = new Button(getResourceBundle().getString(getObjectName()+"BUTTON"));
+		private void addHandler() {
 			button.setOnAction(new EventHandler() {
 
 				@Override
@@ -31,9 +31,10 @@ public class GuiObjectURLOpener extends GuiObject{
 					
 				}
 				
-			});
-			return button;
-}
+			});			
+		}
+
+
 		public static void openWebpage(URI uri) {
 		    Desktop desktop = Desktop.isDesktopSupported() ? Desktop.getDesktop() : null;
 		    if (desktop != null && desktop.isSupported(Desktop.Action.BROWSE)) {
@@ -51,5 +52,23 @@ public class GuiObjectURLOpener extends GuiObject{
 		    } catch (URISyntaxException e) {
 		        e.printStackTrace();
 		    }
+		}
+
+		@Override
+		public Object getCurrentValue() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Control getControl() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
+		@Override
+		public Object getGuiNode() {
+			// TODO Auto-generated method stub
+			return button;
 		}
 }
