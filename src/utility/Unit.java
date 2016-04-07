@@ -2,29 +2,34 @@ package utility;
 
 
 /**
- * Created by rhondusmithwick on 4/3/16.
- * <p>
- * A Unit class that holds a single value of type A.
+ * A Unit class that holds a single final value of type A.
  *
+ * @param <A> type of value 1
  * @author Rhondu Smithwick
  */
 public class Unit<A> {
 
-    private A value1;
+    /**
+     * The first value.
+     */
+    private final A _1;
 
-    protected Unit() {
+    /**
+     * Construct a unit.
+     *
+     * @param _1 the first value.
+     */
+    public Unit(A _1) {
+        this._1 = _1;
     }
 
-    public Unit(A value1) {
-        setValue1(value1);
+    /**
+     * Get first value.
+     *
+     * @return first value
+     */
+    public A _1() {
+        return _1;
     }
 
-    public A getValue1() {
-        return value1;
-    }
-
-
-    public void setValue1(A value1) {
-        this.value1 = value1;
-    }
 }

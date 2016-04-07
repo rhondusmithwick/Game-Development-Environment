@@ -1,8 +1,10 @@
 package model.component.movement;
 
-import model.component.IComponent;
+import api.IComponent;
 import javafx.beans.property.SimpleDoubleProperty;
 import utility.Pair;
+
+import java.util.function.DoubleUnaryOperator;
 
 
 /**
@@ -10,21 +12,21 @@ import utility.Pair;
  *
  * @author Rhondu Smithwick
  */
-public class Velocity extends Pair<SimpleDoubleProperty, SimpleDoubleProperty> implements IComponent {
+public class Velocity implements IComponent {
+
+    private final Pair<SimpleDoubleProperty, SimpleDoubleProperty> pair = new Pair<>(new SimpleDoubleProperty(this, "speed", 0),
+            new SimpleDoubleProperty(this, "direction", 0));
+    ;
 
     public Velocity() {
-        setValue1(new SimpleDoubleProperty(this, "speed", 0));
-        setValue2(new SimpleDoubleProperty(this, "direction", 0));
     }
 
     public Velocity(Double speed, Double direction) {
-        this();
         setSpeed(speed);
         setDirection(direction);
     }
 
     public Velocity(Double vx, Double vy, boolean flag) {
-        this();
         setVXY(vx, vy);
     }
 
@@ -37,7 +39,7 @@ public class Velocity extends Pair<SimpleDoubleProperty, SimpleDoubleProperty> i
     }
 
     public SimpleDoubleProperty speedProperty() {
-        return getValue1();
+        return pair._1();
     }
 
     public double getDirection() {
@@ -49,15 +51,20 @@ public class Velocity extends Pair<SimpleDoubleProperty, SimpleDoubleProperty> i
     }
 
     public SimpleDoubleProperty directionProperty() {
-        return getValue2();
+        return pair._2();
+    }
+
+    private double getVHelp(DoubleUnaryOperator func) {
+        double directionRadians = Math.toRadians(getDirection());
+        return getSpeed() * func.applyAsDouble(directionRadians);
     }
 
     public double getVX() {
-        return getSpeed() * Math.cos(Math.toRadians(getDirection()));
+        return getVHelp(Math::cos);
     }
 
     public double getVY() {
-        return getSpeed() * Math.sin(Math.toRadians(getDirection()));
+        return getVHelp(Math::sin);
     }
 
     public void setVXY(double vx, double vy) {

@@ -1,6 +1,7 @@
 package datamanagement;
 
 
+import api.IDataWriter;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
@@ -12,7 +13,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 /**
- * Created by rhondusmithwick on 4/1/16.
+ * DataWriter for XML files.
  *
  * @author Rhondu Smithwick
  */
@@ -44,7 +45,8 @@ public class XMLWriter<T> implements IDataWriter<T> {
         return writer.toString();
     }
 
-    private void doWrite(Writer writer, T... objects) {
+    @SafeVarargs
+    private final void doWrite(Writer writer, T... objects) {
         try {
             ObjectOutputStream out = xstream.createObjectOutputStream(writer);
             for (T obj : objects) {

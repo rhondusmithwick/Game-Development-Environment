@@ -1,12 +1,12 @@
 package testing;
 
 import datamanagement.XMLWriter;
-import model.component.IComponent;
+import api.IComponent;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.entity.EntitySystem;
-import model.entity.IEntity;
-import model.entity.IEntitySystem;
+import api.IEntity;
+import api.IEntitySystem;
 
 
 /**
@@ -15,8 +15,8 @@ import model.entity.IEntitySystem;
  * @author Rhondu Smithwick
  */
 class EntityTesting implements Tester {
-    private static final String DEFAULT_FILE_NAME = "resources/playerDefault.xml";
-    private static final String LOAD_FILE_NAME = "resources/player.xml";
+    private static final String DEFAULT_FILE_NAME = "resources/savedComponents/playerDefault.xml";
+    private static final String LOAD_FILE_NAME = "resources/savedEntities/player.xml";
 
     private final IEntitySystem entitySystem = new EntitySystem();
 
@@ -36,6 +36,9 @@ class EntityTesting implements Tester {
         System.out.println("DEFAULT:");
         Position position = new Position(50.0, 40.0);
         Velocity velocity = new Velocity(100.0, 10.0);
+        IComponent hey = new Position(50.0, 80.0);
+        System.out.println(hey.getClass().getSimpleName());
+
         new XMLWriter<IComponent>().writeToFile(DEFAULT_FILE_NAME, position, velocity);
         IEntity entity = entitySystem.createEntityFromDefault(DEFAULT_FILE_NAME);
         System.out.println("Entity read from default file: " + entity);

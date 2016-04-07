@@ -1,7 +1,7 @@
 package model.component.movement;
 
-import model.component.IComponent;
 import javafx.beans.property.SimpleDoubleProperty;
+import api.IComponent;
 import utility.Triple;
 
 
@@ -10,16 +10,16 @@ import utility.Triple;
  *
  * @author Rhondu Smithwick
  */
-public class Position extends Triple<SimpleDoubleProperty, SimpleDoubleProperty, SimpleDoubleProperty> implements IComponent {
+public class Position implements IComponent {
+
+    private final Triple<SimpleDoubleProperty, SimpleDoubleProperty, SimpleDoubleProperty> triple = new Triple<>(new SimpleDoubleProperty(this, "x", 0),
+            new SimpleDoubleProperty(this, "y", 0),
+            new SimpleDoubleProperty(this, "orientation", 0));
 
     public Position() {
-        setValue1(new SimpleDoubleProperty(this, "x", 0));
-        setValue2(new SimpleDoubleProperty(this, "y", 0));
-        setValue3(new SimpleDoubleProperty(this, "orientation", 0));
     }
 
     public Position(Double x, Double y) {
-        this();
         setXY(x, y);
         setOrientation(0);
     }
@@ -38,11 +38,11 @@ public class Position extends Triple<SimpleDoubleProperty, SimpleDoubleProperty,
     }
 
     public SimpleDoubleProperty xProperty() {
-        return getValue1();
+        return triple._1();
     }
 
     public double getY() {
-        return getValue2().get();
+        return triple._2().get();
     }
 
     public void setY(double y) {
@@ -50,7 +50,7 @@ public class Position extends Triple<SimpleDoubleProperty, SimpleDoubleProperty,
     }
 
     public SimpleDoubleProperty yProperty() {
-        return getValue2();
+        return triple._2();
     }
 
     public void setXY(double x, double y) {
@@ -67,7 +67,7 @@ public class Position extends Triple<SimpleDoubleProperty, SimpleDoubleProperty,
     }
 
     public SimpleDoubleProperty orientationProperty() {
-        return getValue3();
+        return triple._3();
     }
 
     public void add(double dx, double dy) {

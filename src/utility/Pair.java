@@ -1,29 +1,36 @@
 package utility;
 
 /**
- * Created by rhondusmithwick on 4/3/16.
- * <p>
- * A Pair class that holds two values of type A and B.
+ * A Pair class that holds two final values of type A and B.
  *
+ * @param <A> type of value 1
+ * @param <B> type of value 2
  * @author Rhondu Smithwick
  */
 public class Pair<A, B> extends Unit<A> {
 
-    private B value2;
+    /**
+     * Value 2.
+     */
+    private final B _2;
 
-    protected Pair() {
+    /**
+     * Construct a pair.
+     *
+     * @param _1 first value
+     * @param _2 second value
+     */
+    public Pair(A _1, B _2) {
+        super(_1);
+        this._2 = _2;
     }
 
-    public Pair(A value1, B value2) {
-        super(value1);
-        setValue2(value2);
-    }
-
-    public B getValue2() {
-        return value2;
-    }
-
-    public void setValue2(B value2) {
-        this.value2 = value2;
+    /**
+     * Return second value.
+     *
+     * @return second value
+     */
+    public B _2() {
+        return _2;
     }
 }
