@@ -1,8 +1,6 @@
 package model.component.character;
 
-import javafx.beans.property.SimpleDoubleProperty;
-import api.IComponent;
-import utility.Unit;
+import model.component.DataComponent;
 
 
 /**
@@ -11,17 +9,14 @@ import utility.Unit;
  *
  * @author Roxanne Baker
  */
-public class Attack implements IComponent {
 
-    /**
-     * The unit to contain the property.
-     */
-    private final Unit<SimpleDoubleProperty> unit = new Unit<>(new SimpleDoubleProperty(this, "attack", 0.0));
+public class Attack extends DataComponent<Double> {
 
     /**
      * Empty constructor. Has attack at 0.
      */
     public Attack() {
+    	super("Attack", 0.0);
     }
 
     /**
@@ -29,32 +24,15 @@ public class Attack implements IComponent {
      * @param attack the initial value
      */
     public Attack(Double attack) {
-        setAttack(attack);
+       	this();
+       	set(attack);
     }
 
     /**
-     * Get the attack as a property.
-     * @return the attack property
+     * @return String representation of attack
      */
-    public SimpleDoubleProperty attackProperty() {
-        return unit._1();
-    }
-
-    public double getAttack() {
-        return attackProperty().get();
-    }
-
-    public void setAttack(double attack) {
-        attackProperty().set(attack);
-    }
-
     @Override
     public String toString() {
-        return String.format("Attack: %s", getAttack());
-    }
-
-    @Override
-    public boolean unique() {
-        return true;
+        return String.format("Attack: %s", get());
     }
 }

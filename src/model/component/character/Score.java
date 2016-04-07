@@ -1,35 +1,37 @@
 package model.component.character;
 
-import api.IComponent;
-import javafx.beans.property.SimpleDoubleProperty;
-import utility.Unit;
+import model.component.DataComponent;
 
-/***
- * Created by Anirudh Jonnavithula on 04/03/16
+
+/**
+ * The class for Score. Contains a single double property.
+ * {@inheritDoc}
  *
- * @author ajonnav
+ * @author Roxanne Baker
  */
-public class Score implements IComponent {
+public class Score extends DataComponent<Double> {
 
-    private final Unit<SimpleDoubleProperty> unit = new Unit<>(new SimpleDoubleProperty(this, "score", 0.0));
-
+    /**
+     * Empty constructor. Has attack at 0.
+     */
     public Score() {
+    	super("Score", 0.0);
     }
 
-    public Score(double score) {
-        setScore(score);
+    /**
+     * Construct with an initial value.
+     * @param attack the initial value
+     */
+    public Score(Double score) {
+       	this();
+       	set(score);
     }
 
-    public SimpleDoubleProperty scoreProperty() {
-        return unit._1();
+    /**
+     * @return String representation of score
+     */
+    @Override
+    public String toString() {
+        return String.format("Score: %s", get());
     }
-
-    public double getScore() {
-        return scoreProperty().get();
-    }
-
-    public void setScore(double score) {
-        scoreProperty().set(score);
-    }
-
 }
