@@ -57,16 +57,8 @@ public class Vooga {
 		// root.getChildren().add(myVBox);
 
 		BorderPane splash = new BorderPane();
-		// splash.setCenter(root);
-		splash.getChildren().add(root);
+		splash.setCenter(root);
 		return splash;
-	}
-
-	// TODO: for BenTester only, remove asap
-	public void refreshDraw(ImageView img, double x, double y) {
-		root.getChildren().clear();
-		System.out.println(x + " " + y);
-		this.draw(img);
 	}
 
 }
