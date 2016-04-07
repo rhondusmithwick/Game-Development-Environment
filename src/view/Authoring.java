@@ -22,7 +22,7 @@ public class Authoring {
 		 * @return the splash screen scene
 		 */
 		
-		public static Scene init(ReadOnlyDoubleProperty height, ReadOnlyDoubleProperty width){
+		public Scene init(ReadOnlyDoubleProperty height, ReadOnlyDoubleProperty width){
 			TabPane display = new TabPane();
 			display.prefHeightProperty().bind(height);
 			display.prefWidthProperty().bind(width);
