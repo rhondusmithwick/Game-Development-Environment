@@ -4,7 +4,9 @@ import com.google.common.base.Preconditions;
 import javafx.beans.property.SimpleObjectProperty;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
@@ -35,22 +37,39 @@ public interface IComponent extends ISerializable {
     }
 
     /**
-     * Gets a specific property of specified class nd with specified name.
+     * Gets a specific property with specified value class and with specified name.
+     * <p>
+     * Example call for a position:
+     * SimpleObjectProperty$Double$ x = position.getProperty(Double, "X");
      *
-     * @param propertyClass the class of the property
+     * @param propertyClass the class of the property's held value
      * @param name          the name of property
-     * @param <T>           the type
+     * @param <T>           the type of the property's held value
      * @return specific property of specified class and with name
+     * @throws IllegalArgumentException if incorrect propertyClass or no property with this name is present
      */
-    @SuppressWarnings("unchecked")
-    default <T> T getProperty(Class<T> propertyClass, String name) {
-        Predicate<SimpleObjectProperty> isRight = (s) -> (Objects.equals(s.getName(), name));
+    @SuppressWarnings({"unchecked", "OptionalGetWithoutIsPresent"})
+    default <T> SimpleObjectProperty<T> getProperty(Class<T> propertyClass, String name) throws IllegalArgumentException {
+        Predicate<SimpleObjectProperty<?>> isRight = (s) -> (Objects.equals(s.getName(), name));
         Optional<SimpleObjectProperty<?>> rightProperty = getProperties().stream().filter(isRight).findFirst();
         boolean hasProperty = rightProperty.isPresent();
-        Preconditions.checkArgument(hasProperty, "No such name present");
-        boolean rightClass = propertyClass.isInstance(rightProperty);
-        Preconditions.checkArgument(rightClass, "Incorrect class");
-        return propertyClass.cast(rightProperty.get());
+        Preconditions.checkArgument(hasProperty, "No such property with this name is present");
+        boolean rightClass = propertyClass.isInstance(rightProperty.get().get());
+        Preconditions.checkArgument(rightClass, "Incorrect value class");
+        return (SimpleObjectProperty<T>) rightProperty.get();
+    }
+
+    /**
+     * Get a map, where each entry is a component name to it's value class.
+     *
+     * @return a map, where each entry is a component name to it's value class
+     */
+    default Map<String, Class<?>> getPropertyNamesAndClasses() {
+        Map<String, Class<?>> nameCLassMap = new HashMap<>();
+        for (SimpleObjectProperty<?> property : getProperties()) {
+            nameCLassMap.put(property.getName(), property.get().getClass());
+        }
+        return nameCLassMap;
     }
 
     /**
