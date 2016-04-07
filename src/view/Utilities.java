@@ -1,23 +1,25 @@
 package view;
 
-	import javafx.collections.ObservableList;
+	import java.util.ResourceBundle;
+
+import javafx.collections.ObservableList;
 	import javafx.event.ActionEvent;
 	import javafx.event.EventHandler;
 	import javafx.scene.control.Alert;
 	import javafx.scene.control.Button;
 	import javafx.scene.control.ComboBox;
 	import javafx.scene.control.Alert.AlertType;
-
+	
+	
 	public class Utilities {
-
 		/**
 		 * Show an error with a certain message.
 		 * @param error message
 		 */
 		
-		public static void showError(String message) {
+		public static void showError(String message, ResourceBundle displayStrings) {
 			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle("Error");
+			alert.setTitle(displayStrings.getString("error"));
 			alert.setContentText(message);
 			alert.show();
 		}
