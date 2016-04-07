@@ -14,6 +14,7 @@ import java.util.List;
  */
 public class Attack implements IComponent {
 
+
     private final SingleProperty<Double> singleProperty;
 
     /**
@@ -28,7 +29,7 @@ public class Attack implements IComponent {
      *
      * @param attack the initial value
      */
-    public Attack(Double attack) {
+    public Attack(double attack) {
         this();
         setAttack(attack);
     }

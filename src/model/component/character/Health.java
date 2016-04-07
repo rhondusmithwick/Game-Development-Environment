@@ -27,7 +27,7 @@ public class Health implements IComponent {
      *
      * @param health the initial value
      */
-    public Health(Double health) {
+    public Health(double health) {
         this();
         setHealth(health);
     }

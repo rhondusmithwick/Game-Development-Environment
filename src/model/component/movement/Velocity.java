@@ -23,13 +23,13 @@ public class Velocity implements IComponent {
         twoProperty = new TwoProperty<>("Spped", 0.0, "Direction", 0.0);
     }
 
-    public Velocity(Double speed, Double direction) {
+    public Velocity(double speed, double direction) {
         this();
         setSpeed(speed);
         setDirection(direction);
     }
 
-    public Velocity(Double vx, Double vy, boolean flag) {
+    public Velocity(double vx, double vy, boolean flag) {
         this();
         setVXY(vx, vy);
     }

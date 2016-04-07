@@ -31,7 +31,7 @@ public class Defense implements IComponent {
      *
      * @param defense the initial defense value
      */
-    public Defense(Double defense) {
+    public Defense(double defense) {
         this();
         setDefense(defense);
     }

@@ -11,9 +11,11 @@ public class Speed implements IComponent{
         speed = new SimpleDoubleProperty(this, "speed", 0);
 
 	}
+
 	public double getSpeed(){
 		return speed.getValue();
 	}
+
 	public DoubleProperty speedProperty(){
 		return speed;
 	}

@@ -20,7 +20,7 @@ public class Position implements IComponent {
         twoProperty = new TwoProperty<>("X", 0.0, "Y", 0.0);
     }
 
-    public Position(Double x, Double y) {
+    public Position(double x, double y) {
         this();
         setXY(x, y);
     }
