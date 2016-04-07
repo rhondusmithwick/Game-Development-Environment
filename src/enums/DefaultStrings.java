@@ -1,9 +1,10 @@
 package enums;
 
 public enum DefaultStrings {
-
-	DISPLAY_LOC("resources/guiStrings/english"),
-    BACKGROUND_COLOR("-fx-background-color: cornflowerblue");
+	
+	DEFAULT_LANGUAGE("english"),
+	DEFAULT_ICON("resources/default_icon.png"),
+	ENTITY_EDITOR_NAME("EditorEntity");
 
 
 
