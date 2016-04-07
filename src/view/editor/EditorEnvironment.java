@@ -2,9 +2,12 @@ package view.editor;
 
 import javafx.scene.Group;
 import javafx.scene.layout.Pane;
+import model.entity.EntitySystem;
 import view.Editor;
 
 public class EditorEnvironment extends Editor{
+	
+	EntitySystem myEntities;
 
 	@Override
 	public void loadDefaults() {
@@ -28,6 +31,18 @@ public class EditorEnvironment extends Editor{
 	public void updateEditor() {
 		// TODO Auto-generated method stub
 		
+	}
+
+	public void addEntitySystem(EntitySystem entitySystem) {
+		myEntities = entitySystem;
+	}
+
+	public EntitySystem getEntitySystem() {
+		return myEntities;
+	}
+
+	public Object getEntity(int i) {
+		return myEntities.getEntity(i);
 	}
 
 }

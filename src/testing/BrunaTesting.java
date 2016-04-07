@@ -5,6 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
+import model.entity.Entity;
+import model.entity.EntitySystem;
 import view.editor.EditorEnvironment;
 
 
@@ -19,7 +21,17 @@ public class BrunaTesting {
 
 	@Test
 	public void testAcceptsEntitySystem() {
-		myEditorEnvironment.addEntitySystem();
+		EntitySystem entitySystem = new EntitySystem();
+		myEditorEnvironment.addEntitySystem(entitySystem);
+		assertNotNull(myEditorEnvironment.getEntitySystem());
+	}
+	
+	@Test 
+	public void testContainsEntities() {
+		EntitySystem entitySystem = new EntitySystem();
+		entitySystem.addEntities(new Entity(0));
+		myEditorEnvironment.addEntitySystem(entitySystem);
+		assertNotNull(myEditorEnvironment.getEntity(0));
 	}
 
 }
