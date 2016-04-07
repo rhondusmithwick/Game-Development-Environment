@@ -11,9 +11,9 @@ public class GuiObjectButton extends GuiObject{
 	Button button;
 	boolean onAction;
 	
-	public GuiObjectButton(String name,  String bName, String resourceBundle, EventHandler<ActionEvent> event, Property property) {
+	public GuiObjectButton(String name,String resourceBundle, EventHandler<ActionEvent> event, Property property) {
 		super(name, resourceBundle);
-		button = new Button(getResourceBundle().getString(bName));
+		button = new Button(getResourceBundle().getString(getResourceBundle().getString(name+"Button")));
 		addHandler(event);
 		
 	}

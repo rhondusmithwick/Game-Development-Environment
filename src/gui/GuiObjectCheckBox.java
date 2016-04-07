@@ -11,10 +11,10 @@ import javafx.scene.control.Control;
 public class GuiObjectCheckBox extends GuiObject{
 	private CheckBox checkBox;
 	
-	public GuiObjectCheckBox(String name, String resourceBundle,boolean isChecked,EventHandler<ActionEvent> event, Property property) {
+	public GuiObjectCheckBox(String name, String resourceBundle,EventHandler<ActionEvent> event, Property property) {
 		super(name, resourceBundle);
-		checkBox = new CheckBox(getResourceBundle().getString(getObjectName()+"LABEL"));
-		checkBox.setSelected(isChecked);
+		checkBox = new CheckBox(getResourceBundle().getString(name+"Label"));
+		checkBox.setSelected(Boolean.parseBoolean(getResourceBundle().getString(name + "Default")));
 
 		addHandler(event);
 		bindProperty(property);

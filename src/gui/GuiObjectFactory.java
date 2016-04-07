@@ -1,6 +1,7 @@
 package gui;
 import api.ISerializable;
 import model.component.movement.Position;
+import model.component.movement.Velocity;
 
 /**
  * This is part of my masterpiece code. I reused this from my CellSociety project. This class introduces polymorphism and abstraction to the GUI elements. 
@@ -17,8 +18,11 @@ public class GuiObjectFactory {
 	}
 	public GuiObject createNewGuiObject(String type, ISerializable serial){
 		switch(type){
-			case("ORIENTATION"):{
-				return new GuiObjectSlider(type, GUI_RESOURCES,null, ((Position) serial).orientationProperty(),0.0, 360.0, 5.0, 0);
+			case("Position"):{
+				return new GuiObjectInputBox(type, GUI_RESOURCES,null, ((Position) serial).xProperty());
+			}
+			case("Velocity"):{
+				return new GuiObjectSlider(type, GUI_RESOURCES, null, ((Velocity) serial).speedProperty());
 			}
 
 

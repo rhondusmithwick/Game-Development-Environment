@@ -16,13 +16,13 @@ public class GuiObjectDropDown extends GuiObject {	private static final double W
 	private ComboBox<String> dropDown;
 	private VBox dropDownBox;
 	private Label dropDownLabel;
-	public GuiObjectDropDown(String name, String resourceBundle, EventHandler<ActionEvent> event, Property property, String initialValue, ListProperty list) {
+	public GuiObjectDropDown(String name, String resourceBundle, EventHandler<ActionEvent> event, Property property,ListProperty list) {
 		super(name, resourceBundle);
 		dropDown = new ComboBox<String>();
 		dropDown.setMaxWidth(WIDTH);
 		dropDown.itemsProperty().bind(list);		
-		dropDown.setValue(initialValue);
-		dropDownLabel = new Label(getResourceBundle().getString(getObjectName()+"LABEL"));
+		dropDown.setValue(getResourceBundle().getString(name+"Default"));
+		dropDownLabel = new Label(getResourceBundle().getString(name+"Label"));
 		bindProperty(property);
 		addHandler(event);
 	}

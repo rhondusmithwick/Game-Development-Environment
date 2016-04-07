@@ -18,9 +18,9 @@ public class GuiObjectColorPicker extends GuiObject{
 	private ResourceBundle cssResources = ResourceBundle.getBundle("CSSClasses");
 	
 	public GuiObjectColorPicker(String name, String resourceBundle,
-			EventHandler<ActionEvent> event, Property property, Color initialColor) {
+			EventHandler<ActionEvent> event, Property property) {
 		super(name, resourceBundle);
-		colorPicker = new ColorPicker(initialColor);
+		colorPicker = new ColorPicker(Color.web(getResourceBundle().getString(name+"Default")));
         colorPickerLabel = new Label(getResourceBundle().getString(getObjectName()+"LABEL"));
         addHandler(event);
         bindProperty(property);

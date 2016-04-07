@@ -1,5 +1,8 @@
 package gui;
 
+import java.util.ResourceBundle;
+
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.Property;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -14,14 +17,14 @@ public class GuiObjectSlider extends GuiObject{
 	private Label numLabel;
 
 
-	public GuiObjectSlider(String name, String resourceBundle,EventHandler<ActionEvent> event, Property property,double min,double max, double initialValue, double increment) {
+	public GuiObjectSlider(String name, String resourceBundle,EventHandler<ActionEvent> event, Property property) {
 		super(name, resourceBundle);
-
-		slider = new Slider(min,max,initialValue); 
+		slider = new Slider(Integer.parseInt(getResourceBundle().getString(name+"Min")),Integer.parseInt(getResourceBundle().getString(name+ "Max")), Integer.parseInt(getResourceBundle().getString(name+"Default"))); 
 		slider.setShowTickMarks(true);
-		slider.setBlockIncrement(increment);
-		textLabel = new Label(getResourceBundle().getString(getObjectName()+"LABEL"));
+		slider.setBlockIncrement(Integer.parseInt(getResourceBundle().getString(name+"Increment")));
+		textLabel = new Label(getResourceBundle().getString(getObjectName()+"Label"));
 		numLabel = new Label(Double.toString(slider.getValue()));
+		numLabel.textProperty().bind(Bindings.convert(slider.valueProperty()));
 		bindProperty(property);
 	}
 
