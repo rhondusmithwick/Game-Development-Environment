@@ -13,6 +13,7 @@ import model.component.character.Health;
 import model.component.character.Score;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
+import model.component.movement.X;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
 import api.IEntity;
