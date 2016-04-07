@@ -90,6 +90,7 @@ public class GameEditor extends Editor {
 	private void createEditor(String editName) {
 		IEditor editor = editFact.createEditor(editName);
 		editor.populateLayout();
+
 		authEnv.createTab(editor.getPane(), editName, true);
 		
 	}

@@ -4,6 +4,7 @@ import java.util.Collection;
 
 import gui.GuiObject;
 import gui.GuiObjectFactory;
+import model.component.movement.Position;
 import model.entity.Entity;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
