@@ -5,7 +5,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import view.Authoring;
@@ -33,20 +32,15 @@ public class Vooga {
 	 */
 	
 	public Scene init(){
-		BorderPane display = createDisplay();
-		Scene myScene = new Scene(display, 500, 500);
+		myScene = new Scene(createDisplay(), 500, 500);
 		return myScene;
 	}
 	
 	public void draw(ImageView image) {
 		root.getChildren().add(image);
 	}
-	
-	/**
-	 * Creates the splash screen display independently of initializing the scene.
-	 * @return BorderPane in which the contents are the splash screen
-	 */
-	private BorderPane createDisplay() {
+
+	private Group createDisplay() {
 		root = new Group();
 		Button createGame = Utilities.makeButton("Create Game", null);
 		createGame.setOnAction(e->createAuthoring());
@@ -54,9 +48,7 @@ public class Vooga {
 		myVBox.setAlignment(Pos.CENTER);
 		myVBox.getChildren().add(createGame);
 		root.getChildren().add(myVBox);
-		BorderPane splash = new BorderPane();
-		splash.setCenter(root);
-		return splash;
+		return root;
 	}
 	
 	private void createAuthoring(){

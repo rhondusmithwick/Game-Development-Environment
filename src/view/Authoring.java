@@ -1,10 +1,10 @@
 package view;
 
 import javafx.beans.property.ReadOnlyDoubleProperty;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
+import javafx.scene.layout.Pane;
 
 import java.util.ResourceBundle;
 
@@ -33,13 +33,16 @@ public class Authoring {
 			display = new TabPane();
 			display.prefHeightProperty().bind(height);
 			display.prefWidthProperty().bind(width);
+			createTab(new Pane(), "error");
 			myScene = new Scene(display,GUISize.AUTHORING_START.getSize(), GUISize.AUTHORING_START.getSize());
 			return myScene;
 		}
 		
-		public void createTab(Group tabContent, String key){
+		public void createTab(Pane tabContent, String key){
 			Tab tab = new Tab(myResources.getString(key));
 			tab.setContent(tabContent);
+			tabContent.prefHeightProperty().bind(display.heightProperty().subtract(GUISize.TOP_TAB.getSize()));
+			tabContent.prefWidthProperty().bind(display.widthProperty());
 			display.getTabs().add(tab);
 	
 		}

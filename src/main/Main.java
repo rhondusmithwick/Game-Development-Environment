@@ -15,7 +15,9 @@ public class Main extends Application{
 		public void start (Stage stage) {
 
 			myStage = stage;
-			myStage.setTitle("main screen");
+			myStage.setTitle("VOOGA");
+			myStage.setWidth(700);
+			myStage.setHeight(700);
 			Vooga vooga = new Vooga(myStage);
 			myStage.setScene(vooga.init());
 			myStage.show();

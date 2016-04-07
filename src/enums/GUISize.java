@@ -2,7 +2,7 @@ package enums;
 
 public enum GUISize {
 
-	
+	TOP_TAB(25),
     AUTHORING_START(20);
 
     private final int size;
