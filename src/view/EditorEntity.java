@@ -35,11 +35,9 @@ public class EditorEntity extends Editor{
 	}
 
 	@Override
-	public Group getGroup() {
+	public Pane getPane() {
 		populateLayout(editorPane);
-		Group editorGroup = new Group();
-		editorGroup.getChildren().add(editorPane);
-		return editorGroup;
+		return editorPane;
 	}
 
 	@Override

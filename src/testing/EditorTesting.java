@@ -30,7 +30,7 @@ public class EditorTesting extends Application {
         EditorFactory factory = new EditorFactory();
 		//Editor editorEntity = (Editor) new EditorEntity((Entity) entity);
         Editor editorEntity = factory.createEditor(ENTITY_EDITOR);
-		Scene scene = new Scene(editorEntity.getGroup());
+        Scene scene = new Scene(editorEntity.getPane());
 		myStage.setScene(scene);
 		myStage.show();
 	}

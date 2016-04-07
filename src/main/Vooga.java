@@ -16,6 +16,8 @@ public class Vooga {
 	private Stage myStage;
 	private VBox myVBox;
 	private Group root;
+	private Authoring authEnv;
+	private Scene myScene;
 	/**
 	 * Constructor that takes in a stage to display the graphics.
 	 * @param stage
@@ -46,18 +48,21 @@ public class Vooga {
 	 */
 	private BorderPane createDisplay() {
 		root = new Group();
-//		Button createGame = Utilities.makeButton("Create Game", e -> myStage.setScene(Authoring.init(myStage.widthProperty(), myStage.heightProperty())));
-//
-//		myVBox = new VBox(30);
-//		myVBox.setAlignment(Pos.CENTER);
-//		myVBox.getChildren().add(createGame);
-//		root.getChildren().add(myVBox);
-		
-		
-
+		Button createGame = Utilities.makeButton("Create Game", null);
+		createGame.setOnAction(e->createAuthoring());
+		myVBox = new VBox(30);
+		myVBox.setAlignment(Pos.CENTER);
+		myVBox.getChildren().add(createGame);
+		root.getChildren().add(myVBox);
 		BorderPane splash = new BorderPane();
 		splash.setCenter(root);
 		return splash;
+	}
+	
+	private void createAuthoring(){
+		authEnv = new Authoring();
+		myScene = authEnv.init(myStage.widthProperty(), myStage.heightProperty());
+		myStage.setScene(myScene);
 	}
 
 }
