@@ -4,7 +4,7 @@ import java.util.Collection;
 import java.util.HashSet;
 
 import javafx.scene.shape.Shape;
-import model.component.IComponent;
+import api.IComponent;
 
 public class Collision implements IComponent {
 	private Shape mask;

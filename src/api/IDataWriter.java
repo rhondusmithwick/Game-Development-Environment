@@ -1,10 +1,8 @@
-package datamanagement;
+package api;
 
 import java.io.File;
 
 /**
- * Created by rhondusmithwick on 3/31/16.
- * <p>
  * The class to write serializables to a file.
  *
  * @author Rhondu Smithwick
@@ -12,9 +10,11 @@ import java.io.File;
 public interface IDataWriter<T> {
 
     /**
-     * Writes all these serializables to a file.
+     * Write the objects to a file.
      *
-     * @param serializables the serializables to be written
+     * @param fileName the file to be written to
+     * @param objects  the objects to be written
+     * @return the File written
      */
     File writeToFile(String fileName, T... objects);
 
@@ -22,7 +22,8 @@ public interface IDataWriter<T> {
      * Write the specified objects to a string.
      *
      * @param objects to be written
-     * @return
+     * @return a string of the objects in a data format
      */
+    @SuppressWarnings("unchecked")
     String writeToString(T... objects);
 }

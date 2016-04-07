@@ -1,18 +1,18 @@
-package datamanagement;
+package api;
 
 import java.util.List;
 
 /**
  * Created by rhondusmithwick on 3/31/16.
  * <p>
- * Class to wread in serializables of type T.
+ * Class to read in serializables of type T.
  *
  * @author Rhondu Smithwick
  */
 public interface IDataReader<T> {
 
     /**
-     * Read in the data from a file.
+     * Read in all the data from a file.
      *
      * @return list of objects of type T read from file
      */
