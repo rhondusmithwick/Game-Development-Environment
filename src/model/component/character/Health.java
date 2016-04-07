@@ -1,38 +1,56 @@
 package model.component.character;
 
-import model.component.DataComponent;
+import api.IComponent;
+import javafx.beans.property.SimpleObjectProperty;
+import utility.SingleProperty;
 
+import java.util.List;
 
 /**
- * The class for Health. Contains a single double property.
- * {@inheritDoc}
+ * The health component.
  *
- * @author Roxanne Baker
+ * @author Rhondu Smithwick
  */
+public class Health implements IComponent {
 
-public class Health extends DataComponent<Double> {
+    private final SingleProperty<Double> singleProperty;
 
     /**
-     * Empty constructor. Has attack at 0.
+     * Empty constructor. Defaults to 0.
      */
     public Health() {
-    	super("Health", 0.0);
+        singleProperty = new SingleProperty<>("Health", 0.0);
     }
 
     /**
      * Construct with an initial value.
-     * @param attack the initial value
+     *
+     * @param health the initial value
      */
-    public Health(Double health) {
-       	this();
-       	set(health);
+    public Health(double health) {
+        this();
+        setHealth(health);
     }
 
     /**
-     * @return String representation of health
+     * Get the health property.
+     *
+     * @return the health property
      */
+    public SimpleObjectProperty<Double> healthProperty() {
+        return singleProperty.property1();
+    }
+
+    public double getHealth() {
+        return healthProperty().get();
+    }
+
+    public void setHealth(double health) {
+        healthProperty().set(health);
+    }
+
     @Override
-    public String toString() {
-        return String.format("Health: %s", get());
+    public List<SimpleObjectProperty<?>> getProperties() {
+        return singleProperty.getProperties();
     }
 }

@@ -38,7 +38,6 @@ class EntityTesting implements Tester {
         Velocity velocity = new Velocity(100.0, 10.0);
         IComponent hey = new Position(50.0, 80.0);
         System.out.println(hey.getClass().getSimpleName());
-
         new XMLWriter<IComponent>().writeToFile(DEFAULT_FILE_NAME, position, velocity);
         IEntity entity = entitySystem.createEntityFromDefault(DEFAULT_FILE_NAME);
         System.out.println("Entity read from default file: " + entity);

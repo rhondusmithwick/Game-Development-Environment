@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by rhondusmithwick on 4/1/16.
+ * The XML implementation of a DataReader.
  *
  * @author Rhondu Smithwick
  */

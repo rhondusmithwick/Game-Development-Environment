@@ -1,9 +1,12 @@
 package model.component.physics;
 
-import com.google.common.base.Preconditions;
-import javafx.beans.property.SimpleDoubleProperty;
 import api.IComponent;
-import utility.Unit;
+import com.google.common.base.Preconditions;
+import javafx.beans.property.SimpleObjectProperty;
+import utility.SingleProperty;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Created by rhondusmithwick on 4/3/16.
@@ -12,15 +15,20 @@ import utility.Unit;
  */
 public class Mass implements IComponent {
 
-    private final Unit<SimpleDoubleProperty> unit = new Unit<>(new SimpleDoubleProperty(this, "mass", 0.0));
+    private final SingleProperty<Double> singleProperty;
 
     public Mass() {
+        singleProperty = new SingleProperty<>("Mass", 0.0);
     }
 
     public Mass(double mass) {
+        this();
         setMass(mass);
     }
 
+    public SimpleObjectProperty<Double> massProperty() {
+        return singleProperty.property1();
+    }
 
     public double getMass() {
         return massProperty().get();
@@ -32,7 +40,9 @@ public class Mass implements IComponent {
         massProperty().set(mass);
     }
 
-    public SimpleDoubleProperty massProperty() {
-        return unit._1();
+
+    @Override
+    public List<SimpleObjectProperty<?>> getProperties() {
+        return Collections.singletonList(massProperty());
     }
 }
