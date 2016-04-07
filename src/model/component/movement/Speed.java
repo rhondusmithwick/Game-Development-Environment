@@ -2,7 +2,7 @@ package model.component.movement;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import model.component.IComponent;
+import api.IComponent;
 
 public class Speed implements IComponent{
 	private SimpleDoubleProperty speed;

@@ -1,4 +1,4 @@
-package api;
+package view;
 
 import java.util.Collection;
 
@@ -9,7 +9,7 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
-import model.component.IComponent;
+import api.IComponent;
 /**
  * 
  * @author Melissa Zhang

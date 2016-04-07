@@ -3,13 +3,13 @@ package testing;
 import model.component.movement.Speed;
 import model.entity.Entity;
 import model.entity.EntitySystem;
-import model.entity.IEntity;
-import model.entity.IEntitySystem;
-import api.Editor;
+import api.IEntity;
+import api.IEntitySystem;
+import view.EditorEntity;
+import view.Editor;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import api.EditorEntity;
 
 public class EditorTesting extends Application {
 	private Stage myStage;
