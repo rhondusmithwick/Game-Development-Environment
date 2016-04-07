@@ -1,23 +1,49 @@
 package model.component.visual;
 
 import api.IComponent;
-import javafx.beans.property.SimpleBooleanProperty;
-import utility.Unit;
+import javafx.beans.property.SimpleObjectProperty;
+import utility.SingleProperty;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
- * Created by rhondusmithwick on 4/3/16.
+ * Visible Component for whether an Entity is visible or not.
  *
  * @author Rhondu Smithwick
  */
 public class Visible implements IComponent {
-    private final Unit<SimpleBooleanProperty> unit = new Unit<>(new SimpleBooleanProperty(this, "visible", true));
+    /**
+     * Single Property.
+     */
+    private final SingleProperty<Boolean> singleProperty;
 
+    /**
+     * Empty Constructor. Starts as true.
+     */
     public Visible() {
+        singleProperty = new SingleProperty<>("Visible", true);
     }
 
+    /**
+     * Construct with a initial value.
+     *
+     * @param visible initial value
+     */
     public Visible(boolean visible) {
+        this();
         setVisible(visible);
     }
+
+    /**
+     * Get the visible property.
+     *
+     * @return the visible property.
+     */
+    public SimpleObjectProperty<Boolean> visibleProperty() {
+        return singleProperty.property1();
+    }
+
 
     public boolean getVisible() {
         return visibleProperty().get();
@@ -27,7 +53,8 @@ public class Visible implements IComponent {
         visibleProperty().set(visible);
     }
 
-    public SimpleBooleanProperty visibleProperty() {
-        return unit._1();
+    @Override
+    public List<SimpleObjectProperty<?>> getProperties() {
+        return Collections.singletonList(visibleProperty());
     }
 }

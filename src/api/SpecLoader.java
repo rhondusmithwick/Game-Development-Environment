@@ -16,4 +16,5 @@ public interface SpecLoader<T> {
      * @return the specs from the file
      */
     Map<T, Integer> loadSpecs(String fileName);
+
 }
