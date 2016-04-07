@@ -2,7 +2,12 @@ package model.component.movement;
 
 import api.IComponent;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import utility.Pair;
+import utility.TwoProperty;
+
+import java.util.List;
+import java.util.function.DoubleUnaryOperator;
 
 
 /**
@@ -12,18 +17,20 @@ import utility.Pair;
  */
 public class Velocity implements IComponent {
 
-    private final Pair<SimpleDoubleProperty, SimpleDoubleProperty> pair = new Pair<>(new SimpleDoubleProperty(this, "speed", 0),
-            new SimpleDoubleProperty(this, "direction", 0));;
+    private final TwoProperty<Double, Double> twoProperty;
 
     public Velocity() {
+        twoProperty = new TwoProperty<>("Spped", 0.0, "Direction", 0.0);
     }
 
-    public Velocity(Double speed, Double direction) {
+    public Velocity(double speed, double direction) {
+        this();
         setSpeed(speed);
         setDirection(direction);
     }
 
-    public Velocity(Double vx, Double vy, boolean flag) {
+    public Velocity(double vx, double vy, boolean flag) {
+        this();
         setVXY(vx, vy);
     }
 
@@ -35,8 +42,8 @@ public class Velocity implements IComponent {
         speedProperty().set(speed);
     }
 
-    public SimpleDoubleProperty speedProperty() {
-        return pair._1();
+    public SimpleObjectProperty<Double> speedProperty() {
+        return twoProperty.property1();
     }
 
     public double getDirection() {
@@ -47,16 +54,21 @@ public class Velocity implements IComponent {
         directionProperty().set(direction);
     }
 
-    public SimpleDoubleProperty directionProperty() {
-        return pair._2();
+    public SimpleObjectProperty<Double> directionProperty() {
+        return twoProperty.property2();
+    }
+
+    private double getVHelp(DoubleUnaryOperator func) {
+        double directionRadians = Math.toRadians(getDirection());
+        return getSpeed() * func.applyAsDouble(directionRadians);
     }
 
     public double getVX() {
-        return getSpeed() * Math.cos(Math.toRadians(getDirection()));
+        return getVHelp(Math::cos);
     }
 
     public double getVY() {
-        return getSpeed() * Math.sin(Math.toRadians(getDirection()));
+        return getVHelp(Math::sin);
     }
 
     public void setVXY(double vx, double vy) {
@@ -71,5 +83,10 @@ public class Velocity implements IComponent {
     @Override
     public String toString() {
         return String.format("Velocity: [Speed: %s, Direction: %s]", getSpeed(), getDirection());
+    }
+
+    @Override
+    public List<SimpleObjectProperty<?>> getProperties() {
+        return twoProperty.getProperties();
     }
 }

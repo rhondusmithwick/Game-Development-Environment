@@ -1,10 +1,9 @@
 package enums;
 
-public enum Size {
+public enum GUISize {
 
 	
-    EX_BUTTON(20),
-    VIEW_PADDING(10);
+    AUTHORING_START(20);
 
     private final int size;
 
@@ -13,7 +12,7 @@ public enum Size {
      *
      * @param size size for component
      */
-    Size(int size) {
+    GUISize(int size) {
         this.size = size;
     }
 
