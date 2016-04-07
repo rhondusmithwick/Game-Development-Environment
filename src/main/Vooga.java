@@ -51,6 +51,8 @@ public class Vooga {
 		Button createGame = Utilities.makeButton(myResources.getString("createGame"), null);
 		createGame.setOnAction(e->createAuthoring());
 		myVBox = new VBox(GUISize.ORIG_MENU_PADDING.getSize());
+		myVBox.prefHeightProperty().bind(myStage.heightProperty());
+		myVBox.prefWidthProperty().bind(myStage.widthProperty());
 		myVBox.setAlignment(Pos.CENTER);
 		myVBox.getChildren().add(createGame);
 		root.getChildren().add(myVBox);
