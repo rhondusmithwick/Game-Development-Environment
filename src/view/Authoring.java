@@ -2,7 +2,8 @@ package view;
 
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.Scene;
-import javafx.scene.layout.GridPane;
+import javafx.scene.control.TabPane;
+import enums.GUISize;
 
 public class Authoring {
 
@@ -22,25 +23,13 @@ public class Authoring {
 		 */
 		
 		public static Scene init(ReadOnlyDoubleProperty height, ReadOnlyDoubleProperty width){
-			GridPane display = createDisplay();
+			TabPane display = new TabPane();
 			display.prefHeightProperty().bind(height);
 			display.prefWidthProperty().bind(width);
-			myScene = new Scene(display,500, 500);
+			myScene = new Scene(display,GUISize.AUTHORING_START.getSize(), GUISize.AUTHORING_START.getSize());
 			return myScene;
 		}
 		
-		/**
-		 * Creates the display independently of initializing the scene.
-		 * @return BorderPane in which the contents are the splash screen
-		 */
-
-		private static GridPane createDisplay() {
-			GridPane display = new GridPane();
-			display.setHgap(10);
-			display.setVgap(10);
-			// add children here 
-			return display;
-		}
 
 	}
 
