@@ -1,10 +1,6 @@
 package testing;
 
-import java.io.File;
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
-
+import api.IComponent;
 import api.IEntity;
 import api.IEntitySystem;
 import api.IPhysicsEngine;
@@ -26,91 +22,87 @@ import model.entity.Entity;
 import model.entity.EntitySystem;
 import model.physics.PhysicsEngine;
 
+import java.io.File;
+import java.net.URI;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
 public class BenTester extends Application {
-	private Vooga vooga;
-	private Stage stage;
-	private static final String IMAGE_PATH = "resources/RhonduSmithwick.JPG";
-	private static ImageView testSprite; // BAD PRACTICE: USE final WHENEVER
-											// POSSIBLE, DON'T BE LIKE ME!
-	private static IPhysicsEngine physics; // TODO: remove these things
 
-	public BenTester() {
-		stage = new Stage();
-		vooga = new Vooga(stage);
-	}
+    private static final int MILLISECOND_DELAY = 10;
+    private static final double SECOND_DELAY = 0.01;
+    private static final String IMAGE_PATH = "resources/RhonduSmithwick.JPG";
 
-	public void start(Stage s) {
-		Scene scene = vooga.init();
-		s.setScene(scene);
-		s.show();
+    private static ImageView testSprite; // BAD PRACTICE: USE final WHENEVER
+    // POSSIBLE, DON'T BE LIKE ME!
+    private static IPhysicsEngine physics; // TODO: remove these things
 
-		List<IEntity> list = new ArrayList<IEntity>();
-		IEntity character = new Entity(0);
-		character.forceAddComponent(new Health((double) 100), true);
-		character.forceAddComponent(new Score((double) 100), true);
-		Position pos = new Position(250.0, 250.0);
-		character.forceAddComponent(pos, true);
-		character.forceAddComponent(new ImagePath(IMAGE_PATH), true);
-		character.forceAddComponent(new Velocity(10.0, 10.0), true);
-		list.add(character);
+    private final Vooga vooga;
+    private final Stage stage;
 
-		IEntitySystem system = new EntitySystem();
-		system.addEntities(list);
-		// TODO: don't lazy-initialize!
-		physics = new PhysicsEngine(system);
+    public BenTester() {
+        stage = new Stage();
+        vooga = new Vooga(stage);
+    }
 
-		// TODO: seriously, don't lazy-initialize
-		testSprite = createImage(character.getComponent(ImagePath.class), character.getComponent(Position.class));
+    public void start(Stage s) {
+        Scene scene = vooga.init();
+        s.setScene(scene);
+        s.show();
+        List<IEntity> spriteList = buildSprites();
 
-		int MILLISECOND_DELAY = 10;
-		double SECOND_DELAY = 0.01;
-		// sets the game's loop
-		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> this.step(SECOND_DELAY, list, system));
-		Timeline animation = new Timeline();
-		animation.setCycleCount(Timeline.INDEFINITE);
-		animation.getKeyFrames().add(frame);
-		animation.play();
+        IEntitySystem system = new EntitySystem();
+        system.addEntities(spriteList);
+        // TODO: don't lazy-initialize!
+        physics = new PhysicsEngine(system);
 
-	}
+        // TODO: seriously, don't lazy-initialize
+        IEntity character = spriteList.get(0);
+        ImagePath imagePath = character.getComponent(ImagePath.class);
+        Position position = character.getComponent(Position.class);
+        testSprite = createImage(imagePath, position);
+        vooga.draw(testSprite);
 
-	private void step(double dt, List<IEntity> list, IEntitySystem system) {
-		physics.update(system, dt);
-		drawEntities(list);
-	}
+        // sets the game's loop
+        Timeline animation = buildLoop(system);
+        animation.play();
 
-	// private void test(IPhysicsEngine physics, IEntitySystem system, Position
-	// pos) {
-	// physics.update(system, 1);
-	// System.out.println(pos);
-	// }
+    }
 
-	private void drawEntities(List<IEntity> list) {
-		for (IEntity entity : list) {
-			Position pos = entity.getComponent(Position.class);
-			// ImagePath imagePath = entity.getComponent(ImagePath.class);
-			// ImageView image = createImage(imagePath, pos);
-			// testSprite.setTranslateX(pos.getX());
-			// testSprite.setTranslateY(pos.getY());
-			// testSprite.relocate(pos.getX(), pos.getY());
-			vooga.refreshDraw(testSprite, pos.getX(), pos.getY());
-		}
-	}
+    private void step(double dt, IEntitySystem system) {
+        physics.update(system, dt);
+    }
 
-	private ImageView createImage(ImagePath path, Position pos) {
-		URI resource = new File(path.getImagePath()).toURI();
-		Image image = new Image(resource.toString());
-		ImageView imageView = new ImageView(image);
-		// imageView.setTranslateX(pos.getX());
-		// imageView.setTranslateY(pos.getY());
-		imageView.setFitHeight(100);
-		imageView.setPreserveRatio(true);
-		imageView.xProperty().bind(pos.xProperty());
-		imageView.yProperty().bind(pos.yProperty());
-		return imageView;
-	}
+    private List<IEntity> buildSprites() {
+        IEntity character = new Entity(0);
+        List<IComponent> components = Arrays.asList(new Health(100.0),
+                new Score(100), new Position(250.0, 250.0),
+                new ImagePath(IMAGE_PATH), new Velocity(10.0, 10.0));
+        character.forceAddComponents(components, true);
+        return Collections.singletonList(character);
+    }
 
-	public static void main(String[] args) {
-		launch(args);
-	}
+    private ImageView createImage(ImagePath path, Position pos) {
+        URI resource = new File(path.getImagePath()).toURI();
+        Image image = new Image(resource.toString());
+        ImageView imageView = new ImageView(image);
+        imageView.setFitHeight(100);
+        imageView.setPreserveRatio(true);
+        imageView.translateXProperty().bind(pos.xProperty());
+        imageView.translateYProperty().bind(pos.yProperty());
+        return imageView;
+    }
 
+    public static void main(String[] args) {
+        launch(args);
+    }
+
+    private Timeline buildLoop(IEntitySystem system) {
+        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> step(SECOND_DELAY, system));
+        Timeline animation = new Timeline();
+        animation.setCycleCount(Timeline.INDEFINITE);
+        animation.getKeyFrames().add(frame);
+        return animation;
+    }
 }
