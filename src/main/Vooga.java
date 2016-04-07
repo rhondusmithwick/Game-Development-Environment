@@ -50,7 +50,6 @@ public class Vooga {
 		root = new Group();
 		Button createGame = Utilities.makeButton("Create Game", null);
 		createGame.setOnAction(e->createAuthoring());
-
 		myVBox = new VBox(30);
 		myVBox.setAlignment(Pos.CENTER);
 		myVBox.getChildren().add(createGame);

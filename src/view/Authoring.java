@@ -21,7 +21,7 @@ public class Authoring {
 		 * @param language that the user chooses the program from.
 		 */
 		public Authoring(){
-			myResources = ResourceBundle.getBundle("resources/english");
+			myResources = ResourceBundle.getBundle("english");
 		}
 
 		/**
