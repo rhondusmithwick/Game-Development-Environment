@@ -20,7 +20,7 @@ public class Authoring {
 		 * Constructor that takes in the language choice of the user.
 		 * @param language that the user chooses the program from.
 		 */
-		public Authoring(String lang){
+		public Authoring(){
 			myResources = ResourceBundle.getBundle("resources/english");
 		}
 
@@ -29,7 +29,7 @@ public class Authoring {
 		 * @return the splash screen scene
 		 */
 		
-		public Scene init(ReadOnlyDoubleProperty height, ReadOnlyDoubleProperty width){
+		public  Scene init(ReadOnlyDoubleProperty height, ReadOnlyDoubleProperty width){
 			display = new TabPane();
 			display.prefHeightProperty().bind(height);
 			display.prefWidthProperty().bind(width);

@@ -27,7 +27,7 @@ public class EditorTesting extends Application {
 		myStage = stage;
         IEntity entity = entitySystem.createEntityFromLoad(LOAD_FILE_NAME);
 		Editor editorEntity = (Editor) new EditorEntity((Entity) entity);
-		Scene scene = new Scene(editorEntity.getGroup());
+		Scene scene = new Scene(editorEntity.getPane());
 		myStage.setScene(scene);
 		myStage.show();
 	}
