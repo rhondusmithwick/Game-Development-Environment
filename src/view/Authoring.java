@@ -3,6 +3,7 @@ package view;
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.Scene;
 import javafx.scene.control.TabPane;
+import enums.GUISize;
 
 public class Authoring {
 
@@ -25,7 +26,7 @@ public class Authoring {
 			TabPane display = new TabPane();
 			display.prefHeightProperty().bind(height);
 			display.prefWidthProperty().bind(width);
-			myScene = new Scene(display,500, 500);
+			myScene = new Scene(display,GUISize.AUTHORING_START.getSize(), GUISize.AUTHORING_START.getSize());
 			return myScene;
 		}
 		
