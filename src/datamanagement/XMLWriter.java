@@ -13,7 +13,7 @@ import java.io.StringWriter;
 import java.io.Writer;
 
 /**
- * DataWriter for XML files.
+ * The XML implementation of a DataWriter.
  *
  * @author Rhondu Smithwick
  */

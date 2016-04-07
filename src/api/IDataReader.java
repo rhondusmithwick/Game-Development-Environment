@@ -3,8 +3,6 @@ package api;
 import java.util.List;
 
 /**
- * Created by rhondusmithwick on 3/31/16.
- * <p>
  * Class to read in serializables of type T.
  *
  * @author Rhondu Smithwick
