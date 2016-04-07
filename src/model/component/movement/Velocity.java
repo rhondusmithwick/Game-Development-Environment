@@ -4,6 +4,8 @@ import api.IComponent;
 import javafx.beans.property.SimpleDoubleProperty;
 import utility.Pair;
 
+import java.util.function.DoubleUnaryOperator;
+
 
 /**
  * Created by rhondusmithwick on 4/1/16.
@@ -13,7 +15,8 @@ import utility.Pair;
 public class Velocity implements IComponent {
 
     private final Pair<SimpleDoubleProperty, SimpleDoubleProperty> pair = new Pair<>(new SimpleDoubleProperty(this, "speed", 0),
-            new SimpleDoubleProperty(this, "direction", 0));;
+            new SimpleDoubleProperty(this, "direction", 0));
+    ;
 
     public Velocity() {
     }
@@ -51,12 +54,17 @@ public class Velocity implements IComponent {
         return pair._2();
     }
 
+    private double getVHelp(DoubleUnaryOperator func) {
+        double directionRadians = Math.toRadians(getDirection());
+        return getSpeed() * func.applyAsDouble(directionRadians);
+    }
+
     public double getVX() {
-        return getSpeed() * Math.cos(Math.toRadians(getDirection()));
+        return getVHelp(Math::cos);
     }
 
     public double getVY() {
-        return getSpeed() * Math.sin(Math.toRadians(getDirection()));
+        return getVHelp(Math::sin);
     }
 
     public void setVXY(double vx, double vy) {

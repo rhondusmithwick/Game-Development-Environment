@@ -1,0 +1,52 @@
+.root {
+	-fx-font-size: 12pt;
+	-fx-font-family: "Avenir Black";
+	-fx-base: #ffffff;
+	-fx-background: #0099ff;
+}
+
+.button {
+	-fx-text-fill: #000000;
+	-fx-background-color: #cc0066;
+	-fx-border-radius: 20;
+	-fx-background-radius: 20;
+	-fx-padding: 8;
+}
+
+.slider {
+	-fx-text-fill: #cc0066;
+	-fx-prompt-text-fill: #cc0066;
+}
+
+.button:hover {
+	-fx-background-color: #ffff00;
+
+}
+
+.combo-box-base {
+	-fx-text-base-color: #000000;
+	-fx-background-color: #cc0066;
+	-fx-border-radius: 20;
+	-fx-background-radius: 20;
+}
+
+.combo-box-base:hover {
+	-fx-background-color: #ffff00;
+	-fx-text-base-color: #000000;
+}
+
+.combo-box-popup .list-view .list-cell {
+	-fx-background-color: #cc0066;
+	-fx-text-base-color: #000000;
+}
+
+.combo-box-popup .list-view .list-cell:filled:hover {
+	-fx-background-color: #ffff00;
+	-fx-text-fill: #000000;
+}
+
+.label {
+	-fx-font-size: 10pt;
+	-fx-font-family: "Arial Black";
+	-fx-text-fill: #ff66cc;
+}
