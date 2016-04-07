@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import api.IComponent;
+import api.IEntity;
 /**
  * 
  * @author Melissa Zhang
