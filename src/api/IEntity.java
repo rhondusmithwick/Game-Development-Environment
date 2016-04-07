@@ -1,5 +1,7 @@
 package api;
 
+import model.entity.ResourceFileSpecLoader;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -200,6 +202,17 @@ public interface IEntity extends ISerializable {
      * @return the specs map
      */
     Map<Class<? extends IComponent>, Integer> getSpecs();
+
+    /**
+     * Load the specs from a resource properties file.
+     *
+     * @param fileName the fileName
+     */
+    default void loadSpecsFromPropertiesFile(String fileName) {
+        SpecLoader<Class<? extends IComponent>> specLoader = new ResourceFileSpecLoader();
+        Map<Class<? extends IComponent>, Integer> specs = specLoader.loadSpecs(fileName);
+        setSpecs(specs);
+    }
 
     /**
      * Set specs with a map.
