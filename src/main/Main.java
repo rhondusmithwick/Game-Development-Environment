@@ -1,5 +1,6 @@
 package main;
 
+import enums.GUISize;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
@@ -16,8 +17,8 @@ public class Main extends Application{
 
 			myStage = stage;
 			myStage.setTitle("VOOGA");
-			myStage.setWidth(700);
-			myStage.setHeight(700);
+			myStage.setWidth(GUISize.MAIN_SIZE.getSize());
+			myStage.setHeight(GUISize.MAIN_SIZE.getSize());
 			Vooga vooga = new Vooga(myStage);
 			myStage.setScene(vooga.init());
 			myStage.show();

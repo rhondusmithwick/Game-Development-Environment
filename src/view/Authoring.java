@@ -15,13 +15,15 @@ public class Authoring {
 		private ResourceBundle myResources;
 		private Scene myScene;
 		private TabPane display;
+		private String language;
 
 		/**
 		 * Constructor that takes in the language choice of the user.
 		 * @param language that the user chooses the program from.
 		 */
-		public Authoring(){
-			myResources = ResourceBundle.getBundle("english");
+		public Authoring(String language){
+			this.language = language;
+			myResources = ResourceBundle.getBundle(language);
 		}
 
 		/**
@@ -31,11 +33,11 @@ public class Authoring {
 		
 		public  Scene init(ReadOnlyDoubleProperty height, ReadOnlyDoubleProperty width){
 			display = new TabPane();
+			GameEditor gEdit = new GameEditor(this, language);
+			createTab(gEdit.getPane(), "gDeets", false);
+			myScene = new Scene(display,GUISize.AUTHORING_WIDTH.getSize(), GUISize.AUTHORING_HEIGHT.getSize());
 			display.prefHeightProperty().bind(height);
 			display.prefWidthProperty().bind(width);
-			GameEditor gEdit = new GameEditor(this);
-			createTab(gEdit.getPane(), "gDeets", false);
-			myScene = new Scene(display,GUISize.AUTHORING_START.getSize(), GUISize.AUTHORING_START.getSize());
 			return myScene;
 		}
 		

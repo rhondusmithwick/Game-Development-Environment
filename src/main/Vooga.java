@@ -1,5 +1,9 @@
 package main;
 
+import java.util.ResourceBundle;
+
+import enums.DefaultStrings;
+import enums.GUISize;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -17,6 +21,7 @@ public class Vooga {
 	private Group root;
 	private Authoring authEnv;
 	private Scene myScene;
+	private ResourceBundle myResources;
 	/**
 	 * Constructor that takes in a stage to display the graphics.
 	 * @param stage
@@ -24,6 +29,7 @@ public class Vooga {
 	
 	public Vooga(Stage stage) {
 		myStage = stage;
+		myResources = ResourceBundle.getBundle(DefaultStrings.DEFAULT_LANGUAGE.getDefault());
 	}
 
 	/**
@@ -32,7 +38,7 @@ public class Vooga {
 	 */
 	
 	public Scene init(){
-		myScene = new Scene(createDisplay(), 500, 500);
+		myScene = new Scene(createDisplay(), GUISize.MAIN_SIZE.getSize(), GUISize.MAIN_SIZE.getSize());
 		return myScene;
 	}
 	
@@ -42,9 +48,9 @@ public class Vooga {
 
 	private Group createDisplay() {
 		root = new Group();
-		Button createGame = Utilities.makeButton("Create Game", null);
+		Button createGame = Utilities.makeButton(myResources.getString("createGame"), null);
 		createGame.setOnAction(e->createAuthoring());
-		myVBox = new VBox(30);
+		myVBox = new VBox(GUISize.ORIG_MENU_PADDING.getSize());
 		myVBox.setAlignment(Pos.CENTER);
 		myVBox.getChildren().add(createGame);
 		root.getChildren().add(myVBox);
@@ -52,9 +58,13 @@ public class Vooga {
 	}
 	
 	private void createAuthoring(){
-		authEnv = new Authoring();
+		myStage.hide();
+		myStage.setWidth(GUISize.AUTHORING_WIDTH.getSize());
+		myStage.setHeight(GUISize.AUTHORING_HEIGHT.getSize());
+		authEnv = new Authoring(DefaultStrings.DEFAULT_LANGUAGE.getDefault());
 		myScene = authEnv.init(myStage.widthProperty(), myStage.heightProperty());
 		myStage.setScene(myScene);
+		myStage.show();
 	}
 
 }

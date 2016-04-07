@@ -2,12 +2,12 @@ package view;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import api.IEditor;
+import enums.DefaultStrings;
 import enums.FileExtensions;
+import enums.GUISize;
 import enums.ViewInsets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -32,12 +32,12 @@ public class GameEditor extends Editor {
 	private EditorFactory editFact;
 	private Authoring authEnv;
 	
-	GameEditor(Authoring authEnv){
-		pane = new VBox(20);
+	GameEditor(Authoring authEnv, String language){
+		pane = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
 		pane.setAlignment(Pos.TOP_LEFT);
 		entryList = new ArrayList<>();
-		myResources = ResourceBundle.getBundle("english");
+		myResources = ResourceBundle.getBundle(language);
 		editFact = new EditorFactory();
 		this.authEnv=authEnv;
 		
@@ -57,11 +57,24 @@ public class GameEditor extends Editor {
 
 	@Override
 	public void populateLayout() {
-		createTextEntries();
+		createTextEntry("gName");
+		createTextEntry("gDesc");
 		showIcon();
 		editorButtons();
-		pane.getChildren().add(Utilities.makeButton("Save Game", e->saveGame()));
+		pane.getChildren().add(Utilities.makeButton(myResources.getString("saveGame"), e->saveGame()));
 
+	}
+
+	
+	
+	private void createTextEntry(String name){
+		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
+		Label title = new Label(myResources.getString(name));
+		TextArea entryBox = Utilities.makeTextArea(myResources.getString(name));
+		container.getChildren().addAll(title, entryBox);
+		HBox.setHgrow(entryBox, Priority.SOMETIMES);
+		pane.getChildren().add(container);
+		entryList.add(entryBox);
 	}
 
 	private void saveGame() {
@@ -69,7 +82,8 @@ public class GameEditor extends Editor {
 	}
 
 	private void editorButtons() {
-		pane.getChildren().add(Utilities.makeButton("Create Entity", e->createEditor("EditorEntity")));
+		pane.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENTITY_EDITOR_NAME.getDefault()), 
+				e->createEditor(DefaultStrings.ENTITY_EDITOR_NAME.getDefault())));
 		
 	}
 
@@ -81,45 +95,32 @@ public class GameEditor extends Editor {
 	}
 
 	private void showIcon() {
-		HBox iconBox = new HBox(50);
-		Label iconTitle = new Label("Game Icon:");
+		HBox iconBox = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
+		iconBox.setAlignment(Pos.CENTER_LEFT);
+		Label iconTitle = new Label(myResources.getString("gIcon"));
 		icon = new ImageView();
-		setIconPicture(new File("resources/default_icon.png"));
-		iconBox.getChildren().addAll(iconTitle, icon, Utilities.makeButton("Choose Icon", e->updateIcon()));
+		setIconPicture(new File(DefaultStrings.DEFAULT_ICON.getDefault()));
+		iconBox.getChildren().addAll(iconTitle, icon, Utilities.makeButton(myResources.getString("cIcon"), e->updateIcon()));
 		pane.getChildren().add(iconBox);
 	}
 
 	private void setIconPicture(File file) {
 		iconPath = file.toURI().toString();
 		icon.setImage(new Image(iconPath));
-		icon.setFitHeight(50);
-		icon.setFitWidth(50);
+		icon.setFitHeight(GUISize.ICON_SIZE.getSize());
+		icon.setFitWidth(GUISize.ICON_SIZE.getSize());
 	}
 
 	private void updateIcon() {
 		Stage s = new Stage();
 		FileChooser fChoose = new FileChooser();
-		fChoose.setTitle("Choose Icon");
+		fChoose.setTitle(myResources.getString("cIcon"));
 		fChoose.getExtensionFilters().addAll(FileExtensions.GIF.getFilter(), FileExtensions.JPG.getFilter(), FileExtensions.PNG.getFilter());
 		File file = fChoose.showOpenDialog(s);
 		setIconPicture(file);
 		
 	}
 
-	private void createTextEntries() {
-		HBox name = new HBox(50);
-		Label nTitle = new Label("Game Name:");
-		TextArea nameBox = Utilities.makeTextArea("Game Name");
-		name.getChildren().addAll(nTitle, nameBox);
-		HBox.setHgrow(nameBox, Priority.SOMETIMES);
-		HBox desc = new HBox(50);
-		Label dTitle = new Label("Game Description:");
-		TextArea description = Utilities.makeTextArea("Game Description");
-		HBox.setHgrow(description, Priority.SOMETIMES);
-		desc.getChildren().addAll(dTitle, description);
-		pane.getChildren().addAll(name, desc);
-		entryList.addAll(Arrays.asList(nameBox, description));
-	}
 
 	@Override
 	public void updateEditor() {
