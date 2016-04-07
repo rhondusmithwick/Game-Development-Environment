@@ -1,7 +1,8 @@
 package model.entity;
 
+import api.IComponent;
+import api.SpecLoader;
 import com.google.common.collect.Maps;
-import model.component.IComponent;
 
 import java.util.Enumeration;
 import java.util.Map;
@@ -9,6 +10,7 @@ import java.util.ResourceBundle;
 
 /**
  * A SpecLoader for resource files.
+ * {@inheritDoc}
  *
  * @author Rhondu Smithwick
  */

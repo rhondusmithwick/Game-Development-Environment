@@ -1,7 +1,7 @@
 package model.component.character;
 
+import api.IComponent;
 import javafx.beans.property.SimpleDoubleProperty;
-import model.component.IComponent;
 import utility.Unit;
 
 /***
@@ -11,14 +11,12 @@ import utility.Unit;
  */
 public class Score implements IComponent {
 
-    private final Unit<SimpleDoubleProperty> unit;
+    private final Unit<SimpleDoubleProperty> unit = new Unit<>(new SimpleDoubleProperty(this, "score", 0.0));
 
     public Score() {
-        unit = new Unit<>(new SimpleDoubleProperty(this, "score", 0.0));
     }
 
     public Score(double score) {
-        this();
         setScore(score);
     }
 

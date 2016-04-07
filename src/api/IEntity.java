@@ -1,7 +1,4 @@
-package model.entity;
-
-import api.ISerializable;
-import model.component.IComponent;
+package api;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -16,10 +13,11 @@ import java.util.stream.Collectors;
  * @author Rhondu Smithwick, Tom Wu
  */
 public interface IEntity extends ISerializable {
-	/**
-	 * Gets the unique id of this entity
-	 * @return id the unique id of this entity
-	 */
+    /**
+     * Gets the unique id of this entity
+     *
+     * @return id the unique id of this entity
+     */
     int getID();
 
     /**

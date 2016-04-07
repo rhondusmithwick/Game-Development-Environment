@@ -1,12 +1,12 @@
 package usecases;
 
 import api.IComponent;
-import api.IEnvironmentEditor;
+import api.IEntityEditor;
 
 import java.util.List;
 
 
-public class EnvironmentEditor implements IEnvironmentEditor {
+public class EntityEditor implements IEntityEditor {
 
     @Override
     public List<IComponent> getComponents() {
@@ -15,7 +15,13 @@ public class EnvironmentEditor implements IEnvironmentEditor {
     }
 
     @Override
-    public List<System> getSystems() {
+    public IComponent editComponent(IComponent myComp) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
+    @Override
+    public IComponent getSingleComponent(IComponent myComp) {
         // TODO Auto-generated method stub
         return null;
     }
@@ -27,13 +33,13 @@ public class EnvironmentEditor implements IEnvironmentEditor {
     }
 
     @Override
-    public void writeToFile(String musicURL) {
+    public void close() {
         // TODO Auto-generated method stub
 
     }
 
     @Override
-    public void close() {
+    public void writeToFile(String filename) {
         // TODO Auto-generated method stub
 
     }

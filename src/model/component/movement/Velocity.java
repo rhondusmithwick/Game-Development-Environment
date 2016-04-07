@@ -1,8 +1,10 @@
 package model.component.movement;
 
+import api.IComponent;
 import javafx.beans.property.SimpleDoubleProperty;
-import model.component.IComponent;
 import utility.Pair;
+
+import java.util.function.DoubleUnaryOperator;
 
 
 /**
@@ -12,21 +14,19 @@ import utility.Pair;
  */
 public class Velocity implements IComponent {
 
-    private final Pair<SimpleDoubleProperty, SimpleDoubleProperty> pair;
+    private final Pair<SimpleDoubleProperty, SimpleDoubleProperty> pair = new Pair<>(new SimpleDoubleProperty(this, "speed", 0),
+            new SimpleDoubleProperty(this, "direction", 0));
+    ;
 
     public Velocity() {
-        pair = new Pair<>(new SimpleDoubleProperty(this, "speed", 0),
-                new SimpleDoubleProperty(this, "direction", 0));
     }
 
     public Velocity(Double speed, Double direction) {
-        this();
         setSpeed(speed);
         setDirection(direction);
     }
 
     public Velocity(Double vx, Double vy, boolean flag) {
-        this();
         setVXY(vx, vy);
     }
 
@@ -54,12 +54,17 @@ public class Velocity implements IComponent {
         return pair._2();
     }
 
+    private double getVHelp(DoubleUnaryOperator func) {
+        double directionRadians = Math.toRadians(getDirection());
+        return getSpeed() * func.applyAsDouble(directionRadians);
+    }
+
     public double getVX() {
-        return getSpeed() * Math.cos(Math.toRadians(getDirection()));
+        return getVHelp(Math::cos);
     }
 
     public double getVY() {
-        return getSpeed() * Math.sin(Math.toRadians(getDirection()));
+        return getVHelp(Math::sin);
     }
 
     public void setVXY(double vx, double vy) {
