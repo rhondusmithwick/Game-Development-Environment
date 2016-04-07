@@ -1,6 +1,8 @@
 package datamanagement;
 
 
+import api.IDataWriter;
+
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;

@@ -11,9 +11,14 @@ import javafx.scene.shape.Shape;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.Collision;
-import model.entity.IEntity;
-import model.entity.IEntitySystem;
+import api.IEntity;
+import api.IEntitySystem;
 
+/**
+ * Implementation of the physics engine
+ *
+ * @author Tom Wu
+ */
 public class PhysicsEngine implements IPhysicsEngine {
 	IEntitySystem settings;
 
@@ -21,10 +26,10 @@ public class PhysicsEngine implements IPhysicsEngine {
 		this.settings = settings;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public IEntitySystem update(IEntitySystem universe, double dt) {
-		Collection<IEntity> dynamicEntities = universe.getAllEntities().stream()
-				.filter(p -> p.hasComponents(Position.class, Velocity.class)).collect(Collectors.toSet());
+		Collection<IEntity> dynamicEntities = universe.getEntitiesWithComponents(Position.class, Velocity.class);
 		dynamicEntities.stream().forEach(p -> {
 			Position pos = p.getComponent(Position.class);
 			Velocity velocity = p.getComponent(Velocity.class);
@@ -35,10 +40,14 @@ public class PhysicsEngine implements IPhysicsEngine {
 		return universe;
 	}
 
-	public void applyImpulse(IEntity body, Impulse J) {
+	@Override
+	public boolean applyImpulse(IEntity body, Impulse J) {
 		if (body.hasComponent(Velocity.class)) {
 			Velocity v = body.getComponent(Velocity.class);
 			v.add(J.getJx(), J.getJy());
+			return true;
+		} else {
+			return false;
 		}
 	}
 
@@ -71,6 +80,12 @@ public class PhysicsEngine implements IPhysicsEngine {
 		Set<String> s1 = new HashSet<String>(IDList1);
 		Set<String> s2 = new HashSet<String>(IDList2);
 		return (Sets.intersection(s1, s2).size() > 0);
+	}
+
+	@Override
+	public IEntitySystem updateCollisions(IEntitySystem universe, boolean dynamicsOn) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

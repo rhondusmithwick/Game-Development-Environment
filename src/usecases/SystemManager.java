@@ -1,6 +1,6 @@
 package usecases;
 
-import model.entity.IEntitySystem;
+import api.IEntitySystem;
 import api.IEventSystem;
 import api.ISystem;
 import api.ISystemManager;

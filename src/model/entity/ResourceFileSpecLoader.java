@@ -1,0 +1,48 @@
+package model.entity;
+
+import api.SpecLoader;
+import com.google.common.collect.Maps;
+import api.IComponent;
+
+import java.util.Enumeration;
+import java.util.Map;
+import java.util.ResourceBundle;
+
+/**
+ * A SpecLoader for resource files.
+ *
+ * @author Rhondu Smithwick
+ */
+public class ResourceFileSpecLoader implements SpecLoader<Class<? extends IComponent>> {
+
+    /**
+     * The resource Bundle for component locations.
+     */
+    private final ResourceBundle locationsBundle = ResourceBundle.getBundle("resources/componentLocations");
+
+    /**
+     * {@inheritDoc}
+     * An implementation for resource bundles.
+     *
+     * @param resourceFile the resource file.
+     * @return the specs map
+     */
+    @Override
+    public Map<Class<? extends IComponent>, Integer> loadSpecs(String resourceFile) {
+        ResourceBundle bundle = ResourceBundle.getBundle(resourceFile);
+        Map<Class<? extends IComponent>, Integer> specs = Maps.newHashMap();
+        Enumeration<String> iter = bundle.getKeys();
+        while (iter.hasMoreElements()) {
+            String component = iter.nextElement();
+            Integer numSpec = Integer.parseInt(bundle.getString(component));
+            String location = locationsBundle.getString(component);
+            try {
+                Class<? extends IComponent> componentClass = (Class<? extends IComponent>) Class.forName(location);
+                specs.put(componentClass, numSpec);
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
+        return specs;
+    }
+}
