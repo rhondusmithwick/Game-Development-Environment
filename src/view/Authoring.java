@@ -33,7 +33,8 @@ public class Authoring {
 			display = new TabPane();
 			display.prefHeightProperty().bind(height);
 			display.prefWidthProperty().bind(width);
-			createTab(new Pane(), "error");
+			GameEditor gEdit = new GameEditor();
+			createTab(gEdit.getPane(), "gDeets");
 			myScene = new Scene(display,GUISize.AUTHORING_START.getSize(), GUISize.AUTHORING_START.getSize());
 			return myScene;
 		}
