@@ -33,15 +33,16 @@ public class Authoring {
 			display = new TabPane();
 			display.prefHeightProperty().bind(height);
 			display.prefWidthProperty().bind(width);
-			GameEditor gEdit = new GameEditor();
-			createTab(gEdit.getPane(), "gDeets");
+			GameEditor gEdit = new GameEditor(this);
+			createTab(gEdit.getPane(), "gDeets", false);
 			myScene = new Scene(display,GUISize.AUTHORING_START.getSize(), GUISize.AUTHORING_START.getSize());
 			return myScene;
 		}
 		
-		public void createTab(Pane tabContent, String key){
+		public void createTab(Pane tabContent, String key, boolean closable){
 			Tab tab = new Tab(myResources.getString(key));
 			tab.setContent(tabContent);
+			tab.setClosable(closable);
 			tabContent.prefHeightProperty().bind(display.heightProperty().subtract(GUISize.TOP_TAB.getSize()));
 			tabContent.prefWidthProperty().bind(display.widthProperty());
 			display.getTabs().add(tab);

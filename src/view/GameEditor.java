@@ -5,6 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import api.IEditor;
 import enums.FileExtensions;
 import enums.ViewInsets;
 import javafx.geometry.Pos;
@@ -22,18 +24,23 @@ import javafx.stage.Stage;
 
 public class GameEditor extends Editor {
 	
-	private VBox vBox;
+	private VBox pane;
 	private List<Node> entryList;
 	private String iconPath;
 	private ImageView icon;
 	private ResourceBundle myResources;
+	private EditorFactory editFact;
+	private Authoring authEnv;
 	
-	GameEditor(){
-		vBox = new VBox(20);
-		vBox.setPadding(ViewInsets.GAME_EDIT.getInset());
-		vBox.setAlignment(Pos.TOP_CENTER);
+	GameEditor(Authoring authEnv){
+		pane = new VBox(20);
+		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
+		pane.setAlignment(Pos.TOP_LEFT);
 		entryList = new ArrayList<>();
 		myResources = ResourceBundle.getBundle("english");
+		editFact = new EditorFactory();
+		this.authEnv=authEnv;
+		
 	}
 
 	@Override
@@ -44,18 +51,36 @@ public class GameEditor extends Editor {
 
 	@Override
 	public Pane getPane() {
-		populateLayout(vBox);
-		return vBox;
+		populateLayout();
+		return pane;
 	}
 
 	@Override
-	public void populateLayout(Pane pane) {
-		createTextEntries(pane);
-		showIcon(pane);
+	public void populateLayout() {
+		createTextEntries();
+		showIcon();
+		editorButtons();
+		pane.getChildren().add(Utilities.makeButton("Save Game", e->saveGame()));
 
 	}
 
-	private void showIcon(Pane pane) {
+	private void saveGame() {
+		// TODO Auto-generated method stub
+	}
+
+	private void editorButtons() {
+		pane.getChildren().add(Utilities.makeButton("Create Entity", e->createEditor("EditorEntity")));
+		
+	}
+
+	private void createEditor(String editName) {
+		IEditor editor = editFact.createEditor(editName);
+		editor.populateLayout();
+		authEnv.createTab(editor.getPane(), editName, true);
+		
+	}
+
+	private void showIcon() {
 		HBox iconBox = new HBox(50);
 		Label iconTitle = new Label("Game Icon:");
 		icon = new ImageView();
@@ -81,7 +106,7 @@ public class GameEditor extends Editor {
 		
 	}
 
-	private void createTextEntries(Pane pane) {
+	private void createTextEntries() {
 		HBox name = new HBox(50);
 		Label nTitle = new Label("Game Name:");
 		TextArea nameBox = Utilities.makeTextArea("Game Name");
@@ -98,7 +123,7 @@ public class GameEditor extends Editor {
 
 	@Override
 	public void updateEditor() {
-		populateLayout(vBox);
+		populateLayout();
 
 	}
 

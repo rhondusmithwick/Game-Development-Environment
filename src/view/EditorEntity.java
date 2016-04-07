@@ -5,12 +5,10 @@ import java.util.Collection;
 import gui.GuiObject;
 import gui.GuiObjectFactory;
 import model.entity.Entity;
-import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import api.IComponent;
-import api.IEntity;
 /**
  * 
  * @author Melissa Zhang
@@ -36,19 +34,19 @@ public class EditorEntity extends Editor{
 
 	@Override
 	public Pane getPane() {
-		populateLayout(editorPane);
+		populateLayout();
 		return editorPane;
 	}
 
 	@Override
-	public void populateLayout(Pane pane) {
+	public void populateLayout() {
 		GuiObjectFactory guiFactory = new GuiObjectFactory();
 		Collection<IComponent> componentList = myEntity.getAllComponents();
 		for (IComponent component: componentList){
 			System.out.println(component.getClass().getSimpleName());
 			GuiObject object = guiFactory.createNewGuiObject(component.getClass().getSimpleName(), component);
 			if (object!=null){
-				pane.getChildren().add((Node) object.getGuiNode());
+				editorPane.getChildren().add((Node) object.getGuiNode());
 			}
 		}
 			
@@ -58,7 +56,7 @@ public class EditorEntity extends Editor{
 
 	@Override
 	public void updateEditor() {
-		populateLayout(editorPane);
+		populateLayout();
 	}
 
 
