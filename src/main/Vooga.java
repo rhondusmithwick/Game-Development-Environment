@@ -1,5 +1,7 @@
 package main;
 
+import java.util.ResourceBundle;
+
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -16,12 +18,15 @@ public class Vooga {
 	private Stage myStage;
 	private VBox myVBox;
 	private Group root;
+	private ResourceBundle myResources;
+	private Authoring myAuthor;
 	/**
 	 * Constructor that takes in a stage to display the graphics.
 	 * @param stage
 	 */
 	
 	public Vooga(Stage stage) {
+		myResources = ResourceBundle.getBundle("authoring");
 		myStage = stage;
 	}
 
@@ -32,7 +37,7 @@ public class Vooga {
 	
 	public Scene init(){
 		BorderPane display = createDisplay();
-		Scene myScene = new Scene(display, 500, 500);
+		Scene myScene = new Scene(display, Integer.parseInt(myResources.getString("splashWidth")), Integer.parseInt(myResources.getString("splashHeight")));
 		return myScene;
 	}
 	
@@ -46,15 +51,10 @@ public class Vooga {
 	 */
 	private BorderPane createDisplay() {
 		root = new Group();
-//		Button createGame = Utilities.makeButton("Create Game", e -> myStage.setScene(Authoring.init(myStage.widthProperty(), myStage.heightProperty())));
-//
-//		myVBox = new VBox(30);
-//		myVBox.setAlignment(Pos.CENTER);
-//		myVBox.getChildren().add(createGame);
-//		root.getChildren().add(myVBox);
-		
-		
-
+		Button createGameButton = Utilities.makeButton(myResources.getString("createGameButtonLabel"), e -> myStage.setScene(myAuthor.init(myStage.widthProperty(), myStage.heightProperty())));
+		Button playGameButton = Utilities.makeButton(myResources.getString("playGameButtonLabel"), null);
+		root.getChildren().add(createGameButton);
+		//root.getChildren().add(playGameButton);
 		BorderPane splash = new BorderPane();
 		splash.setCenter(root);
 		return splash;

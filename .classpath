@@ -13,5 +13,6 @@
 	<classpathentry kind="lib" path="lib/xstream-src.jar"/>
 	<classpathentry kind="lib" path="lib/guava-19.0.jar"/>
 	<classpathentry kind="lib" path="lib/guava-gwt-19.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
