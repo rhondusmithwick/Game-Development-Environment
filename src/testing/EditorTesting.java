@@ -36,7 +36,6 @@ public class EditorTesting extends Application {
 	 * Launches our program.
 	 * @param args
 	 */
-
 	public static void main (String[] args) {
 		launch(args);
 	}
