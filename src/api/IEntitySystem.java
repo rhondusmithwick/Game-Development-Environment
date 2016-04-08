@@ -1,5 +1,6 @@
 package api;
 
+import com.google.common.collect.Collections2;
 import datamanagement.XMLReader;
 
 import java.util.Arrays;
@@ -38,7 +39,7 @@ public interface IEntitySystem extends ISerializable {
      * @param id of the entity
      * @return entity with provided id
      */
-    IEntity getEntity(int id);
+    IEntity getEntity(String id);
 
     /**
      * Get all entites in the system.
@@ -48,19 +49,28 @@ public interface IEntitySystem extends ISerializable {
     Collection<IEntity> getAllEntities();
 
     /**
+     * Get all IDs in this system.
+     *
+     * @return all the IDs in this system
+     */
+    default Collection<String> getAllIDS() {
+        return Collections2.transform(getAllEntities(), IEntity::getID);
+    }
+
+    /**
      * Check whether this system contains an entity with provided ID.
      *
      * @param id to check
      * @return true if system contains this entity
      */
-    boolean containsID(int id);
+    boolean containsID(String id);
 
     /**
      * Check if system contains this entity.
      *
      * @param entity to check
      * @return true if system contains this entity
-     * @see #containsID(int)
+     * @see #containsID(String)
      * @see IEntity#getID()
      */
     default boolean containsEntity(IEntity entity) {
@@ -95,12 +105,7 @@ public interface IEntitySystem extends ISerializable {
      * @param id to remove
      * @return true if removed
      */
-    boolean removeEntity(int id);
-
-    /**
-     * @return next available id
-     */
-    int getNextAvailableID();
+    boolean removeEntity(String id);
 
     /**
      * Created an entity from a file containing an entity.
@@ -186,13 +191,13 @@ public interface IEntitySystem extends ISerializable {
     /**
      * Get component using an id
      *
+     * @param <T>           type of component
      * @param id            of the entity
      * @param componentType the type of component
-     * @param <T>           type of component
      * @return component with type T of entity with id id
      * @see IEntity#getComponentList(Class)
      */
-    default <T extends IComponent> List<T> getComponentOfEntity(int id, Class<T> componentType) {
+    default <T extends IComponent> List<T> getComponentOfEntity(String id, Class<T> componentType) {
         return getEntity(id).getComponentList(componentType);
     }
 
@@ -205,5 +210,14 @@ public interface IEntitySystem extends ISerializable {
     default List<IEntity> getEntitiesWithName(String name) {
         Predicate<IEntity> isName = (e) -> (Objects.equals(e.getName(), name));
         return getAllEntities().stream().filter(isName).collect(Collectors.toList());
+    }
+
+    /**
+     * Get all entity names in this system.
+     *
+     * @return all names in this system
+     */
+    default Collection<String> getAllNames() {
+        return Collections2.transform(getAllEntities(), IEntity::getName);
     }
 }
