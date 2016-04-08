@@ -13,4 +13,4 @@ position.setX(3000);
 
 position.setY(500);
 
-position1.setX(888888);
+$1.setX(888888);
