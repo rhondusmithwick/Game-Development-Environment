@@ -13,6 +13,7 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
+@Deprecated
 public class SerializableReader<T> implements IDataReader<T> {
 
     @Override
