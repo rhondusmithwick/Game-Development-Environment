@@ -8,7 +8,7 @@ public class Speed implements IComponent{
 	private SimpleDoubleProperty speed;
 
 	public Speed(){
-        speed = new SimpleDoubleProperty(this, "speed", 0);
+        speed = new SimpleDoubleProperty(this, "Speed", 0);
 
 	}
 

@@ -20,7 +20,7 @@ public class Velocity implements IComponent {
     private final TwoProperty<Double, Double> twoProperty;
 
     public Velocity() {
-        twoProperty = new TwoProperty<>("Spped", 0.0, "Direction", 0.0);
+        twoProperty = new TwoProperty<>("Speed", 0.0, "Direction", 0.0);
     }
 
     public Velocity(double speed, double direction) {
