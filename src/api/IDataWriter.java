@@ -42,6 +42,7 @@ public interface IDataWriter<T> {
      * @return the File written
      * @see #writeToFile(String, List)
      */
+    @SuppressWarnings("unchecked")
     default File writeToFile(String fileName, T... objects) {
         return writeToFile(fileName, Arrays.asList(objects));
     }
