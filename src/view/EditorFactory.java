@@ -14,7 +14,7 @@ public class EditorFactory {
 			if(name.equals(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault())) {
 				editor = (Editor) Class.forName(pack + "." + name).getConstructor(EntitySystem.class).newInstance(new EntitySystem());
 			} else {
-				editor = (Editor) Class.forName(pack + "." + name).getConstructor(Entity.class).newInstance(new Entity(0));
+				editor = (Editor) Class.forName(pack + "." + name).getConstructor(Entity.class).newInstance(new Entity());
 			}
 		} catch (Exception e) {
 				System.out.println("EDITOR FACTORY FAILED TO CREATE CLASS");

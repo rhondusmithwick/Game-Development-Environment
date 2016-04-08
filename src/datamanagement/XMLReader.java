@@ -55,6 +55,8 @@ public class XMLReader<T> implements IDataReader<T> {
                 objects.add(obj);
             } catch (IOException e) {
                 break;
+            } catch (ClassCastException c) {
+                throw new ClassCastException("Not all objects in this file of type T.");
             }
         }
     }
