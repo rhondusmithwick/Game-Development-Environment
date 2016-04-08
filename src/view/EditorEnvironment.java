@@ -98,7 +98,7 @@ public class EditorEnvironment extends Editor{
 		myEntities = entitySystem;
 	}
 
-	public EntitySystem getEntitySystem() {
+	public IEntitySystem getEntitySystem() {
 		return myEntities;
 	}
 
