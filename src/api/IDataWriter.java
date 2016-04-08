@@ -1,6 +1,12 @@
 package api;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
+
 import java.io.File;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * The class to write serializables to a file.
@@ -10,20 +16,55 @@ import java.io.File;
 public interface IDataWriter<T> {
 
     /**
-     * Write the objects to a file.
+     * Write the objects (list) to a file.
      *
      * @param fileName the file to be written to
      * @param objects  the objects to be written
      * @return the File written
+     * @see #writeToString(List)
      */
-    File writeToFile(String fileName, T... objects);
+    default File writeToFile(String fileName, List<T> objects) {
+        String objectsString = writeToString(objects);
+        File file = new File(fileName);
+        try {
+            Files.write(objectsString,file, Charsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return file;
+    }
 
     /**
-     * Write the specified objects to a string.
+     * Write the objects (array/varargs) to a file.
+     *
+     * @param fileName the file to be written to
+     * @param objects  the objects to be written
+     * @return the File written
+     * @see #writeToFile(String, List)
+     */
+    @SuppressWarnings("unchecked")
+    default File writeToFile(String fileName, T... objects) {
+        return writeToFile(fileName, Arrays.asList(objects));
+    }
+
+    /**
+     * Write the specified objects (list) to a string.
      *
      * @param objects to be written
      * @return a string of the objects in a data format
      */
+    String writeToString(List<T> objects);
+
+    /**
+     * Write the specified objects (array/ varargs) to a string.
+     *
+     * @param objects to be written
+     * @return a string of the objects in a data format
+     * @see #writeToString(List)
+     */
     @SuppressWarnings("unchecked")
-    String writeToString(T... objects);
+    default String writeToString(T... objects) {
+        return writeToString(Arrays.asList(objects));
+    }
+
 }

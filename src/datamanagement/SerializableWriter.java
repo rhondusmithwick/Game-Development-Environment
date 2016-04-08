@@ -9,13 +9,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.OutputStream;
+import java.util.List;
 
 /**
  * Created by rhondusmithwick on 3/31/16.
  *
  * @author Rhondu Smithwick
  */
+@Deprecated
 public class SerializableWriter<T> implements IDataWriter<T> {
+    @Override
+    public String writeToString(List<T> objects) {
+        return null;
+    }
 
     @Override
     @SafeVarargs
