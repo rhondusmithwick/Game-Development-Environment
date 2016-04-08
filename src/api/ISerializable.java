@@ -1,36 +1,17 @@
 package api;
 
-import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
 
 import java.io.File;
 import java.io.Serializable;
-import java.util.List;
 
 /**
- * Interface for serializable objects
+ * Interface for serializable objects.
+ * Indicates that an object may be read and written from a file, and allows a few methods to do so.
  *
- * @author Tom Wu
+ * @author Rhondu Smithwick, Tom Wu
  */
 public interface ISerializable extends Serializable {
-
-    /**
-     * Evaluates the File f
-     *
-     * @param f File to evaluate
-     */
-    static List<Object> evaluate(File file) {
-        return new XMLReader<>().readFromFile(file.getPath());
-    }
-
-    /**
-     * Evaluates the String s
-     *
-     * @param s String to evaluate
-     */
-    static List<Object> evaluateString(String stringToReadFrom) {
-        return new XMLReader<>().readFromString(stringToReadFrom);
-    }
 
     /**
      * Serializes this object to a File
