@@ -13,14 +13,12 @@ import model.component.movement.Velocity;
 import model.component.physics.Mass;
 import model.entity.Entity;
 import model.entity.EntitySystem;
-import org.junit.Test;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.assertEquals;
 
 
 /**
