@@ -1,25 +1,25 @@
+
 package main;
 
-import java.util.ResourceBundle;
-
+import enums.GUISize;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class Main extends Application{
-	
-		private ResourceBundle myResources;
 
 		private Stage myStage;
-		
+
 		/**
 		 * Sets up a stage to launch our window and initializes the splash screen.
 		 * @param stage
 		 */
 
 		public void start (Stage stage) {
-			myResources = ResourceBundle.getBundle("authoring");
+
 			myStage = stage;
-			myStage.setTitle(myResources.getString("title"));
+			myStage.setTitle("VOOGA");
+			myStage.setWidth(GUISize.MAIN_SIZE.getSize());
+			myStage.setHeight(GUISize.MAIN_SIZE.getSize());
 			Vooga vooga = new Vooga(myStage);
 			myStage.setScene(vooga.init());
 			myStage.show();

@@ -2,12 +2,13 @@ package main;
 
 import java.util.ResourceBundle;
 
+import enums.DefaultStrings;
+import enums.GUISize;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import view.Authoring;
@@ -18,16 +19,17 @@ public class Vooga {
 	private Stage myStage;
 	private VBox myVBox;
 	private Group root;
+	private Authoring authEnv;
+	private Scene myScene;
 	private ResourceBundle myResources;
-	private Authoring myAuthor;
 	/**
 	 * Constructor that takes in a stage to display the graphics.
 	 * @param stage
 	 */
 	
 	public Vooga(Stage stage) {
-		myResources = ResourceBundle.getBundle("authoring");
 		myStage = stage;
+		myResources = ResourceBundle.getBundle(DefaultStrings.DEFAULT_LANGUAGE.getDefault());
 	}
 
 	/**
@@ -36,28 +38,35 @@ public class Vooga {
 	 */
 	
 	public Scene init(){
-		BorderPane display = createDisplay();
-		Scene myScene = new Scene(display, Integer.parseInt(myResources.getString("splashWidth")), Integer.parseInt(myResources.getString("splashHeight")));
+		myScene = new Scene(createDisplay(), GUISize.MAIN_SIZE.getSize(), GUISize.MAIN_SIZE.getSize());
 		return myScene;
 	}
 	
 	public void draw(ImageView image) {
 		root.getChildren().add(image);
 	}
-	
-	/**
-	 * Creates the splash screen display independently of initializing the scene.
-	 * @return BorderPane in which the contents are the splash screen
-	 */
-	private BorderPane createDisplay() {
+
+	private Group createDisplay() {
 		root = new Group();
-		Button createGameButton = Utilities.makeButton(myResources.getString("createGameButtonLabel"), e -> myStage.setScene(myAuthor.init(myStage.widthProperty(), myStage.heightProperty())));
-		Button playGameButton = Utilities.makeButton(myResources.getString("playGameButtonLabel"), null);
-		root.getChildren().add(createGameButton);
-		//root.getChildren().add(playGameButton);
-		BorderPane splash = new BorderPane();
-		splash.setCenter(root);
-		return splash;
+		Button createGame = Utilities.makeButton(myResources.getString("createGame"), null);
+		createGame.setOnAction(e->createAuthoring());
+		myVBox = new VBox(GUISize.ORIG_MENU_PADDING.getSize());
+		myVBox.prefHeightProperty().bind(myStage.heightProperty());
+		myVBox.prefWidthProperty().bind(myStage.widthProperty());
+		myVBox.setAlignment(Pos.CENTER);
+		myVBox.getChildren().add(createGame);
+		root.getChildren().add(myVBox);
+		return root;
+	}
+	
+	private void createAuthoring(){
+		myStage.hide();
+		myStage.setWidth(GUISize.AUTHORING_WIDTH.getSize());
+		myStage.setHeight(GUISize.AUTHORING_HEIGHT.getSize());
+		authEnv = new Authoring(DefaultStrings.DEFAULT_LANGUAGE.getDefault());
+		myScene = authEnv.init(myStage.widthProperty(), myStage.heightProperty());
+		myStage.setScene(myScene);
+		myStage.show();
 	}
 
 }
