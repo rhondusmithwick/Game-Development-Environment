@@ -15,14 +15,12 @@ import java.util.List;
  */
 public class Mass implements IComponent {
 
-    private final SingleProperty<Double> singleProperty;
+    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Mass", 0.0);
 
     public Mass() {
-        singleProperty = new SingleProperty<>("Mass", 0.0);
     }
 
     public Mass(double mass) {
-        this();
         setMass(mass);
     }
 

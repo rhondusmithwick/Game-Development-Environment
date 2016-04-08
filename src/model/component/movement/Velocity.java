@@ -17,14 +17,12 @@ import java.util.function.DoubleUnaryOperator;
  */
 public class Velocity implements IComponent {
 
-    private final TwoProperty<Double, Double> twoProperty;
+    private final TwoProperty<Double, Double> twoProperty = new TwoProperty<>("Speed", 0.0, "Direction", 0.0);;
 
     public Velocity() {
-        twoProperty = new TwoProperty<>("Speed", 0.0, "Direction", 0.0);
     }
 
     public Velocity(double speed, double direction) {
-        this();
         setSpeed(speed);
         setDirection(direction);
     }

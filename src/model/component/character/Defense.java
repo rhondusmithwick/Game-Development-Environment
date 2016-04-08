@@ -17,13 +17,12 @@ public class Defense implements IComponent {
     /**
      * The singleProperty.
      */
-    private final SingleProperty<Double> singleProperty;
+    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Defense", 0.0);;
 
     /**
      * Construct to start defense at 0.
      */
     public Defense() {
-        singleProperty = new SingleProperty<>("Defense", 0.0);
     }
 
     /**
@@ -32,7 +31,6 @@ public class Defense implements IComponent {
      * @param defense the initial defense value
      */
     public Defense(double defense) {
-        this();
         setDefense(defense);
     }
 

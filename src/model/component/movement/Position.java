@@ -14,17 +14,30 @@ import java.util.List;
  */
 public class Position implements IComponent {
 
-    private final TwoProperty<Double, Double> twoProperty;
+    /**
+     * The two property, which holds a property for x and a property for y.
+     */
+    private final TwoProperty<Double, Double> twoProperty = new TwoProperty<>("X", 0.0, "Y", 0.0);;
 
+    /**
+     * Empty constructor. Starts at 0.0.
+     */
     public Position() {
-        twoProperty = new TwoProperty<>("X", 0.0, "Y", 0.0);
     }
 
+    /**
+     * Constructor with initial values.
+     * @param x initial x value
+     * @param y initial y value
+     */
     public Position(double x, double y) {
-        this();
         setXY(x, y);
     }
 
+    /**
+     * Get the x property.
+     * @return the x property
+     */
     public SimpleObjectProperty<Double> xProperty() {
         return twoProperty.property1();
     }
@@ -37,6 +50,10 @@ public class Position implements IComponent {
         xProperty().set(x);
     }
 
+    /**
+     * Get the y property.
+     * @return the y property
+     */
     public SimpleObjectProperty<Double> yProperty() {
         return twoProperty.property2();
     }

@@ -14,14 +14,12 @@ import java.util.List;
  */
 public class Attack implements IComponent {
 
-
-    private final SingleProperty<Double> singleProperty;
+    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Attack", 0.0);;
 
     /**
      * Empty constructor. Has attack at 0.
      */
     public Attack() {
-        singleProperty = new SingleProperty<>("Attack", 0.0);
     }
 
     /**
@@ -30,7 +28,6 @@ public class Attack implements IComponent {
      * @param attack the initial value
      */
     public Attack(double attack) {
-        this();
         setAttack(attack);
     }
 

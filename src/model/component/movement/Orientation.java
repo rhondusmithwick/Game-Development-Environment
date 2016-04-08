@@ -16,13 +16,12 @@ public class Orientation implements IComponent {
     /**
      * Single Proprety.
      */
-    private final SingleProperty<Double> singleProperty;
+    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Orientation", 0.0);;
 
     /**
      * Empty constructor. Starts at 0.0.
      */
     public Orientation() {
-        singleProperty = new SingleProperty<>("Orientation", 0.0);
     }
 
     /**
@@ -31,7 +30,6 @@ public class Orientation implements IComponent {
      * @param orientation the default value
      */
     public Orientation(double orientation) {
-        this();
         setOrientation(orientation);
     }
 
