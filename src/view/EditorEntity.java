@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import api.IComponent;
+import api.IEntity;
 /**
  * 
  * @author Melissa Zhang
@@ -19,10 +20,10 @@ import api.IComponent;
 public class EditorEntity extends Editor{
 	
 	private Pane editorPane;
-	private Entity myEntity;
+	private IEntity myEntity;
 
 
-	public EditorEntity(Entity entity) {
+	public EditorEntity(IEntity entity) {
 		editorPane = new GridPane();
 		myEntity = entity;
 	}

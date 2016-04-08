@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import api.IEntity;
+import api.IEntitySystem;
 import gui.GuiObject;
 import gui.GuiObjectFactory;
 import javafx.geometry.HPos;
@@ -24,7 +25,7 @@ import model.entity.EntitySystem;
 public class EditorEnvironment extends Editor{
 	
 	private ResourceBundle myResources;
-	private EntitySystem myEntities;
+	private IEntitySystem myEntities;
 	private GridPane environmentPane;
 	private List<Node> viewList;
 	private Utilities utilities;
@@ -32,7 +33,7 @@ public class EditorEnvironment extends Editor{
 	private VBox entityOptions;
 	private Group gameRoot;
 	
-	public EditorEnvironment(EntitySystem entitySystem){
+	public EditorEnvironment(IEntitySystem entitySystem){
 		myResources = ResourceBundle.getBundle("authoring");
 		myEntities = entitySystem;
 		environmentPane = new GridPane();
