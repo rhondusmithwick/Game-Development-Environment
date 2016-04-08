@@ -11,7 +11,7 @@ public class EditorFactory {
 		Editor editor = null;
 		String pack = Reflection.getPackageName(this.getClass());
 		try {
-			if(name.equals(DefaultStrings.ENVIRONMENT_EDITOR_NAME)) {
+			if(name.equals(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault())) {
 				editor = (Editor) Class.forName(pack + "." + name).getConstructor(EntitySystem.class).newInstance(new EntitySystem());
 			} else {
 				editor = (Editor) Class.forName(pack + "." + name).getConstructor(Entity.class).newInstance(new Entity(0));

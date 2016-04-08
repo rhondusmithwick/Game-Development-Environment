@@ -86,10 +86,10 @@ public class GameEditor extends Editor {
 	private void editorButtons() {
 		pane.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENTITY_EDITOR_NAME.getDefault()), 
 				e->createEditor(DefaultStrings.ENTITY_EDITOR_NAME.getDefault())));
-		//pane.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
-		//		e->createEditor(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault())));
 		pane.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
-				e->createEnvironmentEditor()));
+				e->createEditor(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault())));
+//		pane.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
+//				e->createEnvironmentEditor()));
 		}
 
 	private void createEnvironmentEditor() {

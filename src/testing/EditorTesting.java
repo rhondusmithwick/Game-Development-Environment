@@ -5,6 +5,7 @@ import model.entity.Entity;
 import model.entity.EntitySystem;
 import api.IEntity;
 import api.IEntitySystem;
+import enums.DefaultStrings;
 import view.EditorEntity;
 import view.EditorFactory;
 import view.Editor;
@@ -29,7 +30,7 @@ public class EditorTesting extends Application {
         IEntity entity = entitySystem.createEntityFromLoad(LOAD_FILE_NAME);
         EditorFactory factory = new EditorFactory();
 		//Editor editorEntity = (Editor) new EditorEntity((Entity) entity);
-        Editor editorEntity = factory.createEditor(ENTITY_EDITOR);
+        Editor editorEntity = factory.createEditor(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault());
         Scene scene = new Scene(editorEntity.getPane());
 		myStage.setScene(scene);
 		myStage.show();
