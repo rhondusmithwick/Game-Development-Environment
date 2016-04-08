@@ -6,6 +6,7 @@ package api;
  * @author Tom Wu
  */
 public interface IEvent extends ISerializable {
+	
 	/**
 	 * Gets the unique id of an event
 	 * 
