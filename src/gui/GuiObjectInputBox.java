@@ -2,6 +2,8 @@ package gui;
 
 import java.util.ResourceBundle;
 
+import api.ISerializable;
+import javafx.beans.property.ListProperty;
 import javafx.beans.property.Property;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,7 +21,7 @@ public class GuiObjectInputBox extends GuiObject{
 
 
 	
-	public GuiObjectInputBox(String name, String resourceBundle, EventHandler<ActionEvent> event, Property property) {
+	public GuiObjectInputBox(String name, String resourceBundle,EventHandler<ActionEvent> event, Property<?> property) {
 		super(name,resourceBundle);
 		fileErrorLabel = new Label();
 		fileErrorLabel.setVisible(false);

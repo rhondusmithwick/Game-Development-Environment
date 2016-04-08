@@ -6,6 +6,10 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Observable;
 
+import api.ISerializable;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.Property;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -16,7 +20,8 @@ public class GuiObjectFileOpener extends GuiObject{
 	private Button button;
 	private String fileToOpen;
 	private static final String FILE_DIR = "files/";
-	public GuiObjectFileOpener(String name, String resourceBundle) {
+	
+	public GuiObjectFileOpener(String name, String resourceBundle,EventHandler<ActionEvent> event, Property<?> property, ListProperty<?> list, ISerializable serial) {
 		super(name, resourceBundle);
 		fileToOpen = getResourceBundle().getString(name+"file");
 		button = new Button(getResourceBundle().getString(getObjectName()+"Button"));

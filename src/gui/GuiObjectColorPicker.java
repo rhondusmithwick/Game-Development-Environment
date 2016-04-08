@@ -1,6 +1,8 @@
 package gui;
 import java.util.ResourceBundle;
 
+import api.ISerializable;
+import javafx.beans.property.ListProperty;
 import javafx.beans.property.Property;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -17,13 +19,16 @@ public class GuiObjectColorPicker extends GuiObject{
 	private Label colorPickerLabel;
 	private ResourceBundle cssResources = ResourceBundle.getBundle("CSSClasses");
 	
-	public GuiObjectColorPicker(String name, String resourceBundle,
-			EventHandler<ActionEvent> event, Property property) {
+	public GuiObjectColorPicker(String name, String resourceBundle,EventHandler<ActionEvent> event, Property<?> property, ListProperty<?> list, ISerializable serial) {
 		super(name, resourceBundle);
 		colorPicker = new ColorPicker(Color.web(getResourceBundle().getString(name+"Default")));
         colorPickerLabel = new Label(getResourceBundle().getString(getObjectName()+"LABEL"));
         addHandler(event);
         bindProperty(property);
+	}
+	
+	public void initialize(){
+		
 	}
 
 	@Override
