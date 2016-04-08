@@ -1,5 +1,6 @@
 package api;
 
+
 import com.google.common.base.Preconditions;
 import model.entity.ResourceFileISpecLoader;
 
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
 
 /**
  * Interface for an entity.
@@ -36,7 +38,7 @@ public interface IEntity extends ISerializable {
      *
      * @return id the unique id of this entity
      */
-    int getID();
+    String getID();
 
     /**
      * Get all the components of this entity.
