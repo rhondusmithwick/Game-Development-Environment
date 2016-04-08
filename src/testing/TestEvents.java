@@ -27,7 +27,7 @@ public class TestEvents extends Application {
 	}
 
 	public void test(Node n) {
-		IEntity e = new Entity(0);
+		IEntity e = new Entity();
 		e.forceAddComponent(new Velocity(), true);
 		System.out.println(e.getComponent(Velocity.class)); // before 'a' key is
 															// pressed
