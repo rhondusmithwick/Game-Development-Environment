@@ -28,18 +28,18 @@ public class EventSystem {
 		}
 		eventMap.get(event).add(trigger);
 	}
-	
+
 	/*
-	 * Takes the given event and "deregisters" it so it is no longer
-	 * considered for event handling purposes
+	 * Takes the given event and "deregisters" it so it is no longer considered
+	 * for event handling purposes
 	 */
 	public void deregisterTrigger(EventObject event) {
 		eventMap.remove(event);
 	}
-	
+
 	/*
-	 * Given an event, handles it if there exists a handler for it
-	 * If no handler is registered for the event, nothing happens
+	 * Given an event, handles it if there exists a handler for it If no handler
+	 * is registered for the event, nothing happens
 	 */
 	public void handleEvent(EventObject event) {
 		if (eventMap.containsKey(event)) {
@@ -50,15 +50,15 @@ public class EventSystem {
 			this.message = "Event handled";
 		}
 	}
-	
+
 	/**
-	 * Method that gets the most recent message from the event handler
-	 * Useful for testing purposes
+	 * Method that gets the most recent message from the event handler Useful
+	 * for testing purposes
+	 * 
 	 * @return last message received from event handler
 	 */
 	public String getLastMessage() {
 		return message;
 	}
-	
-	
+
 }
