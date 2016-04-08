@@ -5,6 +5,7 @@ import datamanagement.XMLReader;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -193,5 +194,16 @@ public interface IEntitySystem extends ISerializable {
      */
     default <T extends IComponent> List<T> getComponentOfEntity(int id, Class<T> componentType) {
         return getEntity(id).getComponentList(componentType);
+    }
+
+    /**
+     * Get all the entities with provided name.
+     *
+     * @param name provided name
+     * @return list of entities with this name
+     */
+    default List<IEntity> getEntitiesWithName(String name) {
+        Predicate<IEntity> isName = (e) -> (Objects.equals(e.getName(), name));
+        return getAllEntities().stream().filter(isName).collect(Collectors.toList());
     }
 }

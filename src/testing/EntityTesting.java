@@ -1,12 +1,24 @@
 package testing;
 
-import datamanagement.XMLWriter;
 import api.IComponent;
-import model.component.movement.Position;
-import model.component.movement.Velocity;
-import model.entity.EntitySystem;
 import api.IEntity;
 import api.IEntitySystem;
+import datamanagement.XMLWriter;
+import model.component.character.Attack;
+import model.component.character.Defense;
+import model.component.character.Health;
+import model.component.character.Score;
+import model.component.movement.Position;
+import model.component.movement.Velocity;
+import model.component.physics.Mass;
+import model.entity.Entity;
+import model.entity.EntitySystem;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 
 
 /**
@@ -26,16 +38,36 @@ class EntityTesting implements Tester {
 
     @Override
     public void test() {
+        testLoadSpecs();
         IEntity entity = loadDefault();
         new XMLWriter<IEntity>().writeToFile(LOAD_FILE_NAME, entity);
         loadFromBuilt();
     }
 
+    private void testLoadSpecs() {
+        Map<Class<? extends IComponent>, Integer> specs = getSpecsTestMap();
+        IEntity entity1 = new Entity(1);
+        entity1.loadSpecsFromPropertiesFile("templates/player");
+        if (specs.equals(entity1.getSpecs())) System.out.println("SPecs worked");
+    }
+
+    private Map<Class<? extends IComponent>, Integer> getSpecsTestMap() {
+        Map<Class<? extends IComponent>, Integer> specs = new HashMap<>();
+        List<Class<? extends IComponent>> classes = Arrays.asList(Attack.class, Defense.class,
+                Health.class, Mass.class,
+                Position.class,
+                Score.class, Velocity.class);
+        for (Class<? extends IComponent> c: classes) {
+            specs.put(c, 1);
+        }
+        return specs;
+    }
 
     private IEntity loadDefault() {
         System.out.println("DEFAULT:");
         Position position = new Position(50.0, 40.0);
         Velocity velocity = new Velocity(100.0, 10.0);
+
         IComponent hey = new Position(50.0, 80.0);
         System.out.println(hey.getClass().getSimpleName());
         new XMLWriter<IComponent>().writeToFile(DEFAULT_FILE_NAME, position, velocity);

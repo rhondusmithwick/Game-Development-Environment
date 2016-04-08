@@ -1,5 +1,8 @@
 package api;
 
+import com.google.common.base.Preconditions;
+import model.entity.ResourceFileISpecLoader;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -13,6 +16,21 @@ import java.util.stream.Collectors;
  * @author Rhondu Smithwick, Tom Wu
  */
 public interface IEntity extends ISerializable {
+
+    /**
+     * Get this Entity's name.
+     *
+     * @return this entity's name
+     */
+    String getName();
+
+    /**
+     * Set this entity's name.
+     *
+     * @param name this entity's new name
+     */
+    void setName(String name);
+
     /**
      * Gets the unique id of this entity
      *
@@ -54,10 +72,13 @@ public interface IEntity extends ISerializable {
      * @param index          the component number that it was inserted
      * @param <T>            the type of component
      * @return component of this type that was the index inserted
+     * @throws IllegalArgumentException if no such index
      * @see #getComponentList(Class)
      */
-    default <T extends IComponent> T getComponent(Class<T> componentClass, int index) {
+    default <T extends IComponent> T getComponent(Class<T> componentClass, int index) throws IllegalArgumentException {
         List<T> componentStorage = getComponentList(componentClass);
+        boolean validIndex = index < componentStorage.size();
+        Preconditions.checkArgument(validIndex, "No such index");
         return componentStorage.get(index);
     }
 
@@ -200,6 +221,17 @@ public interface IEntity extends ISerializable {
      * @return the specs map
      */
     Map<Class<? extends IComponent>, Integer> getSpecs();
+
+    /**
+     * Load the specs from a resource properties file.
+     *
+     * @param fileName the fileName
+     */
+    default void loadSpecsFromPropertiesFile(String fileName) {
+        ISpecLoader<Class<? extends IComponent>> specLoader = new ResourceFileISpecLoader();
+        Map<Class<? extends IComponent>, Integer> specs = specLoader.loadSpecs(fileName);
+        setSpecs(specs);
+    }
 
     /**
      * Set specs with a map.

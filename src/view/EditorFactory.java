@@ -11,7 +11,6 @@ public class EditorFactory {
 		try {
 			editor = (Editor) Class.forName(pack + "." + name).getConstructor(Entity.class).newInstance(new Entity(0));
 		} catch (Exception e) {
-			System.out.println("Invalid editor");
 		}
 		return editor;
 	}

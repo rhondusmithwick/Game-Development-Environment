@@ -1,5 +1,10 @@
 package api;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 /**
@@ -14,7 +19,16 @@ public interface IDataReader<T> {
      *
      * @return list of objects of type T read from file
      */
-    List<T> readFromFile(String fileName);
+    default List<T> readFromFile(String fileName) {
+        File file = new File(fileName);
+        String readFromFile = null;
+        try {
+            readFromFile = Files.toString(file, Charsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return readFromString(readFromFile);
+    }
 
     /**
      * Return single object of type T read from file. Will be first object read (or only one

@@ -26,6 +26,9 @@ public class Entity implements IEntity {
 	@XStreamAsAttribute()
 	private final Integer ID;
 
+	@XStreamAsAttribute()
+	private String name;
+
 	@XStreamAlias("components")
 	private final ObservableMap<Class<? extends IComponent>, List<IComponent>> componentMap = FXCollections
 			.observableHashMap();
@@ -34,7 +37,23 @@ public class Entity implements IEntity {
 	private final Map<Class<? extends IComponent>, Integer> specs = Maps.newLinkedHashMap();
 
 	public Entity(int ID) {
+		this(ID, "");
+	}
+
+	public Entity(int ID, String name) {
 		this.ID = ID;
+		setName(name);
+	}
+
+
+	@Override
+	public String getName() {
+		return name;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	@Override

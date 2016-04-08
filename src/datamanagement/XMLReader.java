@@ -35,17 +35,6 @@ public class XMLReader<T> implements IDataReader<T> {
         return objects;
     }
 
-    @Override
-    public List<T> readFromFile(String fileName) {
-        try {
-            Reader reader = new FileReader(fileName);
-            doRead(reader);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return objects;
-    }
-
     private void doRead(Reader reader) {
         try {
             ObjectInputStream in = xstream.createObjectInputStream(reader);
