@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by rhondusmithwick on 4/1/16.
+ * The XML implementation of a DataReader.
  *
  * @author Rhondu Smithwick
  */
@@ -32,17 +32,6 @@ public class XMLReader<T> implements IDataReader<T> {
     public List<T> readFromString(String stringInput) {
         Reader reader = new StringReader(stringInput);
         doRead(reader);
-        return objects;
-    }
-
-    @Override
-    public List<T> readFromFile(String fileName) {
-        try {
-            Reader reader = new FileReader(fileName);
-            doRead(reader);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
         return objects;
     }
 

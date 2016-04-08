@@ -1,26 +1,29 @@
 package model.component.character;
 
 import api.IComponent;
-import javafx.beans.property.SimpleDoubleProperty;
-import utility.Unit;
+import javafx.beans.property.SimpleObjectProperty;
+import utility.SingleProperty;
+
+import java.util.List;
 
 
 /**
  * The Defense property. Holds a single double property.
  *
- * @author Roxanne Baker
+ * @author Roxanne Baker, Rhondu Smithwick
  */
 public class Defense implements IComponent {
 
     /**
-     * The unit to contain the property.
+     * The singleProperty.
      */
-    private final Unit<SimpleDoubleProperty> unit = new Unit<>(new SimpleDoubleProperty(this, "defense", 0.0));
+    private final SingleProperty<Double> singleProperty;
 
     /**
      * Construct to start defense at 0.
      */
     public Defense() {
+        singleProperty = new SingleProperty<>("Defense", 0.0);
     }
 
     /**
@@ -28,7 +31,8 @@ public class Defense implements IComponent {
      *
      * @param defense the initial defense value
      */
-    public Defense(Double defense) {
+    public Defense(double defense) {
+        this();
         setDefense(defense);
     }
 
@@ -37,8 +41,8 @@ public class Defense implements IComponent {
      *
      * @return the defense property
      */
-    public SimpleDoubleProperty defenseProperty() {
-        return unit._1();
+    public SimpleObjectProperty<Double> defenseProperty() {
+        return singleProperty.property1();
     }
 
     public double getDefense() {
@@ -57,5 +61,10 @@ public class Defense implements IComponent {
     @Override
     public boolean unique() {
         return true;
+    }
+
+    @Override
+    public List<SimpleObjectProperty<?>> getProperties() {
+        return singleProperty.getProperties();
     }
 }

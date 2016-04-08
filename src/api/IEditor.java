@@ -8,6 +8,6 @@ public interface IEditor { //This will be an abstract class that all editors wil
 
     Pane getPane(); // This is a method all subclasses should implement.
 
-    void populateLayout(Pane pane); // This is a method all subclasses should implement
+    void populateLayout(); // This is a method all subclasses should implement
 
 }

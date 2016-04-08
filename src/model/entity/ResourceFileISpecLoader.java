@@ -1,7 +1,7 @@
 package model.entity;
 
 import api.IComponent;
-import api.SpecLoader;
+import api.ISpecLoader;
 import com.google.common.collect.Maps;
 
 import java.util.Enumeration;
@@ -9,17 +9,19 @@ import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
- * A SpecLoader for resource files.
+ * A ISpecLoader for resource files.
  * {@inheritDoc}
  *
  * @author Rhondu Smithwick
  */
-public class ResourceFileSpecLoader implements SpecLoader<Class<? extends IComponent>> {
+public class ResourceFileISpecLoader implements ISpecLoader<Class<? extends IComponent>> {
+
+    private static final String COMPONENT_LOCATIONS = "componentLocations";
 
     /**
      * The resource Bundle for component locations.
      */
-    private final ResourceBundle locationsBundle = ResourceBundle.getBundle("resources/componentLocations");
+    private final ResourceBundle locationsBundle = ResourceBundle.getBundle(COMPONENT_LOCATIONS);
 
     /**
      * {@inheritDoc}

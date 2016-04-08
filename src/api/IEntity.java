@@ -1,5 +1,8 @@
 package api;
 
+import com.google.common.base.Preconditions;
+import model.entity.ResourceFileISpecLoader;
+
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -55,9 +58,12 @@ public interface IEntity extends ISerializable {
      * @param <T>            the type of component
      * @return component of this type that was the index inserted
      * @see #getComponentList(Class)
+     * @throws IllegalArgumentException if no such index
      */
-    default <T extends IComponent> T getComponent(Class<T> componentClass, int index) {
+    default <T extends IComponent> T getComponent(Class<T> componentClass, int index) throws IllegalArgumentException {
         List<T> componentStorage = getComponentList(componentClass);
+        boolean validIndex = index < componentStorage.size();
+        Preconditions.checkArgument(validIndex, "No such index");
         return componentStorage.get(index);
     }
 
@@ -200,6 +206,17 @@ public interface IEntity extends ISerializable {
      * @return the specs map
      */
     Map<Class<? extends IComponent>, Integer> getSpecs();
+
+    /**
+     * Load the specs from a resource properties file.
+     *
+     * @param fileName the fileName
+     */
+    default void loadSpecsFromPropertiesFile(String fileName) {
+        ISpecLoader<Class<? extends IComponent>> specLoader = new ResourceFileISpecLoader();
+        Map<Class<? extends IComponent>, Integer> specs = specLoader.loadSpecs(fileName);
+        setSpecs(specs);
+    }
 
     /**
      * Set specs with a map.
