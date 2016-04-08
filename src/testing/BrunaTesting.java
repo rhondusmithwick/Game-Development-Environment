@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import model.entity.Entity;
 import model.entity.EntitySystem;
-import view.editor.EditorEnvironment;
+import view.EditorEnvironment;
 
 
 public class BrunaTesting {
@@ -16,7 +16,7 @@ public class BrunaTesting {
 
 	@Before
 	    public void setUp () {
-	        myEditorEnvironment = new EditorEnvironment();
+	        myEditorEnvironment = new EditorEnvironment(null);
 	    }
 
 	@Test

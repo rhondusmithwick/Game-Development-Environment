@@ -21,6 +21,9 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import model.entity.Entity;
+import model.entity.EntitySystem;
+import usecases.EnvironmentEditor;
 
 public class GameEditor extends Editor {
 	
@@ -66,7 +69,6 @@ public class GameEditor extends Editor {
 	}
 
 	
-	
 	private void createTextEntry(String name){
 		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
 		Label title = new Label(myResources.getString(name));
@@ -84,15 +86,26 @@ public class GameEditor extends Editor {
 	private void editorButtons() {
 		pane.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENTITY_EDITOR_NAME.getDefault()), 
 				e->createEditor(DefaultStrings.ENTITY_EDITOR_NAME.getDefault())));
-		
+		//pane.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
+		//		e->createEditor(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault())));
+		pane.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
+				e->createEnvironmentEditor()));
+		}
+
+	private void createEnvironmentEditor() {
+		EntitySystem entitySystem = new EntitySystem();
+		entitySystem.addEntity(new Entity(0));
+		entitySystem.addEntity(new Entity(1));
+		entitySystem.addEntity(new Entity(2));
+		IEditor editor = new EditorEnvironment(entitySystem);
+		editor.populateLayout();
+		authEnv.createTab(editor.getPane(), DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault(), true);
 	}
 
 	private void createEditor(String editName) {
 		IEditor editor = editFact.createEditor(editName);
 		editor.populateLayout();
-
 		authEnv.createTab(editor.getPane(), editName, true);
-		
 	}
 
 	private void showIcon() {

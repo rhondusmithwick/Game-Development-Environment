@@ -45,7 +45,7 @@ public class EditorEntity extends Editor{
 		Collection<IComponent> componentList = myEntity.getAllComponents();
 		for (IComponent component: componentList){
 			System.out.println(component.getClass().getSimpleName());
-			GuiObject object = guiFactory.createNewGuiObject(component.getClass().getSimpleName(), component);
+			GuiObject object = guiFactory.createNewGuiObject(component.getClass().toString(), component);
 			if (object!=null){
 				editorPane.getChildren().add((Node) object.getGuiNode());
 			}
