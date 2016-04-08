@@ -28,16 +28,11 @@ import model.entity.EntitySystem;
 import model.physics.PhysicsEngine;
 
 public class BenTest extends Application {
-	private Stage stage;
 	private static final String IMAGE_PATH = "resources/RhonduSmithwick.JPG";
 	private static ImageView testSprite; // BAD PRACTICE: USE final WHENEVER
 											// POSSIBLE, DON'T BE LIKE ME!
 	private static IPhysicsEngine physics; // TODO: remove these things
 	private Group root;
-
-	public BenTest() {
-		stage = new Stage();
-	}
 
 	public void start(Stage s) {
 		root = new Group();

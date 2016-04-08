@@ -13,13 +13,13 @@ import model.entity.Entity
  */
 class BenTestCharacter {
     IEntity run(String IMAGE_PATH) {
-        IEntity character = new Entity(0);
-        character.forceAddComponent(new Health((double) 100), true);
-        character.forceAddComponent(new Score((double) 100), true);
-        Position pos = new Position(250.0, 250.0);
-        character.forceAddComponent(pos, true);
-        character.forceAddComponent(new ImagePath(IMAGE_PATH), true);
-        character.forceAddComponent(new Velocity(10.0, 10.0), true);
-        return character;
+        IEntity character = new Entity(0)
+        character.forceAddComponent(new Health((double) 100), true)
+        character.forceAddComponent(new Score((double) 100), true)
+        Position pos = new Position(250.0, 250.0)
+        character.forceAddComponent(pos, true)
+        character.forceAddComponent(new ImagePath(IMAGE_PATH), true)
+        character.forceAddComponent(new Velocity(10.0, 10.0), true)
+        return character
     }
 }
