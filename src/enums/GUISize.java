@@ -10,7 +10,8 @@ public enum GUISize {
     ORIG_MENU_PADDING(30),
     GAME_EDITOR_PADDING(20),
     GAME_EDITOR_HBOX_PADDING(50),
-    ICON_SIZE(50);
+    ICON_SIZE(50),
+	EVENT_EDITOR_PADDING(20);
 
     private final int size;
 

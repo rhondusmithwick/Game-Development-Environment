@@ -60,12 +60,9 @@ public class GameEditor extends Editor {
 		createTextEntry("gName");
 		createTextEntry("gDesc");
 		showIcon();
-		editorButtons();
+		editorButtons(); 
 		pane.getChildren().add(Utilities.makeButton(myResources.getString("saveGame"), e->saveGame()));
-
 	}
-
-	
 	
 	private void createTextEntry(String name){
 		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
@@ -121,8 +118,6 @@ public class GameEditor extends Editor {
 		setIconPicture(file);
 		
 	}
-
-
 	@Override
 	public void updateEditor() {
 		populateLayout();
