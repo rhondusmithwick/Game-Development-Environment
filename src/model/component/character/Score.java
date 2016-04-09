@@ -16,7 +16,7 @@ public class Score implements IComponent {
     /**
      * The singleProperty.
      */
-    private final SingleProperty<Double> singleProperty  = new SingleProperty<>("Score", 0.0);;
+    private final SingleProperty<Double> singleProperty  = new SingleProperty<>("Score", 0.0);
 
     /**
      * Empty constructor. Starts at 0.0.

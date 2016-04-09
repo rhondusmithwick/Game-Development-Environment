@@ -17,7 +17,7 @@ public class Position implements IComponent {
     /**
      * The two property, which holds a property for x and a property for y.
      */
-    private final TwoProperty<Double, Double> twoProperty = new TwoProperty<>("X", 0.0, "Y", 0.0);;
+    private final TwoProperty<Double, Double> twoProperty = new TwoProperty<>("X", 0.0, "Y", 0.0);
 
     /**
      * Empty constructor. Starts at 0.0.

@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class Attack implements IComponent {
 
-    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Attack", 0.0);;
+    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Attack", 0.0);
 
     /**
      * Empty constructor. Has attack at 0.

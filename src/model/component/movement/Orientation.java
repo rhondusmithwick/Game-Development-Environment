@@ -16,7 +16,7 @@ public class Orientation implements IComponent {
     /**
      * Single Proprety.
      */
-    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Orientation", 0.0);;
+    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Orientation", 0.0);
 
     /**
      * Empty constructor. Starts at 0.0.

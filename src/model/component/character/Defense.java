@@ -17,7 +17,7 @@ public class Defense implements IComponent {
     /**
      * The singleProperty.
      */
-    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Defense", 0.0);;
+    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Defense", 0.0);
 
     /**
      * Construct to start defense at 0.

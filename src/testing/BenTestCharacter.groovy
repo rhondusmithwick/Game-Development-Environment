@@ -13,7 +13,7 @@ import model.entity.Entity
  */
 class BenTestCharacter {
     IEntity run(String IMAGE_PATH) {
-        IEntity character = new Entity(0)
+        IEntity character = new Entity()
         character.forceAddComponent(new Health((double) 100), true)
         character.forceAddComponent(new Score((double) 100), true)
         Position pos = new Position(250.0, 250.0)
