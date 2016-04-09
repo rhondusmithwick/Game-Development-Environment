@@ -16,13 +16,12 @@ public class Score implements IComponent {
     /**
      * The singleProperty.
      */
-    private final SingleProperty<Double> singleProperty;
+    private final SingleProperty<Double> singleProperty  = new SingleProperty<>("Score", 0.0);
 
     /**
      * Empty constructor. Starts at 0.0.
      */
     public Score() {
-        singleProperty = new SingleProperty<>("Score", 0.0);
     }
 
     /**
@@ -31,7 +30,6 @@ public class Score implements IComponent {
      * @param score the initial value
      */
     public Score(double score) {
-        this();
         setScore(score);
     }
 
