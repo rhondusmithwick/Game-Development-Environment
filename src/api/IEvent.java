@@ -6,11 +6,11 @@ package api;
  * @author Tom Wu
  */
 public interface IEvent extends ISerializable {
-	
+
 	/**
-	 * Gets the unique id of an event
+	 * Gets the message id of an event
 	 * 
-	 * @return the unique id of an event
+	 * @return the message id of an event
 	 */
-	int getEventID();
+	String getEventID();
 }
