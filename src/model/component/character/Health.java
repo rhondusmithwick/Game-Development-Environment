@@ -13,13 +13,12 @@ import java.util.List;
  */
 public class Health implements IComponent {
 
-    private final SingleProperty<Double> singleProperty;
+    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Health", 0.0);
 
     /**
      * Empty constructor. Defaults to 0.
      */
     public Health() {
-        singleProperty = new SingleProperty<>("Health", 0.0);
     }
 
     /**
