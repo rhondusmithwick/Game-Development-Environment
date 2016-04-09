@@ -7,6 +7,7 @@ import api.IEntity;
 import api.IEntitySystem;
 import enums.DefaultStrings;
 import view.EditorEntity;
+import view.EditorEnvironment;
 import view.EditorFactory;
 import view.Editor;
 import javafx.application.Application;
@@ -30,7 +31,7 @@ public class EditorTesting extends Application {
         IEntity entity = entitySystem.createEntityFromLoad(LOAD_FILE_NAME);
         EditorFactory factory = new EditorFactory();
 		//Editor editorEntity = (Editor) new EditorEntity((Entity) entity);
-        Editor editorEntity = factory.createEditor(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault());
+        Editor editorEntity = factory.createEditor(EditorEntity.class);
         Scene scene = new Scene(editorEntity.getPane());
 		myStage.setScene(scene);
 		myStage.show();
