@@ -25,7 +25,7 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
-public class EventEditor extends Editor
+public class EditorEvent extends Editor
 {
 	private VBox pane;
 	private List<Node> entryList;
@@ -35,7 +35,7 @@ public class EventEditor extends Editor
 	private EditorFactory factory;
 	private Authoring authoringEnvironment;
 	
-	EventEditor(Authoring authoringEnvironment, String language)
+	public EditorEvent(Authoring authoringEnvironment, String language)
 	{
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());

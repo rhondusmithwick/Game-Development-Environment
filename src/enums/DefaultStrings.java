@@ -5,7 +5,7 @@ public enum DefaultStrings {
 	DEFAULT_LANGUAGE("english"),
 	DEFAULT_ICON("resources/default_icon.png"),
 	ENTITY_EDITOR_NAME("EditorEntity"),
-	EVENT_EDITOR_NAME("EventEditor");
+	EVENT_EDITOR_NAME("EditorEvent");
 	
 
 

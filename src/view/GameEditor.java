@@ -82,10 +82,18 @@ public class GameEditor extends Editor {
 		pane.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENTITY_EDITOR_NAME.getDefault()), 
 				e->createEditor(DefaultStrings.ENTITY_EDITOR_NAME.getDefault())));
 		
+		pane.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.EVENT_EDITOR_NAME.getDefault()), 
+				e->createEditor(DefaultStrings.EVENT_EDITOR_NAME.getDefault())));
+		
 	}
 
 	private void createEditor(String editName) {
-		IEditor editor = editFact.createEditor(editName);
+		IEditor editor = editFact.createEditor(editName,  authEnv, DefaultStrings.DEFAULT_LANGUAGE.getDefault());
+		
+		// DEBUGGING
+		System.out.println("Created an Editor: " + editor.getClass().toString());
+		//
+		
 		editor.populateLayout();
 
 		authEnv.createTab(editor.getPane(), editName, true);
