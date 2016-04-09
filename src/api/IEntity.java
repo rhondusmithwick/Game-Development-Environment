@@ -2,7 +2,9 @@ package api;
 
 
 import com.google.common.base.Preconditions;
-import model.entity.ResourceFileISpecLoader;
+import com.google.common.collect.Collections2;
+import com.google.common.collect.Lists;
+import model.entity.PropertiesTemplateLoader;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -230,7 +232,7 @@ public interface IEntity extends ISerializable {
      * @param fileName the fileName
      */
     default void loadSpecsFromPropertiesFile(String fileName) {
-        ISpecLoader<Class<? extends IComponent>> specLoader = new ResourceFileISpecLoader();
+        ITemplateLoader<Class<? extends IComponent>> specLoader = new PropertiesTemplateLoader();
         Map<Class<? extends IComponent>, Integer> specs = specLoader.loadSpecs(fileName);
         setSpecs(specs);
     }

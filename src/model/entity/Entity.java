@@ -39,7 +39,7 @@ public class Entity implements IEntity {
     private final Map<Class<? extends IComponent>, Integer> specs = Maps.newLinkedHashMap();
 
     public Entity() {
-        this("");
+        this("John Doe");
     }
 
     public Entity(String name) {

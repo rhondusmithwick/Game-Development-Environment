@@ -1,8 +1,10 @@
-package model.component.physics;
+package model.component.character;
 
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 import utility.SingleProperty;
+
+import java.util.List;
 
 /**
  * The class containing a property for lives.
@@ -46,4 +48,28 @@ public class Lives implements IComponent {
     public void setLives(int lives) {
         livesProperty().set(lives);
     }
+
+    /**
+     * Decrease number of lives by 1.
+     */
+    public void decrementLives() {
+        changeHelp(-1);
+    }
+
+    /**
+     * Increase number of lives by 1.
+     */
+    public void incrementLives() {
+        changeHelp(1);
+    }
+
+    private void changeHelp(int num) {
+        setLives(getLives() + num);
+    }
+
+    @Override
+    public List<SimpleObjectProperty<?>> getProperties() {
+        return singleProperty.getProperties();
+    }
+
 }
