@@ -21,7 +21,7 @@ public class VoogaTesting {
 	public void testMovement() {
 		Position pos = new Position(0.0,0.0);
 		Velocity v = new Velocity(1.0,1.0,true);
-		IEntity e = new Entity(0);
+		IEntity e = new Entity();
 		e.forceAddComponent(pos, true);
 		e.forceAddComponent(v, true);
 		IPhysicsEngine p = new PhysicsEngine(null);
@@ -37,7 +37,7 @@ public class VoogaTesting {
 	public void testImpulse() {
 		Position pos = new Position(0.0,0.0);
 		Velocity v = new Velocity(1.0,1.0,true);
-		IEntity e = new Entity(0);
+		IEntity e = new Entity();
 		e.forceAddComponent(pos, true);
 		e.forceAddComponent(v, true);
 		IPhysicsEngine p = new PhysicsEngine(null);

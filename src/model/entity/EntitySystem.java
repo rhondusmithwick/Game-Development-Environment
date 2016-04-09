@@ -21,19 +21,11 @@ public class EntitySystem implements IEntitySystem {
 	 * The entities in this system.
 	 */
 	@XStreamAlias("entities")
-	private final Map<Integer, IEntity> entities = Maps.newLinkedHashMap();
-
-	/**
-	 * The maxID of this system.
-	 */
-	@XStreamAlias("maxID")
-	private int maxID = 0;
+	private final Map<String, IEntity> entities = Maps.newLinkedHashMap();
 
 	@Override
 	public IEntity createEntity() {
-		int ID = getNextAvailableID();
-		Entity entity = new Entity(ID);
-		maxID++;
+		Entity entity = new Entity();
 		addEntity(entity);
 		return entity;
 	}
@@ -44,7 +36,7 @@ public class EntitySystem implements IEntitySystem {
 	}
 
 	@Override
-	public IEntity getEntity(int id) {
+	public IEntity getEntity(String id) {
 		return entities.get(id);
 	}
 
@@ -54,22 +46,17 @@ public class EntitySystem implements IEntitySystem {
 	}
 
 	@Override
-	public boolean containsID(int id) {
+	public boolean containsID(String id) {
 		return entities.containsKey(id);
 	}
 
 	@Override
-	public boolean removeEntity(int id) {
+	public boolean removeEntity(String id) {
 		if (containsID(id)) {
 			entities.remove(id);
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public int getNextAvailableID() {
-		return maxID + 1;
 	}
 
 }
