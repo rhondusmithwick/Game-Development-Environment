@@ -1,4 +1,4 @@
-package view;
+package view.editor;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -6,20 +6,22 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import api.IEntity;
-import gui.GuiObject;
-import gui.GuiObjectFactory;
+import api.ISerializable;
+import enums.GUISize;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.entity.EntitySystem;
+import view.Utilities;
 
 public class EditorEnvironment extends Editor{
 	
@@ -27,41 +29,45 @@ public class EditorEnvironment extends Editor{
 	private EntitySystem myEntities;
 	private GridPane environmentPane;
 	private List<Node> viewList;
-	private Utilities utilities;
 	private SubScene gameScene;
 	private VBox entityOptions;
 	private Group gameRoot;
 	
-	public EditorEnvironment(EntitySystem entitySystem){
-		myResources = ResourceBundle.getBundle("authoring");
-		myEntities = entitySystem;
+	public EditorEnvironment(String language, ISerializable entities){
+		myResources = ResourceBundle.getBundle(language);
+		myEntities = (EntitySystem) entities;
 		environmentPane = new GridPane();
-		utilities = new Utilities();
 		viewList = new ArrayList<Node>();
 		addLayoutComponents();
 	}
-	
+
 	private void addLayoutComponents(){
 		entityOptions = new VBox();
-		setAndAdd(entityOptions,0,0,1,1);
+		entityOptions.setMinWidth(GUISize.ONE_THIRD_OF_SCREEN.getSize()/3);
+		entityOptions.setMinHeight(GUISize. HEIGHT_MINUS_TAB.getSize());
+		ScrollPane pane = new ScrollPane(entityOptions);
+		pane.setMinWidth(GUISize.ONE_THIRD_OF_SCREEN.getSize());
+		pane.setMinHeight(GUISize. HEIGHT_MINUS_TAB.getSize());
+		setAndAdd(pane,0,0,1,1);
 		populateVbox(entityOptions);
+		
 		gameRoot = new Group();
-		gameScene = new SubScene(gameRoot,Integer.parseInt(myResources.getString("gameSceneHeight")),Integer.parseInt(myResources.getString("gameSceneWidth")));
+		gameScene = new SubScene(gameRoot,(GUISize.TWO_THIRDS_OF_SCREEN.getSize()),GUISize.HEIGHT_MINUS_TAB.getSize());
 		gameScene.setFill(Color.WHITE);
 		setAndAdd(gameScene,1,0,1,1);
 	}
 	
 	private void populateVbox(VBox vbox) {
+		try{
 		Collection<IEntity> entityList = myEntities.getAllEntities();
 		for (IEntity entity: entityList){
-			try{
 			Button entityButton = Utilities.makeButton(entity.toString(), e -> addToScene(entity));
 			vbox.getChildren().add(entityButton);
-			} catch(NullPointerException e){
+			(entityButton).setMaxWidth(Double.MAX_VALUE);
+			} }catch(NullPointerException e){
 				// do nothing
 			}
 		}
-	}
 	
 	private Object addToScene(IEntity entity) {
 		// TODO Auto-generated method stub
@@ -109,6 +115,12 @@ public class EditorEnvironment extends Editor{
 	public Pane getPane() {
 		//populateLayout();
 		return environmentPane;
+	}
+
+	@Override
+	public void addSerializable(ISerializable serialize) {
+		myEntities = (EntitySystem) serialize;
+		
 	}
 
 }
