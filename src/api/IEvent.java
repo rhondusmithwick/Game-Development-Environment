@@ -1,7 +1,16 @@
 package api;
 
-public interface IEvent {
-    IEventListener getEventListener ();
+/**
+ * Interface for event/condition clause of a trigger.
+ *
+ * @author Tom Wu
+ */
+public interface IEvent extends ISerializable {
 
-    IEventHandler getEventHandler ();
+	/**
+	 * Gets the message id of an event
+	 * 
+	 * @return the message id of an event
+	 */
+	String getEventID();
 }
