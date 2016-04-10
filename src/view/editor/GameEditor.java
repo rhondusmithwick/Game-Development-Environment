@@ -30,6 +30,7 @@ import javafx.stage.Stage;
 import model.entity.Entity;
 import model.entity.EntitySystem;
 import usecases.EntityEditor;
+import usecases.EnvironmentEditor;
 import view.Authoring;
 import view.Utilities;
 
@@ -113,6 +114,18 @@ public class GameEditor extends Editor  {
 
 
 	}
+	
+	
+	private VBox leftPane() {
+		VBox temp = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
+		temp.getChildren().add(createTextEntry("gName"));
+		temp.getChildren().add(createTextEntry("gDesc"));
+		temp.getChildren().add(showIcon());
+		editorButtons(temp);
+		temp.getChildren().add(Utilities.makeButton(myResources.getString("saveGame"), e->saveGame()));
+		return temp;
+	}
+	
 
 	private ScrollPane createEnvList() {
 		ScrollPane scroll = new ScrollPane();
@@ -147,16 +160,6 @@ public class GameEditor extends Editor  {
 
 	}
 
-	private VBox leftPane() {
-		VBox temp = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
-		temp.getChildren().add(createTextEntry("gName"));
-		temp.getChildren().add(createTextEntry("gDesc"));
-		temp.getChildren().add(showIcon());
-		editorButtons(temp);
-		temp.getChildren().add(Utilities.makeButton(myResources.getString("saveGame"), e->saveGame()));
-		return temp;
-	}
-
 
 	private HBox createTextEntry(String name){
 		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
@@ -174,24 +177,11 @@ public class GameEditor extends Editor  {
 
 	private void editorButtons(VBox container) {
 		container.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENTITY_EDITOR_NAME.getDefault()), 
-				e->createEntityEditor(EditorEntity.class)));
+				e->createEditor(EntityEditor.class, (ISerializable) new Entity())));
 		container.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
-				e->createEnvironmentEditor(EditorEnvironment.class)));
+				e->createEditor(EnvironmentEditor.class, (ISerializable) new EntitySystem())));
 	}
-
-	private void createEntityEditor(Class<?> editorName){
-		ISerializable passedParameter = new Entity();
-		createEditor(editorName, passedParameter);
-	}
-
-	private void createEnvironmentEditor(Class<?> editorName) {
-		EntitySystem entitySystem = new EntitySystem();
-		entitySystem.addEntity(new Entity());
-		entitySystem.addEntity(new Entity());
-		entitySystem.addEntity(new Entity());
-		createEditor(editorName, entitySystem);
-	}
-
+	
 	private void createEditor(Class<?> editName, ISerializable passedParameter) {
 		IEditor editor = editFact.createEditor(editName, passedParameter, myLanguage, new Button());
 		editor.populateLayout();
@@ -222,7 +212,6 @@ public class GameEditor extends Editor  {
 		fChoose.getExtensionFilters().addAll(FileExtensions.GIF.getFilter(), FileExtensions.JPG.getFilter(), FileExtensions.PNG.getFilter());
 		File file = fChoose.showOpenDialog(s);
 		setIconPicture(file);
-
 	}
 
 
