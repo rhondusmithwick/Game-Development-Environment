@@ -8,8 +8,6 @@ import java.security.ProtectionDomain;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
-
-import javafx.collections.ObservableList;
 	import javafx.event.ActionEvent;
 	import javafx.event.EventHandler;
 	import javafx.scene.control.Alert;
@@ -33,7 +31,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 		public static void showError(String message, ResourceBundle displayStrings) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle(displayStrings.getString("error"));
-			alert.setContentText(message);
+			alert.setContentText(displayStrings.getString(message));
 			alert.show();
 		}
 		

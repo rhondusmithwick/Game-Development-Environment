@@ -1,18 +1,19 @@
 package view.editor;
 
-import com.google.common.reflect.Reflection;
 
+import java.util.ResourceBundle;
 import api.ISerializable;
+import javafx.collections.ObservableList;
+import view.Utilities;
 
 public class EditorFactory {
-	
-	public Editor createEditor(String name, String language, ISerializable object) {
+
+	public Editor createEditor(Class<?> name,  String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> otherList) {
 		Editor editor = null;
-		String pack = Reflection.getPackageName(this.getClass());
 		try {
-				editor = (Editor) Class.forName(pack + "." + name).getConstructor(String.class,ISerializable.class).newInstance(language,object);
+			editor = (Editor) name.getConstructor( String.class, ISerializable.class, ObservableList.class, ObservableList.class).newInstance( language, toEdit, masterList, otherList);
 		} catch (Exception e) {
-				System.out.println("EDITOR FACTORY FAILED TO CREATE CLASS");
+			Utilities.showError("editCreate", ResourceBundle.getBundle(language));
 		}
 		return editor;
 	}
