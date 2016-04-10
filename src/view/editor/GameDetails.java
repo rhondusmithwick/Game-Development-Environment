@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-
 import enums.DefaultStrings;
 import enums.FileExtensions;
 import enums.GUISize;
@@ -23,7 +22,8 @@ import view.Utilities;
 public class GameDetails {
 	
 	private ResourceBundle myResources;
-	private HBox name, description, iconBox;
+	private HBox nameBox, descriptionBox, iconBox;
+	private TextArea name, desc;
 	private String iconPath;
 	private ImageView icon;
 
@@ -34,8 +34,10 @@ public class GameDetails {
 	}
 
 	private void createDetails() {
-		name = createTextEntry("gName");
-		description = createTextEntry("gDesc");
+		nameBox = createTextEntry("gName");
+		name = (TextArea) nameBox.getChildren().get(1);
+		descriptionBox = createTextEntry("gDesc");
+		desc = (TextArea) nameBox.getChildren().get(1);
 		showIcon();
 		
 	}
@@ -43,9 +45,9 @@ public class GameDetails {
 	private HBox createTextEntry(String name){
 		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
 		Label title = new Label(myResources.getString(name));
-		TextArea entryBox = Utilities.makeTextArea(myResources.getString(name));
-		container.getChildren().addAll(title, entryBox);
-		HBox.setHgrow(entryBox, Priority.SOMETIMES);
+		TextArea tArea = Utilities.makeTextArea(myResources.getString(name));
+		container.getChildren().addAll(title, tArea);
+		HBox.setHgrow(tArea, Priority.SOMETIMES);
 		return container;
 	}
 	
@@ -78,6 +80,10 @@ public class GameDetails {
 	
 	
 	public List<Node> getElements(){
-		return Arrays.asList(name, description, iconBox);
+		return Arrays.asList(nameBox, descriptionBox, iconBox);
+	}
+	
+	public List<String> getGameDetails(){
+		return Arrays.asList(name.getText(), desc.getText(), iconPath);
 	}
 }

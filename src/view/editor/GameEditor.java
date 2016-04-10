@@ -101,7 +101,6 @@ public class GameEditor extends Editor  {
 
 	}
 	
-	
 	private VBox leftPane() {
 		VBox temp = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
 		temp.getChildren().addAll(gameDetails.getElements());
@@ -146,9 +145,6 @@ public class GameEditor extends Editor  {
 
 	}
 
-
-
-
 	private void saveGame() {
 		// TODO Auto-generated method stub
 	}
@@ -166,9 +162,7 @@ public class GameEditor extends Editor  {
 		authEnv.createTab(editor.getPane(), editName.getSimpleName(), true);
 	}
 
-
-
-
+	
 	@Override
 	public void updateEditor() {
 		populateLayout();
