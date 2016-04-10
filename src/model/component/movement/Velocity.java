@@ -1,9 +1,10 @@
 package model.component.movement;
 
 import api.IComponent;
-import javafx.beans.property.SimpleDoubleProperty;
-import utility.Pair;
+import javafx.beans.property.SimpleObjectProperty;
+import utility.TwoProperty;
 
+import java.util.List;
 import java.util.function.DoubleUnaryOperator;
 
 
@@ -14,19 +15,18 @@ import java.util.function.DoubleUnaryOperator;
  */
 public class Velocity implements IComponent {
 
-    private final Pair<SimpleDoubleProperty, SimpleDoubleProperty> pair = new Pair<>(new SimpleDoubleProperty(this, "speed", 0),
-            new SimpleDoubleProperty(this, "direction", 0));
-    ;
+    private final TwoProperty<Double, Double> twoProperty = new TwoProperty<>("Speed", 0.0, "Direction", 0.0);
 
     public Velocity() {
     }
 
-    public Velocity(Double speed, Double direction) {
+    public Velocity(double speed, double direction) {
         setSpeed(speed);
         setDirection(direction);
     }
 
-    public Velocity(Double vx, Double vy, boolean flag) {
+    public Velocity(double vx, double vy, boolean flag) {
+        this();
         setVXY(vx, vy);
     }
 
@@ -38,8 +38,8 @@ public class Velocity implements IComponent {
         speedProperty().set(speed);
     }
 
-    public SimpleDoubleProperty speedProperty() {
-        return pair._1();
+    public SimpleObjectProperty<Double> speedProperty() {
+        return twoProperty.property1();
     }
 
     public double getDirection() {
@@ -50,8 +50,8 @@ public class Velocity implements IComponent {
         directionProperty().set(direction);
     }
 
-    public SimpleDoubleProperty directionProperty() {
-        return pair._2();
+    public SimpleObjectProperty<Double> directionProperty() {
+        return twoProperty.property2();
     }
 
     private double getVHelp(DoubleUnaryOperator func) {
@@ -79,5 +79,10 @@ public class Velocity implements IComponent {
     @Override
     public String toString() {
         return String.format("Velocity: [Speed: %s, Direction: %s]", getSpeed(), getDirection());
+    }
+
+    @Override
+    public List<SimpleObjectProperty<?>> getProperties() {
+        return twoProperty.getProperties();
     }
 }

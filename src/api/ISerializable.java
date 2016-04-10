@@ -1,50 +1,33 @@
 package api;
 
+import datamanagement.XMLWriter;
+
 import java.io.File;
 import java.io.Serializable;
 
 /**
- * Interface for serializable objects
+ * Interface for serializable objects.
+ * Indicates that an object may be read and written from a file, and allows a few methods to do so.
  *
- * @author Tom Wu
+ * @author Rhondu Smithwick, Tom Wu
  */
 public interface ISerializable extends Serializable {
-	/**
-	 * Evaluates the File f
-	 * @param f File to evaluate
-	 */
-    default void evaluate(File f) {
-        // TODO
-		System.out.println("ISerializable evaluate() not implemented");
-		System.exit(1);
-    }
-    
+
     /**
-	 * Evaluates the String s
-	 * @param s String to evaluate
-	 */
-    default void evaluateString(String s) { // TODO
-		System.out.println("ISerializable evaluateString() not implemented");
-		System.exit(1);
+     * Serializes this object to a File
+     *
+     * @return File representing the serialized form of this object
+     */
+    default File serialize(String fileName) {
+        return new XMLWriter<>().writeToFile(fileName, this);
     }
 
     /**
-	 * Serializes this object to a File
-	 * @return File representing the serialized form of this object
-	 */
-    default File serialize() {
-		System.out.println("ISerializable serialize() not implemented");
-		System.exit(1);
-        return null; // TODO
-    }
-
-    /**
-	 * Serializes this object to a String
-	 * @return String representing the serialized form of this object
-	 */
-    default String serializeToString() { // TODO
-		System.out.println("ISerializable serializeToString() not implemented");
-		System.exit(1);
-		return null;
+     * Serializes this object to a String
+     *
+     * @return String representing the serialized form of this object
+     */
+    default String serializeToString() {
+        return new XMLWriter<>().writeToString(this);
     }
 }

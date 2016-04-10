@@ -7,7 +7,7 @@ import java.util.Map;
  *
  * @author Rhondu Smithwick
  */
-public interface SpecLoader<T> {
+public interface ITemplateLoader<T> {
 
     /**
      * Load specs from the file.
@@ -16,4 +16,5 @@ public interface SpecLoader<T> {
      * @return the specs from the file
      */
     Map<T, Integer> loadSpecs(String fileName);
+
 }

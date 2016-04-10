@@ -1,22 +1,20 @@
 package model.component.character;
 
-import javafx.beans.property.SimpleDoubleProperty;
 import api.IComponent;
-import utility.Unit;
+import javafx.beans.property.SimpleObjectProperty;
+import utility.SingleProperty;
+
+import java.util.List;
 
 
 /**
  * The class for Attack. Contains a single double property.
- * {@inheritDoc}
  *
- * @author Roxanne Baker
+ * @author Roxanne Baker, Rhondu Smithwick
  */
 public class Attack implements IComponent {
 
-    /**
-     * The unit to contain the property.
-     */
-    private final Unit<SimpleDoubleProperty> unit = new Unit<>(new SimpleDoubleProperty(this, "attack", 0.0));
+    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Attack", 0.0);
 
     /**
      * Empty constructor. Has attack at 0.
@@ -26,18 +24,20 @@ public class Attack implements IComponent {
 
     /**
      * Construct with an initial value.
+     *
      * @param attack the initial value
      */
-    public Attack(Double attack) {
+    public Attack(double attack) {
         setAttack(attack);
     }
 
     /**
      * Get the attack as a property.
+     *
      * @return the attack property
      */
-    public SimpleDoubleProperty attackProperty() {
-        return unit._1();
+    public SimpleObjectProperty<Double> attackProperty() {
+        return singleProperty.property1();
     }
 
     public double getAttack() {
@@ -56,5 +56,10 @@ public class Attack implements IComponent {
     @Override
     public boolean unique() {
         return true;
+    }
+
+    @Override
+    public List<SimpleObjectProperty<?>> getProperties() {
+        return singleProperty.getProperties();
     }
 }

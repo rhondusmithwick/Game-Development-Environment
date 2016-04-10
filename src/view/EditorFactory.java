@@ -9,9 +9,8 @@ public class EditorFactory {
 		Editor editor = null;
 		String pack = Reflection.getPackageName(this.getClass());
 		try {
-			editor = (Editor) Class.forName(pack + "." + name).getConstructor(Entity.class).newInstance(new Entity(0));
+			editor = (Editor) Class.forName(pack + "." + name).getConstructor(Entity.class).newInstance(new Entity());
 		} catch (Exception e) {
-			
 		}
 		return editor;
 	}

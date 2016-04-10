@@ -4,8 +4,6 @@ import api.IDataReader;
 import com.thoughtworks.xstream.XStream;
 import com.thoughtworks.xstream.io.xml.StaxDriver;
 
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.Reader;
@@ -14,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by rhondusmithwick on 4/1/16.
+ * The XML implementation of a DataReader.
  *
  * @author Rhondu Smithwick
  */
@@ -32,17 +30,6 @@ public class XMLReader<T> implements IDataReader<T> {
     public List<T> readFromString(String stringInput) {
         Reader reader = new StringReader(stringInput);
         doRead(reader);
-        return objects;
-    }
-
-    @Override
-    public List<T> readFromFile(String fileName) {
-        try {
-            Reader reader = new FileReader(fileName);
-            doRead(reader);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
         return objects;
     }
 
@@ -66,6 +53,8 @@ public class XMLReader<T> implements IDataReader<T> {
                 objects.add(obj);
             } catch (IOException e) {
                 break;
+            } catch (ClassCastException c) {
+                throw new ClassCastException("Not all objects in this file of type T.");
             }
         }
     }

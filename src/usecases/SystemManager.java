@@ -37,18 +37,6 @@ public class SystemManager implements ISystemManager {
     }
 
     @Override
-    public void evaluate(File f) {
-        // TODO Auto-generated method stub
-
-    }
-
-    @Override
-    public File serialize() {
-        // TODO Auto-generated method stub
-        return null;
-    }
-
-    @Override
     public IEntitySystem getEntitySystem() {
         // TODO Auto-generated method stub
         return null;

@@ -1,8 +1,10 @@
 package model.component.character;
 
 import api.IComponent;
-import javafx.beans.property.SimpleDoubleProperty;
-import utility.Unit;
+import javafx.beans.property.SimpleObjectProperty;
+import utility.SingleProperty;
+
+import java.util.List;
 
 /**
  * The health component.
@@ -11,10 +13,7 @@ import utility.Unit;
  */
 public class Health implements IComponent {
 
-    /**
-     * The unit for health.
-     */
-    private final Unit<SimpleDoubleProperty> unit = new Unit<>(new SimpleDoubleProperty(this, "health", 0.0));
+    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Health", 0.0);
 
     /**
      * Empty constructor. Defaults to 0.
@@ -27,7 +26,8 @@ public class Health implements IComponent {
      *
      * @param health the initial value
      */
-    public Health(Double health) {
+    public Health(double health) {
+        this();
         setHealth(health);
     }
 
@@ -36,8 +36,8 @@ public class Health implements IComponent {
      *
      * @return the health property
      */
-    public SimpleDoubleProperty healthProperty() {
-        return unit._1();
+    public SimpleObjectProperty<Double> healthProperty() {
+        return singleProperty.property1();
     }
 
     public double getHealth() {
@@ -48,4 +48,8 @@ public class Health implements IComponent {
         healthProperty().set(health);
     }
 
+    @Override
+    public List<SimpleObjectProperty<?>> getProperties() {
+        return singleProperty.getProperties();
+    }
 }
