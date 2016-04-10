@@ -2,11 +2,14 @@ package testing;
 
 import api.IEntity;
 import api.IEntitySystem;
+import api.ISerializable;
 import model.entity.EntitySystem;
 import view.editor.Editor;
 import view.editor.EditorEntity;
 import view.editor.EditorFactory;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
@@ -33,8 +36,9 @@ public class EditorTesting extends Application {
 		myStage = stage;
         IEntity entity = entitySystem.createEntityFromLoad(LOAD_FILE_NAME);
         EditorFactory factory = new EditorFactory();
+        ObservableList<ISerializable> entityList = FXCollections.observableArrayList();
         //Editor editorEntity = factory.createEditor(EditorEnvironment.class, new EntitySystem(), LANGUAGE, new Button());
-        Editor editorEntity = new EditorEntity(null, entity, null, null);
+        Editor editorEntity = new EditorEntity(null, entity, entityList, null);
         Scene scene = new Scene(editorEntity.getPane());
 
 		myStage.setScene(scene);

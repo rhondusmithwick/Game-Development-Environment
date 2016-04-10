@@ -1,13 +1,9 @@
 package gui;
 import java.util.ResourceBundle;
 
-import view.Utilities;
-import view.editor.Editor;
+
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.scene.control.Button;
-import api.ISerializable;
-import model.component.movement.Position;
-import model.component.movement.Velocity;
+
 
 /**
  * This is part of my masterpiece code. I reused this from my CellSociety project. This class introduces polymorphism and abstraction to the GUI elements. 
@@ -19,12 +15,9 @@ import model.component.movement.Velocity;
 
 public class GuiObjectFactory {
 	private static final String GUI_RESOURCES = "guiComponents";
-	private ResourceBundle myResources;
-	private String packageName = "gui.";
 	private String myLanguage;
 
 	public GuiObjectFactory(String language){
-		myResources = ResourceBundle.getBundle(GUI_RESOURCES);
 		myLanguage=  language;
 	}
 	public GuiObject createNewGuiObject(String type, SimpleObjectProperty<?> property, Object object){
@@ -36,6 +29,7 @@ public class GuiObjectFactory {
 			case("Speed"):{
 				return new GuiObjectSlider(type, GUI_RESOURCES, null, property, object);
 			}
+
 
 			}
 		

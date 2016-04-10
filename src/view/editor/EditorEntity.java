@@ -2,6 +2,7 @@ package view.editor;
 
 import java.util.Collection;
 
+import view.Utilities;
 import gui.GuiObject;
 import gui.GuiObjectFactory;
 import model.entity.Entity;
@@ -27,11 +28,14 @@ public class EditorEntity extends Editor{
 	private IEntity myEntity;
 	private VBox vbox;
 	private String myLanguage;
+	private ObservableList<ISerializable> entityList;
+	private Button saveButton;
 
-	public EditorEntity( String language, ISerializable toEdit, ObservableList<ISerializable> addToList, ObservableList<ISerializable> emptyList) {
+	public EditorEntity(String language, ISerializable toEdit, ObservableList<ISerializable> addToList, ObservableList<ISerializable> emptyList) {
 		editorPane = new GridPane();
 		myLanguage = language;
 		myEntity = (Entity) toEdit;
+		entityList = addToList;
 
 	}
 
@@ -62,7 +66,10 @@ public class EditorEntity extends Editor{
 			}
 		}
 			
+		saveButton = Utilities.makeButton("Save Entity", e-> addSerializable(myEntity));
+		vbox.getChildren().add(saveButton);
 		editorPane.getChildren().add(vbox);
+
 	}
 	
 
@@ -73,8 +80,8 @@ public class EditorEntity extends Editor{
 
 	@Override
 	public void addSerializable(ISerializable serialize) {
-		// TODO Auto-generated method stub
-		
+		System.out.println("Saved Entity");
+		entityList.add(serialize);
 	}
 
 
