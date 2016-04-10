@@ -2,13 +2,8 @@ package view.editor;
 
 
 import java.util.ResourceBundle;
-
 import api.ISerializable;
-<<<<<<< HEAD
 import javafx.collections.ObservableList;
-=======
-import javafx.scene.control.Button;
->>>>>>> frontend
 import view.Utilities;
 
 public class EditorFactory {
