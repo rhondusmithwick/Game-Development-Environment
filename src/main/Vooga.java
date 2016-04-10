@@ -1,5 +1,6 @@
 package main;
 
+import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import enums.DefaultStrings;
@@ -8,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -22,7 +24,7 @@ public class Vooga {
 	private Authoring authEnv;
 	private Scene myScene;
 	private ResourceBundle myResources;
-
+	private ComboBox<String> languages;
 	/**
 	 * Constructor that takes in a stage to display the graphics.
 	 * 
@@ -31,7 +33,7 @@ public class Vooga {
 
 	public Vooga(Stage stage) {
 		myStage = stage;
-		myResources = ResourceBundle.getBundle(DefaultStrings.DEFAULT_LANGUAGE.getDefault());
+		myResources = ResourceBundle.getBundle(DefaultStrings.LANG_LOC.getDefault()+DefaultStrings.DEFAULT_LANGUAGE.getDefault());
 	}
 
 	/**
@@ -52,12 +54,21 @@ public class Vooga {
 	private Group createDisplay() {
 		root = new Group();
 		setVBox();
+		createGame();
+		setLanguage();
+		return root;
+	}
+
+	private void setLanguage() {
+		languages = Utilities.makeComboBox(myResources.getString("dispLang"), Arrays.asList("english", "spanish"), null);
+		myVBox.getChildren().add(languages);
+		
+	}
+
+	private void createGame() {
 		Button createGame = Utilities.makeButton(myResources.getString("createGame"), null);
 		createGame.setOnAction(e -> createAuthoring());
-		
 		myVBox.getChildren().add(createGame);
-		root.getChildren().add(myVBox);
-		return root;
 	}
 
 	private void setVBox() {
@@ -65,13 +76,19 @@ public class Vooga {
 		myVBox.prefHeightProperty().bind(myStage.heightProperty());
 		myVBox.prefWidthProperty().bind(myStage.widthProperty());
 		myVBox.setAlignment(Pos.CENTER);
+		root.getChildren().add(myVBox);
 	}
 
 	private void createAuthoring() {
 		myStage.hide();
 		myStage.setWidth(GUISize.AUTHORING_WIDTH.getSize());
 		myStage.setHeight(GUISize.AUTHORING_HEIGHT.getSize());
-		authEnv = new Authoring(DefaultStrings.DEFAULT_LANGUAGE.getDefault());
+		String temp = languages.getSelectionModel().getSelectedItem();
+		if(temp == null){
+			temp = DefaultStrings.DEFAULT_LANGUAGE.getDefault();
+		}
+		String lang = DefaultStrings.LANG_LOC.getDefault() + temp;
+		authEnv = new Authoring(lang);
 		myScene = authEnv.init(myStage.widthProperty(), myStage.heightProperty());
 		myStage.setScene(myScene);
 		myStage.show();

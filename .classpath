@@ -14,5 +14,7 @@
 	<classpathentry kind="lib" path="lib/groovy-all-2.4.6-indy.jar"/>
 	<classpathentry kind="lib" path="lib/groovy-doc.jar"/>
 	<classpathentry kind="lib" path="lib/groovy-src.jar"/>
+	<classpathentry exported="true" kind="con" path="GROOVY_SUPPORT"/>
+	<classpathentry exported="true" kind="con" path="GROOVY_DSL_SUPPORT"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
