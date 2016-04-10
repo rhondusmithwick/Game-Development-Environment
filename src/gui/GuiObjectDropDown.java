@@ -2,8 +2,11 @@ package gui;
 
 import java.util.ResourceBundle;
 
+import api.ISerializable;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.Property;
+import javafx.beans.value.ObservableValue;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ComboBox;
@@ -16,11 +19,11 @@ public class GuiObjectDropDown extends GuiObject {	private static final double W
 	private ComboBox<String> dropDown;
 	private VBox dropDownBox;
 	private Label dropDownLabel;
-	public GuiObjectDropDown(String name, String resourceBundle, EventHandler<ActionEvent> event, Property property,ListProperty list) {
+	public GuiObjectDropDown(String name, String resourceBundle,EventHandler<ActionEvent> event, Property<?> property, ListProperty<?> list, ISerializable serial) {
 		super(name, resourceBundle);
 		dropDown = new ComboBox<String>();
 		dropDown.setMaxWidth(WIDTH);
-		dropDown.itemsProperty().bind(list);		
+		dropDown.itemsProperty().bind((ObservableValue<? extends ObservableList<String>>) list);		
 		dropDown.setValue(getResourceBundle().getString(name+"Default"));
 		dropDownLabel = new Label(getResourceBundle().getString(name+"Label"));
 		bindProperty(property);
