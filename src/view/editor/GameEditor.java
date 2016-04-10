@@ -11,6 +11,7 @@ import enums.FileExtensions;
 import enums.GUISize;
 import enums.ViewInsets;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
@@ -32,9 +33,9 @@ import usecases.EntityEditor;
 import view.Authoring;
 import view.Utilities;
 
-public class GameEditor extends Editor {
-	
-	private VBox pane;
+public class GameEditor extends Editor  {
+
+	private VBox pane, entities, environments;
 	private List<Node> entryList;
 	private String iconPath;
 	private ImageView icon;
@@ -44,8 +45,8 @@ public class GameEditor extends Editor {
 	private String myLanguage;
 	private ObservableList<Entity> masterEntityList;
 	private ObservableList<EntitySystem> masterEnvironmentList;
-	
-	
+
+
 	public GameEditor(Authoring authEnv, String language){
 		myLanguage = language;
 		pane = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
@@ -57,7 +58,29 @@ public class GameEditor extends Editor {
 		this.authEnv=authEnv;
 		this.masterEntityList = FXCollections.observableArrayList();
 		this.masterEnvironmentList = FXCollections.observableArrayList();
+		addListners();
+
+	}
+
+	private void addListners() {
+		masterEntityList.addListener(new ListChangeListener<Entity>() {
+
+			@Override
+			public void onChanged(@SuppressWarnings("rawtypes") ListChangeListener.Change change) {
+				updateEntities();
+			}
+		});
 		
+		masterEnvironmentList.addListener(new ListChangeListener<EntitySystem>() {
+
+			@Override
+			public void onChanged(@SuppressWarnings("rawtypes") ListChangeListener.Change change) {
+				updateEnvironments();
+			}
+		});
+
+
+
 	}
 
 	@Override
@@ -76,7 +99,9 @@ public class GameEditor extends Editor {
 	public void populateLayout() {
 		VBox right = rightPane();
 		VBox left = leftPane();
-		pane.getChildren().addAll(left, right);
+		HBox container = new HBox(GUISize.GAME_EDITOR_PADDING.getSize());
+		container.getChildren().addAll(left, right);
+		pane.getChildren().addAll(container);
 
 	}
 
@@ -85,33 +110,41 @@ public class GameEditor extends Editor {
 		temp.getChildren().add(createEntityList());
 		temp.getChildren().add(createEnvList());
 		return temp;
-		
-		
+
+
 	}
 
 	private ScrollPane createEnvList() {
 		ScrollPane scroll = new ScrollPane();
-		VBox container = new VBox();
-		//masterEnvironmentList.stream().forEach(e-> addEnvironmentToScroll(e, container));
-		scroll.setContent(container);
+		updateEnvironments();
+		scroll.setContent(environments);
 		return scroll;
 	}
 
+	private void updateEnvironments() {
+		environments = new VBox();
+		//masterEnvironmentList.stream().forEach(e-> addEnvironmentToScroll(e, container));
+	}
+
 	//private void addEnvironmentToScroll(EntitySystem e, VBox container) {
-		//container.getChildren().add(Utilities.makeButton(, handler))
+	//container.getChildren().add(Utilities.makeButton(, handler))
 	//}
 
 	private ScrollPane createEntityList() {
 		ScrollPane scroll = new ScrollPane();
-		VBox container = new VBox();
-		masterEntityList.stream().forEach(e-> addEntityToScroll(e, container));
-		scroll.setContent(container);
+		updateEntities();
+		scroll.setContent(entities);
 		return scroll;
+	}
+
+	private void updateEntities() {
+		entities = new VBox();
+		masterEntityList.stream().forEach(e-> addEntityToScroll(e, entities));
 	}
 
 	private void addEntityToScroll(Entity entity, VBox container) {
 		container.getChildren().add(Utilities.makeButton(entity.getName(), f->createEditor(EntityEditor.class, (ISerializable) entity)));
-		
+
 	}
 
 	private VBox leftPane() {
@@ -124,7 +157,7 @@ public class GameEditor extends Editor {
 		return temp;
 	}
 
-	
+
 	private HBox createTextEntry(String name){
 		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
 		Label title = new Label(myResources.getString(name));
@@ -144,8 +177,8 @@ public class GameEditor extends Editor {
 				e->createEntityEditor(EditorEntity.class)));
 		container.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
 				e->createEnvironmentEditor(EditorEnvironment.class)));
-		}
-	
+	}
+
 	private void createEntityEditor(Class<?> editorName){
 		ISerializable passedParameter = new Entity();
 		createEditor(editorName, passedParameter);
@@ -189,7 +222,7 @@ public class GameEditor extends Editor {
 		fChoose.getExtensionFilters().addAll(FileExtensions.GIF.getFilter(), FileExtensions.JPG.getFilter(), FileExtensions.PNG.getFilter());
 		File file = fChoose.showOpenDialog(s);
 		setIconPicture(file);
-		
+
 	}
 
 
@@ -202,7 +235,7 @@ public class GameEditor extends Editor {
 	@Override
 	public void addSerializable(ISerializable serialize) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
