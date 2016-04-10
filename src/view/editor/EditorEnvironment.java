@@ -8,6 +8,7 @@ import java.util.List;
 import api.IEntity;
 import api.ISerializable;
 import enums.GUISize;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
@@ -45,9 +46,9 @@ public class EditorEnvironment extends Editor{
 	private Group gameRoot;
 	private static final String IMAGE_PATH = "resources/RhonduSmithwick.JPG";
 	
-	public EditorEnvironment(ISerializable entities, String language, Button button){
+	public EditorEnvironment(String language, ObservableList<ISerializable> masterList, ObservableList<ISerializable> addToList){
 		//myResources = ResourceBundle.getBundle(language);
-		myEntities = (EntitySystem) entities;
+		myEntities = new EntitySystem();
 		environmentPane = new GridPane();
 		viewList = new ArrayList<Node>();
 		addLayoutComponents();

@@ -15,7 +15,6 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
@@ -28,7 +27,6 @@ import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.entity.Entity;
-import model.entity.EntitySystem;
 import view.Authoring;
 import view.Utilities;
 
@@ -42,8 +40,8 @@ public class GameEditor extends Editor  {
 	private EditorFactory editFact;
 	private Authoring authEnv;
 	private String myLanguage;
-	private ObservableList<Entity> masterEntityList;
-	private ObservableList<EntitySystem> masterEnvironmentList;
+	private ObservableList<ISerializable> masterEntityList;
+	private ObservableList<ISerializable> masterEnvironmentList;
 
 
 	public GameEditor(Authoring authEnv, String language){
@@ -64,7 +62,7 @@ public class GameEditor extends Editor  {
 	
 	private void addListeners() {	
 		
-		masterEntityList.addListener(new ListChangeListener<Entity>() {
+		masterEntityList.addListener(new ListChangeListener<ISerializable>() {
 
 			@Override
 			public void onChanged(@SuppressWarnings("rawtypes") ListChangeListener.Change change) {
@@ -73,7 +71,7 @@ public class GameEditor extends Editor  {
 			}
 		});
 		
-		masterEnvironmentList.addListener(new ListChangeListener<EntitySystem>() {
+		masterEnvironmentList.addListener(new ListChangeListener<ISerializable>() {
 
 			@Override
 			public void onChanged(@SuppressWarnings("rawtypes") ListChangeListener.Change change) {
@@ -158,8 +156,8 @@ public class GameEditor extends Editor  {
 		masterEntityList.stream().forEach(e-> addEntityToScroll(e, entities));
 	}
 
-	private void addEntityToScroll(Entity entity, VBox container) {
-		container.getChildren().add(Utilities.makeButton(entity.getName(), f->createEditor(EditorEntity.class, (ISerializable) entity)));
+	private void addEntityToScroll(ISerializable entity, VBox container) {
+		container.getChildren().add(Utilities.makeButton(((Entity) entity).getName(), f->createEditor(EditorEntity.class, FXCollections.observableArrayList(entity))));
 
 	}
 
@@ -180,13 +178,13 @@ public class GameEditor extends Editor  {
 
 	private void editorButtons(VBox container) {
 		container.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENTITY_EDITOR_NAME.getDefault()), 
-				e->createEditor(EditorEntity.class, (ISerializable) new Entity())));
+				e->createEditor(EditorEntity.class, FXCollections.observableArrayList(new Entity()))));
 		container.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
-				e->createEditor(EditorEnvironment.class, (ISerializable) new EntitySystem())));
+				e->createEditor(EditorEnvironment.class, masterEnvironmentList)));
 	}
 	
-	private void createEditor(Class<?> editName, ISerializable passedParameter) {
-		IEditor editor = editFact.createEditor(editName, passedParameter, myLanguage, new Button());
+	private void createEditor(Class<?> editName, ObservableList<ISerializable> otherList) {
+		IEditor editor = editFact.createEditor(editName, myLanguage, masterEntityList, otherList);
 		editor.populateLayout();
 		authEnv.createTab(editor.getPane(), editName.getSimpleName(), true);
 	}
