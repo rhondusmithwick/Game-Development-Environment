@@ -12,6 +12,7 @@ import enums.GUISize;
 import enums.ViewInsets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
@@ -90,19 +91,19 @@ public class GameEditor extends Editor {
 
 	private void editorButtons() {
 		pane.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENTITY_EDITOR_NAME.getDefault()), 
-				e->createEntityEditor(DefaultStrings.ENTITY_EDITOR_NAME.getDefault())));
+				e->createEntityEditor(EditorEntity.class)));
 		pane.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
-				e->createEnvironmentEditor(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault())));
+				e->createEnvironmentEditor(EditorEnvironment.class)));
 	//pane.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
 		//e->createEnvironmentEditor()));
 		}
 	
-	private void createEntityEditor(String editorName){
+	private void createEntityEditor(Class<?> editorName){
 		ISerializable passedParameter = new Entity();
 		createEditor(editorName, passedParameter);
 	}
 
-	private void createEnvironmentEditor(String editorName) {
+	private void createEnvironmentEditor(Class<?> editorName) {
 		EntitySystem entitySystem = new EntitySystem();
 		entitySystem.addEntity(new Entity());
 		entitySystem.addEntity(new Entity());
@@ -110,10 +111,10 @@ public class GameEditor extends Editor {
 		createEditor(editorName, entitySystem);
 	}
 
-	private void createEditor(String editName, ISerializable passedParameter) {
-		IEditor editor = editFact.createEditor(editName,myLanguage,passedParameter);
+	private void createEditor(Class<?> editName, ISerializable passedParameter) {
+		IEditor editor = editFact.createEditor(editName, passedParameter, myLanguage, new Button());
 		editor.populateLayout();
-		authEnv.createTab(editor.getPane(), editName, true);
+		authEnv.createTab(editor.getPane(), editName.getName(), true);
 	}
 
 	private void showIcon() {

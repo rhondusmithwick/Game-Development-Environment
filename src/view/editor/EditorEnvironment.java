@@ -52,8 +52,8 @@ public class EditorEnvironment extends Editor{
 	private Group gameRoot;
 	private static final String IMAGE_PATH = "resources/RhonduSmithwick.JPG";
 	
-	public EditorEnvironment(String language, ISerializable entities){
-		myResources = ResourceBundle.getBundle(language);
+	public EditorEnvironment(ISerializable entities, String language, Button button){
+		//myResources = ResourceBundle.getBundle(language);
 		myEntities = (EntitySystem) entities;
 		environmentPane = new GridPane();
 		viewList = new ArrayList<Node>();

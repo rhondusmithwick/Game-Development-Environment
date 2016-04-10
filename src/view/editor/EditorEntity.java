@@ -6,6 +6,7 @@ import gui.GuiObject;
 import gui.GuiObjectFactory;
 import model.entity.Entity;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import api.IComponent;
@@ -22,7 +23,7 @@ public class EditorEntity extends Editor{
 	private Pane editorPane;
 	private IEntity myEntity;
 
-	public EditorEntity(String language, ISerializable entity) {
+	public EditorEntity(ISerializable entity, String language, Button button) {
 		editorPane = new GridPane();
 		myEntity = (Entity) entity;
 	}
