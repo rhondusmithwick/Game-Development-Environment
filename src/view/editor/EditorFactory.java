@@ -1,18 +1,17 @@
 package view.editor;
 
-import com.google.common.reflect.Reflection;
 
 import api.ISerializable;
+import javafx.scene.control.Button;
 
 public class EditorFactory {
-	
-	public Editor createEditor(String name, String language, ISerializable object) {
+
+	public Editor createEditor(Class<?> name, ISerializable entity, String language, Button button) {
 		Editor editor = null;
-		String pack = Reflection.getPackageName(this.getClass());
 		try {
-				editor = (Editor) Class.forName(pack + "." + name).getConstructor(String.class,ISerializable.class).newInstance(language,object);
+			editor = (Editor) name.getConstructor(ISerializable.class, String.class, Button.class).newInstance(entity, language, button);
 		} catch (Exception e) {
-				System.out.println("EDITOR FACTORY FAILED TO CREATE CLASS");
+			System.out.println("EDITOR FACTORY FAILED TO CREATE CLASS");
 		}
 		return editor;
 	}

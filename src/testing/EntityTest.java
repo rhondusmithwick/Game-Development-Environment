@@ -2,7 +2,6 @@ package testing;
 
 import api.IComponent;
 import api.IEntity;
-import api.IEntitySystem;
 import model.component.character.Attack;
 import model.component.character.Defense;
 import model.component.character.Health;
@@ -11,7 +10,6 @@ import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.Mass;
 import model.entity.Entity;
-import model.entity.EntitySystem;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -28,10 +26,10 @@ import static org.junit.Assert.assertEquals;
  * @author Rhondu Smithwick
  */
 public class EntityTest {
-    private static final String DEFAULT_FILE_NAME = "resources/savedComponents/playerDefault.xml";
-    private static final String LOAD_FILE_NAME = "resources/savedEntities/player.xml";
-
-    private final IEntitySystem entitySystem = new EntitySystem();
+//    private static final String DEFAULT_FILE_NAME = "resources/savedComponents/playerDefault.xml";
+//    private static final String LOAD_FILE_NAME = "resources/savedEntities/player.xml";
+//
+//    private final IEntitySystem entitySystem = new EntitySystem();
 
 
     @Before
