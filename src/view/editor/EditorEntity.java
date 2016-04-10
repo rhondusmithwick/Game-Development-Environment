@@ -5,10 +5,13 @@ import java.util.Collection;
 import gui.GuiObject;
 import gui.GuiObjectFactory;
 import model.entity.Entity;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import api.IComponent;
 import api.IEntity;
 import api.ISerializable;
@@ -22,10 +25,13 @@ public class EditorEntity extends Editor{
 	
 	private Pane editorPane;
 	private IEntity myEntity;
+	private VBox vbox;
+	private String myLanguage;
 
 	public EditorEntity(ISerializable entity, String language, Button button) {
 		editorPane = new GridPane();
 		myEntity = (Entity) entity;
+		myLanguage = language;
 	}
 
 	@Override
@@ -42,17 +48,20 @@ public class EditorEntity extends Editor{
 
 	@Override
 	public void populateLayout() {
-		GuiObjectFactory guiFactory = new GuiObjectFactory();
+		vbox = new VBox();
+		GuiObjectFactory guiFactory = new GuiObjectFactory(myLanguage);
 		Collection<IComponent> componentList = myEntity.getAllComponents();
+		
 		for (IComponent component: componentList){
-			System.out.println(component.getClass().getSimpleName());
-			GuiObject object = guiFactory.createNewGuiObject(component.getClass().toString(), component);
+			for (SimpleObjectProperty<?> property: component.getProperties()){
+			GuiObject object = guiFactory.createNewGuiObject(property.getName(), property, property.getValue());
 			if (object!=null){
-				editorPane.getChildren().add((Node) object.getGuiNode());
+				vbox.getChildren().add((Node) object.getGuiNode());
+			}
 			}
 		}
 			
-
+		editorPane.getChildren().add(vbox);
 	}
 	
 

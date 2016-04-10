@@ -1,8 +1,10 @@
 package testing;
 
+import api.IEntity;
+import api.IEntitySystem;
 import model.entity.EntitySystem;
-
 import view.editor.Editor;
+import view.editor.EditorEntity;
 import view.editor.EditorEnvironment;
 import view.editor.EditorFactory;
 import javafx.application.Application;
@@ -12,8 +14,8 @@ import javafx.stage.Stage;
 
 public class EditorTesting extends Application {
 	private Stage myStage;
-//    private static final String LOAD_FILE_NAME = "resources/savedEntities/player.xml";
-//    private final IEntitySystem entitySystem = new EntitySystem();
+    private static final String LOAD_FILE_NAME = "resources/savedEntities/player.xml";
+    private final IEntitySystem entitySystem = new EntitySystem();
     private static final String LANGUAGE = "english";
 
 	/**
@@ -31,9 +33,10 @@ public class EditorTesting extends Application {
 	public void start (Stage stage) {
 
 		myStage = stage;
-        //IEntity entity = entitySystem.createEntityFromLoad(LOAD_FILE_NAME);
+        IEntity entity = entitySystem.createEntityFromLoad(LOAD_FILE_NAME);
         EditorFactory factory = new EditorFactory();
-        Editor editorEntity = factory.createEditor(EditorEnvironment.class, new EntitySystem(), LANGUAGE, new Button());
+        //Editor editorEntity = factory.createEditor(EditorEnvironment.class, new EntitySystem(), LANGUAGE, new Button());
+        Editor editorEntity = new EditorEntity(entity, LANGUAGE, new Button());
         Scene scene = new Scene(editorEntity.getPane());
 
 		myStage.setScene(scene);

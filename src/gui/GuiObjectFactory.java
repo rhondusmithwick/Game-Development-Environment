@@ -1,4 +1,10 @@
 package gui;
+import java.util.ResourceBundle;
+
+import view.Utilities;
+import view.editor.Editor;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.scene.control.Button;
 import api.ISerializable;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
@@ -12,17 +18,23 @@ import model.component.movement.Velocity;
 
 
 public class GuiObjectFactory {
-	private static final String GUI_RESOURCES = "gui";
+	private static final String GUI_RESOURCES = "guiComponents";
+	private ResourceBundle myResources;
+	private String packageName = "gui.";
+	private String myLanguage;
 
-	public GuiObjectFactory(){
+	public GuiObjectFactory(String language){
+		myResources = ResourceBundle.getBundle(GUI_RESOURCES);
+		myLanguage=  language;
 	}
-	public GuiObject createNewGuiObject(String type, ISerializable serial){
+	public GuiObject createNewGuiObject(String type, SimpleObjectProperty<?> property, Object object){
+
 		switch(type){
-			case("Position"):{
-				return new GuiObjectInputBox(type, GUI_RESOURCES,null, ((Position) serial).xProperty());
+			case("Direction"):{
+				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
 			}
-			case("Velocity"):{
-				return new GuiObjectSlider(type, GUI_RESOURCES, null, ((Velocity) serial).speedProperty());
+			case("Speed"):{
+				return new GuiObjectSlider(type, GUI_RESOURCES, null, property, object);
 			}
 
 			}
