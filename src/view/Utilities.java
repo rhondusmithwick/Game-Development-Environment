@@ -20,7 +20,7 @@ import javafx.scene.control.Alert.AlertType;
 		public static void showError(String message, ResourceBundle displayStrings) {
 			Alert alert = new Alert(AlertType.ERROR);
 			alert.setTitle(displayStrings.getString("error"));
-			alert.setContentText(message);
+			alert.setContentText(displayStrings.getString(message));
 			alert.show();
 		}
 		
