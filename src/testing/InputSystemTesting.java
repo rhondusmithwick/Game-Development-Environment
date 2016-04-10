@@ -58,7 +58,7 @@ public class InputSystemTesting extends Application {
     public void start(Stage primaryStage)  {
         primaryStage.setScene(mYInit());
         primaryStage.show();
-        setUp();e
+        setUp();
     }
 
 }
