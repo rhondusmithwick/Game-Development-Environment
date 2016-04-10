@@ -2,7 +2,6 @@ package model.entity;
 
 import api.IComponent;
 import api.IEntity;
-import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -85,13 +84,17 @@ public class Entity implements IEntity {
     @Override
     public boolean forceAddComponent(IComponent componentToAdd, boolean forceAdd) {
         Class<? extends IComponent> componentClass = componentToAdd.getClassForComponentMap();
+        boolean noTemplate = specs.isEmpty();
+        boolean preCondition = forceAdd || noTemplate || specs.containsKey(componentClass);
+        if (!preCondition) {
+            return false;
+        }
         if (!componentMap.containsKey(componentClass)) {
             componentMap.put(componentClass, Lists.newArrayList());
         }
         List<IComponent> componentStore = componentMap.get(componentClass);
-        boolean specCondition = forceAdd || !specs.containsKey(componentClass) || componentStore.size() < getSpec(componentClass);
-        Preconditions.checkArgument(specCondition, "Too many components already");
-        return componentStore.add(componentToAdd);
+        boolean eligibleByForceOrSize = forceAdd || noTemplate || (componentStore.size() < getSpec(componentClass));
+        return eligibleByForceOrSize && componentStore.add(componentToAdd);
     }
 
     @Override
