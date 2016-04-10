@@ -1,8 +1,11 @@
 package view.editor;
 
 
+import java.util.ResourceBundle;
+
 import api.ISerializable;
 import javafx.scene.control.Button;
+import view.Utilities;
 
 public class EditorFactory {
 
@@ -11,7 +14,7 @@ public class EditorFactory {
 		try {
 			editor = (Editor) name.getConstructor(ISerializable.class, String.class, Button.class).newInstance(entity, language, button);
 		} catch (Exception e) {
-			System.out.println("EDITOR FACTORY FAILED TO CREATE CLASS");
+			Utilities.showError("editFactory", ResourceBundle.getBundle(language));
 		}
 		return editor;
 	}
