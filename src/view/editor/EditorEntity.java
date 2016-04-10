@@ -23,9 +23,9 @@ public class EditorEntity extends Editor{
 	private Pane editorPane;
 	private IEntity myEntity;
 
-	public EditorEntity(String language, ObservableList<ISerializable> addToList, ObservableList<ISerializable> newEntity) {
+	public EditorEntity( String language, ISerializable toEdit, ObservableList<ISerializable> addToList, ObservableList<ISerializable> emptyList) {
 		editorPane = new GridPane();
-		myEntity = (Entity) newEntity.get(0);
+		myEntity = (Entity) toEdit;
 	}
 
 	@Override

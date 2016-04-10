@@ -9,12 +9,11 @@ import view.Utilities;
 
 public class EditorFactory {
 
-	public Editor createEditor(Class<?> name, String language, ObservableList<ISerializable> masterList, ObservableList<ISerializable> otherList) {
+	public Editor createEditor(Class<?> name,  String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> otherList) {
 		Editor editor = null;
 		try {
-			editor = (Editor) name.getConstructor( String.class, ObservableList.class, ObservableList.class).newInstance( language, masterList, otherList);
+			editor = (Editor) name.getConstructor( String.class, ISerializable.class, ObservableList.class, ObservableList.class).newInstance( language, toEdit, masterList, otherList);
 		} catch (Exception e) {
-			e.printStackTrace();
 			Utilities.showError("editCreate", ResourceBundle.getBundle(language));
 		}
 		return editor;

@@ -27,6 +27,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
+import model.entity.Entity;
 import model.entity.EntitySystem;
 import view.Utilities;
 
@@ -46,9 +47,10 @@ public class EditorEnvironment extends Editor{
 	private Group gameRoot;
 	private static final String IMAGE_PATH = "resources/RhonduSmithwick.JPG";
 	
-	public EditorEnvironment(String language, ObservableList<ISerializable> masterList, ObservableList<ISerializable> addToList){
+	public EditorEnvironment(String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> addToList){
 		//myResources = ResourceBundle.getBundle(language);
-		myEntities = new EntitySystem();
+		myEntities = (EntitySystem) toEdit;
+		myEntities.addEntity(new Entity());
 		environmentPane = new GridPane();
 		viewList = new ArrayList<Node>();
 		addLayoutComponents();
