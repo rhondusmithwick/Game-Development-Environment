@@ -84,7 +84,8 @@ public class Entity implements IEntity {
     @Override
     public boolean forceAddComponent(IComponent componentToAdd, boolean forceAdd) {
         Class<? extends IComponent> componentClass = componentToAdd.getClassForComponentMap();
-        boolean preCondition = forceAdd || specs.containsKey(componentClass);
+        boolean noTemplate = specs.isEmpty();
+        boolean preCondition = forceAdd || noTemplate || specs.containsKey(componentClass);
         if (!preCondition) {
             return false;
         }
@@ -92,7 +93,7 @@ public class Entity implements IEntity {
             componentMap.put(componentClass, Lists.newArrayList());
         }
         List<IComponent> componentStore = componentMap.get(componentClass);
-        boolean eligibleByForceOrSize = forceAdd || (componentStore.size() < getSpec(componentClass));
+        boolean eligibleByForceOrSize = forceAdd || noTemplate || (componentStore.size() < getSpec(componentClass));
         return eligibleByForceOrSize && componentStore.add(componentToAdd);
     }
 
