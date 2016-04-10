@@ -11,7 +11,7 @@ import javax.script.ScriptException;
  *
  * @author Rhondu Smithwick
  */
-public class Action {
+public abstract class Action {
 
     private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
     private String script;
@@ -20,14 +20,27 @@ public class Action {
         this.script = script;
     }
 
-
-    public void activate(IEntitySystem universe) {
-        engine.put("universe", universe);
+    public void activate() {
+        setUp();
         try {
-            engine.eval(script);
+            getEngine().eval(getScript());
         } catch (ScriptException e) {
             e.printStackTrace();
         }
+    }
+
+    protected abstract void setUp();
+
+    public ScriptEngine getEngine() {
+        return engine;
+    }
+
+    public void setScript(String script) {
+        this.script = script;
+    }
+
+    public String getScript() {
+        return script;
     }
 
 }

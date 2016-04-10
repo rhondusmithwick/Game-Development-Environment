@@ -9,6 +9,7 @@ import com.google.common.io.Files;
 import api.IEntity;
 import events.Action;
 import events.InputSystem;
+import events.UniverseAction;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
@@ -33,7 +34,7 @@ public class InputSystemTesting extends Application {
 	private Scene mYInit() {
 		BorderPane splash = new BorderPane();
 		Scene scene = new Scene(splash, 500, 500);
-		scene.setOnKeyPressed(e -> inputSystem.take(e.getCode(), universe));
+		scene.setOnKeyPressed(e -> inputSystem.take(e.getCode()));
 		return scene;
 	}
 
@@ -52,7 +53,7 @@ public class InputSystemTesting extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return new Action(script);
+		return new UniverseAction(script, universe);
 	}
 
 	@Override
@@ -60,10 +61,6 @@ public class InputSystemTesting extends Application {
 		primaryStage.setScene(mYInit());
 		primaryStage.show();
 		setUp();
-	}
-
-	public static void main(String[] args) {
-		launch(args);
 	}
 
 }
