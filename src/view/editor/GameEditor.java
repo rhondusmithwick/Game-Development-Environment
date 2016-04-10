@@ -93,8 +93,6 @@ public class GameEditor extends Editor {
 				e->createEntityEditor(EditorEntity.class)));
 		pane.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
 				e->createEnvironmentEditor(EditorEnvironment.class)));
-	//pane.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
-		//e->createEnvironmentEditor()));
 		}
 	
 	private void createEntityEditor(Class<?> editorName){
@@ -113,7 +111,7 @@ public class GameEditor extends Editor {
 	private void createEditor(Class<?> editName, ISerializable passedParameter) {
 		IEditor editor = editFact.createEditor(editName, passedParameter, myLanguage, new Button());
 		editor.populateLayout();
-		authEnv.createTab(editor.getPane(), editName.getName(), true);
+		authEnv.createTab(editor.getPane(), editName.getSimpleName(), true);
 	}
 
 	private void showIcon() {
