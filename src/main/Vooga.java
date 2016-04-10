@@ -60,7 +60,7 @@ public class Vooga {
 	}
 
 	private void setLanguage() {
-		languages = Utilities.makeComboBox(myResources.getString("dispLang"), Arrays.asList("english", "spanish"), null);
+		languages = Utilities.makeComboBox(myResources.getString("dispLang"), Arrays.asList("english", "spanish", "arabic"), null);
 		myVBox.getChildren().add(languages);
 		
 	}
