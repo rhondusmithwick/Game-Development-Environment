@@ -4,6 +4,7 @@ import api.IEntity;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import events.Action;
+import events.UniverseAction;
 import model.component.movement.Position;
 import model.entity.Entity;
 import model.entity.EntitySystem;
@@ -32,8 +33,8 @@ public class ActionTest {
         universe.addEntity(entity);
         try {
             String script = Files.toString(new File(MOVE_SCRIPT), Charsets.UTF_8);
-            Action action = new Action(script);
-            action.activate(universe);
+            Action action = new UniverseAction(script, universe);
+            action.activate();
         } catch (IOException e) {
             e.printStackTrace();
         }

@@ -8,11 +8,11 @@ import java.util.Map;
 
 import api.IEventListener;
 
+@Deprecated
 // BASED OFF OF IEventSystem
 /*
- * Links EventObjects and IEventListeners
- * Utilized to call the relevant event handlers
- * when given an event object
+ * Links EventObjects and IEventListeners Utilized to call the relevant event
+ * handlers when given an event object
  */
 public class EventSystem {
 

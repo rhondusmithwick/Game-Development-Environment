@@ -16,7 +16,7 @@ import java.util.ResourceBundle;
  */
 public class PropertiesTemplateLoader implements ITemplateLoader<Class<? extends IComponent>> {
 
-    private static final String COMPONENT_LOCATIONS = "componentLocations";
+    private static final String COMPONENT_LOCATIONS = "propertyFiles/componentLocations";
 
     /**
      * The resource Bundle for component locations.

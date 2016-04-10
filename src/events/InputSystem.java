@@ -1,10 +1,7 @@
 package events;
 
-import api.IEntitySystem;
-import javafx.event.Event;
 import javafx.scene.input.KeyCode;
 
-import java.security.Key;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -13,7 +10,7 @@ import java.util.Map;
  *
  * @author Rhondu Smithwick
  */
-public class InputSystem  {
+public class InputSystem {
     private final Map<KeyCode, Action> actionMap = new HashMap<>();
 
     public void addEvent(KeyCode k, Action action) {
@@ -24,9 +21,9 @@ public class InputSystem  {
         return actionMap.containsKey(k);
     }
 
-    public void take(KeyCode k, IEntitySystem universe) {
+    public void take(KeyCode k) {
         if (containsEvent(k)) {
-            actionMap.get(k).activate(universe);
+            actionMap.get(k).activate();
         }
     }
 }
