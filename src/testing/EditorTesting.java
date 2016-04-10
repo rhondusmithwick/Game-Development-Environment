@@ -5,11 +5,9 @@ import api.IEntitySystem;
 import model.entity.EntitySystem;
 import view.editor.Editor;
 import view.editor.EditorEntity;
-import view.editor.EditorEnvironment;
 import view.editor.EditorFactory;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class EditorTesting extends Application {
@@ -36,7 +34,7 @@ public class EditorTesting extends Application {
         IEntity entity = entitySystem.createEntityFromLoad(LOAD_FILE_NAME);
         EditorFactory factory = new EditorFactory();
         //Editor editorEntity = factory.createEditor(EditorEnvironment.class, new EntitySystem(), LANGUAGE, new Button());
-        Editor editorEntity = new EditorEntity(entity, LANGUAGE, new Button());
+        Editor editorEntity = new EditorEntity(null, entity, null, null);
         Scene scene = new Scene(editorEntity.getPane());
 
 		myStage.setScene(scene);

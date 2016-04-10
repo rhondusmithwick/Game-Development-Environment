@@ -2,19 +2,18 @@ package view.editor;
 
 
 import java.util.ResourceBundle;
-
 import api.ISerializable;
-import javafx.scene.control.Button;
+import javafx.collections.ObservableList;
 import view.Utilities;
 
 public class EditorFactory {
 
-	public Editor createEditor(Class<?> name, ISerializable entity, String language, Button button) {
+	public Editor createEditor(Class<?> name,  String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> otherList) {
 		Editor editor = null;
 		try {
-			editor = (Editor) name.getConstructor(ISerializable.class, String.class, Button.class).newInstance(entity, language, button);
+			editor = (Editor) name.getConstructor( String.class, ISerializable.class, ObservableList.class, ObservableList.class).newInstance( language, toEdit, masterList, otherList);
 		} catch (Exception e) {
-			Utilities.showError("editFactory", ResourceBundle.getBundle(language));
+			Utilities.showError("editCreate", ResourceBundle.getBundle(language));
 		}
 		return editor;
 	}
