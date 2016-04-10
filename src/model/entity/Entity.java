@@ -89,7 +89,7 @@ public class Entity implements IEntity {
             componentMap.put(componentClass, Lists.newArrayList());
         }
         List<IComponent> componentStore = componentMap.get(componentClass);
-        boolean specCondition = forceAdd || componentStore.size() < getSpec(componentClass);
+        boolean specCondition = forceAdd || !specs.containsKey(componentClass) || componentStore.size() < getSpec(componentClass);
         Preconditions.checkArgument(specCondition, "Too many components already");
         return componentStore.add(componentToAdd);
     }
