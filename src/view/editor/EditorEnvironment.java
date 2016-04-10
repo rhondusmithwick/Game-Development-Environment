@@ -5,9 +5,6 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.ResourceBundle;
-
-import api.IComponent;
 import api.IEntity;
 import api.ISerializable;
 import enums.GUISize;
@@ -27,12 +24,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import model.component.character.Health;
-import model.component.character.Score;
 import model.component.movement.Position;
-import model.component.movement.Velocity;
 import model.component.visual.ImagePath;
-import model.entity.Entity;
 import model.entity.EntitySystem;
 import view.Utilities;
 
@@ -43,7 +36,7 @@ public class EditorEnvironment extends Editor{
 	private double translateX;
 	private double translateY;
 	
-	private ResourceBundle myResources;
+	//private ResourceBundle myResources;
 	private EntitySystem myEntities;
 	private GridPane environmentPane;
 	private List<Node> viewList;

@@ -6,10 +6,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import enums.GUISize;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
-import main.Vooga;
 import model.entity.Entity;
 import model.entity.EntitySystem;
 import view.editor.EditorEnvironment;
@@ -19,8 +17,8 @@ public class BrunaTesting {
 	
 	 private EditorEnvironment myEditorEnvironment;
 	private Stage myStage;
-	private Scene myScene;
-	private static final String LANGUAGE = "English";
+//	private Scene myScene;
+//	private static final String LANGUAGE = "English";
 
 	@Before
 	    public void setUp () {
@@ -30,7 +28,7 @@ public class BrunaTesting {
 		myStage.setWidth(GUISize.MAIN_SIZE.getSize());
 		myStage.setHeight(GUISize.MAIN_SIZE.getSize());
 		myEditorEnvironment = new EditorEnvironment(new EntitySystem(), "English", new Button());
-		myScene = new Scene(myEditorEnvironment.getPane(), GUISize.MAIN_SIZE.getSize(), GUISize.MAIN_SIZE.getSize());
+		//myScene = new Scene(myEditorEnvironment.getPane(), GUISize.MAIN_SIZE.getSize(), GUISize.MAIN_SIZE.getSize());
 		
 		myStage.show();
 	}
