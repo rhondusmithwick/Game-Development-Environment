@@ -10,10 +10,13 @@ import enums.DefaultStrings;
 import enums.FileExtensions;
 import enums.GUISize;
 import enums.ViewInsets;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -25,6 +28,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.entity.Entity;
 import model.entity.EntitySystem;
+import usecases.EntityEditor;
 import view.Authoring;
 import view.Utilities;
 
@@ -38,6 +42,9 @@ public class GameEditor extends Editor {
 	private EditorFactory editFact;
 	private Authoring authEnv;
 	private String myLanguage;
+	private ObservableList<Entity> masterEntityList;
+	private ObservableList<EntitySystem> masterEnvironmentList;
+	
 	
 	public GameEditor(Authoring authEnv, String language){
 		myLanguage = language;
@@ -48,6 +55,8 @@ public class GameEditor extends Editor {
 		myResources = ResourceBundle.getBundle(language);
 		editFact = new EditorFactory();
 		this.authEnv=authEnv;
+		this.masterEntityList = FXCollections.observableArrayList();
+		this.masterEnvironmentList = FXCollections.observableArrayList();
 		
 	}
 
@@ -65,33 +74,75 @@ public class GameEditor extends Editor {
 
 	@Override
 	public void populateLayout() {
-		createTextEntry("gName");
-		createTextEntry("gDesc");
-		showIcon();
-		editorButtons();
-		pane.getChildren().add(Utilities.makeButton(myResources.getString("saveGame"), e->saveGame()));
+		VBox right = rightPane();
+		VBox left = leftPane();
+		pane.getChildren().addAll(left, right);
 
 	}
 
+	private VBox rightPane() {
+		VBox temp = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
+		temp.getChildren().add(createEntityList());
+		temp.getChildren().add(createEnvList());
+		return temp;
+		
+		
+	}
+
+	private ScrollPane createEnvList() {
+		ScrollPane scroll = new ScrollPane();
+		VBox container = new VBox();
+		//masterEnvironmentList.stream().forEach(e-> addEnvironmentToScroll(e, container));
+		scroll.setContent(container);
+		return scroll;
+	}
+
+	//private void addEnvironmentToScroll(EntitySystem e, VBox container) {
+		//container.getChildren().add(Utilities.makeButton(, handler))
+	//}
+
+	private ScrollPane createEntityList() {
+		ScrollPane scroll = new ScrollPane();
+		VBox container = new VBox();
+		masterEntityList.stream().forEach(e-> addEntityToScroll(e, container));
+		scroll.setContent(container);
+		return scroll;
+	}
+
+	private void addEntityToScroll(Entity entity, VBox container) {
+		container.getChildren().add(Utilities.makeButton(entity.getName(), f->createEditor(EntityEditor.class, (ISerializable) entity)));
+		
+	}
+
+	private VBox leftPane() {
+		VBox temp = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
+		temp.getChildren().add(createTextEntry("gName"));
+		temp.getChildren().add(createTextEntry("gDesc"));
+		temp.getChildren().add(showIcon());
+		editorButtons(temp);
+		temp.getChildren().add(Utilities.makeButton(myResources.getString("saveGame"), e->saveGame()));
+		return temp;
+	}
+
 	
-	private void createTextEntry(String name){
+	private HBox createTextEntry(String name){
 		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
 		Label title = new Label(myResources.getString(name));
 		TextArea entryBox = Utilities.makeTextArea(myResources.getString(name));
 		container.getChildren().addAll(title, entryBox);
 		HBox.setHgrow(entryBox, Priority.SOMETIMES);
-		pane.getChildren().add(container);
 		entryList.add(entryBox);
+		return container;
 	}
 
 	private void saveGame() {
 		// TODO Auto-generated method stub
 	}
 
-	private void editorButtons() {
-		pane.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENTITY_EDITOR_NAME.getDefault()), 
+	private void editorButtons(VBox container) {
+		container.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENTITY_EDITOR_NAME.getDefault()), 
 				e->createEntityEditor(EditorEntity.class)));
-		pane.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
+		container.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
 				e->createEnvironmentEditor(EditorEnvironment.class)));
 		}
 	
@@ -114,14 +165,14 @@ public class GameEditor extends Editor {
 		authEnv.createTab(editor.getPane(), editName.getSimpleName(), true);
 	}
 
-	private void showIcon() {
+	private HBox showIcon() {
 		HBox iconBox = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
 		iconBox.setAlignment(Pos.CENTER_LEFT);
 		Label iconTitle = new Label(myResources.getString("gIcon"));
 		icon = new ImageView();
 		setIconPicture(new File(DefaultStrings.DEFAULT_ICON.getDefault()));
 		iconBox.getChildren().addAll(iconTitle, icon, Utilities.makeButton(myResources.getString("cIcon"), e->updateIcon()));
-		pane.getChildren().add(iconBox);
+		return iconBox;
 	}
 
 	private void setIconPicture(File file) {
