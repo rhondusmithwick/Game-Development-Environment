@@ -57,15 +57,18 @@ public class GameEditor extends Editor  {
 		this.authEnv=authEnv;
 		this.masterEntityList = FXCollections.observableArrayList();
 		this.masterEnvironmentList = FXCollections.observableArrayList();
-		addListners();
+		addListeners();
 
 	}
 
-	private void addListners() {
+	
+	private void addListeners() {	
+		
 		masterEntityList.addListener(new ListChangeListener<Entity>() {
 
 			@Override
 			public void onChanged(@SuppressWarnings("rawtypes") ListChangeListener.Change change) {
+			
 				updateEntities();
 			}
 		});
@@ -127,13 +130,14 @@ public class GameEditor extends Editor  {
 
 	private ScrollPane createEnvList() {
 		ScrollPane scroll = new ScrollPane();
+		environments = new VBox();
 		updateEnvironments();
 		scroll.setContent(environments);
 		return scroll;
 	}
 
 	private void updateEnvironments() {
-		environments = new VBox();
+		environments.getChildren().remove(environments.getChildren());
 		//masterEnvironmentList.stream().forEach(e-> addEnvironmentToScroll(e, container));
 	}
 
@@ -143,13 +147,14 @@ public class GameEditor extends Editor  {
 
 	private ScrollPane createEntityList() {
 		ScrollPane scroll = new ScrollPane();
+		entities = new VBox();
 		updateEntities();
 		scroll.setContent(entities);
 		return scroll;
 	}
 
 	private void updateEntities() {
-		entities = new VBox();
+			entities.getChildren().remove(entities.getChildren());
 		masterEntityList.stream().forEach(e-> addEntityToScroll(e, entities));
 	}
 
