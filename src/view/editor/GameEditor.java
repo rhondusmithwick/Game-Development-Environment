@@ -24,7 +24,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.entity.Entity;
 import model.entity.EntitySystem;
-import usecases.EnvironmentEditor;
 import view.Authoring;
 import view.Utilities;
 
