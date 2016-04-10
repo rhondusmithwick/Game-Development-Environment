@@ -1,6 +1,7 @@
 package view;
 
-	import java.util.ResourceBundle;
+	import java.util.List;
+import java.util.ResourceBundle;
 
 import javafx.collections.ObservableList;
 	import javafx.event.ActionEvent;
@@ -47,8 +48,9 @@ import javafx.scene.control.Alert.AlertType;
 		 * @return the combo box with the above features.
 		 */
 		
-		public static ComboBox<String> makeComboBox(String prompt, ObservableList<String> choices, EventHandler<ActionEvent> event) {
-			ComboBox<String> comboBox = new ComboBox<String>(choices);
+		public static ComboBox<String> makeComboBox(String prompt, List<String> choices, EventHandler<ActionEvent> event) {
+			ComboBox<String> comboBox = new ComboBox<>();
+			comboBox.getItems().addAll(choices);
 			comboBox.setEditable(false);
 			comboBox.setPromptText(prompt);
 			comboBox.setOnAction(event); 

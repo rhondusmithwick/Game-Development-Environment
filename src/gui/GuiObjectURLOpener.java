@@ -5,6 +5,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 
+import api.ISerializable;
+import javafx.beans.property.ListProperty;
+import javafx.beans.property.Property;
+import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -13,7 +17,7 @@ import javafx.scene.control.Control;
 public class GuiObjectURLOpener extends GuiObject{
 		private Button button;
 		private URI urlToOpen;
-		public GuiObjectURLOpener(String name, String resourceBundle) {
+		public GuiObjectURLOpener(String name, String resourceBundle,EventHandler<ActionEvent> event, Property<?> property, ListProperty<?> list, ISerializable serial) {
 			super(name, resourceBundle);
 			
 			urlToOpen = URI.create(getResourceBundle().getString(name+"URL"));

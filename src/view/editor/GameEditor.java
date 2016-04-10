@@ -1,16 +1,18 @@
-package view;
+package view.editor;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import api.IEditor;
+import api.ISerializable;
 import enums.DefaultStrings;
 import enums.FileExtensions;
 import enums.GUISize;
 import enums.ViewInsets;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
@@ -21,6 +23,10 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import model.entity.Entity;
+import model.entity.EntitySystem;
+import view.Authoring;
+import view.Utilities;
 
 public class GameEditor extends Editor {
 	
@@ -31,8 +37,10 @@ public class GameEditor extends Editor {
 	private ResourceBundle myResources;
 	private EditorFactory editFact;
 	private Authoring authEnv;
+	private String myLanguage;
 	
-	GameEditor(Authoring authEnv, String language){
+	public GameEditor(Authoring authEnv, String language){
+		myLanguage = language;
 		pane = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
 		pane.setAlignment(Pos.TOP_LEFT);
@@ -66,7 +74,6 @@ public class GameEditor extends Editor {
 	}
 
 	
-	
 	private void createTextEntry(String name){
 		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
 		Label title = new Label(myResources.getString(name));
@@ -83,16 +90,28 @@ public class GameEditor extends Editor {
 
 	private void editorButtons() {
 		pane.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENTITY_EDITOR_NAME.getDefault()), 
-				e->createEditor(DefaultStrings.ENTITY_EDITOR_NAME.getDefault())));
-		
+				e->createEntityEditor(EditorEntity.class)));
+		pane.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
+				e->createEnvironmentEditor(EditorEnvironment.class)));
+		}
+	
+	private void createEntityEditor(Class<?> editorName){
+		ISerializable passedParameter = new Entity();
+		createEditor(editorName, passedParameter);
 	}
 
-	private void createEditor(String editName) {
-		IEditor editor = editFact.createEditor(editName);
-		editor.populateLayout();
+	private void createEnvironmentEditor(Class<?> editorName) {
+		EntitySystem entitySystem = new EntitySystem();
+		entitySystem.addEntity(new Entity());
+		entitySystem.addEntity(new Entity());
+		entitySystem.addEntity(new Entity());
+		createEditor(editorName, entitySystem);
+	}
 
-		authEnv.createTab(editor.getPane(), editName, true);
-		
+	private void createEditor(Class<?> editName, ISerializable passedParameter) {
+		IEditor editor = editFact.createEditor(editName, passedParameter, myLanguage, new Button());
+		editor.populateLayout();
+		authEnv.createTab(editor.getPane(), editName.getSimpleName(), true);
 	}
 
 	private void showIcon() {
@@ -127,6 +146,12 @@ public class GameEditor extends Editor {
 	public void updateEditor() {
 		populateLayout();
 
+	}
+
+	@Override
+	public void addSerializable(ISerializable serialize) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

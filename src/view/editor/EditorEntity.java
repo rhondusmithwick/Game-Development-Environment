@@ -1,15 +1,17 @@
-package view;
+package view.editor;
 
 import java.util.Collection;
 
 import gui.GuiObject;
 import gui.GuiObjectFactory;
-import model.component.movement.Position;
 import model.entity.Entity;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import api.IComponent;
+import api.IEntity;
+import api.ISerializable;
 /**
  * 
  * @author Melissa Zhang
@@ -19,12 +21,11 @@ import api.IComponent;
 public class EditorEntity extends Editor{
 	
 	private Pane editorPane;
-	private Entity myEntity;
+	private IEntity myEntity;
 
-
-	public EditorEntity(Entity entity) {
+	public EditorEntity(ISerializable entity, String language, Button button) {
 		editorPane = new GridPane();
-		myEntity = entity;
+		myEntity = (Entity) entity;
 	}
 
 	@Override
@@ -45,7 +46,7 @@ public class EditorEntity extends Editor{
 		Collection<IComponent> componentList = myEntity.getAllComponents();
 		for (IComponent component: componentList){
 			System.out.println(component.getClass().getSimpleName());
-			GuiObject object = guiFactory.createNewGuiObject(component.getClass().getSimpleName(), component);
+			GuiObject object = guiFactory.createNewGuiObject(component.getClass().toString(), component);
 			if (object!=null){
 				editorPane.getChildren().add((Node) object.getGuiNode());
 			}
@@ -58,6 +59,12 @@ public class EditorEntity extends Editor{
 	@Override
 	public void updateEditor() {
 		populateLayout();
+	}
+
+	@Override
+	public void addSerializable(ISerializable serialize) {
+		// TODO Auto-generated method stub
+		
 	}
 
 
