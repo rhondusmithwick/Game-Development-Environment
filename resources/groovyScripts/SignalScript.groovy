@@ -10,4 +10,4 @@ import model.entity.Entity
 
 Entity entity = universe.getEntitiesWithName("Ben").get(0);
 Position position = entity.getComponent(Position.class);
-position.setX(50);
+position.setX(position.getX() + 50);
