@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import api.IEventListener;
+import javafx.beans.property.StringProperty;
 
 // BASED OFF OF IEventSystem
 /*
@@ -16,13 +17,13 @@ import api.IEventListener;
  */
 public class EventSystem {
 
-	private Map<EventObject, List<IEventListener>> eventMap = new HashMap<EventObject, List<IEventListener>>();
-	private String message;
+	private Map<EventNotifier, List<IEventListener>> eventMap = new HashMap<EventNotifier, List<IEventListener>>();
+	private StringProperty message;
 
 	/*
 	 * Adds the IEventListener to the list of triggers for the given EventObject
 	 */
-	public void registerTrigger(EventObject event, IEventListener trigger) {
+	public void registerTrigger(EventNotifier event, IEventListener trigger) {
 		if (!eventMap.containsKey(event)) {
 			eventMap.put(event, new ArrayList<IEventListener>());
 		}
@@ -33,7 +34,7 @@ public class EventSystem {
 	 * Takes the given event and "deregisters" it so it is no longer
 	 * considered for event handling purposes
 	 */
-	public void deregisterTrigger(EventObject event) {
+	public void deregisterTrigger(EventNotifier event) {
 		eventMap.remove(event);
 	}
 	
@@ -41,13 +42,14 @@ public class EventSystem {
 	 * Given an event, handles it if there exists a handler for it
 	 * If no handler is registered for the event, nothing happens
 	 */
-	public void handleEvent(EventObject event) {
-		if (eventMap.containsKey(event)) {
-			for (IEventListener listener : eventMap.get(event)) {
-				listener.handleEvent();
-			}
-			// NEED TO MODIFY HOW MESSAGE IS SET
-			this.message = "Event handled";
+	public void handleEvent(EventNotifier event) {
+		
+//		if (eventMap.containsKey(event)) {
+//			for (IEventListener listener : eventMap.get(event)) {
+//				listener.handleEvent();
+//			}
+//			// NEED TO MODIFY HOW MESSAGE IS SET
+//			this.message = "Event handled";
 		}
 	}
 	
@@ -58,6 +60,10 @@ public class EventSystem {
 	 */
 	public String getLastMessage() {
 		return message;
+	}
+	
+	public void publish(String message) {
+		
 	}
 	
 	
