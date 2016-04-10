@@ -3,9 +3,11 @@ package gui;
 import java.util.ArrayList;
 import java.util.List;
 
-
+import api.ISerializable;
+import javafx.beans.property.ListProperty;
 import javafx.beans.property.Property;
-
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
@@ -21,12 +23,11 @@ public class GuiObjectRadioButton extends GuiObject{
 	private Label radioLabel;
 	private ToggleGroup radioButtonGroup;
 	private int initialToggle;
-	public GuiObjectRadioButton(String name,
-			String resourceBundle, List<String> options, Property property) {
+	public GuiObjectRadioButton(String name, String resourceBundle,EventHandler<ActionEvent> event, Property<?> property, ListProperty<?> list, ISerializable serial) {
 		super(name, resourceBundle);
 		buttonList = new ArrayList<RadioButton>();
 		radioButtonGroup = new ToggleGroup();
-		radioOptions = options;
+		radioOptions = (List<String>) list;
 		initialToggle = Integer.parseInt(getResourceBundle().getString(name+"Default"));
 		radioLabel = new Label(getResourceBundle().getString(getObjectName()+"LABEL"));
 

@@ -11,5 +11,8 @@
 	<classpathentry kind="lib" path="lib/guava-19.0.jar"/>
 	<classpathentry kind="lib" path="lib/guava-gwt-19.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="lib/groovy-all-2.4.6-indy.jar"/>
+	<classpathentry kind="lib" path="lib/groovy-doc.jar"/>
+	<classpathentry kind="lib" path="lib/groovy-src.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

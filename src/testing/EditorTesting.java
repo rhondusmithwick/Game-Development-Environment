@@ -6,8 +6,8 @@ import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 import model.entity.EntitySystem;
-import view.Editor;
-import view.EditorFactory;
+import view.editor.Editor;
+import view.editor.EditorFactory;
 
 public class EditorTesting extends Application {
 	private Stage myStage;
