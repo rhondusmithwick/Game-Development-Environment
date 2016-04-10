@@ -11,7 +11,7 @@ import java.io.Serializable;
  *
  * @author Rhondu Smithwick, Tom Wu
  */
-public interface ISerializable extends Serializable {
+public interface ISerializable extends Serializable{
 
     /**
      * Serializes this object to a File
