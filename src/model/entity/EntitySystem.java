@@ -36,8 +36,8 @@ public class EntitySystem implements IEntitySystem {
 	}
 
 	@Override
-	public IEntity getEntity(String id) {
-		return entities.get(id);
+	public IEntity getEntity(String i) {
+		return entities.get(i);
 	}
 
 	@Override

@@ -1,5 +1,8 @@
 package api;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.common.collect.ImmutableBiMap;
 
 /**
@@ -16,6 +19,7 @@ import com.google.common.collect.ImmutableBiMap;
 public interface IEventSystem extends ISerializable {
 
 	// TODO: maps event(s) (including condition(s)) to a listener
+	Map<IEvent, IEventListener> eventMap = new HashMap<IEvent, IEventListener>();
 	/**
 	 * Register a trigger
 	 * @param event the event(s) (including condition(s))

@@ -1,4 +1,4 @@
-package view;
+package view.editor;
 
 import java.util.Collection;
 
@@ -10,6 +10,7 @@ import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import api.IComponent;
+import api.ISerializable;
 /**
  * 
  * @author Melissa Zhang
@@ -22,9 +23,9 @@ public class EditorEntity extends Editor{
 	private Entity myEntity;
 
 
-	public EditorEntity(Entity entity) {
+	public EditorEntity(String language, ISerializable entity) {
 		editorPane = new GridPane();
-		myEntity = entity;
+		myEntity = (Entity) entity;
 	}
 
 	@Override
@@ -45,7 +46,7 @@ public class EditorEntity extends Editor{
 		Collection<IComponent> componentList = myEntity.getAllComponents();
 		for (IComponent component: componentList){
 			System.out.println(component.getClass().getSimpleName());
-			GuiObject object = guiFactory.createNewGuiObject(component.getClass().getSimpleName(), component);
+			GuiObject object = guiFactory.createNewGuiObject(component.getClass().toString(), component);
 			if (object!=null){
 				editorPane.getChildren().add((Node) object.getGuiNode());
 			}
@@ -58,6 +59,12 @@ public class EditorEntity extends Editor{
 	@Override
 	public void updateEditor() {
 		populateLayout();
+	}
+
+	@Override
+	public void addSerializable(ISerializable serialize) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

@@ -51,15 +51,20 @@ public class Vooga {
 
 	private Group createDisplay() {
 		root = new Group();
+		setVBox();
 		Button createGame = Utilities.makeButton(myResources.getString("createGame"), null);
 		createGame.setOnAction(e -> createAuthoring());
+		
+		myVBox.getChildren().add(createGame);
+		root.getChildren().add(myVBox);
+		return root;
+	}
+
+	private void setVBox() {
 		myVBox = new VBox(GUISize.ORIG_MENU_PADDING.getSize());
 		myVBox.prefHeightProperty().bind(myStage.heightProperty());
 		myVBox.prefWidthProperty().bind(myStage.widthProperty());
 		myVBox.setAlignment(Pos.CENTER);
-		myVBox.getChildren().add(createGame);
-		root.getChildren().add(myVBox);
-		return root;
 	}
 
 	private void createAuthoring() {
