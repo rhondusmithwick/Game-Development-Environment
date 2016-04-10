@@ -22,11 +22,13 @@ public class Vooga {
 	private Authoring authEnv;
 	private Scene myScene;
 	private ResourceBundle myResources;
+
 	/**
 	 * Constructor that takes in a stage to display the graphics.
+	 * 
 	 * @param stage
 	 */
-	
+
 	public Vooga(Stage stage) {
 		myStage = stage;
 		myResources = ResourceBundle.getBundle(DefaultStrings.DEFAULT_LANGUAGE.getDefault());
@@ -34,14 +36,15 @@ public class Vooga {
 
 	/**
 	 * Initializes the scene which is displayed in the window.
+	 * 
 	 * @return the splash screen scene
 	 */
-	
-	public Scene init(){
+
+	public Scene init() {
 		myScene = new Scene(createDisplay(), GUISize.MAIN_SIZE.getSize(), GUISize.MAIN_SIZE.getSize());
 		return myScene;
 	}
-	
+
 	public void draw(ImageView image) {
 		root.getChildren().add(image);
 	}
@@ -49,7 +52,7 @@ public class Vooga {
 	private Group createDisplay() {
 		root = new Group();
 		Button createGame = Utilities.makeButton(myResources.getString("createGame"), null);
-		createGame.setOnAction(e->createAuthoring());
+		createGame.setOnAction(e -> createAuthoring());
 		myVBox = new VBox(GUISize.ORIG_MENU_PADDING.getSize());
 		myVBox.prefHeightProperty().bind(myStage.heightProperty());
 		myVBox.prefWidthProperty().bind(myStage.widthProperty());
@@ -58,8 +61,8 @@ public class Vooga {
 		root.getChildren().add(myVBox);
 		return root;
 	}
-	
-	private void createAuthoring(){
+
+	private void createAuthoring() {
 		myStage.hide();
 		myStage.setWidth(GUISize.AUTHORING_WIDTH.getSize());
 		myStage.setHeight(GUISize.AUTHORING_HEIGHT.getSize());

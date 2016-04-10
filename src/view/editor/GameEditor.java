@@ -98,15 +98,15 @@ public class GameEditor extends Editor {
 		}
 	
 	private void createEntityEditor(String editorName){
-		ISerializable passedParameter = new Entity(0);
+		ISerializable passedParameter = new Entity();
 		createEditor(editorName, passedParameter);
 	}
 
 	private void createEnvironmentEditor(String editorName) {
 		EntitySystem entitySystem = new EntitySystem();
-		entitySystem.addEntity(new Entity(0));
-		entitySystem.addEntity(new Entity(1));
-		entitySystem.addEntity(new Entity(2));
+		entitySystem.addEntity(new Entity());
+		entitySystem.addEntity(new Entity());
+		entitySystem.addEntity(new Entity());
 		createEditor(editorName, entitySystem);
 	}
 

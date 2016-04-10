@@ -1,13 +1,17 @@
 package view.editor;
 
+import java.io.File;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import api.IComponent;
 import api.IEntity;
 import api.ISerializable;
 import enums.GUISize;
+import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
@@ -15,15 +19,29 @@ import javafx.scene.Node;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import model.component.character.Health;
+import model.component.character.Score;
+import model.component.movement.Position;
+import model.component.movement.Velocity;
+import model.component.visual.ImagePath;
+import model.entity.Entity;
 import model.entity.EntitySystem;
 import view.Utilities;
 
 public class EditorEnvironment extends Editor{
+	
+	private double sceneX;
+	private double sceneY;
+	private double translateX;
+	private double translateY;
 	
 	private ResourceBundle myResources;
 	private EntitySystem myEntities;
@@ -32,6 +50,7 @@ public class EditorEnvironment extends Editor{
 	private SubScene gameScene;
 	private VBox entityOptions;
 	private Group gameRoot;
+	private static final String IMAGE_PATH = "resources/RhonduSmithwick.JPG";
 	
 	public EditorEnvironment(String language, ISerializable entities){
 		myResources = ResourceBundle.getBundle(language);
@@ -42,6 +61,18 @@ public class EditorEnvironment extends Editor{
 	}
 
 	private void addLayoutComponents(){
+		setEntityOptions();
+		setGameScene();
+	}
+	
+	private void setGameScene() {
+		gameRoot = new Group();
+		gameScene = new SubScene(gameRoot,(GUISize.TWO_THIRDS_OF_SCREEN.getSize()),GUISize.HEIGHT_MINUS_TAB.getSize());
+		gameScene.setFill(Color.BLUE);
+		setAndAdd(gameScene,1,0,1,1);
+	}
+
+	private void setEntityOptions() {
 		entityOptions = new VBox();
 		entityOptions.setMinWidth(GUISize.ONE_THIRD_OF_SCREEN.getSize()/3);
 		entityOptions.setMinHeight(GUISize. HEIGHT_MINUS_TAB.getSize());
@@ -50,13 +81,8 @@ public class EditorEnvironment extends Editor{
 		pane.setMinHeight(GUISize. HEIGHT_MINUS_TAB.getSize());
 		setAndAdd(pane,0,0,1,1);
 		populateVbox(entityOptions);
-		
-		gameRoot = new Group();
-		gameScene = new SubScene(gameRoot,(GUISize.TWO_THIRDS_OF_SCREEN.getSize()),GUISize.HEIGHT_MINUS_TAB.getSize());
-		gameScene.setFill(Color.WHITE);
-		setAndAdd(gameScene,1,0,1,1);
 	}
-	
+
 	private void populateVbox(VBox vbox) {
 		try{
 		Collection<IEntity> entityList = myEntities.getAllEntities();
@@ -69,10 +95,33 @@ public class EditorEnvironment extends Editor{
 			}
 		}
 	
-	private Object addToScene(IEntity entity) {
-		// TODO Auto-generated method stub
-		return null;
+	private void addToScene(IEntity entity) {
+		if (!entity.hasComponent(Position.class)){
+		Position pos = new Position();
+		entity.forceAddComponent(pos, true);
+		}
+		if (!entity.hasComponent(ImagePath.class)){
+		entity.forceAddComponent(new ImagePath(IMAGE_PATH), true);
+		}
+		updateEditor();
+		ImageView entityView = createImage(entity.getComponent(ImagePath.class), entity.getComponent(Position.class));
+		entityView.setOnMousePressed(myMousePressedEventHandler);
+        entityView.setOnMouseDragged(myMouseDraggedEventHandler);
+		gameRoot.getChildren().add(entityView);
 	}
+
+		private ImageView createImage(ImagePath path, Position pos) {
+			URI resource = new File(path.getImagePath()).toURI();
+			Image image = new Image(resource.toString());
+			ImageView imageView = new ImageView(image);
+			imageView.setFitHeight(100);
+			imageView.setPreserveRatio(true);
+			pos.setY((GUISize.HEIGHT_MINUS_TAB.getSize()/2)+(imageView.getFitHeight()/2));
+			pos.setX((GUISize.TWO_THIRDS_OF_SCREEN.getSize()/2)-(imageView.getFitWidth()));
+			imageView.xProperty().bind(pos.xProperty());
+			imageView.yProperty().bind(pos.yProperty());
+			return imageView;
+		}
 
 	private void setAndAdd(Node node, int col, int row, int colspan, int rowspan) {
 		GridPane.setConstraints(node, col, row, colspan, rowspan, HPos.CENTER, VPos.CENTER);
@@ -83,6 +132,33 @@ public class EditorEnvironment extends Editor{
 			// do nothing
 		}
 	}
+	
+    EventHandler<MouseEvent> myMousePressedEventHandler = 
+            new EventHandler<MouseEvent>() {
+
+			@Override
+            public void handle(MouseEvent t) {
+                sceneX = t.getSceneX();
+                sceneY = t.getSceneY();
+                translateX = ((Node) t.getSource()).getTranslateX();
+                translateY = ((Node) t.getSource()).getTranslateY();
+            }
+        };
+         
+        EventHandler<MouseEvent> myMouseDraggedEventHandler = 
+            new EventHandler<MouseEvent>() {
+     
+            @Override
+            public void handle(MouseEvent t) {
+                double offsetX = t.getSceneX() - sceneX;
+                double offsetY = t.getSceneY() - sceneY;
+                double newTranslateX = translateX + offsetX;
+                double newTranslateY = translateY + offsetY;
+                 
+                ((Node)(t.getSource())).setTranslateX(newTranslateX);
+                ((Node)(t.getSource())).setTranslateY(newTranslateY);
+            }
+        };
 	
 	@Override
 	public void populateLayout() {
@@ -96,18 +172,20 @@ public class EditorEnvironment extends Editor{
 
 	@Override
 	public void updateEditor() {
-		// TODO Auto-generated method stub
+		entityOptions.getChildren().clear();
+		populateVbox(entityOptions);
 	}
 
 	public void addEntitySystem(EntitySystem entitySystem) {
 		myEntities = entitySystem;
+		updateEditor();
 	}
 
 	public EntitySystem getEntitySystem() {
 		return myEntities;
 	}
 
-	public Object getEntity(int i) {
+	public Object getEntity(String i) {
 		return myEntities.getEntity(i);
 	}
 
@@ -120,7 +198,7 @@ public class EditorEnvironment extends Editor{
 	@Override
 	public void addSerializable(ISerializable serialize) {
 		myEntities = (EntitySystem) serialize;
-		
+		updateEditor();
 	}
 
 }

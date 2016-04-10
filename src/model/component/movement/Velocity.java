@@ -1,9 +1,7 @@
 package model.component.movement;
 
 import api.IComponent;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import utility.Pair;
 import utility.TwoProperty;
 
 import java.util.List;
@@ -17,14 +15,12 @@ import java.util.function.DoubleUnaryOperator;
  */
 public class Velocity implements IComponent {
 
-    private final TwoProperty<Double, Double> twoProperty;
+    private final TwoProperty<Double, Double> twoProperty = new TwoProperty<>("Speed", 0.0, "Direction", 0.0);
 
     public Velocity() {
-        twoProperty = new TwoProperty<>("Speed", 0.0, "Direction", 0.0);
     }
 
     public Velocity(double speed, double direction) {
-        this();
         setSpeed(speed);
         setDirection(direction);
     }
