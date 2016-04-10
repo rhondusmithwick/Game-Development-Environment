@@ -23,6 +23,7 @@ public class ActionTest {
     private final EntitySystem universe = new EntitySystem();
 
     private final String MOVE_SCRIPT = "resources/groovyScripts/SignalScript.groovy";
+
     @Test
     public void signalTest() {
         IEntity entity = new Entity("Ben");
@@ -31,11 +32,12 @@ public class ActionTest {
         universe.addEntity(entity);
         try {
             String script = Files.toString(new File(MOVE_SCRIPT), Charsets.UTF_8);
-            Action action = new Action(universe, script);
-            action.run();
+            Action action = new Action(script);
+            action.activate(universe);
         } catch (IOException e) {
             e.printStackTrace();
         }
         assertEquals(position.getX(), 50, .001);
     }
+
 }
