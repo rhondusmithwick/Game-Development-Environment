@@ -1,16 +1,16 @@
-package view;
+package view.editor;
 
 import java.util.Collection;
 
 import gui.GuiObject;
 import gui.GuiObjectFactory;
-import model.component.movement.Position;
 import model.entity.Entity;
 import javafx.scene.Node;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import api.IComponent;
 import api.IEntity;
+import api.ISerializable;
 /**
  * 
  * @author Melissa Zhang
@@ -22,10 +22,9 @@ public class EditorEntity extends Editor{
 	private Pane editorPane;
 	private IEntity myEntity;
 
-
-	public EditorEntity(IEntity entity) {
+	public EditorEntity(String language, ISerializable entity) {
 		editorPane = new GridPane();
-		myEntity = entity;
+		myEntity = (Entity) entity;
 	}
 
 	@Override
@@ -59,6 +58,12 @@ public class EditorEntity extends Editor{
 	@Override
 	public void updateEditor() {
 		populateLayout();
+	}
+
+	@Override
+	public void addSerializable(ISerializable serialize) {
+		// TODO Auto-generated method stub
+		
 	}
 
 

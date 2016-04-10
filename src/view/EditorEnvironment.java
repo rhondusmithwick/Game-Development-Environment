@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 
 import api.IEntity;
 import api.IEntitySystem;
+import api.ISerializable;
 import gui.GuiObject;
 import gui.GuiObjectFactory;
 import javafx.geometry.HPos;
@@ -21,6 +22,7 @@ import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.entity.EntitySystem;
+import view.editor.Editor;
 
 public class EditorEnvironment extends Editor{
 	
@@ -110,6 +112,12 @@ public class EditorEnvironment extends Editor{
 	public Pane getPane() {
 		//populateLayout();
 		return environmentPane;
+	}
+
+	@Override
+	public void addSerializable(ISerializable serialize) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

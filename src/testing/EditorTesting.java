@@ -1,15 +1,12 @@
 package testing;
 
-import model.component.movement.Speed;
 import model.entity.Entity;
 import model.entity.EntitySystem;
 import api.IEntity;
 import api.IEntitySystem;
-import enums.DefaultStrings;
-import view.EditorEntity;
-import view.EditorEnvironment;
-import view.EditorFactory;
-import view.Editor;
+import view.editor.Editor;
+import view.editor.EditorEntity;
+import view.editor.EditorFactory;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
@@ -19,6 +16,7 @@ public class EditorTesting extends Application {
     private static final String LOAD_FILE_NAME = "resources/savedEntities/player.xml";
     private final IEntitySystem entitySystem = new EntitySystem();
     private static final String ENTITY_EDITOR = "EditorEntity";
+    private static final String LANGUAGE = "English";
 
 	/**
 	 * Sets up a stage to launch our window and initializes the splash screen.
@@ -31,7 +29,7 @@ public class EditorTesting extends Application {
         IEntity entity = entitySystem.createEntityFromLoad(LOAD_FILE_NAME);
         EditorFactory factory = new EditorFactory();
 		//Editor editorEntity = (Editor) new EditorEntity((Entity) entity);
-        Editor editorEntity = factory.createEditor(EditorEntity.class);
+        Editor editorEntity = factory.createEditor(LANGUAGE, EditorEntity.class);
         Scene scene = new Scene(editorEntity.getPane());
 		myStage.setScene(scene);
 		myStage.show();

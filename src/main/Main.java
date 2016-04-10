@@ -3,11 +3,15 @@ package main;
 
 import enums.GUISize;
 import javafx.application.Application;
+import javafx.scene.Scene;
 import javafx.stage.Stage;
+import view.editor.EditorEnvironment;
 
 public class Main extends Application{
 
 		private Stage myStage;
+		private EditorEnvironment myEditorEnvironment;
+		private Scene myScene;
 
 		/**
 		 * Sets up a stage to launch our window and initializes the splash screen.
@@ -15,7 +19,6 @@ public class Main extends Application{
 		 */
 
 		public void start (Stage stage) {
-
 			myStage = stage;
 			myStage.setTitle("VOOGA");
 			myStage.setWidth(GUISize.MAIN_SIZE.getSize());
