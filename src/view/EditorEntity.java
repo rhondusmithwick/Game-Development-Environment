@@ -22,7 +22,8 @@ public class EditorEntity extends Editor{
 	private Entity myEntity;
 
 
-	public EditorEntity(Entity entity) {
+	public EditorEntity(Entity entity) 
+	{
 		editorPane = new GridPane();
 		myEntity = entity;
 	}
@@ -50,9 +51,8 @@ public class EditorEntity extends Editor{
 				editorPane.getChildren().add((Node) object.getGuiNode());
 			}
 		}
-			
-
 	}
+	
 	
 
 	@Override

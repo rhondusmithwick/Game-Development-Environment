@@ -87,12 +87,20 @@ public class GameEditor extends Editor {
 		
 	}
 
-	private void createEditor(String editName) {
-		IEditor editor = editFact.createEditor(editName,  authEnv, DefaultStrings.DEFAULT_LANGUAGE.getDefault());
-		
-		// DEBUGGING
-		System.out.println("Created an Editor: " + editor.getClass().toString());
-		//
+	private void createEditor(String editName) 
+	{
+		IEditor editor;
+		/*
+		 * TODO: Quite sure there is better way to do this.
+		 */
+		if (editName.equals(DefaultStrings.EVENT_EDITOR_NAME.getDefault()))
+		{
+			editor = editFact.createEditor(editName,  authEnv, DefaultStrings.DEFAULT_LANGUAGE.getDefault());
+		}
+		else 
+		{
+			editor = editFact.createEditor(editName);
+		}
 		
 		editor.populateLayout();
 
@@ -129,7 +137,6 @@ public class GameEditor extends Editor {
 	@Override
 	public void updateEditor() {
 		populateLayout();
-
 	}
 
 }
