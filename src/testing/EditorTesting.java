@@ -1,5 +1,6 @@
 package testing;
 
+<<<<<<< HEAD
 import model.entity.Entity;
 import model.entity.EntitySystem;
 
@@ -11,10 +12,17 @@ import view.editor.Editor;
 import view.editor.EditorEntity;
 import view.editor.EditorEnvironment;
 import view.editor.EditorFactory;
+=======
+import api.IEntity;
+import api.IEntitySystem;
+>>>>>>> refs/remotes/origin/frontend
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
+import model.entity.EntitySystem;
+import view.editor.Editor;
+import view.editor.EditorFactory;
 
 public class EditorTesting extends Application {
 	private Stage myStage;
@@ -25,6 +33,7 @@ public class EditorTesting extends Application {
 
 	/**
 	 * Sets up a stage to launch our window and initializes the splash screen.
+	 * 
 	 * @param stage
 	 * @throws SecurityException 
 	 * @throws NoSuchMethodException 
@@ -34,7 +43,7 @@ public class EditorTesting extends Application {
 	 * @throws InstantiationException 
 	 */
 
-	public void start (Stage stage) throws InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException {
+	public void start (Stage stage) {
 
 		myStage = stage;
         IEntity entity = entitySystem.createEntityFromLoad(LOAD_FILE_NAME);
@@ -42,18 +51,18 @@ public class EditorTesting extends Application {
 		//Editor editorEntity = (Editor) new EditorEntity((Entity) entity);
         Editor editorEntity = factory.createEditor(EditorEnvironment.class, new EntitySystem(), LANGUAGE, new Button());
         Scene scene = new Scene(editorEntity.getPane());
+
 		myStage.setScene(scene);
 		myStage.show();
 	}
 
 	/**
 	 * Launches our program.
+	 * 
 	 * @param args
 	 */
-
-	public static void main (String[] args) {
+	public static void main(String[] args) {
 		launch(args);
 	}
 
 }
-

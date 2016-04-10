@@ -3,14 +3,17 @@ datamanagement
 enums
 gui
 main
+model.component
 model.component.character
 model.component.movement
 model.component.physics
 model.component.visual
 model.entity
+model.events
 model.physics
 testing
 usecases
 utility
 view
+voogasalad
 voogasalad_can18_cw223
