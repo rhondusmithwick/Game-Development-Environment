@@ -29,8 +29,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import model.entity.Entity;
 import model.entity.EntitySystem;
-import usecases.EntityEditor;
-import usecases.EnvironmentEditor;
 import view.Authoring;
 import view.Utilities;
 
@@ -156,7 +154,7 @@ public class GameEditor extends Editor  {
 	}
 
 	private void addEntityToScroll(Entity entity, VBox container) {
-		container.getChildren().add(Utilities.makeButton(entity.getName(), f->createEditor(EntityEditor.class, (ISerializable) entity)));
+		container.getChildren().add(Utilities.makeButton(entity.getName(), f->createEditor(EditorEntity.class, (ISerializable) entity)));
 
 	}
 
@@ -177,9 +175,9 @@ public class GameEditor extends Editor  {
 
 	private void editorButtons(VBox container) {
 		container.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENTITY_EDITOR_NAME.getDefault()), 
-				e->createEditor(EntityEditor.class, (ISerializable) new Entity())));
+				e->createEditor(EditorEntity.class, (ISerializable) new Entity())));
 		container.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
-				e->createEditor(EnvironmentEditor.class, (ISerializable) new EntitySystem())));
+				e->createEditor(EditorEnvironment.class, (ISerializable) new EntitySystem())));
 	}
 	
 	private void createEditor(Class<?> editName, ISerializable passedParameter) {

@@ -14,6 +14,7 @@ public class EditorFactory {
 		try {
 			editor = (Editor) name.getConstructor(ISerializable.class, String.class, Button.class).newInstance(entity, language, button);
 		} catch (Exception e) {
+			e.printStackTrace();
 			Utilities.showError("editCreate", ResourceBundle.getBundle(language));
 		}
 		return editor;
