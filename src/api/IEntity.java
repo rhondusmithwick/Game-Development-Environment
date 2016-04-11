@@ -1,7 +1,8 @@
 package api;
 
+
 import com.google.common.base.Preconditions;
-import model.entity.ResourceFileISpecLoader;
+import model.entity.PropertiesTemplateLoader;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
 
 /**
  * Interface for an entity.
@@ -36,7 +38,7 @@ public interface IEntity extends ISerializable {
      *
      * @return id the unique id of this entity
      */
-    int getID();
+    String getID();
 
     /**
      * Get all the components of this entity.
@@ -228,7 +230,7 @@ public interface IEntity extends ISerializable {
      * @param fileName the fileName
      */
     default void loadSpecsFromPropertiesFile(String fileName) {
-        ISpecLoader<Class<? extends IComponent>> specLoader = new ResourceFileISpecLoader();
+        ITemplateLoader<Class<? extends IComponent>> specLoader = new PropertiesTemplateLoader();
         Map<Class<? extends IComponent>, Integer> specs = specLoader.loadSpecs(fileName);
         setSpecs(specs);
     }

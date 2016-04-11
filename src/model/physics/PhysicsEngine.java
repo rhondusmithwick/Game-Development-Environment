@@ -1,5 +1,6 @@
 package model.physics;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -85,7 +86,28 @@ public class PhysicsEngine implements IPhysicsEngine {
 
 	@Override
 	public IEntitySystem updateCollisions(IEntitySystem universe, boolean dynamicsOn) {
-		// TODO Auto-generated method stub
+		Collection<IEntity> collidableEntities = universe.getEntitiesWithComponents(Collision.class);
+		for (IEntity firstEntity : collidableEntities) {
+			for (IEntity secondEntity : collidableEntities) {
+				if (!firstEntity.equals(secondEntity)) {
+					// generalize to reduce duplicated code
+					Shape firstShape = firstEntity.getComponent(Collision.class).getMask();
+					Shape secondShape = secondEntity.getComponent(Collision.class).getMask();
+					//getBoundsInLocal or another bound test?
+					if (firstShape.intersects(secondShape.getBoundsInLocal())) {
+						List<String> firstID = new ArrayList<String>();
+						firstID.add(firstEntity.getID());
+						secondEntity.getComponent(Collision.class).addCollidingIDs(firstID);
+						
+						List<String> secondID = new ArrayList<String>();
+						secondID.add(secondEntity.getID());
+						firstEntity.getComponent(Collision.class).addCollidingIDs(secondID);
+					}					
+				}
+
+			}
+		}
+		
 		return null;
 	}
 

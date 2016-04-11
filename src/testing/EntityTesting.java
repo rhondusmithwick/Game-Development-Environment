@@ -46,7 +46,7 @@ class EntityTesting implements Tester {
 
     private void testLoadSpecs() {
         Map<Class<? extends IComponent>, Integer> specs = getSpecsTestMap();
-        IEntity entity1 = new Entity(1);
+        IEntity entity1 = new Entity();
         entity1.loadSpecsFromPropertiesFile("templates/player");
         if (specs.equals(entity1.getSpecs())) System.out.println("SPecs worked");
     }

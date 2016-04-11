@@ -1,8 +1,11 @@
 package testing;
 
+<<<<<<< HEAD
 import java.awt.AWTException;
 import java.awt.Robot;
 
+=======
+>>>>>>> db2f942403e922273d844f159a7041040ea2e813
 import api.IEntity;
 import api.IEventListener;
 import javafx.animation.KeyFrame;
@@ -30,20 +33,12 @@ public class TestEvents extends Application {
 	}
 
 	public void test(Node n) {
-		IEntity e = new Entity(0);
+		IEntity e = new Entity();
 		e.forceAddComponent(new Velocity(), true);
 		System.out.println(e.getComponent(Velocity.class)); // before 'a' key is
 															// pressed
 
 		IEventListener eListener = new MoveEntityLeft(e);
-		Robot robot;
-		try {
-			robot = new Robot();
-		} catch (AWTException e1) {
-			e1.printStackTrace();
-		}
-		robot.keyPress(KeyEvent.VK_A);
-		
 		eSystem.registerTrigger(new KeyEvent(n, n, KeyEvent.ANY, "a", "a", KeyCode.A, false, false, false, false),
 				eListener);
 	}

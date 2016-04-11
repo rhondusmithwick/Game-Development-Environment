@@ -45,7 +45,7 @@ public class BenTest extends Application {
 		s.show();
 
 		List<IEntity> list = new ArrayList<IEntity>();
-		IEntity character = new Entity(0);
+		IEntity character = new Entity();
 		character.forceAddComponent(new Health((double) 100), true);
 		character.forceAddComponent(new Score((double) 100), true);
 		Position pos = new Position(250.0, 250.0);

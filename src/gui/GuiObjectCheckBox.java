@@ -2,6 +2,8 @@ package gui;
 
 import java.util.ResourceBundle;
 
+import api.ISerializable;
+import javafx.beans.property.ListProperty;
 import javafx.beans.property.Property;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,18 +13,19 @@ import javafx.scene.control.Control;
 public class GuiObjectCheckBox extends GuiObject{
 	private CheckBox checkBox;
 	
-	public GuiObjectCheckBox(String name, String resourceBundle,EventHandler<ActionEvent> event, Property property) {
+	public GuiObjectCheckBox(String name, String resourceBundle,EventHandler<ActionEvent> event, Property<?> property, ListProperty<?> list, ISerializable serial) {
 		super(name, resourceBundle);
 		checkBox = new CheckBox(getResourceBundle().getString(name+"Label"));
 		checkBox.setSelected(Boolean.parseBoolean(getResourceBundle().getString(name + "Default")));
-
+	}
+	
+	public void initialize(EventHandler<ActionEvent> event, Property<Boolean> property){
 		addHandler(event);
 		bindProperty(property);
-
 	}
 
 
-	private void bindProperty(Property property) {
+	private void bindProperty(Property<Boolean> property) {
 		checkBox.selectedProperty().bindBidirectional(property);
 	}
 

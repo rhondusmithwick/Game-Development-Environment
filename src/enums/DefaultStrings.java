@@ -3,8 +3,12 @@ package enums;
 public enum DefaultStrings {
 	
 	DEFAULT_LANGUAGE("english"),
-	DEFAULT_ICON("resources/default_icon.png"),
-	ENTITY_EDITOR_NAME("EditorEntity");
+	DEFAULT_ICON("resources/guiImages/default_icon.png"),
+	ENTITY_EDITOR_NAME("EditorEntity"),
+	ENVIRONMENT_EDITOR_NAME("EditorEnvironment"),
+	CREATE_GAME_LABEL("createGameButtonLabel"),
+	PLAY_GAME_LABEL("playGameButtonLabel"),
+	LANG_LOC("propertyFiles/");
 
 
 

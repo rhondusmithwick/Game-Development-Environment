@@ -9,7 +9,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import model.component.movement.Velocity;
+import api.IComponent;
 import model.entity.Entity;
 import model.events.EventSystem;
 import model.events.MoveEntityLeft;
@@ -21,15 +21,15 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 
 public class EventHandlingTester {
-	
+
 	@Test
 	public void addToEventSystem() {
 		EventSystem eventbus = new EventSystem();
-		Entity entity = new Entity(0);
+		Entity entity = new Entity();
 		List<IComponent> components = new ArrayList<IComponent>();
 		Object myObject = new Object();
-		
-		// it appears that if the sources are effectively equal, 
+
+		// it appears that if the sources are effectively equal,
 		// then the event handler should also be equal
 		// will need to find a way to test for key events/mouse events
 		EventObject event = new EventObject(new Double(50));
