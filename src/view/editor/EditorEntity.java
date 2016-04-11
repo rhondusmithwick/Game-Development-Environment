@@ -59,10 +59,11 @@ public class EditorEntity extends Editor{
 		
 		for (IComponent component: componentList){
 			for (SimpleObjectProperty<?> property: component.getProperties()){
-			GuiObject object = guiFactory.createNewGuiObject(property.getName(), property, property.getValue());
-			if (object!=null){
-				vbox.getChildren().add((Node) object.getGuiNode());
-			}
+				System.out.println(component.getProperties());
+				GuiObject object = guiFactory.createNewGuiObject(property.getName(), property, property.getValue());
+				if (object!=null){
+					vbox.getChildren().add((Node) object.getGuiNode());
+				}
 			}
 		}
 			

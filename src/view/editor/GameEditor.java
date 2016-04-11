@@ -1,6 +1,8 @@
 package view.editor;
 
 import java.util.ResourceBundle;
+
+import api.IComponent;
 import api.IEditor;
 import api.ISerializable;
 import enums.DefaultStrings;
@@ -10,10 +12,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import model.component.character.Lives;
 import model.entity.Entity;
 import model.entity.EntitySystem;
 import view.Authoring;
@@ -22,7 +26,6 @@ import view.Utilities;
 public class GameEditor extends Editor  {
 
 	private VBox pane, entities, environments;
-
 	private ResourceBundle myResources;
 	private EditorFactory editFact;
 	private Authoring authEnv;
@@ -49,6 +52,11 @@ public class GameEditor extends Editor  {
 	
 	private void addListeners() {	
 		
+		Entity j = new Entity("Test Entity");
+		j.addComponent(new Lives(3));
+		masterEntityList.add(j);
+		
+		
 		masterEntityList.addListener(new ListChangeListener<ISerializable>() {
 
 			@Override
@@ -70,6 +78,8 @@ public class GameEditor extends Editor  {
 
 	}
 
+
+
 	@Override
 	public void loadDefaults() {
 		// TODO Auto-generated method stub
@@ -86,6 +96,8 @@ public class GameEditor extends Editor  {
 	public void populateLayout() {
 		VBox right = rightPane();
 		VBox left = leftPane();
+		left.prefWidthProperty().bind(pane.widthProperty().divide(2));
+		right.prefWidthProperty().bind(pane.widthProperty().divide(2));
 		HBox container = new HBox(GUISize.GAME_EDITOR_PADDING.getSize());
 		container.getChildren().addAll(left, right);
 		pane.getChildren().addAll(container);
@@ -94,7 +106,9 @@ public class GameEditor extends Editor  {
 
 	private VBox rightPane() {
 		VBox temp = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
+		temp.getChildren().add( new Label(myResources.getString("entities")));
 		temp.getChildren().add(createEntityList());
+		temp.getChildren().add( new Label(myResources.getString("environments")));
 		temp.getChildren().add(createEnvList());
 		return temp;
 
@@ -112,7 +126,7 @@ public class GameEditor extends Editor  {
 
 	private ScrollPane createEnvList() {
 		ScrollPane scroll = new ScrollPane();
-		environments = new VBox();
+		environments = new VBox(GUISize.SCROLL_PAD.getSize());
 		updateEnvironments();
 		scroll.setContent(environments);
 		return scroll;
@@ -124,12 +138,12 @@ public class GameEditor extends Editor  {
 	}
 
 	//private void addEnvironmentToScroll(EntitySystem e, VBox container) {
-	//container.getChildren().add(Utilities.makeButton(, handler))
+		//container.getChildren().add(Utilities.makeButton(, handler))
 	//}
 
 	private ScrollPane createEntityList() {
 		ScrollPane scroll = new ScrollPane();
-		entities = new VBox();
+		entities = new VBox(GUISize.SCROLL_PAD.getSize());
 		updateEntities();
 		scroll.setContent(entities);
 		return scroll;
