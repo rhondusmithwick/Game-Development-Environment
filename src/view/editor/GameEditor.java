@@ -9,6 +9,7 @@ import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
 import enums.DefaultStrings;
 import enums.GUISize;
+import enums.Indexes;
 import enums.ViewInsets;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -61,8 +62,8 @@ public class GameEditor extends Editor  {
 
 	private void loadFile(String fileName) {
 		XMLReader<List<String>> xReader  = new XMLReader<List<String>>();
-		List<List<String>> gameObjects = xReader.readFromFile("resources/createdGames/" + fileName+".xml");
-		List<String> details = gameObjects.get(0);
+		List<List<String>> gameObjects = xReader.readFromFile(DefaultStrings.CREATE_LOC.getDefault() + fileName+ DefaultStrings.XML.getDefault());
+		List<String> details = gameObjects.get(Indexes.XML_GAME_DETAILS.getIndex());
 		gameDetails.setDetails(details);
 	}
 
@@ -162,8 +163,8 @@ public class GameEditor extends Editor  {
 
 	private void saveGame() {
 		XMLWriter<List<String>> writer = new XMLWriter<List<String>>();
-		String name = gameDetails.getGameDetails().get(0);
-		writer.writeToFile("resources/createdGames/" + name.trim() + ".xml", Arrays.asList(gameDetails.getGameDetails()));
+		String name = gameDetails.getGameDetails().get(Indexes.GAME_NAME.getIndex());
+		writer.writeToFile(DefaultStrings.CREATE_LOC.getDefault() + name.trim()+ DefaultStrings.XML.getDefault(), Arrays.asList(gameDetails.getGameDetails()));
 		System.out.println("Saved");
 	}
 

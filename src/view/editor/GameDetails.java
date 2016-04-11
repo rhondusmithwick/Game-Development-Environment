@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import enums.DefaultStrings;
 import enums.FileExtensions;
 import enums.GUISize;
+import enums.Indexes;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -83,9 +84,9 @@ public class GameDetails {
 	
 	
 	public void setDetails(List<String> list){
-		name.setText(list.get(0));
-		desc.setText(list.get(1));
-		iconPath = list.get(2);
+		name.setText(list.get(Indexes.GAME_NAME.getIndex()));
+		desc.setText(list.get(Indexes.GAME_DESC.getIndex()));
+		iconPath = list.get(Indexes.GAME_ICON.getIndex());
 		setImage();
 	}
 
