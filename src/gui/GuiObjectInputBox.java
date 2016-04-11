@@ -21,12 +21,12 @@ public class GuiObjectInputBox extends GuiObject{
 
 
 	
-	public GuiObjectInputBox(String name, String resourceBundle,EventHandler<ActionEvent> event, Property<?> property) {
+	public GuiObjectInputBox(String name, String resourceBundle,EventHandler<ActionEvent> event, Property<?> property, Object object) {
 		super(name,resourceBundle);
 		fileErrorLabel = new Label();
 		fileErrorLabel.setVisible(false);
 		fileErrorLabel.setWrapText(true);
-		userInputFileString = new TextField(getResourceBundle().getString(name+"Default"));
+		userInputFileString = new TextField(object + "");
 		initializeButton = new Button(getResourceBundle().getString(getObjectName()+"Button"));
 		addHandler(event);
 
