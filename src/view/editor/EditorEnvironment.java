@@ -29,16 +29,11 @@ import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
 import model.entity.EntitySystem;
+import view.DragAndResize;
 import view.Utilities;
 
 public class EditorEnvironment extends Editor{
 	
-	private double sceneX;
-	private double sceneY;
-	private double translateX;
-	private double translateY;
-	
-	//private ResourceBundle myResources;
 	private EntitySystem myEntities;
 	private GridPane environmentPane;
 	private List<Node> viewList;
@@ -64,8 +59,18 @@ public class EditorEnvironment extends Editor{
 	private void setGameScene() {
 		gameRoot = new Group();
 		gameScene = new SubScene(gameRoot,(GUISize.TWO_THIRDS_OF_SCREEN.getSize()),GUISize.HEIGHT_MINUS_TAB.getSize());
-		gameScene.setFill(Color.BLUE);
+		gameScene.setFill(Color.WHITE);
 		setAndAdd(gameScene,1,0,1,1);
+	
+		gameScene.setOnMousePressed(new EventHandler<MouseEvent>() {
+	            @Override
+	            public void handle(MouseEvent event) {
+	                printxevent(event);
+	            }});
+	}
+
+	private void printxevent(MouseEvent event) {
+		System.out.println("location of mouse on game scene. X: " + event.getX());
 	}
 
 	private void setEntityOptions() {
@@ -101,8 +106,7 @@ public class EditorEnvironment extends Editor{
 		}
 		updateEditor();
 		ImageView entityView = createImage(entity.getComponent(ImagePath.class), entity.getComponent(Position.class));
-		entityView.setOnMousePressed(myMousePressedEventHandler);
-        entityView.setOnMouseDragged(myMouseDraggedEventHandler);
+        DragAndResize.makeResizable(entityView);
 		gameRoot.getChildren().add(entityView);
 	}
 
@@ -112,8 +116,6 @@ public class EditorEnvironment extends Editor{
 			ImageView imageView = new ImageView(image);
 			imageView.setFitHeight(100);
 			imageView.setPreserveRatio(true);
-			pos.setY((GUISize.HEIGHT_MINUS_TAB.getSize()/2)+(imageView.getFitHeight()/2));
-			pos.setX((GUISize.TWO_THIRDS_OF_SCREEN.getSize()/2)-(imageView.getFitWidth()));
 			imageView.xProperty().bind(pos.xProperty());
 			imageView.yProperty().bind(pos.yProperty());
 			return imageView;
@@ -128,34 +130,7 @@ public class EditorEnvironment extends Editor{
 			// do nothing
 		}
 	}
-	
-    EventHandler<MouseEvent> myMousePressedEventHandler = 
-            new EventHandler<MouseEvent>() {
-
-			@Override
-            public void handle(MouseEvent t) {
-                sceneX = t.getSceneX();
-                sceneY = t.getSceneY();
-                translateX = ((Node) t.getSource()).getTranslateX();
-                translateY = ((Node) t.getSource()).getTranslateY();
-            }
-        };
-         
-        EventHandler<MouseEvent> myMouseDraggedEventHandler = 
-            new EventHandler<MouseEvent>() {
-     
-            @Override
-            public void handle(MouseEvent t) {
-                double offsetX = t.getSceneX() - sceneX;
-                double offsetY = t.getSceneY() - sceneY;
-                double newTranslateX = translateX + offsetX;
-                double newTranslateY = translateY + offsetY;
-                 
-                ((Node)(t.getSource())).setTranslateX(newTranslateX);
-                ((Node)(t.getSource())).setTranslateY(newTranslateY);
-            }
-        };
-	
+		
 	@Override
 	public void populateLayout() {
 		environmentPane.getChildren().addAll(viewList);
