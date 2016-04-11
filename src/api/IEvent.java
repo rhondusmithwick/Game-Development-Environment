@@ -1,5 +1,6 @@
 package api;
 
+@Deprecated
 /**
  * Interface for event/condition clause of a trigger.
  *

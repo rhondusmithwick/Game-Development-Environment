@@ -27,7 +27,7 @@ public class BrunaTesting {
 		myStage.setTitle("Testing");
 		myStage.setWidth(GUISize.MAIN_SIZE.getSize());
 		myStage.setHeight(GUISize.MAIN_SIZE.getSize());
-		myEditorEnvironment = new EditorEnvironment(new EntitySystem(), "English", new Button());
+		//myEditorEnvironment = new EditorEnvironment(new EntitySystem(), "English", new Button());
 		//myScene = new Scene(myEditorEnvironment.getPane(), GUISize.MAIN_SIZE.getSize(), GUISize.MAIN_SIZE.getSize());
 		
 		myStage.show();

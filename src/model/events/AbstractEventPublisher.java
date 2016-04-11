@@ -2,6 +2,7 @@ package model.events;
 
 import api.IEventPublisher;
 
+@Deprecated
 /**
  * Publishes an event
  *

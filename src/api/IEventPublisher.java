@@ -1,5 +1,6 @@
 package api;
 
+@Deprecated
 /**
  * Interface for event notification
  *
@@ -21,7 +22,8 @@ public interface IEventPublisher extends IEventListener {
 	/**
 	 * Sets the Groovy script that determines the event
 	 * 
-	 * @param groovyScript a new Groovy script
+	 * @param groovyScript
+	 *            a new Groovy script
 	 */
 	void setScript(String groovyScript);
 }

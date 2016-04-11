@@ -14,7 +14,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import view.Utilities;
@@ -45,9 +44,9 @@ public class GameDetails {
 	private HBox createTextEntry(String name){
 		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
 		Label title = new Label(myResources.getString(name));
+		title.setMinWidth(GUISize.LABEL_MIN_WIDTH.getSize());
 		TextArea tArea = Utilities.makeTextArea(myResources.getString(name));
 		container.getChildren().addAll(title, tArea);
-		HBox.setHgrow(tArea, Priority.SOMETIMES);
 		return container;
 	}
 	

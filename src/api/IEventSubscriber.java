@@ -1,5 +1,6 @@
 package api;
 
+@Deprecated
 /**
  * Interface for event handling
  *
@@ -9,7 +10,8 @@ public interface IEventSubscriber extends IEventListener {
 	/**
 	 * Subscribe to an event
 	 * 
-	 * @param message the message id of the event
+	 * @param message
+	 *            the message id of the event
 	 */
 	void subscribe(String message);
 
@@ -23,7 +25,8 @@ public interface IEventSubscriber extends IEventListener {
 	/**
 	 * Sets the Groovy script that handles the event
 	 * 
-	 * @param groovyScript a new Groovy script
+	 * @param groovyScript
+	 *            a new Groovy script
 	 */
 	void setScript(String groovyScript);
 }
