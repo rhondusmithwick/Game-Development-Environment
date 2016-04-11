@@ -74,7 +74,8 @@ public class PhysicsEngine implements IPhysicsEngine {
 
 	// probably more useful:
 	public Collection<IEntity> getEntitiesCollidingWith(IEntity e) {
-
+		
+		
 		return null; // TODO
 	}
 
