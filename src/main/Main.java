@@ -3,15 +3,11 @@ package main;
 
 import enums.GUISize;
 import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
-import view.editor.EditorEnvironment;
 
 public class Main extends Application{
 
 		private Stage myStage;
-		private EditorEnvironment myEditorEnvironment;
-		private Scene myScene;
 
 		/**
 		 * Sets up a stage to launch our window and initializes the splash screen.
