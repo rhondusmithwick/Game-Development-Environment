@@ -2,6 +2,8 @@ package events;
 
 import api.IEntitySystem;
 
+import java.util.Map;
+
 /**
  * Created by rhondusmithwick on 4/10/16.
  *
@@ -15,6 +17,10 @@ public class UniverseAction extends Action {
         this.universe = universe;
     }
 
+    public UniverseAction(String script, Map<String, Object> parameters, IEntitySystem universe) {
+        super(script, parameters);
+        this.universe = universe;
+    }
 
     @Override
     protected void setUp() {

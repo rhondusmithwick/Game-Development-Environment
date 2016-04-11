@@ -3,55 +3,60 @@ package view.editor;
 import java.io.File;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
+import java.util.ResourceBundle;
+
 import api.IEntity;
 import api.ISerializable;
+import enums.DefaultStrings;
 import enums.GUISize;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.geometry.HPos;
 import javafx.geometry.VPos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
-import model.entity.EntitySystem;
 import view.DragAndResize;
 import view.Utilities;
 
 public class EditorEnvironment extends Editor{
 	
-	private EntitySystem myEntities;
 	private GridPane environmentPane;
 	private List<Node> viewList;
 	private SubScene gameScene;
 	private VBox entityOptions;
 	private Group gameRoot;
+	private ResourceBundle myResources;
+	private ObservableList<ISerializable> masterEntities;
+	private ObservableList<ISerializable> envionmentEntities;
 	private static final String IMAGE_PATH = "resources/RhonduSmithwick.JPG";
 	
-	public EditorEnvironment(String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> addToList){
-		//myResources = ResourceBundle.getBundle(language);
-		myEntities = (EntitySystem) toEdit;
-		myEntities.addEntity(new Entity());
-		environmentPane = new GridPane();
-		viewList = new ArrayList<Node>();
+	public EditorEnvironment(String language, ISerializable toEdit, ObservableList<ISerializable>masterList, ObservableList<ISerializable> addToList){
+		myResources = ResourceBundle.getBundle(language);
+		masterEntities = masterList;
+		masterEntities.add(new Entity());
+		envionmentEntities = addToList;
 		addLayoutComponents();
 	}
 
 	private void addLayoutComponents(){
+		environmentPane = new GridPane();
+		viewList = new ArrayList<Node>();
 		setEntityOptions();
 		setGameScene();
 	}
@@ -61,16 +66,6 @@ public class EditorEnvironment extends Editor{
 		gameScene = new SubScene(gameRoot,(GUISize.TWO_THIRDS_OF_SCREEN.getSize()),GUISize.HEIGHT_MINUS_TAB.getSize());
 		gameScene.setFill(Color.WHITE);
 		setAndAdd(gameScene,1,0,1,1);
-	
-		gameScene.setOnMousePressed(new EventHandler<MouseEvent>() {
-	            @Override
-	            public void handle(MouseEvent event) {
-	                printxevent(event);
-	            }});
-	}
-
-	private void printxevent(MouseEvent event) {
-		System.out.println("location of mouse on game scene. X: " + event.getX());
 	}
 
 	private void setEntityOptions() {
@@ -86,25 +81,44 @@ public class EditorEnvironment extends Editor{
 
 	private void populateVbox(VBox vbox) {
 		try{
-		Collection<IEntity> entityList = myEntities.getAllEntities();
-		for (IEntity entity: entityList){
-			Button entityButton = Utilities.makeButton(entity.toString(), e -> addToScene(entity));
-			vbox.getChildren().add(entityButton);
+			if (masterEntities.isEmpty()){
+				Utilities.showError("",myResources.getString(DefaultStrings.NO_ENTITIES.getDefault()));
+			}
+		for (ISerializable entity: masterEntities){
+			Button entityButton = Utilities.makeButton(entity.toString(), e -> addToScene((IEntity) entity));
 			(entityButton).setMaxWidth(Double.MAX_VALUE);
+			vbox.getChildren().add(entityButton);
 			} }catch(NullPointerException e){
-				// do nothing
+				// do nothing, no real error 
 			}
 		}
 	
 	private void addToScene(IEntity entity) {
 		if (!entity.hasComponent(Position.class)){
-		Position pos = new Position();
-		entity.forceAddComponent(pos, true);
+			ButtonType answer = Utilities.confirmationBox("Confirm.", "Entity must have a position component to be displayed.", "Is it okay to add this component?");
+			if (answer == ButtonType.OK){
+			Position pos = new Position();
+			entity.forceAddComponent(pos, true);
+			}
+			else{
+				return;
+			}
 		}
 		if (!entity.hasComponent(ImagePath.class)){
-		entity.forceAddComponent(new ImagePath(IMAGE_PATH), true);
+			ButtonType answer = Utilities.confirmationBox("Confirm.", "Entity must have an image component to be displayed.", "Is it okay to add this component?");
+			if (answer == ButtonType.OK){
+				try{
+				File file = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("PNG", "*.png"), "Pick the image for the Image Path Compoenent.");
+				entity.forceAddComponent(new ImagePath(file.getPath()), true);
+				} catch(Exception e) {
+					Utilities.showError("ERROR", "Unable to add entity to the scene.");
+				}
+			}
+			else{
+				return;
+			}
 		}
-		updateEditor();
+		//updateEditor();
 		ImageView entityView = createImage(entity.getComponent(ImagePath.class), entity.getComponent(Position.class));
         DragAndResize.makeResizable(entityView);
 		gameRoot.getChildren().add(entityView);
@@ -147,17 +161,8 @@ public class EditorEnvironment extends Editor{
 		populateVbox(entityOptions);
 	}
 
-	public void addEntitySystem(EntitySystem entitySystem) {
-		myEntities = entitySystem;
-		updateEditor();
-	}
-
-	public EntitySystem getEntitySystem() {
-		return myEntities;
-	}
-
-	public Object getEntity(String i) {
-		return myEntities.getEntity(i);
+	public ObservableList<ISerializable> getEntitySystem() {
+		return envionmentEntities;
 	}
 
 	@Override
@@ -168,8 +173,7 @@ public class EditorEnvironment extends Editor{
 
 	@Override
 	public void addSerializable(ISerializable serialize) {
-		myEntities = (EntitySystem) serialize;
-		updateEditor();
+		
 	}
 
 }

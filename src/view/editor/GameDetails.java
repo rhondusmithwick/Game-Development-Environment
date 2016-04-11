@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import enums.DefaultStrings;
 import enums.FileExtensions;
 import enums.GUISize;
+import enums.Indexes;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -36,7 +37,7 @@ public class GameDetails {
 		nameBox = createTextEntry("gName");
 		name = (TextArea) nameBox.getChildren().get(1);
 		descriptionBox = createTextEntry("gDesc");
-		desc = (TextArea) nameBox.getChildren().get(1);
+		desc = (TextArea) descriptionBox.getChildren().get(1);
 		showIcon();
 		
 	}
@@ -63,6 +64,10 @@ public class GameDetails {
 
 	private void setIconPicture(File file) {
 		iconPath = file.toURI().toString();
+		setImage();
+	}
+
+	private void setImage() {
 		icon.setImage(new Image(iconPath));
 		icon.setFitHeight(GUISize.ICON_SIZE.getSize());
 		icon.setFitWidth(GUISize.ICON_SIZE.getSize());
@@ -76,6 +81,15 @@ public class GameDetails {
 		File file = fChoose.showOpenDialog(s);
 		setIconPicture(file);
 	}
+	
+	
+	public void setDetails(List<String> list){
+		name.setText(list.get(Indexes.GAME_NAME.getIndex()));
+		desc.setText(list.get(Indexes.GAME_DESC.getIndex()));
+		iconPath = list.get(Indexes.GAME_ICON.getIndex());
+		setImage();
+	}
+
 	
 	
 	public List<Node> getElements(){

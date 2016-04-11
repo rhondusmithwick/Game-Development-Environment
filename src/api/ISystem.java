@@ -1,5 +1,6 @@
 package api;
 
+@Deprecated
 /**
  * Interface for a system, mainly for back-end use
  *
