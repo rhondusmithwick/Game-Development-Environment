@@ -157,7 +157,7 @@ public class GameEditor extends Editor  {
 	}
 	
 	private void createEditor(Class<?> editName, ISerializable toEdit, ObservableList<ISerializable> otherList) {
-		IEditor editor = editFact.createEditor(editName,  myLanguage,toEdit, masterEntityList, otherList);
+		IEditor editor = editFact.createEditor(editName, myLanguage, toEdit, masterEntityList, otherList);
 		editor.populateLayout();
 		authEnv.createTab(editor.getPane(), editName.getSimpleName(), true);
 	}

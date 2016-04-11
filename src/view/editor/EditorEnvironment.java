@@ -32,10 +32,12 @@ import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
 import view.DragAndResize;
+import view.LoadDefaults;
 import view.Utilities;
 
 public class EditorEnvironment extends Editor{
 	
+	private static final List<Node> environmentEntities = null;
 	private GridPane environmentPane;
 	private List<Node> viewList;
 	private SubScene gameScene;
@@ -44,12 +46,12 @@ public class EditorEnvironment extends Editor{
 	private ResourceBundle myResources;
 	private ObservableList<ISerializable> masterEntities;
 	private ObservableList<ISerializable> envionmentEntities;
-	private static final String IMAGE_PATH = "resources/RhonduSmithwick.JPG";
+	private ObservableList<ISerializable> displayEntities;
 	
 	public EditorEnvironment(String language, ISerializable toEdit, ObservableList<ISerializable>masterList, ObservableList<ISerializable> addToList){
 		myResources = ResourceBundle.getBundle(language);
 		masterEntities = masterList;
-		masterEntities.add(new Entity());
+		displayEntities = masterList;
 		envionmentEntities = addToList;
 		addLayoutComponents();
 	}
@@ -76,15 +78,16 @@ public class EditorEnvironment extends Editor{
 		pane.setMinWidth(GUISize.ONE_THIRD_OF_SCREEN.getSize());
 		pane.setMinHeight(GUISize. HEIGHT_MINUS_TAB.getSize());
 		setAndAdd(pane,0,0,1,1);
-		populateVbox(entityOptions);
+		populateVbox(entityOptions,displayEntities);
+		loadDefaults();
 	}
 
-	private void populateVbox(VBox vbox) {
+	private void populateVbox(VBox vbox, ObservableList<ISerializable> entityChoices) {
 		try{
-			if (masterEntities.isEmpty()){
+			if (entityChoices.isEmpty()){
 				Utilities.showError("",myResources.getString(DefaultStrings.NO_ENTITIES.getDefault()));
 			}
-		for (ISerializable entity: masterEntities){
+		for (ISerializable entity: entityChoices){
 			Button entityButton = Utilities.makeButton(entity.toString(), e -> addToScene((IEntity) entity));
 			(entityButton).setMaxWidth(Double.MAX_VALUE);
 			vbox.getChildren().add(entityButton);
@@ -97,8 +100,9 @@ public class EditorEnvironment extends Editor{
 		if (!entity.hasComponent(Position.class)){
 			ButtonType answer = Utilities.confirmationBox("Confirm.", "Entity must have a position component to be displayed.", "Is it okay to add this component?");
 			if (answer == ButtonType.OK){
+			entity.setSpec(Position.class, 1); 
 			Position pos = new Position();
-			entity.forceAddComponent(pos, true);
+			entity.addComponent(pos);
 			}
 			else{
 				return;
@@ -108,10 +112,16 @@ public class EditorEnvironment extends Editor{
 			ButtonType answer = Utilities.confirmationBox("Confirm.", "Entity must have an image component to be displayed.", "Is it okay to add this component?");
 			if (answer == ButtonType.OK){
 				try{
-				File file = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("PNG", "*.png"), "Pick the image for the Image Path Compoenent.");
-				entity.forceAddComponent(new ImagePath(file.getPath()), true);
+			    List<ExtensionFilter> filters = new ArrayList<ExtensionFilter>();
+			    filters.add(new FileChooser.ExtensionFilter("All Images", "*.*"));
+			    filters.add(new FileChooser.ExtensionFilter("JPG", "*.jpg"));
+			    filters.add(new FileChooser.ExtensionFilter("PNG", "*.png"));
+				File file = Utilities.promptAndGetFile(filters,"Pick the image for the Image Path Component.");
+				entity.setSpec(ImagePath.class, 1); 
+				entity.addComponent(new ImagePath(file.getPath()));
 				} catch(Exception e) {
 					Utilities.showError("ERROR", "Unable to add entity to the scene.");
+					return;
 				}
 			}
 			else{
@@ -121,6 +131,7 @@ public class EditorEnvironment extends Editor{
 		//updateEditor();
 		ImageView entityView = createImage(entity.getComponent(ImagePath.class), entity.getComponent(Position.class));
         DragAndResize.makeResizable(entityView);
+        envionmentEntities.add(entity);
 		gameRoot.getChildren().add(entityView);
 	}
 
@@ -152,13 +163,15 @@ public class EditorEnvironment extends Editor{
 
 	@Override
 	public void loadDefaults() {
-		// TODO Auto-generated method stub
+		displayEntities.add(LoadDefaults.loadBackgroundDefault());
+		displayEntities.add(LoadDefaults.loadPlatformDefault(masterEntities));
+		populateVbox(entityOptions,displayEntities);
 	}
 
 	@Override
 	public void updateEditor() {
 		entityOptions.getChildren().clear();
-		populateVbox(entityOptions);
+		populateVbox(entityOptions,displayEntities);
 	}
 
 	public ObservableList<ISerializable> getEntitySystem() {
@@ -173,7 +186,7 @@ public class EditorEnvironment extends Editor{
 
 	@Override
 	public void addSerializable(ISerializable serialize) {
-		
+		envionmentEntities.add(serialize);
 	}
 
 }
