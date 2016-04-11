@@ -11,19 +11,31 @@ import java.util.Map;
  * @author Rhondu Smithwick
  */
 public class InputSystem {
-    private final Map<KeyCode, Action> actionMap = new HashMap<>();
+    private final Map<String, Action> actionMap = new HashMap<>();
+    private final Map<KeyCode, String> keyMap = new HashMap<>();
 
-    public void addEvent(KeyCode k, Action action) {
-        actionMap.put(k, action);
+    public void addEvent(String actionName, Action action) {
+        actionMap.put(actionName, action);
+    }
+    
+    public void addKeyBinding(KeyCode k, String actionName) {
+    	keyMap.put(k, actionName);
     }
 
-    public boolean containsEvent(KeyCode k) {
-        return actionMap.containsKey(k);
+    public boolean containsEvent(String actionName) {
+        return actionMap.containsKey(actionName);
+    }
+    
+    public boolean containsKey(KeyCode k) {
+        return keyMap.containsKey(k);
     }
 
     public void take(KeyCode k) {
-        if (containsEvent(k)) {
-            actionMap.get(k).activate();
+    	// TODO maybe change this if tree
+        if (containsKey(k)) {
+        	if(containsEvent(keyMap.get(k))) {
+        		actionMap.get(keyMap.get(k)).activate();
+        	}
         }
     }
 }
