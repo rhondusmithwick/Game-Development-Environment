@@ -19,7 +19,7 @@ public class ImagePath implements IComponent {
 	 */
 	private final SingleProperty<String> imagePathProperty, spritesheetPath;
 //	private final int framePointer;
-	private final double imageWidth, imageHeight, width, height, offsetX, offsetY;
+	private double imageWidth, imageHeight, width, height, offsetX, offsetY;
 	private final boolean isAnimated;
 
 	public ImagePath() {
@@ -76,6 +76,22 @@ public class ImagePath implements IComponent {
 
 	public void setImagePath(String imagePath) {
 		this.imagePathProperty().set(imagePath);
+	}
+	
+	public double getImageWidth() {
+		return this.imageWidth;
+	}
+	
+	public void setImageWidth(double imageWidth) {
+		this.imageWidth = imageWidth;
+	}
+
+	public double getImageHeight() {
+		return this.imageHeight;
+	}
+	
+	public void setImageHeight(double imageHeight) {
+		this.imageHeight = imageHeight;
 	}
 
 	@Override
