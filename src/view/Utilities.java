@@ -12,6 +12,7 @@ import java.util.ResourceBundle;
 	import javafx.event.EventHandler;
 	import javafx.scene.control.Alert;
 	import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
@@ -28,10 +29,10 @@ import javafx.stage.FileChooser.ExtensionFilter;
 		 * @param error message
 		 */
 		
-		public static void showError(String message, ResourceBundle displayStrings) {
+		public static void showError(String title,String message) {
 			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle(displayStrings.getString("error"));
-			alert.setContentText(displayStrings.getString(message));
+			alert.setTitle(title);
+			alert.setContentText(message);
 			alert.show();
 		}
 		
@@ -78,13 +79,13 @@ import javafx.stage.FileChooser.ExtensionFilter;
 		 * all others are not allowed @ param String prompt: prompt for the file
 		 * chooser box
 		 */
-		private String promptAndGetFile(ExtensionFilter extension, String prompt) {
+		public static File promptAndGetFile(ExtensionFilter extension, String prompt) {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle(prompt);
 			fileChooser.getExtensionFilters().add(extension);
 			fileChooser.setInitialDirectory(getLocalDir());
 			File file = fileChooser.showOpenDialog(new Stage());
-			return file.getName();
+			return file;
 		}
 		
 		/**
@@ -133,4 +134,15 @@ import javafx.stage.FileChooser.ExtensionFilter;
 			}
 			return null;
 		}
+		
+		public static ButtonType confirmationBox (String title,String header, String message){
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(message);
+
+		Optional<ButtonType> result = alert.showAndWait();
+		return result.get(); // check against result == ButtonType.OK
+		}
+		
 	}

@@ -8,9 +8,10 @@ public enum DefaultStrings {
 	ENVIRONMENT_EDITOR_NAME("EditorEnvironment"),
 	CREATE_GAME_LABEL("createGameButtonLabel"),
 	PLAY_GAME_LABEL("playGameButtonLabel"),
-	LANG_LOC("propertyFiles/");
-
-
+	LANG_LOC("propertyFiles/"), 
+	EDITOR_FACTORY_ERROR("editCreate"), 
+	ERROR("error"), 
+	NO_ENTITIES("noEntitiesError");
 
     private final String content;
 
