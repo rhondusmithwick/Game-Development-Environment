@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -12,6 +13,7 @@ import java.util.ResourceBundle;
 	import javafx.event.EventHandler;
 	import javafx.scene.control.Alert;
 	import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
@@ -28,10 +30,10 @@ import javafx.stage.FileChooser.ExtensionFilter;
 		 * @param error message
 		 */
 		
-		public static void showError(String message, ResourceBundle displayStrings) {
+		public static void showError(String title,String message) {
 			Alert alert = new Alert(AlertType.ERROR);
-			alert.setTitle(displayStrings.getString("error"));
-			alert.setContentText(displayStrings.getString(message));
+			alert.setTitle(title);
+			alert.setContentText(message);
 			alert.show();
 		}
 		
@@ -78,13 +80,13 @@ import javafx.stage.FileChooser.ExtensionFilter;
 		 * all others are not allowed @ param String prompt: prompt for the file
 		 * chooser box
 		 */
-		private String promptAndGetFile(ExtensionFilter extension, String prompt) {
+		public static File promptAndGetFile(ExtensionFilter extension, String prompt) {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle(prompt);
 			fileChooser.getExtensionFilters().add(extension);
 			fileChooser.setInitialDirectory(getLocalDir());
 			File file = fileChooser.showOpenDialog(new Stage());
-			return file.getName();
+			return file;
 		}
 		
 		/**
@@ -133,4 +135,38 @@ import javafx.stage.FileChooser.ExtensionFilter;
 			}
 			return null;
 		}
+		
+		public static ButtonType confirmationBox (String title,String header, String message){
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(message);
+
+		Optional<ButtonType> result = alert.showAndWait();
+		return result.get(); // check against result == ButtonType.OK
+		}
+		
+		
+	    /**
+	     * Gets all file names from a given directory.
+	     * Is static so that it can be accessed as the actual class is never instantiated,
+	     * also so that function can be accessed without this object being passed.
+	     *
+	     * @param directoryLocation String path to a file directory
+	     * @return List of Strings of all file names within given directory
+	     */
+	    public static List<String> getAllFromDirectory(String directoryLocation) {
+
+	        ArrayList<String> files = new ArrayList<>();
+	        File directory = new File(directoryLocation);
+	        File[] fileList = directory.listFiles();
+	        for (File file : fileList) {
+	            String name = file.getName();
+	            files.add(name.substring(0, name.lastIndexOf('.')));
+	        }
+	        return files;
+
+
+	    }
+		
 	}
