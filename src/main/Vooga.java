@@ -11,6 +11,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import view.Utilities;
+import view.beginingmenus.AuthoringStartUp;
 
 public class Vooga {
 	

@@ -1,4 +1,4 @@
-package main;
+package view.beginingmenus;
 
 import java.util.ResourceBundle;
 import enums.GUISize;
