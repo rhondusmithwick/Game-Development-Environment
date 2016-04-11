@@ -1,10 +1,16 @@
 package view.editor;
 
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStream;
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import api.IComponent;
 import api.IEditor;
 import api.ISerializable;
+import datamanagement.XMLWriter;
 import enums.DefaultStrings;
 import enums.GUISize;
 import enums.ViewInsets;
@@ -160,7 +166,9 @@ public class GameEditor extends Editor  {
 	}
 
 	private void saveGame() {
-		// TODO Auto-generated method stub
+		XMLWriter writer = new XMLWriter();
+		File file = writer.writeToFile("newgame.xml", Arrays.asList(gameDetails.getGameDetails(), masterEntityList, masterEnvironmentList));
+		System.out.println(file.getAbsolutePath());
 	}
 
 	private void editorButtons(VBox container) {
