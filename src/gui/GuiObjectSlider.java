@@ -19,9 +19,9 @@ public class GuiObjectSlider extends GuiObject{
 	private Label numLabel;
 
 
-	public GuiObjectSlider(String name, String resourceBundle,EventHandler<ActionEvent> event, Property<?> property) {
+	public GuiObjectSlider(String name, String resourceBundle,EventHandler<ActionEvent> event, Property<?> property, Object object) {
 		super(name, resourceBundle);
-		slider = new Slider(Integer.parseInt(getResourceBundle().getString(name+"Min")),Integer.parseInt(getResourceBundle().getString(name+ "Max")), Integer.parseInt(getResourceBundle().getString(name+"Default"))); 
+		slider = new Slider(Integer.parseInt(getResourceBundle().getString(name+"Min")),Integer.parseInt(getResourceBundle().getString(name+ "Max")), (double) object); 
 		slider.setShowTickMarks(true);
 		slider.setBlockIncrement(Integer.parseInt(getResourceBundle().getString(name+"Increment")));
 		textLabel = new Label(getResourceBundle().getString(getObjectName()+"Label"));
