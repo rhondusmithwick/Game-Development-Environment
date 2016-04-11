@@ -20,8 +20,7 @@ public class Main extends Application{
 			myStage.setWidth(GUISize.MAIN_SIZE.getSize());
 			myStage.setHeight(GUISize.MAIN_SIZE.getSize());
 			Vooga vooga = new Vooga(myStage);
-			myStage.setScene(vooga.init());
-			myStage.show();
+			vooga.init();
 		}
 
 		/**
