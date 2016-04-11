@@ -44,13 +44,13 @@ public class EditorEnvironment extends Editor{
 	private VBox entityOptions;
 	private Group gameRoot;
 	private ResourceBundle myResources;
-	private ObservableList<ISerializable> masterEntities;
+	//private ObservableList<ISerializable> masterEntities;
 	private ObservableList<ISerializable> envionmentEntities;
 	private ObservableList<ISerializable> displayEntities;
 	
 	public EditorEnvironment(String language, ISerializable toEdit, ObservableList<ISerializable>masterList, ObservableList<ISerializable> addToList){
 		myResources = ResourceBundle.getBundle(language);
-		masterEntities = masterList;
+		//masterEntities = masterList;
 		displayEntities = masterList;
 		envionmentEntities = addToList;
 		addLayoutComponents();
@@ -88,7 +88,7 @@ public class EditorEnvironment extends Editor{
 				Utilities.showError("",myResources.getString(DefaultStrings.NO_ENTITIES.getDefault()));
 			}
 		for (ISerializable entity: entityChoices){
-			Button entityButton = Utilities.makeButton(entity.toString(), e -> addToScene((IEntity) entity));
+			Button entityButton = Utilities.makeButton(((IEntity) entity).getName(), e -> addToScene((IEntity) entity));
 			(entityButton).setMaxWidth(Double.MAX_VALUE);
 			vbox.getChildren().add(entityButton);
 			} }catch(NullPointerException e){
@@ -164,7 +164,7 @@ public class EditorEnvironment extends Editor{
 	@Override
 	public void loadDefaults() {
 		displayEntities.add(LoadDefaults.loadBackgroundDefault());
-		displayEntities.add(LoadDefaults.loadPlatformDefault(masterEntities));
+		displayEntities.add(LoadDefaults.loadPlatformDefault(displayEntities));
 		populateVbox(entityOptions,displayEntities);
 	}
 

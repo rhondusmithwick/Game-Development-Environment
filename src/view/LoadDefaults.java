@@ -19,25 +19,23 @@ import javafx.scene.shape.Rectangle;
 public class LoadDefaults {
 	
 	public static IEntity loadBackgroundDefault(){
-		IEntity entity = new Entity();
+		IEntity entity = new Entity("Default Dragon Temple Background");
 		//entity.loadSpecsFromPropertiesFile("resources/templates/Background.properties");
-		entity.setSpec(Position.class, 1);
-		//entity.addComponent(new Position());
-		//entity.addComponent(new ImagePath("resources/images/ghosttemple.jpg"));
+		entity.forceAddComponent(new Position(),true);
+	    entity.forceAddComponent(new ImagePath("resources/images/dragontemple.gif"),true);
 		return entity;
 	}
 	
 	public static IEntity loadPlatformDefault(ObservableList<ISerializable> masterEntities){
-		IEntity entity = new Entity();
-		
-		entity.loadSpecsFromPropertiesFile("resources/templates/PlatformSprite.properties");
+		IEntity entity = new Entity("Default Mario Platform");
+		//entity.loadSpecsFromPropertiesFile("resources/templates/PlatformSprite.properties");
 		// add friction
 		// add render properties
-		//entity.addComponent(new Position());
-		//ImagePath path = new ImagePath("resources/images/marioplatform");
-		//entity.addComponent(path);
-		//entity.addComponent(new Collision(imagePathToFitRectangle(entity.getComponent(ImagePath.class)),
-			//	entityListToIDs(masterEntities)));
+		entity.forceAddComponent(new Position(),true);
+		ImagePath path = new ImagePath("resources/images/marioplatform.jpeg");
+		entity.forceAddComponent(path, true);
+		entity.forceAddComponent(new Collision(imagePathToFitRectangle(entity.getComponent(ImagePath.class)),
+			entityListToIDs(masterEntities)),true);
 		return entity;
 	}
 	
