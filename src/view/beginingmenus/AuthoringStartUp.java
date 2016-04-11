@@ -1,5 +1,6 @@
 package view.beginingmenus;
 
+import java.util.Arrays;
 import java.util.ResourceBundle;
 import enums.GUISize;
 import javafx.geometry.Pos;
@@ -8,15 +9,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import view.Authoring;
 import view.Utilities;
 
-public class AuthoringStartUp {
+public class AuthoringStartUp extends StartUpMenu {
 
 	private Stage myStage;
-	private VBox myVBox;
 	private Group root;
 	private Authoring authEnv;
 	private Scene myScene;
@@ -25,20 +24,15 @@ public class AuthoringStartUp {
 	private String language;
 
 	public AuthoringStartUp(Stage stage, String language) {
+		super(stage);
 		myStage = stage;
 		this.language=language;
 		myResources = ResourceBundle.getBundle(language);
 	}
 
-	public void init() {
-		myScene = new Scene(createDisplay(), GUISize.MAIN_SIZE.getSize(), GUISize.MAIN_SIZE.getSize());
-		myStage.setScene(myScene);
-		myStage.show();
-	}
-
-	private Group createDisplay() {
-		root = new Group();
-		setVBox();
+	@Override
+	protected Group createDisplay() {
+		root = super.createDisplay();
 		createGame();
 		loadGame();
 		return root;
@@ -50,21 +44,13 @@ public class AuthoringStartUp {
 		games = Utilities.makeComboBox(myResources.getString("chooseGame"), Utilities.getAllFromDirectory("resources/createdGames"), null);
 		Button loadGame = Utilities.makeButton(myResources.getString("loadGame"), e->createAuthoringFromFile());
 		container.getChildren().addAll(games, loadGame);
-		myVBox.getChildren().add(container);
+		super.addNodesToVBox(Arrays.asList(container));
 	}
 
 	private void createGame() {
 		Button createGame = Utilities.makeButton(myResources.getString("createGame"), null);
 		createGame.setOnAction(e -> createAuthoring());
-		myVBox.getChildren().add(createGame);
-	}
-
-	private void setVBox() {
-		myVBox = new VBox(GUISize.ORIG_MENU_PADDING.getSize());
-		myVBox.prefHeightProperty().bind(myStage.heightProperty());
-		myVBox.prefWidthProperty().bind(myStage.widthProperty());
-		myVBox.setAlignment(Pos.CENTER);
-		root.getChildren().add(myVBox);
+		super.addNodesToVBox(Arrays.asList(createGame));
 	}
 
 	private void createAuthoring() {
