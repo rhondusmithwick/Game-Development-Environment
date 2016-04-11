@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import view.Authoring;
@@ -24,7 +25,7 @@ public class Vooga {
 	private Authoring authEnv;
 	private Scene myScene;
 	private ResourceBundle myResources;
-	private ComboBox<String> languages;
+	private ComboBox<String> languages, games;
 	/**
 	 * Constructor that takes in a stage to display the graphics.
 	 * 
@@ -55,6 +56,7 @@ public class Vooga {
 		root = new Group();
 		setVBox();
 		createGame();
+		loadGame();
 		setLanguage();
 		return root;
 	}
@@ -63,6 +65,15 @@ public class Vooga {
 		languages = Utilities.makeComboBox(myResources.getString("dispLang"), Arrays.asList("english", "spanish", "arabic"), null);
 		myVBox.getChildren().add(languages);
 		
+	}
+	
+	private void loadGame(){
+		HBox container = new HBox(GUISize.ORIG_MENU_PADDING.getSize());
+		container.setAlignment(Pos.CENTER);
+		games = Utilities.makeComboBox(myResources.getString("chooseGame"), Utilities.getAllFromDirectory("resources/createdGames"), null);
+		Button loadGame = Utilities.makeButton(myResources.getString("loadGame"), e->createAuthoringFromFile());
+		container.getChildren().addAll(games, loadGame);
+		myVBox.getChildren().add(container);
 	}
 
 	private void createGame() {
@@ -80,6 +91,24 @@ public class Vooga {
 	}
 
 	private void createAuthoring() {
+		String lang = setUpAuthoring();
+		authEnv = new Authoring(lang);
+		showAuthoring();
+	}
+	
+	private void createAuthoringFromFile() {
+		String fileName = games.getSelectionModel().getSelectedItem();
+		if(fileName == null){
+			createAuthoring();
+		}
+		String lang = setUpAuthoring();
+		authEnv = new Authoring(lang, fileName);
+		showAuthoring();
+		
+		
+	}
+	
+	private String setUpAuthoring() {
 		myStage.hide();
 		myStage.setWidth(GUISize.AUTHORING_WIDTH.getSize());
 		myStage.setHeight(GUISize.AUTHORING_HEIGHT.getSize());
@@ -88,10 +117,16 @@ public class Vooga {
 			temp = DefaultStrings.DEFAULT_LANGUAGE.getDefault();
 		}
 		String lang = DefaultStrings.LANG_LOC.getDefault() + temp;
-		authEnv = new Authoring(lang);
+		return lang;
+	}
+	
+	
+	private void showAuthoring() {
 		myScene = authEnv.init(myStage.widthProperty(), myStage.heightProperty());
 		myStage.setScene(myScene);
 		myStage.show();
 	}
+
+
 
 }
