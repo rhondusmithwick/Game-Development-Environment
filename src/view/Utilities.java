@@ -5,6 +5,7 @@ import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
@@ -144,5 +145,28 @@ import javafx.stage.FileChooser.ExtensionFilter;
 		Optional<ButtonType> result = alert.showAndWait();
 		return result.get(); // check against result == ButtonType.OK
 		}
+		
+		
+	    /**
+	     * Gets all file names from a given directory.
+	     * Is static so that it can be accessed as the actual class is never instantiated,
+	     * also so that function can be accessed without this object being passed.
+	     *
+	     * @param directoryLocation String path to a file directory
+	     * @return List of Strings of all file names within given directory
+	     */
+	    public static List<String> getAllFromDirectory(String directoryLocation) {
+
+	        ArrayList<String> files = new ArrayList<>();
+	        File directory = new File(directoryLocation);
+	        File[] fileList = directory.listFiles();
+	        for (File file : fileList) {
+	            String name = file.getName();
+	            files.add(name.substring(0, name.lastIndexOf('.')));
+	        }
+	        return files;
+
+
+	    }
 		
 	}

@@ -36,7 +36,7 @@ public class GameDetails {
 		nameBox = createTextEntry("gName");
 		name = (TextArea) nameBox.getChildren().get(1);
 		descriptionBox = createTextEntry("gDesc");
-		desc = (TextArea) nameBox.getChildren().get(1);
+		desc = (TextArea) descriptionBox.getChildren().get(1);
 		showIcon();
 		
 	}
@@ -63,6 +63,10 @@ public class GameDetails {
 
 	private void setIconPicture(File file) {
 		iconPath = file.toURI().toString();
+		setImage();
+	}
+
+	private void setImage() {
 		icon.setImage(new Image(iconPath));
 		icon.setFitHeight(GUISize.ICON_SIZE.getSize());
 		icon.setFitWidth(GUISize.ICON_SIZE.getSize());
@@ -76,6 +80,15 @@ public class GameDetails {
 		File file = fChoose.showOpenDialog(s);
 		setIconPicture(file);
 	}
+	
+	
+	public void setDetails(List<String> list){
+		name.setText(list.get(0));
+		desc.setText(list.get(1));
+		iconPath = list.get(2);
+		setImage();
+	}
+
 	
 	
 	public List<Node> getElements(){
