@@ -1,11 +1,13 @@
 package model.component.visual;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 import utility.SingleProperty;
+import utility.TwoProperty;
 
 /**
  * Component to hold an imagePath.
@@ -19,7 +21,8 @@ public class ImagePath implements IComponent {
 	 */
 	private final SingleProperty<String> imagePathProperty, spritesheetPath;
 //	private final int framePointer;
-	private double imageWidth, imageHeight, width, height, offsetX, offsetY;
+	private final TwoProperty<Double, Double> imageSizeProperty;
+	private double width, height, offsetX, offsetY;
 	private final boolean isAnimated;
 
 	public ImagePath() {
@@ -51,8 +54,7 @@ public class ImagePath implements IComponent {
 	public ImagePath(String imagePath, double imageWidth, double imageHeight,
 			String spritesheetPath, double width, double height, double offsetX, double offsetY, boolean isAnimated) {
 		this.imagePathProperty = new SingleProperty<>("ImagePath", imagePath);
-		this.imageWidth = imageWidth;
-		this.imageHeight = imageHeight;
+		this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", height);
 		this.spritesheetPath = new SingleProperty<>("SpritesheetPath", spritesheetPath);
 		this.width = width;
 		this.height = height;
@@ -78,24 +80,32 @@ public class ImagePath implements IComponent {
 		this.imagePathProperty().set(imagePath);
 	}
 	
+	public SimpleObjectProperty<Double> imageWidthProperty() {
+		return imageSizeProperty.property1();
+	}
+	
+	public SimpleObjectProperty<Double> imageHeightProperty() {
+		return imageSizeProperty.property2();
+	}
+	
 	public double getImageWidth() {
-		return this.imageWidth;
+		return this.imageWidthProperty().get();
 	}
 	
 	public void setImageWidth(double imageWidth) {
-		this.imageWidth = imageWidth;
+		this.imageWidthProperty().set(imageWidth);
 	}
 
 	public double getImageHeight() {
-		return this.imageHeight;
+		return this.imageHeightProperty().get();
 	}
 	
 	public void setImageHeight(double imageHeight) {
-		this.imageHeight = imageHeight;
+		this.imageHeightProperty().set(imageHeight);
 	}
 
 	@Override
 	public List<SimpleObjectProperty<?>> getProperties() {
-		return Collections.singletonList(imagePathProperty());
+		return Arrays.asList(imagePathProperty(), imageWidthProperty(), imageHeightProperty());
 	}
 }
