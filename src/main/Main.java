@@ -1,3 +1,4 @@
+
 package main;
 
 import enums.GUISize;
@@ -14,7 +15,6 @@ public class Main extends Application{
 		 */
 
 		public void start (Stage stage) {
-
 			myStage = stage;
 			myStage.setTitle("VOOGA");
 			myStage.setWidth(GUISize.MAIN_SIZE.getSize());

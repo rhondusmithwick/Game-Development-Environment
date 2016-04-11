@@ -1,4 +1,4 @@
-package view;
+package view.editor;
 
 import javafx.scene.layout.Pane;
 
@@ -8,11 +8,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import view.Authoring;
+import view.Utilities;
 import api.IEditor;
+import api.ISerializable;
 import enums.DefaultStrings;
 import enums.FileExtensions;
 import enums.GUISize;
 import enums.ViewInsets;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
@@ -36,49 +40,47 @@ import javafx.stage.Stage;
 public class EditorEvent extends Editor
 {
 	private VBox pane;
-	private List<Node> entryList;
-	private String iconPath;
-	private ImageView icon;
 	private ResourceBundle myResources;
-	private EditorFactory factory;
-	private Authoring authoringEnvironment;
 	private HashMap<String, TableView<String>> tableMap; 
 	private HashMap<String, Button> buttonMap;
-	
-	public EditorEvent(Authoring authoringEnvironment, String language)
+
+
+	/*
+	 *  Constructor is made based on new Editor Factory.
+	 *  I tried to pass an event system, but it deprecated.
+	 *  TODO: Change this, because it's temporary
+	 */
+	public EditorEvent(String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> addToList)
 	{
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
 		pane.setAlignment(Pos.TOP_LEFT);
-		entryList = new ArrayList<>();
 		myResources = ResourceBundle.getBundle(language);
-		factory = new EditorFactory();
 		tableMap = new HashMap<String, TableView<String>>();
 		buttonMap = new HashMap<String, Button>();
-		this.authoringEnvironment = authoringEnvironment;
 	}
-	
+
 	private void makeButtons()
 	{
 		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
-		
+
 		// Create Trigger Button
 		buttonMap.put(myResources.getString("createTrigger"), Utilities.makeButton(myResources.getString("createTrigger"), 
 				e-> createTrigger()));
-		
-		
+
+
 		// Create Event Button
 		buttonMap.put(myResources.getString("createEvent"), Utilities.makeButton(myResources.getString("createEvent"), 
 				e-> createEvent()));
-		
+
 		for ( Button button: buttonMap.values() )
 		{
 			container.getChildren().add(button);
 		}
-		
+
 		pane.getChildren().add(container);
 	}
-	
+
 	private void createTrigger()
 	{
 		/*
@@ -87,10 +89,10 @@ public class EditorEvent extends Editor
 		 * They could be done by some user input, timer action, or Entity parameter change.
 		 * For user ease of use, try to separate these into their according lists.
 		 */
-		
+
 		System.out.println("Creating Trigger!");
 	}
-	
+
 	private void createEvent()
 	{
 		/*
@@ -102,41 +104,47 @@ public class EditorEvent extends Editor
 		 * So maybe also separate the Event into Executioner/Action.
 		 *
 		 */
-		
+
 		/*
 		 * So, need some further explaining, but Events could be broken down to:
 		 * When =TRIGGER= does/hits =ACTION/VALUE=, =EXECUTIONER= will =ACTION=.
 		 * 
 		 *  I see this better organized into 4 TableViews.
 		 */
-		
+
 		System.out.println("Creating Event!");
 	}
-	
+
 	private void createTables()
 	{
-		
+
 		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
-		
+
 		// Creates the Tables
 		tableMap.put("Triggers", Utilities.makeSingleColumnTable("Triggers")); // TODO: RESOURCE FILE BITCHHHHHH
 		tableMap.put("Trigger Actions", Utilities.makeSingleColumnTable("Triger Actions")); // TODO: RESOURCE FILE BITCHHHHHH
 		tableMap.put("Actors", Utilities.makeSingleColumnTable("Actors")); // TODO: RESOURCE FILE BITCHHHHHH
 		tableMap.put("Actor Actions", Utilities.makeSingleColumnTable("Actor Actions")); // TODO: RESOURCE FILE BITCHHHHHH
-		
+
 		for ( TableView<String> table: tableMap.values() )
 		{
 			container.getChildren().add(table);
 			HBox.setHgrow(table, Priority.SOMETIMES);
 		}
-		
+
 		pane.getChildren().add(container);
 	}
 	
+	public void populateLayout() 
+	{
+		makeButtons();
+		createTables();
+	}
+
 	@Override
 	public void loadDefaults() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -146,16 +154,15 @@ public class EditorEvent extends Editor
 	}
 
 	@Override
-	public void populateLayout() 
-	{
-		makeButtons();
-		createTables();
+	public void addSerializable(ISerializable serialize) {
+		// TODO Auto-generated method stub
+
 	}
-	
+
 	@Override
 	public void updateEditor() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }
