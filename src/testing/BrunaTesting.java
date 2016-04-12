@@ -12,26 +12,26 @@ import view.editor.gameeditor.GameEditor;
 
 
 public class BrunaTesting {
-	
-	 private EditorEnvironment myEditorEnvironment;
+
+	private EditorEnvironment myEditorEnvironment;
 	private GameEditor myGameEditor;
-	
-	
+
+
 	@Before
-    public void setUp () {
-	myGameEditor = new GameEditor(null, "propertyFiles/english");
-}
+	public void setUp () {
+		myGameEditor = new GameEditor(null, "propertyFiles/english");
+	}
 
 
-@Test
+	@Test
 	public void listConnectionTest(){
-	//myEditorEnvironment = new EditorEnvironment("propertyFiles/english", null, myGameEditor.getMasterList(),
-	//myGameEditor.getAddToList());
-	//myEditorEnvironment.populateLayout();
-	IEntity checkEntity = new Entity("Check For");
-	//myGameEditor.addToMaster(checkEntity);
-	assertTrue(myEditorEnvironment.displayContains(checkEntity));
-	
-}
+		//myEditorEnvironment = new EditorEnvironment("propertyFiles/english", null, myGameEditor.getMasterList(),
+		//myGameEditor.getAddToList());
+		//myEditorEnvironment.populateLayout();
+		IEntity checkEntity = new Entity("Check For");
+		//myGameEditor.addToMaster(checkEntity);
+		assertTrue(myEditorEnvironment.displayContains(checkEntity));
+
+	}
 
 }
