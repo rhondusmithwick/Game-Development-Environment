@@ -43,7 +43,8 @@ public class TwoProperty<A, B> extends SingleProperty<A> {
      *
      * @return the properties as a list
      */
-    public List<SimpleObjectProperty<?>> getProperties() {
+    @Override
+	public List<SimpleObjectProperty<?>> getProperties() {
         return Arrays.asList(property1(), property2());
     }
 }

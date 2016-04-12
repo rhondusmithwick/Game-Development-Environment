@@ -4,7 +4,6 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Region;
 
 
 public class DragAndResize {

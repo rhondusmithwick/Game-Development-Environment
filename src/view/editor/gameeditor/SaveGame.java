@@ -3,7 +3,6 @@ package view.editor.gameeditor;
 import java.util.List;
 import api.ISerializable;
 import enums.Indexes;
-import javafx.collections.ObservableList;
 
 public class SaveGame implements ISerializable {
 	

@@ -33,6 +33,7 @@ public class GameEditor extends Editor  {
 	private String myLanguage;
 	private ObservableList<ISerializable> masterEntityList;
 	private ObservableList<ISerializable> masterEnvironmentList;
+	private ObservableList<ISerializable> masterEventList;
 	private GameDetails gameDetails;
 	private EntityDisplay entDisp;
 	private EnvironmentDisplay envDisp;
@@ -49,8 +50,10 @@ public class GameEditor extends Editor  {
 		this.authEnv=authEnv;
 		this.masterEntityList = FXCollections.observableArrayList();
 		this.masterEnvironmentList = FXCollections.observableArrayList();
+		this.masterEventList = FXCollections.observableArrayList();
 		entDisp = new EntityDisplay(myLanguage, masterEntityList, authEnv);
 		envDisp = new EnvironmentDisplay(myLanguage, masterEnvironmentList, masterEntityList, authEnv);
+		
 		addShit();
 		setPane();
 	}

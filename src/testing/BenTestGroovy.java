@@ -3,6 +3,7 @@ package testing;
 import api.IEntity;
 import api.IEntitySystem;
 import api.IPhysicsEngine;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -32,6 +33,7 @@ public class BenTestGroovy extends Application {
 	private static IPhysicsEngine physics; // TODO: remove these things
 	private Group root;
 
+	@Override
 	public void start(Stage s) {
 		root = new Group();
 		BorderPane splash = new BorderPane();
@@ -57,7 +59,7 @@ public class BenTestGroovy extends Application {
 		// sets the game's loop
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> this.step(SECOND_DELAY, list, system));
 		Timeline animation = new Timeline();
-		animation.setCycleCount(Timeline.INDEFINITE);
+		animation.setCycleCount(Animation.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
 

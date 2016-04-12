@@ -31,6 +31,7 @@ public class EditorTesting extends Application {
 	 * @throws InstantiationException 
 	 */
 
+	@Override
 	public void start (Stage stage) {
 
 		myStage = stage;

@@ -7,6 +7,7 @@ import java.util.List;
 import api.IEntity;
 import api.IEntitySystem;
 import api.IPhysicsEngine;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -33,6 +34,7 @@ public class BenTest extends Application {
 	private static IPhysicsEngine physics; // TODO: remove these things
 	private Group root;
 
+	@Override
 	public void start(Stage s) {
 		root = new Group();
 		BorderPane splash = new BorderPane();
@@ -45,8 +47,8 @@ public class BenTest extends Application {
 
 		List<IEntity> list = new ArrayList<IEntity>();
 		IEntity character = new Entity();
-		character.forceAddComponent(new Health((double) 100), true);
-		character.forceAddComponent(new Score((double) 100), true);
+		character.forceAddComponent(new Health(100), true);
+		character.forceAddComponent(new Score(100), true);
 		Position pos = new Position(250.0, 250.0);
 		character.forceAddComponent(pos, true);
 		character.forceAddComponent(new ImagePath(IMAGE_PATH), true);
@@ -67,7 +69,7 @@ public class BenTest extends Application {
 		// sets the game's loop
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> this.step(SECOND_DELAY, list, system));
 		Timeline animation = new Timeline();
-		animation.setCycleCount(Timeline.INDEFINITE);
+		animation.setCycleCount(Animation.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
 

@@ -2,8 +2,6 @@ package gui;
 
 import java.util.ResourceBundle;
 
-import api.ISerializable;
-import javafx.beans.property.ListProperty;
 import javafx.beans.property.Property;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;

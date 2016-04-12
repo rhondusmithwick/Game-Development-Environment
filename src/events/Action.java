@@ -1,7 +1,5 @@
 package events;
 
-import api.IEntitySystem;
-
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
