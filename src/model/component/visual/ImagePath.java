@@ -21,10 +21,11 @@ public class ImagePath implements IComponent {
 	 */
 	private final SingleProperty<String> imagePathProperty, spritesheetPath;
 	private final TwoProperty<Double, Double> imageSizeProperty;
-	private int framePointer;
 	private final Rectangle2D viewport;
-	private final boolean isAnimated;
-	private final double frameDuration, totalDuration;
+	private int frameIndex;
+	private boolean isAnimated;
+	private long elapsedTimeMillis;
+	private final long frameDurationMillis, totalDurationMillis;
 
 	public ImagePath() {
 		this("resources/RhonduSmithwick.JPG");
@@ -37,7 +38,7 @@ public class ImagePath implements IComponent {
 	 *            starting value
 	 */
 	public ImagePath(String imagePath) {
-		this(imagePath, 0.0, 0.0, "resources/RhonduSmithwick.JPG", new Rectangle2D(0.0, 0.0, 0.0, 0.0), false, 0.0, 0.0);
+		this(imagePath, 0.0, 0.0, "resources/RhonduSmithwick.JPG", new Rectangle2D(0.0, 0.0, 0.0, 0.0), false, 0, 0);
 	}
 
 	/**
@@ -61,14 +62,15 @@ public class ImagePath implements IComponent {
 	 *            offset in y-direction
 	 */
 	public ImagePath(String imagePath, double imageWidth, double imageHeight, String spritesheetPath,
-			Rectangle2D viewport, boolean isAnimated, double frameDuration, double totalDuration) {
+			Rectangle2D viewport, boolean isAnimated, long frameDurationMillis, long totalDurationMillis) {
 		this.imagePathProperty = new SingleProperty<>("ImagePath", imagePath);
 		this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", imageHeight);
 		this.spritesheetPath = new SingleProperty<>("SpritesheetPath", spritesheetPath);
 		this.viewport = viewport;
+		this.frameIndex = 0;
 		this.isAnimated = isAnimated;
-		this.frameDuration = frameDuration;
-		this.totalDuration = totalDuration;
+		this.frameDurationMillis = frameDurationMillis;
+		this.totalDurationMillis = totalDurationMillis;
 	}
 
 	/**
@@ -116,4 +118,17 @@ public class ImagePath implements IComponent {
 	public List<SimpleObjectProperty<?>> getProperties() {
 		return Arrays.asList(imagePathProperty(), imageWidthProperty(), imageHeightProperty());
 	}
+	
+	public Rectangle2D getViewport() {
+		return this.viewport;
+	}
+	
+	public int getFrameIndex() {
+		return this.frameIndex;
+	}
+
+	public int setFrameIndex(int frameIndex) {
+		return this.frameIndex = frameIndex;
+	}
+	
 }
