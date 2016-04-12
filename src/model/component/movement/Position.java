@@ -48,7 +48,7 @@ public class Position implements IComponent {
 
     public void setX(double x) {
         xProperty().set(x);
-        System.out.println("Set Position to: " + x);
+        System.out.println("Set X Position to: " + x);
     }
 
     /**
@@ -65,6 +65,7 @@ public class Position implements IComponent {
 
     public void setY(double y) {
         yProperty().set(y);
+        System.out.println("Set Y Position to: " + y);
     }
 
 

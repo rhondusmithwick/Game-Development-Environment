@@ -27,10 +27,10 @@ public class LoadDefaults {
 	    entity.addComponent(path);
 		return entity;
 	}
-	
+		
 	public static IEntity loadPlatformDefault(ObservableList<ISerializable> masterEntities){
 		IEntity entity = new Entity("Default Mario Platform");
-		//entity.loadSpecsFromPropertiesFile("resources/templates/PlatformSprite.properties");
+		//entity.loadSpecsFromPropertiesFile("templates/PlatformSprite");
 		// add friction
 		// add render properties
 		entity.forceAddComponent(new Position(),true);
@@ -43,10 +43,10 @@ public class LoadDefaults {
 	}
 	
 	private static Rectangle imagePathToFitRectangle(ImagePath path){
-		URI resource = new File(path.getImagePath()).toURI();
-		Image image = new Image(resource.toString());
-		ImageView imageView = new ImageView(image);
-		return new Rectangle((int) imageView.getFitWidth(), (int) imageView.getFitHeight());
+		if (path.getImageHeight()==0 || path.getImageWidth() == 0){
+			Utilities.setUpImagePathSize(path);
+		}
+		return new Rectangle((int) path.getImageHeight(), (int) path.getImageWidth());
 	}
 	
 	private static List<String> entityListToIDs(ObservableList<ISerializable> masterEntities){
