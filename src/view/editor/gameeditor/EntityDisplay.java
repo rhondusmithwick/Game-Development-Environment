@@ -1,63 +1,41 @@
 package view.editor.gameeditor;
 
 import java.util.ResourceBundle;
-
-import api.IEditor;
 import api.ISerializable;
 import enums.DefaultStrings;
-import enums.GUISize;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Button;
+import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import model.entity.Entity;
 import view.Authoring;
 import view.Utilities;
 import view.editor.EditorEntity;
-import view.editor.EditorFactory;
 
-public class EntityDisplay {
+public class EntityDisplay extends ObjectDisplay{
 
-	private VBox container;
-	private Authoring authEnv;
-	private String language;
 	private ResourceBundle myResources;
 	private ObservableList<ISerializable> masterEntList;
-	private final EditorFactory editFact = new EditorFactory();
 	
 	public EntityDisplay(String language,ObservableList<ISerializable> masterEntList, Authoring authEnv){
+		super(language, authEnv,masterEntList);
 		this.masterEntList = masterEntList;
-		this.authEnv = authEnv;
-		this.language = language;
 		this.myResources = ResourceBundle.getBundle(language);
 		
 
 	}
 	
-	private void addListeners() {
-		masterEntList.addListener(new ListChangeListener<ISerializable>() {
-			@Override
-			public void onChanged(@SuppressWarnings("rawtypes") ListChangeListener.Change change) {
-			
-				updateEntities();
-			}
-		});
-		
-	}
-
+	
+	@Override
 	public ScrollPane init() {
-		ScrollPane scroll = new ScrollPane();
-		container = new VBox(GUISize.SCROLL_PAD.getSize());
-		updateEntities();
-		scroll.setContent(container);
-		addListeners();
+		ScrollPane scroll = super.init();
+		addListeners(masterEntList);
 		return scroll;
 	}
 
-	private void updateEntities() {
-		container.getChildren().remove(container.getChildren());
+	@Override
+	protected void addNewObjects(VBox container) {
 		masterEntList.stream().forEach(e-> addEntityToScroll(e, container));
 	}
 
@@ -66,13 +44,8 @@ public class EntityDisplay {
 
 	}
 	
-	private void createEditor(Class<?> editName, ISerializable toEdit, ObservableList<ISerializable> otherList) {
-		IEditor editor = editFact.createEditor(editName, language, toEdit, masterEntList, otherList);
-		editor.populateLayout();
-		authEnv.createTab(editor.getPane(), editName.getSimpleName(), true);
-	}
-	
-	public Button getButton(){
+	@Override
+	public Node makeNewObject(){
 		return Utilities.makeButton(myResources.getString(DefaultStrings.ENTITY_EDITOR_NAME.getDefault()), 
 				e->createEditor(EditorEntity.class, new Entity(), FXCollections.observableArrayList()));
 	}
