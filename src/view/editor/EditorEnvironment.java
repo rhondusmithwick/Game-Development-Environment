@@ -18,6 +18,7 @@ import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.SubScene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
@@ -81,7 +82,7 @@ public class EditorEnvironment extends Editor{
 	}
 
 	private void saveEnvironment() {
-		// editor is done and can close
+		whenSave.add(envionmentEntities);
 	}
 
 	private void setGameScene() {
@@ -93,21 +94,16 @@ public class EditorEnvironment extends Editor{
 
 	private void setEntityOptions() {
 		entityOptions = new VBox();
-		//entityOptions.setMinWidth(GUISize.ONE_THIRD_OF_SCREEN.getSize());
-		//entityOptions.setMinHeight(GUISize. HEIGHT_MINUS_TAB.getSize());
 		ScrollPane pane = new ScrollPane(entityOptions);
-		//pane.setMinWidth(GUISize.ONE_THIRD_OF_SCREEN.getSize());
-		//pane.setMinHeight(GUISize. HEIGHT_MINUS_TAB.getSize());
 		environmentPane.setLeft(pane);
 		populateVbox(entityOptions,displayEntities);
 		loadDefaults();
 	}
 
 	private void populateVbox(VBox vbox, ObservableList<ISerializable> entityChoices) {
-		System.out.println(displayEntities.size());
 		try{
 			if (entityChoices.isEmpty()){
-				Utilities.showError("",myResources.getString(DefaultStrings.NO_ENTITIES.getDefault()));
+				Utilities.showAlert("Information",null,myResources.getString(DefaultStrings.NO_ENTITIES.getDefault()),AlertType.INFORMATION);
 			}
 		for (ISerializable entity: entityChoices){
 			Button entityButton = Utilities.makeButton(((IEntity) entity).getName(), e -> addToScene((IEntity) entity));
@@ -120,8 +116,7 @@ public class EditorEnvironment extends Editor{
 	
 	private void addToScene(IEntity entity) {
 		if (!entity.hasComponent(Position.class)){
-			ButtonType answer = Utilities.confirmationBox("Confirm.", "Entity must have a position component to be displayed.", "Is it okay to add this component?");
-			if (answer == ButtonType.OK){
+			if (Utilities.showAlert("Confirm.", "Entity must have a position component to be displayed.", "Is it okay to add this component?",AlertType.CONFIRMATION)){
 			entity.setSpec(Position.class, 1); 
 			Position pos = new Position();
 			entity.addComponent(pos);
@@ -131,8 +126,7 @@ public class EditorEnvironment extends Editor{
 			}
 		}
 		if (!entity.hasComponent(ImagePath.class)){
-			ButtonType answer = Utilities.confirmationBox("Confirm.", "Entity must have an image component to be displayed.", "Is it okay to add this component?");
-			if (answer == ButtonType.OK){
+			if (Utilities.showAlert("Confirm.", "Entity must have an image component to be displayed.", "Is it okay to add this component?",AlertType.CONFIRMATION)){
 				try{
 			    List<ExtensionFilter> filters = new ArrayList<ExtensionFilter>();
 			    filters.add(new FileChooser.ExtensionFilter("All Images", "*.*"));
@@ -142,7 +136,7 @@ public class EditorEnvironment extends Editor{
 				entity.setSpec(ImagePath.class, 1); 
 				entity.addComponent(new ImagePath(file.getPath()));
 				} catch(Exception e) {
-					Utilities.showError("ERROR", "Unable to add entity to the scene.");
+					Utilities.showAlert("ERROR",null, "Unable to add entity to the scene.",AlertType.ERROR);
 					return;
 				}
 			}
@@ -151,44 +145,26 @@ public class EditorEnvironment extends Editor{
 			}
 		}
 		//updateEditor();
-		ImageView entityView = createImage(entity.getComponent(ImagePath.class), entity.getComponent(Position.class));
-        DragAndResize.makeResizable(entityView);
+		IEntity newEntity = Utilities.copyEntity(entity);
+		ImageView entityView = Utilities.createImage(newEntity.getComponent(ImagePath.class), newEntity.getComponent(Position.class));
+        DragAndResize.makeResizable(entityView, newEntity.getComponent(ImagePath.class), newEntity.getComponent(Position.class));
         entityView.setOnMouseClicked(new EventHandler<MouseEvent>(){
     		@Override
     		public void handle(MouseEvent event){
     			MouseButton button = event.getButton();
                 if(button==MouseButton.SECONDARY){
-                    removeFromDisplay(entityView,entity);
+                    removeFromDisplay(entityView,newEntity);
                 }
     		}});
-        envionmentEntities.addEntity(entity);
+        if (!envionmentEntities.containsEntity(newEntity)){
+        envionmentEntities.addEntity(newEntity);
 		gameRoot.getChildren().add(entityView);
+        }
 	}
 
 	protected void removeFromDisplay(ImageView entityView, IEntity entity) {
 		gameRoot.getChildren().remove(entityView);
 		envionmentEntities.removeEntity(entity.getID());
-	}
-
-		private ImageView createImage(ImagePath path, Position pos) {
-			URI resource = new File(path.getImagePath()).toURI();
-			Image image = new Image(resource.toString());
-			ImageView imageView = new ImageView(image);
-			imageView.setFitHeight(100);
-			imageView.setPreserveRatio(true);
-			imageView.xProperty().bind(pos.xProperty());
-			imageView.yProperty().bind(pos.yProperty());
-			return imageView;
-		}
-
-	private void setAndAdd(Node node, String methodString) {
-		try{
-		Method method = BorderPane.class.getDeclaredMethod(methodString);
-		//environmentPane.invoke(node);
-		((Region) node).setMaxWidth(Double.MAX_VALUE);
-		} catch (Exception e) {
-			// do nothing
-		}
 	}
 		
 	@Override
@@ -198,8 +174,8 @@ public class EditorEnvironment extends Editor{
 
 	@Override
 	public void loadDefaults() {
-		if  (Utilities.confirmationBox("Add Defaults", "We have some defaults we can add!", 
-				"Do you want to go ahead and let us add some default entities for your use?") == ButtonType.OK){
+		if  (Utilities.showAlert("Add Defaults", "We have some defaults we can add!", 
+				"Do you want to go ahead and let us add some default entities for your use?", AlertType.CONFIRMATION)){
 		displayEntities.add(LoadDefaults.loadBackgroundDefault());
 		displayEntities.add(LoadDefaults.loadPlatformDefault(displayEntities));
 		//populateVbox(entityOptions,displayEntities);
