@@ -11,14 +11,14 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
-public class RenderProperties implements IComponent {
+public class RendererProperties implements IComponent {
 
     private final TwoProperty<Double, Double> twoProperty = new TwoProperty<>("Tint", 0.0, "Transparency", 0.0);
 
     /**
      * Empty constructor. Both Start at 0.0.
      */
-    public RenderProperties() {
+    public RendererProperties() {
     }
 
     /**
@@ -27,7 +27,7 @@ public class RenderProperties implements IComponent {
      * @param tint         initial value for tint
      * @param transparency initial value for transparency
      */
-    public RenderProperties(double tint, double transparency) {
+    public RendererProperties(double tint, double transparency) {
         setTint(tint);
         setTransparency(transparency);
     }

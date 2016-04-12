@@ -2,6 +2,7 @@ package view.editor;
 
 import java.util.ResourceBundle;
 import api.IEditor;
+import api.IEntity;
 import api.ISerializable;
 import enums.DefaultStrings;
 import enums.GUISize;
@@ -166,7 +167,6 @@ public class GameEditor extends Editor  {
 	@Override
 	public void updateEditor() {
 		populateLayout();
-
 	}
 
 	@Override
@@ -174,5 +174,20 @@ public class GameEditor extends Editor  {
 		// TODO Auto-generated method stub
 
 	}
+
+
+/*	public ObservableList<ISerializable> getMasterList() {
+		return masterEntityList;
+	}
+
+
+	public ObservableList<ISerializable> getAddToList() {
+		return masterEnvironmentList;
+	}
+
+
+	public void addToMaster(IEntity checkEntity) {
+		masterEntityList.add(checkEntity);
+	}*/
 
 }

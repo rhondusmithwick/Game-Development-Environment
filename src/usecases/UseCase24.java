@@ -1,19 +1,21 @@
 package usecases;
 
 import api.IEnvironmentEditor;
+import view.editor.EditorEnvironment;
 
+@SuppressWarnings("unused")
 public class UseCase24 {
 
-    // game creator adds music to an environment
+/*    // game creator adds music to an environment
     void doUseCase() {
-        IEnvironmentEditor myEditor = new EnvironmentEditor();
+        IEnvironmentEditor myEditor = new EditorEnvironment();
         myEditor.show();
         //waiting for user to enter data and press create button
         //once create button is pressed
         String musicURL = null; //get user input from editor
         myEditor.writeToFile(musicURL);
         myEditor.close();
-    }
+    }*/
 
 
 }
