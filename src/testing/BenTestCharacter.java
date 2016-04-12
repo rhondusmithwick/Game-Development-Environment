@@ -13,13 +13,13 @@ import api.IEntity
  */
 class BenTestCharacter {
 	IEntity run(String IMAGE_PATH) {
-		IEntity character = new Entity()
-		character.addComponent(new Health((double) 100))
-		character.addComponent(new Score((double) 100))
-		Position pos = new Position(250.0, 250.0)
-		character.addComponent(pos)
-		character.addComponent(new ImagePath(IMAGE_PATH))
-		character.addComponent(new Velocity(10.0, 10.0))
-		return character
+		IEntity character = new Entity();
+		character.addComponent(new Health((double) 100));
+		character.addComponent(new Score((double) 100));
+		Position pos = new Position(250.0, 250.0);
+		character.addComponent(pos);
+		character.addComponent(new ImagePath(IMAGE_PATH));
+		character.addComponent(new Velocity(10.0, 10.0));
+		return character;
 	}
 }
