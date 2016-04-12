@@ -1,6 +1,6 @@
 package api;
 
-import model.physics.Impulse;
+import model.physics.Vector;
 
 /**
  * Interface for the physics engine
@@ -23,7 +23,7 @@ public interface IPhysicsEngine {
 	 *   (with Mass, Position, Velocity, and of course, Collision)
 	 * @return updated universe
 	 */
-    IEntitySystem updateCollisions(IEntitySystem universe, boolean dynamicsOn);
+    IEntitySystem updateCollisionComponents(IEntitySystem universe, boolean dynamicsOn);
 
     /**
      * Useful for debugging but will be deprecated!
@@ -33,5 +33,5 @@ public interface IPhysicsEngine {
 	 * @return whether J is successfully applied to body
 	 *   (false if body does not have Mass, Position, and Velocity)
 	 */
-    boolean applyImpulse(IEntity body, Impulse J);
+    boolean applyImpulse(IEntity body, Vector J);
 }
