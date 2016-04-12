@@ -23,7 +23,6 @@ public class EditorFactory {
 		try {
 			editor = (Editor) name.getConstructor( String.class, ISerializable.class, ObservableList.class, ObservableList.class).newInstance( language, toEdit, masterEntityList, entitySystemList);
 		} catch (Exception e) {
-			
 			Utilities.showAlert(ResourceBundle.getBundle(language).getString("error"), null,
 					ResourceBundle.getBundle(language).getString("noEditorCreated"), AlertType.ERROR);
 		}
