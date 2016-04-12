@@ -3,8 +3,8 @@ package view.editor;
 
 import java.util.ResourceBundle;
 import api.ISerializable;
-import enums.DefaultStrings;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert.AlertType;
 import view.Utilities;
 
 public class EditorFactory {
@@ -24,8 +24,8 @@ public class EditorFactory {
 			editor = (Editor) name.getConstructor( String.class, ISerializable.class, ObservableList.class, ObservableList.class).newInstance( language, toEdit, masterEntityList, entitySystemList);
 		} catch (Exception e) {
 			
-			Utilities.showError(ResourceBundle.getBundle(language).getString(DefaultStrings.ERROR.getDefault()),
-					ResourceBundle.getBundle(language).getString(DefaultStrings.EDITOR_FACTORY_ERROR.getDefault()));
+			Utilities.showAlert(ResourceBundle.getBundle(language).getString("error"), null,
+					ResourceBundle.getBundle(language).getString("noEditorCreated"), AlertType.ERROR);
 		}
 		return editor;
 	}
