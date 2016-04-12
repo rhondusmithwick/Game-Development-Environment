@@ -1,18 +1,18 @@
 package testing.animation;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
+import animation.AnimationEngine;
 import api.IEntity;
 import api.IEntitySystem;
 import api.IPhysicsEngine;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -20,7 +20,6 @@ import javafx.util.Duration;
 import model.component.character.Health;
 import model.component.character.Score;
 import model.component.movement.Position;
-import model.component.movement.Velocity;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
 import model.entity.EntitySystem;
@@ -49,9 +48,10 @@ public class AnimationTest extends Application {
 		character.forceAddComponent(new Score((double) 100), true);
 		Position pos = new Position(250.0, 250.0);
 		character.forceAddComponent(pos, true);
-		character.forceAddComponent(new ImagePath(IMAGE_PATH), true);
-		character.forceAddComponent(new Velocity(20.0, 50.0), true);
-		character.removeComponents(Velocity.class, Score.class);
+		character.forceAddComponent(
+				new ImagePath("resources/spriteSheets/spritesheet.png", 0.0, 0.0,
+						"resources/spriteSheets/spritesheet.png", new Rectangle2D(0, 0, 125, 125), true, 0.01, 4.0, 4),
+				true);
 		list.add(character);
 
 		IEntitySystem system = new EntitySystem();
@@ -70,11 +70,12 @@ public class AnimationTest extends Application {
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
-
 	}
 
 	private void step(double dt, List<IEntity> list, IEntitySystem system) {
 		physics.update(system, dt);
+		AnimationEngine a = new AnimationEngine();
+		a.update(system, dt);
 		drawEntities(list);
 	}
 
@@ -87,21 +88,19 @@ public class AnimationTest extends Application {
 	private void drawEntities(List<IEntity> list) {
 		for (IEntity entity : list) {
 			Position pos = entity.getComponent(Position.class);
-			// ImagePath imagePath = entity.getComponent(ImagePath.class);
+			ImagePath imagePath = entity.getComponent(ImagePath.class);
+			Rectangle2D viewport = imagePath.getViewport(); // TODO: for some reason, setting viewport internally fails
 			// ImageView image = createImage(imagePath, pos);
-			// testSprite.setTranslateX(pos.getX());
-			// testSprite.setTranslateY(pos.getY());
 			// testSprite.relocate(pos.getX(), pos.getY());
-			refreshDraw(testSprite, pos.getX(), pos.getY());
+			refreshDraw(testSprite, viewport, pos.getX(), pos.getY());
 		}
 	}
 
 	private ImageView createImage(ImagePath path, Position pos) {
-		File resource = new File(path.getImagePath());
-		Image image = new Image(resource.toURI().toString());
-		ImageView imageView = new ImageView(image);
-		// imageView.setTranslateX(pos.getX());
-		// imageView.setTranslateY(pos.getY());
+		// File resource = new File(path.getImagePath());
+		// Image image = new Image(resource.toURI().toString());
+		// ImageView imageView = new ImageView(image);
+		ImageView imageView = path.getImageView();
 		imageView.setFitHeight(100);
 		imageView.setPreserveRatio(true);
 		imageView.xProperty().bind(pos.xProperty());
@@ -113,10 +112,10 @@ public class AnimationTest extends Application {
 		launch(args);
 	}
 
-	// TODO: for BenTest only, remove asap
-	private void refreshDraw(ImageView img, double x, double y) {
+	private void refreshDraw(ImageView img, Rectangle2D viewport, double x, double y) {
 		root.getChildren().clear();
-		System.out.println(x + " " + y);
+		img.setViewport(viewport);
+		// System.out.println(x + " " + y);
 		root.getChildren().add(img);
 	}
 

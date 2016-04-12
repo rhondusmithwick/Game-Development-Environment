@@ -1,11 +1,14 @@
 package model.component.visual;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import utility.SingleProperty;
 import utility.TwoProperty;
 
@@ -21,11 +24,13 @@ public class ImagePath implements IComponent {
 	 */
 	private final SingleProperty<String> imagePathProperty, spritesheetPath;
 	private final TwoProperty<Double, Double> imageSizeProperty;
-	private final Rectangle2D viewport;
+	private ImageView imageView;
+	private Rectangle2D viewport;
 	private int frameIndex;
+	private final int maxFrameIndex;
 	private boolean isAnimated;
-	private long elapsedTimeMillis;
-	private final long frameDurationMillis, totalDurationMillis;
+	private double timeSinceLastFrame, elapsedTime;
+	private final double frameDuration, totalDuration;
 
 	public ImagePath() {
 		this("resources/RhonduSmithwick.JPG");
@@ -37,10 +42,11 @@ public class ImagePath implements IComponent {
 	 * @param imagePath
 	 *            starting value
 	 */
-	public ImagePath(String imagePath) {
-		this(imagePath, 0.0, 0.0, "resources/RhonduSmithwick.JPG", new Rectangle2D(0.0, 0.0, 0.0, 0.0), false, 0, 0);
+	public ImagePath(String imagePath) { // TODO: place default in resource file
+		this(imagePath, 0.0, 0.0, "resources/RhonduSmithwick.JPG", new Rectangle2D(0, 0, 0, 0), false, 0, 0, 0);
 	}
 
+	// TODO: IMPORTANT NOTE: I forgot to account for columns!
 	/**
 	 * Construct with starting values.
 	 *
@@ -62,15 +68,23 @@ public class ImagePath implements IComponent {
 	 *            offset in y-direction
 	 */
 	public ImagePath(String imagePath, double imageWidth, double imageHeight, String spritesheetPath,
-			Rectangle2D viewport, boolean isAnimated, long frameDurationMillis, long totalDurationMillis) {
+			Rectangle2D viewport, boolean isAnimated, double frameDurationMillis, double totalDurationMillis,
+			int maxFrameIndex) {
 		this.imagePathProperty = new SingleProperty<>("ImagePath", imagePath);
 		this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", imageHeight);
 		this.spritesheetPath = new SingleProperty<>("SpritesheetPath", spritesheetPath);
+
+		File resource = new File(spritesheetPath);
+		Image image = new Image(resource.toURI().toString());
+		this.imageView = new ImageView(image);
+
 		this.viewport = viewport;
 		this.frameIndex = 0;
 		this.isAnimated = isAnimated;
-		this.frameDurationMillis = frameDurationMillis;
-		this.totalDurationMillis = totalDurationMillis;
+		this.reset();
+		this.frameDuration = frameDurationMillis;
+		this.totalDuration = totalDurationMillis;
+		this.maxFrameIndex = maxFrameIndex;
 	}
 
 	/**
@@ -118,17 +132,68 @@ public class ImagePath implements IComponent {
 	public List<SimpleObjectProperty<?>> getProperties() {
 		return Arrays.asList(imagePathProperty(), imageWidthProperty(), imageHeightProperty());
 	}
-	
-	public Rectangle2D getViewport() {
+
+	private void updateViewport() {
+		double width = this.viewport.getWidth();
+		double height = this.viewport.getHeight();
+		double offsetX = this.frameIndex * width; // TODO: change to offsetX +
+													// ...
+		double offsetY = 0.0; // TODO: change to offsetX + ...
+		this.viewport = new Rectangle2D(offsetX, offsetY, width, height);
+	}
+
+	public Rectangle2D getViewport() { // TODO: remove, for debugging purposes
 		return this.viewport;
 	}
-	
+
+	public ImageView getImageView() { // TODO: make imageView an instance
+										// variable
+		imageView.setViewport(this.viewport); // TODO: for some reason, setting
+												// viewport internally fails
+		return imageView;
+	}
+
+	public void setFrameIndex(int frameIndex) {
+		this.frameIndex = frameIndex % this.maxFrameIndex;
+		this.updateViewport(); // TODO: possibly relocate this, hacky
+	}
+
+	public void updateTime(double dt) {
+		this.elapsedTime += dt;
+		this.timeSinceLastFrame += dt;
+	}
+
+	public double getElapsedTime() {
+		return this.elapsedTime;
+	}
+
+	public double getTimeSinceLastFrame() {
+		return this.timeSinceLastFrame;
+	}
+
+	public double getFrameDuration() {
+		return this.frameDuration;
+	}
+
+	public void resetTimeSinceLastFrame() {
+		this.timeSinceLastFrame = 0.0;
+	}
+
+	public void reset() {
+		this.timeSinceLastFrame = 0.0;
+		this.elapsedTime = 0.0;
+	}
+
+	public double getDuration() {
+		return this.totalDuration;
+	}
+
 	public int getFrameIndex() {
 		return this.frameIndex;
 	}
 
-	public int setFrameIndex(int frameIndex) {
-		return this.frameIndex = frameIndex;
+	public void incrementFrameIndex() {
+		this.setFrameIndex(this.getFrameIndex() + 1);
 	}
-	
+
 }
