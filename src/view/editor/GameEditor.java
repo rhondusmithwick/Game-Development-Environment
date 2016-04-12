@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 import api.IEditor;
+import api.IEntity;
 import api.ISerializable;
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
@@ -176,7 +177,7 @@ public class GameEditor extends Editor  {
 	}
 	
 	private void createEditor(Class<?> editName, ISerializable toEdit, ObservableList<ISerializable> otherList) {
-		IEditor editor = editFact.createEditor(editName,  myLanguage,toEdit, masterEntityList, otherList);
+		IEditor editor = editFact.createEditor(editName, myLanguage, toEdit, masterEntityList, otherList);
 		editor.populateLayout();
 		authEnv.createTab(editor.getPane(), editName.getSimpleName(), true);
 	}
@@ -185,10 +186,24 @@ public class GameEditor extends Editor  {
 	@Override
 	public void updateEditor() {
 		populateLayout();
-
 	}
 
 	@Override
 	public void addSerializable(ISerializable serialize) {}
+
+
+/*	public ObservableList<ISerializable> getMasterList() {
+		return masterEntityList;
+	}
+
+
+	public ObservableList<ISerializable> getAddToList() {
+		return masterEnvironmentList;
+	}
+
+
+	public void addToMaster(IEntity checkEntity) {
+		masterEntityList.add(checkEntity);
+	}*/
 
 }

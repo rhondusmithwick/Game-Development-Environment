@@ -1,18 +1,20 @@
 package view.editor;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
 import api.IEntity;
+import api.IEntitySystem;
 import api.ISerializable;
 import enums.DefaultStrings;
 import enums.GUISize;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.geometry.HPos;
-import javafx.geometry.VPos;
+import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.SubScene;
@@ -21,7 +23,9 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.GridPane;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -31,61 +35,82 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
+import model.entity.EntitySystem;
 import view.DragAndResize;
+import view.LoadDefaults;
 import view.Utilities;
 
 public class EditorEnvironment extends Editor{
 	
-	private GridPane environmentPane;
+	private BorderPane environmentPane;
 	private List<Node> viewList;
 	private SubScene gameScene;
 	private VBox entityOptions;
 	private Group gameRoot;
 	private ResourceBundle myResources;
-	private ObservableList<ISerializable> masterEntities;
-	private ObservableList<ISerializable> envionmentEntities;
-	private static final String IMAGE_PATH = "resources/RhonduSmithwick.JPG";
+	private IEntitySystem envionmentEntities;
+	private ObservableList<ISerializable> displayEntities;
+	private ObservableList<ISerializable> whenSave;
 	
+	@SuppressWarnings("unchecked")
 	public EditorEnvironment(String language, ISerializable toEdit, ObservableList<ISerializable>masterList, ObservableList<ISerializable> addToList){
 		myResources = ResourceBundle.getBundle(language);
-		masterEntities = masterList;
-		masterEntities.add(new Entity());
-		envionmentEntities = addToList;
+		masterList.addListener((ListChangeListener<? super ISerializable>) c -> {this.updateDisplay(masterList);}); 
+		displayEntities = masterList;
+		envionmentEntities = (IEntitySystem) toEdit;
+		whenSave = addToList;
 		addLayoutComponents();
 	}
 
+	private void updateDisplay(ObservableList<ISerializable> masterList) {
+		displayEntities = masterList;
+		updateEditor();
+	}
+
 	private void addLayoutComponents(){
-		environmentPane = new GridPane();
+		environmentPane = new BorderPane();
 		viewList = new ArrayList<Node>();
 		setEntityOptions();
 		setGameScene();
+		setSaveButton();
 	}
 	
+	private void setSaveButton() {
+		Button saveButton = Utilities.makeButton("Save Environment", e-> saveEnvironment());
+		environmentPane.setRight(saveButton);
+	}
+
+	private void saveEnvironment() {
+		// editor is done and can close
+	}
+
 	private void setGameScene() {
 		gameRoot = new Group();
 		gameScene = new SubScene(gameRoot,(GUISize.TWO_THIRDS_OF_SCREEN.getSize()),GUISize.HEIGHT_MINUS_TAB.getSize());
 		gameScene.setFill(Color.WHITE);
-		setAndAdd(gameScene,1,0,1,1);
+		environmentPane.setCenter(gameScene);
 	}
 
 	private void setEntityOptions() {
 		entityOptions = new VBox();
-		entityOptions.setMinWidth(GUISize.ONE_THIRD_OF_SCREEN.getSize()/3);
-		entityOptions.setMinHeight(GUISize. HEIGHT_MINUS_TAB.getSize());
+		//entityOptions.setMinWidth(GUISize.ONE_THIRD_OF_SCREEN.getSize());
+		//entityOptions.setMinHeight(GUISize. HEIGHT_MINUS_TAB.getSize());
 		ScrollPane pane = new ScrollPane(entityOptions);
-		pane.setMinWidth(GUISize.ONE_THIRD_OF_SCREEN.getSize());
-		pane.setMinHeight(GUISize. HEIGHT_MINUS_TAB.getSize());
-		setAndAdd(pane,0,0,1,1);
-		populateVbox(entityOptions);
+		//pane.setMinWidth(GUISize.ONE_THIRD_OF_SCREEN.getSize());
+		//pane.setMinHeight(GUISize. HEIGHT_MINUS_TAB.getSize());
+		environmentPane.setLeft(pane);
+		populateVbox(entityOptions,displayEntities);
+		loadDefaults();
 	}
 
-	private void populateVbox(VBox vbox) {
+	private void populateVbox(VBox vbox, ObservableList<ISerializable> entityChoices) {
+		System.out.println(displayEntities.size());
 		try{
-			if (masterEntities.isEmpty()){
+			if (entityChoices.isEmpty()){
 				Utilities.showError("",myResources.getString(DefaultStrings.NO_ENTITIES.getDefault()));
 			}
-		for (ISerializable entity: masterEntities){
-			Button entityButton = Utilities.makeButton(entity.toString(), e -> addToScene((IEntity) entity));
+		for (ISerializable entity: entityChoices){
+			Button entityButton = Utilities.makeButton(((IEntity) entity).getName(), e -> addToScene((IEntity) entity));
 			(entityButton).setMaxWidth(Double.MAX_VALUE);
 			vbox.getChildren().add(entityButton);
 			} }catch(NullPointerException e){
@@ -97,8 +122,9 @@ public class EditorEnvironment extends Editor{
 		if (!entity.hasComponent(Position.class)){
 			ButtonType answer = Utilities.confirmationBox("Confirm.", "Entity must have a position component to be displayed.", "Is it okay to add this component?");
 			if (answer == ButtonType.OK){
+			entity.setSpec(Position.class, 1); 
 			Position pos = new Position();
-			entity.forceAddComponent(pos, true);
+			entity.addComponent(pos);
 			}
 			else{
 				return;
@@ -108,10 +134,16 @@ public class EditorEnvironment extends Editor{
 			ButtonType answer = Utilities.confirmationBox("Confirm.", "Entity must have an image component to be displayed.", "Is it okay to add this component?");
 			if (answer == ButtonType.OK){
 				try{
-				File file = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("PNG", "*.png"), "Pick the image for the Image Path Compoenent.");
-				entity.forceAddComponent(new ImagePath(file.getPath()), true);
+			    List<ExtensionFilter> filters = new ArrayList<ExtensionFilter>();
+			    filters.add(new FileChooser.ExtensionFilter("All Images", "*.*"));
+			    filters.add(new FileChooser.ExtensionFilter("JPG", "*.jpg"));
+			    filters.add(new FileChooser.ExtensionFilter("PNG", "*.png"));
+				File file = Utilities.promptAndGetFile(filters,"Pick the image for the Image Path Component.");
+				entity.setSpec(ImagePath.class, 1); 
+				entity.addComponent(new ImagePath(file.getPath()));
 				} catch(Exception e) {
 					Utilities.showError("ERROR", "Unable to add entity to the scene.");
+					return;
 				}
 			}
 			else{
@@ -121,7 +153,21 @@ public class EditorEnvironment extends Editor{
 		//updateEditor();
 		ImageView entityView = createImage(entity.getComponent(ImagePath.class), entity.getComponent(Position.class));
         DragAndResize.makeResizable(entityView);
+        entityView.setOnMouseClicked(new EventHandler<MouseEvent>(){
+    		@Override
+    		public void handle(MouseEvent event){
+    			MouseButton button = event.getButton();
+                if(button==MouseButton.SECONDARY){
+                    removeFromDisplay(entityView,entity);
+                }
+    		}});
+        envionmentEntities.addEntity(entity);
 		gameRoot.getChildren().add(entityView);
+	}
+
+	protected void removeFromDisplay(ImageView entityView, IEntity entity) {
+		gameRoot.getChildren().remove(entityView);
+		envionmentEntities.removeEntity(entity.getID());
 	}
 
 		private ImageView createImage(ImagePath path, Position pos) {
@@ -135,33 +181,38 @@ public class EditorEnvironment extends Editor{
 			return imageView;
 		}
 
-	private void setAndAdd(Node node, int col, int row, int colspan, int rowspan) {
-		GridPane.setConstraints(node, col, row, colspan, rowspan, HPos.CENTER, VPos.CENTER);
-		viewList.add(node);
-		try {
-			((Region) node).setMaxWidth(Double.MAX_VALUE);
-		} catch (ClassCastException e) {
+	private void setAndAdd(Node node, String methodString) {
+		try{
+		Method method = BorderPane.class.getDeclaredMethod(methodString);
+		//environmentPane.invoke(node);
+		((Region) node).setMaxWidth(Double.MAX_VALUE);
+		} catch (Exception e) {
 			// do nothing
 		}
 	}
 		
 	@Override
 	public void populateLayout() {
-		environmentPane.getChildren().addAll(viewList);
+		//environmentPane.getChildren().addAll(viewList);
 	}
 
 	@Override
 	public void loadDefaults() {
-		// TODO Auto-generated method stub
+		if  (Utilities.confirmationBox("Add Defaults", "We have some defaults we can add!", 
+				"Do you want to go ahead and let us add some default entities for your use?") == ButtonType.OK){
+		displayEntities.add(LoadDefaults.loadBackgroundDefault());
+		displayEntities.add(LoadDefaults.loadPlatformDefault(displayEntities));
+		//populateVbox(entityOptions,displayEntities);
+		}
 	}
 
 	@Override
 	public void updateEditor() {
 		entityOptions.getChildren().clear();
-		populateVbox(entityOptions);
+		populateVbox(entityOptions,displayEntities);
 	}
 
-	public ObservableList<ISerializable> getEntitySystem() {
+	public IEntitySystem getEntitySystem() {
 		return envionmentEntities;
 	}
 
@@ -173,7 +224,11 @@ public class EditorEnvironment extends Editor{
 
 	@Override
 	public void addSerializable(ISerializable serialize) {
-		
+		envionmentEntities.addEntity((IEntity) serialize);
+	}
+
+	public boolean displayContains(IEntity checkEntity) {
+		return displayEntities.contains(checkEntity);
 	}
 
 }

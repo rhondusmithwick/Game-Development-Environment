@@ -4,8 +4,6 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.Region;
-
 
 public class DragAndResize {
     
@@ -29,9 +27,13 @@ public class DragAndResize {
 	private double parentWidth;
 	private double clickX;
 	private double clickY;
+	private double minW;
+	private double minH;
     
     private DragAndResize(ImageView anImage) {
         image = anImage;
+        minW = image.minWidth(image.getFitHeight());
+        minH = image.minHeight(image.getFitWidth());
     }
 
     private void setNewInitialEventCoordinates(MouseEvent event) {
@@ -48,16 +50,21 @@ public class DragAndResize {
     }
     
     private void resizeWidth(double width){
+    		if (minW>width){
+    			return;
+    		}
     		image.setFitWidth(width);
     }
     
     private void resizeHeight(double height){
+    		if (minH>height){
+			return;
+		}
 		image.setFitHeight(height);
 }
 
     public static void makeResizable(ImageView anImage) {
-        final DragAndResize resizer = new DragAndResize(anImage);
-        
+        final DragAndResize resizer = new DragAndResize(anImage); 
         anImage.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
