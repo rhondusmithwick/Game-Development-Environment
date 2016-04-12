@@ -40,7 +40,7 @@ public interface ISerializable  {
      * @return a cloned object
      */
     default <T extends ISerializable> T clone(Class<T> objectClass) {
-        String clonedString = new XMLWriter<>().writeToString(this);
+        String clonedString = serializeToString();
         Object obj = new XMLReader<>().readSingleFromString(clonedString);
         return objectClass.cast(obj);
     }
