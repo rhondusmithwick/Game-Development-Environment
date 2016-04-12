@@ -98,7 +98,7 @@ public class Entity implements IEntity {
     }
 
     @Override
-    public <T extends IComponent> boolean removeComponent(Class<T> componentClassToRemove) {
+    public <T extends IComponent> Boolean removeComponent(Class<? extends IComponent> componentClassToRemove) {
         if (componentMap.containsKey(componentClassToRemove)) {
             componentMap.remove(componentClassToRemove);
             return true;
