@@ -23,7 +23,7 @@ public interface IPhysicsEngine {
 	 *   (with Mass, Position, Velocity, and of course, Collision)
 	 * @return updated universe
 	 */
-    IEntitySystem updateCollisions(IEntitySystem universe, boolean dynamicsOn);
+    IEntitySystem updateCollisionComponents(IEntitySystem universe, boolean dynamicsOn);
 
     /**
      * Useful for debugging but will be deprecated!

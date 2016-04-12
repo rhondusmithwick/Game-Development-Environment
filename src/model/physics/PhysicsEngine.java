@@ -19,7 +19,7 @@ import api.IEntitySystem;
 /**
  * Implementation of the physics engine
  *
- * @author Tom Wu
+ * @author Tom Wu and Roxanne Baker
  */
 public class PhysicsEngine implements IPhysicsEngine {
 	IEntitySystem settings;
@@ -65,6 +65,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 				Collection<String> IDList2 = c2.getIDs();
 				if (!this.areIntersectingIDLists(IDList1, IDList2)) {
 					// TODO
+					return true;
 				}
 			}
 		}
@@ -74,9 +75,15 @@ public class PhysicsEngine implements IPhysicsEngine {
 
 	// probably more useful:
 	public Collection<IEntity> getEntitiesCollidingWith(IEntity e) {
+		// returns an collection of entities being collided with
+		// if not colliding with any entities, collection is empty
 		
+		Collection<IEntity> collidingEntities = new HashSet<IEntity>();
+		for (String collidingID : e.getComponent(Collision.class).getCollidingIDs()) {
+			collidingEntities.add(settings.getEntity(collidingID));
+		}
 		
-		return null; // TODO
+		return collidingEntities;
 	}
 
 	private boolean areIntersectingIDLists(Collection<String> IDList1, Collection<String> IDList2) {
@@ -86,30 +93,47 @@ public class PhysicsEngine implements IPhysicsEngine {
 	}
 
 	@Override
-	public IEntitySystem updateCollisions(IEntitySystem universe, boolean dynamicsOn) {
+	public IEntitySystem updateCollisionComponents(IEntitySystem universe, boolean dynamicsOn) {
+		//more efficient if can get List instead of Collection
 		Collection<IEntity> collidableEntities = universe.getEntitiesWithComponents(Collision.class);
+		
 		for (IEntity firstEntity : collidableEntities) {
 			for (IEntity secondEntity : collidableEntities) {
 				if (!firstEntity.equals(secondEntity)) {
-					// generalize to reduce duplicated code
-					Shape firstShape = firstEntity.getComponent(Collision.class).getMask();
-					Shape secondShape = secondEntity.getComponent(Collision.class).getMask();
-					//getBoundsInLocal or another bound test?
-					if (firstShape.intersects(secondShape.getBoundsInLocal())) {
-						List<String> firstID = new ArrayList<String>();
-						firstID.add(firstEntity.getID());
-						secondEntity.getComponent(Collision.class).addCollidingIDs(firstID);
-						
-						List<String> secondID = new ArrayList<String>();
-						secondID.add(secondEntity.getID());
-						firstEntity.getComponent(Collision.class).addCollidingIDs(secondID);
+					
+					List<Shape> firstHitBoxes = getHitBoxesForEntity(firstEntity);
+					List<Shape> secondHitBoxes = getHitBoxesForEntity(secondEntity);
+
+					//getBoundsInParent?
+					for (Shape firstHitBox : firstHitBoxes) {
+						for (Shape secondHitBox : secondHitBoxes) {
+							if (firstHitBox.intersects(secondHitBox.getBoundsInParent())) {
+								//LATER:  ADD SOMETHING TO DIFFERENTIATE MASK, NOT JUST ENTITY
+								addCollisionComponents(firstEntity, secondEntity);
+								addCollisionComponents(secondEntity, firstEntity);								
+							}
+						}
 					}					
 				}
-
 			}
 		}
+		return universe;
+	}
+	
+	private void addCollisionComponents(IEntity entityAddingTo, IEntity entityAddingFrom) {
+		List<String> entityID = new ArrayList<String>();
+		entityID.add(entityAddingFrom.getID());
+		entityAddingTo.getComponent(Collision.class).addCollidingIDs(entityID);
+	}
+	
+	private List<Shape> getHitBoxesForEntity(IEntity entity) {
+		List<Collision> collisionComponents = entity.getComponentList(Collision.class);
 		
-		return null;
+		List<Shape> hitBoxes = new ArrayList<>();
+		for (Collision hitBox : collisionComponents) {
+			hitBoxes.add(hitBox.getMask());
+		}
+		return hitBoxes;
 	}
 
 }
