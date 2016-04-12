@@ -1,7 +1,6 @@
 package testing;
 
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -76,6 +75,7 @@ public class BenTest extends Application {
 
 	private void step(double dt, List<IEntity> list, IEntitySystem system) {
 		physics.update(system, dt);
+		System.out.println("dt=" + dt);
 		drawEntities(list);
 	}
 
@@ -98,8 +98,8 @@ public class BenTest extends Application {
 	}
 
 	private ImageView createImage(ImagePath path, Position pos) {
-		URI resource = new File(path.getImagePath()).toURI();
-		Image image = new Image(resource.toString());
+		File resource = new File(path.getImagePath());
+		Image image = new Image(resource.toURI().toString());
 		ImageView imageView = new ImageView(image);
 		// imageView.setTranslateX(pos.getX());
 		// imageView.setTranslateY(pos.getY());
