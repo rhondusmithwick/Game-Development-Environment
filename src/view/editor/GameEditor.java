@@ -2,12 +2,9 @@ package view.editor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
-
 import api.IDataWriter;
 import api.IEditor;
-import api.IEntity;
 import api.ISerializable;
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
@@ -57,7 +54,7 @@ public class GameEditor extends Editor  {
 	private void addShit() {
 		Entity temp = new Entity("aaaa");
 		masterEntityList.add(temp);
-		EntitySystem tt = new EntitySystem();
+		EntitySystem tt = new EntitySystem("this be my entity system");
 		tt.addEntity(temp);
 		temp = new Entity("bbb");
 		masterEntityList.add(new Entity("bbbb"));
@@ -155,12 +152,12 @@ public class GameEditor extends Editor  {
 
 	private void updateEnvironments() {
 		environments.getChildren().remove(environments.getChildren());
-		//masterEnvironmentList.stream().forEach(e-> addEnvironmentToScroll(e, container));
+		masterEnvironmentList.stream().forEach(e-> addEnvironmentToScroll((EntitySystem) e, environments));
 	}
 
-	//private void addEnvironmentToScroll(EntitySystem e, VBox container) {
-		//container.getChildren().add(Utilities.makeButton(, handler))
-	//}
+	private void addEnvironmentToScroll(EntitySystem eSystem, VBox container) {
+		container.getChildren().add(Utilities.makeButton(eSystem.getName(), f->createEditor(EditorEnvironment.class, eSystem, masterEnvironmentList )));
+	}
 
 	private ScrollPane createEntityList() {
 		ScrollPane scroll = new ScrollPane();
