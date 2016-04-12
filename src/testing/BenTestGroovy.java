@@ -21,7 +21,6 @@ import model.physics.PhysicsEngine;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -77,8 +76,8 @@ public class BenTestGroovy extends Application {
 	}
 
 	private ImageView createImage(ImagePath path, Position pos) {
-		URI resource = new File(path.getImagePath()).toURI();
-		Image image = new Image(resource.toString());
+		File resource = new File(path.getImagePath());
+		Image image = new Image(resource.toURI().toString());
 		ImageView imageView = new ImageView(image);
 		imageView.setFitHeight(100);
 		imageView.setPreserveRatio(true);
