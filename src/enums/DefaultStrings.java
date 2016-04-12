@@ -1,5 +1,7 @@
 package enums;
 
+import model.component.movement.Position;
+
 public enum DefaultStrings {
 	
 	DEFAULT_LANGUAGE("english"),
@@ -14,7 +16,9 @@ public enum DefaultStrings {
 	ERROR("error"), 
 	NO_ENTITIES("noEntitiesError"),
 	CREATE_LOC("resources/createdGames/"),
-	XML(".xml");
+	XML(".xml"),
+	TEMPLATE_LOC("resources/templates/"),
+	POSITION_COMP_NAME(Position.class.getName());
 
     private final String content;
 
