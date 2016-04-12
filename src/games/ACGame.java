@@ -8,13 +8,18 @@ import src.model.component.movement.Position;
 import src.model.component.movement.Velocity;
 import src.model.component.visual.ImagePath;
 import src.model.entity.EntitySystem;
+import src.testing.PhysicsEngine;
 import src.api.IEntity;
 import src.api.IEntitySystem;
+
+import java.util.List;
+
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import src.model.entity.Entity;
 
 public class ACGame {
@@ -24,15 +29,14 @@ public class ACGame {
     private static final double GROWTH_RATE = 1.1;
     private static final int BOUNCER_SPEED = 30;
 
-    private final IEntitySystem universe = new EntitySystem();
+	private final EntitySystem universe = new EntitySystem();
 	private final InputSystem inputSystem = new InputSystem();
+	private final PhysicsEngine physics = new PhysicsEngine();
+	private IEntity character;
 	private final String IMAGE_PATH = "resources/images/blastoise.png";
     
     private Scene myScene;
-    private ImageView myBouncer;
-    private Rectangle myTopBlock;
-    private Rectangle myBottomBlock;
-
+    
 
     /**
      * Returns name of the game.
@@ -55,10 +59,11 @@ public class ACGame {
     
     public void initEngine() { 
     	addCharacter();
+    	
     }
 
 	private void addCharacter() {
-		IEntity character = new Entity("Anolyn");
+		character = new Entity("Anolyn");
 		character.forceAddComponent(new Health((double) 100), true);
 		character.forceAddComponent(new Score((double) 100), true);
 		Position pos = new Position(250.0, 250.0);
@@ -67,5 +72,15 @@ public class ACGame {
 		character.forceAddComponent(new Velocity(20.0, 50.0), true);
 		character.getComponent(Position.class).getProperties().get(0).addListener(new EntityAction(character));
     	universe.addEntity(character);
+	}
+	
+	private void step(double dt, IEntity character, IEntitySystem system) {
+		physics.update(system, dt);
+		moveEntity(character, 20);
+	}
+	
+	private void moveEntity(IEntity character, int move) { 
+		 Position pos = character.getComponent(Position.class);
+		 pos.setX(pos.getX() + move);
 	}
 }

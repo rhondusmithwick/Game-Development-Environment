@@ -11,10 +11,12 @@ import java.util.Map;
  */
 public class EntityAction extends Action {
     private final IEntity entity;
+    private final IComponent component; 
 
-    public EntityAction(String script, IEntity entity) {
+    public EntityAction(String script, IEntity entity, IComponent component) {
         super(script);
         this.entity = entity;
+        this.component = component; 
     }
 
 
@@ -26,5 +28,6 @@ public class EntityAction extends Action {
     @Override
     protected void setUp() {
         getEngine().put("entity", entity);
+        component.getProperties().get(0).addListener(this);
     }
 }

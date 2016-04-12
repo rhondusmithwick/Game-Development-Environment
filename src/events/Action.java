@@ -1,6 +1,7 @@
 package events;
 
 import api.IEntitySystem;
+import javafx.beans.value.ObservableValue;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -13,11 +14,12 @@ import java.util.Map;
  *
  * @author Rhondu Smithwick
  */
-public abstract class Action {
+public abstract class Action implements ChangeLister {
 
     private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
     private String script;
     private final Map<String, Object> parameters = new HashMap<>();
+
 
     public Action(String script) {
         setScript(script);
@@ -64,4 +66,8 @@ public abstract class Action {
         return getParameters().remove(key);
     }
 
+	@Override
+	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+		System.out.println("IT WORKS YA DOOF");
+	}
 }
