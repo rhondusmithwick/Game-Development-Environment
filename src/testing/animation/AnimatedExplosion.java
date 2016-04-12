@@ -1,4 +1,4 @@
-package testing;
+package testing.animation;
 
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
