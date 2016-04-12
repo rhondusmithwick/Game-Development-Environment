@@ -6,6 +6,7 @@ import java.util.List;
 
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.geometry.Rectangle2D;
 import utility.SingleProperty;
 import utility.TwoProperty;
 
@@ -20,10 +21,11 @@ public class ImagePath implements IComponent {
 	 * The singleProperty.
 	 */
 	private final SingleProperty<String> imagePathProperty, spritesheetPath;
-//	private final int framePointer;
 	private final TwoProperty<Double, Double> imageSizeProperty;
-	private double width, height, offsetX, offsetY;
+	private final int framePointer;
+	private final Rectangle2D viewport;
 	private final boolean isAnimated;
+	private final double frameDuration, totalDuration;
 
 	public ImagePath() {
 		this("resources/RhonduSmithwick.JPG");
@@ -36,7 +38,7 @@ public class ImagePath implements IComponent {
 	 */
 	public ImagePath(String imagePath) {
 		this(imagePath, 0.0, 0.0,
-				"resources/RhonduSmithwick.JPG", 0.0, 0.0, 0.0, 0.0, false);
+				"resources/RhonduSmithwick.JPG", new Rectangle2D(0.0, 0.0, 0.0, 0.0), false);
 	}
 	
 	/**
@@ -52,14 +54,11 @@ public class ImagePath implements IComponent {
 	 * @param offsetX offset in y-direction
 	 */
 	public ImagePath(String imagePath, double imageWidth, double imageHeight,
-			String spritesheetPath, double width, double height, double offsetX, double offsetY, boolean isAnimated) {
+			String spritesheetPath, Rectangle2D viewport, boolean isAnimated) {
 		this.imagePathProperty = new SingleProperty<>("ImagePath", imagePath);
-		this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", height);
+		this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", imageHeight);
 		this.spritesheetPath = new SingleProperty<>("SpritesheetPath", spritesheetPath);
-		this.width = width;
-		this.height = height;
-		this.offsetX = offsetX;
-		this.offsetY = offsetY;
+		this.viewport = viewport;
 		this.isAnimated = isAnimated;
 	}
 
