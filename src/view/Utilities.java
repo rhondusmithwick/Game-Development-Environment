@@ -349,8 +349,26 @@ public class Utilities {
 		for (IComponent component : entity.getAllComponents()) {
 			// newEntity.addComponent(component);
 			newEntity.forceAddComponent(component, true);
+			if (newEntity.hasComponent(Position.class)){
+				newEntity.removeComponent(Position.class);
+				Position newPos = new Position();
+				newEntity.forceAddComponent(newPos,true);
+			}
+			if (newEntity.hasComponent(ImagePath.class)){
+				newEntity.removeComponent(ImagePath.class);
+				ImagePath newPath = new ImagePath(entity.getComponent(ImagePath.class).getImagePath());
+				newEntity.forceAddComponent(newPath, true);
+			}
 		}
 		return newEntity;
+	}
+	
+	public static List<ExtensionFilter> getImageFilters(){
+		List<ExtensionFilter> filters = new ArrayList<ExtensionFilter>();
+		filters.add(new FileChooser.ExtensionFilter("All Images", "*.*"));
+		filters.add(new FileChooser.ExtensionFilter("JPG", "*.jpg"));
+		filters.add(new FileChooser.ExtensionFilter("PNG", "*.png"));
+		return filters;
 	}
 
 }
