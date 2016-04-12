@@ -83,7 +83,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 		}
 		
 
-		public static TableView makeSingleColumnTable( String title )
+		public static TableView<?> makeSingleColumnTable( String title )
 		{
 			TableView table = new TableView();
 			TableColumn column = new TableColumn(title);
@@ -157,10 +157,11 @@ import javafx.stage.FileChooser.ExtensionFilter;
 		}
 		
 		// TODO: is static not good?
-		public static TitledPane makeTitledPane(String title, Node content)
+		public static TitledPane makeTitledPane(String title, Node content, boolean collapsable)
 		{
 			TitledPane pane = new TitledPane(title, content);
-			pane.setExpanded(false);
+			pane.setCollapsible(collapsable);
+			pane.setExpanded(!collapsable);
 		
 			return pane;
 		}

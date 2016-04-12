@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 
 import view.Authoring;
 import view.Utilities;
@@ -18,9 +20,12 @@ import enums.GUISize;
 import enums.ViewInsets;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
@@ -38,13 +43,30 @@ import javafx.stage.Stage;
  * @author Alankmc
  *
  */
+
+/*
+ * TODO: Entity picker		--> Groundwork done
+ * TODO: Table with collapsable panes	--> Done
+ * TODO: Pane 1 - Retrieve Entity Properties and put in Table
+ * TODO: Pane 2 - Editable Action Table
+ * TODO: Load Groovy button
+ * TODO: Editable + Resetable Groovy table
+ * TODO: Write bindings to file
+ * 
+ */
 public class EditorEvent extends Editor
 {
-	private VBox pane;
-	private ResourceBundle myResources;
-	private HashMap<String, TableView<String>> tableMap; 
-	private HashMap<String, Button> buttonMap;
-	private HashMap<String, TitledPane> paneMap;
+	private final VBox pane;
+	private final ResourceBundle myResources;
+	private ComboBox<String> entityPicker;
+	
+	// Entity table contains TitledPanes...
+	private TitledPane entityPane;
+	// ... that in turn contain TableViews...
+	private final HashMap<String, Node> entitySubPanes;
+	// ... specified here.
+	private final HashMap<String, Node> entityCustomizables;
+	
 
 	/*
 	 *  Constructor is made based on new Editor Factory.
@@ -57,88 +79,61 @@ public class EditorEvent extends Editor
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
 		pane.setAlignment(Pos.TOP_LEFT);
 		myResources = ResourceBundle.getBundle(language);
-		tableMap = new HashMap<String, TableView<String>>();
-		buttonMap = new HashMap<String, Button>();
-		paneMap = new HashMap<String, TitledPane>();
+		
+		entityPicker = new ComboBox<String>();
+		entityPane = new TitledPane();
+		entitySubPanes = new HashMap<String, Node>();
+		entityCustomizables = new HashMap<String, Node>();
+	}
+	
+	private void makeEntityPanes()
+	{
+		for (String name: new String[]{myResources.getString("propertiesPane"), myResources.getString("actionsPane")})
+		{
+			entityCustomizables.put(name, Utilities.makeSingleColumnTable(name) );
+			entitySubPanes.put(name, Utilities.makeTitledPane(name, entityCustomizables.get(name), true) );
+		}
 	}
 
 	private void makeButtons()
 	{
-		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
 
-		// Create Trigger Button
-		buttonMap.put(myResources.getString("createTrigger"), Utilities.makeButton(myResources.getString("createTrigger"), 
-				e-> createTrigger()));
-
-
-		// Create Event Button
-		buttonMap.put(myResources.getString("createEvent"), Utilities.makeButton(myResources.getString("createEvent"), 
-				e-> createEvent()));
-
-		for ( Button button: buttonMap.values() )
-		{
-			container.getChildren().add(button);
-		}
-
-		pane.getChildren().add(container);
 	}
 
-	private void createTrigger()
+	private void makeComboBox()
 	{
-		/*
-		 * Go through list of possible triggers?
-		 * Have to understand how the triggers are going to work, and how they will be stored.
-		 * They could be done by some user input, timer action, or Entity parameter change.
-		 * For user ease of use, try to separate these into their according lists.
-		 */
-
-		System.out.println("Creating Trigger!");
-	}
-
-	private void createEvent()
-	{
-		/*
-		 * What is an event...?
-		 * Something that a certain Entity or Game element will execute. 
-		 * Maybe separate these into lists, like the triggers.
-		 * 
-		 * Events are characterized by a certain subject, executing a certain action, I think.
-		 * So maybe also separate the Event into Executioner/Action.
-		 *
-		 */
-
-		/*
-		 * So, need some further explaining, but Events could be broken down to:
-		 * When =TRIGGER= does/hits =ACTION/VALUE=, =EXECUTIONER= will =ACTION=.
-		 * 
-		 *  I see this better organized into 4 TableViews.
-		 */
-
-		System.out.println("Creating Event!");
-	}
-
-	private void createTables()
-	{
-
-		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
+		List<String> entityNames = new ArrayList<String>();
 		
-		// Creates the Tables
-		paneMap.put("Triggers", Utilities.makeTitledPane("Triggers", Utilities.makeSingleColumnTable("User Input"))); // TODO: RESOURCE FILE BITCHHHHHH
-		paneMap.put("Actions", Utilities.makeTitledPane("Actions", Utilities.makeSingleColumnTable("Character Movement"))); // TODO: RESOURCE FILE BITCHHHHHH
-
-		for ( TitledPane titlePane: paneMap.values() )
-		{
-			container.getChildren().add(titlePane);
-			HBox.setHgrow(titlePane, Priority.SOMETIMES);
-		}
-
+		entityPicker = Utilities.makeComboBox(myResources.getString("chooseEntity"), 
+				entityNames, e -> selectedAnEntity());
+		
+		pane.getChildren().add(entityPicker);
+	}
+	
+	private void makeTables()
+	{
+		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
+		VBox internalBox = new VBox();
+		
+		makeEntityPanes();
+		
+		internalBox.getChildren().addAll(entitySubPanes.values());		
+		entityPane = Utilities.makeTitledPane(myResources.getString("entityPane"), internalBox, false);
+		
+		container.getChildren().add(entityPane);
 		pane.getChildren().add(container);
+	}
+	
+	private void selectedAnEntity()
+	{
+		
 	}
 	
 	public void populateLayout() 
 	{
+		makeComboBox();
 		makeButtons();
-		createTables();
+		makeTables();
 	}
 
 	@Override
