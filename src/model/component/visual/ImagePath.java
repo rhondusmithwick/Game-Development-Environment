@@ -1,11 +1,11 @@
 package model.component.visual;
 
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.geometry.Rectangle2D;
 import utility.SingleProperty;
 import utility.TwoProperty;
 
@@ -20,47 +20,55 @@ public class ImagePath implements IComponent {
 	 * The singleProperty.
 	 */
 	private final SingleProperty<String> imagePathProperty, spritesheetPath;
-//	private final int framePointer;
 	private final TwoProperty<Double, Double> imageSizeProperty;
-	private double width, height, offsetX, offsetY;
+	private int framePointer;
+	private final Rectangle2D viewport;
 	private final boolean isAnimated;
+	private final double frameDuration, totalDuration;
 
 	public ImagePath() {
 		this("resources/RhonduSmithwick.JPG");
 	}
-	
+
 	/**
 	 * Construct with no animation.
 	 *
-	 * @param imagePath starting value
+	 * @param imagePath
+	 *            starting value
 	 */
 	public ImagePath(String imagePath) {
-		this(imagePath, 0.0, 0.0,
-				"resources/RhonduSmithwick.JPG", 0.0, 0.0, 0.0, 0.0, false);
+		this(imagePath, 0.0, 0.0, "resources/RhonduSmithwick.JPG", new Rectangle2D(0.0, 0.0, 0.0, 0.0), false, 0.0, 0.0);
 	}
-	
+
 	/**
 	 * Construct with starting values.
 	 *
-	 * @param imagePath String path to image
-	 * @param imageWidth width of image
-	 * @param imageHeight height of image
-	 * @param spritesheetPath String path to spritesheet
-	 * @param width width of viewport
-	 * @param height height of viewport
-	 * @param offsetX offset in x-direction
-	 * @param offsetX offset in y-direction
+	 * @param imagePath
+	 *            String path to image
+	 * @param imageWidth
+	 *            width of image
+	 * @param imageHeight
+	 *            height of image
+	 * @param spritesheetPath
+	 *            String path to spritesheet
+	 * @param width
+	 *            width of viewport
+	 * @param height
+	 *            height of viewport
+	 * @param offsetX
+	 *            offset in x-direction
+	 * @param offsetX
+	 *            offset in y-direction
 	 */
-	public ImagePath(String imagePath, double imageWidth, double imageHeight,
-			String spritesheetPath, double width, double height, double offsetX, double offsetY, boolean isAnimated) {
+	public ImagePath(String imagePath, double imageWidth, double imageHeight, String spritesheetPath,
+			Rectangle2D viewport, boolean isAnimated, double frameDuration, double totalDuration) {
 		this.imagePathProperty = new SingleProperty<>("ImagePath", imagePath);
-		this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", height);
+		this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", imageHeight);
 		this.spritesheetPath = new SingleProperty<>("SpritesheetPath", spritesheetPath);
-		this.width = width;
-		this.height = height;
-		this.offsetX = offsetX;
-		this.offsetY = offsetY;
+		this.viewport = viewport;
 		this.isAnimated = isAnimated;
+		this.frameDuration = frameDuration;
+		this.totalDuration = totalDuration;
 	}
 
 	/**
@@ -79,19 +87,19 @@ public class ImagePath implements IComponent {
 	public void setImagePath(String imagePath) {
 		this.imagePathProperty().set(imagePath);
 	}
-	
+
 	public SimpleObjectProperty<Double> imageWidthProperty() {
 		return imageSizeProperty.property1();
 	}
-	
+
 	public SimpleObjectProperty<Double> imageHeightProperty() {
 		return imageSizeProperty.property2();
 	}
-	
+
 	public double getImageWidth() {
 		return this.imageWidthProperty().get();
 	}
-	
+
 	public void setImageWidth(double imageWidth) {
 		this.imageWidthProperty().set(imageWidth);
 	}
@@ -99,7 +107,7 @@ public class ImagePath implements IComponent {
 	public double getImageHeight() {
 		return this.imageHeightProperty().get();
 	}
-	
+
 	public void setImageHeight(double imageHeight) {
 		this.imageHeightProperty().set(imageHeight);
 	}
