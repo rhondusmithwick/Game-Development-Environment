@@ -34,7 +34,6 @@ public class Animator {
 		return animation;
 	}
 	public Node getImageView(IEntity entity) {
-		// TODO Auto-generated method stub
 		return imageView;
 	}
 }
