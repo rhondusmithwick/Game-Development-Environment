@@ -24,6 +24,7 @@ import model.entity.Entity;
 import model.entity.EntitySystem;
 import view.Authoring;
 import view.Utilities;
+import view.editor.gameeditor.GameDetails;
 
 public class GameEditor extends Editor  {
 

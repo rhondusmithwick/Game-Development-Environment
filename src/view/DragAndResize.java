@@ -56,8 +56,7 @@ public class DragAndResize {
 }
 
     public static void makeResizable(ImageView anImage) {
-        final DragAndResize resizer = new DragAndResize(anImage);
-        
+        final DragAndResize resizer = new DragAndResize(anImage); 
         anImage.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {

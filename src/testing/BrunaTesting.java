@@ -5,21 +5,18 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import enums.GUISize;
-import javafx.scene.control.Button;
-import javafx.stage.Stage;
+import api.IEntity;
 import model.entity.Entity;
-import model.entity.EntitySystem;
 import view.editor.EditorEnvironment;
+import view.editor.gameeditor.GameEditor;
 
 
 public class BrunaTesting {
 	
 	 private EditorEnvironment myEditorEnvironment;
-	private Stage myStage;
-//	private Scene myScene;
-//	private static final String LANGUAGE = "English";
-
+	private GameEditor myGameEditor;
+	
+	
 	@Before
 	    public void setUp () {
 		System.out.println("ro aww xon");
@@ -33,19 +30,16 @@ public class BrunaTesting {
 		myStage.show();
 	}
 
-	@Test
-	public void testAcceptsEntitySystem() {
-		EntitySystem entitySystem = new EntitySystem();
-		myEditorEnvironment.addEntitySystem(entitySystem);
-		assertNotNull(myEditorEnvironment.getEntitySystem());
-	}
+
+@Test
+	public void listConnectionTest(){
+	//myEditorEnvironment = new EditorEnvironment("propertyFiles/english", null, myGameEditor.getMasterList(),
+	//myGameEditor.getAddToList());
+	//myEditorEnvironment.populateLayout();
+	IEntity checkEntity = new Entity("Check For");
+	//myGameEditor.addToMaster(checkEntity);
+	assertTrue(myEditorEnvironment.displayContains(checkEntity));
 	
-	@Test 
-	public void testContainsEntities() {
-		EntitySystem entitySystem = new EntitySystem();
-		entitySystem.addEntities(new Entity());
-		myEditorEnvironment.addEntitySystem(entitySystem);
-		assertNotNull(myEditorEnvironment.getEntity(null));
-	}
+}
 
 }
