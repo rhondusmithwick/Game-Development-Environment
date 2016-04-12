@@ -33,7 +33,8 @@ public class InputSystem {
     public void take(KeyCode k) {
     	// TODO maybe change this if tree
         if (containsKey(k)) {
-        	if(containsEvent(keyMap.get(k))) {
+        	String actionName = keyMap.get(k);
+        	if(containsEvent(actionName)) {
         		actionMap.get(keyMap.get(k)).activate();
         	}
         }
