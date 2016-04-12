@@ -8,7 +8,9 @@ import api.ISystemManager;
  *
  * @author Rhondu Smithwick
  */
+@SuppressWarnings("unused")
 public class UseCase40 {
+
     private final ISystemManager systemManager = new SystemManager();
     //private final IEnvironmentEditor editor = new EnvironmentEditor();
 
@@ -16,4 +18,5 @@ public class UseCase40 {
         systemManager.pauseLoop(); // stop the game
         //editor.show();  // show the editor
     }
+
 }
