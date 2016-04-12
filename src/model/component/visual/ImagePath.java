@@ -4,14 +4,11 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-import com.google.common.reflect.Reflection;
-
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import model.component.movement.Position;
 import utility.SingleProperty;
 import utility.TwoProperty;
 
@@ -25,15 +22,15 @@ public class ImagePath implements IComponent {
 	/**
 	 * The singleProperty.
 	 */
-	private final SingleProperty<String> imagePathProperty, spriteSheetPath;
+	private final SingleProperty<String> imagePathProperty, spritesheetPath;
 	private final TwoProperty<Double, Double> imageSizeProperty;
-	private int framePointer;
-	//private final Rectangle2D viewport;
-	private final boolean isAnimated;
-	private final double frameDuration, totalDuration;
-	private static final String PROPERTIES_DIR = "templates.";
-	private final String spriteName;
 	private ImageView imageView;
+	private Rectangle2D viewport;
+	private int frameIndex;
+	private final int maxFrameIndex;
+	private boolean isAnimated;
+	private double timeSinceLastFrame, elapsedTime;
+	private final double frameDuration, totalDuration;
 
 	public ImagePath() {
 		this("resources/RhonduSmithwick.JPG");
@@ -45,10 +42,11 @@ public class ImagePath implements IComponent {
 	 * @param imagePath
 	 *            starting value
 	 */
-	public ImagePath(String imagePath) {
-		this(imagePath, 0.0, 0.0, "resources/RhonduSmithwick.JPG", false, 0.0, 0.0, "Rhondu");
+	public ImagePath(String imagePath) { // TODO: place default in resource file
+		this(imagePath, 0.0, 0.0, "resources/RhonduSmithwick.JPG", new Rectangle2D(0, 0, 0, 0), false, 0, 0, 0);
 	}
 
+	// TODO: IMPORTANT NOTE: I forgot to account for columns!
 	/**
 	 * Construct with starting values.
 	 *
@@ -58,7 +56,7 @@ public class ImagePath implements IComponent {
 	 *            width of image
 	 * @param imageHeight
 	 *            height of image
-	 * @param spriteSheetPath
+	 * @param spritesheetPath
 	 *            String path to spritesheet
 	 * @param width
 	 *            width of viewport
@@ -69,16 +67,24 @@ public class ImagePath implements IComponent {
 	 * @param offsetX
 	 *            offset in y-direction
 	 */
-	public ImagePath(String imagePath, double imageWidth, double imageHeight, String spriteSheetPath,
-			boolean isAnimated, double frameDuration, double totalDuration, String spriteName) {
+	public ImagePath(String imagePath, double imageWidth, double imageHeight, String spritesheetPath,
+			Rectangle2D viewport, boolean isAnimated, double frameDurationMillis, double totalDurationMillis,
+			int maxFrameIndex) {
 		this.imagePathProperty = new SingleProperty<>("ImagePath", imagePath);
-		this.imageView = createImage(imagePath);
 		this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", imageHeight);
-		this.spriteSheetPath = new SingleProperty<>("SpriteSheetPath", spriteSheetPath);
+		this.spritesheetPath = new SingleProperty<>("SpritesheetPath", spritesheetPath);
+
+		File resource = new File(spritesheetPath);
+		Image image = new Image(resource.toURI().toString());
+		this.imageView = new ImageView(image);
+
+		this.viewport = viewport;
+		this.frameIndex = 0;
 		this.isAnimated = isAnimated;
-		this.frameDuration = frameDuration;
-		this.totalDuration = totalDuration;
-		this.spriteName = spriteName;
+		this.reset();
+		this.frameDuration = frameDurationMillis;
+		this.totalDuration = totalDurationMillis;
+		this.maxFrameIndex = maxFrameIndex;
 	}
 
 	/**
@@ -88,10 +94,6 @@ public class ImagePath implements IComponent {
 	 */
 	public SimpleObjectProperty<String> imagePathProperty() {
 		return imagePathProperty.property1();
-	}
-	
-	public SimpleObjectProperty<String> spriteSheetProperty() {
-		return spriteSheetPath.property1();
 	}
 
 	public String getImagePath() {
@@ -116,7 +118,6 @@ public class ImagePath implements IComponent {
 
 	public void setImageWidth(double imageWidth) {
 		this.imageWidthProperty().set(imageWidth);
-		System.out.println("Set width to: " + imageWidth);
 	}
 
 	public double getImageHeight() {
@@ -125,7 +126,6 @@ public class ImagePath implements IComponent {
 
 	public void setImageHeight(double imageHeight) {
 		this.imageHeightProperty().set(imageHeight);
-		System.out.println("Set height to: " + imageHeight);
 	}
 
 	@Override
@@ -133,30 +133,67 @@ public class ImagePath implements IComponent {
 		return Arrays.asList(imagePathProperty(), imageWidthProperty(), imageHeightProperty());
 	}
 
+	private void updateViewport() {
+		double width = this.viewport.getWidth();
+		double height = this.viewport.getHeight();
+		double offsetX = this.frameIndex * width; // TODO: change to offsetX +
+													// ...
+		double offsetY = 0.0; // TODO: change to offsetX + ...
+		this.viewport = new Rectangle2D(offsetX, offsetY, width, height);
+	}
+
+	public Rectangle2D getViewport() { // TODO: remove, for debugging purposes
+		return this.viewport;
+	}
+
+	public ImageView getImageView() { // TODO: make imageView an instance
+										// variable
+		imageView.setViewport(this.viewport); // TODO: for some reason, setting
+												// viewport internally fails
+		return imageView;
+	}
+
+	public void setFrameIndex(int frameIndex) {
+		this.frameIndex = frameIndex % this.maxFrameIndex;
+		this.updateViewport(); // TODO: possibly relocate this, hacky
+	}
+
+	public void updateTime(double dt) {
+		this.elapsedTime += dt;
+		this.timeSinceLastFrame += dt;
+	}
+
+	public double getElapsedTime() {
+		return this.elapsedTime;
+	}
+
+	public double getTimeSinceLastFrame() {
+		return this.timeSinceLastFrame;
+	}
+
 	public double getFrameDuration() {
 		return this.frameDuration;
 	}
 
-	public double getTotalDuration() {
+	public void resetTimeSinceLastFrame() {
+		this.timeSinceLastFrame = 0.0;
+	}
+
+	public void reset() {
+		this.timeSinceLastFrame = 0.0;
+		this.elapsedTime = 0.0;
+	}
+
+	public double getDuration() {
 		return this.totalDuration;
 	}
 
-	public String getSpriteSheet(){
-		return spriteSheetProperty().get();
+	public int getFrameIndex() {
+		return this.frameIndex;
 	}
 
-	public String getSpriteProperties() {
-		return PROPERTIES_DIR + this.spriteName;
-	}
-
-	private ImageView createImage(String path) {
-		Image image = new Image(new File(path).toURI().toString());
-		ImageView imageView = new ImageView(image);
-		return imageView;
-	}
-	
-	public ImageView getImageView() {
-		return this.imageView;
+	public void incrementFrameIndex() {
+		this.setFrameIndex(this.getFrameIndex() + 1);
 	}
 
 }

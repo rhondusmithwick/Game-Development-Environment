@@ -9,19 +9,23 @@ import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import api.IComponent;
-import api.IEntity;
+import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import api.IComponent;
+import api.IEntity;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
@@ -32,7 +36,7 @@ import model.component.visual.ImagePath;
 import model.entity.Entity;
 
 public class Utilities {
-	
+
 	/**
 	 * This class has all static methods so that the methods can be 
 	 * accessed without the actual class being instantiated and so that class function
@@ -63,6 +67,29 @@ public class Utilities {
 		alert.setContentText(message);
 		Optional<ButtonType> result = alert.showAndWait();
 		return (result.get() == ButtonType.OK);
+	}
+	/**
+	 * Show an error with a certain message.
+	 * @param error message
+	 */
+
+	public static void showError(String title,String message) {
+		Alert alert = new Alert(AlertType.ERROR);
+		alert.setTitle(title);
+		alert.setContentText(message);
+		alert.show();
+	}
+
+	
+	public static TableView<?> makeSingleColumnTable( String title )
+	{
+		TableView table = new TableView();
+		TableColumn column = new TableColumn(title);
+		column.prefWidthProperty().bind(table.widthProperty()); 
+
+		table.getColumns().setAll(column);
+
+		return table;
 	}
 	
 	/**
@@ -167,7 +194,7 @@ public class Utilities {
 	 * 
 	 * @return File directory: local directory being returned
 	 */
-	
+
 	private static File getLocalDir() {
 		ProtectionDomain pd = Utilities.class.getProtectionDomain();
 		CodeSource cs = pd.getCodeSource();
@@ -191,7 +218,7 @@ public class Utilities {
 	 *            prompt: detailed message to the user about the input box
 	 * @return String result: user response if there is one, null if there isn't
 	 */
-	
+
 	public String userInputBox(String title, String prompt) {
 		TextInputDialog input = new TextInputDialog("");
 		input.setTitle(title);
@@ -213,7 +240,7 @@ public class Utilities {
 	 * (all three shouldn't be null at once or dialogue is useless)
 	 * @return String result: user choice as a string from the given choice options
 	 */
-	
+
 	public String choiceBox(List<String> choices, String title, String header, String content) {
 		ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
 		dialog.setTitle(title);
@@ -223,18 +250,40 @@ public class Utilities {
 		if (result.isPresent()) {
 			return result.get();
 		}
+
 		return null;
 	}
 
+	// TODO: is static not good?
+	public static TitledPane makeTitledPane(String title, Node content, boolean collapsable)
+	{
+		TitledPane pane = new TitledPane(title, content);
+		pane.setCollapsible(collapsable);
+		pane.setExpanded(!collapsable);
+
+		return pane;
+	}
+
+	public static ButtonType confirmationBox (String title,String header, String message){
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(message);
+
+		return null;
+	}
+
+
 	/**
-	 * Gets all file names from a given directory location. 
-	 * @param directoryLocation
-	 *            String path to a file directory
-	 * @return files
-	 * 			  List of Strings of all file names within given directory
+	 * Gets all file names from a given directory.
+	 * Is static so that it can be accessed as the actual class is never instantiated,
+	 * also so that function can be accessed without this object being passed.
+	 *
+	 * @param directoryLocation String path to a file directory
+	 * @return List of Strings of all file names within given directory
 	 */
-	
 	public static List<String> getAllFromDirectory(String directoryLocation) {
+
 		ArrayList<String> files = new ArrayList<>();
 		File directory = new File(directoryLocation);
 		File[] fileList = directory.listFiles();
@@ -243,7 +292,10 @@ public class Utilities {
 			files.add(name.substring(0, name.lastIndexOf('.')));
 		}
 		return files;
+
+
 	}
+
 
 	/**
 	 * Sets the image width and height size in an ImagePath component;
@@ -252,7 +304,7 @@ public class Utilities {
 	 * @param ImagePath path: ImagePath component
 	 * @return ImageView imageView: ImageView set up using the path
 	 */
-	
+
 	public static ImageView setUpImagePathSize(ImagePath path) {
 		URI resource = new File(path.getImagePath()).toURI();
 		Image image = new Image(resource.toString());
@@ -273,7 +325,7 @@ public class Utilities {
 	 * @param Position pos: Position component
 	 * @return ImageView imageView: ImageView set up using the path with bound properties
 	 */
-	
+
 	// could take in entity and extract needed components
 	public static ImageView createImage(ImagePath path, Position pos) {
 		ImageView imageView = setUpImagePathSize(path);
@@ -290,7 +342,7 @@ public class Utilities {
 	 * @param IEntity entity: given IEntity to copy
 	 * @return IEntity newEntity: returned copy of the given IEntity
 	 */
-	
+
 	public static IEntity copyEntity(IEntity entity) {
 		IEntity newEntity = new Entity(entity.getName());
 		newEntity.setSpecs(entity.getSpecs());

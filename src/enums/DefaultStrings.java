@@ -3,6 +3,7 @@ package enums;
 public enum DefaultStrings {
 	
 	DEFAULT_LANGUAGE("english"),
+	EVENT_EDITOR_NAME("EditorEvent"),
 	DEFAULT_ICON("resources/guiImages/default_icon.png"),
 	ENTITY_EDITOR_NAME("EditorEntity"),
 	ENVIRONMENT_EDITOR_NAME("EditorEnvironment"),
