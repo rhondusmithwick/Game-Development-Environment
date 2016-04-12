@@ -1,7 +1,5 @@
 package testing;
 
-import datamanagement.XMLReader;
-import datamanagement.XMLWriter;
 import model.component.movement.Position;
 import org.junit.Test;
 
@@ -17,8 +15,7 @@ public class CloneTest {
     @Test
     public void testClone() {
         Position position = new Position(30, 40);
-        String clonedString = new XMLWriter<Position>().writeToString(position);
-        Position position2 = new XMLReader<Position>().readSingleFromString(clonedString);
+        Position position2 = position.clone(Position.class);
         position2.setX(80);
         assertEquals(position.getX(), 30, .001);
         assertEquals(position2.getX(), 80, .001);
