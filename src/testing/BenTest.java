@@ -51,7 +51,8 @@ public class BenTest extends Application {
 		Position pos = new Position(250.0, 250.0);
 		character.forceAddComponent(pos, true);
 		character.forceAddComponent(new ImagePath(IMAGE_PATH), true);
-		character.forceAddComponent(new Velocity(10.0, 10.0), true);
+		character.forceAddComponent(new Velocity(20.0, 50.0), true);
+		character.removeComponents(Velocity.class, Score.class);
 		list.add(character);
 
 		IEntitySystem system = new EntitySystem();

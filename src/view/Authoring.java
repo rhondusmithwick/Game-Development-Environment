@@ -16,7 +16,7 @@ public class Authoring {
 		private ResourceBundle myResources;
 		private Scene myScene;
 		private TabPane display;
-		private String language;
+		private String language, fileName;
 
 		/**
 		 * Constructor that takes in the language choice of the user.
@@ -25,6 +25,12 @@ public class Authoring {
 		public Authoring(String language){
 			this.language = language;
 			myResources = ResourceBundle.getBundle(language);
+			this.fileName=null;
+		}
+		
+		public Authoring(String language, String fileName){
+			this(language);
+			this.fileName = fileName;
 		}
 
 		/**
@@ -34,7 +40,13 @@ public class Authoring {
 		
 		public  Scene init(ReadOnlyDoubleProperty height, ReadOnlyDoubleProperty width){
 			display = new TabPane();
-			GameEditor gEdit = new GameEditor(this, language);
+			GameEditor gEdit;
+			if(fileName == null){
+				gEdit = new GameEditor(this, language);
+			}else{
+				gEdit = new GameEditor(this, language, fileName);
+			}
+			
 			createTab(gEdit.getPane(), "gDeets", false);
 			myScene = new Scene(display,GUISize.AUTHORING_WIDTH.getSize(), GUISize.AUTHORING_HEIGHT.getSize());
 			display.prefHeightProperty().bind(height);
