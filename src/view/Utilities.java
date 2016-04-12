@@ -8,8 +8,10 @@ import java.security.ProtectionDomain;
 import java.util.List;
 import java.util.Optional;
 import java.util.ResourceBundle;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Node;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
@@ -19,6 +21,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.TitledPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -75,9 +78,9 @@ import javafx.stage.FileChooser.ExtensionFilter;
 		}
 		
 
-		public static TableView<String> makeSingleColumnTable( String title )
+		public static TableView makeSingleColumnTable( String title )
 		{
-			TableView<String> table = new TableView<String>();
+			TableView table = new TableView();
 			TableColumn column = new TableColumn(title);
 			column.prefWidthProperty().bind(table.widthProperty()); 
 
@@ -146,5 +149,14 @@ import javafx.stage.FileChooser.ExtensionFilter;
 				return result.get();
 			}
 			return null;
+		}
+		
+		// TODO: is static not good?
+		public static TitledPane makeTitledPane(String title, Node content)
+		{
+			TitledPane pane = new TitledPane(title, content);
+			pane.setExpanded(false);
+		
+			return pane;
 		}
 	}

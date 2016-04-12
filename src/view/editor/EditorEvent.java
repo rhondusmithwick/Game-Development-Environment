@@ -23,6 +23,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TitledPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -43,7 +44,7 @@ public class EditorEvent extends Editor
 	private ResourceBundle myResources;
 	private HashMap<String, TableView<String>> tableMap; 
 	private HashMap<String, Button> buttonMap;
-
+	private HashMap<String, TitledPane> paneMap;
 
 	/*
 	 *  Constructor is made based on new Editor Factory.
@@ -58,6 +59,7 @@ public class EditorEvent extends Editor
 		myResources = ResourceBundle.getBundle(language);
 		tableMap = new HashMap<String, TableView<String>>();
 		buttonMap = new HashMap<String, Button>();
+		paneMap = new HashMap<String, TitledPane>();
 	}
 
 	private void makeButtons()
@@ -119,17 +121,15 @@ public class EditorEvent extends Editor
 	{
 
 		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
-
+		
 		// Creates the Tables
-		tableMap.put("Triggers", Utilities.makeSingleColumnTable("Triggers")); // TODO: RESOURCE FILE BITCHHHHHH
-		tableMap.put("Trigger Actions", Utilities.makeSingleColumnTable("Triger Actions")); // TODO: RESOURCE FILE BITCHHHHHH
-		tableMap.put("Actors", Utilities.makeSingleColumnTable("Actors")); // TODO: RESOURCE FILE BITCHHHHHH
-		tableMap.put("Actor Actions", Utilities.makeSingleColumnTable("Actor Actions")); // TODO: RESOURCE FILE BITCHHHHHH
+		paneMap.put("Triggers", Utilities.makeTitledPane("Triggers", Utilities.makeSingleColumnTable("User Input"))); // TODO: RESOURCE FILE BITCHHHHHH
+		paneMap.put("Actions", Utilities.makeTitledPane("Actions", Utilities.makeSingleColumnTable("Character Movement"))); // TODO: RESOURCE FILE BITCHHHHHH
 
-		for ( TableView<String> table: tableMap.values() )
+		for ( TitledPane titlePane: paneMap.values() )
 		{
-			container.getChildren().add(table);
-			HBox.setHgrow(table, Priority.SOMETIMES);
+			container.getChildren().add(titlePane);
+			HBox.setHgrow(titlePane, Priority.SOMETIMES);
 		}
 
 		pane.getChildren().add(container);
