@@ -1,12 +1,12 @@
-package testing
+package testing;
 
-import model.component.character.Health
-import model.component.character.Score
-import model.component.movement.Position
-import model.component.movement.Velocity
-import model.component.visual.ImagePath
-import model.entity.Entity
-import api.IEntity
+import model.component.character.Health;
+import model.component.character.Score;
+import model.component.movement.Position;
+import model.component.movement.Velocity;
+import model.component.visual.ImagePath;
+import model.entity.Entity;
+import api.IEntity;
 
 /**
  * Created by Tom on 4/7/2016.
