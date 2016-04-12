@@ -81,9 +81,15 @@ import javafx.stage.FileChooser.ExtensionFilter;
 		 * chooser box
 		 */
 		public static File promptAndGetFile(ExtensionFilter extension, String prompt) {
+			List<ExtensionFilter> filters = new ArrayList<ExtensionFilter>();
+			filters.add(extension);
+			return promptAndGetFile(filters,prompt);
+		}
+		
+		public static File promptAndGetFile(List<ExtensionFilter> filters, String prompt) {
 			FileChooser fileChooser = new FileChooser();
 			fileChooser.setTitle(prompt);
-			fileChooser.getExtensionFilters().add(extension);
+			fileChooser.getExtensionFilters().addAll(filters);
 			fileChooser.setInitialDirectory(getLocalDir());
 			File file = fileChooser.showOpenDialog(new Stage());
 			return file;
@@ -145,8 +151,8 @@ import javafx.stage.FileChooser.ExtensionFilter;
 		Optional<ButtonType> result = alert.showAndWait();
 		return result.get(); // check against result == ButtonType.OK
 		}
-		
-		
+
+				
 	    /**
 	     * Gets all file names from a given directory.
 	     * Is static so that it can be accessed as the actual class is never instantiated,
