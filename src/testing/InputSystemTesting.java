@@ -62,5 +62,9 @@ public class InputSystemTesting extends Application {
 		primaryStage.show();
 		setUp();
 	}
+	
+	public static void main(String[] args) { 
+		launch(args);
+	}
 
 }

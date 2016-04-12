@@ -50,7 +50,7 @@ public class BasicRMIClient extends Application{
 		
 		try { 
 			System.setSecurityManager(new RMISecurityManager());
-			IEntitySystem universe = (IEntitySystem) Naming.lookup("rmi://localhost/entitysystem_server");
+			EntitySystem universe = (EntitySystem) Naming.lookup("rmi://localhost/entitysystem_server");
 			universe.addEntities(list);
 			physics = new PhysicsEngine(universe);
 			testSprite = createImage(character.getComponent(ImagePath.class), character.getComponent(Position.class));
