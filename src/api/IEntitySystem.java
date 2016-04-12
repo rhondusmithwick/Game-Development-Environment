@@ -18,6 +18,18 @@ import java.util.stream.Collectors;
  */
 public interface IEntitySystem extends ISerializable {
 
+	/**
+	 * Names the entity System
+	 * @param The string with the name
+	 */
+	void setName(String name);
+	
+	/**
+	 * Gets the Entity Systems name
+	 * @return stirng entity system name
+	 */
+	String getName();
+	
     /**
      * Creates an entity.
      *
