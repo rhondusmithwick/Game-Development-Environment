@@ -1,40 +1,42 @@
 package view;
 
-import java.io.File;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
 import api.IEntity;
 import api.ISerializable;
+import enums.DefaultStrings;
 import javafx.collections.ObservableList;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import model.component.movement.Position;
 import model.component.physics.Collision;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
 import javafx.scene.shape.Rectangle;
 
-public class LoadDefaults {
+public class DefaultsMaker {
+	
+	private final static String backgroundName = "Default Fire Background";
+	private final static String backgroundPath = "resources/images/fire.gif";
+	private final static String platformName = "Default Mario Platform";
+	private final static String platformPath = "resources/images/marioplatform.jpeg";
 	
 	public static IEntity loadBackgroundDefault(){
-		IEntity entity = new Entity("Default Fire Background");
-		entity.loadSpecsFromPropertiesFile("templates/Background");
+		IEntity entity = new Entity(backgroundName);
+		entity.loadSpecsFromPropertiesFile(DefaultStrings.BACKGROUND_TEMPLATE_PATH.getDefault());
 		entity.addComponent(new Position());
-		ImagePath path = new ImagePath("resources/images/fire.gif");
+		ImagePath path = new ImagePath(backgroundPath);
 		Utilities.setUpImagePathSize(path);
 	    entity.addComponent(path);
 		return entity;
 	}
 		
 	public static IEntity loadPlatformDefault(ObservableList<ISerializable> masterEntities){
-		IEntity entity = new Entity("Default Mario Platform");
-		//entity.loadSpecsFromPropertiesFile("templates/PlatformSprite");
+		IEntity entity = new Entity(platformName);
+		entity.loadSpecsFromPropertiesFile(DefaultStrings.PLATFORM_TEMPLATE_PATH.getDefault());
 		// add friction
 		// add render properties
 		entity.forceAddComponent(new Position(),true);
-		ImagePath path = new ImagePath("resources/images/marioplatform.jpeg");
+		ImagePath path = new ImagePath(platformPath);
 		Utilities.setUpImagePathSize(path);
 		entity.forceAddComponent(path, true);
 		entity.forceAddComponent(new Collision(imagePathToFitRectangle(entity.getComponent(ImagePath.class)),
