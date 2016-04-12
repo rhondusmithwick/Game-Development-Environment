@@ -8,7 +8,7 @@ import org.junit.Test;
 import api.IEntity;
 import model.entity.Entity;
 import view.editor.EditorEnvironment;
-import view.editor.GameEditor;
+import view.editor.gameeditor.GameEditor;
 
 
 public class BrunaTesting {
