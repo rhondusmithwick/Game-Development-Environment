@@ -79,7 +79,9 @@ public class GameDetails {
 		fChoose.setTitle(myResources.getString("cIcon"));
 		fChoose.getExtensionFilters().addAll(FileExtensions.GIF.getFilter(), FileExtensions.JPG.getFilter(), FileExtensions.PNG.getFilter());
 		File file = fChoose.showOpenDialog(s);
-		setIconPicture(file);
+		if(file!=null){
+			setIconPicture(file);
+		}
 	}
 	
 	
