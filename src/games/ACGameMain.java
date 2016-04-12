@@ -1,3 +1,6 @@
+package games;
+
+import games.ACGame;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;

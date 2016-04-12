@@ -1,18 +1,28 @@
-package src.games;
+package games;
 
-import src.events.EntityAction;
-import src.events.InputSystem;
-import src.model.component.character.Health;
-import src.model.component.character.Score;
-import src.model.component.movement.Position;
-import src.model.component.movement.Velocity;
-import src.model.component.visual.ImagePath;
-import src.model.entity.EntitySystem;
-import src.testing.PhysicsEngine;
-import src.api.IEntity;
-import src.api.IEntitySystem;
+import events.Action;
+import events.EntityAction;
+import events.InputSystem;
+import games.ACGameXChangeListener;
+import model.component.character.Health;
+import model.component.character.Score;
+import model.component.movement.Position;
+import model.component.movement.Velocity;
+import model.component.visual.ImagePath;
+import model.entity.EntitySystem;
+import model.physics.PhysicsEngine;
+import api.IComponent;
+import api.IEntity;
+import api.IEntitySystem;
 
-import java.util.List;
+import java.io.File;
+import java.io.IOException;
+
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -20,20 +30,23 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import src.model.entity.Entity;
+import model.entity.Entity;
 
 public class ACGame {
 	
     public static final String TITLE = "Ani's and Carolyn's game";
+	private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
     public static final int KEY_INPUT_SPEED = 5;
     private static final double GROWTH_RATE = 1.1;
     private static final int BOUNCER_SPEED = 30;
 
-	private final EntitySystem universe = new EntitySystem();
+	private final IEntitySystem universe = new EntitySystem();
 	private final InputSystem inputSystem = new InputSystem();
-	private final PhysicsEngine physics = new PhysicsEngine();
+	private final PhysicsEngine physics = new PhysicsEngine(universe);
 	private IEntity character;
 	private final String IMAGE_PATH = "resources/images/blastoise.png";
+	private final String healthScriptPath = "resources/groovyScripts/ACGameTestScript.groovy";
+	
     
     private Scene myScene;
     
@@ -59,7 +72,6 @@ public class ACGame {
     
     public void initEngine() { 
     	addCharacter();
-    	
     }
 
 	private void addCharacter() {
@@ -70,13 +82,26 @@ public class ACGame {
 		character.forceAddComponent(pos, true);
 		character.forceAddComponent(new ImagePath(IMAGE_PATH), true);
 		character.forceAddComponent(new Velocity(20.0, 50.0), true);
-		character.getComponent(Position.class).getProperties().get(0).addListener(new EntityAction(character));
+		//character.getComponent(Position.class).getProperties().get(0).addListener(new ACGameXChangeListener(character));
+		//character.getComponent(Position.class).getProperties().get(0).addListener(new EntityAction(character));
     	universe.addEntity(character);
+    	Action healthAction = getAction(healthScriptPath, character, pos);
+    	inputSystem.addEvent("HEALTH_DECREASE", healthAction);
 	}
 	
-	private void step(double dt, IEntity character, IEntitySystem system) {
-		physics.update(system, dt);
+	public void step(double dt) {
+		physics.update(universe, dt);
 		moveEntity(character, 20);
+	}
+	
+	private Action getAction(String scriptPath, IEntity entity, IComponent component) {
+		String script = null;
+		try {
+			script = Files.toString(new File(scriptPath), Charsets.UTF_8);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return new EntityAction(script, entity, component);
 	}
 	
 	private void moveEntity(IEntity character, int move) { 

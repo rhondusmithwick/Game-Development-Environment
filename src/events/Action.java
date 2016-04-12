@@ -1,11 +1,13 @@
 package events;
 
 import api.IEntitySystem;
+import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,7 +16,7 @@ import java.util.Map;
  *
  * @author Rhondu Smithwick
  */
-public abstract class Action implements ChangeLister {
+public abstract class Action implements ChangeListener{
 
     private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
     private String script;
@@ -66,7 +68,7 @@ public abstract class Action implements ChangeLister {
         return getParameters().remove(key);
     }
 
-	@Override
+    @Override
 	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
 		System.out.println("IT WORKS YA DOOF");
 	}

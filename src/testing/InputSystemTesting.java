@@ -114,10 +114,6 @@ public class InputSystemTesting extends Application implements ChangeListener {
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
-	public static void main(String[] args) { 
-		launch(args);
-	}
 
 /*	@Override
 	public void changed(ObservableValue<? extends Double> arg0, Double arg1,
