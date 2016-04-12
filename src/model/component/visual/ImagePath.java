@@ -22,9 +22,10 @@ public class ImagePath implements IComponent {
 	private final SingleProperty<String> imagePathProperty, spritesheetPath;
 	private final TwoProperty<Double, Double> imageSizeProperty;
 	private int framePointer;
-	private final Rectangle2D viewport;
+	//private final Rectangle2D viewport;
 	private final boolean isAnimated;
 	private final double frameDuration, totalDuration;
+	private static final String PROPERTIES_DIR = "templates.";
 
 	public ImagePath() {
 		this("resources/RhonduSmithwick.JPG");
@@ -37,7 +38,7 @@ public class ImagePath implements IComponent {
 	 *            starting value
 	 */
 	public ImagePath(String imagePath) {
-		this(imagePath, 0.0, 0.0, "resources/RhonduSmithwick.JPG", new Rectangle2D(0.0, 0.0, 0.0, 0.0), false, 0.0, 0.0);
+		this(imagePath, 0.0, 0.0, "resources/RhonduSmithwick.JPG", false, 0.0, 0.0);
 	}
 
 	/**
@@ -61,11 +62,10 @@ public class ImagePath implements IComponent {
 	 *            offset in y-direction
 	 */
 	public ImagePath(String imagePath, double imageWidth, double imageHeight, String spritesheetPath,
-			Rectangle2D viewport, boolean isAnimated, double frameDuration, double totalDuration) {
+			boolean isAnimated, double frameDuration, double totalDuration) {
 		this.imagePathProperty = new SingleProperty<>("ImagePath", imagePath);
 		this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", imageHeight);
 		this.spritesheetPath = new SingleProperty<>("SpritesheetPath", spritesheetPath);
-		this.viewport = viewport;
 		this.isAnimated = isAnimated;
 		this.frameDuration = frameDuration;
 		this.totalDuration = totalDuration;
@@ -116,4 +116,23 @@ public class ImagePath implements IComponent {
 	public List<SimpleObjectProperty<?>> getProperties() {
 		return Arrays.asList(imagePathProperty(), imageWidthProperty(), imageHeightProperty());
 	}
+
+	public double getFrameDuration() {
+		return this.frameDuration;
+	}
+
+	public double getTotalDuration() {
+		return this.totalDuration;
+	}
+
+	public String getSpriteSheet(){
+		return this.spritesheetPath.property1().get();
+	}
+
+	public String getSpriteProperties() {
+		return PROPERTIES_DIR  + this.imagePathProperty.property1().get();
+	}
+
+
+
 }
