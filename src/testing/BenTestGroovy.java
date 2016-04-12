@@ -17,9 +17,6 @@ import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import model.entity.EntitySystem;
 import model.physics.PhysicsEngine;
-
-import testing.BenTestCharacter;
-
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.io.File;
