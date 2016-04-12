@@ -27,11 +27,10 @@ public class ACGame {
     private final IEntitySystem universe = new EntitySystem();
 	private final InputSystem inputSystem = new InputSystem();
 	private final String IMAGE_PATH = "resources/images/blastoise.png";
+	private final String HANDLER_PATH = "/groovyScripts/";
+	private final String HANDLER_PATH2 = "/groovyScripts/";
     
     private Scene myScene;
-    private ImageView myBouncer;
-    private Rectangle myTopBlock;
-    private Rectangle myBottomBlock;
 
 
     /**
@@ -65,7 +64,8 @@ public class ACGame {
 		character.forceAddComponent(pos, true);
 		character.forceAddComponent(new ImagePath(IMAGE_PATH), true);
 		character.forceAddComponent(new Velocity(20.0, 50.0), true);
-		character.getComponent(Position.class).getProperties().get(0).addListener(new EntityAction(character));
+		character.getComponent(Position.class).getProperties().get(0).addListener(new EntityAction(HANDLER_PATH, character));
+		character.getComponent(Position.class).getProperties().get(0).addListener(new EntityAction(HANDLER_PATH2, character));
     	universe.addEntity(character);
 	}
 }
