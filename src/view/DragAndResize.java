@@ -4,18 +4,12 @@ import javafx.scene.Cursor;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import model.component.movement.Position;
+import model.component.visual.ImagePath;
 
 
 public class DragAndResize {
-    
-	private double sceneX;
-	private double sceneY;
-	private double translateX;
-	private double translateY;
-	
-	private double y;
-	private double x;
-    
+        
     private double margin = 8;
 
     private final ImageView image;
@@ -30,9 +24,13 @@ public class DragAndResize {
 	private double clickY;
 	private double minW;
 	private double minH;
+	private ImagePath path;
+	private Position position;
     
-    private DragAndResize(ImageView anImage) {
+    private DragAndResize(ImageView anImage, ImagePath aPath, Position aPos) {
         image = anImage;
+        path = aPath;
+        position = aPos;
         minW = image.minWidth(image.getFitHeight());
         minH = image.minHeight(image.getFitWidth());
     }
@@ -44,28 +42,26 @@ public class DragAndResize {
         parentWidth = image.getBoundsInParent().getWidth();
         clickX = event.getX();
         clickY = event.getY();
-        sceneX = event.getSceneX();
-        sceneY = event.getSceneY();
-        translateX = ((Node) event.getSource()).getTranslateX();
-        translateY = ((Node) event.getSource()).getTranslateY();
     }
     
     private void resizeWidth(double width){
-    		if (minW>width){
+    	if (minW>width){
     			return;
     		}
-    		image.setFitWidth(width);
+    		path.setImageWidth(width);
+    		//image.setFitWidth(width);
     }
     
     private void resizeHeight(double height){
     		if (minH>height){
-			return;
+		return;
 		}
-		image.setFitHeight(height);
+    		path.setImageHeight(height);
+		//image.setFitHeight(height);
 }
 
-    public static void makeResizable(ImageView anImage) {
-        final DragAndResize resizer = new DragAndResize(anImage); 
+    public static void makeResizable(ImageView anImage, ImagePath aPath, Position aPos) {
+        final DragAndResize resizer = new DragAndResize(anImage, aPath, aPos); 
         anImage.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -135,8 +131,12 @@ public class DragAndResize {
     		if (dragging){
     				double translateX = mouseX - clickX;
     				double translateY = mouseY - clickY;
-    			    image.setTranslateX(translateX);
-    			    image.setTranslateY(translateY);
+    				position.setX(translateX);
+    				position.setY(translateY);
+    				//image.setTranslateX(translateX);
+    				//image.setTranslateY(translateY);
+    			   // image.setX(translateX);
+    			   //image.setY(translateY);
                 return;
     		}
     		else{

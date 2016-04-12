@@ -191,8 +191,7 @@ public interface IEntity extends ISerializable {
      * @param componentClassToRemove component class to remove
      * @param <T>                    type of component
      * @return true if component was remove
-     */
-    Boolean removeComponent(Class<? extends IComponent> componentClassToRemove);
+     */    Boolean removeComponent(Class<? extends IComponent> componentClassToRemove);
 
 
     /**
