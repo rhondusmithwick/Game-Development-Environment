@@ -1,11 +1,5 @@
 package testing;
 
-<<<<<<< HEAD
-import java.awt.AWTException;
-import java.awt.Robot;
-
-=======
->>>>>>> db2f942403e922273d844f159a7041040ea2e813
 import api.IEntity;
 import api.IEventListener;
 import javafx.animation.KeyFrame;

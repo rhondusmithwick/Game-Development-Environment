@@ -16,13 +16,24 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @author Rhondu Smithwick
  */
 public class EntitySystem implements IEntitySystem {
-
+	
+	
 	/**
 	 * The entities in this system.
 	 */
 	@XStreamAlias("entities")
 	private final Map<String, IEntity> entities = Maps.newLinkedHashMap();
+	private String name;
 
+	public EntitySystem(){
+		this("");
+	}
+
+	public EntitySystem(String name){
+		this.name=name;
+	}
+	
+	
 	@Override
 	public IEntity createEntity() {
 		Entity entity = new Entity();
@@ -57,6 +68,17 @@ public class EntitySystem implements IEntitySystem {
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public void setName(String name) {
+		this.name=name;
+		
+	}
+
+	@Override
+	public String getName() {
+		return this.name;
 	}
 
 }
