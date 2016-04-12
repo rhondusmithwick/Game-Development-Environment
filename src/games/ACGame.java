@@ -1,21 +1,21 @@
-package games;
+package src.games;
 
-import events.EntityAction;
-import events.InputSystem;
-import model.component.character.Health;
-import model.component.character.Score;
-import model.component.movement.Position;
-import model.component.movement.Velocity;
-import model.component.visual.ImagePath;
-import model.entity.Entity;
-import model.entity.EntitySystem;
-import api.IEntity;
-import api.IEntitySystem;
+import src.events.EntityAction;
+import src.events.InputSystem;
+import src.model.component.character.Health;
+import src.model.component.character.Score;
+import src.model.component.movement.Position;
+import src.model.component.movement.Velocity;
+import src.model.component.visual.ImagePath;
+import src.model.entity.EntitySystem;
+import src.api.IEntity;
+import src.api.IEntitySystem;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import src.model.entity.Entity;
 
 public class ACGame {
 	
