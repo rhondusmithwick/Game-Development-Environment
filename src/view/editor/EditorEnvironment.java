@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import api.IEntity;
+import api.IEntitySystem;
 import api.ISerializable;
 import enums.DefaultStrings;
 import enums.GUISize;
@@ -25,7 +26,6 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
@@ -35,6 +35,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
+import model.entity.EntitySystem;
 import view.DragAndResize;
 import view.LoadDefaults;
 import view.Utilities;
@@ -47,18 +48,17 @@ public class EditorEnvironment extends Editor{
 	private VBox entityOptions;
 	private Group gameRoot;
 	private ResourceBundle myResources;
-	//private ObservableList<ISerializable> masterEntities;
-	private ObservableList<ISerializable> envionmentEntities;
+	private IEntitySystem envionmentEntities;
 	private ObservableList<ISerializable> displayEntities;
+	private ObservableList<ISerializable> whenSave;
 	
 	@SuppressWarnings("unchecked")
 	public EditorEnvironment(String language, ISerializable toEdit, ObservableList<ISerializable>masterList, ObservableList<ISerializable> addToList){
-		// entity system 
 		myResources = ResourceBundle.getBundle(language);
-		//masterEntities = masterList;
 		masterList.addListener((ListChangeListener<? super ISerializable>) c -> {this.updateDisplay(masterList);}); 
 		displayEntities = masterList;
-		envionmentEntities = addToList;
+		envionmentEntities = (IEntitySystem) toEdit;
+		whenSave = addToList;
 		addLayoutComponents();
 	}
 
@@ -161,13 +161,13 @@ public class EditorEnvironment extends Editor{
                     removeFromDisplay(entityView,entity);
                 }
     		}});
-        envionmentEntities.add(entity);
+        envionmentEntities.addEntity(entity);
 		gameRoot.getChildren().add(entityView);
 	}
 
 	protected void removeFromDisplay(ImageView entityView, IEntity entity) {
 		gameRoot.getChildren().remove(entityView);
-		envionmentEntities.remove(entity);
+		envionmentEntities.removeEntity(entity.getID());
 	}
 
 		private ImageView createImage(ImagePath path, Position pos) {
@@ -212,7 +212,7 @@ public class EditorEnvironment extends Editor{
 		populateVbox(entityOptions,displayEntities);
 	}
 
-	public ObservableList<ISerializable> getEntitySystem() {
+	public IEntitySystem getEntitySystem() {
 		return envionmentEntities;
 	}
 
@@ -224,7 +224,7 @@ public class EditorEnvironment extends Editor{
 
 	@Override
 	public void addSerializable(ISerializable serialize) {
-		envionmentEntities.add(serialize);
+		envionmentEntities.addEntity((IEntity) serialize);
 	}
 
 	public boolean displayContains(IEntity checkEntity) {

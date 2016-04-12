@@ -1,6 +1,7 @@
 package view;
 
 	import java.io.File;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.CodeSource;
@@ -19,9 +20,13 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
+import model.component.movement.Position;
+import model.component.visual.ImagePath;
 	
 	
 	public class Utilities {
@@ -171,8 +176,26 @@ import javafx.stage.FileChooser.ExtensionFilter;
 	            files.add(name.substring(0, name.lastIndexOf('.')));
 	        }
 	        return files;
-
-
 	    }
+	    
+	    public static void setUpImagePathSize(ImagePath path){
+	    		URI resource = new File(path.getImagePath()).toURI();
+			Image image = new Image(resource.toString());
+			ImageView imageView = new ImageView(image);
+			path.setImageHeight(imageView.getFitHeight());
+			path.setImageWidth(imageView.getFitWidth());
+	    }
+	    
+	    public ImageView createImage(ImagePath path, Position pos) {
+			URI resource = new File(path.getImagePath()).toURI();
+			Image image = new Image(resource.toString());
+			ImageView imageView = new ImageView(image);
+			imageView.setPreserveRatio(true);
+			imageView.fitHeightProperty().bind(path.imageHeightProperty());
+			imageView.fitWidthProperty().bind(path.imageWidthProperty());
+			imageView.xProperty().bind(pos.xProperty());
+			imageView.yProperty().bind(pos.yProperty());
+			return imageView;
+		}
 		
 	}

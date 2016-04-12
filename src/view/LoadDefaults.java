@@ -19,12 +19,12 @@ import javafx.scene.shape.Rectangle;
 public class LoadDefaults {
 	
 	public static IEntity loadBackgroundDefault(){
-		IEntity entity = new Entity("Default Dragon Temple Background");
+		IEntity entity = new Entity("Default Fire Background");
 		entity.loadSpecsFromPropertiesFile("templates/Background");
 		entity.addComponent(new Position());
-	    entity.addComponent(new ImagePath("resources/images/fire.gif"));
-		//entity.forceAddComponent(new Position(),true);
-	    //entity.forceAddComponent(new ImagePath("resources/images/dragontemple.gif"),true);
+		ImagePath path = new ImagePath("resources/images/fire.gif");
+		Utilities.setUpImagePathSize(path);
+	    entity.addComponent(path);
 		return entity;
 	}
 	
@@ -35,6 +35,7 @@ public class LoadDefaults {
 		// add render properties
 		entity.forceAddComponent(new Position(),true);
 		ImagePath path = new ImagePath("resources/images/marioplatform.jpeg");
+		Utilities.setUpImagePathSize(path);
 		entity.forceAddComponent(path, true);
 		entity.forceAddComponent(new Collision(imagePathToFitRectangle(entity.getComponent(ImagePath.class)),
 			entityListToIDs(masterEntities)),true);
