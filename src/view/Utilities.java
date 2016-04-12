@@ -300,5 +300,13 @@ public class Utilities {
 		}
 		return newEntity;
 	}
+	
+	public static List<ExtensionFilter> getImageFilters(){
+		List<ExtensionFilter> filters = new ArrayList<ExtensionFilter>();
+		filters.add(new FileChooser.ExtensionFilter("All Images", "*.*"));
+		filters.add(new FileChooser.ExtensionFilter("JPG", "*.jpg"));
+		filters.add(new FileChooser.ExtensionFilter("PNG", "*.png"));
+		return filters;
+	}
 
 }

@@ -6,12 +6,7 @@ public enum DefaultStrings {
 	DEFAULT_ICON("resources/guiImages/default_icon.png"),
 	ENTITY_EDITOR_NAME("EditorEntity"),
 	ENVIRONMENT_EDITOR_NAME("EditorEnvironment"),
-	CREATE_GAME_LABEL("createGameButtonLabel"),
-	PLAY_GAME_LABEL("playGameButtonLabel"),
 	LANG_LOC("propertyFiles/"), 
-	EDITOR_FACTORY_ERROR("editCreate"), 
-	ERROR("error"), 
-	NO_ENTITIES("noEntitiesError"),
 	CREATE_LOC("resources/createdGames/"),
 	XML(".xml");
 

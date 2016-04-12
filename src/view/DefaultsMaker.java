@@ -16,7 +16,7 @@ import model.component.visual.ImagePath;
 import model.entity.Entity;
 import javafx.scene.shape.Rectangle;
 
-public class LoadDefaults {
+public class DefaultsMaker {
 	
 	public static IEntity loadBackgroundDefault(){
 		IEntity entity = new Entity("Default Fire Background");
