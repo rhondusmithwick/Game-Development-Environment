@@ -297,6 +297,16 @@ public class Utilities {
 		for (IComponent component : entity.getAllComponents()) {
 			// newEntity.addComponent(component);
 			newEntity.forceAddComponent(component, true);
+			if (newEntity.hasComponent(Position.class)){
+				newEntity.removeComponent(Position.class);
+				Position newPos = new Position();
+				newEntity.forceAddComponent(newPos,true);
+			}
+			if (newEntity.hasComponent(ImagePath.class)){
+				newEntity.removeComponent(ImagePath.class);
+				ImagePath newPath = new ImagePath(entity.getComponent(ImagePath.class).getImagePath());
+				newEntity.forceAddComponent(newPath, true);
+			}
 		}
 		return newEntity;
 	}

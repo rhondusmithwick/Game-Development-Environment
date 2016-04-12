@@ -10,15 +10,22 @@ import enums.GUISize;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.SubScene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import view.DragAndResize;
@@ -28,17 +35,17 @@ import view.Utilities;
 public class EditorEnvironment extends Editor {
 
 	private BorderPane environmentPane;
-
-	private SubScene gameScene;
 	private VBox entityOptions;
+	private IEntitySystem entitiesInEnvironment;
+	private SubScene gameScene;
 	private Group gameRoot;
 	private ResourceBundle myResources;
-	private IEntitySystem entitiesInEnvironment;
 	private ObservableList<ISerializable> entitiesToDisplay;
 	private ObservableList<ISerializable> finalEnvironmentList;
-	private ScrollPane leftPane;
+	private VBox leftPane;
 	private VBox rightPane;
 	private VBox entitiesCurrentlyIn;
+	private TextField name;
 
 	public EditorEnvironment(String language, ISerializable toEdit, ObservableList<ISerializable> masterList,
 			ObservableList<ISerializable> addToList) {
@@ -60,15 +67,21 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void setLeftPane() {
-		leftPane = new ScrollPane();
-		leftPane.setContent(setEntityOptionsDisplay());
+		leftPane = new VBox();
+		leftPane.getChildren().add(setNameDisplay());
+		leftPane.getChildren().add(setEntityOptionsDisplay());
 	}
 
-	private VBox setEntityOptionsDisplay() {
+	private TextField setNameDisplay() {
+		name = new TextField(myResources.getString("environmentName"));
+		return name;
+	}
+
+	private ScrollPane setEntityOptionsDisplay() {
 		entityOptions = new VBox();
 		populateVbox(entityOptions, entitiesToDisplay);
 		loadDefaults();
-		return entityOptions;
+		return (new ScrollPane(entityOptions));
 	}
 
 	private void populateVbox(VBox vbox, ObservableList<ISerializable> entityPopulation) {
@@ -135,7 +148,18 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void saveEnvironment() {
+		entitiesInEnvironment.setName(name.getText());
 		finalEnvironmentList.add(entitiesInEnvironment);
+		environmentPane.getChildren().clear();
+		environmentPane.setCenter(savedMessage());
+	}
+
+	private Text savedMessage() {
+		Text text = new Text();
+		text.setFont(new Font(40));
+		text.setTextAlignment(TextAlignment.CENTER);
+		text.setText("Your environment has been saved.\nPlease close this tab.");
+		return text;
 	}
 
 	private void addToScene(IEntity entity) {
