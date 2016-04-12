@@ -1,4 +1,4 @@
-package view.editor;
+package view.editor.gameeditor;
 
 import java.util.List;
 import api.ISerializable;

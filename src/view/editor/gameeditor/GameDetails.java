@@ -1,4 +1,4 @@
-package view.editor;
+package view.editor.gameeditor;
 
 import java.io.File;
 import java.util.Arrays;

@@ -1,4 +1,4 @@
-package view.editor;
+package view.editor.gameeditor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,6 +25,10 @@ import model.entity.Entity;
 import model.entity.EntitySystem;
 import view.Authoring;
 import view.Utilities;
+import view.editor.Editor;
+import view.editor.EditorEntity;
+import view.editor.EditorEnvironment;
+import view.editor.EditorFactory;
 
 public class GameEditor extends Editor  {
 
