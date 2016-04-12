@@ -9,7 +9,9 @@ public enum DefaultStrings {
 	ENVIRONMENT_EDITOR_NAME("EditorEnvironment"),
 	LANG_LOC("propertyFiles/"), 
 	CREATE_LOC("resources/createdGames/"),
-	XML(".xml");
+	XML(".xml"), 
+	BACKGROUND_TEMPLATE_PATH("templates/Background"), 
+	PLATFORM_TEMPLATE_PATH("templates/PlatformSprite");
 
     private final String content;
 
