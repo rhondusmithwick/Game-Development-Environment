@@ -118,7 +118,6 @@ public class ImagePath implements IComponent {
 
 	public void setImageWidth(double imageWidth) {
 		this.imageWidthProperty().set(imageWidth);
-		System.out.println("Set width to: " + imageWidth);
 	}
 
 	public double getImageHeight() {
@@ -127,7 +126,6 @@ public class ImagePath implements IComponent {
 
 	public void setImageHeight(double imageHeight) {
 		this.imageHeightProperty().set(imageHeight);
-		System.out.println("Set height to: " + imageHeight);
 	}
 
 	@Override

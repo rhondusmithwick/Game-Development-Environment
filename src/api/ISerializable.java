@@ -1,5 +1,6 @@
 package api;
 
+import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
 
 import java.io.File;
@@ -11,7 +12,7 @@ import java.io.Serializable;
  *
  * @author Rhondu Smithwick, Tom Wu
  */
-public interface ISerializable extends Serializable {
+public interface ISerializable  {
 
     /**
      * Serializes this object to a File
@@ -30,4 +31,18 @@ public interface ISerializable extends Serializable {
     default String serializeToString() {
         return new XMLWriter<>().writeToString(this);
     }
+
+    /**
+     * Clones this object to the provided class. Must be the same class.
+     *
+     * @param objectClass the class to clone to (must be same class)
+     * @param <T>         the type
+     * @return a cloned object
+     */
+    default <T extends ISerializable> T clone(Class<T> objectClass) {
+        String clonedString = serializeToString();
+        Object obj = new XMLReader<>().readSingleFromString(clonedString);
+        return objectClass.cast(obj);
+    }
+
 }

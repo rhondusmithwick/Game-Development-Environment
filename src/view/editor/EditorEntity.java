@@ -81,8 +81,11 @@ public class EditorEntity extends Editor{
 
 	@Override
 	public void addSerializable(ISerializable serialize) {
+		if(!entityList.contains(serialize)){
+			entityList.add(serialize);
+		}
 		System.out.println("Saved Entity");
-		entityList.add(serialize);
+
 	}
 
 
