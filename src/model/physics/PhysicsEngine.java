@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import com.google.common.collect.Sets;
 import api.IPhysicsEngine;
@@ -12,6 +13,7 @@ import javafx.scene.shape.Shape;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.Collision;
+import model.component.physics.Mass;
 import api.IEntity;
 import api.IEntitySystem;
 
@@ -42,10 +44,10 @@ public class PhysicsEngine implements IPhysicsEngine {
 	}
 
 	@Override
-	public boolean applyImpulse(IEntity body, Impulse J) {
+	public boolean applyImpulse(IEntity body, Vector vector) {
 		if (body.hasComponent(Velocity.class)) {
 			Velocity v = body.getComponent(Velocity.class);
-			v.add(J.getJx(), J.getJy());
+			v.add(vector.getXComponent(), vector.getYComponent());
 			return true;
 		} else {
 			return false;
@@ -117,6 +119,43 @@ public class PhysicsEngine implements IPhysicsEngine {
 			}
 		}
 		return universe;
+	}
+	
+	public void changeVelocityAfterCollision(IEntity firstEntity, IEntity secondEntity) {		
+		//CALCULATE COEFFICIENT OF RESTITUTION
+		int restitution = 0;
+		
+		setNewVelocityForEntity(firstEntity, secondEntity, restitution);
+		setNewVelocityForEntity(secondEntity, firstEntity, restitution);
+	}
+	
+	private void setNewVelocityForEntity(IEntity entityToSet, IEntity entityCollidingWith, double restitution) {
+		double nextVX1 = getNextVelocityComponent(entityToSet, entityCollidingWith, restitution, (Velocity v) -> v.getVX());
+		double nextVY1 = getNextVelocityComponent(entityToSet, entityCollidingWith, restitution, (Velocity v) -> v.getVY());
+		entityToSet.getComponent(Velocity.class).setVXY(nextVX1, nextVY1);		
+	}
+	
+	private double getNextVelocityComponent(IEntity firstEntity, IEntity secondEntity, double restitution, Function<Velocity, Double> getCoordinate) {
+		double mass1 = firstEntity.getComponent(Mass.class).getMass();
+		double velocity1 = getCoordinate.apply(firstEntity.getComponent(Velocity.class));
+		
+		double mass2 = secondEntity.getComponent(Mass.class).getMass();
+		double velocity2 = getCoordinate.apply(secondEntity.getComponent(Velocity.class));
+		
+		double velocityWithoutRestitution = getVelocityWithoutRestitution(mass1, mass2, velocity1, velocity2);
+		return velocityWithoutRestitution + ((mass2 * restitution * (velocity2 - velocity1)) / (mass1 + mass2));
+	}
+	
+	private double getVelocityWithoutRestitution(double mass1, double mass2, double velocity1, double velocity2) {
+		return (mass1 * velocity1) + (mass2 * velocity2) / (mass1 + mass2);
+	}
+	
+	public void applyGravity(IEntitySystem universe, double timePassed) {
+		//will need to apply only to entities that are "prone" to gravity
+		//ex: floating platforms not prone to gravity
+		//NEED AMOUNT OF TIME THAT HAS PASSED
+		//assume time passed is in milliseconds (NEED TO FIGURE THIS OUT FOR SURE)
+		
 	}
 	
 	private void addCollisionComponents(IEntity entityAddingTo, IEntity entityAddingFrom) {

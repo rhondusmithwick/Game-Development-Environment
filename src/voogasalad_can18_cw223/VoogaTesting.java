@@ -11,7 +11,7 @@ import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.entity.Entity;
 import model.entity.EntitySystem;
-import model.physics.Impulse;
+import model.physics.Vector;
 import model.physics.PhysicsEngine;
 
 
@@ -43,7 +43,7 @@ public class VoogaTesting {
 		IPhysicsEngine p = new PhysicsEngine(null);
 		IEntitySystem universe = new EntitySystem();
 		universe.addEntity(e);
-		p.applyImpulse(e, new Impulse(10, 20));
+		p.applyImpulse(e, new Vector(10, 20));
 		assertEquals(Math.abs(v.getVX()-11.0)<0.0001, true);
 		assertEquals(Math.abs(v.getVY()-21.0)<0.0001, true);
 	}
