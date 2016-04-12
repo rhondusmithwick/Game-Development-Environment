@@ -1,5 +1,7 @@
 package animation;
 
+import java.io.File;
+
 import javafx.animation.Animation;
 import javafx.application.Application;
 import javafx.geometry.Rectangle2D;
@@ -11,15 +13,15 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 
 public class SandboxFX extends Application {
-
-    private static final Image IMAGE = new Image("http://upload.wikimedia.org/wikipedia/commons/7/73/The_Horse_in_Motion.jpg");
+	private static final File FILE = new File("resources/spriteSheets/spritesheet.png");
+    private static final Image IMAGE = new Image(FILE.toURI().toString());
 
     private static final int COLUMNS  =   4;
-    private static final int COUNT    =  10;
-    private static final int OFFSET_X =  18;
-    private static final int OFFSET_Y =  25;
-    private static final int WIDTH    = 374;
-    private static final int HEIGHT   = 243;
+    private static final int COUNT    =  16;
+    private static final int OFFSET_X =  0;
+    private static final int OFFSET_Y =  0;
+    private static final int WIDTH    = 125;
+    private static final int HEIGHT   = 125;
 
     public static void main(String[] args) {
         launch(args);
