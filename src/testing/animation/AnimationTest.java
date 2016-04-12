@@ -20,6 +20,7 @@ import javafx.util.Duration;
 import model.component.character.Health;
 import model.component.character.Score;
 import model.component.movement.Position;
+import model.component.movement.Velocity;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
 import model.entity.EntitySystem;
@@ -48,6 +49,7 @@ public class AnimationTest extends Application {
 		character.forceAddComponent(new Score((double) 100), true);
 		Position pos = new Position(250.0, 250.0);
 		character.forceAddComponent(pos, true);
+		character.forceAddComponent(new Velocity(20, 0), true);
 		character.forceAddComponent(
 				new ImagePath("resources/spriteSheets/spritesheet.png", 0.0, 0.0,
 						"resources/spriteSheets/spritesheet.png", new Rectangle2D(0, 0, 125, 125), true, 0.01, 4.0, 4),
@@ -89,7 +91,10 @@ public class AnimationTest extends Application {
 		for (IEntity entity : list) {
 			Position pos = entity.getComponent(Position.class);
 			ImagePath imagePath = entity.getComponent(ImagePath.class);
-			Rectangle2D viewport = imagePath.getViewport(); // TODO: for some reason, setting viewport internally fails
+			Rectangle2D viewport = imagePath.getViewport(); // TODO: for some
+															// reason, setting
+															// viewport
+															// internally fails
 			// ImageView image = createImage(imagePath, pos);
 			// testSprite.relocate(pos.getX(), pos.getY());
 			refreshDraw(testSprite, viewport, pos.getX(), pos.getY());
