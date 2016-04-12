@@ -7,6 +7,7 @@ import java.util.ResourceBundle;
 import enums.DefaultStrings;
 import enums.FileExtensions;
 import enums.GUISize;
+import enums.Indexes;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -14,7 +15,6 @@ import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Priority;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import view.Utilities;
@@ -37,7 +37,7 @@ public class GameDetails {
 		nameBox = createTextEntry("gName");
 		name = (TextArea) nameBox.getChildren().get(1);
 		descriptionBox = createTextEntry("gDesc");
-		desc = (TextArea) nameBox.getChildren().get(1);
+		desc = (TextArea) descriptionBox.getChildren().get(1);
 		showIcon();
 		
 	}
@@ -45,9 +45,9 @@ public class GameDetails {
 	private HBox createTextEntry(String name){
 		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
 		Label title = new Label(myResources.getString(name));
+		title.setMinWidth(GUISize.LABEL_MIN_WIDTH.getSize());
 		TextArea tArea = Utilities.makeTextArea(myResources.getString(name));
 		container.getChildren().addAll(title, tArea);
-		HBox.setHgrow(tArea, Priority.SOMETIMES);
 		return container;
 	}
 	
@@ -64,6 +64,10 @@ public class GameDetails {
 
 	private void setIconPicture(File file) {
 		iconPath = file.toURI().toString();
+		setImage();
+	}
+
+	private void setImage() {
 		icon.setImage(new Image(iconPath));
 		icon.setFitHeight(GUISize.ICON_SIZE.getSize());
 		icon.setFitWidth(GUISize.ICON_SIZE.getSize());
@@ -77,6 +81,15 @@ public class GameDetails {
 		File file = fChoose.showOpenDialog(s);
 		setIconPicture(file);
 	}
+	
+	
+	public void setDetails(List<String> list){
+		name.setText(list.get(Indexes.GAME_NAME.getIndex()));
+		desc.setText(list.get(Indexes.GAME_DESC.getIndex()));
+		iconPath = list.get(Indexes.GAME_ICON.getIndex());
+		setImage();
+	}
+
 	
 	
 	public List<Node> getElements(){

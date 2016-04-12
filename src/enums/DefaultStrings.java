@@ -11,7 +11,9 @@ public enum DefaultStrings {
 	LANG_LOC("propertyFiles/"), 
 	EDITOR_FACTORY_ERROR("editCreate"), 
 	ERROR("error"), 
-	NO_ENTITIES("noEntitiesError");
+	NO_ENTITIES("noEntitiesError"),
+	CREATE_LOC("resources/createdGames/"),
+	XML(".xml");
 
     private final String content;
 

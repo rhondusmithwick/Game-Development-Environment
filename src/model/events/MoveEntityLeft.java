@@ -4,6 +4,7 @@ import api.IEntity;
 import api.IEventListener;
 import model.component.movement.Velocity;
 
+@Deprecated
 public class MoveEntityLeft implements IEventListener {
 
 	private IEntity myEntity;

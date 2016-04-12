@@ -10,11 +10,13 @@ import api.ISystemManager;
  */
 @SuppressWarnings("unused")
 public class UseCase40 {
-/*    private final ISystemManager systemManager = new SystemManager();
-    private final IEnvironmentEditor editor = new EnvironmentEditor();
+
+    private final ISystemManager systemManager = new SystemManager();
+    //private final IEnvironmentEditor editor = new EnvironmentEditor();
 
     void doUseCase() {
         systemManager.pauseLoop(); // stop the game
-        editor.show();  // show the editor
-    }*/
+        //editor.show();  // show the editor
+    }
+
 }

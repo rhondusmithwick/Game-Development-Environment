@@ -1,16 +1,22 @@
 package view.editor;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import api.IEditor;
 import api.IEntity;
 import api.ISerializable;
+import datamanagement.XMLReader;
+import datamanagement.XMLWriter;
 import enums.DefaultStrings;
 import enums.GUISize;
+import enums.Indexes;
 import enums.ViewInsets;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -23,7 +29,6 @@ import view.Utilities;
 public class GameEditor extends Editor  {
 
 	private VBox pane, entities, environments;
-
 	private ResourceBundle myResources;
 	private EditorFactory editFact;
 	private Authoring authEnv;
@@ -36,20 +41,35 @@ public class GameEditor extends Editor  {
 	public GameEditor(Authoring authEnv, String language){
 		myLanguage = language;
 		gameDetails = new GameDetails(language);
-		pane = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
-		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
-		pane.setAlignment(Pos.TOP_LEFT);
 		myResources = ResourceBundle.getBundle(language);
 		editFact = new EditorFactory();
 		this.authEnv=authEnv;
 		this.masterEntityList = FXCollections.observableArrayList();
 		this.masterEnvironmentList = FXCollections.observableArrayList();
+		setPane();
 		addListeners();
+	}
+
+	private void setPane() {
+		pane = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
+		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
+		pane.setAlignment(Pos.TOP_LEFT);
+	}
+	
+	public GameEditor(Authoring authEnv, String language, String fileName){
+		this(authEnv, language);
+		loadFile(fileName);
+	}
+
+	private void loadFile(String fileName) {
+		XMLReader<List<String>> xReader  = new XMLReader<List<String>>();
+		List<List<String>> gameObjects = xReader.readFromFile(DefaultStrings.CREATE_LOC.getDefault() + fileName+ DefaultStrings.XML.getDefault());
+		List<String> details = gameObjects.get(Indexes.XML_GAME_DETAILS.getIndex());
+		gameDetails.setDetails(details);
 	}
 
 	
 	private void addListeners() {	
-		
 		masterEntityList.addListener(new ListChangeListener<ISerializable>() {
 
 			@Override
@@ -67,15 +87,10 @@ public class GameEditor extends Editor  {
 			}
 		});
 
-
-
 	}
 
 	@Override
-	public void loadDefaults() {
-		// TODO Auto-generated method stub
-
-	}
+	public void loadDefaults() {}
 
 	@Override
 	public Pane getPane() {
@@ -87,19 +102,20 @@ public class GameEditor extends Editor  {
 	public void populateLayout() {
 		VBox right = rightPane();
 		VBox left = leftPane();
+		left.prefWidthProperty().bind(pane.widthProperty().divide(2));
+		right.prefWidthProperty().bind(pane.widthProperty().divide(2));
 		HBox container = new HBox(GUISize.GAME_EDITOR_PADDING.getSize());
 		container.getChildren().addAll(left, right);
 		pane.getChildren().addAll(container);
-
 	}
 
 	private VBox rightPane() {
 		VBox temp = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
+		temp.getChildren().add( new Label(myResources.getString("entities")));
 		temp.getChildren().add(createEntityList());
+		temp.getChildren().add( new Label(myResources.getString("environments")));
 		temp.getChildren().add(createEnvList());
 		return temp;
-
-
 	}
 	
 	private VBox leftPane() {
@@ -113,7 +129,7 @@ public class GameEditor extends Editor  {
 
 	private ScrollPane createEnvList() {
 		ScrollPane scroll = new ScrollPane();
-		environments = new VBox();
+		environments = new VBox(GUISize.SCROLL_PAD.getSize());
 		updateEnvironments();
 		scroll.setContent(environments);
 		return scroll;
@@ -125,12 +141,12 @@ public class GameEditor extends Editor  {
 	}
 
 	//private void addEnvironmentToScroll(EntitySystem e, VBox container) {
-	//container.getChildren().add(Utilities.makeButton(, handler))
+		//container.getChildren().add(Utilities.makeButton(, handler))
 	//}
 
 	private ScrollPane createEntityList() {
 		ScrollPane scroll = new ScrollPane();
-		entities = new VBox();
+		entities = new VBox(GUISize.SCROLL_PAD.getSize());
 		updateEntities();
 		scroll.setContent(entities);
 		return scroll;
@@ -147,7 +163,10 @@ public class GameEditor extends Editor  {
 	}
 
 	private void saveGame() {
-		// TODO Auto-generated method stub
+		XMLWriter<List<String>> writer = new XMLWriter<List<String>>();
+		String name = gameDetails.getGameDetails().get(Indexes.GAME_NAME.getIndex());
+		writer.writeToFile(DefaultStrings.CREATE_LOC.getDefault() + name.trim()+ DefaultStrings.XML.getDefault(), Arrays.asList(gameDetails.getGameDetails()));
+		System.out.println("Saved");
 	}
 
 	private void editorButtons(VBox container) {
@@ -170,10 +189,7 @@ public class GameEditor extends Editor  {
 	}
 
 	@Override
-	public void addSerializable(ISerializable serialize) {
-		// TODO Auto-generated method stub
-
-	}
+	public void addSerializable(ISerializable serialize) {}
 
 
 /*	public ObservableList<ISerializable> getMasterList() {
