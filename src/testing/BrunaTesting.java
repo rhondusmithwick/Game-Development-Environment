@@ -18,17 +18,9 @@ public class BrunaTesting {
 	
 	
 	@Before
-	    public void setUp () {
-		System.out.println("ro aww xon");
-		myStage = new Stage();
-		myStage.setTitle("Testing");
-		myStage.setWidth(GUISize.MAIN_SIZE.getSize());
-		myStage.setHeight(GUISize.MAIN_SIZE.getSize());
-		//myEditorEnvironment = new EditorEnvironment(new EntitySystem(), "English", new Button());
-		//myScene = new Scene(myEditorEnvironment.getPane(), GUISize.MAIN_SIZE.getSize(), GUISize.MAIN_SIZE.getSize());
-		
-		myStage.show();
-	}
+    public void setUp () {
+	myGameEditor = new GameEditor(null, "propertyFiles/english");
+}
 
 
 @Test

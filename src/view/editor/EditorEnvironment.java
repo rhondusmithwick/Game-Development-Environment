@@ -51,6 +51,7 @@ public class EditorEnvironment extends Editor{
 	
 	@SuppressWarnings("unchecked")
 	public EditorEnvironment(String language, ISerializable toEdit, ObservableList<ISerializable>masterList, ObservableList<ISerializable> addToList){
+		// entity system 
 		myResources = ResourceBundle.getBundle(language);
 		//masterEntities = masterList;
 		masterList.addListener((ListChangeListener<? super ISerializable>) c -> {this.updateDisplay(masterList);}); 
@@ -195,9 +196,12 @@ public class EditorEnvironment extends Editor{
 
 	@Override
 	public void loadDefaults() {
+		if  (Utilities.confirmationBox("Add Defaults", "We have some defaults we can add!", 
+				"Do you want to go ahead and let us add some default entities for your use?") == ButtonType.OK){
 		displayEntities.add(LoadDefaults.loadBackgroundDefault());
 		displayEntities.add(LoadDefaults.loadPlatformDefault(displayEntities));
 		//populateVbox(entityOptions,displayEntities);
+		}
 	}
 
 	@Override
