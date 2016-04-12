@@ -1,5 +1,6 @@
 package api;
 
+import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
 
 import java.io.File;
@@ -30,4 +31,11 @@ public interface ISerializable extends Serializable {
     default String serializeToString() {
         return new XMLWriter<>().writeToString(this);
     }
+
+    default <T extends ISerializable> T clone(Class<T> objectClass) {
+        String clonedString = new XMLWriter<>().writeToString(this);
+        Object obj = new XMLReader<>().readSingleFromString(clonedString);
+        return objectClass.cast(obj);
+    }
+    
 }
