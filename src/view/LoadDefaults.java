@@ -22,7 +22,7 @@ public class LoadDefaults {
 		IEntity entity = new Entity("Default Dragon Temple Background");
 		entity.loadSpecsFromPropertiesFile("templates/Background");
 		entity.addComponent(new Position());
-	    entity.addComponent(new ImagePath("resources/images/dragontemple.gif"));
+	    entity.addComponent(new ImagePath("resources/images/fire.gif"));
 		//entity.forceAddComponent(new Position(),true);
 	    //entity.forceAddComponent(new ImagePath("resources/images/dragontemple.gif"),true);
 		return entity;
