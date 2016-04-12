@@ -26,6 +26,7 @@ public class ImagePath implements IComponent {
 	private final boolean isAnimated;
 	private final double frameDuration, totalDuration;
 	private static final String PROPERTIES_DIR = "templates.";
+	private final String spriteName;
 
 	public ImagePath() {
 		this("resources/RhonduSmithwick.JPG");
@@ -38,7 +39,7 @@ public class ImagePath implements IComponent {
 	 *            starting value
 	 */
 	public ImagePath(String imagePath) {
-		this(imagePath, 0.0, 0.0, "resources/RhonduSmithwick.JPG", false, 0.0, 0.0);
+		this(imagePath, 0.0, 0.0, "resources/RhonduSmithwick.JPG", false, 0.0, 0.0, "Rhondu");
 	}
 
 	/**
@@ -62,13 +63,14 @@ public class ImagePath implements IComponent {
 	 *            offset in y-direction
 	 */
 	public ImagePath(String imagePath, double imageWidth, double imageHeight, String spritesheetPath,
-			boolean isAnimated, double frameDuration, double totalDuration) {
+			boolean isAnimated, double frameDuration, double totalDuration, String spriteName) {
 		this.imagePathProperty = new SingleProperty<>("ImagePath", imagePath);
 		this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", imageHeight);
 		this.spritesheetPath = new SingleProperty<>("SpritesheetPath", spritesheetPath);
 		this.isAnimated = isAnimated;
 		this.frameDuration = frameDuration;
 		this.totalDuration = totalDuration;
+		this.spriteName = spriteName;
 	}
 
 	/**
@@ -130,7 +132,7 @@ public class ImagePath implements IComponent {
 	}
 
 	public String getSpriteProperties() {
-		return PROPERTIES_DIR  + this.imagePathProperty.property1().get();
+		return PROPERTIES_DIR  + this.spriteName;
 	}
 
 

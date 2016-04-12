@@ -46,7 +46,7 @@ public class SandboxFX extends Application {
 //        );
         IEntity entity = new Entity();
         Animator animator = new Animator();
-        ImagePath imagePath = new ImagePath("spritesheet",125, 125, "resources/spriteSheets/spritesheet.png",true, 1000.0, 1000.0);
+        ImagePath imagePath = new ImagePath(null, 125, 125, "resources/spriteSheets/spritesheet.png",true, 1000.0, 1000.0, "spritesheet");
 		entity.addComponent(imagePath);
         Animation animation = animator.createAnimation("walkleft",entity);
 		animation.setCycleCount(Animation.INDEFINITE);
