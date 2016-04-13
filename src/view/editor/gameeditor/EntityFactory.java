@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 
 import api.IComponent;
 import api.IEntity;
+import enums.DefaultStrings;
 import model.entity.Entity;
 import view.Utilities;
 
@@ -14,7 +15,7 @@ public class EntityFactory {
 	public IEntity createEntity(String template, String language){
 		
 		IEntity entity = new Entity();
-		entity.loadSpecsFromPropertiesFile("templates/" + template);
+		entity.loadSpecsFromPropertiesFile(DefaultStrings.TEMPLATE_BUNDLE_LOC.getDefault() + template);
 		Map<Class<? extends IComponent>, Integer> numComponents = entity.getSpecs();
 		numComponents.keySet().stream().forEach(e->addComponent(e, entity, numComponents, language));
 		return entity;
@@ -25,9 +26,8 @@ public class EntityFactory {
 		int numToAdd = numComponents.get(componentName);
 		for(int i=0; i<numToAdd; i++){
 			try {
-				if(!componentName.getName().equals("Position")){
 					entity.addComponent(componentName.getConstructor().newInstance());
-				}
+				
 			} catch (Exception e) {
 				ResourceBundle resources = ResourceBundle.getBundle(language);
 				Utilities.showError(resources.getString("error"), resources.getString("createComp"));
