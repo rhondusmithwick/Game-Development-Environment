@@ -29,20 +29,21 @@ import javafx.scene.input.KeyCode;
 public class EventSystem implements Observer{
 	
 	IEntitySystem universe;
-	Map<Observable, Action> actionMap = new HashMap<>();
+	Map<Trigger, Action> actionMap = new HashMap<>();
 	
 	public EventSystem(IEntitySystem universe) {
 		this.universe = universe;
 	}
 	
-	public void registerEvent(Observable trigger, Action action) {
+	public void registerEvent(Trigger trigger, Action action) {
 		actionMap.put(trigger, action);
 		trigger.addObserver(this);
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		actionMap.get(o).activate(universe);
+		Action action = actionMap.get(((Trigger)o));
+		action.activate(universe);
 	}
 	
 	

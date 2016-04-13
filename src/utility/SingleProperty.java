@@ -14,7 +14,7 @@ import events.Trigger;
  * @param <A> the type of the first property
  * @author Rhondu Smithwick
  */
-public class SingleProperty<A> extends Trigger {
+public class SingleProperty<A> {
 
     private final SimpleObjectProperty<A> property1;
 

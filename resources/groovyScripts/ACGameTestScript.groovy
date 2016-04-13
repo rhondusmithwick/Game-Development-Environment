@@ -8,13 +8,11 @@ package groovyScripts
 import model.component.movement.Position;
 import model.component.character.Health;
 
-position = entity.getComponent(Position.class);
-health = entity.getComponent(Health.class);
-
-def moved = $1 as double;
-
+position = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Position.class);
+health = universe.getEntitiesWithName("Anolyn").get(0).getComponent(Health.class);
+System.out.println(position.getX());
 if (position.getX() > 500) {
 	health.setHealth(0);
-	System.out.println(health.getHealth());
+	System.out.println("HEY " + health.getHealth());
 }
 //position.setX(position.getX() + moved);

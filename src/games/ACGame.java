@@ -1,9 +1,7 @@
 package games;
 
 import events.Action;
-import events.EntityAction;
 import events.EventSystem;
-import events.InputSystem;
 import events.Trigger;
 import games.ACGameXChangeListener;
 import model.component.character.Health;
@@ -16,16 +14,12 @@ import model.physics.PhysicsEngine;
 import api.IComponent;
 import api.IEntity;
 import api.IEntitySystem;
-
 import java.io.File;
 import java.io.IOException;
-
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -41,16 +35,18 @@ public class ACGame {
     public static final int KEY_INPUT_SPEED = 5;
     private static final double GROWTH_RATE = 1.1;
     private static final int BOUNCER_SPEED = 30;
-
+    private static Group root;
+    
 	private final IEntitySystem universe = new EntitySystem();
 	private final EventSystem eventSystem = new EventSystem(universe);
-	//private final InputSystem inputSystem = new InputSystem();
 	private final PhysicsEngine physics = new PhysicsEngine(universe);
 	private IEntity character;
 	private final String IMAGE_PATH = "resources/images/blastoise.png";
 	private final String healthScriptPath = "resources/groovyScripts/ACGameTestScript.groovy";
+	private static ImageView charSpr; 
+    
     private Scene myScene;
-    private Group root;
+    
 
     /**
      * Returns name of the game.
@@ -86,33 +82,47 @@ public class ACGame {
 		//character.getComponent(Position.class).getProperties().get(0).addListener(new ACGameXChangeListener(character));
 		//character.getComponent(Position.class).getProperties().get(0).addListener(new EntityAction(character));
     	universe.addEntity(character);
-    	eventSystem.registerEvent(new Trigger(character.getComponent(Position.class).getProperties().get(0)), new Action(healthScriptPath));
-    	//Action healthAction = getAction(healthScriptPath, character, pos);
-    	//inputSystem.addEvent("HEALTH_DECREASE", healthAction);
+    	
+		character.addComponent(new ImagePath(IMAGE_PATH));
+    	eventSystem.registerEvent(new Trigger(character.getID(), character.getComponent(Position.class), 0, universe), getAction(healthScriptPath));
+		charSpr = drawCharacter(character);
 	}
 	
 	public void step(double dt) {
 		physics.update(universe, dt);
-		moveEntity(character, 20);
-		draw(character);
+		moveEntity(character, 1);
+		refreshDraw(charSpr);
 	}
 	
-	private Action getAction(String scriptPath, IEntity entity, IComponent component) {
+	private void refreshDraw(ImageView img) {
+		root.getChildren().clear();
+		root.getChildren().add(img);
+	}
+	
+	public ImageView drawCharacter(IEntity character) { 
+		ImagePath imgPath = character.getComponent(ImagePath.class);
+		ImageView charSprite = imgPath.getImageView();
+		charSprite.setFitHeight(100);
+		charSprite.setPreserveRatio(true);
+		charSprite.xProperty().bind(character.getComponent(Position.class).xProperty());
+		charSprite.yProperty().bind(character.getComponent(Position.class).yProperty());
+		root.getChildren().add(charSprite);
+		return charSprite;
+		//ImageView testSprite = new ImageView(file.toURI().toString());
+	}
+	
+	private Action getAction(String scriptPath) {
 		String script = null;
 		try {
 			script = Files.toString(new File(scriptPath), Charsets.UTF_8);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return new EntityAction(script, entity, component);
+		return new Action(script);
 	}
 	
 	private void moveEntity(IEntity character, int move) { 
 		 Position pos = character.getComponent(Position.class);
 		 pos.setX(pos.getX() + move);
-	}
-	
-	private void draw(IEntity character) {
-		
 	}
 }
