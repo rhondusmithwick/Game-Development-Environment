@@ -2,7 +2,6 @@ package events;
 
 import api.IEntitySystem;
 import javafx.scene.input.KeyCode;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -37,7 +36,6 @@ public class InputSystem {
     }
 
     public void take(KeyCode k) {
-    	// TODO maybe change this if tree
         if (containsKey(k)) {
         	String actionName = keyMap.get(k);
         	if(containsEvent(actionName)) {

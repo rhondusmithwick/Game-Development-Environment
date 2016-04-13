@@ -2,7 +2,6 @@ package events;
 
 import api.IEntitySystem;
 import api.ISerializable;
-
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
@@ -21,6 +20,7 @@ public class Action implements ISerializable{
     private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
     private String script;
     private final Map<String, Object> parameters = new HashMap<>();
+
 
     public Action(String script) {
         setScript(script);
@@ -66,5 +66,4 @@ public class Action implements ISerializable{
         engine = new ScriptEngineManager().getEngineByName("groovy");
 
     }
-
 }
