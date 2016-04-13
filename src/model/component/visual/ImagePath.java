@@ -21,9 +21,9 @@ public class ImagePath implements IComponent {
 	/**
 	 * The singleProperty.
 	 */
-	private final SingleProperty<String> spritesheetPath;
+	private SingleProperty<String> imagePath;
 	private ObjectProperty<ImageView> imageViewProperty = new SimpleObjectProperty<ImageView>();	private final String spriteName;
-
+	
 
 	public ImagePath() {
 		this("resources/RhonduSmithwick.JPG");
@@ -42,6 +42,7 @@ public class ImagePath implements IComponent {
 		this("resources/RhonduSmithwick.JPG", "Rhodu");
         ImageView imageView = new ImageView(new Image(new File(imagePath).toURI().toString()));
         imageViewProperty.set(imageView);
+		this.imagePath = new SingleProperty<>("ImagePath", imagePath);
 	}
 
 	// TODO: IMPORTANT NOTE: I forgot to account for columns!
@@ -66,7 +67,7 @@ public class ImagePath implements IComponent {
 	 *            offset in y-direction
 	 */
 	public ImagePath(String spritesheetPath, String spriteName) {
-		this.spritesheetPath = new SingleProperty<>("SpritesheetPath", spritesheetPath);
+		this.imagePath = new SingleProperty<>("SpritesheetPath", spritesheetPath);
 		this.spriteName = spriteName;
 		File resource = new File(spritesheetPath);
 		Image image = new Image(resource.toURI().toString());
@@ -117,7 +118,7 @@ public class ImagePath implements IComponent {
 	}
 
 	public String getSpriteSheet(){
-		return this.spritesheetPath.property1().get();
+		return this.imagePath.property1().get();
 	}
 	
 	public String getSpriteName(){
@@ -127,6 +128,10 @@ public class ImagePath implements IComponent {
 	public String getSpriteProperties() {
 		return PROPERTIES_DIR + this.spriteName;
 
+	}
+
+	public String getImagePath() {
+		return imagePath.property1().get();
 	}
 
 
