@@ -74,8 +74,7 @@ public class EditorEntity extends Editor{
 				}
 			}
 		}
-		System.out.println(vbox.getChildren());	
-		saveButton = Utilities.makeButton("Save Entity", e-> addSerializable(myEntity));
+		saveButton = Utilities.makeButton(myResources.getString("saveEntity"), e-> addSerializable(myEntity));
 		vbox.getChildren().add(saveButton);
 		editorPane.getChildren().add(vbox);
 
