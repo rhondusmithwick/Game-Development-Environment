@@ -1,7 +1,7 @@
 package view.editor;
 
 import java.util.Collection;
-
+import java.util.ResourceBundle;
 import view.Utilities;
 import gui.GuiObject;
 import gui.GuiObjectFactory;
@@ -9,6 +9,7 @@ import model.entity.Entity;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextArea;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
@@ -30,10 +31,13 @@ public class EditorEntity extends Editor{
 	private String myLanguage;
 	private ObservableList<ISerializable> entityList;
 	private Button saveButton;
+	private ResourceBundle myResources;
+	private TextArea name;
 
 	public EditorEntity(String language, ISerializable toEdit, ObservableList<ISerializable> addToList, ObservableList<ISerializable> emptyList) {
 		editorPane = new GridPane();
 		myLanguage = language;
+		myResources = ResourceBundle.getBundle(language);
 		myEntity = (Entity) toEdit;
 		entityList = addToList;
 
@@ -54,6 +58,9 @@ public class EditorEntity extends Editor{
 	@Override
 	public void populateLayout() {
 		vbox = new VBox();
+		name = Utilities.makeTextArea(myResources.getString("enterName"));
+		name.setText(myEntity.getName());
+		vbox.getChildren().add(name);
 		GuiObjectFactory guiFactory = new GuiObjectFactory(myLanguage);
 		Collection<IComponent> componentList = myEntity.getAllComponents();
 		
@@ -80,9 +87,11 @@ public class EditorEntity extends Editor{
 	}
 
 	@Override
-	public void addSerializable(ISerializable serialize) {
-		System.out.println("Saved Entity");
+	public void addSerializable(ISerializable serialize) {	
+		((IEntity) serialize).setName(name.getText());
+		entityList.remove(serialize);
 		entityList.add(serialize);
+
 	}
 
 
