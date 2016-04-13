@@ -6,6 +6,8 @@ import java.io.IOException;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
+import api.IEntitySystem;
+
 public class ActionFactory {
 	
 	private ActionFactory(){}

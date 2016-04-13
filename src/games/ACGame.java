@@ -75,14 +75,17 @@ public class ACGame {
 		character = new Entity("Anolyn");
 		character.forceAddComponent(new Health((double) 100), true);
 		character.forceAddComponent(new Score((double) 100), true);
-		Position pos = new Position(250.0, 250.0);
+		Position pos = new Position(100.0, 100.0);
 		character.forceAddComponent(pos, true);
 		character.forceAddComponent(new ImagePath(IMAGE_PATH), true);
 		//character.forceAddComponent(new Velocity(20.0, 50.0), true);
 		//character.getComponent(Position.class).getProperties().get(0).addListener(new ACGameXChangeListener(character));
 		//character.getComponent(Position.class).getProperties().get(0).addListener(new EntityAction(character));
     	universe.addEntity(character);
-    	
+//    	character.getComponent(Position.class).getProperties().get(0).addListener(new ACGameXChangeListener(character));
+//		character.addComponent(new ImagePath(IMAGE_PATH));
+//    	Action healthAction = getAction(healthScriptPath, character, pos);
+//    	inputSystem.addEvent("HEALTH_DECREASE", healthAction);
 		character.addComponent(new ImagePath(IMAGE_PATH));
     	eventSystem.registerEvent(new Trigger(character.getID(), character.getComponent(Position.class), 0, universe), getAction(healthScriptPath));
 		charSpr = drawCharacter(character);
@@ -91,12 +94,6 @@ public class ACGame {
 	public void step(double dt) {
 		physics.update(universe, dt);
 		moveEntity(character, 1);
-		refreshDraw(charSpr);
-	}
-	
-	private void refreshDraw(ImageView img) {
-		root.getChildren().clear();
-		root.getChildren().add(img);
 	}
 	
 	public ImageView drawCharacter(IEntity character) { 

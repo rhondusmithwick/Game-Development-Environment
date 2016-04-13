@@ -21,7 +21,6 @@ public class Action implements ISerializable{
     private String script;
     private final Map<String, Object> parameters = new HashMap<>();
 
-
     public Action(String script) {
         setScript(script);
     }

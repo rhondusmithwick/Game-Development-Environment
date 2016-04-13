@@ -12,7 +12,6 @@ import java.io.File;
  *
  * @author Rhondu Smithwick, Tom Wu
  */
-
 public interface ISerializable {
 
     /**
