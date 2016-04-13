@@ -1,6 +1,7 @@
 package view.editor.gameeditor;
 
 import java.util.ResourceBundle;
+import api.IEntitySystem;
 import api.ISerializable;
 import enums.DefaultStrings;
 import javafx.collections.ObservableList;
@@ -34,10 +35,10 @@ public class EnvironmentDisplay extends ObjectDisplay{
 
 	@Override
 	protected void addNewObjects(VBox container) {
-		masterEnvList.stream().forEach(e-> addEnvironmentToScroll((EntitySystem) e, container));
+		masterEnvList.stream().forEach(e-> addEnvironmentToScroll((IEntitySystem) e, container));
 	}
 
-	private void addEnvironmentToScroll(EntitySystem eSystem, VBox container) {
+	private void addEnvironmentToScroll(IEntitySystem eSystem, VBox container) {
 		container.getChildren().add(Utilities.makeButton(eSystem.getName(), f->createEditor(EditorEnvironment.class, eSystem, masterEnvList )));
 	}
 	
