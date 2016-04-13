@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import api.IDataWriter;
+import api.IEntitySystem;
 import api.ISerializable;
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
@@ -103,6 +104,7 @@ public class GameEditor extends Editor  {
 	}
 	
 	private void saveGame() {
+		masterEnvironmentList.stream().forEach(env->removeBindings(env));
 		SaveGame sGame = new SaveGame(gameDetails.getGameDetails(), new ArrayList<ISerializable>(masterEntityList), new ArrayList<ISerializable>(masterEnvironmentList));
 		IDataWriter<SaveGame> writer = new XMLWriter<>();
 		String name = gameDetails.getGameDetails().get(Indexes.GAME_NAME.getIndex());
@@ -110,6 +112,11 @@ public class GameEditor extends Editor  {
 		System.out.println("Saved");
 	}
 	
+	private void removeBindings(ISerializable env) {
+		((IEntitySystem) env).removeAllBindingsFromComponents();
+		
+	}
+
 	@Override
 	public void updateEditor() {
 		populateLayout();
