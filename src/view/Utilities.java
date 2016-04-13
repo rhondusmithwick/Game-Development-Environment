@@ -326,18 +326,18 @@ public class Utilities {
 	@Deprecated
 	public static ImageView createImage(ImagePath path, Position pos) {
 		ImageView imageView = setUpImagePathSize(path);
-		imageView.fitHeightProperty().bind(imageView.fitHeightProperty());
-		imageView.fitWidthProperty().bind(imageView.fitWidthProperty());
-		imageView.translateXProperty().bind(pos.xProperty());
-		imageView.translateYProperty().bind(pos.yProperty());
+		//imageView.fitHeightProperty().bind(imageView.fitHeightProperty());
+		//imageView.fitWidthProperty().bind(imageView.fitWidthProperty());
+		//imageView.translateXProperty().bind(pos.xProperty());
+		//imageView.translateYProperty().bind(pos.yProperty());
 		return imageView;
 	}
 	
 	@Deprecated
 	public static ImageView setBinding(ImagePath path, Position pos) {
 		path.getImageView().setPreserveRatio(true);
-		path.getImageView().translateXProperty().bind(pos.xProperty());
-		path.getImageView().translateYProperty().bind(pos.yProperty());
+		//path.getImageView().translateXProperty().bind(pos.xProperty());
+		//path.getImageView().translateYProperty().bind(pos.yProperty());
 		return path.getImageView();
 	}
 
