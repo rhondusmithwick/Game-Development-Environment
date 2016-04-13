@@ -203,6 +203,7 @@ public class ImagePath implements IComponent {
 		// reconstruct imageView
 		File resource = new File(this.imagePathProperty().get());
 		Image image = new Image(resource.toURI().toString());
+		System.out.println("Deserialized: " + resource.toURI().toString());
 		this.imageView = new ImageView(image);
 	}
 

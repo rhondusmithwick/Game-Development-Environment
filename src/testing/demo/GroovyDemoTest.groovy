@@ -11,7 +11,7 @@ import api.IEntitySystem
 import api.ISystemManager
 
 /**
- * Created by Tom on 4/7/2016.
+ * Created by Tom on 4/13/2016.
  */
 class GroovyDemoTest {
 	String IMAGE_PATH = "resources/RhonduSmithwick.JPG"
@@ -42,5 +42,13 @@ class GroovyDemoTest {
 		IEntitySystem universe = game.getEntitySystem()
 		GroovyDemoTest test = new GroovyDemoTest()
 		universe.addEntities(test.getCharacter0(), test.getCharacter1())
+	}
+
+	static void saveSystem(IEntitySystem universe) {
+		universe.serialize("test.sav")
+	}
+
+	static void loadSystem(ISystemManager game, String filename) {
+		game.evaluate("test.sav")
 	}
 }

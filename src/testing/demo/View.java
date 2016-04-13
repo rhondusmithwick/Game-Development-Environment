@@ -5,7 +5,6 @@ import java.util.Collection;
 import api.IEntity;
 import api.IEntitySystem;
 import api.ISystemManager;
-import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -31,7 +30,8 @@ public class View {
 	private final Stage myStage;
 	private final Group root = new Group();
 	private final ConsoleTextArea console = new ConsoleTextArea();
-	private final Button evaluateButton = new Button();
+	private final Button evaluateButton = new Button("Evaluate");
+	private final Button loadButton = new Button("Load");
 	private final GroovyShell shell = new GroovyShell();
 	private ISystemManager model = new SystemManager();
 
@@ -81,6 +81,7 @@ public class View {
 		BorderPane inputPane = new BorderPane();
 		inputPane.setTop(console);
 		inputPane.setBottom(evaluateButton);
+		inputPane.setRight(loadButton);
 		pane.setBottom(inputPane);
 		return pane;
 	}
@@ -97,17 +98,27 @@ public class View {
 	}
 
 	private void initButtons() {
-		evaluateButton.setText("Evaluate");
+		// evaluateButton.setText("Evaluate");
 		evaluateButton.setOnAction(e -> this.evaluate());
+		loadButton.setOnAction(e -> this.load());
 	}
 
-	private void initEngine() {
+	private void initEngine() { // TODO: make it possible to import classes
+								// directly within shell
+		// Binding binding = new Binding();
+		// binding.setVariable("game", this.model);
+		// binding.setVariable("demo", new GroovyDemoTest());
+		shell.setVariable("game", this.model);
+		shell.setVariable("universe", this.model.getEntitySystem());
+		shell.setVariable("demo", new GroovyDemoTest());
 		// this.engine.put("game", this.model);
-		Binding binding = new Binding();
-		binding.setVariable("game", this.model);
 		// this.engine.put("universe", this.model.getEntitySystem());
 		// this.engine.put("c0", (new GroovyDemoTest()).getCharacter0());
 		// this.engine.put("c1", (new GroovyDemoTest()).getCharacter1());
+	}
+
+	private void load() { // TODO: load from "demo.xml"
+		// this.model = ?
 	}
 
 	private void evaluate() {
