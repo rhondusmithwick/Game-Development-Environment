@@ -23,15 +23,32 @@ public class GuiObjectFactory {
 	public GuiObject createNewGuiObject(String type, SimpleObjectProperty<?> property, Object object){
 
 		switch(type){
-			case("Direction"):{
+			case("Attack"):{
 				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
 			}
-			case("Speed"):{
-				return new GuiObjectSlider(type, GUI_RESOURCES, null, property, object);
+			case("Defense"):{
+				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
+			}
+			case("Beta"):{
+				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
+			}
+			case("Health"):{
+				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
+			}
+			case("Lives"):{
+				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
+			}
+			case("Mass"):{
+				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
+			}
+			case("Orientation"):{
+				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
+			}
+			case("Score"):{
+				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
 			}
 
-
-			}
+		}
 		
 		return null;
 	}
