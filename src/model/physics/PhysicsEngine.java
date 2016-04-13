@@ -9,6 +9,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import com.google.common.collect.Sets;
 import api.IPhysicsEngine;
+import javafx.geometry.Bounds;
 import javafx.scene.shape.Shape;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
@@ -42,7 +43,6 @@ public class PhysicsEngine implements IPhysicsEngine {
 			Velocity velocity = p.getComponent(Velocity.class);
 			double dx = dt * velocity.getVX();
 			double dy = dt * velocity.getVY();
-			System.out.println(pos+" "+dt+" "+velocity.getVX()+" "+velocity.getVY());
 			pos.add(dx, dy);
 		});
 	}
@@ -63,10 +63,10 @@ public class PhysicsEngine implements IPhysicsEngine {
 		List<Collision> cList1 = e1.getComponentList(Collision.class);
 		List<Collision> cList2 = e2.getComponentList(Collision.class);
 		for (Collision c1 : cList1) {
-			Shape mask1 = c1.getMask();
+			Bounds mask1 = c1.getMask();
 			Collection<String> IDList1 = c1.getIDs();
 			for (Collision c2 : cList2) {
-				Shape mask2 = c2.getMask();
+				Bounds mask2 = c2.getMask();
 				Collection<String> IDList2 = c2.getIDs();
 				if (!this.areIntersectingIDLists(IDList1, IDList2)) {
 					// TODO
@@ -120,12 +120,14 @@ public class PhysicsEngine implements IPhysicsEngine {
 	}
 	
 	private void addCollisionComponents(IEntity firstEntity, IEntity secondEntity) {
-		List<Shape> firstHitBoxes = getHitBoxesForEntity(firstEntity);
-		List<Shape> secondHitBoxes = getHitBoxesForEntity(secondEntity);
+		List<Bounds> firstHitBoxes = getHitBoxesForEntity(firstEntity);
+		List<Bounds> secondHitBoxes = getHitBoxesForEntity(secondEntity);
 
-		for (Shape firstHitBox : firstHitBoxes) {
-			for (Shape secondHitBox : secondHitBoxes) {
-				if (firstHitBox.intersects(secondHitBox.getBoundsInParent())) {
+		for (Bounds firstHitBox : firstHitBoxes) {
+			for (Bounds secondHitBox : secondHitBoxes) {
+				System.out.println("Check for collision "+firstHitBox.getMinX()+" "+firstHitBox.getMaxX()+" "+secondHitBox.getMinX()+" "+secondHitBox.getMaxX());
+				if (firstHitBox.intersects(secondHitBox)) {
+					System.out.println("COLLISION OCCURRED");
 					addCollisionID(firstEntity, secondEntity);
 					addCollisionID(secondEntity, firstEntity);
 					changeVelocityAfterCollision(firstEntity, secondEntity);
@@ -174,9 +176,9 @@ public class PhysicsEngine implements IPhysicsEngine {
 		entityAddingTo.getComponent(Collision.class).addCollidingID(entityAddingFrom.getID());
 	}
 	
-	private List<Shape> getHitBoxesForEntity(IEntity entity) {
+	private List<Bounds> getHitBoxesForEntity(IEntity entity) {
 		List<Collision> collisionComponents = entity.getComponentList(Collision.class);
-		List<Shape> hitBoxes = new ArrayList<>();
+		List<Bounds> hitBoxes = new ArrayList<>();
 		for (Collision hitBox : collisionComponents) {
 			hitBoxes.add(hitBox.getMask());
 		}

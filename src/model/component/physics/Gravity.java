@@ -1,4 +1,4 @@
-package model.component.character;
+package model.component.physics;
 
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
@@ -19,6 +19,7 @@ public class Gravity implements IComponent {
      * Empty constructor. Defaults to 9.81.
      */
     public Gravity() {
+    	setGravity(1000);
     }
 
     /**
@@ -27,7 +28,6 @@ public class Gravity implements IComponent {
      * @param gravity the initial value
      */
     public Gravity(double gravity) {
-        this();
         setGravity(gravity);
     }
 

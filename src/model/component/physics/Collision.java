@@ -6,21 +6,22 @@ import java.util.HashSet;
 import java.util.List;
 
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.geometry.Bounds;
 import javafx.scene.shape.Shape;
 import api.IComponent;
 
 public class Collision implements IComponent {
-	private Shape mask;
+	private Bounds mask;
 	private Collection<String> IDs;
 	private Collection<String> collidingIDs;
 
-	public Collision(Shape mask, Collection<String> IDs) {
+	public Collision(Bounds mask, Collection<String> IDs) {
 		this.mask = mask;
 		this.IDs = IDs;
 		this.collidingIDs = new HashSet<String>();
 	}
 
-	public Shape getMask() {
+	public Bounds getMask() {
 		return this.mask;
 	}
 
