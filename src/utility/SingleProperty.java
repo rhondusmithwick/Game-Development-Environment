@@ -4,6 +4,9 @@ import javafx.beans.property.SimpleObjectProperty;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Observable;
+
+import events.Trigger;
 
 /**
  * Holds one property of type A.

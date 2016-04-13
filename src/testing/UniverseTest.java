@@ -1,8 +1,14 @@
 package testing;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import api.IEntitySystem;
 import datamanagement.XMLReader;
-import events.UniverseAction;
+import datamanagement.XMLWriter;
+import events.Action;
 import model.entity.EntitySystem;
 
 /**
@@ -18,10 +24,15 @@ public class UniverseTest {
     }
 
     public void test() {
-        UniverseAction action = new UniverseAction("", universe);
-        action.serialize("heeey.xml");
-        UniverseAction action2 = new XMLReader<UniverseAction>().readSingleFromFile("heeey.xml");
-        System.out.println(action.getUniverse() == action2.getUniverse());
+    	Map<String, Object> map = new HashMap<>();
+    	map.put("HEYHEY","YOUYOU");
+    	List<Action> actionList = new ArrayList<>();
+        Action action = new Action("BLAH", map);
+        Action action3 = new Action("asdfadf", map);
+        actionList.add(action);
+        actionList.add(action3);
+        new XMLWriter<Action>().writeToFile("heeey.xml", actionList);
+        List<Action> actionList2 = new XMLReader<Action>().readFromFile("heeey.xml");
     }
 
 }
