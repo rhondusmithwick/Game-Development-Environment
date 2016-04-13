@@ -4,6 +4,9 @@ import javafx.beans.property.SimpleObjectProperty;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Observable;
+
+import events.Trigger;
 
 /**
  * Holds one property of type A.
@@ -11,7 +14,7 @@ import java.util.List;
  * @param <A> the type of the first property
  * @author Rhondu Smithwick
  */
-public class SingleProperty<A> {
+public class SingleProperty<A> extends Trigger {
 
     private final SimpleObjectProperty<A> property1;
 

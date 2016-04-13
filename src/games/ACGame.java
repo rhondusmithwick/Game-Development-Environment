@@ -2,7 +2,9 @@ package games;
 
 import events.Action;
 import events.EntityAction;
+import events.EventSystem;
 import events.InputSystem;
+import events.Trigger;
 import games.ACGameXChangeListener;
 import model.component.character.Health;
 import model.component.character.Score;
@@ -41,7 +43,8 @@ public class ACGame {
     private static final int BOUNCER_SPEED = 30;
 
 	private final IEntitySystem universe = new EntitySystem();
-	private final InputSystem inputSystem = new InputSystem();
+	private final EventSystem eventSystem = new EventSystem(universe);
+	//private final InputSystem inputSystem = new InputSystem();
 	private final PhysicsEngine physics = new PhysicsEngine(universe);
 	private IEntity character;
 	private final String IMAGE_PATH = "resources/images/blastoise.png";
@@ -79,12 +82,13 @@ public class ACGame {
 		Position pos = new Position(250.0, 250.0);
 		character.forceAddComponent(pos, true);
 		character.forceAddComponent(new ImagePath(IMAGE_PATH), true);
-		character.forceAddComponent(new Velocity(20.0, 50.0), true);
+		//character.forceAddComponent(new Velocity(20.0, 50.0), true);
 		//character.getComponent(Position.class).getProperties().get(0).addListener(new ACGameXChangeListener(character));
 		//character.getComponent(Position.class).getProperties().get(0).addListener(new EntityAction(character));
     	universe.addEntity(character);
-    	Action healthAction = getAction(healthScriptPath, character, pos);
-    	inputSystem.addEvent("HEALTH_DECREASE", healthAction);
+    	eventSystem.registerEvent(new Trigger(character.getComponent(Position.class).getProperties().get(0)), new Action(healthScriptPath));
+    	//Action healthAction = getAction(healthScriptPath, character, pos);
+    	//inputSystem.addEvent("HEALTH_DECREASE", healthAction);
 	}
 	
 	public void step(double dt) {

@@ -51,6 +51,7 @@ public class ACGameMain extends Application {
      * Start the program.
      */
     public static void main (String[] args) {
-        launch(args);
+    	
+        //launch(args);
     }
 }

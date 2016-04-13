@@ -5,7 +5,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.Properties;
+
+import utility.SingleProperty;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -15,37 +19,31 @@ import javafx.scene.input.KeyCode;
 
 /***
  * Created by ajonnav 04/12/16
- * @author Anirudh Jonnavithula
+ * @author Anirudh Jonnavithula, Carolyn Yao
+ * For non-key events, we want to create a string "entityid:componentName:index".
+ * Register string to an action in the map. 
+ * A Trigger Factory can interpret the string to create the right kind of Trigger
+ * Using this string, we generate the triggers in some sort of factory fashion
  *
  */
-public class EventSystem {
+public class EventSystem implements Observer{
 	
-	private InputSystem inputSystem;
-	Map<String, String> actionMap = new HashMap<>();
+	IEntitySystem universe;
+	Map<Observable, Action> actionMap = new HashMap<>();
 	
-	public void registerEventsFromFile(String filepath, IEntitySystem universe) {
-		actionMap = loadFile(filepath);
+	public EventSystem(IEntitySystem universe) {
+		this.universe = universe;
 	}
 	
-	public void takeKeyCode(KeyCode keycode) {
-		inputSystem.take(keycode);
+	public void registerEvent(Observable trigger, Action action) {
+		actionMap.put(trigger, action);
+		trigger.addObserver(this);
+	}
+
+	@Override
+	public void update(Observable o, Object arg) {
+		actionMap.get(o).activate(universe);
 	}
 	
-	public Map<String, String> loadFile(String filepath) {
-		Map<String, String> map= new HashMap<>();
-		Properties properties = new Properties();
-		try {
-			InputStream s = getClass().getResourceAsStream(filepath);
-			properties.load(s);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		properties.keySet().stream().forEach(e-> {
-			String action = (String) e;
-			String scriptPath = (String)properties.get(action);
-			inputSystem.addEvent(action, getAction(scriptPath, entity));
-		});
-		return map;
-	}
+	
 }

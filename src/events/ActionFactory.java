@@ -10,9 +10,10 @@ public class ActionFactory {
 	
 	private ActionFactory(){}
 	
-	public static Action createAction(String actionDescription, String scriptPath) {
+	public static Action createAction(String actionDescription, String scriptPath, IEntitySystem universe) {
 		String[] descriptors = actionDescription.split(":");
 		
+		if()
 	}
 	
 	public String getScriptFromPath(String scriptPath) {
