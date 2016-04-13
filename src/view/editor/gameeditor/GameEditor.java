@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import api.IDataReader;
 import api.IDataWriter;
 import api.IEntity;
+import api.IEntitySystem;
 import api.ISerializable;
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
@@ -23,6 +24,7 @@ import javafx.scene.layout.VBox;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
+import model.entity.EntitySystem;
 import view.Authoring;
 import view.Utilities;
 import view.editor.Editor;
@@ -59,10 +61,7 @@ public class GameEditor extends Editor  {
 		entDisp = new EntityDisplay(myLanguage, masterEntityList, authEnv);
 		envDisp = new EnvironmentDisplay(myLanguage, masterEnvironmentList, masterEntityList, authEnv);
 		eventDisplay = new EventDisplay(myLanguage, masterEntityList, authEnv, userActions);
-		IEntity a = new Entity("ddfa");
-		a.addComponent(new ImagePath());
-		a.addComponent(new Position(0.0, 0.0));
-		masterEntityList.add(a);
+
 		setPane();
 	}
 

@@ -14,6 +14,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
@@ -22,7 +23,6 @@ import javafx.scene.paint.Color;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import view.DragAndResize;
-import view.DefaultsMaker;
 import view.Utilities;
 
 public class EditorEnvironment extends Editor {
@@ -98,8 +98,8 @@ public class EditorEnvironment extends Editor {
 	public void loadDefaults() {
 		if (Utilities.showAlert(myResources.getString("addDefaults"), myResources.getString("defaultsMessage"),
 				myResources.getString("addDefaultsQuestion"), AlertType.CONFIRMATION)) {
-			entitiesToDisplay.add(DefaultsMaker.loadBackgroundDefault());
-			entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay));
+			//entitiesToDisplay.add(DefaultsMaker.loadBackgroundDefault());
+			//entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay));
 		}
 	}
 
@@ -134,8 +134,9 @@ public class EditorEnvironment extends Editor {
 		if (!entity.hasComponent(Position.class) || !entity.hasComponent(ImagePath.class)) {
 			addComponents(entity);
 		}
-		ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
-		//Utilities.setBinding(entity.getComponent(ImagePath.class), entity.getComponent(Position.class));
+		String imagePath = entity.getComponent(ImagePath.class).getImagePath();
+		File file = new File(imagePath);
+		ImageView entityView = new ImageView(new Image(file.toURI().toString()));
 		DragAndResize.makeResizable(entityView, entity.getComponent(Position.class));
 		Button entityInButton = new Button(entity.getName());
 		entityInButton.setOnAction(e -> removeFromDisplay(entityView, entity, entityInButton));
@@ -186,7 +187,9 @@ public class EditorEnvironment extends Editor {
 				addComponents(entity);
 			}
 			IEntity newEntity = Utilities.copyEntity(entity);
-			ImageView entityView = newEntity.getComponent(ImagePath.class).getImageView();
+			String imagePath = entity.getComponent(ImagePath.class).getImagePath();
+	                File file = new File(imagePath);
+	                ImageView entityView = new ImageView(new Image(file.toURI().toString()));
 			//Utilities.setBinding(newEntity.getComponent(ImagePath.class), newEntity.getComponent(Position.class));
 			DragAndResize.makeResizable(entityView, newEntity.getComponent(Position.class));
 			System.out.println(entityView.getX());
