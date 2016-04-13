@@ -14,8 +14,6 @@ import javafx.scene.image.ImageView;
 import utility.SingleProperty;
 import utility.TwoProperty;
 
-import javax.script.ScriptEngineManager;
-
 /**
  * Component to hold an imagePath.
  *
@@ -200,10 +198,12 @@ public class ImagePath implements IComponent {
 		this.setFrameIndex(this.getFrameIndex() + 1);
 	}
 
-
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        // reconstruct imageView
-    }
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+		// reconstruct imageView
+		File resource = new File(this.imagePathProperty().get());
+		Image image = new Image(resource.toURI().toString());
+		this.imageView = new ImageView(image);
+	}
 
 }
