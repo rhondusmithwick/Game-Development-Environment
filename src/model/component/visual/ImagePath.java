@@ -19,6 +19,8 @@ public class ImagePath implements IComponent {
     /**
      * The singleProperty.
      */
+    private double height;
+    private double width;
     private SingleProperty<String> imagePath;
     private ImageView imageView;
     private final String spriteName;
@@ -121,13 +123,18 @@ public class ImagePath implements IComponent {
     }
     
     public void setForSave(){
+        height = imageView.getBoundsInParent().getHeight();
+        width = imageView.getBoundsInParent().getWidth();
         this.imageView=null;
+        
     }
     
     public void reloadImageView(){
         File resource = new File(imagePath.property1().get());
         Image image = new Image(resource.toURI().toString());
         this.imageView = (new ImageView(image));
+        imageView.setFitHeight(height);
+        imageView.setFitWidth(width);
         imageView.setPreserveRatio(true);
     }
     
