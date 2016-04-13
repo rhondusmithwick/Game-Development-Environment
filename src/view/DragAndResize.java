@@ -119,7 +119,9 @@ public class DragAndResize {
     				double translateX = mouseX - clickX;
     				double translateY = mouseY - clickY;
     				position.setX(translateX);
+    				image.setTranslateX(translateX);
     				position.setY(translateY);
+    				image.setTranslateY(translateY);
                 return;
     		}
     		else{

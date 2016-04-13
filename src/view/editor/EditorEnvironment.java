@@ -135,7 +135,7 @@ public class EditorEnvironment extends Editor {
 			addComponents(entity);
 		}
 		ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
-		Utilities.setBinding(entity.getComponent(ImagePath.class), entity.getComponent(Position.class));
+		//Utilities.setBinding(entity.getComponent(ImagePath.class), entity.getComponent(Position.class));
 		DragAndResize.makeResizable(entityView, entity.getComponent(Position.class));
 		Button entityInButton = new Button(entity.getName());
 		entityInButton.setOnAction(e -> removeFromDisplay(entityView, entity, entityInButton));
@@ -163,7 +163,6 @@ public class EditorEnvironment extends Editor {
 	private void saveEnvironment() {
 		String name = getName();
 		entitiesInEnvironment.setName(name);
-		// finalEnvironmentList.remove(entitiesInEnvironment);
 		finalEnvironmentList.add(entitiesInEnvironment);
 		environmentPane.getChildren().clear();
 		environmentPane.setCenter(saveMessage(myResources.getString("saveMessage")));
@@ -187,8 +186,9 @@ public class EditorEnvironment extends Editor {
 			}
 			IEntity newEntity = Utilities.copyEntity(entity);
 			ImageView entityView = newEntity.getComponent(ImagePath.class).getImageView();
-			Utilities.setBinding(newEntity.getComponent(ImagePath.class), newEntity.getComponent(Position.class));
+			//Utilities.setBinding(newEntity.getComponent(ImagePath.class), newEntity.getComponent(Position.class));
 			DragAndResize.makeResizable(entityView, newEntity.getComponent(Position.class));
+			System.out.println(entityView.getX());
 			if (!entitiesInEnvironment.containsEntity(newEntity)) {
 				entitiesInEnvironment.addEntity(newEntity);
 				Button entityInButton = new Button(newEntity.getName());

@@ -333,6 +333,7 @@ public class Utilities {
 		return imageView;
 	}
 	
+	@Deprecated
 	public static ImageView setBinding(ImagePath path, Position pos) {
 		path.getImageView().setPreserveRatio(true);
 		path.getImageView().translateXProperty().bind(pos.xProperty());
@@ -346,13 +347,13 @@ public class Utilities {
 	 * @param IEntity entity: given IEntity to copy
 	 * @return IEntity newEntity: returned copy of the given IEntity
 	 */
-
+	@Deprecated
 	public static IEntity copyEntity(IEntity entity) {
 		IEntity newEntity = new Entity(entity.getName());
 		newEntity.setSpecs(entity.getSpecs());
 		for (IComponent component : entity.getAllComponents()) {
-			// newEntity.addComponent(component);
-			newEntity.forceAddComponent(component, true);
+			newEntity.addComponent(component.clone(component.getClass()));
+			//newEntity.forceAddComponent(component, true);
 			if (newEntity.hasComponent(Position.class)){
 				newEntity.removeComponent(Position.class);
 				Position newPos = new Position();
