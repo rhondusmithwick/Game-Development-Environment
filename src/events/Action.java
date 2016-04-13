@@ -68,3 +68,4 @@ public abstract class Action implements ChangeListener{
 	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
 		System.out.println("IT WORKS YA DOOF");
 	}
+}

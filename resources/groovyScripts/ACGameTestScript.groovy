@@ -11,10 +11,10 @@ import model.component.character.Health;
 position = entity.getComponent(Position.class);
 health = entity.getComponent(Health.class);
 
-def moved = $1 as double;
+//def moved = $1 as double;
 
-if (position.getX() > 500) {
+//if (position.getX() > 500) {
 	health.setHealth(0);
 	System.out.println(health.getHealth());
-}
+//}
 //position.setX(position.getX() + moved);

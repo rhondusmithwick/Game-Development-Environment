@@ -39,14 +39,15 @@ public class ACGame {
     public static final int KEY_INPUT_SPEED = 5;
     private static final double GROWTH_RATE = 1.1;
     private static final int BOUNCER_SPEED = 30;
-
+    private static Group root;
+    
 	private final IEntitySystem universe = new EntitySystem();
-	private final InputSystem inputSystem = new InputSystem();
+	private final InputSystem inputSystem = new InputSystem(universe);
 	private final PhysicsEngine physics = new PhysicsEngine(universe);
 	private IEntity character;
 	private final String IMAGE_PATH = "resources/images/blastoise.png";
 	private final String healthScriptPath = "resources/groovyScripts/ACGameTestScript.groovy";
-	
+	private static ImageView charSpr; 
     
     private Scene myScene;
     
@@ -63,7 +64,7 @@ public class ACGame {
      */
     public Scene init (int width, int height) {
         // Create a scene graph to organize the scene
-        Group root = new Group();
+        root = new Group();
         // Create a place to see the shapes
         myScene = new Scene(root, width, height, Color.WHITE);
         initEngine();
@@ -81,19 +82,38 @@ public class ACGame {
 		Position pos = new Position(250.0, 250.0);
 		character.forceAddComponent(pos, true);
 		character.forceAddComponent(new ImagePath(IMAGE_PATH), true);
-		character.forceAddComponent(new Velocity(20.0, 50.0), true);
+		//character.forceAddComponent(new Velocity(20.0, 50.0), true);
 		//character.getComponent(Position.class).getProperties().get(0).addListener(new ACGameXChangeListener(character));
 		//character.getComponent(Position.class).getProperties().get(0).addListener(new EntityAction(character));
     	universe.addEntity(character);
-
+    	character.getComponent(Position.class).getProperties().get(0).addListener(new ACGameXChangeListener(character));
 		character.addComponent(new ImagePath(IMAGE_PATH));
     	Action healthAction = getAction(healthScriptPath, character, pos);
     	inputSystem.addEvent("HEALTH_DECREASE", healthAction);
+		charSpr = drawCharacter(character);
 	}
 	
 	public void step(double dt) {
 		physics.update(universe, dt);
-		moveEntity(character, 20);
+		moveEntity(character, 1);
+		refreshDraw(charSpr);
+	}
+	
+	private void refreshDraw(ImageView img) {
+		root.getChildren().clear();
+		root.getChildren().add(img);
+	}
+	
+	public ImageView drawCharacter(IEntity character) { 
+		ImagePath imgPath = character.getComponent(ImagePath.class);
+		ImageView charSprite = imgPath.getImageView();
+		charSprite.setFitHeight(100);
+		charSprite.setPreserveRatio(true);
+		charSprite.xProperty().bind(character.getComponent(Position.class).xProperty());
+		charSprite.yProperty().bind(character.getComponent(Position.class).yProperty());
+		root.getChildren().add(charSprite);
+		return charSprite;
+		//ImageView testSprite = new ImageView(file.toURI().toString());
 	}
 	
 	private Action getAction(String scriptPath, IEntity entity, IComponent component) {

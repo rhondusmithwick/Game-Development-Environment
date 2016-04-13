@@ -12,18 +12,16 @@ public class ACGameXChangeListener implements ChangeListener{
 	public ACGameXChangeListener(IEntity character) {
 		this.character = character;
 	}
-//	
-//	public void listen(IEntity character) { 
-//		character.getComponent(Position.class).getX().addListener(this);
-//	}
-//	
-//	@Override
-//	public void changed(ObservableValue<? extends Double> arg0, Double arg1,
-//			Double arg2) {
-//		if (arg0.getValue() > 500) { 
-//			System.out.println("out of bounds");
-//		}
-//		
-//	}
+	
+	public void listen(IEntity character) { 
+		character.getComponent(Position.class).getProperties().get(0).addListener(this);
+	}
+
+	@Override
+	public void changed(ObservableValue observable, Object oldValue, Object newValue) {
+		if ((double) observable.getValue() > 500){
+			System.out.println("out of bounds");
+		}
+	}	
 	
 }
