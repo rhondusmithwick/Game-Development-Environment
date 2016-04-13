@@ -1,6 +1,7 @@
 package api;
 
 import com.google.common.base.Preconditions;
+import javafx.beans.property.ObjectPropertyBase;
 import javafx.beans.property.SimpleObjectProperty;
 
 import java.util.Collections;
@@ -79,5 +80,12 @@ public interface IComponent extends ISerializable {
      */
     default Class<? extends IComponent> getClassForComponentMap() {
         return getClass();
+    }
+
+    /**
+     * Remove the bindings from all this Component's properties.
+     */
+    default void removeBindings() {
+        getProperties().stream().forEach(ObjectPropertyBase::unbind);
     }
 }

@@ -1,5 +1,8 @@
 package testing;
 
+import java.io.File;
+import java.util.Collection;
+
 import api.IEntity;
 import api.IEntitySystem;
 import api.IPhysicsEngine;
@@ -17,59 +20,53 @@ import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import model.entity.EntitySystem;
 import model.physics.PhysicsEngine;
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-import java.io.File;
-import java.util.ArrayList;
-import java.util.List;
 
 public class BenTestGroovy extends Application {
-	private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
+	// private final ScriptEngine engine = new
+	// ScriptEngineManager().getEngineByName("groovy");
 	private static final String IMAGE_PATH = "resources/RhonduSmithwick.JPG";
-	private static ImageView testSprite; // BAD PRACTICE: USE final WHENEVER
-											// POSSIBLE, DON'T BE LIKE ME!
-	private static IPhysicsEngine physics; // TODO: remove these things
-	private Group root;
+	private static final double MILLISECOND_DELAY = 10;
+	private static final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
+	private static final Group ROOT = new Group();
 
 	public void start(Stage s) {
-		root = new Group();
 		BorderPane splash = new BorderPane();
-		splash.getChildren().add(root);
+		splash.getChildren().add(ROOT);
 		Scene scene = new Scene(splash, 500, 500);
 		s.setScene(scene);
 		s.show();
 
-		List<IEntity> list = new ArrayList<IEntity>();
-		IEntity character = (new BenTestCharacter()).run(IMAGE_PATH);
-		list.add(character);
-
+		// Sprites
+		IEntity rhonduEntity = BenTestCharacter.run(IMAGE_PATH);
+		// IEntity ball =
 		IEntitySystem system = new EntitySystem();
-		system.addEntities(list);
-		// TODO: don't lazy-initialize!
-		physics = new PhysicsEngine(system);
+		system.addEntities(rhonduEntity);
+		IPhysicsEngine physics = new PhysicsEngine(system);
+		ImageView testSprite = createImage(rhonduEntity.getComponent(ImagePath.class),
+				rhonduEntity.getComponent(Position.class));
 
-		// TODO: seriously, don't lazy-initialize
-		testSprite = createImage(character.getComponent(ImagePath.class), character.getComponent(Position.class));
-
-		int MILLISECOND_DELAY = 10;
-		double SECOND_DELAY = 0.01;
 		// sets the game's loop
-		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> this.step(SECOND_DELAY, list, system));
+		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
+				e -> this.step(SECOND_DELAY, system, physics));
 		Timeline animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
-
 	}
 
-	private void step(double dt, List<IEntity> list, IEntitySystem system) {
+	private void step(double dt, IEntitySystem system, IPhysicsEngine physics) {
 		physics.update(system, dt);
-		drawEntities(list);
+		drawEntities(system);
 	}
 
-	private void drawEntities(List<IEntity> list) {
+	private void drawEntities(IEntitySystem s) {
+		Collection<IEntity> list = s.getAllEntities();
 		for (IEntity entity : list) {
 			Position pos = entity.getComponent(Position.class);
+			ImagePath imgPath = entity.getComponent(ImagePath.class);
+			String path = imgPath.getImagePath();
+			File file = new File(path);
+			ImageView testSprite = new ImageView(file.toURI().toString());
 			refreshDraw(testSprite, pos.getX(), pos.getY());
 		}
 	}
@@ -85,15 +82,13 @@ public class BenTestGroovy extends Application {
 		return imageView;
 	}
 
-	public static void main(String[] args) {
-		launch(args);
+	private void refreshDraw(ImageView img, double x, double y) {
+		ROOT.getChildren().clear();
+		ROOT.getChildren().add(img);
 	}
 
-	// TODO: for BenTest only, remove asap
-	private void refreshDraw(ImageView img, double x, double y) {
-		root.getChildren().clear();
-		System.out.println(x + " " + y);
-		root.getChildren().add(img);
+	public static void main(String[] args) {
+		launch(args);
 	}
 
 }
