@@ -13,8 +13,11 @@ import api.IEntity;
 import events.Action;
 import events.EntityAction;
 import events.InputSystem;
-import events.UniverseAction;
 import javafx.application.Application;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
@@ -28,7 +31,7 @@ import model.entity.EntitySystem;
  *
  * @author Rhondu Smithwick
  */
-public class InputSystemTesting extends Application {
+public class InputSystemTesting extends Application implements ChangeListener {
 
 	private final IEntitySystem universe = new EntitySystem();
 	private final InputSystem inputSystem = new InputSystem(universe);
@@ -49,6 +52,8 @@ public class InputSystemTesting extends Application {
 		Position position = new Position();
 		entity.forceAddComponent(position, true);
 		universe.addEntity(entity);
+		position = entity.getComponent(Position.class);
+		position.getProperties().get(0).addListener(this);
 		return entity;
 	}
 
@@ -108,6 +113,21 @@ public class InputSystemTesting extends Application {
 	
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+/*	@Override
+	public void changed(ObservableValue<? extends Double> arg0, Double arg1,
+			Double arg2) {
+		if(arg2 >500) {
+			System.out.println("YOU WON STOP DOING THIS SHIT");
+		}
+		
+	}*/
+
+	@Override
+	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+		// TODO Auto-generated method stub
+		System.out.println("IT WORKS YA DOOF");
 	}
 
 }
