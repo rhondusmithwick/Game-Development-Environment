@@ -25,7 +25,7 @@ public class DefaultsMaker {
 		entity.loadSpecsFromPropertiesFile(DefaultStrings.BACKGROUND_TEMPLATE_PATH.getDefault());
 		entity.addComponent(new Position());
 		ImagePath path = new ImagePath(backgroundPath);
-		Utilities.setUpImagePathSize(path);
+		//Utilities.setUpImagePathSize(path);
 	    entity.addComponent(path);
 		return entity;
 	}
@@ -36,7 +36,7 @@ public class DefaultsMaker {
 		// add render properties
 		entity.addComponent(new Position());
 		ImagePath path = new ImagePath(platformPath);
-		Utilities.setUpImagePathSize(path);
+		//Utilities.setUpImagePathSize(path);
 		entity.addComponent(path);
 		entity.addComponent(new Collision(imagePathToFitRectangle(entity.getComponent(ImagePath.class)),
 			entityListToIDs(masterEntities)));
@@ -45,7 +45,7 @@ public class DefaultsMaker {
 	
 	private static Rectangle imagePathToFitRectangle(ImagePath path){
 		if (path.getImageHeight()==0 || path.getImageWidth() == 0){
-			Utilities.setUpImagePathSize(path);
+			//Utilities.setUpImagePathSize(path);
 		}
 		return new Rectangle((int) path.getImageHeight(), (int) path.getImageWidth());
 	}
