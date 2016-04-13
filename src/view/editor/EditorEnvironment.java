@@ -22,6 +22,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
+import view.DefaultsMaker;
 import view.DragAndResize;
 import view.Utilities;
 
@@ -98,8 +99,8 @@ public class EditorEnvironment extends Editor {
 	public void loadDefaults() {
 		if (Utilities.showAlert(myResources.getString("addDefaults"), myResources.getString("defaultsMessage"),
 				myResources.getString("addDefaultsQuestion"), AlertType.CONFIRMATION)) {
-			//entitiesToDisplay.add(DefaultsMaker.loadBackgroundDefault());
-			//entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay));
+			entitiesToDisplay.add(DefaultsMaker.loadBackgroundDefault());
+			entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay));
 		}
 	}
 
