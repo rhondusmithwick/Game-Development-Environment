@@ -81,4 +81,9 @@ public class EntitySystem implements IEntitySystem {
 		return this.name;
 	}
 
+	@Override
+	public boolean isEmpty() {
+		return this.getAllEntities().isEmpty();
+	}
+
 }

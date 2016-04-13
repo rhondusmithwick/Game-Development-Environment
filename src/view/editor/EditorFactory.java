@@ -1,5 +1,6 @@
 package view.editor;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ResourceBundle;
 import api.ISerializable;
 import javafx.collections.ObservableList;
@@ -29,12 +30,32 @@ public class EditorFactory {
 	 */
 	public Editor createEditor(Class<?> name, String language, ISerializable toEdit, ObservableList<ISerializable> masterEntityList, ObservableList<ISerializable> entitySystemList) {
 		Editor editor = null;
-		try {
-			editor = (Editor) name.getConstructor( String.class, ISerializable.class, ObservableList.class, ObservableList.class).newInstance( language, toEdit, masterEntityList, entitySystemList);
-		} catch (Exception e) {	
-			Utilities.showAlert(ResourceBundle.getBundle(language).getString("error"), null,
-					ResourceBundle.getBundle(language).getString("noEditorCreated"), AlertType.ERROR);
-		}
+		//try {
+			try {
+				editor = (Editor) name.getConstructor( String.class, ISerializable.class, ObservableList.class, ObservableList.class).newInstance( language, toEdit, masterEntityList, entitySystemList);
+			} catch (InstantiationException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalAccessException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (IllegalArgumentException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (InvocationTargetException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (NoSuchMethodException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+	//	} //catch (Exception e) {	
+			//Utilities.showAlert(ResourceBundle.getBundle(language).getString("error"), null,
+				//	ResourceBundle.getBundle(language).getString("noEditorCreated"), AlertType.ERROR);
+		//}
 		return editor;
 	}
 }
