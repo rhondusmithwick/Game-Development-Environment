@@ -3,11 +3,14 @@ package events;
 import api.IEntitySystem;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import api.ISerializable;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -17,8 +20,7 @@ import java.util.Map;
  * @author Rhondu Smithwick
  */
 public abstract class Action implements ChangeListener{
-
-    private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
+    private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
     private String script;
     private final Map<String, Object> parameters = new HashMap<>();
 
@@ -27,25 +29,19 @@ public abstract class Action implements ChangeListener{
         setScript(script);
     }
 
-    public Action(String script, Map<String,Object> parameters) {
+    public Action(String script, Map<String, Object> parameters) {
         this(script);
         this.parameters.putAll(parameters);
     }
 
-    public void activate() {
-        setUp();
+    public void activate(IEntitySystem universe) {
+        engine.put("universe", universe);
         parameters.entrySet().stream().forEach(e -> engine.put(e.getKey(), e.getValue()));
         try {
-            getEngine().eval(getScript());
+            engine.eval(getScript());
         } catch (ScriptException e) {
             e.printStackTrace();
         }
-    }
-
-    protected abstract void setUp();
-
-    public ScriptEngine getEngine() {
-        return engine;
     }
 
     public void setScript(String script) {
@@ -64,7 +60,7 @@ public abstract class Action implements ChangeListener{
         return getParameters().put(key, value);
     }
 
-    public Object removeParameter(Object key) {
+    public Object removeParameter(String key) {
         return getParameters().remove(key);
     }
 
@@ -72,4 +68,3 @@ public abstract class Action implements ChangeListener{
 	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
 		System.out.println("IT WORKS YA DOOF");
 	}
-}
