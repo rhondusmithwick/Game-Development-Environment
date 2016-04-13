@@ -63,11 +63,7 @@ public class BenTestGroovy extends Application {
 		Collection<IEntity> list = s.getAllEntities();
 		for (IEntity entity : list) {
 			Position pos = entity.getComponent(Position.class);
-			ImagePath imgPath = entity.getComponent(ImagePath.class);
-			String path = imgPath.getImagePath();
-			File file = new File(path);
-			ImageView testSprite = new ImageView(file.toURI().toString());
-			refreshDraw(testSprite, pos.getX(), pos.getY());
+//			refreshDraw(testSprite, pos.getX(), pos.getY());
 		}
 	}
 
