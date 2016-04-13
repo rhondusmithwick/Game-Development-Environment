@@ -32,15 +32,14 @@ public class DefaultsMaker {
 		
 	public static IEntity loadPlatformDefault(ObservableList<ISerializable> masterEntities){
 		IEntity entity = new Entity(platformName);
-		// entity.loadSpecsFromPropertiesFile(DefaultStrings.PLATFORM_TEMPLATE_PATH.getDefault());
-		// add friction
+		entity.loadSpecsFromPropertiesFile(DefaultStrings.PLATFORM_TEMPLATE_PATH.getDefault());
 		// add render properties
-		entity.forceAddComponent(new Position(),true);
+		entity.addComponent(new Position());
 		ImagePath path = new ImagePath(platformPath);
 		Utilities.setUpImagePathSize(path);
-		entity.forceAddComponent(path, true);
-		entity.forceAddComponent(new Collision(imagePathToFitRectangle(entity.getComponent(ImagePath.class)),
-			entityListToIDs(masterEntities)),true);
+		entity.addComponent(path);
+		entity.addComponent(new Collision(imagePathToFitRectangle(entity.getComponent(ImagePath.class)),
+			entityListToIDs(masterEntities)));
 		return entity;
 	}
 	
