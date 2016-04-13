@@ -63,8 +63,9 @@ public class GameEditor extends Editor  {
 		XMLReader<SaveGame> xReader  = new XMLReader<SaveGame>();
 		SaveGame s = xReader.readSingleFromFile(DefaultStrings.CREATE_LOC.getDefault() + fileName+ DefaultStrings.XML.getDefault());
 		gameDetails.setDetails(Arrays.asList(s.getName(), s.getDesc(), s.getIcon()));
-		masterEntityList = FXCollections.observableArrayList(s.getEntites());
-		masterEnvironmentList = FXCollections.observableArrayList(s.getEnvironments());
+		masterEntityList.addAll(s.getEntites());
+		masterEnvironmentList.addAll(s.getEnvironments());
+
 	}
 
 
