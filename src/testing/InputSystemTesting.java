@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import api.IEntitySystem;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
@@ -29,8 +30,8 @@ import model.entity.EntitySystem;
  */
 public class InputSystemTesting extends Application {
 
-	private final EntitySystem universe = new EntitySystem();
-	private final InputSystem inputSystem = new InputSystem();
+	private final IEntitySystem universe = new EntitySystem();
+	private final InputSystem inputSystem = new InputSystem(universe);
 
 	private final String KEY_BINDINGS = "/propertyFiles/keyBindings.properties";
 	private final String ACTION_BINDINGS = "/propertyFiles/ActionScriptBindings.properties";
@@ -51,14 +52,14 @@ public class InputSystemTesting extends Application {
 		return entity;
 	}
 
-	private Action getAction(String scriptPath, IEntity entity) {
+	private Action getAction(String scriptPath) {
 		String script = null;
 		try {
 			script = Files.toString(new File(scriptPath), Charsets.UTF_8);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return new EntityAction(script, entity);
+		return new Action(script);
 	}
 	
 	private void addActionBindings(IEntity entity) {
@@ -76,7 +77,7 @@ public class InputSystemTesting extends Application {
 		properties.keySet().stream().forEach(e-> {
 			String action = (String) e;
 			String scriptPath = (String)properties.get(action);
-			inputSystem.addEvent(action, getAction(scriptPath, entity));
+			inputSystem.addEvent(action, getAction(scriptPath));
 		});
 	}
 	
