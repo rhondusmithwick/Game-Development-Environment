@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+import api.IEntitySystem;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
@@ -13,6 +14,10 @@ import events.Action;
 import events.EntityAction;
 import events.InputSystem;
 import javafx.application.Application;
+import javafx.beans.InvalidationListener;
+import javafx.beans.Observable;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
@@ -26,10 +31,10 @@ import model.entity.EntitySystem;
  *
  * @author Rhondu Smithwick
  */
-public class InputSystemTesting extends Application {
+public class InputSystemTesting extends Application implements ChangeListener {
 
-	private final EntitySystem universe = new EntitySystem();
-	private final InputSystem inputSystem = new InputSystem();
+	private final IEntitySystem universe = new EntitySystem();
+	private final InputSystem inputSystem = new InputSystem(universe);
 
 	private final String KEY_BINDINGS = "/propertyFiles/keyBindings.properties";
 	private final String ACTION_BINDINGS = "/propertyFiles/ActionScriptBindings.properties";
@@ -47,17 +52,19 @@ public class InputSystemTesting extends Application {
 		Position position = new Position();
 		entity.forceAddComponent(position, true);
 		universe.addEntity(entity);
+		position = entity.getComponent(Position.class);
+		position.getProperties().get(0).addListener(this);
 		return entity;
 	}
 
-	private Action getAction(String scriptPath, IEntity entity) {
+	private Action getAction(String scriptPath) {
 		String script = null;
 		try {
 			script = Files.toString(new File(scriptPath), Charsets.UTF_8);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		return new EntityAction(script, entity);
+		return new Action(script);
 	}
 	
 	private void addActionBindings(IEntity entity) {
@@ -75,7 +82,7 @@ public class InputSystemTesting extends Application {
 		properties.keySet().stream().forEach(e-> {
 			String action = (String) e;
 			String scriptPath = (String)properties.get(action);
-			inputSystem.addEvent(action, getAction(scriptPath, entity));
+			inputSystem.addEvent(action, getAction(scriptPath));
 		});
 	}
 	
@@ -106,6 +113,21 @@ public class InputSystemTesting extends Application {
 	
 	public static void main(String[] args) {
 		launch(args);
+	}
+
+/*	@Override
+	public void changed(ObservableValue<? extends Double> arg0, Double arg1,
+			Double arg2) {
+		if(arg2 >500) {
+			System.out.println("YOU WON STOP DOING THIS SHIT");
+		}
+		
+	}*/
+
+	@Override
+	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+		// TODO Auto-generated method stub
+		System.out.println("IT WORKS YA DOOF");
 	}
 
 }

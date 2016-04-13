@@ -11,7 +11,7 @@ import enums.Indexes;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -23,7 +23,7 @@ public class GameDetails {
 	
 	private ResourceBundle myResources;
 	private HBox nameBox, descriptionBox, iconBox;
-	private TextArea name, desc;
+	private TextField name, desc;
 	private String iconPath;
 	private ImageView icon;
 
@@ -35,9 +35,9 @@ public class GameDetails {
 
 	private void createDetails() {
 		nameBox = createTextEntry("gName");
-		name = (TextArea) nameBox.getChildren().get(1);
+		name = (TextField) nameBox.getChildren().get(1);
 		descriptionBox = createTextEntry("gDesc");
-		desc = (TextArea) descriptionBox.getChildren().get(1);
+		desc = (TextField) descriptionBox.getChildren().get(1);
 		showIcon();
 		
 	}
@@ -46,7 +46,7 @@ public class GameDetails {
 		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
 		Label title = new Label(myResources.getString(name));
 		title.setMinWidth(GUISize.LABEL_MIN_WIDTH.getSize());
-		TextArea tArea = Utilities.makeTextArea(myResources.getString(name));
+		TextField tArea = Utilities.makeTextArea(myResources.getString(name));
 		container.getChildren().addAll(title, tArea);
 		return container;
 	}

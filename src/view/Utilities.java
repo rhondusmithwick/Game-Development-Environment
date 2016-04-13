@@ -21,7 +21,7 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
-import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TitledPane;
@@ -141,8 +141,8 @@ public class Utilities {
 	 * @return TextArea field the new text area with above features
 	 */
 
-	public static TextArea makeTextArea(String prompt) {
-		TextArea field = new TextArea();
+	public static TextField makeTextArea(String prompt) {
+		TextField field = new TextField();
 		field.setPromptText(prompt);
 		return field;
 	}
@@ -221,7 +221,7 @@ public class Utilities {
 	 * @return String result: user response if there is one, null if there isn't
 	 */
 
-	public String userInputBox(String title, String prompt) {
+	public static String userInputBox(String title, String prompt) {
 		TextInputDialog input = new TextInputDialog("");
 		input.setTitle(title);
 		input.setContentText(prompt);
@@ -358,8 +358,26 @@ public class Utilities {
 		for (IComponent component : entity.getAllComponents()) {
 			// newEntity.addComponent(component);
 			newEntity.forceAddComponent(component, true);
+			if (newEntity.hasComponent(Position.class)){
+				newEntity.removeComponent(Position.class);
+				Position newPos = new Position();
+				newEntity.forceAddComponent(newPos,true);
+			}
+			if (newEntity.hasComponent(ImagePath.class)){
+				newEntity.removeComponent(ImagePath.class);
+				ImagePath newPath = new ImagePath(entity.getComponent(ImagePath.class).getImagePath());
+				newEntity.forceAddComponent(newPath, true);
+			}
 		}
 		return newEntity;
+	}
+	
+	public static List<ExtensionFilter> getImageFilters(){
+		List<ExtensionFilter> filters = new ArrayList<ExtensionFilter>();
+		filters.add(new FileChooser.ExtensionFilter("All Images", "*.*"));
+		filters.add(new FileChooser.ExtensionFilter("JPG", "*.jpg"));
+		filters.add(new FileChooser.ExtensionFilter("PNG", "*.png"));
+		return filters;
 	}
 
 }

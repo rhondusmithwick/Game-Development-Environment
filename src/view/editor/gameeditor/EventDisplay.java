@@ -9,6 +9,7 @@ import enums.GUISize;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
@@ -19,7 +20,7 @@ import view.editor.EditorEntity;
 import view.editor.EditorEvent;
 import view.editor.EditorFactory;
 
-public class EventDisplay 
+public class EventDisplay extends ObjectDisplay
 {
 
 	private VBox container;
@@ -32,6 +33,8 @@ public class EventDisplay
 	
 	public EventDisplay(String language,ObservableList<ISerializable> masterEntityList, Authoring authoringEnvironment, ObservableList<String> actions)
 	{
+		super(language, authoringEnvironment,masterEntityList);
+		this.language=language;
 		this.masterEntityList = masterEntityList;
 		this.authoringEnvironment = authoringEnvironment;
 		this.language = language;
@@ -39,7 +42,8 @@ public class EventDisplay
 		this.actions = actions;
 	}
 
-	private void createEditor(Class<?> editName, ISerializable toEdit, ObservableList<ISerializable> otherList) 
+	@Override
+	public void createEditor(Class<?> editName, ISerializable toEdit, ObservableList<ISerializable> otherList) 
 	{
 		IEditor editor = editFact.createEditor(editName, language, toEdit, masterEntityList, otherList);
 		editor.populateLayout();
@@ -47,9 +51,15 @@ public class EventDisplay
 		authoringEnvironment.createTab(editor.getPane(), editName.getSimpleName(), true);
 	}
 	
-	public Button getButton()
-	{
+	@Override
+	protected void addNewObjects(VBox container) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public Node makeNewObject() {
 		return Utilities.makeButton(myResources.getString(DefaultStrings.EVENT_EDITOR_NAME.getDefault()), 
 				e->createEditor(EditorEvent.class, new Entity(), FXCollections.observableArrayList()));
-	}
+		}
 }

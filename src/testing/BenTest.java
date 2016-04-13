@@ -77,6 +77,7 @@ public class BenTest extends Application {
 
 	private void step(double dt, List<IEntity> list, IEntitySystem system) {
 		physics.update(system, dt);
+		System.out.println("dt=" + dt);
 		drawEntities(list);
 	}
 

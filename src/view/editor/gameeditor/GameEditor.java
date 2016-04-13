@@ -18,8 +18,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import model.entity.Entity;
-import model.entity.EntitySystem;
 import view.Authoring;
 import view.Utilities;
 import view.editor.Editor;
@@ -36,9 +34,8 @@ public class GameEditor extends Editor  {
 	private ObservableList<ISerializable> masterEventList;
 	private ObservableList<String> userActions;
 	private GameDetails gameDetails;
-	private EntityDisplay entDisp;
-	private EnvironmentDisplay envDisp;
-	private final EventDisplay eventDisplay;
+	private ObjectDisplay entDisp, envDisp, eventDisplay;
+
 
 	public GameEditor(Authoring authEnv, String language, String fileName){
 		this(authEnv, language);
@@ -56,23 +53,10 @@ public class GameEditor extends Editor  {
 		this.userActions = FXCollections.observableArrayList();
 		entDisp = new EntityDisplay(myLanguage, masterEntityList, authEnv);
 		envDisp = new EnvironmentDisplay(myLanguage, masterEnvironmentList, masterEntityList, authEnv);
-		addShit();
 		eventDisplay = new EventDisplay(myLanguage, masterEntityList, authEnv, userActions);
 		setPane();
 	}
 
-	private void addShit() {
-		Entity temp = new Entity("aaaa");
-		masterEntityList.add(temp);
-		EntitySystem tt = new EntitySystem("this be my entity system");
-		tt.addEntity(temp);
-		temp = new Entity("bbb");
-		masterEntityList.add(new Entity("bbbb"));
-		tt.addEntity(temp);
-		masterEnvironmentList.add(tt);
-		userActions.add("Punch");
-		userActions.add("Move Right");
-	}
 
 	private void setPane() {
 		pane = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
@@ -85,8 +69,9 @@ public class GameEditor extends Editor  {
 		XMLReader<SaveGame> xReader  = new XMLReader<SaveGame>();
 		SaveGame s = xReader.readSingleFromFile(DefaultStrings.CREATE_LOC.getDefault() + fileName+ DefaultStrings.XML.getDefault());
 		gameDetails.setDetails(Arrays.asList(s.getName(), s.getDesc(), s.getIcon()));
-		masterEntityList = FXCollections.observableArrayList(s.getEntites());
-		masterEnvironmentList = FXCollections.observableArrayList(s.getEnvironments());
+		masterEntityList.addAll(s.getEntites());
+		masterEnvironmentList.addAll(s.getEnvironments());
+
 	}
 
 
@@ -119,8 +104,12 @@ public class GameEditor extends Editor  {
 	private VBox leftPane() {
 		VBox temp = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
 		temp.getChildren().addAll(gameDetails.getElements());
+/*
 		temp.getChildren().addAll(Arrays.asList(entDisp.getButton(), envDisp.envButton(), eventDisplay.getButton(), 
 				Utilities.makeButton(myResources.getString("saveGame"), e->saveGame())));
+*/
+		temp.getChildren().addAll(Arrays.asList(entDisp.makeNewObject(), envDisp.makeNewObject(), eventDisplay.makeNewObject(), Utilities.makeButton(myResources.getString("saveGame"), e->saveGame())));
+
 		return temp;
 	}
 	

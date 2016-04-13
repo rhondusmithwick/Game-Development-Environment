@@ -12,7 +12,7 @@ import api.IEntity
  * Created by Tom on 4/7/2016.
  */
 class BenTestCharacter {
-	IEntity run(String IMAGE_PATH) {
+	static IEntity run(String IMAGE_PATH) {
 		IEntity character = new Entity()
 		character.addComponent(new Health((double) 100))
 		character.addComponent(new Score((double) 100))

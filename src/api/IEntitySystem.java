@@ -18,18 +18,20 @@ import java.util.stream.Collectors;
  */
 public interface IEntitySystem extends ISerializable {
 
-	/**
-	 * Names the entity System
-	 * @param The string with the name
-	 */
-	void setName(String name);
-	
-	/**
-	 * Gets the Entity Systems name
-	 * @return stirng entity system name
-	 */
-	String getName();
-	
+    /**
+     * Names the entity System
+     *
+     * @param The string with the name
+     */
+    void setName(String name);
+
+    /**
+     * Gets the Entity Systems name
+     *
+     * @return stirng entity system name
+     */
+    String getName();
+
     /**
      * Creates an entity.
      *
@@ -59,6 +61,16 @@ public interface IEntitySystem extends ISerializable {
      * @return collection of entities
      */
     Collection<IEntity> getAllEntities();
+
+
+    /**
+     * Get all the components in this entity system.
+     * @return all the components in this entity system
+     */
+    default List<IComponent> getAllComponents() {
+        return getAllEntities().stream().map(IEntity::getAllComponents)
+                .flatMap(Collection::stream).collect(Collectors.toList());
+    }
 
     /**
      * Get all IDs in this system.
@@ -118,6 +130,13 @@ public interface IEntitySystem extends ISerializable {
      * @return true if removed
      */
     boolean removeEntity(String id);
+    
+    /**
+     * Checks if any entities are in this system.
+     *
+     * @return true if system contains no entities
+     */
+    boolean isEmpty();
 
     /**
      * Created an entity from a file containing an entity.
@@ -231,5 +250,12 @@ public interface IEntitySystem extends ISerializable {
      */
     default Collection<String> getAllNames() {
         return Collections2.transform(getAllEntities(), IEntity::getName);
+    }
+
+    /**
+     * Remove all the Bindings from all the components in this Entity Sytem.
+     */
+    default void removeAllBindingsFromComponents() {
+        getAllComponents().stream().forEach(IComponent::removeBindings);
     }
 }

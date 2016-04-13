@@ -48,7 +48,6 @@ public class Position implements IComponent {
 
     public void setX(double x) {
         xProperty().set(x);
-        System.out.println("Set X Position to: " + x);
     }
 
     /**

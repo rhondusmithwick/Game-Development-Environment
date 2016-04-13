@@ -16,7 +16,7 @@ public class SaveGame implements ISerializable {
 		this.entities = entities;
 		this.environments = environments;
 	}
-	
+
 	public String getName(){
 		return details.get(Indexes.GAME_NAME.getIndex());
 	}
