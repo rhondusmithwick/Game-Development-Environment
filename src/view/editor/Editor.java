@@ -5,6 +5,10 @@ import java.util.List;
 
 import api.IEditor;
 import api.IEntity;
+import enums.GUISize;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextAlignment;
 import model.entity.EntitySystem;
 
 public abstract class Editor implements IEditor {
@@ -28,4 +32,12 @@ public abstract class Editor implements IEditor {
 	}
 	
 	public abstract void updateEditor();
+	
+	protected Text saveMessage(String message){
+		Text text = new Text();
+		text.setFont(new Font(GUISize.SAVE_MESSAGE_FONT.getSize()));
+		text.setTextAlignment(TextAlignment.CENTER);
+		text.setText(message);
+		return text;
+	}
 }
