@@ -1,6 +1,7 @@
 package model.component.visual;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 import api.IComponent;
@@ -22,7 +23,8 @@ public class ImagePath implements IComponent {
 	 * The singleProperty.
 	 */
 	private SingleProperty<String> imagePath;
-	private ObjectProperty<ImageView> imageViewProperty = new SimpleObjectProperty<ImageView>();	private final String spriteName;
+	//private ObjectProperty<ImageView> imageViewProperty = new SimpleObjectProperty<ImageView>();	
+	private final String spriteName;
 	
 
 	public ImagePath() {
@@ -41,9 +43,9 @@ public class ImagePath implements IComponent {
 	public ImagePath(String imagePath) { // TODO: place default in resource file
 		this("resources/RhonduSmithwick.JPG", "Rhodu");
         ImageView imageView = new ImageView(new Image(new File(imagePath).toURI().toString()));
-        imageViewProperty.set(imageView);
+       // imageViewProperty.set(imageView);
 		this.imagePath = new SingleProperty<>("ImagePath", imagePath);
-		this.imageViewProperty.get().setPreserveRatio(true);
+		//this.imageViewProperty.get().setPreserveRatio(true);
 	}
 
 	// TODO: IMPORTANT NOTE: I forgot to account for columns!
@@ -72,8 +74,8 @@ public class ImagePath implements IComponent {
 		this.spriteName = spriteName;
 		File resource = new File(spritesheetPath);
 		Image image = new Image(resource.toURI().toString());
-		this.imageViewProperty.set(new ImageView(image));
-		this.imageViewProperty.get().setPreserveRatio(true);
+		//this.imageViewProperty.set(new ImageView(image));
+		//this.imageViewProperty.get().setPreserveRatio(true);
 	}
 
 	/**
@@ -92,7 +94,7 @@ public class ImagePath implements IComponent {
 //		return imageSizeProperty.property2();
 //	}
 
-	public double getImageWidth() {
+	/*public double getImageWidth() {
 		return imageViewProperty.get().getBoundsInParent().getWidth();
 	}
 
@@ -108,17 +110,17 @@ public class ImagePath implements IComponent {
 	public void setImageHeight(double imageHeight) {
 		this.imageViewProperty.get().setFitHeight(imageHeight);
 		System.out.println("Image height set to: " + this.getImageWidth());
-	}
+	}*/
 
 	@Override
 	public List<SimpleObjectProperty<?>> getProperties() {
-		return null;
+		return imagePath.getProperties();
 	}
 
 
-	public ImageView getImageView() {	
-		return imageViewProperty.get();
-	}
+	//public ImageView getImageView() {	
+		//return imageViewProperty.get();
+	//}
 
 	public String getSpriteSheet(){
 		return this.imagePath.property1().get();
