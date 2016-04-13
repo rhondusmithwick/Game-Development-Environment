@@ -1,10 +1,10 @@
 package api;
 
+import com.google.common.base.Preconditions;
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
 
 import java.io.File;
-import java.io.Serializable;
 
 /**
  * Interface for serializable objects.
@@ -12,7 +12,7 @@ import java.io.Serializable;
  *
  * @author Rhondu Smithwick, Tom Wu
  */
-public interface ISerializable  {
+public interface ISerializable {
 
     /**
      * Serializes this object to a File
@@ -38,8 +38,11 @@ public interface ISerializable  {
      * @param objectClass the class to clone to (must be same class)
      * @param <T>         the type
      * @return a cloned object
+     * @throws IllegalArgumentException if objectClass snot same class
      */
     default <T extends ISerializable> T clone(Class<T> objectClass) {
+        boolean sameClass = objectClass.equals(getClass());
+        Preconditions.checkArgument(sameClass, "Not the same class so cannot clone.");
         String clonedString = serializeToString();
         Object obj = new XMLReader<>().readSingleFromString(clonedString);
         return objectClass.cast(obj);

@@ -18,8 +18,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import model.entity.Entity;
-import model.entity.EntitySystem;
 import view.Authoring;
 import view.Utilities;
 import view.editor.Editor;
@@ -51,20 +49,7 @@ public class GameEditor extends Editor  {
 		this.masterEnvironmentList = FXCollections.observableArrayList();
 		entDisp = new EntityDisplay(myLanguage, masterEntityList, authEnv);
 		envDisp = new EnvironmentDisplay(myLanguage, masterEnvironmentList, masterEntityList, authEnv);
-		addShit();
 		setPane();
-	}
-
-	private void addShit() {
-		Entity temp = new Entity("aaaa");
-		masterEntityList.add(temp);
-		EntitySystem tt = new EntitySystem("this be my entity system");
-		tt.addEntity(temp);
-		temp = new Entity("bbb");
-		masterEntityList.add(new Entity("bbbb"));
-		tt.addEntity(temp);
-		masterEnvironmentList.add(tt);
-		
 	}
 
 	private void setPane() {

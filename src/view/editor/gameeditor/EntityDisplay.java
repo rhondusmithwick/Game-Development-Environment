@@ -55,7 +55,7 @@ public class EntityDisplay extends ObjectDisplay{
 	@Override
 	public Node makeNewObject(){
 		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
-		templateBox = Utilities.makeComboBox(myResources.getString("entType"), Utilities.getAllFromDirectory(DefaultStrings.TEMPLATE_LOC.getDefault()), null);
+		templateBox = Utilities.makeComboBox(myResources.getString("entType"), Utilities.getAllFromDirectory(DefaultStrings.TEMPLATE_DIREC_LOC.getDefault()), null);
 		container.getChildren().add(templateBox);
 		
 		container.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENTITY_EDITOR_NAME.getDefault()), 
