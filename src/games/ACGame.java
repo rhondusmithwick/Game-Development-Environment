@@ -82,7 +82,10 @@ public class ACGame {
 		//character.getComponent(Position.class).getProperties().get(0).addListener(new ACGameXChangeListener(character));
 		//character.getComponent(Position.class).getProperties().get(0).addListener(new EntityAction(character));
     	universe.addEntity(character);
-    	
+//    	character.getComponent(Position.class).getProperties().get(0).addListener(new ACGameXChangeListener(character));
+//		character.addComponent(new ImagePath(IMAGE_PATH));
+//    	Action healthAction = getAction(healthScriptPath, character, pos);
+//    	inputSystem.addEvent("HEALTH_DECREASE", healthAction);
 		character.addComponent(new ImagePath(IMAGE_PATH));
     	eventSystem.registerEvent(new Trigger(character.getID(), character.getComponent(Position.class), 0, universe), getAction(healthScriptPath));
 		charSpr = drawCharacter(character);
