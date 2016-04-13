@@ -2,10 +2,12 @@ package model.entity;
 
 import api.IComponent;
 import api.IEntity;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 
@@ -63,7 +65,7 @@ public class Entity implements IEntity {
     }
 
     @Override
-    public Collection<IComponent> getAllComponents() {
+    public Collection<IComponent> getAllComponents() {    	
         return componentMap.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
     }
 
@@ -98,7 +100,7 @@ public class Entity implements IEntity {
     }
 
     @Override
-    public <T extends IComponent> Boolean removeComponent(Class<? extends IComponent> componentClassToRemove) {
+    public Boolean removeComponent(Class<? extends IComponent> componentClassToRemove) {
         if (componentMap.containsKey(componentClassToRemove)) {
             componentMap.remove(componentClassToRemove);
             return true;

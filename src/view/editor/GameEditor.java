@@ -1,13 +1,9 @@
 package view.editor;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-
-import api.IDataWriter;
 import api.IEditor;
-import api.IEntity;
 import api.ISerializable;
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
@@ -28,6 +24,7 @@ import model.entity.Entity;
 import model.entity.EntitySystem;
 import view.Authoring;
 import view.Utilities;
+import view.editor.gameeditor.GameDetails;
 
 public class GameEditor extends Editor  {
 
@@ -49,21 +46,8 @@ public class GameEditor extends Editor  {
 		this.authEnv=authEnv;
 		this.masterEntityList = FXCollections.observableArrayList();
 		this.masterEnvironmentList = FXCollections.observableArrayList();
-		addShit();
 		setPane();
 		addListeners();
-	}
-
-	private void addShit() {
-		Entity temp = new Entity("aaaa");
-		masterEntityList.add(temp);
-		EntitySystem tt = new EntitySystem();
-		tt.addEntity(temp);
-		temp = new Entity("bbb");
-		masterEntityList.add(new Entity("bbbb"));
-		tt.addEntity(temp);
-		masterEnvironmentList.add(tt);
-		
 	}
 
 	private void setPane() {
@@ -78,12 +62,10 @@ public class GameEditor extends Editor  {
 	}
 
 	private void loadFile(String fileName) {
-		XMLReader<SaveGame> xReader  = new XMLReader<SaveGame>();
-		SaveGame s = xReader.readSingleFromFile(DefaultStrings.CREATE_LOC.getDefault() + fileName+ DefaultStrings.XML.getDefault());
-		gameDetails.setDetails(Arrays.asList(s.getName(), s.getDesc(), s.getIcon()));
-		masterEntityList = FXCollections.observableArrayList(s.getEntites());
-		masterEnvironmentList = FXCollections.observableArrayList(s.getEnvironments());
-		System.out.println(masterEnvironmentList.get(0));
+		XMLReader<List<String>> xReader  = new XMLReader<List<String>>();
+		List<List<String>> gameObjects = xReader.readFromFile(DefaultStrings.CREATE_LOC.getDefault() + fileName+ DefaultStrings.XML.getDefault());
+		List<String> details = gameObjects.get(Indexes.XML_GAME_DETAILS.getIndex());
+		gameDetails.setDetails(details);
 	}
 
 	
@@ -181,10 +163,9 @@ public class GameEditor extends Editor  {
 	}
 
 	private void saveGame() {
-		SaveGame sGame = new SaveGame(gameDetails.getGameDetails(), new ArrayList<ISerializable>(masterEntityList), new ArrayList<ISerializable>(masterEnvironmentList));
-		IDataWriter<SaveGame> writer = new XMLWriter<>();
+		XMLWriter<List<String>> writer = new XMLWriter<List<String>>();
 		String name = gameDetails.getGameDetails().get(Indexes.GAME_NAME.getIndex());
-		writer.writeToFile(DefaultStrings.CREATE_LOC.getDefault() + name.trim()+ DefaultStrings.XML.getDefault(),sGame);
+		writer.writeToFile(DefaultStrings.CREATE_LOC.getDefault() + name.trim()+ DefaultStrings.XML.getDefault(), Arrays.asList(gameDetails.getGameDetails()));
 		System.out.println("Saved");
 	}
 
@@ -193,10 +174,13 @@ public class GameEditor extends Editor  {
 				e->createEditor(EditorEntity.class, new Entity(), FXCollections.observableArrayList())));
 		container.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
 				e->createEditor(EditorEnvironment.class, new EntitySystem(), masterEnvironmentList)));
+		
+		container.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.EVENT_EDITOR_NAME.getDefault()), 
+				e->createEditor(EditorEvent.class, new EntitySystem(), masterEnvironmentList)));
 	}
 	
 	private void createEditor(Class<?> editName, ISerializable toEdit, ObservableList<ISerializable> otherList) {
-		IEditor editor = editFact.createEditor(editName, myLanguage, toEdit, masterEntityList, otherList);
+		IEditor editor = editFact.createEditor(editName,  myLanguage,toEdit, masterEntityList, otherList);
 		editor.populateLayout();
 		authEnv.createTab(editor.getPane(), editName.getSimpleName(), true);
 	}
@@ -205,24 +189,10 @@ public class GameEditor extends Editor  {
 	@Override
 	public void updateEditor() {
 		populateLayout();
+
 	}
 
 	@Override
 	public void addSerializable(ISerializable serialize) {}
-
-
-/*	public ObservableList<ISerializable> getMasterList() {
-		return masterEntityList;
-	}
-
-
-	public ObservableList<ISerializable> getAddToList() {
-		return masterEnvironmentList;
-	}
-
-
-	public void addToMaster(IEntity checkEntity) {
-		masterEntityList.add(checkEntity);
-	}*/
 
 }

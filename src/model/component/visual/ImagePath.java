@@ -1,11 +1,13 @@
 package model.component.visual;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.geometry.Rectangle2D;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import utility.SingleProperty;
 import utility.TwoProperty;
 
@@ -16,20 +18,18 @@ import utility.TwoProperty;
  */
 public class ImagePath implements IComponent {
 
+	private static final String PROPERTIES_DIR = "templates.";
 	/**
 	 * The singleProperty.
 	 */
 	private final SingleProperty<String> imagePathProperty, spritesheetPath;
 	private final TwoProperty<Double, Double> imageSizeProperty;
-	private int framePointer;
-	//private final Rectangle2D viewport;
-	private final boolean isAnimated;
-	private final double frameDuration, totalDuration;
-	private static final String PROPERTIES_DIR = "templates.";
+	private ImageView imageView;
 	private final String spriteName;
 
 	public ImagePath() {
 		this("resources/RhonduSmithwick.JPG");
+
 	}
 
 	/**
@@ -38,10 +38,13 @@ public class ImagePath implements IComponent {
 	 * @param imagePath
 	 *            starting value
 	 */
-	public ImagePath(String imagePath) {
-		this(imagePath, 0.0, 0.0, "resources/RhonduSmithwick.JPG", false, 0.0, 0.0, "Rhondu");
+
+	public ImagePath(String imagePath) { // TODO: place default in resource file
+		this(imagePath, 0.0, 0.0, "resources/RhonduSmithwick.JPG", "Rhodu");
+        imageView = new ImageView(new Image(new File(imagePath).toURI().toString()));
 	}
 
+	// TODO: IMPORTANT NOTE: I forgot to account for columns!
 	/**
 	 * Construct with starting values.
 	 *
@@ -62,15 +65,18 @@ public class ImagePath implements IComponent {
 	 * @param offsetX
 	 *            offset in y-direction
 	 */
-	public ImagePath(String imagePath, double imageWidth, double imageHeight, String spritesheetPath,
-			boolean isAnimated, double frameDuration, double totalDuration, String spriteName) {
+	public ImagePath(String imagePath, double imageWidth, double imageHeight, String spritesheetPath, String spriteName) {
 		this.imagePathProperty = new SingleProperty<>("ImagePath", imagePath);
 		this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", imageHeight);
 		this.spritesheetPath = new SingleProperty<>("SpritesheetPath", spritesheetPath);
-		this.isAnimated = isAnimated;
-		this.frameDuration = frameDuration;
-		this.totalDuration = totalDuration;
 		this.spriteName = spriteName;
+		
+		
+		File resource = new File(spritesheetPath);
+		Image image = new Image(resource.toURI().toString());
+		this.imageView = new ImageView(image);
+	
+
 	}
 
 	/**
@@ -104,6 +110,7 @@ public class ImagePath implements IComponent {
 
 	public void setImageWidth(double imageWidth) {
 		this.imageWidthProperty().set(imageWidth);
+		System.out.println("Set width to: " + imageWidth);
 	}
 
 	public double getImageHeight() {
@@ -112,6 +119,7 @@ public class ImagePath implements IComponent {
 
 	public void setImageHeight(double imageHeight) {
 		this.imageHeightProperty().set(imageHeight);
+		System.out.println("Set height to: " + imageHeight);
 	}
 
 	@Override
@@ -119,20 +127,23 @@ public class ImagePath implements IComponent {
 		return Arrays.asList(imagePathProperty(), imageWidthProperty(), imageHeightProperty());
 	}
 
-	public double getFrameDuration() {
-		return this.frameDuration;
+
+	public ImageView getImageView() {											
+		return imageView;
 	}
 
-	public double getTotalDuration() {
-		return this.totalDuration;
-	}
+
 
 	public String getSpriteSheet(){
 		return this.spritesheetPath.property1().get();
 	}
+	
+	public String getSpriteName(){
+		return this.spriteName;
+	}
 
 	public String getSpriteProperties() {
-		return PROPERTIES_DIR  + this.spriteName;
+		return PROPERTIES_DIR + this.spriteName;
 	}
 
 

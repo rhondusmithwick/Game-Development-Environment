@@ -8,7 +8,6 @@ import model.component.visual.ImagePath;
 import javafx.animation.Animation;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.Node;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
@@ -21,12 +20,12 @@ public class Animator {
 	public Animation createAnimation(String move, IEntity entity){
 		ImagePath imagePath = entity.getComponent(ImagePath.class);
 		ResourceBundle myResources = ResourceBundle.getBundle(imagePath.getSpriteProperties());
-        imageView = new ImageView(new Image(new File(imagePath.getSpriteSheet()).toURI().toString()));
+        imageView = imagePath.getImageView();
         imageView.setViewport(new Rectangle2D(Double.parseDouble(myResources.getString(move+"OffsetX")), Double.parseDouble(myResources.getString(move+"OffsetY")), imagePath.getImageWidth(), imagePath.getImageHeight()));
 
         final Animation animation = new SpriteAnimation(
                 imageView,
-                Duration.millis(imagePath.getFrameDuration()),
+                Duration.millis(Double.parseDouble(myResources.getString(move+"Duration"))),
                 Integer.parseInt(myResources.getString(move+"Count")), Integer.parseInt(myResources.getString(move+"Columns")),
                 Double.parseDouble(myResources.getString(move+"OffsetX")), Double.parseDouble(myResources.getString(move+"OffsetY")),
                 imagePath.getImageWidth(), imagePath.getImageHeight()

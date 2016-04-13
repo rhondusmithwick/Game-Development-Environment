@@ -5,7 +5,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
-import view.editor.GameEditor;
+import view.editor.gameeditor.GameEditor;
 
 import java.util.ResourceBundle;
 
@@ -61,7 +61,6 @@ public class Authoring {
 			tabContent.prefHeightProperty().bind(display.heightProperty().subtract(GUISize.TOP_TAB.getSize()));
 			tabContent.prefWidthProperty().bind(display.widthProperty());
 			display.getTabs().add(tab);
-	
 		}
 		
 
