@@ -13,6 +13,7 @@ import javafx.scene.shape.Shape;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.Collision;
+import model.component.physics.Gravity;
 import model.component.physics.Mass;
 import api.IEntity;
 import api.IEntitySystem;
@@ -92,11 +93,28 @@ public class PhysicsEngine implements IPhysicsEngine {
 		Set<String> s2 = new HashSet<String>(IDList2);
 		return (Sets.intersection(s1, s2).size() > 0);
 	}
+	
+	private void clearCollisionComponents(Collection<IEntity> collidableEntities) {
+		for (IEntity entity : collidableEntities) {
+			entity.getComponent(Collision.class).clearCollidingIDs();
+		}
+	}
+	
+	
+	public void applyGravity(IEntitySystem universe, double secondsPassed) {
+		Collection<IEntity> entitiesSubjectToGravity = universe.getEntitiesWithComponents(Gravity.class, Velocity.class);
+		for (IEntity entity : entitiesSubjectToGravity) {
+			Velocity entityVelocity = entity.getComponent(Velocity.class);
+			double gravity = entity.getComponent(Gravity.class).getGravity();
+			entityVelocity.setVXY(entityVelocity.getVX(), gravity*secondsPassed);
+		}		
+	}
 
 	@Override
 	public IEntitySystem updateCollisionComponents(IEntitySystem universe, boolean dynamicsOn) {
 		//more efficient if can get List instead of Collection
 		Collection<IEntity> collidableEntities = universe.getEntitiesWithComponents(Collision.class);
+		clearCollisionComponents(collidableEntities);
 		
 		for (IEntity firstEntity : collidableEntities) {
 			for (IEntity secondEntity : collidableEntities) {
@@ -148,14 +166,6 @@ public class PhysicsEngine implements IPhysicsEngine {
 	
 	private double getVelocityWithoutRestitution(double mass1, double mass2, double velocity1, double velocity2) {
 		return (mass1 * velocity1) + (mass2 * velocity2) / (mass1 + mass2);
-	}
-	
-	public void applyGravity(IEntitySystem universe, double timePassed) {
-		//will need to apply only to entities that are "prone" to gravity
-		//ex: floating platforms not prone to gravity
-		//NEED AMOUNT OF TIME THAT HAS PASSED
-		//assume time passed is in milliseconds (NEED TO FIGURE THIS OUT FOR SURE)
-		
 	}
 	
 	private void addCollisionComponents(IEntity entityAddingTo, IEntity entityAddingFrom) {
