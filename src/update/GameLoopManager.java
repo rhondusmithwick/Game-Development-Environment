@@ -40,7 +40,10 @@ public class GameLoopManager extends JPanel implements ListSelectionListener {
 		listModel = new DefaultListModel<String>();
 		ResourceBundle bundle = ResourceBundle.getBundle(RESOURCE_PACKAGE + PROPERTIES_FILE);
 		for(String key : bundle.keySet()) {
-			listModel.addElement(key + ": " + bundle.getString(key));
+			String[] methods = bundle.getString(key).split(",");
+			for(String str: methods) {
+				listModel.addElement(key + ": " + str);
+			}
 		}
 		list = new JList<String>(listModel);
 		list.setSelectionMode(ListSelectionModel.SINGLE_INTERVAL_SELECTION);
