@@ -34,9 +34,11 @@ public class GameEditor extends Editor  {
 	private ObservableList<ISerializable> masterEntityList;
 	private ObservableList<ISerializable> masterEnvironmentList;
 	private ObservableList<ISerializable> masterEventList;
+	private ObservableList<String> userActions;
 	private GameDetails gameDetails;
 	private EntityDisplay entDisp;
 	private EnvironmentDisplay envDisp;
+	private final EventDisplay eventDisplay;
 
 	public GameEditor(Authoring authEnv, String language, String fileName){
 		this(authEnv, language);
@@ -51,10 +53,11 @@ public class GameEditor extends Editor  {
 		this.masterEntityList = FXCollections.observableArrayList();
 		this.masterEnvironmentList = FXCollections.observableArrayList();
 		this.masterEventList = FXCollections.observableArrayList();
+		this.userActions = FXCollections.observableArrayList();
 		entDisp = new EntityDisplay(myLanguage, masterEntityList, authEnv);
 		envDisp = new EnvironmentDisplay(myLanguage, masterEnvironmentList, masterEntityList, authEnv);
-		
 		addShit();
+		eventDisplay = new EventDisplay(myLanguage, masterEntityList, authEnv, userActions);
 		setPane();
 	}
 
@@ -67,7 +70,8 @@ public class GameEditor extends Editor  {
 		masterEntityList.add(new Entity("bbbb"));
 		tt.addEntity(temp);
 		masterEnvironmentList.add(tt);
-		
+		userActions.add("Punch");
+		userActions.add("Move Right");
 	}
 
 	private void setPane() {
@@ -115,7 +119,8 @@ public class GameEditor extends Editor  {
 	private VBox leftPane() {
 		VBox temp = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
 		temp.getChildren().addAll(gameDetails.getElements());
-		temp.getChildren().addAll(Arrays.asList(entDisp.getButton(), envDisp.envButton(), Utilities.makeButton(myResources.getString("saveGame"), e->saveGame())));
+		temp.getChildren().addAll(Arrays.asList(entDisp.getButton(), envDisp.envButton(), eventDisplay.getButton(), 
+				Utilities.makeButton(myResources.getString("saveGame"), e->saveGame())));
 		return temp;
 	}
 	

@@ -36,7 +36,6 @@ public class EditorEntity extends Editor{
 		myLanguage = language;
 		myEntity = (Entity) toEdit;
 		entityList = addToList;
-
 	}
 
 	@Override
