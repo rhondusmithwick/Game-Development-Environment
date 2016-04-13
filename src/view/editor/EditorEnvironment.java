@@ -135,7 +135,7 @@ public class EditorEnvironment extends Editor {
 			addComponents(entity);
 		}
 		ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
-		Utilities.setBinding(entity.getComponent(ImagePath.class), entity.getComponent(Position.class));
+		//Utilities.setBinding(entity.getComponent(ImagePath.class), entity.getComponent(Position.class));
 		DragAndResize.makeResizable(entityView, entity.getComponent(Position.class));
 		Button entityInButton = new Button(entity.getName());
 		entityInButton.setOnAction(e -> removeFromDisplay(entityView, entity, entityInButton));
@@ -161,6 +161,7 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void saveEnvironment() {
+		entitiesInEnvironment.removeAllBindingsFromComponents();
 		String name = getName();
 		entitiesInEnvironment.setName(name);
 		finalEnvironmentList.add(entitiesInEnvironment);
