@@ -135,9 +135,6 @@ public class EditorEnvironment extends Editor {
 		if (!entity.hasComponent(Position.class) || !entity.hasComponent(ImagePath.class)) {
 			addComponents(entity);
 		}
-		//String imagePath = entity.getComponent(ImagePath.class).getImagePath();
-		//File file = new File(imagePath);
-		//ImageView entityView = new ImageView(new Image(file.toURI().toString()));
 		ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
 		DragAndResize.makeResizable(entityView, entity.getComponent(Position.class));
 		Button entityInButton = new Button(entity.getName());
@@ -189,9 +186,6 @@ public class EditorEnvironment extends Editor {
 				addComponents(entity);
 			}
 			IEntity newEntity = Utilities.copyEntity(entity);
-			//String imagePath = entity.getComponent(ImagePath.class).getImagePath();
-	                //File file = new File(imagePath);
-	                //ImageView entityView = new ImageView(new Image(file.toURI().toString()));
 			ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
 			DragAndResize.makeResizable(entityView, newEntity.getComponent(Position.class));
 			System.out.println(entityView.getX());
