@@ -1,5 +1,6 @@
 package events;
 
+import api.IEntitySystem;
 import javafx.scene.input.KeyCode;
 
 import java.util.HashMap;
@@ -13,6 +14,11 @@ import java.util.Map;
 public class InputSystem {
     private final Map<String, Action> actionMap = new HashMap<>();
     private final Map<KeyCode, String> keyMap = new HashMap<>();
+    private IEntitySystem universe;
+
+    public InputSystem(IEntitySystem universe) {
+        this.universe = universe;
+    }
 
     public void addEvent(String actionName, Action action) {
         actionMap.put(actionName, action);
@@ -35,8 +41,13 @@ public class InputSystem {
         if (containsKey(k)) {
         	String actionName = keyMap.get(k);
         	if(containsEvent(actionName)) {
-        		actionMap.get(keyMap.get(k)).activate();
+        		actionMap.get(keyMap.get(k)).activate(universe);
         	}
         }
     }
+
+    public void setUniverse(IEntitySystem universe) {
+        this.universe = universe;
+    }
+
 }

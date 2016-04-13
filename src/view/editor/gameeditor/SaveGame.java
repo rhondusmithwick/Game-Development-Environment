@@ -3,7 +3,6 @@ package view.editor.gameeditor;
 import java.util.List;
 import api.ISerializable;
 import enums.Indexes;
-import javafx.collections.ObservableList;
 
 public class SaveGame implements ISerializable {
 	
@@ -17,7 +16,7 @@ public class SaveGame implements ISerializable {
 		this.entities = entities;
 		this.environments = environments;
 	}
-	
+
 	public String getName(){
 		return details.get(Indexes.GAME_NAME.getIndex());
 	}

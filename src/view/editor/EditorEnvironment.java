@@ -2,7 +2,6 @@ package view.editor;
 
 import java.io.File;
 import java.util.ResourceBundle;
-
 import api.IEntity;
 import api.IEntitySystem;
 import api.ISerializable;
@@ -20,9 +19,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import view.DragAndResize;
@@ -147,25 +143,21 @@ public class EditorEnvironment extends Editor {
 	private void saveEnvironment() {
 		String name = getName();
 		entitiesInEnvironment.setName(name);
+		System.out.println(name);
+		System.out.println(entitiesInEnvironment.getName());
 		finalEnvironmentList.add(entitiesInEnvironment);
 		environmentPane.getChildren().clear();
-		environmentPane.setCenter(savedMessage());
+		environmentPane.setCenter(saveMessage(myResources.getString("saveMessage")));
 	}
 
 	private String getName() {
 		String returnName = null;
 		if (nameField.getText().equals(myResources.getString("environmentName"))){
 			returnName  = Utilities.userInputBox(myResources.getString("noName"),myResources.getString("noNameMessage"));
+		}else{
+			returnName = nameField.getText();
 		}
 		return returnName;
-	}
-
-	private Text savedMessage() {
-		Text text = new Text();
-		text.setFont(new Font(40));
-		text.setTextAlignment(TextAlignment.CENTER);
-		text.setText(myResources.getString("saveMessage"));
-		return text;
 	}
 
 	private void addToScene(IEntity entity) {
