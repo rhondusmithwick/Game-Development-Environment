@@ -121,23 +121,4 @@ public class ImagePath implements IComponent {
     public String getImagePath() {
         return imagePath.property1().get();
     }
-    
-    public void setForSave(){
-        height = imageView.getBoundsInParent().getHeight();
-        width = imageView.getBoundsInParent().getWidth();
-        this.imageView=null;
-        
-    }
-    
-    public void reloadImageView(){
-        File resource = new File(imagePath.property1().get());
-        Image image = new Image(resource.toURI().toString());
-        this.imageView = (new ImageView(image));
-        imageView.setFitHeight(height);
-        imageView.setFitWidth(width);
-        imageView.setPreserveRatio(true);
-    }
-    
-
-
 }
