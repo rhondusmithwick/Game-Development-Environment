@@ -54,7 +54,7 @@ public abstract class ObjectDisplay {
 	}
 	
 	protected void updateDisplay(){
-		container.getChildren().removeAll(container.getChildren());
+		container.getChildren().clear();;
 		addNewObjects(container);
 		
 	}

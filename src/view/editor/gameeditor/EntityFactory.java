@@ -25,9 +25,8 @@ public class EntityFactory {
 		int numToAdd = numComponents.get(componentName);
 		for(int i=0; i<numToAdd; i++){
 			try {
-				if(!componentName.getName().equals("Position")){
 					entity.addComponent(componentName.getConstructor().newInstance());
-				}
+				
 			} catch (Exception e) {
 				ResourceBundle resources = ResourceBundle.getBundle(language);
 				Utilities.showError(resources.getString("error"), resources.getString("createComp"));
