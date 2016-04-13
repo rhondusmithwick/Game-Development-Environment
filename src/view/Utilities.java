@@ -295,51 +295,7 @@ public class Utilities {
 	}
 
 
-	/**
-	 * Sets the image width and height size in an ImagePath component;
-	 * this requires the actual image and image view linked to by the path to be instantiated 
-	 * so that the fit height and fit width parameters can be extracted. 
-	 * @param ImagePath path: ImagePath component
-	 * @return ImageView imageView: ImageView set up using the path
-	 */
-	@Deprecated
-	public static ImageView setUpImagePathSize(ImagePath path) {
-		URI resource = new File(path.getImagePath()).toURI();
-		Image image = new Image(resource.toString());
-		ImageView imageView = new ImageView(image);
-		imageView.setPreserveRatio(true);
-		path.setImageHeight(imageView.getFitHeight());
-		path.setImageWidth(imageView.getFitWidth());
-		return imageView;
-	}
 
-	/**
-	 * Creates the image/image view linked to by an ImagePath component
-	 * and binds the imageview's fit properties and translate properties to the given 
-	 * ImagePath and Position components;
-	 * works with the setUpImagePathSize method to create the ImageView and
-	 * to ensure that the width and height for the ImagePath have been set
-	 * @param ImagePath path: ImagePath component
-	 * @param Position pos: Position component
-	 * @return ImageView imageView: ImageView set up using the path with bound properties
-	 */
-	@Deprecated
-	public static ImageView createImage(ImagePath path, Position pos) {
-		ImageView imageView = setUpImagePathSize(path);
-		//imageView.fitHeightProperty().bind(imageView.fitHeightProperty());
-		//imageView.fitWidthProperty().bind(imageView.fitWidthProperty());
-		//imageView.translateXProperty().bind(pos.xProperty());
-		//imageView.translateYProperty().bind(pos.yProperty());
-		return imageView;
-	}
-	
-	@Deprecated
-	public static ImageView setBinding(ImagePath path, Position pos) {
-		path.getImageView().setPreserveRatio(true);
-		//path.getImageView().translateXProperty().bind(pos.xProperty());
-		//path.getImageView().translateYProperty().bind(pos.yProperty());
-		return path.getImageView();
-	}
 
 	/**
 	 * Creates an IEntity copy of the given IEntity with the same specs,
@@ -347,7 +303,6 @@ public class Utilities {
 	 * @param IEntity entity: given IEntity to copy
 	 * @return IEntity newEntity: returned copy of the given IEntity
 	 */
-	@Deprecated
 	public static IEntity copyEntity(IEntity entity) {
 		IEntity newEntity = new Entity(entity.getName());
 		newEntity.setSpecs(entity.getSpecs());
