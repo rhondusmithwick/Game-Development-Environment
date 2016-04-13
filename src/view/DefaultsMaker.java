@@ -16,7 +16,7 @@ import javafx.scene.shape.Rectangle;
 public class DefaultsMaker {
 	
 	private final static String backgroundName = "Default Fire Background";
-	private final static String backgroundPath = "resources/images/fire.gif";
+	private final static String backgroundPath = "resources/images/chinatown.png";
 	private final static String platformName = "Default Mario Platform";
 	private final static String platformPath = "resources/images/marioplatform.jpeg";
 	

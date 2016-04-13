@@ -43,6 +43,7 @@ public class ImagePath implements IComponent {
         ImageView imageView = new ImageView(new Image(new File(imagePath).toURI().toString()));
         imageViewProperty.set(imageView);
 		this.imagePath = new SingleProperty<>("ImagePath", imagePath);
+		this.imageViewProperty.get().setPreserveRatio(true);
 	}
 
 	// TODO: IMPORTANT NOTE: I forgot to account for columns!
@@ -72,7 +73,7 @@ public class ImagePath implements IComponent {
 		File resource = new File(spritesheetPath);
 		Image image = new Image(resource.toURI().toString());
 		this.imageViewProperty.set(new ImageView(image));
-
+		this.imageViewProperty.get().setPreserveRatio(true);
 	}
 
 	/**
@@ -115,7 +116,7 @@ public class ImagePath implements IComponent {
 	}
 
 
-	public ImageView getImageView() {											
+	public ImageView getImageView() {	
 		return imageViewProperty.get();
 	}
 
