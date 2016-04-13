@@ -17,8 +17,8 @@ import model.entity.Entity;
 import view.Authoring;
 import view.Utilities;
 import view.editor.EditorEntity;
-import view.editor.EditorEvent;
 import view.editor.EditorFactory;
+import view.editor.eventeditor.EditorEvent;
 
 public class EventDisplay extends ObjectDisplay
 {

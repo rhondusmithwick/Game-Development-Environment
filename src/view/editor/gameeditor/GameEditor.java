@@ -62,6 +62,12 @@ public class GameEditor extends Editor  {
 		envDisp = new EnvironmentDisplay(myLanguage, masterEnvironmentList, masterEntityList, authEnv);
 		eventDisplay = new EventDisplay(myLanguage, masterEntityList, authEnv, userActions);
 
+		// TEST
+		Entity test = new Entity("Hello");
+		test.addComponent(new Position());
+		masterEntityList.add(test);
+		
+		//
 		setPane();
 	}
 
@@ -112,10 +118,6 @@ public class GameEditor extends Editor  {
 	private VBox leftPane() {
 		VBox temp = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
 		temp.getChildren().addAll(gameDetails.getElements());
-/*
-		temp.getChildren().addAll(Arrays.asList(entDisp.getButton(), envDisp.envButton(), eventDisplay.getButton(), 
-				Utilities.makeButton(myResources.getString("saveGame"), e->saveGame())));
-*/
 		temp.getChildren().addAll(Arrays.asList(entDisp.makeNewObject(), envDisp.makeNewObject(), eventDisplay.makeNewObject(), Utilities.makeButton(myResources.getString("saveGame"), e->saveGame())));
 
 		return temp;

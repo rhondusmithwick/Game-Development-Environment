@@ -1,4 +1,4 @@
-package view.editor;
+package view.editor.eventeditor;
 
 import javafx.scene.layout.Pane;
 
@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import view.Authoring;
 import view.Utilities;
+import view.editor.Editor;
 import api.IEditor;
 import api.ISerializable;
 import enums.DefaultStrings;
@@ -48,20 +49,12 @@ import model.entity.Entity;
  */
 
 /*
- * TODO: Entity picker		--> Groundwork done
- * TODO: Table with collapsable panes	--> Done
- * TODO: Pane 1 - Retrieve Entity Properties and put in Table
- * TODO: Pane 2 - Editable Action Table
- * TODO: Load Groovy button
- * TODO: Editable + Resetable Groovy table
- * TODO: Write bindings to file
- * 
+ * TODO: Clean this shit up
  */
 public class EditorEvent extends Editor
 {
 	private final VBox pane;
 	private final ResourceBundle myResources;
-	private ComboBox<String> entityPicker;
 	
 	// Entity table contains...
 	private TitledPane entityPane;
@@ -76,6 +69,7 @@ public class EditorEvent extends Editor
 	private  ObservableList<String> actions;
 	private TableView groovyTable;
 	private Button chooseFileButton;
+	private TableManager tableManager;
 	
 	public EditorEvent(String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> addToList)
 	{
@@ -85,12 +79,12 @@ public class EditorEvent extends Editor
 		myResources = ResourceBundle.getBundle(language);
 		this.entityList = masterList;
 		
-		entityPicker = new ComboBox<String>();
 		entityPane = new TitledPane();
 		entitySubPanes = new HashMap<String, Node>();
 		entityCustomizables = new HashMap<String, Node>();
 		
 		actionButtons = new HashMap<String, Button>();
+		tableManager = new TableManager(masterList);
 		
 	}
 	
@@ -105,10 +99,11 @@ public class EditorEvent extends Editor
 
 	public void setActions(ObservableList<String> actions)
 	{
+		/*
 		this.actions = actions;
 
 		((TableView<String>)entityCustomizables.get(myResources.getString("actionsPane"))).setItems(actions);
-		
+		*/
 	}
 
 	private VBox makeGroovySide()
@@ -149,26 +144,14 @@ public class EditorEvent extends Editor
 		pane.getChildren().add(buttonSpace);
 	}
 
-	private void makeComboBox()
-	{
-		List<String> entityNames = new ArrayList<String>();
-		
-		entityPicker = Utilities.makeComboBox(myResources.getString("chooseEntity"), 
-				entityNames, e -> selectedAnEntity());
-		
-		for ( ISerializable entity: entityList )
-		{
-			entityPicker.getItems().add( ((Entity) entity).getName() );
-		}
-		
-		pane.getChildren().add(entityPicker);
-	}
-	
 	private void makeTables()
 	{
+		
 		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
 		VBox internalBox = new VBox();
-		
+	
+		pane.getChildren().add(tableManager.getContainer());
+	/*
 		internalBox.setMinWidth(GUISize.EVENT_EDITOR_TABLE_WIDTH.getSize());
 		
 		makeEntityPanes();
@@ -177,20 +160,16 @@ public class EditorEvent extends Editor
 		entityPane = Utilities.makeTitledPane(myResources.getString("entityPane"), internalBox, false);
 		
 		container.getChildren().add(entityPane);
-		
+		*/
 		container.getChildren().add(makeGroovySide());
 		
 		pane.getChildren().add(container);
-	}
-	
-	private void selectedAnEntity()
-	{
-		// System.out.println("Hell yeah!");
+		
+		
 	}
 	
 	public void populateLayout() 
 	{
-		makeComboBox();
 		makeTables();
 		makeBottomButtons();
 	}
