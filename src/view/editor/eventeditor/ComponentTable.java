@@ -15,27 +15,27 @@ public class ComponentTable
 	private TableColumn<ComponentEntry, String> column;
 	private Entity entity;
 	private ObservableList<ComponentEntry> entries;
+	TableManager manager;
 	
-	public ComponentTable()
+	public ComponentTable(TableManager manager)
 	{
 		table = new TableView<ComponentEntry>();
 		table.setEditable(true);
 		column = new TableColumn<ComponentEntry, String>("Pick Component");	// TODO resource file
 		column.setCellValueFactory( new PropertyValueFactory<ComponentEntry,String>("name") );
-		
+		this.manager = manager;
 		
 		entries = FXCollections.observableArrayList();
 		
 		table.getColumns().add(column);
 		
-	    //Add change listener
-        table.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> {
-            //Check whether item is selected and set value of selected item to Label
-            if (table.getSelectionModel().getSelectedItem() != null) {
-                System.out.println(table.getSelectionModel().getSelectedItem().getName());
-            }
-        });
-        
+		//Add change listener
+		table.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> 
+		{
+			manager.componentWasClicked(observableValue.getValue().getComponent());
+		}
+				);
+
 		table.setItems(entries);
 	}
 	
