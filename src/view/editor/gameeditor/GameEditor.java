@@ -61,7 +61,7 @@ public class GameEditor extends Editor  {
 	
 
 	private void loadFile(String fileName) {
-		IDataReader<SaveGame> xReader  = new XMLReader<SaveGame>();
+		IDataReader<SaveGame> xReader  = new XMLReader<>();
 		SaveGame s = xReader.readSingleFromFile(DefaultStrings.CREATE_LOC.getDefault() + fileName+ DefaultStrings.XML.getDefault());
 		gameDetails.setDetails(Arrays.asList(s.getName(), s.getDesc(), s.getIcon()));
 		masterEntityList.addAll(s.getEntites());
