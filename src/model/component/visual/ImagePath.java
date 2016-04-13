@@ -1,6 +1,8 @@
 package model.component.visual;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -11,6 +13,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utility.SingleProperty;
 import utility.TwoProperty;
+
+import javax.script.ScriptEngineManager;
 
 /**
  * Component to hold an imagePath.
@@ -24,7 +28,7 @@ public class ImagePath implements IComponent {
 	 */
 	private final SingleProperty<String> imagePathProperty, spritesheetPath;
 	private final TwoProperty<Double, Double> imageSizeProperty;
-	private ImageView imageView;
+	private transient ImageView imageView;
 	private Rectangle2D viewport;
 	private int frameIndex;
 	private final int maxFrameIndex;
@@ -195,5 +199,11 @@ public class ImagePath implements IComponent {
 	public void incrementFrameIndex() {
 		this.setFrameIndex(this.getFrameIndex() + 1);
 	}
+
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        // reconstruct imageView
+    }
 
 }
