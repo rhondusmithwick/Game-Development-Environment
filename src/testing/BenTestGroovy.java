@@ -30,28 +30,30 @@ public class BenTestGroovy extends Application {
 	private static final Group ROOT = new Group();
 
 	public void start(Stage s) {
-		BorderPane splash = new BorderPane();
-		splash.getChildren().add(ROOT);
-		Scene scene = new Scene(splash, 500, 500);
-		s.setScene(scene);
-		s.show();
-
-		// Sprites
-		IEntity rhonduEntity = BenTestCharacter.run(IMAGE_PATH);
-		// IEntity ball =
-		IEntitySystem system = new EntitySystem();
-		system.addEntities(rhonduEntity);
-		IPhysicsEngine physics = new PhysicsEngine(system);
-		ImageView testSprite = createImage(rhonduEntity.getComponent(ImagePath.class),
-				rhonduEntity.getComponent(Position.class));
-
-		// sets the game's loop
-		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
-				e -> this.step(SECOND_DELAY, system, physics));
-		Timeline animation = new Timeline();
-		animation.setCycleCount(Timeline.INDEFINITE);
-		animation.getKeyFrames().add(frame);
-		animation.play();
+//		BorderPane splash = new BorderPane();
+//		splash.getChildren().add(ROOT);
+//		Scene scene = new Scene(splash, 500, 500);
+//		s.setScene(scene);
+//		s.show();
+//
+//		// Sprites
+//		IEntity rhonduEntity = BenTestCharacter.run(IMAGE_PATH);
+//
+//		
+//		// IEntity ball =
+//		IEntitySystem system = new EntitySystem();
+//		system.addEntities(rhonduEntity);
+//		IPhysicsEngine physics = new PhysicsEngine(system);
+//		ImageView testSprite = createImage(rhonduEntity.getComponent(ImagePath.class),
+//				rhonduEntity.getComponent(Position.class));
+//
+//		// sets the game's loop
+//		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
+//				e -> this.step(SECOND_DELAY, system, physics));
+//		Timeline animation = new Timeline();
+//		animation.setCycleCount(Timeline.INDEFINITE);
+//		animation.getKeyFrames().add(frame);
+//		animation.play();
 	}
 
 	private void step(double dt, IEntitySystem system, IPhysicsEngine physics) {

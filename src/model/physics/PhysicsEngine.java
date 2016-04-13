@@ -36,12 +36,13 @@ public class PhysicsEngine implements IPhysicsEngine {
 		applyCollisions(universe, true); // WHAT'S PURPOSE OF BOOLEAN HERE?
 		applyGravity(universe, dt);
 		
-		Collection<IEntity> dynamicEntities = universe.getEntitiesWithComponents(Position.class, Velocity.class);		
+		Collection<IEntity> dynamicEntities = universe.getEntitiesWithComponents(Position.class, Velocity.class);
 		dynamicEntities.stream().forEach(p -> {
 			Position pos = p.getComponent(Position.class);
 			Velocity velocity = p.getComponent(Velocity.class);
 			double dx = dt * velocity.getVX();
 			double dy = dt * velocity.getVY();
+			System.out.println(pos+" "+dt+" "+velocity.getVX()+" "+velocity.getVY());
 			pos.add(dx, dy);
 		});
 	}
