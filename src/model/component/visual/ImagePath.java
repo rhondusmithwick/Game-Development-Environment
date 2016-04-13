@@ -1,15 +1,14 @@
 package model.component.visual;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
 import api.IComponent;
+import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utility.SingleProperty;
-import utility.TwoProperty;
 
 /**
  * Component to hold an imagePath.
@@ -18,14 +17,13 @@ import utility.TwoProperty;
  */
 public class ImagePath implements IComponent {
 
-	private static final String PROPERTIES_DIR = "templates.";
+	private static final String PROPERTIES_DIR = "spriteProperties.";
 	/**
 	 * The singleProperty.
 	 */
-	private final SingleProperty<String> imagePathProperty, spritesheetPath;
-	private final TwoProperty<Double, Double> imageSizeProperty;
-	private ImageView imageView;
-	private final String spriteName;
+	private final SingleProperty<String> spritesheetPath;
+	private ObjectProperty<ImageView> imageViewProperty = new SimpleObjectProperty<ImageView>();	private final String spriteName;
+
 
 	public ImagePath() {
 		this("resources/RhonduSmithwick.JPG");
@@ -39,9 +37,11 @@ public class ImagePath implements IComponent {
 	 *            starting value
 	 */
 
+
 	public ImagePath(String imagePath) { // TODO: place default in resource file
-		this(imagePath, 0.0, 0.0, "resources/RhonduSmithwick.JPG", "Rhodu");
-        imageView = new ImageView(new Image(new File(imagePath).toURI().toString()));
+		this("resources/RhonduSmithwick.JPG", "Rhodu");
+        ImageView imageView = new ImageView(new Image(new File(imagePath).toURI().toString()));
+        imageViewProperty.set(imageView);
 	}
 
 	// TODO: IMPORTANT NOTE: I forgot to account for columns!
@@ -65,17 +65,12 @@ public class ImagePath implements IComponent {
 	 * @param offsetX
 	 *            offset in y-direction
 	 */
-	public ImagePath(String imagePath, double imageWidth, double imageHeight, String spritesheetPath, String spriteName) {
-		this.imagePathProperty = new SingleProperty<>("ImagePath", imagePath);
-		this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", imageHeight);
+	public ImagePath(String spritesheetPath, String spriteName) {
 		this.spritesheetPath = new SingleProperty<>("SpritesheetPath", spritesheetPath);
 		this.spriteName = spriteName;
-		
-		
 		File resource = new File(spritesheetPath);
 		Image image = new Image(resource.toURI().toString());
-		this.imageView = new ImageView(image);
-	
+		this.imageViewProperty.set(new ImageView(image));
 
 	}
 
@@ -84,55 +79,42 @@ public class ImagePath implements IComponent {
 	 *
 	 * @return impagePath string property
 	 */
-	public SimpleObjectProperty<String> imagePathProperty() {
-		return imagePathProperty.property1();
-	}
 
-	public String getImagePath() {
-		return imagePathProperty().get();
-	}
 
-	public void setImagePath(String imagePath) {
-		this.imagePathProperty().set(imagePath);
-	}
 
-	public SimpleObjectProperty<Double> imageWidthProperty() {
-		return imageSizeProperty.property1();
-	}
-
-	public SimpleObjectProperty<Double> imageHeightProperty() {
-		return imageSizeProperty.property2();
-	}
+//	public SimpleObjectProperty<Double> imageWidthProperty() {
+//		return imageSizeProperty.property1();
+//	}
+//
+//	public SimpleObjectProperty<Double> imageHeightProperty() {
+//		return imageSizeProperty.property2();
+//	}
 
 	public double getImageWidth() {
-		return this.imageWidthProperty().get();
+		return imageViewProperty.get().getBoundsInParent().getWidth();
 	}
 
 	public void setImageWidth(double imageWidth) {
-		this.imageWidthProperty().set(imageWidth);
-		System.out.println("Set width to: " + imageWidth);
+		this.imageViewProperty.get().setFitWidth(imageWidth);
 	}
 
 	public double getImageHeight() {
-		return this.imageHeightProperty().get();
+		return imageViewProperty.get().getBoundsInParent().getHeight();
 	}
 
 	public void setImageHeight(double imageHeight) {
-		this.imageHeightProperty().set(imageHeight);
-		System.out.println("Set height to: " + imageHeight);
+		this.imageViewProperty.get().setFitHeight(imageHeight);
 	}
 
 	@Override
 	public List<SimpleObjectProperty<?>> getProperties() {
-		return Arrays.asList(imagePathProperty(), imageWidthProperty(), imageHeightProperty());
+		return null;
 	}
 
 
 	public ImageView getImageView() {											
-		return imageView;
+		return imageViewProperty.get();
 	}
-
-
 
 	public String getSpriteSheet(){
 		return this.spritesheetPath.property1().get();
@@ -144,8 +126,8 @@ public class ImagePath implements IComponent {
 
 	public String getSpriteProperties() {
 		return PROPERTIES_DIR + this.spriteName;
-	}
 
+	}
 
 
 }
