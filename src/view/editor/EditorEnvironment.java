@@ -160,6 +160,7 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void saveEnvironment() {
+		entitiesInEnvironment.removeAllBindingsFromComponents();
 		String name = getName();
 		entitiesInEnvironment.setName(name);
 		//finalEnvironmentList.remove(entitiesInEnvironment);

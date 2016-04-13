@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import api.IComponent;
+import api.IDataReader;
 import api.IDataWriter;
 import api.IEntitySystem;
 import api.ISerializable;
@@ -64,7 +65,7 @@ public class GameEditor extends Editor  {
 	
 
 	private void loadFile(String fileName) {
-		XMLReader<SaveGame> xReader  = new XMLReader<SaveGame>();
+		IDataReader<SaveGame> xReader  = new XMLReader<SaveGame>();
 		SaveGame s = xReader.readSingleFromFile(DefaultStrings.CREATE_LOC.getDefault() + fileName+ DefaultStrings.XML.getDefault());
 		gameDetails.setDetails(Arrays.asList(s.getName(), s.getDesc(), s.getIcon()));
 		masterEntityList.addAll(s.getEntites());
@@ -107,7 +108,6 @@ public class GameEditor extends Editor  {
 	}
 	
 	private void saveGame() {
-
 		SaveGame sGame = new SaveGame(gameDetails.getGameDetails(), new ArrayList<ISerializable>(masterEntityList), new ArrayList<ISerializable>(masterEnvironmentList));
 		IDataWriter<SaveGame> writer = new XMLWriter<>();
 		String name = gameDetails.getGameDetails().get(Indexes.GAME_NAME.getIndex());
