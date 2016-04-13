@@ -24,7 +24,7 @@ public class ImagePath implements IComponent {
         /**
          * The singleProperty.
          */
-        private final SingleProperty<String> imagePathProperty, spritesheetPath;
+        private final SingleProperty<String> imagePathProperty;
         private final TwoProperty<Double, Double> imageSizeProperty;
         private transient ImageView imageView;
         private Rectangle2D viewport;
@@ -45,7 +45,7 @@ public class ImagePath implements IComponent {
          *            starting value
          */
         public ImagePath(String imagePath) { // TODO: place default in resource file
-                this(imagePath, 0.0, 0.0, "resources/RhonduSmithwick.JPG", new Rectangle2D(0, 0, 0, 0), false, 0, 0, 0);
+                this(imagePath, 0.0, 0.0, new Rectangle2D(0, 0, 0, 0), false, 0, 0, 0);
         }
 
         // TODO: IMPORTANT NOTE: I forgot to account for columns!
@@ -69,14 +69,13 @@ public class ImagePath implements IComponent {
          * @param offsetX
          *            offset in y-direction
          */
-        public ImagePath(String imagePath, double imageWidth, double imageHeight, String spritesheetPath,
+        public ImagePath(String imagePath, double imageWidth, double imageHeight, 
                         Rectangle2D viewport, boolean isAnimated, double frameDurationMillis, double totalDurationMillis,
                         int maxFrameIndex) {
                 this.imagePathProperty = new SingleProperty<>("ImagePath", imagePath);
                 this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", imageHeight);
-                this.spritesheetPath = new SingleProperty<>("SpritesheetPath", spritesheetPath);
 
-                File resource = new File(spritesheetPath);
+                File resource = new File(imagePath);
                 Image image = new Image(resource.toURI().toString());
                 this.imageView = new ImageView(image);
 
