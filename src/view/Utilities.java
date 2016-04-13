@@ -302,7 +302,7 @@ public class Utilities {
 	 * @param ImagePath path: ImagePath component
 	 * @return ImageView imageView: ImageView set up using the path
 	 */
-
+	@Deprecated
 	public static ImageView setUpImagePathSize(ImagePath path) {
 		URI resource = new File(path.getImagePath()).toURI();
 		Image image = new Image(resource.toString());
@@ -323,15 +323,21 @@ public class Utilities {
 	 * @param Position pos: Position component
 	 * @return ImageView imageView: ImageView set up using the path with bound properties
 	 */
-
-	// could take in entity and extract needed components
+	@Deprecated
 	public static ImageView createImage(ImagePath path, Position pos) {
 		ImageView imageView = setUpImagePathSize(path);
-		imageView.fitHeightProperty().bind(path.imageHeightProperty());
-		imageView.fitWidthProperty().bind(path.imageWidthProperty());
+		imageView.fitHeightProperty().bind(imageView.fitHeightProperty());
+		imageView.fitWidthProperty().bind(imageView.fitWidthProperty());
 		imageView.translateXProperty().bind(pos.xProperty());
 		imageView.translateYProperty().bind(pos.yProperty());
 		return imageView;
+	}
+	
+	public static ImageView setBinding(ImagePath path, Position pos) {
+		path.getImageView().setPreserveRatio(true);
+		path.getImageView().translateXProperty().bind(pos.xProperty());
+		path.getImageView().translateYProperty().bind(pos.yProperty());
+		return path.getImageView();
 	}
 
 	/**
