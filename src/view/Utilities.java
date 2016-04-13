@@ -219,7 +219,7 @@ public class Utilities {
 	 * @return String result: user response if there is one, null if there isn't
 	 */
 
-	public String userInputBox(String title, String prompt) {
+	public static String userInputBox(String title, String prompt) {
 		TextInputDialog input = new TextInputDialog("");
 		input.setTitle(title);
 		input.setContentText(prompt);
@@ -254,7 +254,6 @@ public class Utilities {
 		return null;
 	}
 
-	// TODO: is static not good?
 	public static TitledPane makeTitledPane(String title, Node content, boolean collapsable)
 	{
 		TitledPane pane = new TitledPane(title, content);
