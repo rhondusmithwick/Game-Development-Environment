@@ -16,6 +16,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import api.IComponent;
 import api.IEntity;
+import enums.FileExtensions;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ComboBox;
@@ -347,32 +348,36 @@ public class Utilities {
 	 * @param IEntity entity: given IEntity to copy
 	 * @return IEntity newEntity: returned copy of the given IEntity
 	 */
-	@Deprecated
+	
 	public static IEntity copyEntity(IEntity entity) {
 		IEntity newEntity = new Entity(entity.getName());
 		newEntity.setSpecs(entity.getSpecs());
 		for (IComponent component : entity.getAllComponents()) {
 			newEntity.addComponent(component.clone(component.getClass()));
 			//newEntity.forceAddComponent(component, true);
-			if (newEntity.hasComponent(Position.class)){
-				newEntity.removeComponent(Position.class);
-				Position newPos = new Position();
-				newEntity.forceAddComponent(newPos,true);
-			}
-			if (newEntity.hasComponent(ImagePath.class)){
-				newEntity.removeComponent(ImagePath.class);
-				ImagePath newPath = new ImagePath(entity.getComponent(ImagePath.class).getImagePath());
-				newEntity.forceAddComponent(newPath, true);
-			}
+			componentInitialization(newEntity, entity);
 		}
 		return newEntity;
 	}
 	
+	private static void componentInitialization(IEntity newEntity, IEntity oldEntity) {
+		if (newEntity.hasComponent(Position.class)){
+			newEntity.removeComponent(Position.class);
+			Position newPos = new Position();
+			newEntity.forceAddComponent(newPos,true);
+		}
+		if (newEntity.hasComponent(ImagePath.class)){
+			newEntity.removeComponent(ImagePath.class);
+			ImagePath newPath = new ImagePath(oldEntity.getComponent(ImagePath.class).getImagePath());
+			newEntity.forceAddComponent(newPath, true);
+		}
+	}
+	
 	public static List<ExtensionFilter> getImageFilters(){
 		List<ExtensionFilter> filters = new ArrayList<ExtensionFilter>();
-		filters.add(new FileChooser.ExtensionFilter("All Images", "*.*"));
-		filters.add(new FileChooser.ExtensionFilter("JPG", "*.jpg"));
-		filters.add(new FileChooser.ExtensionFilter("PNG", "*.png"));
+		filters.add(FileExtensions.GIF.getFilter());
+		filters.add(FileExtensions.JPG.getFilter());
+		filters.add(FileExtensions.PNG.getFilter());
 		return filters;
 	}
 

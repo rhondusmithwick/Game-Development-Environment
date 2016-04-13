@@ -11,7 +11,7 @@ public class DragAndResize {
 
 	private boolean resizing;
 	private boolean dragging;
-	private double parentMinX;
+	//private double parentMinX;
 	private double parentMinY;
 	private double parentHeight;
 	private double parentWidth;
@@ -29,8 +29,8 @@ public class DragAndResize {
         minH = image.minHeight(image.getFitWidth());
     }
 
-    private void setNewInitialEventCoordinates(MouseEvent event) {
-        parentMinX = image.getBoundsInParent().getMinX();
+    private void setEventCoordinates(MouseEvent event) {
+      // parentMinX = image.getBoundsInParent().getMinX();
         parentMinY = image.getBoundsInParent().getMinY();
         parentHeight = image.getBoundsInParent().getHeight();
         parentWidth = image.getBoundsInParent().getWidth();
@@ -78,7 +78,7 @@ public class DragAndResize {
     }
 
     protected void mouseOver(MouseEvent event) {
-    		setNewInitialEventCoordinates(event);
+    		setEventCoordinates(event);
         if(isInResizeZone(event) || resizing) {
             image.setCursor(Cursor.S_RESIZE);
         }
@@ -88,7 +88,7 @@ public class DragAndResize {
     }
     
     protected void mousePressed(MouseEvent event) {
-      	setNewInitialEventCoordinates(event);
+      	setEventCoordinates(event);
         dragging = !isInResizeZone(event);
         resizing = isInResizeZone(event);
     }

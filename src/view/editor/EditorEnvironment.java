@@ -1,10 +1,13 @@
 package view.editor;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import api.IEntity;
 import api.IEntitySystem;
 import api.ISerializable;
+import enums.FileExtensions;
 import enums.GUISize;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -19,6 +22,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.FileChooser.ExtensionFilter;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import view.DragAndResize;
@@ -96,10 +100,11 @@ public class EditorEnvironment extends Editor {
 
 	@Override
 	public void loadDefaults() {
-		if (Utilities.showAlert(myResources.getString("addDefaults"), myResources.getString("defaultsMessage"),
-				myResources.getString("addDefaultsQuestion"), AlertType.CONFIRMATION)) {
+		if (Utilities.showAlert(myResources.getString("addDefaults"), myResources.getString("addDefaultsQuestion"),
+				myResources.getString("defaultsMessage"), AlertType.CONFIRMATION)) {
 			entitiesToDisplay.add(DefaultsMaker.loadBackgroundDefault());
-			entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay));
+			//entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(null)); 
+			//entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay)); 
 		}
 	}
 
@@ -135,7 +140,6 @@ public class EditorEnvironment extends Editor {
 			addComponents(entity);
 		}
 		ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
-		//Utilities.setBinding(entity.getComponent(ImagePath.class), entity.getComponent(Position.class));
 		DragAndResize.makeResizable(entityView, entity.getComponent(Position.class));
 		Button entityInButton = new Button(entity.getName());
 		entityInButton.setOnAction(e -> removeFromDisplay(entityView, entity, entityInButton));
@@ -186,7 +190,6 @@ public class EditorEnvironment extends Editor {
 			}
 			IEntity newEntity = Utilities.copyEntity(entity);
 			ImageView entityView = newEntity.getComponent(ImagePath.class).getImageView();
-			//Utilities.setBinding(newEntity.getComponent(ImagePath.class), newEntity.getComponent(Position.class));
 			DragAndResize.makeResizable(entityView, newEntity.getComponent(Position.class));
 			System.out.println(entityView.getX());
 			if (!entitiesInEnvironment.containsEntity(newEntity)) {
