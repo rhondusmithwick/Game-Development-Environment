@@ -66,22 +66,24 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private TextField setNameDisplay() {
-		nameField = new TextField(myResources.getString("environmentName"));
+		nameField = new TextField();
+		if (entitiesInEnvironment.getName().equals("")) {
+			nameField.setText(myResources.getString("environmentName"));
+		} else {
+			nameField.setText(entitiesInEnvironment.getName());
+		}
 		return nameField;
 	}
 
 	private ScrollPane setEntityOptionsDisplay() {
 		entityOptions = new VBox();
-		populateVbox(entityOptions, entitiesToDisplay);
 		loadDefaults();
+		populateVbox(entityOptions, entitiesToDisplay);
 		return (new ScrollPane(entityOptions));
 	}
 
 	private void populateVbox(VBox vbox, ObservableList<ISerializable> entityPopulation) {
-		if (entityPopulation.isEmpty()) {
-			Utilities.showAlert(myResources.getString("information"), null, myResources.getString("noEntitiesError"),
-					AlertType.INFORMATION);
-		}
+		vbox.getChildren().clear();
 		for (ISerializable entity : entityPopulation) {
 			Button addEntityButton = Utilities.makeButton(((IEntity) entity).getName(),
 					e -> addToScene((IEntity) entity));
@@ -96,7 +98,6 @@ public class EditorEnvironment extends Editor {
 				myResources.getString("addDefaultsQuestion"), AlertType.CONFIRMATION)) {
 			entitiesToDisplay.add(DefaultsMaker.loadBackgroundDefault());
 			entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay));
-			// populateVbox(entityOptions,displayEntities);
 		}
 	}
 
@@ -120,16 +121,34 @@ public class EditorEnvironment extends Editor {
 		gameScene = new SubScene(gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()),
 				GUISize.HEIGHT_MINUS_TAB.getSize());
 		gameScene.setFill(Color.WHITE);
+		if (!entitiesInEnvironment.isEmpty()){
+			for (IEntity entity : entitiesInEnvironment.getAllEntities()){
+				loadScene(entity);
+			}
+		}
+	}
+
+	private void loadScene(IEntity entity) {
+			if (!entity.hasComponent(Position.class) || !entity.hasComponent(ImagePath.class)) {
+				addComponents(entity);
+			}
+			ImageView entityView = Utilities.createImage(entity.getComponent(ImagePath.class),
+					entity.getComponent(Position.class));
+			DragAndResize.makeResizable(entityView, entity.getComponent(ImagePath.class),
+					entity.getComponent(Position.class));
+				Button entityInButton = new Button(entity.getName());
+				entityInButton.setOnAction(e -> removeFromDisplay(entityView, entity, entityInButton));
+				entitiesCurrentlyIn.getChildren().add(entityInButton);
+				gameRoot.getChildren().add(entityView);		
 	}
 
 	private void updateDisplay(ObservableList<ISerializable> masterList) {
 		entitiesToDisplay = masterList;
-		updateEditor();
+		populateVbox(entityOptions, entitiesToDisplay);
 	}
 
 	@Override
 	public void updateEditor() {
-		entityOptions.getChildren().clear();
 		populateVbox(entityOptions, entitiesToDisplay);
 	}
 
@@ -143,8 +162,7 @@ public class EditorEnvironment extends Editor {
 	private void saveEnvironment() {
 		String name = getName();
 		entitiesInEnvironment.setName(name);
-		System.out.println(name);
-		System.out.println(entitiesInEnvironment.getName());
+		//finalEnvironmentList.remove(entitiesInEnvironment);
 		finalEnvironmentList.add(entitiesInEnvironment);
 		environmentPane.getChildren().clear();
 		environmentPane.setCenter(saveMessage(myResources.getString("saveMessage")));
@@ -152,9 +170,10 @@ public class EditorEnvironment extends Editor {
 
 	private String getName() {
 		String returnName = null;
-		if (nameField.getText().equals(myResources.getString("environmentName"))){
-			returnName  = Utilities.userInputBox(myResources.getString("noName"),myResources.getString("noNameMessage"));
-		}else{
+		if (nameField.getText().equals(myResources.getString("environmentName"))) {
+			returnName = Utilities.userInputBox(myResources.getString("noName"),
+					myResources.getString("noNameMessage"));
+		} else {
 			returnName = nameField.getText();
 		}
 		return returnName;

@@ -130,6 +130,13 @@ public interface IEntitySystem extends ISerializable {
      * @return true if removed
      */
     boolean removeEntity(String id);
+    
+    /**
+     * Checks if any entities are in this system.
+     *
+     * @return true if system contains no entities
+     */
+    boolean isEmpty();
 
     /**
      * Created an entity from a file containing an entity.
