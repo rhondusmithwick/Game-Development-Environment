@@ -47,6 +47,7 @@ public class ACGame {
 	private final String IMAGE_PATH = "resources/images/blastoise.png";
 	private final String healthScriptPath = "resources/groovyScripts/ACGameTestScript.groovy";
     private Scene myScene;
+    private Group root;
 
     /**
      * Returns name of the game.
@@ -60,7 +61,7 @@ public class ACGame {
      */
     public Scene init (int width, int height) {
         // Create a scene graph to organize the scene
-        Group root = new Group();
+        root = new Group();
         // Create a place to see the shapes
         myScene = new Scene(root, width, height, Color.WHITE);
         initEngine();
@@ -89,6 +90,7 @@ public class ACGame {
 	public void step(double dt) {
 		physics.update(universe, dt);
 		moveEntity(character, 20);
+		draw(character);
 	}
 	
 	private Action getAction(String scriptPath, IEntity entity, IComponent component) {
@@ -104,5 +106,9 @@ public class ACGame {
 	private void moveEntity(IEntity character, int move) { 
 		 Position pos = character.getComponent(Position.class);
 		 pos.setX(pos.getX() + move);
+	}
+	
+	private void draw(IEntity character) {
+		
 	}
 }

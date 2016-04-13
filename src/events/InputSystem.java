@@ -2,8 +2,13 @@ package events;
 
 import javafx.scene.input.KeyCode;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 
 /**
  * Created by rhondusmithwick on 4/10/16.
@@ -31,7 +36,6 @@ public class InputSystem {
     }
 
     public void take(KeyCode k) {
-    	// TODO maybe change this if tree
         if (containsKey(k)) {
         	String actionName = keyMap.get(k);
         	if(containsEvent(actionName)) {
