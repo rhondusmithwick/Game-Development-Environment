@@ -77,22 +77,6 @@ public class ImagePath implements IComponent {
 		imageView.setPreserveRatio(true);
 	}
 
-	/**
-	 * Get the imagePath property.
-	 *
-	 * @return impagePath string property
-	 */
-
-
-
-//	public SimpleObjectProperty<Double> imageWidthProperty() {
-//		return imageSizeProperty.property1();
-//	}
-//
-//	public SimpleObjectProperty<Double> imageHeightProperty() {
-//		return imageSizeProperty.property2();
-//	}
-
 	public double getImageWidth() {
 		return imageView.getBoundsInParent().getWidth();
 	}
