@@ -47,6 +47,9 @@ public class GuiObjectFactory {
 			case("Score"):{
 				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
 			}
+			case("Speed"):{
+				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
+			}
 
 		}
 		
