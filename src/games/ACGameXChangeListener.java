@@ -19,9 +19,10 @@ public class ACGameXChangeListener implements ChangeListener{
 
 	@Override
 	public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-		if ((double) observable.getValue() > 500){
-			System.out.println("out of bounds");
-		}
+			if ((double) observable.getValue() > 500){
+				System.out.println("out of bounds");
+				
+			}
 	}	
 	
 }

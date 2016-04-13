@@ -5,7 +5,6 @@ import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
 
 import java.io.File;
-import java.io.Serializable;
 
 /**
  * Interface for serializable objects.
@@ -13,7 +12,7 @@ import java.io.Serializable;
  *
  * @author Rhondu Smithwick, Tom Wu
  */
-public interface ISerializable extends Serializable{
+public interface ISerializable {
 
     /**
      * Serializes this object to a File
