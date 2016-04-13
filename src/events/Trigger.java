@@ -16,10 +16,13 @@ import javafx.beans.value.ObservableValue;
  */
 public class Trigger extends Observable implements ChangeListener, ISerializable{
 
-	private static String id;
+	private String[] propertySpecifier;
 	
 	public Trigger(String entityID, IComponent component, int index, IEntitySystem universe) {
-		id=entityID+":"+component.getClass()+":"+index;
+		propertySpecifier = new String[3];
+		propertySpecifier[0] = entityID;
+		propertySpecifier[1] = component.getClass().toString();
+		propertySpecifier[2] = index + "";
 		universe.getEntity(entityID).getComponent(component.getClass()).getProperties().get(index).addListener(this);
 	}
 	
@@ -30,15 +33,13 @@ public class Trigger extends Observable implements ChangeListener, ISerializable
 	}
 	
 	public <T extends IComponent> void clearListener(IEntitySystem universe) {
-		String[] descriptors = id.split(":");
-		String entityID = descriptors[0];
-		String componentClass = descriptors[1];
-		int index = Integer.parseInt(descriptors[0]);
+		String entityID = propertySpecifier[0];
+		String componentClass = propertySpecifier[1];
+		int index = Integer.parseInt(propertySpecifier[2]);
 		try {
 			universe.getEntity(entityID).getComponent((Class<T>) Class.forName(componentClass)).getProperties().get(index).removeListener(this);
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.out.println("Could not remove the listener because class was not found.");
 		}
 	}
 }

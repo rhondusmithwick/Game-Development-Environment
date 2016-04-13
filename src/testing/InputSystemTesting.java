@@ -13,7 +13,6 @@ import api.IEntity;
 import events.Action;
 import events.EntityAction;
 import events.InputSystem;
-import events.UniverseAction;
 import javafx.application.Application;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
