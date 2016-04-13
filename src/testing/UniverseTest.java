@@ -5,10 +5,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import api.IEntity;
 import api.IEntitySystem;
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
 import events.Action;
+import events.EventSystem;
+import events.Trigger;
+import model.component.character.Health;
+import model.entity.Entity;
 import model.entity.EntitySystem;
 
 /**
@@ -24,6 +29,8 @@ public class UniverseTest {
     }
 
     public void test() {
+    	
+    	EventSystem eventSystem = new EventSystem(universe);
     	Map<String, Object> map = new HashMap<>();
     	map.put("HEYHEY","YOUYOU");
     	List<Action> actionList = new ArrayList<>();
@@ -33,6 +40,16 @@ public class UniverseTest {
         actionList.add(action3);
         new XMLWriter<Action>().writeToFile("heeey.xml", actionList);
         List<Action> actionList2 = new XMLReader<Action>().readFromFile("heeey.xml");
+        IEntity character = new Entity("Ani");
+        character.addComponent(new Health(100.0));
+        universe.addEntity(character);
+        Trigger t = new Trigger(character.getID(), character.getComponent(Health.class), 0, universe);
+        t.serialize("yoyoyo.xml");
+        Trigger t2 = new XMLReader<Trigger>().readSingleFromFile("yoyoyo.xml");
+        eventSystem.registerEvent(t, action);
+        eventSystem.saveEventsToFile("eventtest.xml");
+        EventSystem eventSystem2 = new EventSystem(universe);
+        eventSystem2.readEventsFromFile("eventtest.xml");
     }
 
 }
