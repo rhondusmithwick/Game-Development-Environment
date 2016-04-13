@@ -1,11 +1,8 @@
 package model.component.visual;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
-
 import api.IComponent;
-import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -23,6 +20,7 @@ public class ImagePath implements IComponent {
 	 * The singleProperty.
 	 */
 	private SingleProperty<String> imagePath;
+	private ImageView imageView;
 	//private ObjectProperty<ImageView> imageViewProperty = new SimpleObjectProperty<ImageView>();	
 	private final String spriteName;
 	
@@ -42,7 +40,8 @@ public class ImagePath implements IComponent {
 
 	public ImagePath(String imagePath) { // TODO: place default in resource file
 		this("resources/RhonduSmithwick.JPG", "Rhodu");
-        ImageView imageView = new ImageView(new Image(new File(imagePath).toURI().toString()));
+        imageView = new ImageView(new Image(new File(imagePath).toURI().toString()));
+        imageView.setPreserveRatio(true);
        // imageViewProperty.set(imageView);
 		this.imagePath = new SingleProperty<>("ImagePath", imagePath);
 		//this.imageViewProperty.get().setPreserveRatio(true);
@@ -74,8 +73,8 @@ public class ImagePath implements IComponent {
 		this.spriteName = spriteName;
 		File resource = new File(spritesheetPath);
 		Image image = new Image(resource.toURI().toString());
-		//this.imageViewProperty.set(new ImageView(image));
-		//this.imageViewProperty.get().setPreserveRatio(true);
+		this.imageView = (new ImageView(image));
+		imageView.setPreserveRatio(true);
 	}
 
 	/**
@@ -94,23 +93,23 @@ public class ImagePath implements IComponent {
 //		return imageSizeProperty.property2();
 //	}
 
-	/*public double getImageWidth() {
-		return imageViewProperty.get().getBoundsInParent().getWidth();
+	public double getImageWidth() {
+		return imageView.getBoundsInParent().getWidth();
 	}
 
 	public void setImageWidth(double imageWidth) {
-		this.imageViewProperty.get().setFitWidth(imageWidth);
+		imageView.setFitWidth(imageWidth);
 		System.out.println("Image height set to: " + this.getImageHeight());
 	}
 
 	public double getImageHeight() {
-		return imageViewProperty.get().getBoundsInParent().getHeight();
+		return imageView.getBoundsInParent().getHeight();
 	}
 
 	public void setImageHeight(double imageHeight) {
-		this.imageViewProperty.get().setFitHeight(imageHeight);
+		imageView.setFitHeight(imageHeight);
 		System.out.println("Image height set to: " + this.getImageWidth());
-	}*/
+	}
 
 	@Override
 	public List<SimpleObjectProperty<?>> getProperties() {
@@ -118,9 +117,9 @@ public class ImagePath implements IComponent {
 	}
 
 
-	//public ImageView getImageView() {	
-		//return imageViewProperty.get();
-	//}
+	public ImageView getImageView() {	
+		return imageView;
+	}
 
 	public String getSpriteSheet(){
 		return this.imagePath.property1().get();
