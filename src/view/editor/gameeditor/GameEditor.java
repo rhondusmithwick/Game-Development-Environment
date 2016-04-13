@@ -3,6 +3,8 @@ package view.editor.gameeditor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.ResourceBundle;
+
+import api.IComponent;
 import api.IDataWriter;
 import api.IEntitySystem;
 import api.ISerializable;
@@ -12,6 +14,7 @@ import enums.DefaultStrings;
 import enums.GUISize;
 import enums.Indexes;
 import enums.ViewInsets;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -104,18 +107,14 @@ public class GameEditor extends Editor  {
 	}
 	
 	private void saveGame() {
-		masterEnvironmentList.stream().forEach(env->removeBindings(env));
+
 		SaveGame sGame = new SaveGame(gameDetails.getGameDetails(), new ArrayList<ISerializable>(masterEntityList), new ArrayList<ISerializable>(masterEnvironmentList));
 		IDataWriter<SaveGame> writer = new XMLWriter<>();
 		String name = gameDetails.getGameDetails().get(Indexes.GAME_NAME.getIndex());
 		writer.writeToFile(DefaultStrings.CREATE_LOC.getDefault() + name.trim()+ DefaultStrings.XML.getDefault(),sGame);
 		System.out.println("Saved");
 	}
-	
-	private void removeBindings(ISerializable env) {
-		((IEntitySystem) env).removeAllBindingsFromComponents();
-		
-	}
+
 
 	@Override
 	public void updateEditor() {
