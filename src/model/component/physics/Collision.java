@@ -47,6 +47,10 @@ public class Collision implements IComponent {
 	public void addCollidingIDs(Collection<String> newIDs) {
 		this.collidingIDs.addAll(newIDs);
 	}
+	
+	public void addCollidingID(String newID) {
+		this.collidingIDs.add(newID);
+	}
 
 	public void clearCollidingIDs() {
 		this.collidingIDs.clear();
