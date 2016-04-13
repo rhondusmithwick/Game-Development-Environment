@@ -38,6 +38,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser.ExtensionFilter;
 import model.entity.Entity;
 
 /**
@@ -73,7 +74,8 @@ public class EditorEvent extends Editor
 	private final HashMap<String, Button> actionButtons;
 	
 	private  ObservableList<String> actions;
-
+	private TableView groovyTable;
+	private Button chooseFileButton;
 	
 	public EditorEvent(String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> addToList)
 	{
@@ -108,10 +110,27 @@ public class EditorEvent extends Editor
 		((TableView<String>)entityCustomizables.get(myResources.getString("actionsPane"))).setItems(actions);
 		
 	}
-	
-	private void makeTopButtons()
-	{
 
+	private VBox makeGroovySide()
+	{
+		VBox container = new VBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
+		// Adding now the Groovy Table
+		chooseFileButton = Utilities.makeButton("Choose file", e -> getFile());
+		groovyTable = Utilities.makeSingleColumnTable("Groovy Scripts", GUISize.EVENT_EDITOR_TABLE_WIDTH.getSize()); // TODO: Temporary
+		
+		container.getChildren().addAll(chooseFileButton, groovyTable);
+		return container;
+	}
+
+	private void getFile()
+	{
+		File groovyFile = null;
+		
+		groovyFile = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("groovy", "*.groovy"), "Select your groovy script!");
+		if ( groovyFile != null )
+		{
+			
+		}
 	}
 	
 	private void makeBottomButtons()
@@ -159,6 +178,8 @@ public class EditorEvent extends Editor
 		
 		container.getChildren().add(entityPane);
 		
+		container.getChildren().add(makeGroovySide());
+		
 		pane.getChildren().add(container);
 	}
 	
@@ -170,7 +191,6 @@ public class EditorEvent extends Editor
 	public void populateLayout() 
 	{
 		makeComboBox();
-		makeTopButtons();
 		makeTables();
 		makeBottomButtons();
 	}
