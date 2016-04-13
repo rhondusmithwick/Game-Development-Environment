@@ -1,5 +1,7 @@
 package enums;
 
+import model.component.movement.Position;
+
 public enum DefaultStrings {
 	
 	DEFAULT_LANGUAGE("english"),
@@ -9,9 +11,12 @@ public enum DefaultStrings {
 	ENVIRONMENT_EDITOR_NAME("EditorEnvironment"),
 	LANG_LOC("propertyFiles/"), 
 	CREATE_LOC("resources/createdGames/"),
-	XML(".xml"), 
+	TEMPLATE_DIREC_LOC("resources/templates/"),
+	TEMPLATE_BUNDLE_LOC("templates/"),
+	POSITION_COMP_NAME(Position.class.getName()),
 	BACKGROUND_TEMPLATE_PATH("templates/Background"), 
-	PLATFORM_TEMPLATE_PATH("templates/PlatformSprite");
+	PLATFORM_TEMPLATE_PATH("templates/PlatformSprite"),
+	XML(".xml");
 
     private final String content;
 

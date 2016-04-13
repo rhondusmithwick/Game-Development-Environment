@@ -15,7 +15,7 @@ public class CloneTest {
     @Test
     public void testClone() {
         Position position = new Position(30, 40);
-        Position position2 = position.clone(Position.class);
+        Position position2 = position.clone(position.getClass());
         position2.setX(80);
         assertEquals(position.getX(), 30, .001);
         assertEquals(position2.getX(), 80, .001);

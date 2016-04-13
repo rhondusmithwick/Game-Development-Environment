@@ -32,7 +32,7 @@ public class DefaultsMaker {
 		
 	public static IEntity loadPlatformDefault(ObservableList<ISerializable> masterEntities){
 		IEntity entity = new Entity(platformName);
-		entity.loadSpecsFromPropertiesFile(DefaultStrings.PLATFORM_TEMPLATE_PATH.getDefault());
+		// entity.loadSpecsFromPropertiesFile(DefaultStrings.PLATFORM_TEMPLATE_PATH.getDefault());
 		// add friction
 		// add render properties
 		entity.forceAddComponent(new Position(),true);

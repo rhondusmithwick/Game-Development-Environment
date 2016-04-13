@@ -52,7 +52,7 @@ public class AnimationTest extends Application {
 		character.forceAddComponent(new Velocity(20, 0), true);
 		character.forceAddComponent(
 				new ImagePath("resources/spriteSheets/spritesheet.png", 0.0, 0.0,
-						"resources/spriteSheets/spritesheet.png", new Rectangle2D(0, 0, 125, 125), true, 0.01, 4.0, 4),
+						"resources/spriteSheets/spritesheet.png", new Rectangle2D(0, 0, 125, 125), true, 0.1, 4.0, 4),
 				true);
 		list.add(character);
 

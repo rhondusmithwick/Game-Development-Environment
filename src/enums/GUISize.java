@@ -18,7 +18,8 @@ public enum GUISize {
 	ONE_THIRD_OF_SCREEN(AUTHORING_WIDTH.getSize()/3),
 	LABEL_MIN_WIDTH(125),
 	SCROLL_PAD(5),
-	VOOGA_PAD(10);
+	VOOGA_PAD(10), 
+	SAVE_MESSAGE_FONT(40);
 
 
     private final int size;

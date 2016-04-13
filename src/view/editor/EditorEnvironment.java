@@ -2,7 +2,6 @@ package view.editor;
 
 import java.io.File;
 import java.util.ResourceBundle;
-
 import api.IEntity;
 import api.IEntitySystem;
 import api.ISerializable;
@@ -20,9 +19,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import view.DragAndResize;
@@ -42,7 +38,7 @@ public class EditorEnvironment extends Editor {
 	private VBox leftPane;
 	private VBox rightPane;
 	private VBox entitiesCurrentlyIn;
-	private TextField name;
+	private TextField nameField;
 
 	public EditorEnvironment(String language, ISerializable toEdit, ObservableList<ISerializable> masterList,
 			ObservableList<ISerializable> addToList) {
@@ -70,8 +66,8 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private TextField setNameDisplay() {
-		name = new TextField(myResources.getString("environmentName"));
-		return name;
+		nameField = new TextField(myResources.getString("environmentName"));
+		return nameField;
 	}
 
 	private ScrollPane setEntityOptionsDisplay() {
@@ -111,7 +107,7 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private Button setSaveButton() {
-		return Utilities.makeButton("Save Environment", e -> saveEnvironment());
+		return Utilities.makeButton(myResources.getString("saveEnvironment"), e -> saveEnvironment());
 	}
 
 	private ScrollPane setEntitiesInEnvironmentDisplay() {
@@ -145,18 +141,23 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void saveEnvironment() {
-		entitiesInEnvironment.setName(name.getText());
+		String name = getName();
+		entitiesInEnvironment.setName(name);
+		System.out.println(name);
+		System.out.println(entitiesInEnvironment.getName());
 		finalEnvironmentList.add(entitiesInEnvironment);
 		environmentPane.getChildren().clear();
-		environmentPane.setCenter(savedMessage());
+		environmentPane.setCenter(saveMessage(myResources.getString("saveMessage")));
 	}
 
-	private Text savedMessage() {
-		Text text = new Text();
-		text.setFont(new Font(40));
-		text.setTextAlignment(TextAlignment.CENTER);
-		text.setText("Your environment has been saved.\nPlease close this tab.");
-		return text;
+	private String getName() {
+		String returnName = null;
+		if (nameField.getText().equals(myResources.getString("environmentName"))){
+			returnName  = Utilities.userInputBox(myResources.getString("noName"),myResources.getString("noNameMessage"));
+		}else{
+			returnName = nameField.getText();
+		}
+		return returnName;
 	}
 
 	private void addToScene(IEntity entity) {
