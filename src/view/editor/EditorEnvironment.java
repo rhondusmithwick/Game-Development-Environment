@@ -4,8 +4,11 @@ import java.io.File;
 import java.util.ResourceBundle;
 import api.IEntity;
 import api.IEntitySystem;
+import api.IPhysicsEngine;
 import api.ISerializable;
 import enums.GUISize;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
@@ -19,8 +22,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
+import model.physics.PhysicsEngine;
 import view.DefaultsMaker;
 import view.DragAndResize;
 import view.Utilities;
@@ -50,8 +55,29 @@ public class EditorEnvironment extends Editor {
 		entitiesInEnvironment = (IEntitySystem) toEdit;
 		finalEnvironmentList = addToList;
 		addLayoutComponents();
+		
+		/*// TODO: don't hard code
+		double MILLISECOND_DELAY = 10;
+		double SECOND_DELAY = MILLISECOND_DELAY/1000;
+		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> this.step(SECOND_DELAY));
+		Timeline animation = new Timeline();
+		animation.setCycleCount(Timeline.INDEFINITE);
+		animation.getKeyFrames().add(frame);
+		animation.play();*/
 	}
 
+/*	private void step(double dt) {
+		IPhysicsEngine p = new PhysicsEngine(null);
+		p.update(getEntitySystem(), dt);
+		for(IEntity e: getEntitySystem().getEntitiesWithComponent(Position.class)) {
+			ImagePath imagePath = e.getComponent(ImagePath.class);
+			ImageView imageView = imagePath.getImageView();
+			Position pos = e.getComponent(Position.class);
+			imageView.setTranslateX(pos.getX());
+			imageView.setTranslateY(pos.getY());
+		}
+	}*/
+	
 	private void addLayoutComponents() {
 		environmentPane = new BorderPane();
 		setLeftPane();
@@ -100,6 +126,8 @@ public class EditorEnvironment extends Editor {
 				myResources.getString("defaultsMessage"), AlertType.CONFIRMATION)) {
 			entitiesToDisplay.add(DefaultsMaker.loadBackgroundDefault());
 			entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay));
+			entitiesToDisplay.add(DefaultsMaker.loadCharacter1Default());
+			entitiesToDisplay.add(DefaultsMaker.loadCharacter2Default());
 		}
 	}
 
@@ -181,7 +209,7 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void addToScene(IEntity entity) {
-		try {
+	//	try {
 			if (!entity.hasComponent(Position.class) || !entity.hasComponent(ImagePath.class)) {
 				addComponents(entity);
 			}
@@ -197,10 +225,10 @@ public class EditorEnvironment extends Editor {
 			entityView.setTranslateY(pos.getY());
 			gameRoot.getChildren().add(entityView);
 
-		} catch (Exception e) {
-			Utilities.showAlert(myResources.getString("error"), null, myResources.getString("unableToAdd"),
-					AlertType.ERROR);
-		}
+	//	} //catch (Exception e) {
+			//Utilities.showAlert(myResources.getString("error"), null, myResources.getString("unableToAdd"),
+				//	AlertType.ERROR);
+	//	}
 	}
 
 	private void addComponents(IEntity entity) {

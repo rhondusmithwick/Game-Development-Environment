@@ -7,18 +7,27 @@ import api.IEntity;
 import api.ISerializable;
 import enums.DefaultStrings;
 import javafx.collections.ObservableList;
+import model.component.character.Defense;
+import model.component.character.Health;
+import model.component.character.Score;
 import model.component.movement.Position;
+import model.component.movement.Velocity;
 import model.component.physics.Collision;
+import model.component.physics.Mass;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
 import javafx.scene.shape.Rectangle;
 
 public class DefaultsMaker {
 	
-	private final static String backgroundName = "Default Fire Background";
-	private final static String backgroundPath = "resources/images/chinatown.png";
+	private final static String backgroundName = "Default GhostTemple Background";
+	private final static String backgroundPath = "resources/images/movingwaterfall.gif";
 	private final static String platformName = "Default Mario Platform";
 	private final static String platformPath = "resources/images/marioplatform.jpeg";
+	private final static String character1Name = "Character 1";
+	private final static String character1Path = "resources/images/white.png";
+	private final static String character2Name = "Character 2";
+	private final static String character2Path = "resources/images/blastoise.png";
 	
 	public static IEntity loadBackgroundDefault(){
 		IEntity entity = new Entity(backgroundName);
@@ -33,19 +42,42 @@ public class DefaultsMaker {
 	public static IEntity loadPlatformDefault(ObservableList<ISerializable> masterEntities){
 		IEntity entity = new Entity(platformName);
 		entity.loadSpecsFromPropertiesFile(DefaultStrings.PLATFORM_TEMPLATE_PATH.getDefault());
-		// add render properties
 		entity.addComponent(new Position());
 		ImagePath path = new ImagePath(platformPath);
-		//Utilities.setUpImagePathSize(path);
 		entity.addComponent(path);
 		entity.addComponent(new Collision(imagePathToFitRectangle(entity.getComponent(ImagePath.class)),
 			entityListToIDs(masterEntities)));
 		return entity;
 	}
+			
+	public static IEntity loadCharacter1Default(){
+		IEntity entity = new Entity(character1Name);
+		entity.loadSpecsFromPropertiesFile(DefaultStrings.CHARACTER_TEMPLATE_PATH.getDefault());
+		entity.addComponent(new Position());
+		ImagePath path = new ImagePath(character1Path);
+		entity.addComponent(path);
+		entity.addComponent(new Defense(25));
+		entity.addComponent(new Health(100));
+		entity.addComponent(new Mass(100));
+		entity.addComponent(new Score());
+		return entity;
+	}
+	
+	public static IEntity loadCharacter2Default(){
+		IEntity entity = new Entity(character2Name);
+		entity.loadSpecsFromPropertiesFile(DefaultStrings.CHARACTER_TEMPLATE_PATH.getDefault());
+		entity.addComponent(new Position());
+		ImagePath path = new ImagePath(character2Path);
+		entity.addComponent(path);
+		entity.addComponent(new Defense(25));
+		entity.addComponent(new Health(100));
+		entity.addComponent(new Mass(100));
+		entity.addComponent(new Score());
+		return entity;
+	}
 	
 	private static Rectangle imagePathToFitRectangle(ImagePath path){
 		if (path.getImageHeight()==0 || path.getImageWidth() == 0){
-			//Utilities.setUpImagePathSize(path);
 		}
 		return new Rectangle((int) path.getImageHeight(), (int) path.getImageWidth());
 	}
