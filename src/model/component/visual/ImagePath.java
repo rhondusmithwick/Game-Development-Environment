@@ -64,6 +64,7 @@ public class ImagePath implements IComponent {
 		this.spriteName = spriteName;
 		File resource = new File(spritesheetPath);
 		Image image = new Image(resource.toURI().toString());
+		
 		this.imageViewProperty.set(new ImageView(image));
 		this.imageViewProperty.get().setPreserveRatio(true);
 	}
@@ -118,5 +119,4 @@ public class ImagePath implements IComponent {
 	public String getImagePath() {
 		return imagePath.property1().get();
 	}
-
 }

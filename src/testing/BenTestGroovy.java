@@ -2,6 +2,8 @@ package testing;
 
 import java.io.File;
 import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
 
 import api.IEntity;
 import api.IEntitySystem;
@@ -18,6 +20,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.component.movement.Position;
+import model.component.physics.Collision;
 import model.component.visual.ImagePath;
 import model.entity.EntitySystem;
 import model.physics.PhysicsEngine;
@@ -26,6 +29,7 @@ public class BenTestGroovy extends Application {
 	// private final ScriptEngine engine = new
 	// ScriptEngineManager().getEngineByName("groovy");
 	private static final String IMAGE_PATH = "resources/RhonduSmithwick.JPG";
+	private static final String IMAGE_PATH2 = "resources/images/blastoise.png";
 	private static final double MILLISECOND_DELAY = 10;
 	private static final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
 	private static final Group ROOT = new Group();
@@ -40,12 +44,14 @@ public class BenTestGroovy extends Application {
 
 		// Sprites
 		IEntity rhonduEntity = BenTestCharacter.run(IMAGE_PATH);
-		// IEntity ball =
+		IEntity rhonduEntity2 = BenTestSecondCharacter.run(IMAGE_PATH2);
+		
+		rhonduEntity.getComponent(ImagePath.class).getImageView().setFitHeight(100);
+		rhonduEntity2.getComponent(ImagePath.class).getImageView().setFitHeight(100);
+		
 		IEntitySystem system = new EntitySystem();
-		system.addEntities(rhonduEntity);
-		IPhysicsEngine physics = new PhysicsEngine(system);
-		ImageView testSprite = createImage(rhonduEntity.getComponent(ImagePath.class),
-				rhonduEntity.getComponent(Position.class));
+		system.addEntities(rhonduEntity, rhonduEntity2);
+		IPhysicsEngine physics = new PhysicsEngine();
 
 		// sets the game's loop
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
@@ -65,23 +71,25 @@ public class BenTestGroovy extends Application {
 		Collection<IEntity> list = s.getAllEntities();
 		for (IEntity entity : list) {
 			Position pos = entity.getComponent(Position.class);
-//			refreshDraw(testSprite, pos.getX(), pos.getY());
+			ImageView imageView = entity.getComponent(ImagePath.class).getImageView();
+			imageView.setFitHeight(100);
+			refreshDraw(imageView, pos.getX(), pos.getY());
 		}
 	}
 
-	private ImageView createImage(ImagePath path, Position pos) {
-		File resource = new File(path.getImagePath());
-		Image image = new Image(resource.toURI().toString());
-		ImageView imageView = new ImageView(image);
-		imageView.setFitHeight(100);
-		imageView.setPreserveRatio(true);
-		imageView.xProperty().bind(pos.xProperty());
-		imageView.yProperty().bind(pos.yProperty());
-		return imageView;
-	}
+//	private ImageView createImage(ImagePath path, Position pos) {
+//		File resource = new File(path.getImagePath());
+//		Image image = new Image(resource.toURI().toString());
+//		ImageView imageView = new ImageView(image);
+//		imageView.setFitHeight(100);
+//		imageView.setPreserveRatio(true);
+//		imageView.xProperty().bind(pos.xProperty());
+//		imageView.yProperty().bind(pos.yProperty());
+//		return imageView;
+//	}
 
 	private void refreshDraw(ImageView img, double x, double y) {
-		ROOT.getChildren().clear();
+		ROOT.getChildren().remove(img);
 		ROOT.getChildren().add(img);
 	}
 
