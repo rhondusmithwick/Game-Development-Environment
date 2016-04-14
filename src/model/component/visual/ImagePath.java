@@ -78,7 +78,7 @@ public class ImagePath implements IComponent {
                 File resource = new File(imagePath);
                 Image image = new Image(resource.toURI().toString());
                 this.imageView = new ImageView(image);
-
+                this.imageView.setPreserveRatio(true);
                 this.viewport = viewport;
                 this.frameIndex = 0;
                 this.isAnimated = isAnimated;
