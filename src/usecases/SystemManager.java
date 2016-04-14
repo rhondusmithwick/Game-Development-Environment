@@ -1,19 +1,12 @@
 package usecases;
 
-import java.util.List;
-
 import api.IEntitySystem;
 import api.IEventSystem;
 import api.IPhysicsEngine;
-import api.ISystem;
 import api.ISystemManager;
-import javafx.animation.Timeline;
-
-import java.util.List;
-
+import events.EventSystem;
 import model.entity.EntitySystem;
 import model.physics.PhysicsEngine;
-
 
 /**
  * Created by rhondusmithwick on 3/31/16.
@@ -21,26 +14,25 @@ import model.physics.PhysicsEngine;
  * @author Rhondu Smithwick
  */
 public class SystemManager implements ISystemManager {
-	// private IEventSystem eventSystem;
+	private IEventSystem eventSystem;
 	private IEntitySystem universe = new EntitySystem();
 	private IPhysicsEngine physics = new PhysicsEngine(null);
+	private boolean isRunning = true;
 
 	public SystemManager() {
+		this.eventSystem = new EventSystem(universe);
 	}
 
 	@Override
 	public void pauseLoop() {
-
-	}
-
-	@Override
-	public Timeline buildLoop() {
-		return null;
+		this.isRunning = false;
 	}
 
 	@Override
 	public void step(double dt) {
-		physics.update(universe, dt);
+		if (this.isRunning) {
+			physics.update(universe, dt);
+		}
 	}
 
 	@Override
@@ -50,13 +42,6 @@ public class SystemManager implements ISystemManager {
 
 	@Override
 	public IEventSystem getEventSystem() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<ISystem> getSystems() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.eventSystem;
 	}
 }
