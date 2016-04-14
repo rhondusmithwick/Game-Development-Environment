@@ -1,7 +1,6 @@
 package api;
 
 import javafx.scene.layout.Pane;
-import model.entity.EntitySystem;
 
 public interface IEditor { //This will be an abstract class that all editors will extend.
 	
