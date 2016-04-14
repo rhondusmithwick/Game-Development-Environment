@@ -1,26 +1,14 @@
 package events;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Properties;
-
-import utility.SingleProperty;
-
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
-
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
 import api.IEntitySystem;
-import api.ISerializable;
-import javafx.scene.input.KeyCode;
 
 /***
  * Created by ajonnav 04/12/16
@@ -47,7 +35,7 @@ public class EventSystem implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		Action action = actionMap.get(((Trigger)o));
+		Action action = actionMap.get(((Trigger) o));
 		action.activate(universe);
 	}
 	

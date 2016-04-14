@@ -1,1 +1,53 @@
-<?xml version="1.0" ?><object-stream><events.EventContainer><trigger><changed>false</changed><obs></obs><propertySpecifier><string>08d53f5c-fddd-4049-a8a9-0cef95be16fd</string><string>model.component.movement.Position</string><string>0</string></propertySpecifier></trigger><action serialization="custom"><events.Action><default><parameters></parameters><scriptPath>resources/groovyScripts/ACGameTestScript.groovy</scriptPath></default></events.Action></action></events.EventContainer></object-stream>
+<?xml version="1.0" ?>
+<object-stream>
+	<events.EventContainer>
+		<trigger class="events.KeyTrigger">
+			<changed>false</changed>
+			<obs></obs>
+			<key>A</key>
+		</trigger>
+		<action serialization="custom">
+			<events.Action>
+				<default>
+					<parameters></parameters>
+					<scriptPath>resources/groovyScripts/keyInputMoveLeft.groovy
+					</scriptPath>
+				</default>
+			</events.Action>
+		</action>
+	</events.EventContainer>
+	<events.EventContainer>
+		<trigger class="events.PropertyTrigger">
+			<changed>false</changed>
+			<obs></obs>
+			<entityID>274ddf2d-fb16-44ba-b42c-b72816e121c5</entityID>
+			<componentName>model.component.movement.Position</componentName>
+			<index>0</index>
+		</trigger>
+		<action serialization="custom">
+			<events.Action>
+				<default>
+					<parameters></parameters>
+					<scriptPath>resources/groovyScripts/ACGameTestScript.groovy
+					</scriptPath>
+				</default>
+			</events.Action>
+		</action>
+	</events.EventContainer>
+	<events.EventContainer>
+		<trigger class="events.KeyTrigger">
+			<changed>false</changed>
+			<obs></obs>
+			<key>D</key>
+		</trigger>
+		<action serialization="custom">
+			<events.Action>
+				<default>
+					<parameters></parameters>
+					<scriptPath>resources/groovyScripts/keyInputMoveRight.groovy
+					</scriptPath>
+				</default>
+			</events.Action>
+		</action>
+	</events.EventContainer>
+</object-stream>
