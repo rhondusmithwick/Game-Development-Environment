@@ -16,7 +16,8 @@ public class SandboxFX extends Application {
         launch(args);
     }
 
-    public void start(Stage primaryStage) {
+    @Override
+	public void start(Stage primaryStage) {
         primaryStage.setTitle("The Horse in Motion");
 
         IEntity runningEntity = new Entity();

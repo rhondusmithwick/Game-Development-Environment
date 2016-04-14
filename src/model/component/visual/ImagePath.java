@@ -1,9 +1,11 @@
 package model.component.visual;
 
 import java.io.File;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Arrays;
+
 import java.util.List;
 
 import api.IComponent;
@@ -20,6 +22,7 @@ import utility.TwoProperty;
  * @author Rhondu Smithwick
  */
 public class ImagePath implements IComponent {
+
 
         /**
          * The singleProperty.
@@ -214,5 +217,6 @@ public class ImagePath implements IComponent {
                 imageView.setPreserveRatio(true);
                 imageView.setFitHeight(imageHeightProperty().get());
         }
+
 
 }

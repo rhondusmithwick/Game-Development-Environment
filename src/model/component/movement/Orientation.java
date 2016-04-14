@@ -21,7 +21,7 @@ public class Orientation implements IComponent {
     /**
      * Empty constructor. Starts at 0.0.
      */
-    public Orientation() {
+    public Orientation() { 
     }
 
     /**

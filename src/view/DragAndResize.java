@@ -6,6 +6,7 @@ import javafx.scene.input.MouseEvent;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
 
+
 public class DragAndResize {
         
     private double margin = 8;
