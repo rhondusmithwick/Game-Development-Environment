@@ -65,10 +65,6 @@ public class ImagePath implements IComponent {
 		File resource = new File(spritesheetPath);
 		Image image = new Image(resource.toURI().toString());
 		
-		ImageView imageView = new ImageView(image);
-		imageView.setFitHeight(100);
-		this.imageViewProperty.set(imageView);
-		
 		this.imageViewProperty.set(new ImageView(image));
 		this.imageViewProperty.get().setPreserveRatio(true);
 	}
