@@ -67,7 +67,6 @@ public class EditorEntity extends Editor{
 		
 		for (IComponent component: componentList){
 			for (SimpleObjectProperty<?> property: component.getProperties()){
-				System.out.print(property.getName());
 				//System.out.println(component.getProperties());
 				GuiObject object = guiFactory.createNewGuiObject(property.getName(), property, property.getValue());
 				if (object!=null){

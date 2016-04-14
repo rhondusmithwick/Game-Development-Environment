@@ -15,7 +15,6 @@ import view.Utilities;
 public class GuiObjectImageDisplay extends GuiObject {
 	
 	private ImageView preview;
-	private HBox container;
 	private Button setImage;
 	private ResourceBundle myResources;
 	private Property<String> property;
@@ -24,7 +23,6 @@ public class GuiObjectImageDisplay extends GuiObject {
 	public GuiObjectImageDisplay(String name, String resourceBundle, String language, Property<String> property, Object object) {
 		super(name, resourceBundle);
 		myResources= ResourceBundle.getBundle(language);
-		container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
 		setImage = Utilities.makeButton(name, e->changeImage());
 		this.property=property;
 		this.preview=new ImageView();
@@ -42,12 +40,10 @@ public class GuiObjectImageDisplay extends GuiObject {
 	}
 
 	private void setImage(File file) {
-		container.getChildren().clear();
 		property.setValue(file.getPath());
 		preview.setImage(new Image(file.toURI().toString()));
 		preview.setFitHeight(100);
 		preview.setPreserveRatio(true);
-		container.getChildren().addAll(preview, setImage);
 	}
 
 
@@ -64,6 +60,8 @@ public class GuiObjectImageDisplay extends GuiObject {
 
 	@Override
 	public Object getGuiNode() {
+		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
+		container.getChildren().addAll(preview, setImage);
 		return container;
 	}
 
