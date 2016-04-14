@@ -2,6 +2,7 @@ package testing;
 
 import api.IEntity;
 import api.IEventListener;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -57,7 +58,7 @@ public class TestEvents extends Application {
 		// sets the game's loop
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> this.step(SECOND_DELAY));
 		Timeline animation = new Timeline();
-		animation.setCycleCount(Timeline.INDEFINITE);
+		animation.setCycleCount(Animation.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
 	}

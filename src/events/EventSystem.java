@@ -22,10 +22,12 @@ import api.IEntitySystem;
 public class EventSystem implements Observer{
 	
 	IEntitySystem universe;
+	InputSystem inputSystem;
 	Map<Trigger, Action> actionMap = new HashMap<>();
 	
-	public EventSystem(IEntitySystem universe) {
+	public EventSystem(IEntitySystem universe, InputSystem inputSystem) {
 		this.universe = universe;
+		this.inputSystem = inputSystem;
 	}
 	
 	public void registerEvent(Trigger trigger, Action action) {
@@ -55,7 +57,7 @@ public class EventSystem implements Observer{
 		Map<Trigger, Action> returnMap = new HashMap<>();
 		for(EventContainer event:eventList) {
 			returnMap.put(event.getTrigger(), event.getAction());
-			event.getTrigger().addHandler(universe);
+			event.getTrigger().addHandler(universe, inputSystem);
 		}
 		return returnMap;
 	}

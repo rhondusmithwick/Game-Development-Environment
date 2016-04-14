@@ -59,5 +59,23 @@ public class BasicRMIServer extends UnicastRemoteObject implements IEntitySystem
 			System.out.println("something went wrong");
 		}
 	}
+
+	@Override
+	public void setName(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
+	}
 	
 }

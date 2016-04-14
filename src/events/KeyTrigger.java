@@ -20,9 +20,9 @@ public class KeyTrigger extends Trigger{
 	
 	private String key; 
 	
-	public KeyTrigger(String key, InputSystem inputSystem) { 
+	public KeyTrigger(String key, IEntitySystem universe, InputSystem inputSystem) { 
 		this.key = key; 
-		inputSystem.listenToKeyPress(this);
+		addHandler(universe, inputSystem);
 	}
 	
 	@Override
@@ -41,8 +41,7 @@ public class KeyTrigger extends Trigger{
 	}
 
 	@Override
-	public <T extends IComponent> void addHandler(IEntitySystem universe) {
-		// TODO Auto-generated method stub
-		
+	public <T extends IComponent> void addHandler(IEntitySystem universe, InputSystem inputSystem) {
+		inputSystem.listenToKeyPress(this);
 	}
 }

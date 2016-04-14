@@ -12,18 +12,16 @@ public interface IPhysicsEngine {
 	 * Update Positions of IEntities in universe based on dt and their Velocities
 	 * @param universe IEntitySystem containing IEntities with both Positions and Velocities
 	 * @param dt duration of update in seconds
-	 * @return updated universe
 	 */
-    IEntitySystem update(IEntitySystem universe, double dt);
+    void update(IEntitySystem universe, double dt);
 
 	/**
 	 * Marks Collision IComponents of applicable IEntities in universe with appropriate collidingIDs
 	 * @param universe IEntitySystem containing IEntities with both Positions and Collisions
 	 * @param dynamicsOn if true, then impulses are subsequently applied to applicable IEntities
 	 *   (with Mass, Position, Velocity, and of course, Collision)
-	 * @return updated universe
 	 */
-    IEntitySystem updateCollisionComponents(IEntitySystem universe, boolean dynamicsOn);
+    void applyCollisions(IEntitySystem universe, boolean dynamicsOn);
 
     /**
      * Useful for debugging but will be deprecated!

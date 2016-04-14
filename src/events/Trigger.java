@@ -18,5 +18,5 @@ public abstract class Trigger extends Observable implements ChangeListener, ISer
 	
 	public abstract <T extends IComponent> void clearListener(IEntitySystem universe);
 
-	public abstract <T extends IComponent> void addHandler(IEntitySystem universe);
+	public abstract <T extends IComponent> void addHandler(IEntitySystem universe, InputSystem inputSystem);
 }

@@ -20,11 +20,11 @@ public class PropertyTrigger extends Trigger{
 	private String componentName;
 	private int index;
 	
-	public PropertyTrigger(String entityID, IComponent component, int index, IEntitySystem universe) {
+	public PropertyTrigger(String entityID, IComponent component, int index, IEntitySystem universe, InputSystem inputSystem) {
 		this.entityID = entityID;
 		this.componentName= component.getClass().toString().split(" ")[1];
 		this.index = index;
-		addHandler(universe);
+		addHandler(universe, inputSystem);
 	}
 	
 	@Override
@@ -42,7 +42,7 @@ public class PropertyTrigger extends Trigger{
 	}
 
 	@Override
-	public <T extends IComponent> void addHandler(IEntitySystem universe) {
+	public <T extends IComponent> void addHandler(IEntitySystem universe, InputSystem inputSystem) {
 		try {
 			universe.getEntity(entityID).getComponent((Class<T>) Class.forName(componentName)).getProperties().get(index).addListener(this);
 		} catch (ClassNotFoundException e) {

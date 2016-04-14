@@ -46,9 +46,9 @@ public class ACGame {
     private static final int BOUNCER_SPEED = 30;
     private static Group root;
 	private final IEntitySystem universe = new EntitySystem();
-	private final EventSystem eventSystem = new EventSystem(universe);
-	private final PhysicsEngine physics = new PhysicsEngine(universe);
 	private final InputSystem inputSystem = new InputSystem(universe);
+	private final EventSystem eventSystem = new EventSystem(universe, inputSystem);
+	private final PhysicsEngine physics = new PhysicsEngine(universe);
 	private IEntity character;
 	private final String IMAGE_PATH = "resources/images/blastoise.png";
 	private final String healthScriptPath = "resources/groovyScripts/ACGameTestScript.groovy";
@@ -84,7 +84,7 @@ public class ACGame {
     }
 
 	private void addCharacter() {
-		int var = 0;
+		int var = 1;
 		if(var==0) {
 			character = new Entity("Anolyn");
 			character.forceAddComponent(new Health((double) 100), true);
@@ -95,9 +95,9 @@ public class ACGame {
 			universe.addEntity(character);
 	    	character.addComponent(new ImagePath(IMAGE_PATH));
 			character.serialize("character.xml");
-	    	eventSystem.registerEvent(new PropertyTrigger(character.getID(), character.getComponent(Position.class), 0, universe), new Action(healthScriptPath));
-			eventSystem.registerEvent(new KeyTrigger("D", inputSystem), new Action(moveRightScriptPath));
-			eventSystem.registerEvent(new KeyTrigger("A", inputSystem), new Action(moveLeftScriptPath));
+	    	eventSystem.registerEvent(new PropertyTrigger(character.getID(), character.getComponent(Position.class), 0, universe, inputSystem), new Action(healthScriptPath));
+			eventSystem.registerEvent(new KeyTrigger("D", universe, inputSystem), new Action(moveRightScriptPath));
+			eventSystem.registerEvent(new KeyTrigger("A", universe, inputSystem), new Action(moveLeftScriptPath));
 	    	// input system add a keycode to a script 
 	    	//eventSystem.registerEvent(new Trigger(inputSystem.getCurrentChar()), action);
 	    	eventSystem.saveEventsToFile("eventtest.xml");
