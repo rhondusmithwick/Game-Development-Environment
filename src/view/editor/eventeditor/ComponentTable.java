@@ -9,46 +9,29 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.entity.Entity;
 
-public class ComponentTable 
+public class ComponentTable extends Table
 {
-	private TableView<ComponentEntry> table;
-	private TableColumn<ComponentEntry, String> column;
-	private Entity entity;
-	private ObservableList<ComponentEntry> entries;
-	TableManager manager;
-	
 	public ComponentTable(TableManager manager)
 	{
-		table = new TableView<ComponentEntry>();
-		table.setEditable(true);
-		column = new TableColumn<ComponentEntry, String>("Pick Component");	// TODO resource file
-		column.setCellValueFactory( new PropertyValueFactory<ComponentEntry,String>("name") );
-		this.manager = manager;
-		
-		entries = FXCollections.observableArrayList();
-		
-		table.getColumns().add(column);
-		
-		//Add change listener
-		table.getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> 
-		{
-			manager.componentWasClicked(observableValue.getValue().getComponent());
-		}
-				);
+		super(manager, "Pick Component");	// TODO resource file
 
-		table.setItems(entries);
-	}
+		// Add change listener
+		getTable().
+        getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> 
+        	{
+        		manager.componentWasClicked((IComponent)observableValue.getValue().getData());
+        	}
+        	);
+   	}
 	
-	public void fillEntries(Entity entity)
-	{	
-		for (IComponent component: entity.getAllComponents())
-		{
-			entries.add(new ComponentEntry(component));
-		}
-	}
-	
-	public TableView<ComponentEntry> getTable()
+	@SuppressWarnings("unchecked")
+	@Override
+	public void fillEntries(Object dataHolder) 
 	{
-		return table;
+		for (IComponent component: ((Entity)dataHolder).getAllComponents())
+		{
+			String[] splitClassName = component.getClass().toString().split("\\.");
+			getEntries().add(new Entry(component, splitClassName[splitClassName.length - 1]));
+		}
 	}
 }

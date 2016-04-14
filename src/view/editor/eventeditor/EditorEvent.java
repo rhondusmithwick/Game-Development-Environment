@@ -56,17 +56,8 @@ public class EditorEvent extends Editor
 	private final VBox pane;
 	private final ResourceBundle myResources;
 	
-	// Entity table contains...
-	private TitledPane entityPane;
-	// ... TitledPanes that in turn contain ...
-	private final HashMap<String, Node> entitySubPanes;
-	// ... TableViews specified here.
-	private final HashMap<String, Node> entityCustomizables;
-	
-	private final ObservableList<ISerializable> entityList;
 	private final HashMap<String, Button> actionButtons;
 	
-	private  ObservableList<String> actions;
 	private TableView groovyTable;
 	private Button chooseFileButton;
 	private TableManager tableManager;
@@ -77,24 +68,10 @@ public class EditorEvent extends Editor
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
 		pane.setAlignment(Pos.TOP_LEFT);
 		myResources = ResourceBundle.getBundle(language);
-		this.entityList = masterList;
-		
-		entityPane = new TitledPane();
-		entitySubPanes = new HashMap<String, Node>();
-		entityCustomizables = new HashMap<String, Node>();
 		
 		actionButtons = new HashMap<String, Button>();
-		tableManager = new TableManager(masterList);
 		
-	}
-	
-	private void makeEntityPanes()
-	{
-		for (String name: new String[]{myResources.getString("propertiesPane"), myResources.getString("actionsPane")})
-		{
-			entityCustomizables.put(name, Utilities.makeSingleColumnTable(name,GUISize.EVENT_EDITOR_TABLE_WIDTH.getSize()) );
-			entitySubPanes.put(name, Utilities.makeTitledPane(name, entityCustomizables.get(name), true) );
-		}
+		tableManager = new TableManager(masterList);
 	}
 
 	public void setActions(ObservableList<String> actions)
@@ -132,9 +109,6 @@ public class EditorEvent extends Editor
 	{
 		HBox buttonSpace = new HBox();
 
-		// Tried using reflection, but it failed :(
-		actionButtons.put(myResources.getString("addAction"), Utilities.makeButton(myResources.getString("addAction"), e -> addAction()));
-		actionButtons.put(myResources.getString("deleteAction"), Utilities.makeButton(myResources.getString("deleteAction"), e -> deleteAction()));
 		
 		for (Button button: actionButtons.values())
 		{
@@ -164,24 +138,12 @@ public class EditorEvent extends Editor
 		container.getChildren().add(makeGroovySide());
 		
 		pane.getChildren().add(container);
-		
-		
 	}
 	
 	public void populateLayout() 
 	{
 		makeTables();
 		makeBottomButtons();
-	}
-	
-	private void addAction()
-	{
-		
-	}
-	
-	private void deleteAction()
-	{
-		
 	}
 
 	@Override

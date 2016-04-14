@@ -2,6 +2,7 @@ package view.editor.eventeditor;
 
 import api.IComponent;
 import api.ISerializable;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.HBox;
 import model.entity.Entity;
@@ -15,6 +16,7 @@ public class TableManager
 	
 	public TableManager(ObservableList<ISerializable> entityList)
 	{
+		
 		container = new HBox();
 		entityTable = new EntityTable(entityList, this);
 		componentTable = new ComponentTable(this);
@@ -31,6 +33,11 @@ public class TableManager
 	public void componentWasClicked(IComponent component)
 	{
 		propertyTable.fillEntries(component);
+	}
+	
+	public void propertyWasClicked(SimpleObjectProperty property)
+	{
+		
 	}
 	
 	private void fillLayout()
