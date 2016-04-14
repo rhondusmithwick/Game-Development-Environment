@@ -8,6 +8,7 @@ import java.util.Collection;
 import api.IEntity;
 import api.IEntitySystem;
 
+@Deprecated 
 // does not have to be IEntity 
 public class BasicRMIServer extends UnicastRemoteObject implements IEntitySystem{
 	

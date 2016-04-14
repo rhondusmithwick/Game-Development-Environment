@@ -1,5 +1,7 @@
 package view.editor.eventeditor;
 
+import java.util.ResourceBundle;
+
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
@@ -11,9 +13,9 @@ import model.entity.Entity;
 
 public class PropertyTable extends Table
 {
-	public PropertyTable(TableManager manager)
+	public PropertyTable(TableManager manager, String language)
 	{
-		super(manager, "Pick Property");	// TODO resource file
+		super(manager, ResourceBundle.getBundle(language).getString("pickProperty"));	// TODO resource file
 
 		// Add change listener
 		getTable().
