@@ -1,4 +1,4 @@
-package view.editor;
+package view.editor.eventeditor;
 
 import javafx.scene.layout.Pane;
 
@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 
 import view.Authoring;
 import view.Utilities;
+import view.editor.Editor;
 import api.IEditor;
 import api.ISerializable;
 import enums.DefaultStrings;
@@ -29,6 +30,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TitledPane;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -37,6 +39,8 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.FileChooser.ExtensionFilter;
+import model.entity.Entity;
 
 /**
  * 
@@ -45,34 +49,19 @@ import javafx.stage.Stage;
  */
 
 /*
- * TODO: Entity picker		--> Groundwork done
- * TODO: Table with collapsable panes	--> Done
- * TODO: Pane 1 - Retrieve Entity Properties and put in Table
- * TODO: Pane 2 - Editable Action Table
- * TODO: Load Groovy button
- * TODO: Editable + Resetable Groovy table
- * TODO: Write bindings to file
- * 
+ * TODO: Clean this shit up
  */
 public class EditorEvent extends Editor
 {
 	private final VBox pane;
 	private final ResourceBundle myResources;
-	private ComboBox<String> entityPicker;
 	
-	// Entity table contains TitledPanes...
-	private TitledPane entityPane;
-	// ... that in turn contain TableViews...
-	private final HashMap<String, Node> entitySubPanes;
-	// ... specified here.
-	private final HashMap<String, Node> entityCustomizables;
+	private final HashMap<String, Button> actionButtons;
 	
-
-	/*
-	 *  Constructor is made based on new Editor Factory.
-	 *  I tried to pass an event system, but it deprecated.
-	 *  TODO: Change this, because it's temporary
-	 */
+	private TableView groovyTable;
+	private Button chooseFileButton;
+	private TableManager tableManager;
+	
 	public EditorEvent(String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> addToList)
 	{
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
@@ -80,40 +69,63 @@ public class EditorEvent extends Editor
 		pane.setAlignment(Pos.TOP_LEFT);
 		myResources = ResourceBundle.getBundle(language);
 		
-		entityPicker = new ComboBox<String>();
-		entityPane = new TitledPane();
-		entitySubPanes = new HashMap<String, Node>();
-		entityCustomizables = new HashMap<String, Node>();
+		actionButtons = new HashMap<String, Button>();
+		
+		tableManager = new TableManager(masterList);
 	}
-	
-	private void makeEntityPanes()
+
+	public void setActions(ObservableList<String> actions)
 	{
-		for (String name: new String[]{myResources.getString("propertiesPane"), myResources.getString("actionsPane")})
+		/*
+		this.actions = actions;
+
+		((TableView<String>)entityCustomizables.get(myResources.getString("actionsPane"))).setItems(actions);
+		*/
+	}
+
+	private VBox makeGroovySide()
+	{
+		VBox container = new VBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
+		// Adding now the Groovy Table
+		chooseFileButton = Utilities.makeButton("Choose file", e -> getFile());
+		groovyTable = Utilities.makeSingleColumnTable("Groovy Scripts", GUISize.EVENT_EDITOR_TABLE_WIDTH.getSize()); // TODO: Temporary
+		
+		container.getChildren().addAll(chooseFileButton, groovyTable);
+		return container;
+	}
+
+	private void getFile()
+	{
+		File groovyFile = null;
+		
+		groovyFile = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("groovy", "*.groovy"), "Select your groovy script!");
+		if ( groovyFile != null )
 		{
-			entityCustomizables.put(name, Utilities.makeSingleColumnTable(name) );
-			entitySubPanes.put(name, Utilities.makeTitledPane(name, entityCustomizables.get(name), true) );
+			
 		}
 	}
-
-	private void makeButtons()
-	{
-
-	}
-
-	private void makeComboBox()
-	{
-		List<String> entityNames = new ArrayList<String>();
-		
-		entityPicker = Utilities.makeComboBox(myResources.getString("chooseEntity"), 
-				entityNames, e -> selectedAnEntity());
-		
-		pane.getChildren().add(entityPicker);
-	}
 	
+	private void makeBottomButtons()
+	{
+		HBox buttonSpace = new HBox();
+
+		
+		for (Button button: actionButtons.values())
+		{
+			buttonSpace.getChildren().add(button);
+		}
+	
+		pane.getChildren().add(buttonSpace);
+	}
+
 	private void makeTables()
 	{
+		
 		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
-		VBox internalBox = new VBox();
+
+		pane.getChildren().add(tableManager.getContainer());
+	/*
+		internalBox.setMinWidth(GUISize.EVENT_EDITOR_TABLE_WIDTH.getSize());
 		
 		makeEntityPanes();
 		
@@ -121,19 +133,16 @@ public class EditorEvent extends Editor
 		entityPane = Utilities.makeTitledPane(myResources.getString("entityPane"), internalBox, false);
 		
 		container.getChildren().add(entityPane);
-		pane.getChildren().add(container);
-	}
-	
-	private void selectedAnEntity()
-	{
+		*/
+		container.getChildren().add(makeGroovySide());
 		
+		pane.getChildren().add(container);
 	}
 	
 	public void populateLayout() 
 	{
-		makeComboBox();
-		makeButtons();
 		makeTables();
+		makeBottomButtons();
 	}
 
 	@Override

@@ -27,10 +27,8 @@ import api.IEntitySystem;
  * @author Tom Wu and Roxanne Baker
  */
 public class PhysicsEngine implements IPhysicsEngine {
-	IEntitySystem settings;
 
-	public PhysicsEngine(IEntitySystem settings) {
-		this.settings = settings;
+	public PhysicsEngine() {
 	}
 
 	@SuppressWarnings("unchecked")
@@ -83,13 +81,13 @@ public class PhysicsEngine implements IPhysicsEngine {
 	}
 
 	// probably more useful:
-	public Collection<IEntity> getEntitiesCollidingWith(IEntity e) {
+	public Collection<IEntity> getEntitiesCollidingWith(IEntitySystem universe, IEntity e) {
 		// returns an collection of entities being collided with
 		// if not colliding with any entities, collection is empty
 		
 		Collection<IEntity> collidingEntities = new HashSet<IEntity>();
 		for (String collidingID : e.getComponent(Collision.class).getCollidingIDs()) {
-			collidingEntities.add(settings.getEntity(collidingID));
+			collidingEntities.add(universe.getEntity(collidingID));
 		}
 		
 		return collidingEntities;
@@ -109,12 +107,11 @@ public class PhysicsEngine implements IPhysicsEngine {
 			entityVelocity.setVXY(entityVelocity.getVX(), gravity*secondsPassed);
 		}		
 	}
-	
-	
+
 
 	@Override
 	public void applyCollisions(IEntitySystem universe, boolean dynamicsOn) {
-		List<IEntity> collidableEntities = new ArrayList<IEntity>(universe.getEntitiesWithComponents(Collision.class));
+		List<IEntity> collidableEntities = new ArrayList<IEntity>(universe.getEntitiesWithComponents(Collision.class, ImagePath.class));
 		clearCollisionComponents(collidableEntities);
 		
 		for (int i=0; i<collidableEntities.size(); i++) {

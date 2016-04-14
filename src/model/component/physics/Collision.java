@@ -1,13 +1,10 @@
 package model.component.physics;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
-import java.util.List;
 
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Bounds;
-import javafx.scene.shape.Shape;
+
 import api.IComponent;
 
 public class Collision implements IComponent {
