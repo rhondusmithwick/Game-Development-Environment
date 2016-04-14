@@ -18,37 +18,25 @@ import model.physics.PhysicsEngine;
 import api.IComponent;
 import api.IEntity;
 import api.IEntitySystem;
-
 import java.io.File;
 import java.io.IOException;
-
-import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import model.entity.Entity;
 
 public class ACGame {
 	
     public static final String TITLE = "Ani's and Carolyn's game";
-	private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
     public static final int KEY_INPUT_SPEED = 5;
-    private static final double GROWTH_RATE = 1.1;
-    private static final int BOUNCER_SPEED = 30;
     private static Group root;
 	private final IEntitySystem universe = new EntitySystem();
 	private final InputSystem inputSystem = new InputSystem(universe);
 	private final EventSystem eventSystem = new EventSystem(universe, inputSystem);
-	private final PhysicsEngine physics = new PhysicsEngine(universe);
+	private final PhysicsEngine physics = new PhysicsEngine();
 	private IEntity character;
 	private final String IMAGE_PATH = "resources/images/blastoise.png";
 	private final String healthScriptPath = "resources/groovyScripts/ACGameTestScript.groovy";
@@ -84,7 +72,7 @@ public class ACGame {
     }
 
 	private void addCharacter() {
-		int var = 1;
+		int var = 0;
 		if(var==0) {
 			character = new Entity("Anolyn");
 			character.forceAddComponent(new Health((double) 100), true);
@@ -98,8 +86,6 @@ public class ACGame {
 	    	eventSystem.registerEvent(new PropertyTrigger(character.getID(), character.getComponent(Position.class), 0, universe, inputSystem), new Action(healthScriptPath));
 			eventSystem.registerEvent(new KeyTrigger("D", universe, inputSystem), new Action(moveRightScriptPath));
 			eventSystem.registerEvent(new KeyTrigger("A", universe, inputSystem), new Action(moveLeftScriptPath));
-	    	// input system add a keycode to a script 
-	    	//eventSystem.registerEvent(new Trigger(inputSystem.getCurrentChar()), action);
 	    	eventSystem.saveEventsToFile("eventtest.xml");
 		}
 		else {
