@@ -24,10 +24,10 @@ import datamanagement.XMLWriter;
  */
 public class EventSystem implements Observer, IEventSystem {
 
-	IEntitySystem universe;
-	Map<Trigger, Action> actionMap = new HashMap<>();
+	private transient IEntitySystem universe;
+	private Map<Trigger, Action> actionMap = new HashMap<>();
 
-	public EventSystem(IEntitySystem universe) {
+	public void init(IEntitySystem universe) {
 		this.universe = universe;
 	}
 
@@ -82,4 +82,5 @@ public class EventSystem implements Observer, IEventSystem {
 			trigger.addObserver(this);
 		}
 	}
+
 }

@@ -20,7 +20,8 @@ public class SystemManager implements ISystemManager {
 	private boolean isRunning = true;
 
 	public SystemManager() {
-		this.eventSystem = new EventSystem(universe);
+		this.eventSystem = new EventSystem();
+		eventSystem.init(universe);
 	}
 
 	@Override
