@@ -200,6 +200,7 @@ public class EditorEnvironment extends Editor {
 		} catch (Exception e) {
 			Utilities.showAlert(myResources.getString("error"), null, myResources.getString("unableToAdd"),
 					AlertType.ERROR);
+			e.printStackTrace();
 		}
 	}
 
