@@ -5,6 +5,7 @@ import java.util.Collection;
 import api.IEntity;
 import api.IEntitySystem;
 import api.ISystemManager;
+import datamanagement.XMLReader;
 import groovy.lang.GroovyShell;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -118,7 +119,7 @@ public class View {
 	}
 
 	private void load() { // TODO: load from "demo.xml"
-		// this.model = ?
+		this.model = new XMLReader<ISystemManager>().readSingleFromFile("demo.xml");
 	}
 
 	private void evaluate() {
