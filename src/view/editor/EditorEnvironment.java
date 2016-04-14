@@ -135,7 +135,7 @@ public class EditorEnvironment extends Editor {
 			addComponents(entity);
 		}
 		ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
-		DragAndResize.makeResizable(entityView, entity.getComponent(Position.class));
+		DragAndResize.makeResizable(entity.getComponent(ImagePath.class), entity.getComponent(Position.class));
 		Button entityInButton = new Button(entity.getName());
 		entityInButton.setOnAction(e -> removeFromDisplay(entityView, entity, entityInButton));
 		entitiesCurrentlyIn.getChildren().add(entityInButton);
@@ -187,7 +187,7 @@ public class EditorEnvironment extends Editor {
 			IEntity newEntity = Utilities.copyEntity(entity);
 			Position pos = newEntity.getComponent(Position.class);
 			ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
-			DragAndResize.makeResizable(entityView, pos);
+			DragAndResize.makeResizable(entity.getComponent(ImagePath.class), pos);
 			if (!entitiesInEnvironment.containsEntity(newEntity)) {
 				entitiesInEnvironment.addEntity(newEntity);
 				Button entityInButton = new Button(newEntity.getName());

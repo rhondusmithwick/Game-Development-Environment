@@ -6,6 +6,7 @@ import java.util.Collection;
 import api.IEntity;
 import api.IEntitySystem;
 import api.IPhysicsEngine;
+import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;
@@ -29,6 +30,7 @@ public class BenTestGroovy extends Application {
 	private static final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
 	private static final Group ROOT = new Group();
 
+	@Override
 	public void start(Stage s) {
 		BorderPane splash = new BorderPane();
 		splash.getChildren().add(ROOT);
@@ -49,7 +51,7 @@ public class BenTestGroovy extends Application {
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
 				e -> this.step(SECOND_DELAY, system, physics));
 		Timeline animation = new Timeline();
-		animation.setCycleCount(Timeline.INDEFINITE);
+		animation.setCycleCount(Animation.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
 	}

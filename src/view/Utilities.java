@@ -80,14 +80,17 @@ public class Utilities {
 	}
 
 	
-	public static TableView<?> makeSingleColumnTable( String title )
+	public static TableView<String> makeSingleColumnTable( String title, double width )
 	{
-		TableView table = new TableView();
+		TableView<String> table = new TableView<String>();
+		table.setPrefWidth(width);
 		TableColumn column = new TableColumn(title);
-		column.prefWidthProperty().bind(table.widthProperty()); 
-
-		table.getColumns().setAll(column);
-
+		column.minWidthProperty().bind(table.prefWidthProperty());
+		column.maxWidthProperty().bind(table.prefWidthProperty());
+		table.getColumns().add(column);
+		
+		table.setEditable(true);
+		
 		return table;
 	}
 	
@@ -177,7 +180,6 @@ public class Utilities {
 	 *            prompt: prompt for the file chooser box
 	 * @return File file: return file selected by the user
 	 */
-
 	public static File promptAndGetFile(List<ExtensionFilter> filters, String prompt) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(prompt);
@@ -253,6 +255,14 @@ public class Utilities {
 		return null;
 	}
 
+	/**
+	 * Creates a Titled Pane, with all content already inside.
+	 * 
+	 * @param String title: Title that will appear on the top of the Pane
+	 * @param Node content: Content to be added. It can be a Group or a VBox or HBox.
+	 * @param boolean collapsable: If it's collapsable, the pane will not be expanded. If it isn't, it will.
+	 * @return TitledPane pane, already initialized.
+	 */
 	public static TitledPane makeTitledPane(String title, Node content, boolean collapsable)
 	{
 		TitledPane pane = new TitledPane(title, content);

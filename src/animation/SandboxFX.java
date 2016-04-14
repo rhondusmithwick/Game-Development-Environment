@@ -1,8 +1,10 @@
+
 package animation;
 
 import api.IEntity;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
+import animation.Animator;
 import javafx.animation.Animation;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -16,7 +18,8 @@ public class SandboxFX extends Application {
         launch(args);
     }
 
-    public void start(Stage primaryStage) {
+    @Override
+	public void start(Stage primaryStage) {
         primaryStage.setTitle("The Horse in Motion");
 
         IEntity runningEntity = new Entity();
