@@ -6,6 +6,11 @@ import api.ISerializable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
+
+import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.HashMap;
@@ -19,15 +24,16 @@ import java.util.Map;
 public class Action implements ISerializable{
 
     private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
-    private String script;
+    private transient String script; 
+    private String scriptPath;
     private final Map<String, Object> parameters = new HashMap<>();
 
-    public Action(String script) {
-        setScript(script);
+    public Action(String scriptPath) {
+        setScriptPath(scriptPath);
     }
 
-    public Action(String script, Map<String, Object> parameters) {
-        this(script);
+    public Action(String scriptPath, Map<String, Object> parameters) {
+        this(scriptPath);
         this.parameters.putAll(parameters);
     }
 
@@ -40,12 +46,24 @@ public class Action implements ISerializable{
             e.printStackTrace();
         }
     }
+    
+    public void setScriptPath(String scriptPath) {
+    	this.scriptPath = scriptPath;
+		
+    }
+    
+    public String getScriptPath() {
+    	return scriptPath;
+    }
 
     public void setScript(String script) {
         this.script = script;
     }
 
     public String getScript() {
+    	if(script==null) {
+    		setScriptFromPath(scriptPath);
+    	}
         return script;
     }
 
@@ -66,5 +84,14 @@ public class Action implements ISerializable{
         engine = new ScriptEngineManager().getEngineByName("groovy");
 
     }
-
+    
+    private void setScriptFromPath(String scriptPath) {
+    	String scr = null;
+		try {
+			scr = Files.toString(new File(scriptPath), Charsets.UTF_8);
+			setScript(scr);
+		} catch (IOException e) {
+			System.out.println("Groovy script not found at " + scriptPath);
+		}
+    }
 }
