@@ -2,6 +2,7 @@ package main;
 
 import java.util.Arrays;
 import java.util.ResourceBundle;
+
 import enums.DefaultStrings;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -10,6 +11,7 @@ import javafx.stage.Stage;
 import view.Utilities;
 import view.beginingmenus.AuthoringStartUp;
 import view.beginingmenus.StartUpMenu;
+import view.gameplaying.GamePlayer;
 
 public class Vooga extends StartUpMenu {
 	
@@ -42,7 +44,8 @@ public class Vooga extends StartUpMenu {
 
 
 	private void createPlayer() {
-		System.out.print("gotta do this still");
+		GamePlayer gamePlayer = new GamePlayer(myStage, getLanguage());
+		gamePlayer.init();
 	}
 	
 	private String getLanguage(){
