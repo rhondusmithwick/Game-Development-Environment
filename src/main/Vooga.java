@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import enums.DefaultStrings;
-import enums.FileExtensions;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
