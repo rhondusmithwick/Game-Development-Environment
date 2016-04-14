@@ -46,4 +46,9 @@ public class SystemManager implements ISystemManager {
 	public IEventSystem getEventSystem() {
 		return this.eventSystem;
 	}
+
+	@Override
+	public void play() {
+		this.isRunning = true;
+	}
 }

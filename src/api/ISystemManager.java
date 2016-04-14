@@ -12,6 +12,11 @@ import datamanagement.XMLReader;
 public interface ISystemManager extends ISerializable {
 
 	/**
+	 * This will play the game loop.
+	 */
+	void play();
+
+	/**
 	 * This will pause the game loop.
 	 */
 	void pauseLoop();

@@ -187,7 +187,8 @@ public class Utilities {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(prompt);
 		fileChooser.getExtensionFilters().addAll(filters);
-		fileChooser.setInitialDirectory(getLocalDir());
+		File dir = new File("resources/");
+		fileChooser.setInitialDirectory(dir);
 		File file = fileChooser.showOpenDialog(new Stage());
 		return file;
 	}
