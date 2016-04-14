@@ -52,7 +52,6 @@ public class EventSystem implements Observer{
 	}
 	
 	public void saveEventsToFile(String filepath) {
-		
 		stopObservingTriggers(actionMap);
 		new XMLWriter<EventContainer>().writeToFile(filepath,convertMapToList(actionMap));
 		watchTriggers(actionMap);
@@ -68,6 +67,7 @@ public class EventSystem implements Observer{
 		Map<Trigger, Action> returnMap = new HashMap<>();
 		for(EventContainer event:eventList) {
 			returnMap.put(event.getTrigger(), event.getAction());
+			event.getTrigger().addHandler(universe);
 		}
 		return returnMap;
 	}
