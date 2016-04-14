@@ -22,7 +22,9 @@ public abstract class StartUpMenu {
 	private Media media;
 	private MediaPlayer mediaPlayer;
 	private static final String MUSIC = "resources/music/";
+	private static final String CSS = "resources/cssFiles/";
 	private static final String MAIN_THEME = "finalCountdown.mp3";
+	private static final String MAIN_CSS = "main.css";
 	
 	public StartUpMenu(Stage myStage){
 		this.myStage = myStage;
@@ -30,6 +32,7 @@ public abstract class StartUpMenu {
 
 	public void init() {
 		myScene = new Scene(createDisplay(), GUISize.MAIN_SIZE.getSize(), GUISize.MAIN_SIZE.getSize());
+		myScene.getStylesheets().add(new File(CSS + MAIN_CSS).toURI().toString());
 		setMusic(MUSIC + MAIN_THEME);
 		myStage.setScene(myScene);
 		myStage.show();
@@ -53,6 +56,7 @@ public abstract class StartUpMenu {
 		myVBox.prefHeightProperty().bind(myStage.heightProperty());
 		myVBox.prefWidthProperty().bind(myStage.widthProperty());
 		myVBox.setAlignment(Pos.CENTER);
+		myVBox.getStyleClass().add("vbox");
 		root.getChildren().add(myVBox);
 	}
 	
