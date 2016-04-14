@@ -11,8 +11,6 @@ import model.component.character.Defense;
 import model.component.character.Health;
 import model.component.character.Score;
 import model.component.movement.Position;
-import model.component.movement.Velocity;
-import model.component.physics.Collision;
 import model.component.physics.Mass;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
@@ -20,7 +18,7 @@ import javafx.scene.shape.Rectangle;
 
 public class DefaultsMaker {
 	
-	private final static String backgroundName = "Default GhostTemple Background";
+	private final static String backgroundName = "Default Waterfall Background";
 	private final static String backgroundPath = "resources/images/movingwaterfall.gif";
 	private final static String platformName = "Default Mario Platform";
 	private final static String platformPath = "resources/images/marioplatform.jpeg";
@@ -34,7 +32,6 @@ public class DefaultsMaker {
 		entity.loadSpecsFromPropertiesFile(DefaultStrings.BACKGROUND_TEMPLATE_PATH.getDefault());
 		entity.addComponent(new Position());
 		ImagePath path = new ImagePath(backgroundPath);
-		//Utilities.setUpImagePathSize(path);
 	    entity.addComponent(path);
 		return entity;
 	}
@@ -45,8 +42,8 @@ public class DefaultsMaker {
 		entity.addComponent(new Position());
 		ImagePath path = new ImagePath(platformPath);
 		entity.addComponent(path);
-		entity.addComponent(new Collision(imagePathToFitRectangle(entity.getComponent(ImagePath.class)),
-			entityListToIDs(masterEntities)));
+		//entity.addComponent(new Collision(imagePathToFitRectangle(entity.getComponent(ImagePath.class)),
+			//entityListToIDs(masterEntities)));
 		return entity;
 	}
 			

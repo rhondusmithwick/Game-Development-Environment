@@ -51,7 +51,6 @@ public class EditorEntity extends Editor{
 
 	@Override
 	public Pane getPane() {
-		populateLayout();
 		return editorPane;
 	}
 
@@ -64,12 +63,11 @@ public class EditorEntity extends Editor{
 		vbox.getChildren().add(name);
 		GuiObjectFactory guiFactory = new GuiObjectFactory(myLanguage);
 		Collection<IComponent> componentList = myEntity.getAllComponents();
-		
 		for (IComponent component: componentList){
 			for (SimpleObjectProperty<?> property: component.getProperties()){
-				//System.out.println(component.getProperties());
 				GuiObject object = guiFactory.createNewGuiObject(property.getName(), property, property.getValue());
 				if (object!=null){
+				
 					vbox.getChildren().add((Node) object.getGuiNode());
 				}
 			}
@@ -89,12 +87,17 @@ public class EditorEntity extends Editor{
 	@Override
 	public void addSerializable(ISerializable serialize) {	
 		((IEntity) serialize).setName(name.getText());
+		((IEntity) serialize).getAllComponents().stream().forEach(e->removeBinding(e));
 		entityList.remove(serialize);
 		entityList.add(serialize);
 		editorPane.getChildren().clear();
 		editorPane.getChildren().add((saveMessage(myResources.getString("saveMessage"))));
 		
 
+	}
+
+	private void removeBinding(IComponent e) {
+		e.removeBindings();
 	}
 
 
