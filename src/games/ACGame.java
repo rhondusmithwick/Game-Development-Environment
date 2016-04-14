@@ -4,6 +4,8 @@ import datamanagement.XMLReader;
 import events.Action;
 import events.EventSystem;
 import events.InputSystem;
+import events.KeyTrigger;
+import events.PropertyTrigger;
 import events.Trigger;
 import games.ACGameXChangeListener;
 import model.component.character.Health;
@@ -44,12 +46,14 @@ public class ACGame {
     private static final int BOUNCER_SPEED = 30;
     private static Group root;
 	private final IEntitySystem universe = new EntitySystem();
-	private final EventSystem eventSystem = new EventSystem(universe);
 	private final InputSystem inputSystem = new InputSystem(universe);
+	private final EventSystem eventSystem = new EventSystem(universe, inputSystem);
 	private final PhysicsEngine physics = new PhysicsEngine(universe);
 	private IEntity character;
 	private final String IMAGE_PATH = "resources/images/blastoise.png";
 	private final String healthScriptPath = "resources/groovyScripts/ACGameTestScript.groovy";
+	private final String moveRightScriptPath = "resources/groovyScripts/keyInputMoveRight.groovy";
+	private final String moveLeftScriptPath = "resources/groovyScripts/keyInputMoveLeft.groovy";
 	private static ImageView charSpr; 
     
     private Scene myScene;
@@ -70,7 +74,7 @@ public class ACGame {
         root = new Group();
         // Create a place to see the shapes
         myScene = new Scene(root, width, height, Color.WHITE);
-        myScene.setOnKeyPressed(e->inputSystem.take(e.getCode()));
+        myScene.setOnKeyPressed(e -> inputSystem.take(e));
         initEngine();
         return myScene;
     }
@@ -91,8 +95,12 @@ public class ACGame {
 			universe.addEntity(character);
 	    	character.addComponent(new ImagePath(IMAGE_PATH));
 			character.serialize("character.xml");
-	    	eventSystem.registerEvent(new Trigger(character.getID(), character.getComponent(Position.class), 0, universe), new Action(healthScriptPath));
-			eventSystem.saveEventsToFile("eventtest.xml");
+	    	eventSystem.registerEvent(new PropertyTrigger(character.getID(), character.getComponent(Position.class), 0, universe, inputSystem), new Action(healthScriptPath));
+			eventSystem.registerEvent(new KeyTrigger("D", universe, inputSystem), new Action(moveRightScriptPath));
+			eventSystem.registerEvent(new KeyTrigger("A", universe, inputSystem), new Action(moveLeftScriptPath));
+	    	// input system add a keycode to a script 
+	    	//eventSystem.registerEvent(new Trigger(inputSystem.getCurrentChar()), action);
+	    	eventSystem.saveEventsToFile("eventtest.xml");
 		}
 		else {
 			character = new XMLReader<IEntity>().readSingleFromFile("character.xml");
@@ -103,9 +111,9 @@ public class ACGame {
 	}
 	
 	public void step(double dt) {
-		
 		physics.update(universe, dt);
-		
+		inputSystem.processInputs();
+		//moveEntity(character, 1);
 	}
 	
 	public ImageView drawCharacter(IEntity character) { 
@@ -117,7 +125,6 @@ public class ACGame {
 		charSprite.yProperty().bind(character.getComponent(Position.class).yProperty());
 		root.getChildren().add(charSprite);
 		return charSprite;
-		//ImageView testSprite = new ImageView(file.toURI().toString());
 	}
 	
 	private Action getAction(String scriptPath) {
