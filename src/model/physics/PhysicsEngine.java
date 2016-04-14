@@ -16,6 +16,7 @@ import model.component.movement.Velocity;
 import model.component.physics.Collision;
 import model.component.physics.Gravity;
 import model.component.physics.Mass;
+import model.component.visual.ImagePath;
 import api.IEntity;
 import api.IEntitySystem;
 
@@ -140,6 +141,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 	private void clearCollisionComponents(List<IEntity> collidableEntities) {
 		for (IEntity entity : collidableEntities) {
 			entity.getComponent(Collision.class).clearCollidingIDs();
+			entity.getComponent(Collision.class).setMask(entity.getComponent(ImagePath.class).getImageView().getBoundsInParent());
 		}
 	}
 	

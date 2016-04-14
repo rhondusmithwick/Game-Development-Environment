@@ -24,6 +24,10 @@ public class Collision implements IComponent {
 	public Bounds getMask() {
 		return this.mask;
 	}
+	
+	public void setMask(Bounds mask) {
+		this.mask = mask;
+	}
 
 	public Collection<String> getIDs() {
 		return this.IDs;
