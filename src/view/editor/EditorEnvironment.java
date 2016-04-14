@@ -50,8 +50,29 @@ public class EditorEnvironment extends Editor {
 		entitiesInEnvironment = (IEntitySystem) toEdit;
 		finalEnvironmentList = addToList;
 		addLayoutComponents();
+		
+		/*// TODO: don't hard code
+		double MILLISECOND_DELAY = 10;
+		double SECOND_DELAY = MILLISECOND_DELAY/1000;
+		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> this.step(SECOND_DELAY));
+		Timeline animation = new Timeline();
+		animation.setCycleCount(Timeline.INDEFINITE);
+		animation.getKeyFrames().add(frame);
+		animation.play();*/
 	}
 
+/*	private void step(double dt) {
+		IPhysicsEngine p = new PhysicsEngine(null);
+		p.update(getEntitySystem(), dt);
+		for(IEntity e: getEntitySystem().getEntitiesWithComponent(Position.class)) {
+			ImagePath imagePath = e.getComponent(ImagePath.class);
+			ImageView imageView = imagePath.getImageView();
+			Position pos = e.getComponent(Position.class);
+			imageView.setTranslateX(pos.getX());
+			imageView.setTranslateY(pos.getY());
+		}
+	}*/
+	
 	private void addLayoutComponents() {
 		environmentPane = new BorderPane();
 		setLeftPane();
@@ -99,7 +120,9 @@ public class EditorEnvironment extends Editor {
 		if (Utilities.showAlert(myResources.getString("addDefaults"), myResources.getString("addDefaultsQuestion"),
 				myResources.getString("defaultsMessage"), AlertType.CONFIRMATION)) {
 			entitiesToDisplay.add(DefaultsMaker.loadBackgroundDefault());
-			entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay));
+			//entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay));
+			entitiesToDisplay.add(DefaultsMaker.loadCharacter1Default());
+			entitiesToDisplay.add(DefaultsMaker.loadCharacter2Default());
 		}
 	}
 
@@ -199,8 +222,10 @@ public class EditorEnvironment extends Editor {
 
 		} catch (Exception e) {
 			Utilities.showAlert(myResources.getString("error"), null, myResources.getString("unableToAdd"),
-					AlertType.ERROR);
+				AlertType.ERROR);
 		}
+
+
 	}
 
 	private void addComponents(IEntity entity) {

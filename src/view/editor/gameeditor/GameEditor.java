@@ -55,6 +55,15 @@ public class GameEditor extends Editor  {
 		entDisp = new EntityDisplay(myLanguage, masterEntityList, authEnv);
 		envDisp = new EnvironmentDisplay(myLanguage, masterEnvironmentList, masterEntityList, authEnv);
 		eventDisplay = new EventDisplay(myLanguage, masterEntityList, authEnv, userActions);
+
+
+		// TEST
+	//	Entity test = new Entity("Hello");
+	//	test.addComponent(new Position());
+	//	masterEntityList.add(test);
+		
+		//
+
 		setPane();
 	}
 
