@@ -185,19 +185,21 @@ public class EditorEnvironment extends Editor {
 				addComponents(entity);
 			}
 			IEntity newEntity = Utilities.copyEntity(entity);
+			Position pos = newEntity.getComponent(Position.class);
 			ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
-			DragAndResize.makeResizable(entityView, newEntity.getComponent(Position.class));
-			System.out.println(entityView.getX());
+			DragAndResize.makeResizable(entityView, pos);
 			if (!entitiesInEnvironment.containsEntity(newEntity)) {
 				entitiesInEnvironment.addEntity(newEntity);
 				Button entityInButton = new Button(newEntity.getName());
 				entityInButton.setOnAction(e -> removeFromDisplay(entityView, newEntity, entityInButton));
 				entitiesCurrentlyIn.getChildren().add(entityInButton);
+				entityView.setTranslateX(pos.getX());
+				entityView.setTranslateY(pos.getY());
 				gameRoot.getChildren().add(entityView);
 			}
 		} catch (Exception e) {
-			// Utilities.showAlert(myResources.getString("error"), null,
-			// myResources.getString("unableToAdd"), AlertType.ERROR);
+			Utilities.showAlert(myResources.getString("error"), null,
+			 myResources.getString("unableToAdd"), AlertType.ERROR);
 		}
 	}
 
