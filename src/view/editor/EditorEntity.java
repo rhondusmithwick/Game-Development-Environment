@@ -51,7 +51,6 @@ public class EditorEntity extends Editor{
 
 	@Override
 	public Pane getPane() {
-		populateLayout();
 		return editorPane;
 	}
 
@@ -64,12 +63,13 @@ public class EditorEntity extends Editor{
 		vbox.getChildren().add(name);
 		GuiObjectFactory guiFactory = new GuiObjectFactory(myLanguage);
 		Collection<IComponent> componentList = myEntity.getAllComponents();
-		
+		System.out.println("\n\n\npopulating layout now");
 		for (IComponent component: componentList){
 			for (SimpleObjectProperty<?> property: component.getProperties()){
-				//System.out.println(component.getProperties());
+				System.out.println(property.getName());
 				GuiObject object = guiFactory.createNewGuiObject(property.getName(), property, property.getValue());
 				if (object!=null){
+				
 					vbox.getChildren().add((Node) object.getGuiNode());
 				}
 			}

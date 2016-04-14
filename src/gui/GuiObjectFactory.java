@@ -52,7 +52,7 @@ public class GuiObjectFactory {
 				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
 			}
 			case("ImagePath"):{
-				System.out.println("help");
+				System.out.println(property.getName());
 				return new GuiObjectImageDisplay(type, GUI_RESOURCES, myLanguage, (Property<String>) property, object);
 			}
 
