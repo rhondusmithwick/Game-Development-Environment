@@ -2,6 +2,8 @@ package gui;
 
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.Property;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Control;
@@ -20,6 +22,7 @@ public class GuiObjectSlider extends GuiObject{
 		slider = new Slider(Integer.parseInt(getResourceBundle().getString(name+"Min")),Integer.parseInt(getResourceBundle().getString(name+ "Max")), (double) object); 
 		slider.setShowTickMarks(true);
 		slider.setBlockIncrement(Integer.parseInt(getResourceBundle().getString(name+"Increment")));
+		slider.setValue((double) property.getValue()); 
 		textLabel = new Label(getResourceBundle().getString(getObjectName()+"Label"));
 		numLabel = new Label(Double.toString(slider.getValue()));
 		numLabel.textProperty().bind(Bindings.convert(slider.valueProperty()));
@@ -29,7 +32,12 @@ public class GuiObjectSlider extends GuiObject{
 
 
 	private void bindProperty(Property property) {
-		slider.valueProperty().bindBidirectional(property);
+		slider.valueProperty().addListener(new ChangeListener<Number>() {
+            @SuppressWarnings("unchecked")
+			public void changed(ObservableValue<? extends Number> ov,Number old_val, Number new_val) {
+            	property.setValue(slider.valueProperty().get());
+            }
+        });
 	}
 
 
