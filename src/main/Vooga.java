@@ -8,6 +8,9 @@ import enums.DefaultStrings;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import view.Utilities;
@@ -32,9 +35,20 @@ public class Vooga extends StartUpMenu {
 	@Override
 	protected Group createDisplay() {
 		root = super.createDisplay();
+		titleText();
 		setLanguage();
 		createButtons();
 		return root;
+	}
+	
+	private void titleText() {
+		Text text = new Text("MakeGamesGreatAgain Presents:\nVOOGASalad");
+		text.getStyleClass().add("title-text");
+		Image image = new Image(new File("resources/trump.jpg").toURI().toString());
+		ImageView imageView = new ImageView(image);
+		imageView.setFitHeight(300);
+		imageView.setPreserveRatio(true);
+		super.addNodesToVBox(Arrays.asList(text, imageView));
 	}
 
 	private void createButtons() {

@@ -63,3 +63,13 @@
 	-fx-border-color: black;
 	-fx-border-radius: 2;
 }
+
+.title-text {
+	-fx-font-size: 48px;
+	-fx-font-family: "baskerville";
+	-fx-font-weight: bold;
+	-fx-text-alignment: center;
+	-fx-fill: white;
+	-fx-stroke: black;
+    -fx-stroke-width: 1;
+}
