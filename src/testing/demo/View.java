@@ -108,16 +108,11 @@ public class View {
 
 	private void initEngine() { // TODO: make it possible to import classes
 								// directly within shell
-		// Binding binding = new Binding();
-		// binding.setVariable("game", this.model);
-		// binding.setVariable("demo", new GroovyDemoTest());
-		// shell.setVariable("game", this.model);
-		// shell.setVariable("universe", this.model.getEntitySystem());
-		// shell.setVariable("demo", new GroovyDemoTest());
 		this.engine.put("game", this.model);
 		this.engine.put("universe", this.model.getEntitySystem());
 		this.engine.put("c0", (new GroovyDemoTest()).getCharacter0());
 		this.engine.put("c1", (new GroovyDemoTest()).getCharacter1());
+		this.engine.put("demo", new GroovyDemoTest());
 	}
 
 	private void load() { // TODO: load from "demo.xml"
