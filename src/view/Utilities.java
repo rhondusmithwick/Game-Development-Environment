@@ -37,8 +37,8 @@ import model.entity.Entity;
 public class Utilities {
 
 	/**
-	 * This class has all static methods so that the methods can be 
-	 * accessed without the actual class being instantiated and so that class function
+	 * This class has all static methods so that the methods can be accessed
+	 * without the actual class being instantiated and so that class function
 	 * can be accessed without this object being passed.
 	 */
 
@@ -54,9 +54,10 @@ public class Utilities {
 	 *            null (though all three above shouldn't be null at the same
 	 *            time or the alert is useless)
 	 * @param AlertType
-	 *            type: type of alert to display, i.e. ERROR, INFORMATION, CONFIRMATION
-	 * @return boolean
-	 * 			   result.get() == ButtonType.OK: returns true is the user clicked the OK button, returns false otherwise
+	 *            type: type of alert to display, i.e. ERROR, INFORMATION,
+	 *            CONFIRMATION
+	 * @return boolean result.get() == ButtonType.OK: returns true is the user
+	 *         clicked the OK button, returns false otherwise
 	 */
 
 	public static boolean showAlert(String title, String header, String message, AlertType type) {
@@ -67,30 +68,31 @@ public class Utilities {
 		Optional<ButtonType> result = alert.showAndWait();
 		return (result.get() == ButtonType.OK);
 	}
+
 	/**
 	 * Show an error with a certain message.
-	 * @param error message
+	 * 
+	 * @param error
+	 *            message
 	 */
 
-	public static void showError(String title,String message) {
+	public static void showError(String title, String message) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle(title);
 		alert.setContentText(message);
 		alert.show();
 	}
 
-	
-	public static TableView<?> makeSingleColumnTable( String title )
-	{
+	public static TableView<?> makeSingleColumnTable(String title) {
 		TableView table = new TableView();
 		TableColumn column = new TableColumn(title);
-		column.prefWidthProperty().bind(table.widthProperty()); 
+		column.prefWidthProperty().bind(table.widthProperty());
 
 		table.getColumns().setAll(column);
 
 		return table;
 	}
-	
+
 	/**
 	 * Makes a button with a given name and event.
 	 * 
@@ -230,14 +232,21 @@ public class Utilities {
 	}
 
 	/**
-	 * Shows a choice box where the user can pick among preset options.
-	 * User response/choice is returned as a string.
-	 * @param List<String> choices: choices given to the user in the dialogue
-	 * @param String title: title of dialogue, could be null
-	 * @param String header: header for the dialogue, could be null
-	 * @param String content: longer message further describing the dialogue, could be null
-	 * (all three shouldn't be null at once or dialogue is useless)
-	 * @return String result: user choice as a string from the given choice options
+	 * Shows a choice box where the user can pick among preset options. User
+	 * response/choice is returned as a string.
+	 * 
+	 * @param List<String>
+	 *            choices: choices given to the user in the dialogue
+	 * @param String
+	 *            title: title of dialogue, could be null
+	 * @param String
+	 *            header: header for the dialogue, could be null
+	 * @param String
+	 *            content: longer message further describing the dialogue, could
+	 *            be null (all three shouldn't be null at once or dialogue is
+	 *            useless)
+	 * @return String result: user choice as a string from the given choice
+	 *         options
 	 */
 
 	public String choiceBox(List<String> choices, String title, String header, String content) {
@@ -253,8 +262,7 @@ public class Utilities {
 		return null;
 	}
 
-	public static TitledPane makeTitledPane(String title, Node content, boolean collapsable)
-	{
+	public static TitledPane makeTitledPane(String title, Node content, boolean collapsable) {
 		TitledPane pane = new TitledPane(title, content);
 		pane.setCollapsible(collapsable);
 		pane.setExpanded(!collapsable);
@@ -262,7 +270,7 @@ public class Utilities {
 		return pane;
 	}
 
-	public static ButtonType confirmationBox (String title,String header, String message){
+	public static ButtonType confirmationBox(String title, String header, String message) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle(title);
 		alert.setHeaderText(header);
@@ -271,13 +279,13 @@ public class Utilities {
 		return null;
 	}
 
-
 	/**
-	 * Gets all file names from a given directory.
-	 * Is static so that it can be accessed as the actual class is never instantiated,
-	 * also so that function can be accessed without this object being passed.
+	 * Gets all file names from a given directory. Is static so that it can be
+	 * accessed as the actual class is never instantiated, also so that function
+	 * can be accessed without this object being passed.
 	 *
-	 * @param directoryLocation String path to a file directory
+	 * @param directoryLocation
+	 *            String path to a file directory
 	 * @return List of Strings of all file names within given directory
 	 */
 	public static List<String> getAllFromDirectory(String directoryLocation) {
@@ -290,40 +298,33 @@ public class Utilities {
 			files.add(name.substring(0, name.lastIndexOf('.')));
 		}
 		return files;
-
-
 	}
 
-
-
-
-	/**
-	 * Creates an IEntity copy of the given IEntity with the same specs,
-	 * components, and component values.
-	 * @param IEntity entity: given IEntity to copy
-	 * @return IEntity newEntity: returned copy of the given IEntity
-	 */
 	public static IEntity copyEntity(IEntity entity) {
 		IEntity newEntity = new Entity(entity.getName());
 		newEntity.setSpecs(entity.getSpecs());
 		for (IComponent component : entity.getAllComponents()) {
 			newEntity.addComponent(component.clone(component.getClass()));
-			//newEntity.forceAddComponent(component, true);
-			if (newEntity.hasComponent(Position.class)){
-				newEntity.removeComponent(Position.class);
-				Position newPos = new Position();
-				newEntity.forceAddComponent(newPos,true);
-			}
-			if (newEntity.hasComponent(ImagePath.class)){
-				newEntity.removeComponent(ImagePath.class);
-				ImagePath newPath = new ImagePath(entity.getComponent(ImagePath.class).getImagePath());
-				newEntity.forceAddComponent(newPath, true);
-			}
+			// newEntity.forceAddComponent(component, true);
+			componentInitialization(newEntity, entity);
 		}
 		return newEntity;
 	}
-	
-	public static List<ExtensionFilter> getImageFilters(){
+
+	private static void componentInitialization(IEntity newEntity, IEntity oldEntity) {
+		if (newEntity.hasComponent(Position.class)) {
+			newEntity.removeComponent(Position.class);
+			Position newPos = new Position();
+			newEntity.forceAddComponent(newPos, true);
+		}
+		if (newEntity.hasComponent(ImagePath.class)) {
+			newEntity.removeComponent(ImagePath.class);
+			ImagePath newPath = new ImagePath(oldEntity.getComponent(ImagePath.class).getImagePath());
+			newEntity.forceAddComponent(newPath, true);
+		}
+	}
+
+	public static List<ExtensionFilter> getImageFilters() {
 		List<ExtensionFilter> filters = new ArrayList<ExtensionFilter>();
 		filters.add(new FileChooser.ExtensionFilter("All Images", "*.*"));
 		filters.add(new FileChooser.ExtensionFilter("JPG", "*.jpg"));
