@@ -1,12 +1,15 @@
 package main;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
 import enums.DefaultStrings;
+import enums.FileExtensions;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import view.Utilities;
 import view.beginingmenus.AuthoringStartUp;
@@ -44,8 +47,11 @@ public class Vooga extends StartUpMenu {
 
 
 	private void createPlayer() {
-		GamePlayer gamePlayer = new GamePlayer(myStage, getLanguage());
-		gamePlayer.init();
+		File file = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("XML","*.xml"), "Choose a saved game");
+		if (file!= null){
+			GamePlayer gamePlayer = new GamePlayer(myStage, getLanguage());
+			gamePlayer.init(file.getPath());
+		}
 	}
 	
 	private String getLanguage(){
