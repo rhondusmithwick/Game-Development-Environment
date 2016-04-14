@@ -1,5 +1,6 @@
 package view.beginingmenus;
 
+import java.io.File;
 import java.util.List;
 
 import enums.GUISize;
@@ -17,7 +18,8 @@ public abstract class StartUpMenu {
 	private Stage myStage;
 	private Group root;
 	private VBox myVBox;
-	
+	private static final String CSS = "resources/cssFiles/";
+	private static final String MAIN_CSS = "main.css";
 	
 	public StartUpMenu(Stage myStage){
 		this.myStage = myStage;
@@ -25,6 +27,7 @@ public abstract class StartUpMenu {
 
 	public void init() {
 		myScene = new Scene(createDisplay(), GUISize.MAIN_SIZE.getSize(), GUISize.MAIN_SIZE.getSize());
+		myScene.getStylesheets().add(new File(CSS + MAIN_CSS).toURI().toString());
 		myStage.setScene(myScene);
 		myStage.show();
 	}
