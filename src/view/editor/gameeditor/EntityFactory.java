@@ -27,6 +27,7 @@ public class EntityFactory {
 		for(int i=0; i<numToAdd; i++){
 			try {
 					entity.addComponent(componentName.getConstructor().newInstance());
+			
 				
 			} catch (Exception e) {
 				ResourceBundle resources = ResourceBundle.getBundle(language);

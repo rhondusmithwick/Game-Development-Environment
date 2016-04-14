@@ -23,7 +23,7 @@ import model.physics.PhysicsEngine;
 public class SystemManager implements ISystemManager {
 	// private IEventSystem eventSystem;
 	private IEntitySystem universe = new EntitySystem();
-	private IPhysicsEngine physics = new PhysicsEngine(null);
+	private IPhysicsEngine physics = new PhysicsEngine();
 
 	public SystemManager() {
 	}
