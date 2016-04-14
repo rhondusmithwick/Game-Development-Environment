@@ -158,7 +158,8 @@ public class ImagePath implements IComponent {
         public ImageView getImageView() { // TODO: make imageView an instance
                                                                                 // variable
                 imageView.setViewport(this.viewport); // TODO: for some reason, setting
-                                                                                                // viewport internally fails
+               imageView.setPreserveRatio(true);
+                imageView.setFitHeight(this.getImageHeight());                                                                              // viewport internally fails
                 return imageView;
         }
 

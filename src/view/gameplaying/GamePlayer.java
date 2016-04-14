@@ -42,8 +42,8 @@ public class GamePlayer {
 		for (ISerializable system: loaded.getEnvironments()){
 			for (IEntity entity: ((IEntitySystem) system).getAllEntities()){
 					ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
-					entityView.setLayoutX(entity.getComponent(Position.class).getX());
-					entityView.setLayoutY(entity.getComponent(Position.class).getY());
+					entityView.setTranslateX(entity.getComponent(Position.class).getX());
+					entityView.setTranslateY(entity.getComponent(Position.class).getY());
 					gameView.addToView(entityView);
 			}
 
