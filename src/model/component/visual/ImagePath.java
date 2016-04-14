@@ -33,6 +33,8 @@ public class ImagePath implements IComponent {
         private boolean isAnimated;
         private double timeSinceLastFrame, elapsedTime;
         private final double frameDuration, totalDuration;
+		private String spriteName;
+		private static final String PROPERTIES_DIR = "spriteProperties.";
 
         public ImagePath() {
                 this("resources/RhonduSmithwick.JPG");
@@ -45,7 +47,7 @@ public class ImagePath implements IComponent {
          *            starting value
          */
         public ImagePath(String imagePath) { // TODO: place default in resource file
-                this(imagePath, 0.0, 0.0, new Rectangle2D(0, 0, 0, 0), false, 0, 0, 0);
+                this(null, imagePath, 0.0, 0.0, new Rectangle2D(0, 0, 0, 0), false, 0, 0, 0);
         }
 
         // TODO: IMPORTANT NOTE: I forgot to account for columns!
@@ -69,12 +71,12 @@ public class ImagePath implements IComponent {
          * @param offsetX
          *            offset in y-direction
          */
-        public ImagePath(String imagePath, double imageWidth, double imageHeight, 
+        public ImagePath(String spriteName, String imagePath, double imageWidth, double imageHeight, 
                         Rectangle2D viewport, boolean isAnimated, double frameDurationMillis, double totalDurationMillis,
                         int maxFrameIndex) {
                 this.imagePathProperty = new SingleProperty<>("ImagePath", imagePath);
                 this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", imageHeight);
-
+                this.spriteName = spriteName;
                 File resource = new File(imagePath);
                 Image image = new Image(resource.toURI().toString());
                 this.imageView = new ImageView(image);
@@ -213,5 +215,11 @@ public class ImagePath implements IComponent {
                 imageView.setFitWidth(imageWidthProperty().get());
                 imageView.setPreserveRatio(true);
         }
+
+		public String getSpriteProperties() {
+			return PROPERTIES_DIR  + this.spriteName;
+		}
+
+
 
 }
