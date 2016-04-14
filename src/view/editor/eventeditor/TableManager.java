@@ -63,7 +63,8 @@ public class TableManager
 		editor.triggerSet(entity.getName() + " - " + 
 				splitClassName[splitClassName.length - 1] + " - " + 
 				property.getName(),
-				new Trigger(entity.getID(), component, propertyIndex, ) );	// TODO: universe...!?
+				null);
+				//new Trigger(entity.getID(), component, propertyIndex, null) );	// TODO: universe...!?
 	}
 	
 	private void fillLayout()

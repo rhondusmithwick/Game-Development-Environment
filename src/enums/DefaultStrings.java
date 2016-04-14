@@ -16,7 +16,8 @@ public enum DefaultStrings {
 	POSITION_COMP_NAME(Position.class.getName()),
 	BACKGROUND_TEMPLATE_PATH("templates/Background"), 
 	PLATFORM_TEMPLATE_PATH("templates/PlatformSprite"),
-	XML(".xml");
+	XML(".xml"), 
+	CHARACTER_TEMPLATE_PATH("templates/player");
 
     private final String content;
 
