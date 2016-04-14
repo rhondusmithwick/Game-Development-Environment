@@ -1,51 +1,71 @@
 package events;
 
 import api.IEntitySystem;
-import javafx.scene.input.KeyCode;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.scene.input.KeyEvent;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 /**
  * Created by rhondusmithwick on 4/10/16.
  *
- * @author Rhondu Smithwick
+ * @author Rhondu Smithwick, Anirudh Jonnavithula, Carolyn Yao
  */
 public class InputSystem {
-    private final Map<String, Action> actionMap = new HashMap<>();
-    private final Map<KeyCode, String> keyMap = new HashMap<>();
     private IEntitySystem universe;
+    private Queue<KeyEvent> q1;
+    private Queue<KeyEvent> q2;
+    private Queue<KeyEvent> fillQ;
+    private Queue<KeyEvent> processQ;
+    
+    
+    private SimpleObjectProperty<KeyEvent> currentChar = new SimpleObjectProperty<>(); 
 
     public InputSystem(IEntitySystem universe) {
+    	q1 = new PriorityQueue<>();
+    	q2 = new PriorityQueue<>();
+    	fillQ = q1; 
+    	processQ = q2;
         this.universe = universe;
     }
 
-    public void addEvent(String actionName, Action action) {
-        actionMap.put(actionName, action);
+    public void take(KeyEvent k) {
+		fillQ.add(k);
     }
     
-    public void addKeyBinding(KeyCode k, String actionName) {
-    	keyMap.put(k, actionName);
-    }
-
-    public boolean containsEvent(String actionName) {
-        return actionMap.containsKey(actionName);
+    public void processInputs() { 
+    	toggleQueues();
+    	while(!processQ.isEmpty()) { 
+    		KeyEvent k = processQ.poll();
+    		if(k!=null) {
+    			currentChar.set(k);
+    		}
+    		
+    	}
     }
     
-    public boolean containsKey(KeyCode k) {
-        return keyMap.containsKey(k);
+    public void listenToKeyPress(ChangeListener listener) {
+    	currentChar.addListener(listener);
     }
-
-    public void take(KeyCode k) {
-        if (containsKey(k)) {
-        	String actionName = keyMap.get(k);
-        	if(containsEvent(actionName)) {
-        		actionMap.get(keyMap.get(k)).activate(universe);
-        	}
-        }
+    
+    private void toggleQueues() {
+    	if (fillQ == q1) { 
+    		fillQ = q2; 
+    		processQ = q1;
+    	} else { 
+    		fillQ = q1;
+    		processQ = q2;
+    	}
     }
 
     public void setUniverse(IEntitySystem universe) {
         this.universe = universe;
     }
-
+    
+    public KeyEvent getCurrentCharKeyEvent() { 
+    	return currentChar.get();
+    }
 }

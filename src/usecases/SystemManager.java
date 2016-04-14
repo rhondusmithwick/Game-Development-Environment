@@ -5,6 +5,7 @@ import api.IEventSystem;
 import api.IPhysicsEngine;
 import api.ISystemManager;
 import events.EventSystem;
+import events.InputSystem;
 import model.entity.EntitySystem;
 import model.physics.PhysicsEngine;
 
@@ -16,12 +17,12 @@ import model.physics.PhysicsEngine;
 public class SystemManager implements ISystemManager {
 	private IEventSystem eventSystem;
 	private IEntitySystem universe = new EntitySystem();
-	private IPhysicsEngine physics = new PhysicsEngine(null);
+	private IPhysicsEngine physics = new PhysicsEngine();
 	private boolean isRunning = true;
 
 	public SystemManager() {
-		this.eventSystem = new EventSystem();
-		eventSystem.init(universe);
+		this.eventSystem = new EventSystem(universe, new InputSystem(universe));
+		// eventSystem.init(universe);
 	}
 
 	@Override

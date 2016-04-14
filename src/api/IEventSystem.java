@@ -18,7 +18,7 @@ import events.Trigger;
  */
 public interface IEventSystem extends Observer, ISerializable {
 
-	void init(IEntitySystem universe);
+	// void init(IEntitySystem universe);
 
 	void registerEvent(Trigger trigger, Action action);
 

@@ -24,11 +24,13 @@ import datamanagement.XMLWriter;
  */
 public class EventSystem implements Observer, IEventSystem {
 
-	private transient IEntitySystem universe;
-	private Map<Trigger, Action> actionMap = new HashMap<>();
+	IEntitySystem universe;
+	InputSystem inputSystem;
+	Map<Trigger, Action> actionMap = new HashMap<>();
 
-	public void init(IEntitySystem universe) {
+	public EventSystem(IEntitySystem universe, InputSystem inputSystem) {
 		this.universe = universe;
+		this.inputSystem = inputSystem;
 	}
 
 	public void registerEvent(Trigger trigger, Action action) {
@@ -58,7 +60,7 @@ public class EventSystem implements Observer, IEventSystem {
 		Map<Trigger, Action> returnMap = new HashMap<>();
 		for (EventContainer event : eventList) {
 			returnMap.put(event.getTrigger(), event.getAction());
-			event.getTrigger().addHandler(universe);
+			event.getTrigger().addHandler(universe, inputSystem);
 		}
 		return returnMap;
 	}
