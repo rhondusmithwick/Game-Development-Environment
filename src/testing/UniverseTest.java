@@ -42,14 +42,16 @@ public class UniverseTest {
         List<Action> actionList2 = new XMLReader<Action>().readFromFile("heeey.xml");
         IEntity character = new Entity("Ani");
         character.addComponent(new Health(100.0));
-        universe.addEntity(character);
+        character.getComponent(Health.class).getProperties().get(0);
+        
+        /*universe.addEntity(character);
         Trigger t = new Trigger(character.getID(), character.getComponent(Health.class), 0, universe);
         t.serialize("yoyoyo.xml");
         Trigger t2 = new XMLReader<Trigger>().readSingleFromFile("yoyoyo.xml");
         eventSystem.registerEvent(t, action);
         eventSystem.saveEventsToFile("eventtest.xml");
         EventSystem eventSystem2 = new EventSystem(universe);
-        eventSystem2.readEventsFromFile("eventtest.xml");
+        eventSystem2.readEventsFromFile("eventtest.xml");*/
     }
 
 }

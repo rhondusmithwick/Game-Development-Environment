@@ -10,6 +10,7 @@ import java.util.stream.Collectors;
 import com.google.common.collect.Sets;
 import api.IPhysicsEngine;
 import javafx.geometry.Bounds;
+import javafx.scene.image.ImageView;
 import javafx.scene.shape.Shape;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
@@ -35,17 +36,20 @@ public class PhysicsEngine implements IPhysicsEngine {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void update(IEntitySystem universe, double dt) {
-		applyCollisions(universe, true); // WHAT'S PURPOSE OF BOOLEAN HERE?
-		applyGravity(universe, dt);
 		
-		Collection<IEntity> dynamicEntities = universe.getEntitiesWithComponents(Position.class, Velocity.class);
+		Collection<IEntity> dynamicEntities = universe.getEntitiesWithComponents(Position.class, Velocity.class, ImagePath.class);
 		dynamicEntities.stream().forEach(p -> {
 			Position pos = p.getComponent(Position.class);
 			Velocity velocity = p.getComponent(Velocity.class);
+			ImageView imageView = p.getComponent(ImagePath.class).getImageView();
+			imageView.setX(pos.getX());
+			imageView.setY(pos.getY());
 			double dx = dt * velocity.getVX();
 			double dy = dt * velocity.getVY();
 			pos.add(dx, dy);
 		});
+		applyCollisions(universe, true); // WHAT'S PURPOSE OF BOOLEAN HERE?
+		applyGravity(universe, dt);
 	}
 
 	@Override
@@ -126,7 +130,6 @@ public class PhysicsEngine implements IPhysicsEngine {
 
 		for (Bounds firstHitBox : firstHitBoxes) {
 			for (Bounds secondHitBox : secondHitBoxes) {
-				System.out.println("Check for collision "+firstHitBox.getMinX()+" "+firstHitBox.getMaxX()+" "+secondHitBox.getMinX()+" "+secondHitBox.getMaxX());
 				if (firstHitBox.intersects(secondHitBox)) {
 					System.out.println("COLLISION OCCURRED");
 					addCollisionID(firstEntity, secondEntity);
@@ -148,15 +151,19 @@ public class PhysicsEngine implements IPhysicsEngine {
 	public void changeVelocityAfterCollision(IEntity firstEntity, IEntity secondEntity) {		
 		//CALCULATE COEFFICIENT OF RESTITUTION
 		int restitution = 0;
-		
 		setNewVelocityForEntity(firstEntity, secondEntity, restitution);
 		setNewVelocityForEntity(secondEntity, firstEntity, restitution);
 	}
 	
-	private void setNewVelocityForEntity(IEntity entityToSet, IEntity entityCollidingWith, double restitution) {
-		double nextVX1 = getNextVelocityComponent(entityToSet, entityCollidingWith, restitution, (Velocity v) -> v.getVX());
-		double nextVY1 = getNextVelocityComponent(entityToSet, entityCollidingWith, restitution, (Velocity v) -> v.getVY());
-		entityToSet.getComponent(Velocity.class).setVXY(nextVX1, nextVY1);		
+	private void setNewVelocityForEntity(IEntity firstEntity, IEntity secondEntity, double restitution) {
+		double nextVX1 = getNextVelocityComponent(firstEntity, secondEntity, restitution, (Velocity v) -> v.getVX());
+		double nextVY1 = getNextVelocityComponent(firstEntity, secondEntity, restitution, (Velocity v) -> v.getVY());
+		
+		double nextVX2 = getNextVelocityComponent(secondEntity, firstEntity, restitution, (Velocity v) -> v.getVX());
+		double nextVY2 = getNextVelocityComponent(secondEntity, firstEntity, restitution, (Velocity v) -> v.getVY());
+		
+		firstEntity.getComponent(Velocity.class).setVXY(nextVX1, nextVY1);	
+		secondEntity.getComponent(Velocity.class).setVXY(nextVX2, nextVY2);
 	}
 	
 	private double getNextVelocityComponent(IEntity firstEntity, IEntity secondEntity, double restitution, Function<Velocity, Double> getCoordinate) {
@@ -167,11 +174,13 @@ public class PhysicsEngine implements IPhysicsEngine {
 		double velocity2 = getCoordinate.apply(secondEntity.getComponent(Velocity.class));
 		
 		double velocityBeforeRestitution = getVelocityBeforeRestitution(mass1, mass2, velocity1, velocity2);
-		return velocityBeforeRestitution + ((mass2 * restitution * (velocity2 - velocity1)) / (mass1 + mass2));
+		double finalVelocity = velocityBeforeRestitution + ((mass2 * restitution * (velocity2 - velocity1)) / (mass1 + mass2));
+
+		return finalVelocity;
 	}
 	
 	private double getVelocityBeforeRestitution(double mass1, double mass2, double velocity1, double velocity2) {
-		return (mass1 * velocity1) + (mass2 * velocity2) / (mass1 + mass2);
+		return ((mass1 * velocity1) + (mass2 * velocity2)) / (mass1 + mass2);
 	}
 	
 	private void addCollisionID(IEntity entityAddingTo, IEntity entityAddingFrom) {

@@ -4,6 +4,7 @@ import model.component.character.Health
 import model.component.character.Score
 import model.component.movement.Position
 import model.component.movement.Velocity
+import model.component.physics.Collision
 import model.component.physics.Gravity
 import model.component.physics.Mass
 import model.component.visual.ImagePath
@@ -24,6 +25,7 @@ class BenTestCharacter {
 		character.addComponent(new Velocity(10.0, 0.0))
 		character.addComponent(new Mass(30.0))
 		character.addComponent(new Gravity())
+		character.addComponent(new Collision(null))
 		return character
 	}
 }

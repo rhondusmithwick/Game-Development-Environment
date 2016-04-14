@@ -32,10 +32,8 @@ public class BenTestGroovy extends Application {
 	private static final double MILLISECOND_DELAY = 10;
 	private static final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
 	private static final Group ROOT = new Group();
-	private Map<IEntity, ImageView> entityToImage;
 
 	public void start(Stage s) {
-		entityToImage = new HashMap<>();
 		BorderPane splash = new BorderPane();
 		splash.getChildren().add(ROOT);
 		Scene scene = new Scene(splash, 500, 500);
@@ -46,21 +44,9 @@ public class BenTestGroovy extends Application {
 		IEntity rhonduEntity = BenTestCharacter.run(IMAGE_PATH);
 		IEntity rhonduEntity2 = BenTestSecondCharacter.run(IMAGE_PATH2);
 		
-		// IEntity ball =
 		IEntitySystem system = new EntitySystem();
 		system.addEntities(rhonduEntity, rhonduEntity2);
-		
 		IPhysicsEngine physics = new PhysicsEngine(system);
-		ImageView testSprite = createImage(rhonduEntity.getComponent(ImagePath.class),
-				rhonduEntity.getComponent(Position.class));
-		rhonduEntity.addComponent(new Collision(testSprite.getBoundsInParent(), null));
-		entityToImage.put(rhonduEntity, testSprite);
-		
-		ImageView testSprite2 = createImage(rhonduEntity2.getComponent(ImagePath.class),
-				rhonduEntity2.getComponent(Position.class));
-		rhonduEntity2.addComponent(new Collision(testSprite2.getBoundsInParent(), null));
-		entityToImage.put(rhonduEntity2, testSprite2);
-		
 
 		// sets the game's loop
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY),
@@ -80,20 +66,20 @@ public class BenTestGroovy extends Application {
 		Collection<IEntity> list = s.getAllEntities();
 		for (IEntity entity : list) {
 			Position pos = entity.getComponent(Position.class);
-			refreshDraw(entityToImage.get(entity), pos.getX(), pos.getY());
+			refreshDraw(entity.getComponent(ImagePath.class).getImageView(), pos.getX(), pos.getY());
 		}
 	}
 
-	private ImageView createImage(ImagePath path, Position pos) {
-		File resource = new File(path.getImagePath());
-		Image image = new Image(resource.toURI().toString());
-		ImageView imageView = new ImageView(image);
-		imageView.setFitHeight(100);
-		imageView.setPreserveRatio(true);
-		imageView.xProperty().bind(pos.xProperty());
-		imageView.yProperty().bind(pos.yProperty());
-		return imageView;
-	}
+//	private ImageView createImage(ImagePath path, Position pos) {
+//		File resource = new File(path.getImagePath());
+//		Image image = new Image(resource.toURI().toString());
+//		ImageView imageView = new ImageView(image);
+//		imageView.setFitHeight(100);
+//		imageView.setPreserveRatio(true);
+//		imageView.xProperty().bind(pos.xProperty());
+//		imageView.yProperty().bind(pos.yProperty());
+//		return imageView;
+//	}
 
 	private void refreshDraw(ImageView img, double x, double y) {
 		ROOT.getChildren().remove(img);

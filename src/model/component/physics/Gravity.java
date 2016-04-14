@@ -19,7 +19,7 @@ public class Gravity implements IComponent {
      * Empty constructor. Defaults to 9.81.
      */
     public Gravity() {
-    	setGravity(1000);
+    	setGravity(100);
     }
 
     /**

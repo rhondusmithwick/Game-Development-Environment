@@ -20,6 +20,11 @@ public class Collision implements IComponent {
 		this.IDs = IDs;
 		this.collidingIDs = new HashSet<String>();
 	}
+	
+	public Collision(Collection<String> IDs) {
+		this.IDs = IDs;
+		this.collidingIDs = new HashSet<String>();
+	}
 
 	public Bounds getMask() {
 		return this.mask;
