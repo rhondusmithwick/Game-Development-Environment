@@ -1,5 +1,7 @@
 package view.editor.eventeditor;
 
+import java.util.ResourceBundle;
+
 import enums.GUISize;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -47,5 +49,4 @@ public abstract class Table
 	{
 		return entries;
 	}
-	
 }

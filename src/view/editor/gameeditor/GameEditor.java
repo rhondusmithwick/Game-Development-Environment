@@ -38,8 +38,7 @@ public class GameEditor extends Editor  {
 	private String myLanguage;
 	private ObservableList<ISerializable> masterEntityList;
 	private ObservableList<ISerializable> masterEnvironmentList;
-	private ObservableList<ISerializable> masterEventList;
-	private ObservableList<String> userActions;
+
 	private GameDetails gameDetails;
 	private ObjectDisplay entDisp, envDisp, eventDisplay;
 
@@ -56,11 +55,10 @@ public class GameEditor extends Editor  {
 		this.authEnv=authEnv;
 		this.masterEntityList = FXCollections.observableArrayList();
 		this.masterEnvironmentList = FXCollections.observableArrayList();
-		this.masterEventList = FXCollections.observableArrayList();
-		this.userActions = FXCollections.observableArrayList();
+		
 		entDisp = new EntityDisplay(myLanguage, masterEntityList, authEnv);
 		envDisp = new EnvironmentDisplay(myLanguage, masterEnvironmentList, masterEntityList, authEnv);
-		eventDisplay = new EventDisplay(myLanguage, masterEntityList, authEnv, userActions);
+		eventDisplay = new EventDisplay(myLanguage, masterEntityList, authEnv);
 
 		// TEST
 		Entity test = new Entity("Hello");
