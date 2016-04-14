@@ -150,7 +150,7 @@ public class ImagePath implements IComponent {
 
 	public ImageView getImageView() { // TODO: make imageView an instance
 										// variable
-		imageView.setViewport(this.viewport); // TODO: for some reason, setting
+		imageView.setViewport(getViewport()); // TODO: for some reason, setting
 												// viewport internally fails
 		return imageView;
 	}
