@@ -2,11 +2,13 @@ package testing.demo;
 
 import java.util.Collection;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
+
 import api.IEntity;
 import api.IEntitySystem;
 import api.ISystemManager;
 import datamanagement.XMLReader;
-import groovy.lang.GroovyShell;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Insets;
@@ -33,7 +35,7 @@ public class View {
 	private final ConsoleTextArea console = new ConsoleTextArea();
 	private final Button evaluateButton = new Button("Evaluate");
 	private final Button loadButton = new Button("Load");
-	private final GroovyShell shell = new GroovyShell();
+	private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("Groovy");
 	private ISystemManager model = new SystemManager();
 
 	public View(Stage stage) {
@@ -109,13 +111,13 @@ public class View {
 		// Binding binding = new Binding();
 		// binding.setVariable("game", this.model);
 		// binding.setVariable("demo", new GroovyDemoTest());
-		shell.setVariable("game", this.model);
-		shell.setVariable("universe", this.model.getEntitySystem());
-		shell.setVariable("demo", new GroovyDemoTest());
-		// this.engine.put("game", this.model);
-		// this.engine.put("universe", this.model.getEntitySystem());
-		// this.engine.put("c0", (new GroovyDemoTest()).getCharacter0());
-		// this.engine.put("c1", (new GroovyDemoTest()).getCharacter1());
+		// shell.setVariable("game", this.model);
+		// shell.setVariable("universe", this.model.getEntitySystem());
+		// shell.setVariable("demo", new GroovyDemoTest());
+		this.engine.put("game", this.model);
+		this.engine.put("universe", this.model.getEntitySystem());
+		this.engine.put("c0", (new GroovyDemoTest()).getCharacter0());
+		this.engine.put("c1", (new GroovyDemoTest()).getCharacter1());
 	}
 
 	private void load() { // TODO: load from "demo.xml"
@@ -127,7 +129,7 @@ public class View {
 		String command = text.substring(text.lastIndexOf("\n")).trim();
 		console.println("\n----------------");
 		try {
-			Object result = shell.evaluate(command);
+			Object result = engine.eval(command);
 			if (result != null) {
 				console.print(result.toString());
 			}
