@@ -1,14 +1,17 @@
 package model.component.visual;
 
 import java.io.File;
+
 import java.util.Arrays;
 import java.util.List;
 
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utility.SingleProperty;
+import utility.TwoProperty;
 
 /**
  * Component to hold an imagePath.
