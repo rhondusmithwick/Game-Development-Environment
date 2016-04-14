@@ -7,11 +7,11 @@ public class GameView {
 	private Group viewGroup;
 
 	public GameView(){
-		
+		viewGroup = new Group();
+
 	}
 	
 	public Group getView(){
-		viewGroup = new Group();
 		return viewGroup;
 		
 	}
