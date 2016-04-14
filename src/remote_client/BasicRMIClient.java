@@ -29,6 +29,7 @@ import model.entity.EntitySystem;
 import model.physics.PhysicsEngine;
 import testing.BenTestCharacter;
 
+@Deprecated
 public class BasicRMIClient extends Application{
 	private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
 	private static final String IMAGE_PATH = "resources/RhonduSmithwick.JPG";

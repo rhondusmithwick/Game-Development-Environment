@@ -38,8 +38,8 @@ public class DefaultsMaker {
 		ImagePath path = new ImagePath(platformPath);
 		//Utilities.setUpImagePathSize(path);
 		entity.addComponent(path);
-		entity.addComponent(new Collision(entity.getComponent(ImagePath.class).getImageView().getBoundsInParent(),
-			entityListToIDs(masterEntities)));
+		//entity.addComponent(new Collision(imagePathToFitRectangle(entity.getComponent(ImagePath.class)),
+			//entityListToIDs(masterEntities)));
 		return entity;
 	}
 	
