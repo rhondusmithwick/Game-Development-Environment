@@ -9,9 +9,9 @@ import model.entity.Entity;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -58,6 +58,7 @@ public class EditorEntity extends Editor{
 	@Override
 	public void populateLayout() {
 		vbox = new VBox();
+		vbox.setAlignment(Pos.CENTER);
 		name = Utilities.makeTextArea(myResources.getString("enterName"));
 		name.setText(myEntity.getName());
 		vbox.getChildren().add(name);
@@ -66,6 +67,7 @@ public class EditorEntity extends Editor{
 		
 		for (IComponent component: componentList){
 			for (SimpleObjectProperty<?> property: component.getProperties()){
+				System.out.print(property.getName());
 				//System.out.println(component.getProperties());
 				GuiObject object = guiFactory.createNewGuiObject(property.getName(), property, property.getValue());
 				if (object!=null){
