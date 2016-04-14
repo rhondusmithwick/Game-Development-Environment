@@ -1,26 +1,14 @@
 package events;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.Properties;
-
-import utility.SingleProperty;
-
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
-
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
 import api.IEntitySystem;
-import api.ISerializable;
-import javafx.scene.input.KeyCode;
 
 /***
  * Created by ajonnav 04/12/16
@@ -34,10 +22,12 @@ import javafx.scene.input.KeyCode;
 public class EventSystem implements Observer{
 	
 	IEntitySystem universe;
+	InputSystem inputSystem;
 	Map<Trigger, Action> actionMap = new HashMap<>();
 	
-	public EventSystem(IEntitySystem universe) {
+	public EventSystem(IEntitySystem universe, InputSystem inputSystem) {
 		this.universe = universe;
+		this.inputSystem = inputSystem;
 	}
 	
 	public void registerEvent(Trigger trigger, Action action) {
@@ -47,7 +37,7 @@ public class EventSystem implements Observer{
 
 	@Override
 	public void update(Observable o, Object arg) {
-		Action action = actionMap.get(((Trigger)o));
+		Action action = actionMap.get(((Trigger) o));
 		action.activate(universe);
 	}
 	
@@ -67,7 +57,7 @@ public class EventSystem implements Observer{
 		Map<Trigger, Action> returnMap = new HashMap<>();
 		for(EventContainer event:eventList) {
 			returnMap.put(event.getTrigger(), event.getAction());
-			event.getTrigger().addHandler(universe);
+			event.getTrigger().addHandler(universe, inputSystem);
 		}
 		return returnMap;
 	}
