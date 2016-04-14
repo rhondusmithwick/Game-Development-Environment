@@ -24,7 +24,6 @@ public class ComponentTable extends Table
         	);
    	}
 	
-	@SuppressWarnings("unchecked")
 	@Override
 	public void fillEntries(Object dataHolder) 
 	{

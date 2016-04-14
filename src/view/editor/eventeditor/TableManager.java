@@ -14,6 +14,10 @@ public class TableManager
 	private ComponentTable componentTable;
 	private PropertyTable propertyTable;
 	
+	private Entity entity;
+	private IComponent component;
+	private int propertyIndex;
+	
 	public TableManager(ObservableList<ISerializable> entityList)
 	{
 		
@@ -28,16 +32,19 @@ public class TableManager
 	public void entityWasClicked(Entity entity)
 	{
 		componentTable.fillEntries(entity);
+		this.entity = entity;
 	}
 	
 	public void componentWasClicked(IComponent component)
 	{
 		propertyTable.fillEntries(component);
+		this.component = component;
 	}
 	
 	public void propertyWasClicked(SimpleObjectProperty property)
 	{
-		
+		propertyIndex = component.getProperties().indexOf(property);
+		System.out.println(propertyIndex);
 	}
 	
 	private void fillLayout()

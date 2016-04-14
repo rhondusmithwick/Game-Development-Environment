@@ -1,5 +1,6 @@
 package view.editor.eventeditor;
 
+import enums.GUISize;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
@@ -18,8 +19,13 @@ public abstract class Table
 		this.manager = manager;
 		table = new TableView<Entry>();
 		table.setEditable(true);
+		table.setPrefWidth(GUISize.EVENT_EDITOR_TABLE_WIDTH.getSize());
+		
 		column = new TableColumn<Entry, String>(name);
 		column.setCellValueFactory( new PropertyValueFactory<Entry,String>("name") );
+		column.minWidthProperty().bind(table.prefWidthProperty());
+		column.maxWidthProperty().bind(table.prefWidthProperty());
+		
 		entries = FXCollections.observableArrayList();
 		table.getColumns().add(column);
 		table.setItems(entries);

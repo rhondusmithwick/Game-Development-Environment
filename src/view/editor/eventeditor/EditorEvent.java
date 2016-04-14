@@ -122,8 +122,7 @@ public class EditorEvent extends Editor
 	{
 		
 		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
-		VBox internalBox = new VBox();
-	
+
 		pane.getChildren().add(tableManager.getContainer());
 	/*
 		internalBox.setMinWidth(GUISize.EVENT_EDITOR_TABLE_WIDTH.getSize());

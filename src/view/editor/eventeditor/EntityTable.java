@@ -9,6 +9,7 @@ public class EntityTable extends Table
 	public EntityTable(ObservableList<ISerializable> entities, TableManager manager)
 	{
 		super(manager, "Pick Entity");	// TODO resource file
+		
 		// Add change listener
 		getTable().
         getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> 
