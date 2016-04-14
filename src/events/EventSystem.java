@@ -11,6 +11,7 @@ import java.util.Observer;
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
 import api.IEntitySystem;
+import api.IEventSystem;
 
 /***
  * Created by ajonnav 04/12/16
@@ -21,7 +22,7 @@ import api.IEntitySystem;
  * Using this string, we generate the triggers in some sort of factory fashion
  *
  */
-public class EventSystem implements Observer{
+public class EventSystem implements Observer, IEventSystem{
 	
 	IEntitySystem universe;
 	InputSystem inputSystem;
@@ -50,7 +51,7 @@ public class EventSystem implements Observer{
 		return new File(filepath);
 	}
 	
-	public void readEventsFromFile(String filepath) {
+	public void readEventsFromFilePath(String filepath) {
 		List<EventContainer> eventList= new XMLReader<EventContainer>().readFromFile(filepath);
 		actionMap = convertListToMap(eventList);
 		watchTriggers(actionMap);
@@ -60,6 +61,10 @@ public class EventSystem implements Observer{
 		List<EventContainer> eventList= new XMLReader<EventContainer>().readFromFile(file.getPath());
 		actionMap = convertListToMap(eventList);
 		watchTriggers(actionMap);
+	}
+	
+	public String returnEventsAsString() {
+		return new XMLWriter<EventContainer>().writeToString(convertMapToList(actionMap));
 	}
 	
 	private Map<Trigger, Action> convertListToMap(List<EventContainer> eventList) {

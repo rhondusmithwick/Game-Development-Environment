@@ -1,5 +1,6 @@
 package api;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Observer;
@@ -25,8 +26,12 @@ public interface IEventSystem extends Observer, ISerializable  {
 
 	void registerEvent(Trigger trigger, Action action);
 	
-	void saveEventsToFile(String filepath);
+	void readEventsFromFilePath(String filepath);
 	
-	void readEventsFromFile(String filepath);
+	File saveEventsToFile(String filepath);
+	
+	void readEventsFromFile(File file);
+	
+	String returnEventsAsString();
 	
 }
