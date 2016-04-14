@@ -80,6 +80,7 @@ public class ImagePath implements IComponent {
                 File resource = new File(imagePath);
                 Image image = new Image(resource.toURI().toString());
                 this.imageView = new ImageView(image);
+                imageView.setPreserveRatio(true);
 
                 this.viewport = viewport;
                 this.frameIndex = 0;
@@ -105,6 +106,9 @@ public class ImagePath implements IComponent {
 
         public void setImagePath(String imagePath) {
                 this.imagePathProperty().set(imagePath);
+                File resource = new File(imagePath);
+                Image image = new Image(resource.toURI().toString());
+                this.imageView.setImage(image);
         }
 
         public SimpleObjectProperty<Double> imageWidthProperty() {
@@ -121,6 +125,7 @@ public class ImagePath implements IComponent {
 
         public void setImageWidth(double imageWidth) {
                 this.imageWidthProperty().set(imageWidth);
+                imageView.setFitWidth(imageWidthProperty().get());
         }
 
         public double getImageHeight() {
@@ -129,6 +134,7 @@ public class ImagePath implements IComponent {
 
         public void setImageHeight(double imageHeight) {
                 this.imageHeightProperty().set(imageHeight);
+                imageView.setFitHeight(imageHeightProperty().get());
         }
 
         @Override
@@ -205,8 +211,8 @@ public class ImagePath implements IComponent {
                 File resource = new File(this.imagePathProperty().get());
                 Image image = new Image(resource.toURI().toString());
                 this.imageView = new ImageView(image);
-                imageView.setFitHeight(imageSizeProperty.property1().get());
-                imageView.setFitWidth(imageSizeProperty.property2().get());
+                imageView.setPreserveRatio(true);
+                imageView.setFitHeight(imageHeightProperty().get());
         }
 
 }
