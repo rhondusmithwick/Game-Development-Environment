@@ -53,7 +53,7 @@ public class BasicRMIClient extends Application{
 			System.setSecurityManager(new RMISecurityManager());
 			EntitySystem universe = (EntitySystem) Naming.lookup("rmi://localhost/entitysystem_server");
 			universe.addEntities(list);
-			physics = new PhysicsEngine(universe);
+			physics = new PhysicsEngine();
 			testSprite = createImage(character.getComponent(ImagePath.class), character.getComponent(Position.class));
 
 			int MILLISECOND_DELAY = 10;

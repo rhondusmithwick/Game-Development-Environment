@@ -19,6 +19,8 @@ import enums.DefaultStrings;
 import enums.FileExtensions;
 import enums.GUISize;
 import enums.ViewInsets;
+import events.Action;
+import events.Trigger;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
@@ -29,6 +31,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
 import javafx.scene.control.TitledPane;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
@@ -37,6 +40,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -57,10 +61,15 @@ public class EditorEvent extends Editor
 	private final ResourceBundle myResources;
 	
 	private final HashMap<String, Button> actionButtons;
+	private Text triggerText;
+	private Text actionText;
 	
-	private TableView groovyTable;
 	private Button chooseFileButton;
+	private Button makeEventButton;
 	private TableManager tableManager;
+	
+	private Trigger trigger;
+	private Action action;
 	
 	public EditorEvent(String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> addToList)
 	{
@@ -69,9 +78,17 @@ public class EditorEvent extends Editor
 		pane.setAlignment(Pos.TOP_LEFT);
 		myResources = ResourceBundle.getBundle(language);
 		
+		triggerText = new Text();
+		actionText = new Text();
+		chooseFileButton = new Button();
+		makeEventButton = new Button();
+		
 		actionButtons = new HashMap<String, Button>();
 		
-		tableManager = new TableManager(masterList);
+		tableManager = new TableManager(masterList, language, this );
+		
+		trigger = null;
+		action = null;
 	}
 
 	public void setActions(ObservableList<String> actions)
@@ -87,10 +104,9 @@ public class EditorEvent extends Editor
 	{
 		VBox container = new VBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
 		// Adding now the Groovy Table
-		chooseFileButton = Utilities.makeButton("Choose file", e -> getFile());
-		groovyTable = Utilities.makeSingleColumnTable("Groovy Scripts", GUISize.EVENT_EDITOR_TABLE_WIDTH.getSize()); // TODO: Temporary
+		chooseFileButton = Utilities.makeButton("Choose Groovy Script", e -> getFile());	// TODO resource
 		
-		container.getChildren().addAll(chooseFileButton, groovyTable);
+		container.getChildren().addAll(chooseFileButton);
 		return container;
 	}
 
@@ -101,21 +117,8 @@ public class EditorEvent extends Editor
 		groovyFile = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("groovy", "*.groovy"), "Select your groovy script!");
 		if ( groovyFile != null )
 		{
-			
+			actionSet(groovyFile.getName(), new Action(groovyFile.toString()));
 		}
-	}
-	
-	private void makeBottomButtons()
-	{
-		HBox buttonSpace = new HBox();
-
-		
-		for (Button button: actionButtons.values())
-		{
-			buttonSpace.getChildren().add(button);
-		}
-	
-		pane.getChildren().add(buttonSpace);
 	}
 
 	private void makeTables()
@@ -123,28 +126,52 @@ public class EditorEvent extends Editor
 		
 		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
 
-		pane.getChildren().add(tableManager.getContainer());
-	/*
-		internalBox.setMinWidth(GUISize.EVENT_EDITOR_TABLE_WIDTH.getSize());
-		
-		makeEntityPanes();
-		
-		internalBox.getChildren().addAll(entitySubPanes.values());		
-		entityPane = Utilities.makeTitledPane(myResources.getString("entityPane"), internalBox, false);
-		
-		container.getChildren().add(entityPane);
-		*/
+		container.getChildren().add(tableManager.getContainer());	
 		container.getChildren().add(makeGroovySide());
 		
 		pane.getChildren().add(container);
 	}
 	
+	private void makeBottomPart()
+	{
+		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
+		
+		triggerSet("Not yet Defined", null);	// TODO resource
+		actionSet("Not yet Defined", null);
+		
+		makeEventButton = Utilities.makeButton("MAKE EVENT!", e -> makeEvent());	// TODO resource
+		makeEventButton.setDisable(true);
+		
+		container.getChildren().addAll(triggerText, actionText, makeEventButton);
+		
+		pane.getChildren().add(container);
+	}
+	
+	private void makeEvent()
+	{
+		
+	}
+	
 	public void populateLayout() 
 	{
 		makeTables();
-		makeBottomButtons();
+		makeBottomPart();
 	}
 
+	public void triggerSet(String triggerString, Trigger trigger)
+	{
+		this.trigger = trigger;
+		triggerText.setText("TRIGGER: \n" + triggerString);	// TODO resource
+		makeEventButton.setDisable( (this.trigger == null) || (this.action == null) );
+	}
+	
+	private void actionSet(String actionString, Action action)
+	{
+		this.action = action;
+		actionText.setText("ACTION:\n" + actionString);	// TODO resource
+		makeEventButton.setDisable( (this.trigger == null) || (this.action == null) );
+	}
+	
 	@Override
 	public void loadDefaults() {
 		// TODO Auto-generated method stub
