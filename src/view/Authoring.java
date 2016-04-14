@@ -62,7 +62,5 @@ public class Authoring {
 			tabContent.prefWidthProperty().bind(display.widthProperty());
 			display.getTabs().add(tab);
 		}
-		
-
 	}
 

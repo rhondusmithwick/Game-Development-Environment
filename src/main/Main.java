@@ -14,6 +14,7 @@ public class Main extends Application{
 		 * @param stage
 		 */
 
+		@Override
 		public void start (Stage stage) {
 			myStage = stage;
 			myStage.setTitle("VOOGA");
