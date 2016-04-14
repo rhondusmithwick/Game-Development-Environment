@@ -4,6 +4,7 @@ import javafx.scene.Cursor;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import model.component.movement.Position;
+import model.component.visual.ImagePath;
 
 
 public class DragAndResize {
@@ -22,9 +23,11 @@ public class DragAndResize {
 	private double minH;
 	private Position position;
     private final ImageView image;
+    private final ImagePath component;
     
-    private DragAndResize(ImageView anImage, Position aPos) {
-        image = anImage;
+    private DragAndResize(ImagePath component, Position aPos) {
+    	this.component=component;
+        image = component.getImageView();
         position = aPos;
         minW = image.minWidth(image.getFitHeight());
         minH = image.minHeight(image.getFitWidth());
@@ -38,24 +41,18 @@ public class DragAndResize {
         clickX = event.getX();
         clickY = event.getY();
     }
-    
-    @Deprecated
-    private void resizeWidth(double width){
-    	if (minW>width){
-    			return;
-    		}
-    		image.setFitWidth(width);
-    }
+   
     
     private void resizeHeight(double height){
     		if (minH>height){
 		return;
 		}
-		image.setFitHeight(height);
+    	component.setImageHeight(height);
 }
 
-    public static void makeResizable(ImageView anImage, Position aPos) {
-        final DragAndResize resizer = new DragAndResize(anImage, aPos); 
+    public static void makeResizable(ImagePath component, Position aPos) {
+        final DragAndResize resizer = new DragAndResize(component, aPos); 
+        ImageView anImage = component.getImageView();
         anImage.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -98,13 +95,6 @@ public class DragAndResize {
         return isInBottomResize(event);  	
     }
      
-    @Deprecated
-    private boolean isInRightResize(MouseEvent event){
-    		double innerRightSide = parentWidth - margin;
-		double outerRightSide = parentWidth;
-		return  ((event.getX() > innerRightSide)
-				&& (event.getX() < outerRightSide));
-    }
     
     private boolean isInBottomResize(MouseEvent event){
     		double innerBottomSide = parentHeight - margin;
