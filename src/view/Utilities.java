@@ -295,24 +295,8 @@ public class Utilities {
 	}
 
 
-	/**
-	 * Sets the image width and height size in an ImagePath component;
-	 * this requires the actual image and image view linked to by the path to be instantiated 
-	 * so that the fit height and fit width parameters can be extracted. 
-	 * @param ImagePath path: ImagePath component
-	 * @return ImageView imageView: ImageView set up using the path
-	 */
-	@Deprecated
-	public static ImageView setUpImagePathSize(ImagePath path) {
-		URI resource = new File(path.getImagePath()).toURI();
-		Image image = new Image(resource.toString());
-		ImageView imageView = new ImageView(image);
-		imageView.setPreserveRatio(true);
-		path.setImageHeight(imageView.getFitHeight());
-		path.setImageWidth(imageView.getFitWidth());
-		return imageView;
-	}
 
+<<<<<<< HEAD
 	/**
 	 * Creates the image/image view linked to by an ImagePath component
 	 * and binds the imageview's fit properties and translate properties to the given 
@@ -340,6 +324,8 @@ public class Utilities {
 		path.getImageView().translateYProperty().bind(pos.yProperty());
 		return path.getImageView();
 	}
+=======
+>>>>>>> 7a1aa8973738dbd4f07fd2a6032a0bfb7be4801f
 
 	/**
 	 * Creates an IEntity copy of the given IEntity with the same specs,
@@ -347,7 +333,10 @@ public class Utilities {
 	 * @param IEntity entity: given IEntity to copy
 	 * @return IEntity newEntity: returned copy of the given IEntity
 	 */
+<<<<<<< HEAD
 	@Deprecated
+=======
+>>>>>>> 7a1aa8973738dbd4f07fd2a6032a0bfb7be4801f
 	public static IEntity copyEntity(IEntity entity) {
 		IEntity newEntity = new Entity(entity.getName());
 		newEntity.setSpecs(entity.getSpecs());

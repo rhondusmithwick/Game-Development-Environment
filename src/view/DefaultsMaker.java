@@ -15,7 +15,11 @@ import javafx.scene.shape.Rectangle;
 
 public class DefaultsMaker {
 	
+<<<<<<< HEAD
 	private final static String backgroundName = "Default Chinatown Background";
+=======
+	private final static String backgroundName = "Default Fire Background";
+>>>>>>> 7a1aa8973738dbd4f07fd2a6032a0bfb7be4801f
 	private final static String backgroundPath = "resources/images/chinatown.png";
 	private final static String platformName = "Default Mario Platform";
 	private final static String platformPath = "resources/images/marioplatform.jpeg";
@@ -44,6 +48,12 @@ public class DefaultsMaker {
 	}
 	
 	private static Rectangle imagePathToFitRectangle(ImagePath path){
+<<<<<<< HEAD
+=======
+		if (path.getImageHeight()==0 || path.getImageWidth() == 0){
+			//Utilities.setUpImagePathSize(path);
+		}
+>>>>>>> 7a1aa8973738dbd4f07fd2a6032a0bfb7be4801f
 		return new Rectangle((int) path.getImageHeight(), (int) path.getImageWidth());
 	}
 	

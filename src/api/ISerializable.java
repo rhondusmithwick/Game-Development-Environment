@@ -5,6 +5,7 @@ import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
 
 import java.io.File;
+import java.io.Serializable;
 
 /**
  * Interface for serializable objects.
@@ -12,7 +13,7 @@ import java.io.File;
  *
  * @author Rhondu Smithwick, Tom Wu
  */
-public interface ISerializable {
+public interface ISerializable extends Serializable {
 
     /**
      * Serializes this object to a File
@@ -44,7 +45,7 @@ public interface ISerializable {
         boolean sameClass = objectClass.equals(getClass());
         Preconditions.checkArgument(sameClass, "Not the same class so cannot clone.");
         String clonedString = serializeToString();
-        Object obj = new XMLReader<>().readSingleFromString(clonedString);
+        Object obj = new XMLReader<T>().readSingleFromString(clonedString);
         return objectClass.cast(obj);
     }
 

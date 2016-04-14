@@ -37,14 +37,7 @@ public class DragAndResize {
         clickX = event.getX();
         clickY = event.getY();
     }
-    
-    @Deprecated
-    private void resizeWidth(double width){
-    	if (minW>width){
-    			return;
-    		}
-    		image.setFitWidth(width);
-    }
+   
     
     private void resizeHeight(double height){
     		if (minH>height){
@@ -97,13 +90,6 @@ public class DragAndResize {
         return isInBottomResize(event);  	
     }
      
-    @Deprecated
-    private boolean isInRightResize(MouseEvent event){
-    		double innerRightSide = parentWidth - margin;
-		double outerRightSide = parentWidth;
-		return  ((event.getX() > innerRightSide)
-				&& (event.getX() < outerRightSide));
-    }
     
     private boolean isInBottomResize(MouseEvent event){
     		double innerBottomSide = parentHeight - margin;
