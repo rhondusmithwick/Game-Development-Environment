@@ -1,6 +1,7 @@
 package view.gameplaying;
 
 import view.editor.gameeditor.SaveGame;
+import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import datamanagement.XMLReader;
 import api.IEntity;
@@ -41,6 +42,8 @@ public class GamePlayer {
 		for (ISerializable system: loaded.getEnvironments()){
 			for (IEntity entity: ((IEntitySystem) system).getAllEntities()){
 					ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
+					entityView.setLayoutX(entity.getComponent(Position.class).getX());
+					entityView.setLayoutY(entity.getComponent(Position.class).getY());
 					gameView.addToView(entityView);
 			}
 
