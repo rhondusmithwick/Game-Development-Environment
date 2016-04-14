@@ -21,9 +21,10 @@ public class Trigger extends Observable implements ChangeListener, ISerializable
 	public Trigger(String entityID, IComponent component, int index, IEntitySystem universe) {
 		propertySpecifier = new String[3];
 		propertySpecifier[0] = entityID;
-		propertySpecifier[1] = component.getClass().toString();
+		String[] temp = component.getClass().toString().split(" ");
+		propertySpecifier[1] = temp[1];
 		propertySpecifier[2] = index + "";
-		universe.getEntity(entityID).getComponent(component.getClass()).getProperties().get(index).addListener(this);
+		addHandler(universe);
 	}
 	
 	@Override
@@ -40,6 +41,21 @@ public class Trigger extends Observable implements ChangeListener, ISerializable
 			universe.getEntity(entityID).getComponent((Class<T>) Class.forName(componentClass)).getProperties().get(index).removeListener(this);
 		} catch (ClassNotFoundException e) {
 			System.out.println("Could not remove the listener because class was not found.");
+		}
+	}
+
+	public <T extends IComponent> void addHandler(IEntitySystem universe) {
+		String entityID = propertySpecifier[0];
+		String componentClass = propertySpecifier[1];
+		int index = Integer.parseInt(propertySpecifier[2]);
+		try {
+			universe.getEntity(entityID).getComponent((Class<T>) Class.forName(componentClass)).getProperties().get(index).addListener(this);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 }

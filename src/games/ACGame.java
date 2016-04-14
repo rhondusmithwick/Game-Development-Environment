@@ -1,7 +1,9 @@
 package games;
 
+import datamanagement.XMLReader;
 import events.Action;
 import events.EventSystem;
+import events.InputSystem;
 import events.Trigger;
 import games.ACGameXChangeListener;
 import model.component.character.Health;
@@ -14,14 +16,19 @@ import model.physics.PhysicsEngine;
 import api.IComponent;
 import api.IEntity;
 import api.IEntitySystem;
+
 import java.io.File;
 import java.io.IOException;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -36,9 +43,9 @@ public class ACGame {
     private static final double GROWTH_RATE = 1.1;
     private static final int BOUNCER_SPEED = 30;
     private static Group root;
-    
 	private final IEntitySystem universe = new EntitySystem();
 	private final EventSystem eventSystem = new EventSystem(universe);
+	private final InputSystem inputSystem = new InputSystem(universe);
 	private final PhysicsEngine physics = new PhysicsEngine(universe);
 	private IEntity character;
 	private final String IMAGE_PATH = "resources/images/blastoise.png";
@@ -63,6 +70,7 @@ public class ACGame {
         root = new Group();
         // Create a place to see the shapes
         myScene = new Scene(root, width, height, Color.WHITE);
+        myScene.setOnKeyPressed(e->inputSystem.take(e.getCode()));
         initEngine();
         return myScene;
     }
@@ -72,28 +80,32 @@ public class ACGame {
     }
 
 	private void addCharacter() {
-		character = new Entity("Anolyn");
-		character.forceAddComponent(new Health((double) 100), true);
-		character.forceAddComponent(new Score((double) 100), true);
-		Position pos = new Position(100.0, 100.0);
-		character.forceAddComponent(pos, true);
-		character.forceAddComponent(new ImagePath(IMAGE_PATH), true);
-		//character.forceAddComponent(new Velocity(20.0, 50.0), true);
-		//character.getComponent(Position.class).getProperties().get(0).addListener(new ACGameXChangeListener(character));
-		//character.getComponent(Position.class).getProperties().get(0).addListener(new EntityAction(character));
-    	universe.addEntity(character);
-//    	character.getComponent(Position.class).getProperties().get(0).addListener(new ACGameXChangeListener(character));
-//		character.addComponent(new ImagePath(IMAGE_PATH));
-//    	Action healthAction = getAction(healthScriptPath, character, pos);
-//    	inputSystem.addEvent("HEALTH_DECREASE", healthAction);
-		character.addComponent(new ImagePath(IMAGE_PATH));
-    	eventSystem.registerEvent(new Trigger(character.getID(), character.getComponent(Position.class), 0, universe), getAction(healthScriptPath));
+		int var = 1;
+		if(var==0) {
+			character = new Entity("Anolyn");
+			character.forceAddComponent(new Health((double) 100), true);
+			character.forceAddComponent(new Score((double) 100), true);
+			Position pos = new Position(100.0, 100.0);
+			character.forceAddComponent(pos, true);
+			character.forceAddComponent(new ImagePath(IMAGE_PATH), true);
+			universe.addEntity(character);
+	    	character.addComponent(new ImagePath(IMAGE_PATH));
+			character.serialize("character.xml");
+	    	eventSystem.registerEvent(new Trigger(character.getID(), character.getComponent(Position.class), 0, universe), new Action(healthScriptPath));
+			eventSystem.saveEventsToFile("eventtest.xml");
+		}
+		else {
+			character = new XMLReader<IEntity>().readSingleFromFile("character.xml");
+			universe.addEntity(character);
+			eventSystem.readEventsFromFile("eventtest.xml");
+		}
 		charSpr = drawCharacter(character);
 	}
 	
 	public void step(double dt) {
+		
 		physics.update(universe, dt);
-		moveEntity(character, 1);
+		
 	}
 	
 	public ImageView drawCharacter(IEntity character) { 
