@@ -2,10 +2,14 @@ package api;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Observer;
 
 import com.google.common.collect.ImmutableBiMap;
 
-@Deprecated
+import events.Action;
+import events.Trigger;
+
+
 /**
  * Might be scrapped in the future! Reference:
  * http://stackoverflow.com/questions/937302/simple-java-message-dispatching-
@@ -15,37 +19,14 @@ import com.google.common.collect.ImmutableBiMap;
  * https://wiki.jmonkeyengine.org/doku.php/jme3:scripting:groovy_event [Trigger:
  * Event(s)+Condition(s)->Result(s)]
  * 
- * @author Tom Wu
+ * @author Tom Wu, ANirudh Jonnavithula
  */
-public interface IEventSystem extends ISerializable {
+public interface IEventSystem extends Observer, ISerializable  {
 
-	// TODO: maps event(s) (including condition(s)) to a listener
-	Map<IEvent, IEventListener> eventMap = new HashMap<IEvent, IEventListener>();
-
-	/**
-	 * Register a trigger
-	 * 
-	 * @param event
-	 *            the event(s) (including condition(s))
-	 * @param listener
-	 *            the event listener/handler
-	 * @return whether the registration is successful
-	 */
-	boolean registerTrigger(IEvent event, IEventListener listener);
-
-	/**
-	 * De-register a trigger
-	 * 
-	 * @param id
-	 *            the event ID
-	 * @return whether the de-registration is successful
-	 */
-	boolean deregisterTrigger(int id);
-
-	/**
-	 * Get all trigger(s)
-	 * 
-	 * @return immutable bidirectional map of triggers
-	 */
-	ImmutableBiMap<IEvent, IEventListener> getTriggers();
+	void registerEvent(Trigger trigger, Action action);
+	
+	void saveEventsToFile(String filepath);
+	
+	void readEventsFromFile(String filepath);
+	
 }
