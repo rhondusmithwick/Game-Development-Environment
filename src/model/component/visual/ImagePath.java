@@ -33,6 +33,8 @@ public class ImagePath implements IComponent {
         private boolean isAnimated;
         private double timeSinceLastFrame, elapsedTime;
         private final double frameDuration, totalDuration;
+		private String spriteName;
+		private static final String PROPERTIES_DIR = "spriteProperties.";
 
         public ImagePath() {
                 this("resources/RhonduSmithwick.JPG");
@@ -45,8 +47,7 @@ public class ImagePath implements IComponent {
          *            starting value
          */
         public ImagePath(String imagePath) { // TODO: place default in resource file
-                this(imagePath, 0.0, 0.0,  new Rectangle2D(0, 0, 0, 0), false, 0, 0, 0);
-
+                this(null, imagePath, 0.0, 0.0, new Rectangle2D(0, 0, 0, 0), false, 0, 0, 0);
         }
 
         // TODO: IMPORTANT NOTE: I forgot to account for columns!
@@ -70,17 +71,16 @@ public class ImagePath implements IComponent {
          * @param offsetX
          *            offset in y-direction
          */
-
-        public ImagePath(String imagePath, double imageWidth, double imageHeight, 
+        public ImagePath(String spriteName, String imagePath, double imageWidth, double imageHeight, 
                         Rectangle2D viewport, boolean isAnimated, double frameDurationMillis, double totalDurationMillis,
                         int maxFrameIndex) {
                 this.imagePathProperty = new SingleProperty<>("ImagePath", imagePath);
                 this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", imageHeight);
-
+                this.spriteName = spriteName;
                 File resource = new File(imagePath);
                 Image image = new Image(resource.toURI().toString());
                 this.imageView = new ImageView(image);
-
+                this.imageView.setPreserveRatio(true);
                 this.viewport = viewport;
                 this.frameIndex = 0;
                 this.isAnimated = isAnimated;
@@ -105,6 +105,10 @@ public class ImagePath implements IComponent {
 
         public void setImagePath(String imagePath) {
                 this.imagePathProperty().set(imagePath);
+                File resource = new File(imagePath);
+                Image image = new Image(resource.toURI().toString());
+                this.imageView.setImage(image);
+                
         }
 
         public SimpleObjectProperty<Double> imageWidthProperty() {
@@ -121,6 +125,7 @@ public class ImagePath implements IComponent {
 
         public void setImageWidth(double imageWidth) {
                 this.imageWidthProperty().set(imageWidth);
+                imageView.setFitWidth(imageWidthProperty().get());
         }
 
         public double getImageHeight() {
@@ -129,6 +134,7 @@ public class ImagePath implements IComponent {
 
         public void setImageHeight(double imageHeight) {
                 this.imageHeightProperty().set(imageHeight);
+                imageView.setFitHeight(imageHeightProperty().get());
         }
 
         @Override
@@ -205,8 +211,15 @@ public class ImagePath implements IComponent {
                 File resource = new File(this.imagePathProperty().get());
                 Image image = new Image(resource.toURI().toString());
                 this.imageView = new ImageView(image);
-                imageView.setFitHeight(imageSizeProperty.property1().get());
-                imageView.setFitWidth(imageSizeProperty.property2().get());
+                imageView.setFitHeight(imageHeightProperty().get());
+                imageView.setFitWidth(imageWidthProperty().get());
+                imageView.setPreserveRatio(true);
         }
+
+		public String getSpriteProperties() {
+			return PROPERTIES_DIR  + this.spriteName;
+		}
+
+
 
 }

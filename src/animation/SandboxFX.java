@@ -1,8 +1,10 @@
+
 package animation;
 
 import api.IEntity;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
+import animation.Animator;
 import javafx.animation.Animation;
 import javafx.application.Application;
 import javafx.scene.Group;
@@ -16,15 +18,16 @@ public class SandboxFX extends Application {
         launch(args);
     }
 
-    public void start(Stage primaryStage) {
+    @Override
+	public void start(Stage primaryStage) {
         primaryStage.setTitle("The Horse in Motion");
 
         IEntity runningEntity = new Entity();
         Animator animator = new Animator();
-        ImagePath runningImagePath = new ImagePath("resources/spriteSheets/spritesheet.png","spritesheet");
+        ImagePath runningImagePath = new ImagePath("spritesheet","resources/spriteSheets/spritesheet.png", 0, 0, null, false, 0, 0, 0);
 		runningEntity.addComponent(runningImagePath);
 		IEntity megamanEntity = new Entity();
-		ImagePath megaManImagePath = new ImagePath("resources/spriteSheets/sonic.png","Sonic");
+		ImagePath megaManImagePath = new ImagePath("Sonic","resources/spriteSheets/sonic.png", 0, 0, null, false, 0, 0, 0);
 		megamanEntity.addComponent(megaManImagePath);
 
 		Animation runningAnimation = animator.createAnimation("walkleft",runningEntity);

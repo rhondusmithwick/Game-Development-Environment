@@ -5,8 +5,6 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 import api.IDataReader;
 import api.IDataWriter;
-import api.IEntity;
-import api.IEntitySystem;
 import api.ISerializable;
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
@@ -21,10 +19,6 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
-import model.component.movement.Position;
-import model.component.visual.ImagePath;
-import model.entity.Entity;
-import model.entity.EntitySystem;
 import view.Authoring;
 import view.Utilities;
 import view.editor.Editor;
@@ -38,8 +32,10 @@ public class GameEditor extends Editor  {
 	private String myLanguage;
 	private ObservableList<ISerializable> masterEntityList;
 	private ObservableList<ISerializable> masterEnvironmentList;
+	private ObservableList<ISerializable> masterEventList;
+	private ObservableList<String> userActions;
 	private GameDetails gameDetails;
-	private ObjectDisplay entDisp, envDisp;
+	private ObjectDisplay entDisp, envDisp, eventDisplay;
 
 
 	public GameEditor(Authoring authEnv, String language, String fileName){
@@ -54,10 +50,23 @@ public class GameEditor extends Editor  {
 		this.authEnv=authEnv;
 		this.masterEntityList = FXCollections.observableArrayList();
 		this.masterEnvironmentList = FXCollections.observableArrayList();
+		this.masterEventList = FXCollections.observableArrayList();
+		this.userActions = FXCollections.observableArrayList();
 		entDisp = new EntityDisplay(myLanguage, masterEntityList, authEnv);
 		envDisp = new EnvironmentDisplay(myLanguage, masterEnvironmentList, masterEntityList, authEnv);
+		eventDisplay = new EventDisplay(myLanguage, masterEntityList, authEnv, userActions);
+
+
+		// TEST
+	//	Entity test = new Entity("Hello");
+	//	test.addComponent(new Position());
+	//	masterEntityList.add(test);
+		
+		//
+
 		setPane();
 	}
+
 
 	private void setPane() {
 		pane = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
@@ -105,7 +114,8 @@ public class GameEditor extends Editor  {
 	private VBox leftPane() {
 		VBox temp = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
 		temp.getChildren().addAll(gameDetails.getElements());
-		temp.getChildren().addAll(Arrays.asList(entDisp.makeNewObject(), envDisp.makeNewObject(), Utilities.makeButton(myResources.getString("saveGame"), e->saveGame())));
+		temp.getChildren().addAll(Arrays.asList(entDisp.makeNewObject(), envDisp.makeNewObject(), eventDisplay.makeNewObject(), Utilities.makeButton(myResources.getString("saveGame"), e->saveGame())));
+
 		return temp;
 	}
 	

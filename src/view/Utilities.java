@@ -1,7 +1,6 @@
 package view;
 
 import java.io.File;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.CodeSource;
@@ -25,8 +24,6 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TitledPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -37,8 +34,8 @@ import model.entity.Entity;
 public class Utilities {
 
 	/**
-	 * This class has all static methods so that the methods can be 
-	 * accessed without the actual class being instantiated and so that class function
+	 * This class has all static methods so that the methods can be accessed
+	 * without the actual class being instantiated and so that class function
 	 * can be accessed without this object being passed.
 	 */
 
@@ -54,9 +51,10 @@ public class Utilities {
 	 *            null (though all three above shouldn't be null at the same
 	 *            time or the alert is useless)
 	 * @param AlertType
-	 *            type: type of alert to display, i.e. ERROR, INFORMATION, CONFIRMATION
-	 * @return boolean
-	 * 			   result.get() == ButtonType.OK: returns true is the user clicked the OK button, returns false otherwise
+	 *            type: type of alert to display, i.e. ERROR, INFORMATION,
+	 *            CONFIRMATION
+	 * @return boolean result.get() == ButtonType.OK: returns true is the user
+	 *         clicked the OK button, returns false otherwise
 	 */
 
 	public static boolean showAlert(String title, String header, String message, AlertType type) {
@@ -67,30 +65,35 @@ public class Utilities {
 		Optional<ButtonType> result = alert.showAndWait();
 		return (result.get() == ButtonType.OK);
 	}
+
 	/**
 	 * Show an error with a certain message.
-	 * @param error message
+	 * 
+	 * @param error
+	 *            message
 	 */
 
-	public static void showError(String title,String message) {
+	public static void showError(String title, String message) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle(title);
 		alert.setContentText(message);
 		alert.show();
 	}
 
-	
-	public static TableView<?> makeSingleColumnTable( String title )
+	public static TableView<String> makeSingleColumnTable( String title, double width )
 	{
-		TableView table = new TableView();
+		TableView<String> table = new TableView<String>();
+		table.setPrefWidth(width);
 		TableColumn column = new TableColumn(title);
-		column.prefWidthProperty().bind(table.widthProperty()); 
-
-		table.getColumns().setAll(column);
-
+		column.minWidthProperty().bind(table.prefWidthProperty());
+		column.maxWidthProperty().bind(table.prefWidthProperty());
+		table.getColumns().add(column);
+		
+		table.setEditable(true);
+		
 		return table;
 	}
-	
+
 	/**
 	 * Makes a button with a given name and event.
 	 * 
@@ -177,7 +180,6 @@ public class Utilities {
 	 *            prompt: prompt for the file chooser box
 	 * @return File file: return file selected by the user
 	 */
-
 	public static File promptAndGetFile(List<ExtensionFilter> filters, String prompt) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(prompt);
@@ -230,14 +232,21 @@ public class Utilities {
 	}
 
 	/**
-	 * Shows a choice box where the user can pick among preset options.
-	 * User response/choice is returned as a string.
-	 * @param List<String> choices: choices given to the user in the dialogue
-	 * @param String title: title of dialogue, could be null
-	 * @param String header: header for the dialogue, could be null
-	 * @param String content: longer message further describing the dialogue, could be null
-	 * (all three shouldn't be null at once or dialogue is useless)
-	 * @return String result: user choice as a string from the given choice options
+	 * Shows a choice box where the user can pick among preset options. User
+	 * response/choice is returned as a string.
+	 * 
+	 * @param List<String>
+	 *            choices: choices given to the user in the dialogue
+	 * @param String
+	 *            title: title of dialogue, could be null
+	 * @param String
+	 *            header: header for the dialogue, could be null
+	 * @param String
+	 *            content: longer message further describing the dialogue, could
+	 *            be null (all three shouldn't be null at once or dialogue is
+	 *            useless)
+	 * @return String result: user choice as a string from the given choice
+	 *         options
 	 */
 
 	public String choiceBox(List<String> choices, String title, String header, String content) {
@@ -253,6 +262,14 @@ public class Utilities {
 		return null;
 	}
 
+	/**
+	 * Creates a Titled Pane, with all content already inside.
+	 * 
+	 * @param String title: Title that will appear on the top of the Pane
+	 * @param Node content: Content to be added. It can be a Group or a VBox or HBox.
+	 * @param boolean collapsable: If it's collapsable, the pane will not be expanded. If it isn't, it will.
+	 * @return TitledPane pane, already initialized.
+	 */
 	public static TitledPane makeTitledPane(String title, Node content, boolean collapsable)
 	{
 		TitledPane pane = new TitledPane(title, content);
@@ -262,7 +279,7 @@ public class Utilities {
 		return pane;
 	}
 
-	public static ButtonType confirmationBox (String title,String header, String message){
+	public static ButtonType confirmationBox(String title, String header, String message) {
 		Alert alert = new Alert(AlertType.CONFIRMATION);
 		alert.setTitle(title);
 		alert.setHeaderText(header);
@@ -271,13 +288,13 @@ public class Utilities {
 		return null;
 	}
 
-
 	/**
-	 * Gets all file names from a given directory.
-	 * Is static so that it can be accessed as the actual class is never instantiated,
-	 * also so that function can be accessed without this object being passed.
+	 * Gets all file names from a given directory. Is static so that it can be
+	 * accessed as the actual class is never instantiated, also so that function
+	 * can be accessed without this object being passed.
 	 *
-	 * @param directoryLocation String path to a file directory
+	 * @param directoryLocation
+	 *            String path to a file directory
 	 * @return List of Strings of all file names within given directory
 	 */
 	public static List<String> getAllFromDirectory(String directoryLocation) {
@@ -290,42 +307,7 @@ public class Utilities {
 			files.add(name.substring(0, name.lastIndexOf('.')));
 		}
 		return files;
-
-
 	}
-
-
-
-<<<<<<< HEAD
-	/**
-	 * Creates the image/image view linked to by an ImagePath component
-	 * and binds the imageview's fit properties and translate properties to the given 
-	 * ImagePath and Position components;
-	 * works with the setUpImagePathSize method to create the ImageView and
-	 * to ensure that the width and height for the ImagePath have been set
-	 * @param ImagePath path: ImagePath component
-	 * @param Position pos: Position component
-	 * @return ImageView imageView: ImageView set up using the path with bound properties
-	 */
-	@Deprecated
-	public static ImageView createImage(ImagePath path, Position pos) {
-		ImageView imageView = setUpImagePathSize(path);
-		imageView.fitHeightProperty().bind(imageView.fitHeightProperty());
-		imageView.fitWidthProperty().bind(imageView.fitWidthProperty());
-		imageView.translateXProperty().bind(pos.xProperty());
-		imageView.translateYProperty().bind(pos.yProperty());
-		return imageView;
-	}
-	
-	@Deprecated
-	public static ImageView setBinding(ImagePath path, Position pos) {
-		path.getImageView().setPreserveRatio(true);
-		path.getImageView().translateXProperty().bind(pos.xProperty());
-		path.getImageView().translateYProperty().bind(pos.yProperty());
-		return path.getImageView();
-	}
-=======
->>>>>>> 7a1aa8973738dbd4f07fd2a6032a0bfb7be4801f
 
 	/**
 	 * Creates an IEntity copy of the given IEntity with the same specs,
@@ -333,31 +315,32 @@ public class Utilities {
 	 * @param IEntity entity: given IEntity to copy
 	 * @return IEntity newEntity: returned copy of the given IEntity
 	 */
-<<<<<<< HEAD
-	@Deprecated
-=======
->>>>>>> 7a1aa8973738dbd4f07fd2a6032a0bfb7be4801f
+
 	public static IEntity copyEntity(IEntity entity) {
 		IEntity newEntity = new Entity(entity.getName());
 		newEntity.setSpecs(entity.getSpecs());
 		for (IComponent component : entity.getAllComponents()) {
 			newEntity.addComponent(component.clone(component.getClass()));
-			//newEntity.forceAddComponent(component, true);
-			if (newEntity.hasComponent(Position.class)){
-				newEntity.removeComponent(Position.class);
-				Position newPos = new Position();
-				newEntity.forceAddComponent(newPos,true);
-			}
-			if (newEntity.hasComponent(ImagePath.class)){
-				newEntity.removeComponent(ImagePath.class);
-				ImagePath newPath = new ImagePath(entity.getComponent(ImagePath.class).getImagePath());
-				newEntity.forceAddComponent(newPath, true);
-			}
+			// newEntity.forceAddComponent(component, true);
+			componentInitialization(newEntity, entity);
 		}
 		return newEntity;
 	}
-	
-	public static List<ExtensionFilter> getImageFilters(){
+
+	private static void componentInitialization(IEntity newEntity, IEntity oldEntity) {
+		if (newEntity.hasComponent(Position.class)) {
+			newEntity.removeComponent(Position.class);
+			Position newPos = new Position();
+			newEntity.forceAddComponent(newPos, true);
+		}
+		if (newEntity.hasComponent(ImagePath.class)) {
+			newEntity.removeComponent(ImagePath.class);
+			ImagePath newPath = new ImagePath(oldEntity.getComponent(ImagePath.class).getImagePath());
+			newEntity.forceAddComponent(newPath, true);
+		}
+	}
+
+	public static List<ExtensionFilter> getImageFilters() {
 		List<ExtensionFilter> filters = new ArrayList<ExtensionFilter>();
 		filters.add(new FileChooser.ExtensionFilter("All Images", "*.*"));
 		filters.add(new FileChooser.ExtensionFilter("JPG", "*.jpg"));

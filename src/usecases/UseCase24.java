@@ -1,8 +1,5 @@
 package usecases;
 
-import api.IEnvironmentEditor;
-import view.editor.EditorEnvironment;
-
 @SuppressWarnings("unused")
 public class UseCase24 {
 

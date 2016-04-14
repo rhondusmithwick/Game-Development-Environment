@@ -18,6 +18,7 @@ public class MoveEntityLeft implements IEventListener {
 		this.myEntity = entity;
 	}
 
+	@Override
 	public void handleEvent() {
 		myEntity.getComponent(Velocity.class).setSpeed(-50);
 		System.out.println(myEntity.getComponent(Velocity.class));

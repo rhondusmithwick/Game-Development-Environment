@@ -8,6 +8,7 @@ import java.util.Collection;
 import api.IEntity;
 import api.IEntitySystem;
 
+@Deprecated 
 // does not have to be IEntity 
 public class BasicRMIServer extends UnicastRemoteObject implements IEntitySystem{
 	
@@ -58,6 +59,24 @@ public class BasicRMIServer extends UnicastRemoteObject implements IEntitySystem
 		} catch (Exception ex) { 
 			System.out.println("something went wrong");
 		}
+	}
+
+	@Override
+	public void setName(String name) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public String getName() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public boolean isEmpty() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

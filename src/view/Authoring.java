@@ -49,6 +49,8 @@ public class Authoring {
 			
 			createTab(gEdit.getPane(), "gDeets", false);
 			myScene = new Scene(display,GUISize.AUTHORING_WIDTH.getSize(), GUISize.AUTHORING_HEIGHT.getSize());
+			//myScene.getStylesheets().add("cssFiles/vivid.css");
+			System.out.println(myScene.getStylesheets());
 			display.prefHeightProperty().bind(height);
 			display.prefWidthProperty().bind(width);
 			return myScene;
@@ -62,7 +64,5 @@ public class Authoring {
 			tabContent.prefWidthProperty().bind(display.widthProperty());
 			display.getTabs().add(tab);
 		}
-		
-
 	}
 

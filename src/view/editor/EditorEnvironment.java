@@ -50,8 +50,29 @@ public class EditorEnvironment extends Editor {
 		entitiesInEnvironment = (IEntitySystem) toEdit;
 		finalEnvironmentList = addToList;
 		addLayoutComponents();
+		
+		/*// TODO: don't hard code
+		double MILLISECOND_DELAY = 10;
+		double SECOND_DELAY = MILLISECOND_DELAY/1000;
+		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> this.step(SECOND_DELAY));
+		Timeline animation = new Timeline();
+		animation.setCycleCount(Timeline.INDEFINITE);
+		animation.getKeyFrames().add(frame);
+		animation.play();*/
 	}
 
+/*	private void step(double dt) {
+		IPhysicsEngine p = new PhysicsEngine(null);
+		p.update(getEntitySystem(), dt);
+		for(IEntity e: getEntitySystem().getEntitiesWithComponent(Position.class)) {
+			ImagePath imagePath = e.getComponent(ImagePath.class);
+			ImageView imageView = imagePath.getImageView();
+			Position pos = e.getComponent(Position.class);
+			imageView.setTranslateX(pos.getX());
+			imageView.setTranslateY(pos.getY());
+		}
+	}*/
+	
 	private void addLayoutComponents() {
 		environmentPane = new BorderPane();
 		setLeftPane();
@@ -96,10 +117,12 @@ public class EditorEnvironment extends Editor {
 
 	@Override
 	public void loadDefaults() {
-		if (Utilities.showAlert(myResources.getString("addDefaults"), myResources.getString("defaultsMessage"),
-				myResources.getString("addDefaultsQuestion"), AlertType.CONFIRMATION)) {
+		if (Utilities.showAlert(myResources.getString("addDefaults"), myResources.getString("addDefaultsQuestion"),
+				myResources.getString("defaultsMessage"), AlertType.CONFIRMATION)) {
 			entitiesToDisplay.add(DefaultsMaker.loadBackgroundDefault());
-			entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay));
+			//entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay));
+			entitiesToDisplay.add(DefaultsMaker.loadCharacter1Default());
+			entitiesToDisplay.add(DefaultsMaker.loadCharacter2Default());
 		}
 	}
 
@@ -123,10 +146,8 @@ public class EditorEnvironment extends Editor {
 		gameScene = new SubScene(gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()),
 				GUISize.HEIGHT_MINUS_TAB.getSize());
 		gameScene.setFill(Color.WHITE);
-		if (!entitiesInEnvironment.isEmpty()) {
-			for (IEntity entity : entitiesInEnvironment.getAllEntities()) {
-				loadScene(entity);
-			}
+		for (IEntity entity : entitiesInEnvironment.getAllEntities()) {
+			loadScene(entity);
 		}
 	}
 
@@ -135,10 +156,13 @@ public class EditorEnvironment extends Editor {
 			addComponents(entity);
 		}
 		ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
-		DragAndResize.makeResizable(entityView, entity.getComponent(Position.class));
+		Position pos = entity.getComponent(Position.class);
+		DragAndResize.makeResizable(entity.getComponent(ImagePath.class), entity.getComponent(Position.class));
 		Button entityInButton = new Button(entity.getName());
-		entityInButton.setOnAction(e -> removeFromDisplay(entityView, entity, entityInButton));
+		entityInButton.setOnAction(e -> removeFromDisplay(entity, entityInButton));
 		entitiesCurrentlyIn.getChildren().add(entityInButton);
+		entityView.setTranslateX(pos.getX());
+		entityView.setTranslateY(pos.getY());
 		gameRoot.getChildren().add(entityView);
 	}
 
@@ -186,21 +210,22 @@ public class EditorEnvironment extends Editor {
 			}
 			IEntity newEntity = Utilities.copyEntity(entity);
 			Position pos = newEntity.getComponent(Position.class);
-			ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
-			DragAndResize.makeResizable(entityView, pos);
-			if (!entitiesInEnvironment.containsEntity(newEntity)) {
-				entitiesInEnvironment.addEntity(newEntity);
-				Button entityInButton = new Button(newEntity.getName());
-				entityInButton.setOnAction(e -> removeFromDisplay(entityView, newEntity, entityInButton));
-				entitiesCurrentlyIn.getChildren().add(entityInButton);
-				entityView.setTranslateX(pos.getX());
-				entityView.setTranslateY(pos.getY());
-				gameRoot.getChildren().add(entityView);
-			}
+			ImageView entityView = newEntity.getComponent(ImagePath.class).getImageView();
+			DragAndResize.makeResizable(newEntity.getComponent(ImagePath.class), pos);
+			entitiesInEnvironment.addEntity(newEntity);
+			Button entityInButton = new Button(newEntity.getName());
+			entityInButton.setOnAction(e -> removeFromDisplay(newEntity, entityInButton));
+			entitiesCurrentlyIn.getChildren().add(entityInButton);
+			entityView.setTranslateX(pos.getX());
+			entityView.setTranslateY(pos.getY());
+			gameRoot.getChildren().add(entityView);
+
 		} catch (Exception e) {
-			Utilities.showAlert(myResources.getString("error"), null,
-			 myResources.getString("unableToAdd"), AlertType.ERROR);
+			Utilities.showAlert(myResources.getString("error"), null, myResources.getString("unableToAdd"),
+				AlertType.ERROR);
 		}
+
+
 	}
 
 	private void addComponents(IEntity entity) {
@@ -224,8 +249,8 @@ public class EditorEnvironment extends Editor {
 		entity.addComponent(new ImagePath(file.getPath()));
 	}
 
-	private void removeFromDisplay(ImageView entityView, IEntity entity, Button entityButton) {
-		gameRoot.getChildren().remove(entityView);
+	private void removeFromDisplay(IEntity entity, Button entityButton) {
+		gameRoot.getChildren().remove(entity.getComponent(ImagePath.class).getImageView());
 		entitiesInEnvironment.removeEntity(entity.getID());
 		entitiesCurrentlyIn.getChildren().remove(entityButton);
 	}
