@@ -3,6 +3,7 @@ package games;
 import datamanagement.XMLReader;
 import events.Action;
 import events.EventSystem;
+import events.InputSystem;
 import events.Trigger;
 import games.ACGameXChangeListener;
 import model.component.character.Health;
@@ -44,6 +45,7 @@ public class ACGame {
     private static Group root;
 	private final IEntitySystem universe = new EntitySystem();
 	private final EventSystem eventSystem = new EventSystem(universe);
+	private final InputSystem inputSystem = new InputSystem(universe);
 	private final PhysicsEngine physics = new PhysicsEngine(universe);
 	private IEntity character;
 	private final String IMAGE_PATH = "resources/images/blastoise.png";
@@ -68,6 +70,7 @@ public class ACGame {
         root = new Group();
         // Create a place to see the shapes
         myScene = new Scene(root, width, height, Color.WHITE);
+        myScene.setOnKeyPressed(e->inputSystem.take(e.getCode()));
         initEngine();
         return myScene;
     }
@@ -100,8 +103,9 @@ public class ACGame {
 	}
 	
 	public void step(double dt) {
+		
 		physics.update(universe, dt);
-		moveEntity(character, 1);
+		
 	}
 	
 	public ImageView drawCharacter(IEntity character) { 
