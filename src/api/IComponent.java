@@ -86,6 +86,6 @@ public interface IComponent extends ISerializable {
      * Remove the bindings from all this Component's properties.
      */
     default void removeBindings() {
-        getProperties().stream().forEach(ObjectPropertyBase::unbind);
+       // getProperties().stream().forEach(ObjectPropertyBase::unbind);
     }
 }

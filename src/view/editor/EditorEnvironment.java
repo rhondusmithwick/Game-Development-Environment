@@ -21,8 +21,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
-import view.DragAndResize;
 import view.DefaultsMaker;
+import view.DragAndResize;
 import view.Utilities;
 
 public class EditorEnvironment extends Editor {
@@ -77,7 +77,9 @@ public class EditorEnvironment extends Editor {
 
 	private ScrollPane setEntityOptionsDisplay() {
 		entityOptions = new VBox();
-		loadDefaults();
+		if (entitiesToDisplay.isEmpty()) {
+			loadDefaults();
+		}
 		populateVbox(entityOptions, entitiesToDisplay);
 		return (new ScrollPane(entityOptions));
 	}
@@ -121,25 +123,23 @@ public class EditorEnvironment extends Editor {
 		gameScene = new SubScene(gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()),
 				GUISize.HEIGHT_MINUS_TAB.getSize());
 		gameScene.setFill(Color.WHITE);
-		if (!entitiesInEnvironment.isEmpty()){
-			for (IEntity entity : entitiesInEnvironment.getAllEntities()){
+		if (!entitiesInEnvironment.isEmpty()) {
+			for (IEntity entity : entitiesInEnvironment.getAllEntities()) {
 				loadScene(entity);
 			}
 		}
 	}
 
 	private void loadScene(IEntity entity) {
-			if (!entity.hasComponent(Position.class) || !entity.hasComponent(ImagePath.class)) {
-				addComponents(entity);
-			}
-			ImageView entityView = Utilities.createImage(entity.getComponent(ImagePath.class),
-					entity.getComponent(Position.class));
-			DragAndResize.makeResizable(entityView, entity.getComponent(ImagePath.class),
-					entity.getComponent(Position.class));
-				Button entityInButton = new Button(entity.getName());
-				entityInButton.setOnAction(e -> removeFromDisplay(entityView, entity, entityInButton));
-				entitiesCurrentlyIn.getChildren().add(entityInButton);
-				gameRoot.getChildren().add(entityView);		
+		if (!entity.hasComponent(Position.class) || !entity.hasComponent(ImagePath.class)) {
+			addComponents(entity);
+		}
+		ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
+		DragAndResize.makeResizable(entityView, entity.getComponent(Position.class));
+		Button entityInButton = new Button(entity.getName());
+		entityInButton.setOnAction(e -> removeFromDisplay(entityView, entity, entityInButton));
+		entitiesCurrentlyIn.getChildren().add(entityInButton);
+		gameRoot.getChildren().add(entityView);
 	}
 
 	private void updateDisplay(ObservableList<ISerializable> masterList) {
@@ -162,7 +162,7 @@ public class EditorEnvironment extends Editor {
 	private void saveEnvironment() {
 		String name = getName();
 		entitiesInEnvironment.setName(name);
-		//finalEnvironmentList.remove(entitiesInEnvironment);
+		finalEnvironmentList.remove(entitiesInEnvironment);
 		finalEnvironmentList.add(entitiesInEnvironment);
 		environmentPane.getChildren().clear();
 		environmentPane.setCenter(saveMessage(myResources.getString("saveMessage")));
@@ -185,20 +185,21 @@ public class EditorEnvironment extends Editor {
 				addComponents(entity);
 			}
 			IEntity newEntity = Utilities.copyEntity(entity);
-			ImageView entityView = Utilities.createImage(newEntity.getComponent(ImagePath.class),
-					newEntity.getComponent(Position.class));
-			DragAndResize.makeResizable(entityView, newEntity.getComponent(ImagePath.class),
-					newEntity.getComponent(Position.class));
+			Position pos = newEntity.getComponent(Position.class);
+			ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
+			DragAndResize.makeResizable(entityView, pos);
 			if (!entitiesInEnvironment.containsEntity(newEntity)) {
 				entitiesInEnvironment.addEntity(newEntity);
 				Button entityInButton = new Button(newEntity.getName());
 				entityInButton.setOnAction(e -> removeFromDisplay(entityView, newEntity, entityInButton));
 				entitiesCurrentlyIn.getChildren().add(entityInButton);
+				entityView.setTranslateX(pos.getX());
+				entityView.setTranslateY(pos.getY());
 				gameRoot.getChildren().add(entityView);
 			}
 		} catch (Exception e) {
-			// Utilities.showAlert(myResources.getString("error"), null,
-			// myResources.getString("unableToAdd"), AlertType.ERROR);
+			Utilities.showAlert(myResources.getString("error"), null,
+			 myResources.getString("unableToAdd"), AlertType.ERROR);
 		}
 	}
 

@@ -4,14 +4,11 @@ import javafx.scene.Cursor;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import model.component.movement.Position;
-import model.component.visual.ImagePath;
 
 public class DragAndResize {
         
     private double margin = 8;
 
-    private final ImageView image;
-    
 	private boolean resizing;
 	private boolean dragging;
 	private double parentMinX;
@@ -22,12 +19,11 @@ public class DragAndResize {
 	private double clickY;
 	private double minW;
 	private double minH;
-	private ImagePath path;
 	private Position position;
+    private final ImageView image;
     
-    private DragAndResize(ImageView anImage, ImagePath aPath, Position aPos) {
+    private DragAndResize(ImageView anImage, Position aPos) {
         image = anImage;
-        path = aPath;
         position = aPos;
         minW = image.minWidth(image.getFitHeight());
         minH = image.minHeight(image.getFitWidth());
@@ -41,25 +37,17 @@ public class DragAndResize {
         clickX = event.getX();
         clickY = event.getY();
     }
-    
-    private void resizeWidth(double width){
-    	if (minW>width){
-    			return;
-    		}
-    		path.setImageWidth(width);
-    		//image.setFitWidth(width);
-    }
+   
     
     private void resizeHeight(double height){
     		if (minH>height){
 		return;
 		}
-    		path.setImageHeight(height);
-		//image.setFitHeight(height);
+		image.setFitHeight(height);
 }
 
-    public static void makeResizable(ImageView anImage, ImagePath aPath, Position aPos) {
-        final DragAndResize resizer = new DragAndResize(anImage, aPath, aPos); 
+    public static void makeResizable(ImageView anImage, Position aPos) {
+        final DragAndResize resizer = new DragAndResize(anImage, aPos); 
         anImage.setOnMousePressed(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent event) {
@@ -99,42 +87,27 @@ public class DragAndResize {
     }
     
     protected boolean isInResizeZone(MouseEvent event) {
-        return isInRightResize(event) || isInBottomResize(event);  	
+        return isInBottomResize(event);  	
     }
-       
-    private boolean isInRightResize(MouseEvent event){
-    		double innerRightSide = parentWidth - margin;
-		double outerRightSide = parentWidth;
-		return  ((event.getX() > innerRightSide)
-				&& (event.getX() < outerRightSide));
-    }
+     
     
     private boolean isInBottomResize(MouseEvent event){
     		double innerBottomSide = parentHeight - margin;
 		double outerBottomSide = parentHeight;
-		//System.out.println("outerBottomSide "+ outerBottomSide );
-	    //System.out.println("event.Y()" + event.getY());
-		//System.out.println("innerBottomSide " + innerBottomSide );
 		return ((event.getY() > innerBottomSide) 
 				&& (event.getY() < outerBottomSide));
     }
     
     protected void mouseDragged(MouseEvent event) {
-    		//double offsetX = event.getSceneX() - sceneX;
-        //double offsetY = event.getSceneY() - sceneY;
-        //double newTranslateX = translateX + offsetX;
-        //double newTranslateY = translateY + offsetY;
     		double mouseX = event.getX() + image.getBoundsInParent().getMinX();
     		double mouseY = event.getY() + image.getBoundsInParent().getMinY();
     		if (dragging){
     				double translateX = mouseX - clickX;
     				double translateY = mouseY - clickY;
     				position.setX(translateX);
+    				image.setTranslateX(translateX);
     				position.setY(translateY);
-    				//image.setTranslateX(translateX);
-    				//image.setTranslateY(translateY);
-    			   // image.setX(translateX);
-    			   //image.setY(translateY);
+    				image.setTranslateY(translateY);
                 return;
     		}
     		else{
@@ -142,10 +115,6 @@ public class DragAndResize {
         double newHeight = mouseY - parentMinY;
         resizeHeight(newHeight);
         }
-        if (isInRightResize(event) || resizing){
-        	double newWidth = parentWidth + parentMinX - mouseX;
-        	resizeWidth(newWidth);
-        }  
     		}
     }
     
