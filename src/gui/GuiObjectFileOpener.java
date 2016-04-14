@@ -4,8 +4,6 @@ package gui;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.util.Observable;
-
 import api.ISerializable;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.Property;
@@ -42,7 +40,8 @@ public class GuiObjectFileOpener extends GuiObject{
 	@Override
 	public Object getGuiNode() {
 		button.setOnAction(new EventHandler() {
-            public void handle(Event t) {
+            @Override
+			public void handle(Event t) {
 
 			    File file = new File(FILE_DIR+fileToOpen);
 			    if (file.exists())

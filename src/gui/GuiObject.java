@@ -2,9 +2,6 @@ package gui;
 
 import java.util.ResourceBundle;
 
-import javafx.beans.property.Property;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Control;
 
 public abstract class GuiObject {

@@ -41,7 +41,6 @@ public class EditorEntity extends Editor{
 		myResources = ResourceBundle.getBundle(language);
 		myEntity = (Entity) toEdit;
 		entityList = addToList;
-
 	}
 
 	@Override
