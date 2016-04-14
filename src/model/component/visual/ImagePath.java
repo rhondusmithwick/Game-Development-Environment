@@ -2,7 +2,9 @@ package model.component.visual;
 
 import java.io.File;
 
+
 import java.util.Arrays;
+
 import java.util.List;
 
 import api.IComponent;
@@ -26,7 +28,7 @@ public class ImagePath implements IComponent {
 	 */
 	private SingleProperty<String> imagePath;
 	private SimpleObjectProperty<ImageView> imageViewProperty = new SimpleObjectProperty<ImageView>();	
-	private final String spriteName;
+	private String spriteName;
 	
 
 	public ImagePath() {
@@ -43,8 +45,7 @@ public class ImagePath implements IComponent {
 
 
 	public ImagePath(String imagePath) { // TODO: place default in resource file
-		this("resources/RhonduSmithwick.JPG", "Rhodu");
-        ImageView imageView = new ImageView(new Image(new File(imagePath).toURI().toString()));
+		ImageView imageView = new ImageView(new Image(new File(imagePath).toURI().toString()));
         imageViewProperty.set(imageView);
 		this.imagePath = new SingleProperty<>("ImagePath", imagePath);
 		this.imageViewProperty.get().setPreserveRatio(true);
@@ -117,6 +118,5 @@ public class ImagePath implements IComponent {
 	public String getImagePath() {
 		return imagePath.property1().get();
 	}
-
 
 }
