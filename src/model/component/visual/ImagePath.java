@@ -46,11 +46,8 @@ public class ImagePath implements IComponent {
 
 	public ImagePath(String imagePath) { // TODO: place default in resource file
 		ImageView imageView = new ImageView(new Image(new File(imagePath).toURI().toString()));
-//        imageViewProperty.set(imageView);
+        imageViewProperty.set(imageView);
 		this.imagePath = new SingleProperty<>("ImagePath", imagePath);
-		
-		imageView.setFitHeight(100);
-		this.imageViewProperty.set(imageView);
 		this.imageViewProperty.get().setPreserveRatio(true);
 	}
 
@@ -72,10 +69,8 @@ public class ImagePath implements IComponent {
 		imageView.setFitHeight(100);
 		this.imageViewProperty.set(imageView);
 		
-//		this.imageViewProperty.set(new ImageView(image));
+		this.imageViewProperty.set(new ImageView(image));
 		this.imageViewProperty.get().setPreserveRatio(true);
-		
-		//TESTING
 	}
 
 	/**

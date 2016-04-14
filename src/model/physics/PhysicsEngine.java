@@ -34,20 +34,24 @@ public class PhysicsEngine implements IPhysicsEngine {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void update(IEntitySystem universe, double dt) {
-		
 		Collection<IEntity> dynamicEntities = universe.getEntitiesWithComponents(Position.class, Velocity.class, ImagePath.class);
 		dynamicEntities.stream().forEach(p -> {
 			Position pos = p.getComponent(Position.class);
-			Velocity velocity = p.getComponent(Velocity.class);
 			ImageView imageView = p.getComponent(ImagePath.class).getImageView();
 			imageView.setX(pos.getX());
 			imageView.setY(pos.getY());
+		});
+		
+		applyCollisions(universe, true); // WHAT'S PURPOSE OF BOOLEAN HERE?
+		applyGravity(universe, dt);
+
+		dynamicEntities.stream().forEach(p -> {
+			Position pos = p.getComponent(Position.class);
+			Velocity velocity = p.getComponent(Velocity.class);
 			double dx = dt * velocity.getVX();
 			double dy = dt * velocity.getVY();
 			pos.add(dx, dy);
 		});
-		applyCollisions(universe, true); // WHAT'S PURPOSE OF BOOLEAN HERE?
-		applyGravity(universe, dt);
 	}
 
 	@Override
@@ -146,10 +150,9 @@ public class PhysicsEngine implements IPhysicsEngine {
 	}
 	
 	public void changeVelocityAfterCollision(IEntity firstEntity, IEntity secondEntity) {		
-		//CALCULATE COEFFICIENT OF RESTITUTION
-		int restitution = 0;
+		//CALCULATE COEFFICIENT OF RESTITUTION - MAKE IT A COMPONENT FOR EACH ENTITY
+		double restitution = 0;
 		setNewVelocityForEntity(firstEntity, secondEntity, restitution);
-		setNewVelocityForEntity(secondEntity, firstEntity, restitution);
 	}
 	
 	private void setNewVelocityForEntity(IEntity firstEntity, IEntity secondEntity, double restitution) {
@@ -172,7 +175,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 		
 		double velocityBeforeRestitution = getVelocityBeforeRestitution(mass1, mass2, velocity1, velocity2);
 		double finalVelocity = velocityBeforeRestitution + ((mass2 * restitution * (velocity2 - velocity1)) / (mass1 + mass2));
-
+		System.out.println(finalVelocity);
 		return finalVelocity;
 	}
 	

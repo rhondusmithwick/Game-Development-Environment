@@ -46,6 +46,9 @@ public class BenTestGroovy extends Application {
 		IEntity rhonduEntity = BenTestCharacter.run(IMAGE_PATH);
 		IEntity rhonduEntity2 = BenTestSecondCharacter.run(IMAGE_PATH2);
 		
+		rhonduEntity.getComponent(ImagePath.class).getImageView().setFitHeight(100);
+		rhonduEntity2.getComponent(ImagePath.class).getImageView().setFitHeight(100);
+		
 		IEntitySystem system = new EntitySystem();
 		system.addEntities(rhonduEntity, rhonduEntity2);
 		IPhysicsEngine physics = new PhysicsEngine();
@@ -68,7 +71,9 @@ public class BenTestGroovy extends Application {
 		Collection<IEntity> list = s.getAllEntities();
 		for (IEntity entity : list) {
 			Position pos = entity.getComponent(Position.class);
-			refreshDraw(entity.getComponent(ImagePath.class).getImageView(), pos.getX(), pos.getY());
+			ImageView imageView = entity.getComponent(ImagePath.class).getImageView();
+			imageView.setFitHeight(100);
+			refreshDraw(imageView, pos.getX(), pos.getY());
 		}
 	}
 
