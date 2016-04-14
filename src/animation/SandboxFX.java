@@ -1,8 +1,10 @@
+
 package animation;
 
 import api.IEntity;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
+import animation.Animator;
 import javafx.animation.Animation;
 import javafx.application.Application;
 import javafx.scene.Group;
