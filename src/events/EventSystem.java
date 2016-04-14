@@ -1,11 +1,13 @@
 package events;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
 import api.IEntitySystem;
@@ -41,14 +43,21 @@ public class EventSystem implements Observer{
 		action.activate(universe);
 	}
 	
-	public void saveEventsToFile(String filepath) {
+	public File saveEventsToFile(String filepath) {
 		stopObservingTriggers(actionMap);
 		new XMLWriter<EventContainer>().writeToFile(filepath,convertMapToList(actionMap));
 		watchTriggers(actionMap);
+		return new File(filepath);
 	}
 	
 	public void readEventsFromFile(String filepath) {
 		List<EventContainer> eventList= new XMLReader<EventContainer>().readFromFile(filepath);
+		actionMap = convertListToMap(eventList);
+		watchTriggers(actionMap);
+	}
+	
+	public void readEventsFromFile(File file) {
+		List<EventContainer> eventList= new XMLReader<EventContainer>().readFromFile(file.getPath());
 		actionMap = convertListToMap(eventList);
 		watchTriggers(actionMap);
 	}

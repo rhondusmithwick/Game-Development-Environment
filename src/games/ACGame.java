@@ -80,6 +80,7 @@ public class ACGame {
 			Position pos = new Position(100.0, 100.0);
 			character.forceAddComponent(pos, true);
 			character.forceAddComponent(new ImagePath(IMAGE_PATH), true);
+			character.forceAddComponent(new Velocity(0,0), true);
 			universe.addEntity(character);
 	    	character.addComponent(new ImagePath(IMAGE_PATH));
 			character.serialize("character.xml");
@@ -107,8 +108,6 @@ public class ACGame {
 		ImageView charSprite = imgPath.getImageView();
 		charSprite.setFitHeight(100);
 		charSprite.setPreserveRatio(true);
-		charSprite.xProperty().bind(character.getComponent(Position.class).xProperty());
-		charSprite.yProperty().bind(character.getComponent(Position.class).yProperty());
 		root.getChildren().add(charSprite);
 		return charSprite;
 	}
