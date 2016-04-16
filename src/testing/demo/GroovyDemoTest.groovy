@@ -23,7 +23,7 @@ class GroovyDemoTest {
 		Position pos = new Position(250.0, 250.0)
 		character.addComponent(pos)
 		character.addComponent(new ImagePath(IMAGE_PATH))
-		character.addComponent(new Velocity(10.0, 10.0))
+		character.addComponent(new Velocity(10.0, 10.0, true))
 		return character
 	}
 
@@ -34,14 +34,16 @@ class GroovyDemoTest {
 		Position pos = new Position(250.0, 250.0)
 		character.addComponent(pos)
 		character.addComponent(new ImagePath(IMAGE_PATH))
-		character.addComponent(new Velocity(10.0, -10.0))
+		character.addComponent(new Velocity(10.0, -10.0, true))
 		return character
 	}
 
-	static void run(ISystemManager game) {
+	static IEntity run(ISystemManager game) {
 		IEntitySystem universe = game.getEntitySystem()
 		GroovyDemoTest test = new GroovyDemoTest()
-		universe.addEntities(test.getCharacter0(), test.getCharacter1())
+		IEntity s = test.getCharacter0()
+		universe.addEntities(s)//, test.getCharacter1())
+		return s
 	}
 
 	static void saveSystem(IEntitySystem universe) {

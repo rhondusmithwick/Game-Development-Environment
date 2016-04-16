@@ -62,17 +62,17 @@ public class View {
 		model.step(SECOND_DELAY);
 
 		// render
-		// root.getChildren().clear();
+		root.getChildren().clear();
 		IEntitySystem universe = model.getEntitySystem();
 		Collection<IEntity> entities = universe.getEntitiesWithComponents(Position.class, ImagePath.class);
 		entities.stream().forEach(e -> {
 			Position pos = e.getComponent(Position.class);
 			ImagePath display = e.getComponent(ImagePath.class);
 			ImageView imageView = display.getImageView();
-			
+
 			imageView.setTranslateX(pos.getX());
 			imageView.setTranslateY(pos.getY());
-			if ( !root.getChildren().contains(imageView) )
+			if (!root.getChildren().contains(imageView))
 				root.getChildren().add(imageView);
 		});
 	}
@@ -80,7 +80,7 @@ public class View {
 	private BorderPane createBorderPane() {
 		BorderPane pane = new BorderPane();
 		ScrollPane center = new ScrollPane();
-		
+
 		IEntitySystem universe = model.getEntitySystem();
 		Collection<IEntity> entities = universe.getEntitiesWithComponents(Position.class, ImagePath.class);
 		entities.stream().forEach(e -> {
@@ -91,17 +91,17 @@ public class View {
 			imageView.setTranslateY(pos.getY());
 			root.getChildren().add(imageView);
 		});
-		
+
 		pane.setPadding(new Insets(gapSize, gapSize, gapSize, gapSize));
-		
+
 		center.setContent(root);
 		center.setPannable(false);
 		center.setFitToHeight(false);
 		center.setVbarPolicy(ScrollBarPolicy.NEVER);
 		center.setHbarPolicy(ScrollBarPolicy.NEVER);
-		
+
 		pane.setCenter(center);
-		
+
 		// GridPane inputPane = new GridPane();
 		// inputPane.add(console, 0, 0);
 		// inputPane.add(evaluateButton, 0, 1);
