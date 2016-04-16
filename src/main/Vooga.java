@@ -14,8 +14,8 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import view.Utilities;
-import view.beginingmenus.AuthoringStartUp;
-import view.beginingmenus.StartUpMenu;
+import view.beginningmenus.AuthoringStartUp;
+import view.beginningmenus.StartUpMenu;
 import view.gameplaying.GamePlayer;
 
 public class Vooga extends StartUpMenu {
@@ -44,7 +44,7 @@ public class Vooga extends StartUpMenu {
 	private void titleText() {
 		Text text = new Text("MakeGamesGreatAgain Presents:\nVOOGASalad");
 		text.getStyleClass().add("title-text");
-		Image image = new Image(new File("resources/trump.jpg").toURI().toString());
+		Image image = new Image(new File("resources/testing/RhonduSmithwick.JPG").toURI().toString());
 		ImageView imageView = new ImageView(image);
 		imageView.setFitHeight(300);
 		imageView.setPreserveRatio(true);

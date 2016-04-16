@@ -16,7 +16,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
@@ -80,27 +79,16 @@ public class View {
 	private BorderPane createBorderPane() {
 		BorderPane pane = new BorderPane();
 		ScrollPane center = new ScrollPane();
-
-		IEntitySystem universe = model.getEntitySystem();
-		Collection<IEntity> entities = universe.getEntitiesWithComponents(Position.class, ImagePath.class);
-		entities.stream().forEach(e -> {
-			Position pos = e.getComponent(Position.class);
-			ImagePath display = e.getComponent(ImagePath.class);
-			ImageView imageView = display.getImageView();
-			imageView.setTranslateX(pos.getX());
-			imageView.setTranslateY(pos.getY());
-			root.getChildren().add(imageView);
-		});
-
 		pane.setPadding(new Insets(gapSize, gapSize, gapSize, gapSize));
 
-		center.setContent(root);
-		center.setPannable(false);
-		center.setFitToHeight(false);
-		center.setVbarPolicy(ScrollBarPolicy.NEVER);
-		center.setHbarPolicy(ScrollBarPolicy.NEVER);
+		// center.setPannable(true);
 
 		pane.setCenter(center);
+		center.setContent(root);
+		center.setFitToHeight(false);
+		center.setFitToWidth(false);
+		// center.setVbarPolicy(ScrollBarPolicy.NEVER);
+		// center.setHbarPolicy(ScrollBarPolicy.NEVER);
 
 		// GridPane inputPane = new GridPane();
 		// inputPane.add(console, 0, 0);
@@ -108,7 +96,7 @@ public class View {
 		BorderPane inputPane = new BorderPane();
 		inputPane.setTop(console);
 		inputPane.setBottom(evaluateButton);
-		inputPane.setRight(loadButton);
+		// inputPane.setRight(loadButton);
 		pane.setBottom(inputPane);
 		return pane;
 	}

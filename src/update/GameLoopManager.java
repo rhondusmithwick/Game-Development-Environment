@@ -28,7 +28,7 @@ public class GameLoopManager extends JPanel implements ListSelectionListener {
 	private static final String upString = "Move up";
 	private static final String downString = "Move down";
 	private static final String RESOURCE_PACKAGE = "update/";
-	private static final String PROPERTIES_FILE = "update";
+	private static final String PROPERTIES_FILE = "GameLoopManager";
 	private JButton addButton;
 	private JButton deleteButton;
 	private JButton upButton;

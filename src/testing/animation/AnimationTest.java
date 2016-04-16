@@ -27,7 +27,7 @@
 //import model.physics.PhysicsEngine;
 //
 //public class AnimationTest extends Application {
-//	private static final String IMAGE_PATH = "resources/RhonduSmithwick.JPG";
+//	private static final String IMAGE_PATH = "resources/testing/RhonduSmithwick.JPG";
 //	private static ImageView testSprite; // BAD PRACTICE: USE final WHENEVER
 //											// POSSIBLE, DON'T BE LIKE ME!
 //	private static IPhysicsEngine physics; // TODO: remove these things
