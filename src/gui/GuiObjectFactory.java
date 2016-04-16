@@ -14,7 +14,7 @@ import javafx.beans.property.SimpleObjectProperty;
 
 
 public class GuiObjectFactory {
-	private static final String GUI_RESOURCES = "guiComponents";
+	private static final String GUI_RESOURCES = "guiObject/guiComponents";
 	private String myLanguage;
 
 	public GuiObjectFactory(String language){

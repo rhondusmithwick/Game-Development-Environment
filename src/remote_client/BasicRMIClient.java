@@ -32,7 +32,7 @@ import testing.BenTestCharacter;
 @Deprecated
 public class BasicRMIClient extends Application{
 	private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
-	private static final String IMAGE_PATH = "resources/RhonduSmithwick.JPG";
+	private static final String IMAGE_PATH = "resources/testing/RhonduSmithwick.JPG";
 	private static ImageView testSprite; 
 	private static IPhysicsEngine physics; 
 	private Group root;
