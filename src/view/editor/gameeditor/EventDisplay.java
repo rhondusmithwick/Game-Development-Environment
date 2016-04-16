@@ -28,10 +28,9 @@ public class EventDisplay extends ObjectDisplay
 	private String language;
 	private ResourceBundle myResources;
 	private ObservableList<ISerializable> masterEntityList;
-	private ObservableList<String> actions;
 	private final EditorFactory editFact = new EditorFactory();
 	
-	public EventDisplay(String language,ObservableList<ISerializable> masterEntityList, Authoring authoringEnvironment, ObservableList<String> actions)
+	public EventDisplay(String language,ObservableList<ISerializable> masterEntityList, Authoring authoringEnvironment)
 	{
 		super(language, authoringEnvironment,masterEntityList);
 		this.language=language;
@@ -39,7 +38,6 @@ public class EventDisplay extends ObjectDisplay
 		this.authoringEnvironment = authoringEnvironment;
 		this.language = language;
 		this.myResources = ResourceBundle.getBundle(language);
-		this.actions = actions;
 	}
 
 	@Override
@@ -47,7 +45,6 @@ public class EventDisplay extends ObjectDisplay
 	{
 		IEditor editor = editFact.createEditor(editName, language, toEdit, masterEntityList, otherList);
 		editor.populateLayout();
-		((EditorEvent)editor).setActions(actions);
 		authoringEnvironment.createTab(editor.getPane(), editName.getSimpleName(), true);
 	}
 	

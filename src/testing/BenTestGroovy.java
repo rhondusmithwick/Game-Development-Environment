@@ -28,7 +28,7 @@ import model.physics.PhysicsEngine;
 public class BenTestGroovy extends Application {
 	// private final ScriptEngine engine = new
 	// ScriptEngineManager().getEngineByName("groovy");
-	private static final String IMAGE_PATH = "resources/RhonduSmithwick.JPG";
+	private static final String IMAGE_PATH = "resources/testing/RhonduSmithwick.JPG";
 	private static final String IMAGE_PATH2 = "resources/images/blastoise.png";
 	private static final double MILLISECOND_DELAY = 10;
 	private static final double SECOND_DELAY = MILLISECOND_DELAY / 1000;

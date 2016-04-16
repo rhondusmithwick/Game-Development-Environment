@@ -6,30 +6,33 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+
+import api.IEntitySystem;
+import api.IEventSystem;
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
-import api.IEntitySystem;
 
 /***
  * Created by ajonnav 04/12/16
- * @author Anirudh Jonnavithula, Carolyn Yao
- * For non-key events, we want to create a string "entityid:componentName:index".
- * Register string to an action in the map. 
- * A Trigger Factory can interpret the string to create the right kind of Trigger
- * Using this string, we generate the triggers in some sort of factory fashion
+ * 
+ * @author Anirudh Jonnavithula, Carolyn Yao For non-key events, we want to
+ *         create a string "entityid:componentName:index". Register string to an
+ *         action in the map. A Trigger Factory can interpret the string to
+ *         create the right kind of Trigger Using this string, we generate the
+ *         triggers in some sort of factory fashion
  *
  */
-public class EventSystem implements Observer{
-	
+public class EventSystem implements Observer, IEventSystem {
+
 	IEntitySystem universe;
 	InputSystem inputSystem;
 	Map<Trigger, Action> actionMap = new HashMap<>();
-	
+
 	public EventSystem(IEntitySystem universe, InputSystem inputSystem) {
 		this.universe = universe;
 		this.inputSystem = inputSystem;
 	}
-	
+
 	public void registerEvent(Trigger trigger, Action action) {
 		actionMap.put(trigger, action);
 		trigger.addObserver(this);
@@ -40,45 +43,46 @@ public class EventSystem implements Observer{
 		Action action = actionMap.get(((Trigger) o));
 		action.activate(universe);
 	}
-	
+
 	public void saveEventsToFile(String filepath) {
 		stopObservingTriggers(actionMap);
-		new XMLWriter<EventContainer>().writeToFile(filepath,convertMapToList(actionMap));
+		new XMLWriter<EventContainer>().writeToFile(filepath, convertMapToList(actionMap));
 		watchTriggers(actionMap);
 	}
-	
+
 	public void readEventsFromFile(String filepath) {
-		List<EventContainer> eventList= new XMLReader<EventContainer>().readFromFile(filepath);
+		List<EventContainer> eventList = new XMLReader<EventContainer>().readFromFile(filepath);
 		actionMap = convertListToMap(eventList);
 		watchTriggers(actionMap);
 	}
-	
+
 	private Map<Trigger, Action> convertListToMap(List<EventContainer> eventList) {
 		Map<Trigger, Action> returnMap = new HashMap<>();
-		for(EventContainer event:eventList) {
+		for (EventContainer event : eventList) {
 			returnMap.put(event.getTrigger(), event.getAction());
 			event.getTrigger().addHandler(universe, inputSystem);
 		}
 		return returnMap;
 	}
 
-	private List<EventContainer> convertMapToList(Map<Trigger,Action> map) {
+	private List<EventContainer> convertMapToList(Map<Trigger, Action> map) {
 		List<EventContainer> returnList = new ArrayList<>();
-		for( Trigger trigger : map.keySet()) {
+		for (Trigger trigger : map.keySet()) {
 			returnList.add(new EventContainer(trigger, map.get(trigger)));
 		}
 		return returnList;
 	}
-	
-	private void stopObservingTriggers(Map<Trigger,Action> map) {
-		for(Trigger trigger : map.keySet()) {
+
+	private void stopObservingTriggers(Map<Trigger, Action> map) {
+		for (Trigger trigger : map.keySet()) {
 			trigger.deleteObserver(this);
 		}
 	}
-	
-	private void watchTriggers(Map<Trigger,Action> map) {
-		for(Trigger trigger : map.keySet()) {
+
+	private void watchTriggers(Map<Trigger, Action> map) {
+		for (Trigger trigger : map.keySet()) {
 			trigger.addObserver(this);
 		}
-	}	
+	}
+
 }

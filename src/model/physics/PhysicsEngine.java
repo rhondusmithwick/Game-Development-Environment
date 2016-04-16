@@ -5,6 +5,8 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import com.google.common.collect.Sets;
@@ -125,27 +127,26 @@ public class PhysicsEngine implements IPhysicsEngine {
 		//CALCULATE COEFFICIENT OF RESTITUTION - MAKE IT A COMPONENT FOR EACH ENTITY
 		double restitution = 0.5;
 		
-		// change to set X and Y components separately; will likely require "setVX" and "setVY" methods
-		double nextVX1 = getNextVelocityComponent(firstEntity, secondEntity, restitution, (Velocity v) -> v.getVX());
-		double nextVY1 = getNextVelocityComponent(firstEntity, secondEntity, restitution, (Velocity v) -> v.getVY());
-		
-		double nextVX2 = getNextVelocityComponent(secondEntity, firstEntity, restitution, (Velocity v) -> v.getVX());
-		double nextVY2 = getNextVelocityComponent(secondEntity, firstEntity, restitution, (Velocity v) -> v.getVY());
-		
-		firstEntity.getComponent(Velocity.class).setVXY(nextVX1, nextVY1);	
-		secondEntity.getComponent(Velocity.class).setVXY(nextVX2, nextVY2);
-	}
-	
-	private double getNextVelocityComponent(IEntity firstEntity, IEntity secondEntity, double restitution, Function<Velocity, Double> getCoordinate) {
 		double mass1 = firstEntity.getComponent(Mass.class).getMass();
-		double velocity1 = getCoordinate.apply(firstEntity.getComponent(Velocity.class));
+		Velocity velocity1 = firstEntity.getComponent(Velocity.class);
 		
 		double mass2 = secondEntity.getComponent(Mass.class).getMass();
-		double velocity2 = getCoordinate.apply(secondEntity.getComponent(Velocity.class));
+		Velocity velocity2 = secondEntity.getComponent(Velocity.class);
 		
-		double velocityBeforeRestitution = getVelocityBeforeRestitution(mass1, mass2, velocity1, velocity2);
-		double finalVelocity = velocityBeforeRestitution + ((mass2 * restitution * (velocity2 - velocity1)) / (mass1 + mass2));
-		return finalVelocity;
+		setVelocityComponent(mass1, mass2, velocity1, velocity2, restitution, (Velocity v) -> v.getVX(), (Velocity v, Double val) -> v.setVX(val));
+		setVelocityComponent(mass1, mass2, velocity1, velocity2, restitution, (Velocity v) -> v.getVY(), (Velocity v, Double val) -> v.setVY(val));
+	}
+	
+	private void setVelocityComponent(double mass1, double mass2, Velocity velocity1, Velocity velocity2, double restitution, Function<Velocity, Double> getCoordinate, BiConsumer<Velocity, Double> setVelocity) {		
+		double initialVelocity1 = getCoordinate.apply(velocity1);
+		double initialVelocity2 = getCoordinate.apply(velocity2);
+		
+		double velocityBeforeRestitution = getVelocityBeforeRestitution(mass1, mass2, initialVelocity1, initialVelocity2);
+		double finalVelocity1 = velocityBeforeRestitution + ((mass2 * restitution * (initialVelocity2 - initialVelocity1)) / (mass1 + mass2));
+		double finalVelocity2 = velocityBeforeRestitution + ((mass1 * restitution * (initialVelocity1 - initialVelocity2)) / (mass1 + mass2));
+		
+		setVelocity.accept(velocity1, finalVelocity1);
+		setVelocity.accept(velocity2, finalVelocity2);
 	}
 	
 	private double getVelocityBeforeRestitution(double mass1, double mass2, double velocity1, double velocity2) {

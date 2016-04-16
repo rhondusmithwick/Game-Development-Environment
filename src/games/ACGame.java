@@ -49,7 +49,6 @@ public class ACGame {
 	private final InputSystem inputSystem = new InputSystem(universe);
 	private final EventSystem eventSystem = new EventSystem(universe, inputSystem);
 	private final PhysicsEngine physics = new PhysicsEngine();
-
 	private IEntity character;
 	private final String IMAGE_PATH = "resources/images/blastoise.png";
 	private final String healthScriptPath = "resources/groovyScripts/ACGameTestScript.groovy";

@@ -1,5 +1,7 @@
 package view.editor.eventeditor;
 
+import java.util.ResourceBundle;
+
 import api.IComponent;
 import api.ISerializable;
 import javafx.collections.FXCollections;
@@ -11,9 +13,9 @@ import model.entity.Entity;
 
 public class ComponentTable extends Table
 {
-	public ComponentTable(TableManager manager)
+	public ComponentTable(TableManager manager, String language)
 	{
-		super(manager, "Pick Component");	// TODO resource file
+		super(manager, ResourceBundle.getBundle(language).getString("pickComponent"));	// TODO resource file
 
 		// Add change listener
 		getTable().

@@ -17,11 +17,11 @@ public class Display implements IComponent {
 
 	public Display() {
 		// TODO: change defaults
-		this("resources/RhonduSmithwick.JPG");
+		this("resources/testing/RhonduSmithwick.JPG");
 	}
 
 	public Display(String imagePath) {
-		this(imagePath, "resources/RhonduSmithwick.JPG", 0.0, 0.0);
+		this(imagePath, "resources/testing/RhonduSmithwick.JPG", 0.0, 0.0);
 	}
 
 	public Display(String imagePath, String spritesheetPath, double width, double height) {
