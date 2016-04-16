@@ -13,6 +13,7 @@ import model.component.movement.Velocity;
 import model.component.physics.Collision;
 import model.component.physics.Gravity;
 import model.component.physics.Mass;
+import model.component.physics.RestitutionCoefficient;
 import model.component.visual.ImagePath;
 import api.IEntity;
 import api.IEntitySystem;
@@ -85,7 +86,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 
 	@Override
 	public void applyCollisions(IEntitySystem universe, boolean dynamicsOn) {
-		List<IEntity> collidableEntities = new ArrayList<IEntity>(universe.getEntitiesWithComponents(Collision.class, ImagePath.class));
+		List<IEntity> collidableEntities = new ArrayList<IEntity>(universe.getEntitiesWithComponents(Collision.class, ImagePath.class, RestitutionCoefficient.class));
 		clearCollisionComponents(collidableEntities);
 		
 		for (int i=0; i<collidableEntities.size(); i++) {
@@ -119,7 +120,8 @@ public class PhysicsEngine implements IPhysicsEngine {
 	
 	public void changeVelocityAfterCollision(IEntity firstEntity, IEntity secondEntity) {		
 		//CALCULATE COEFFICIENT OF RESTITUTION - MAKE IT A COMPONENT FOR EACH ENTITY
-		double restitution = 0.5;
+		double restitution = (firstEntity.getComponent(RestitutionCoefficient.class).getRestitutionCoefficient()+
+				secondEntity.getComponent(RestitutionCoefficient.class).getRestitutionCoefficient())/2;
 		
 		double mass1 = firstEntity.getComponent(Mass.class).getMass();
 		Velocity velocity1 = firstEntity.getComponent(Velocity.class);
@@ -159,5 +161,17 @@ public class PhysicsEngine implements IPhysicsEngine {
 			hitBoxes.add(hitBox.getMask());
 		}
 		return hitBoxes;
+	}
+	
+	public void setGravityActive(boolean gravityActive) {
+		this.gravityActive = gravityActive;
+	}
+	
+	public void setCollisionDetectionActive(boolean collisionDetectionActive) {
+		this.collisionDetectionActive = collisionDetectionActive;
+	}
+	
+	public void setFrictionActive(boolean frictionActive) {
+		this.frictionActive = frictionActive;
 	}
 }
