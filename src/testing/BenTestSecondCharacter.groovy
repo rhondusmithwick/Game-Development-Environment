@@ -6,6 +6,7 @@ import model.component.movement.Position
 import model.component.movement.Velocity
 import model.component.physics.Collision
 import model.component.physics.Mass
+import model.component.physics.RestitutionCoefficient
 import model.component.visual.ImagePath
 import model.entity.Entity
 import api.IEntity
@@ -24,6 +25,7 @@ class BenTestSecondCharacter {
 		character.addComponent(new Velocity(-50.0, 0.0))
 		character.addComponent(new Mass(30.0))
 		character.addComponent(new Collision(null))
+		character.addComponent(new RestitutionCoefficient(0.2))
 		return character
 	}
 }
