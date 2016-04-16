@@ -15,7 +15,6 @@ import java.util.Queue;
  * @author Rhondu Smithwick, Anirudh Jonnavithula, Carolyn Yao
  */
 public class InputSystem {
-    private IEntitySystem universe;
     private Queue<KeyEvent> q1;
     private Queue<KeyEvent> q2;
     private Queue<KeyEvent> fillQ;
@@ -29,7 +28,6 @@ public class InputSystem {
     	q2 = new PriorityQueue<>();
     	fillQ = q1; 
     	processQ = q2;
-        this.universe = universe;
     }
 
     public void take(KeyEvent k) {
@@ -59,10 +57,6 @@ public class InputSystem {
     		fillQ = q1;
     		processQ = q2;
     	}
-    }
-
-    public void setUniverse(IEntitySystem universe) {
-        this.universe = universe;
     }
     
     public KeyEvent getCurrentCharKeyEvent() { 

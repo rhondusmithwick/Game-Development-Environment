@@ -59,7 +59,7 @@ public class BenTest extends Application {
 		IEntitySystem system = new EntitySystem();
 		system.addEntities(list);
 		// TODO: don't lazy-initialize!
-		physics = new PhysicsEngine(system);
+		physics = new PhysicsEngine();
 
 		// TODO: seriously, don't lazy-initialize
 		testSprite = createImage(character.getComponent(ImagePath.class), character.getComponent(Position.class));

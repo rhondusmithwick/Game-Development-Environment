@@ -1,5 +1,6 @@
 package view.beginingmenus;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 import enums.GUISize;
@@ -8,6 +9,8 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import view.Authoring;
@@ -33,9 +36,18 @@ public class AuthoringStartUp extends StartUpMenu {
 	@Override
 	protected Group createDisplay() {
 		root = super.createDisplay();
+		addImage();
 		createGame();
 		loadGame();
 		return root;
+	}
+	
+	private void addImage() {
+		Image image = new Image(new File("resources/trump.jpg").toURI().toString());
+		ImageView imageView = new ImageView(image);
+		imageView.setFitHeight(300);
+		imageView.setPreserveRatio(true);
+		super.addNodesToVBox(Arrays.asList(imageView));
 	}
 	
 	private void loadGame(){

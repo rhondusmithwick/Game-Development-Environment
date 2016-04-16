@@ -1,15 +1,10 @@
 package api;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Observer;
-
-import com.google.common.collect.ImmutableBiMap;
 
 import events.Action;
 import events.Trigger;
-
 
 /**
  * Might be scrapped in the future! Reference:
@@ -22,7 +17,9 @@ import events.Trigger;
  * 
  * @author Tom Wu, ANirudh Jonnavithula
  */
-public interface IEventSystem extends Observer, ISerializable  {
+public interface IEventSystem extends Observer, ISerializable {
+
+	// void init(IEntitySystem universe);
 
 	void registerEvent(Trigger trigger, Action action);
 	
@@ -33,5 +30,4 @@ public interface IEventSystem extends Observer, ISerializable  {
 	void readEventsFromFile(File file);
 	
 	String returnEventsAsString();
-	
 }
