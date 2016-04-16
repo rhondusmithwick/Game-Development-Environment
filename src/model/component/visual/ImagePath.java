@@ -37,7 +37,7 @@ public class ImagePath implements IComponent {
 		private static final String PROPERTIES_DIR = "spriteProperties.";
 
         public ImagePath() {
-                this("resources/RhonduSmithwick.JPG");
+                this("resources/testing/RhonduSmithwick.JPG");
         }
 
         /**
