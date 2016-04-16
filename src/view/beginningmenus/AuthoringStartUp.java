@@ -1,4 +1,4 @@
-package view.beginingmenus;
+package view.beginningmenus;
 
 import java.io.File;
 import java.util.Arrays;
