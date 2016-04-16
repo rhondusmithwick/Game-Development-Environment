@@ -28,7 +28,15 @@ import api.IEntitySystem;
  */
 public class PhysicsEngine implements IPhysicsEngine {
 
+	private boolean gravityActive;
+	private boolean collisionDetectionActive;
+	private boolean frictionActive;
+	
+	
 	public PhysicsEngine() {
+		gravityActive = true;
+		collisionDetectionActive = true;
+		frictionActive = true;
 	}
 
 	@SuppressWarnings("unchecked")
@@ -38,12 +46,16 @@ public class PhysicsEngine implements IPhysicsEngine {
 		dynamicEntities.stream().forEach(p -> {
 			Position pos = p.getComponent(Position.class);
 			ImageView imageView = p.getComponent(ImagePath.class).getImageView();
-			imageView.setX(pos.getX());
-			imageView.setY(pos.getY());
+			imageView.setTranslateX(pos.getX());
+			imageView.setTranslateY(pos.getY());
 		});
 		
-		applyCollisions(universe, true); // WHAT'S PURPOSE OF BOOLEAN HERE?
-		applyGravity(universe, dt);
+		if (collisionDetectionActive) {
+			applyCollisions(universe, true);	
+		}
+		if (gravityActive) {
+			applyGravity(universe, dt);			
+		}
 
 		dynamicEntities.stream().forEach(p -> {
 			Position pos = p.getComponent(Position.class);
@@ -64,52 +76,14 @@ public class PhysicsEngine implements IPhysicsEngine {
 			return false;
 		}
 	}
-
-	// might be useless:
-	public boolean areCollidingEntities(IEntity e1, IEntity e2) {
-		List<Collision> cList1 = e1.getComponentList(Collision.class);
-		List<Collision> cList2 = e2.getComponentList(Collision.class);
-		for (Collision c1 : cList1) {
-			Bounds mask1 = c1.getMask();
-			Collection<String> IDList1 = c1.getIDs();
-			for (Collision c2 : cList2) {
-				Bounds mask2 = c2.getMask();
-				Collection<String> IDList2 = c2.getIDs();
-				if (!this.areIntersectingIDLists(IDList1, IDList2)) {
-					// TODO
-					return true;
-				}
-			}
-		}
-		return false; // TODO
-	}
-
-	// probably more useful:
-	public Collection<IEntity> getEntitiesCollidingWith(IEntitySystem universe, IEntity e) {
-		// returns an collection of entities being collided with
-		// if not colliding with any entities, collection is empty
-		
-		Collection<IEntity> collidingEntities = new HashSet<IEntity>();
-		for (String collidingID : e.getComponent(Collision.class).getCollidingIDs()) {
-			collidingEntities.add(universe.getEntity(collidingID));
-		}
-		
-		return collidingEntities;
-	}
-
-	private boolean areIntersectingIDLists(Collection<String> IDList1, Collection<String> IDList2) {
-		Set<String> s1 = new HashSet<String>(IDList1);
-		Set<String> s2 = new HashSet<String>(IDList2);
-		return (Sets.intersection(s1, s2).size() > 0);
-	}	
 	
 	public void applyGravity(IEntitySystem universe, double secondsPassed) {
 		Collection<IEntity> entitiesSubjectToGravity = universe.getEntitiesWithComponents(Gravity.class, Velocity.class);
-		for (IEntity entity : entitiesSubjectToGravity) {
+		entitiesSubjectToGravity.stream().forEach(entity -> {
 			Velocity entityVelocity = entity.getComponent(Velocity.class);
 			double gravity = entity.getComponent(Gravity.class).getGravity();
 			entityVelocity.setVXY(entityVelocity.getVX(), gravity*secondsPassed);
-		}		
+		});	
 	}
 
 
@@ -132,9 +106,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 		for (Bounds firstHitBox : firstHitBoxes) {
 			for (Bounds secondHitBox : secondHitBoxes) {
 				if (firstHitBox.intersects(secondHitBox)) {
-					System.out.println("COLLISION OCCURRED");
-					addCollisionID(firstEntity, secondEntity);
-					addCollisionID(secondEntity, firstEntity);
+					addCollisionIDs(firstEntity, secondEntity);
 					changeVelocityAfterCollision(firstEntity, secondEntity);
 					break;
 				}
@@ -151,11 +123,9 @@ public class PhysicsEngine implements IPhysicsEngine {
 	
 	public void changeVelocityAfterCollision(IEntity firstEntity, IEntity secondEntity) {		
 		//CALCULATE COEFFICIENT OF RESTITUTION - MAKE IT A COMPONENT FOR EACH ENTITY
-		double restitution = 0;
-		setNewVelocityForEntity(firstEntity, secondEntity, restitution);
-	}
-	
-	private void setNewVelocityForEntity(IEntity firstEntity, IEntity secondEntity, double restitution) {
+		double restitution = 0.5;
+		
+		// change to set X and Y components separately; will likely require "setVX" and "setVY" methods
 		double nextVX1 = getNextVelocityComponent(firstEntity, secondEntity, restitution, (Velocity v) -> v.getVX());
 		double nextVY1 = getNextVelocityComponent(firstEntity, secondEntity, restitution, (Velocity v) -> v.getVY());
 		
@@ -175,7 +145,6 @@ public class PhysicsEngine implements IPhysicsEngine {
 		
 		double velocityBeforeRestitution = getVelocityBeforeRestitution(mass1, mass2, velocity1, velocity2);
 		double finalVelocity = velocityBeforeRestitution + ((mass2 * restitution * (velocity2 - velocity1)) / (mass1 + mass2));
-		System.out.println(finalVelocity);
 		return finalVelocity;
 	}
 	
@@ -183,8 +152,9 @@ public class PhysicsEngine implements IPhysicsEngine {
 		return ((mass1 * velocity1) + (mass2 * velocity2)) / (mass1 + mass2);
 	}
 	
-	private void addCollisionID(IEntity entityAddingTo, IEntity entityAddingFrom) {
-		entityAddingTo.getComponent(Collision.class).addCollidingID(entityAddingFrom.getID());
+	private void addCollisionIDs(IEntity firstEntity, IEntity secondEntity) {
+		firstEntity.getComponent(Collision.class).addCollidingID(secondEntity.getID());
+		secondEntity.getComponent(Collision.class).addCollidingID(firstEntity.getID());
 	}
 	
 	private List<Bounds> getHitBoxesForEntity(IEntity entity) {
@@ -195,5 +165,4 @@ public class PhysicsEngine implements IPhysicsEngine {
 		}
 		return hitBoxes;
 	}
-
 }
