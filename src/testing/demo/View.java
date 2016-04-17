@@ -16,6 +16,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
@@ -80,15 +81,15 @@ public class View {
 		BorderPane pane = new BorderPane();
 		ScrollPane center = new ScrollPane();
 		pane.setPadding(new Insets(gapSize, gapSize, gapSize, gapSize));
-
-		// center.setPannable(true);
-
 		pane.setCenter(center);
 		center.setContent(root);
-		center.setFitToHeight(false);
-		center.setFitToWidth(false);
-		// center.setVbarPolicy(ScrollBarPolicy.NEVER);
-		// center.setHbarPolicy(ScrollBarPolicy.NEVER);
+		root.setManaged(false); // IMPORTANT
+
+		center.setPannable(true);
+		// center.setFitToHeight(false);
+		// center.setFitToWidth(false);
+		center.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		center.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
 
 		// GridPane inputPane = new GridPane();
 		// inputPane.add(console, 0, 0);
@@ -122,8 +123,6 @@ public class View {
 								// directly within shell
 		this.engine.put("game", this.model);
 		this.engine.put("universe", this.model.getEntitySystem());
-		this.engine.put("c0", (new GroovyDemoTest()).getCharacter0());
-		this.engine.put("c1", (new GroovyDemoTest()).getCharacter1());
 		this.engine.put("demo", new GroovyDemoTest());
 	}
 

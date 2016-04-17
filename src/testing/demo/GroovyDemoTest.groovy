@@ -40,7 +40,7 @@ class GroovyDemoTest {
 		IEntitySystem universe = game.getEntitySystem()
 		GroovyDemoTest test = new GroovyDemoTest()
 		IEntity s = test.getCharacter1()
-		universe.addEntities(s)//, test.getCharacter1())
+		universe.addEntities(s)//, test.getCharacter0())
 		return s
 	}
 
