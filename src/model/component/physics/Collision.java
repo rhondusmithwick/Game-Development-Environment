@@ -3,10 +3,14 @@ package model.component.physics;
 import java.util.Collection;
 import java.util.HashSet;
 
+import api.IComponent;
 import javafx.geometry.Bounds;
 
-import api.IComponent;
-
+/**
+ * 
+ * @author Roxanne and Tom
+ *
+ */
 public class Collision implements IComponent {
 	private Bounds mask;
 	private Collection<String> IDs;
@@ -17,7 +21,7 @@ public class Collision implements IComponent {
 		this.IDs = IDs;
 		this.collidingIDs = new HashSet<String>();
 	}
-	
+
 	public Collision(Collection<String> IDs) {
 		this.IDs = IDs;
 		this.collidingIDs = new HashSet<String>();
@@ -26,7 +30,7 @@ public class Collision implements IComponent {
 	public Bounds getMask() {
 		return this.mask;
 	}
-	
+
 	public void setMask(Bounds mask) {
 		this.mask = mask;
 	}
@@ -54,7 +58,7 @@ public class Collision implements IComponent {
 	public void addCollidingIDs(Collection<String> newIDs) {
 		this.collidingIDs.addAll(newIDs);
 	}
-	
+
 	public void addCollidingID(String newID) {
 		this.collidingIDs.add(newID);
 	}
@@ -62,6 +66,5 @@ public class Collision implements IComponent {
 	public void clearCollidingIDs() {
 		this.collidingIDs.clear();
 	}
-
 
 }

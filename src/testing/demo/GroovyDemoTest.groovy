@@ -36,19 +36,10 @@ class GroovyDemoTest {
 		return character
 	}
 
-	static IEntity run(ISystemManager game) {
+	IEntity run(ISystemManager game) {
 		IEntitySystem universe = game.getEntitySystem()
-		GroovyDemoTest test = new GroovyDemoTest()
-		IEntity s = test.getCharacter1()
+		IEntity s = this.getCharacter1()
 		universe.addEntities(s)//, test.getCharacter0())
 		return s
-	}
-
-	static void saveSystem(IEntitySystem universe) {
-		universe.serialize("test.sav")
-	}
-
-	static void loadSystem(ISystemManager game, String filename) {
-		game.evaluate("test.sav")
 	}
 }
