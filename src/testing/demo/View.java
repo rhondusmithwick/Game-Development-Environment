@@ -62,13 +62,15 @@ public class View {
 		pane.setPadding(new Insets(gapSize, gapSize, gapSize, gapSize));
 		pane.setCenter(center);
 		center.setContent(root);
+		// root.setLayoutX(0);
+		// root.setLayoutY(0);
 		root.setManaged(false); // IMPORTANT
 
 		center.setPannable(true);
 		// center.setFitToHeight(false);
 		// center.setFitToWidth(false);
-		center.setVbarPolicy(ScrollBarPolicy.AS_NEEDED);
-		center.setHbarPolicy(ScrollBarPolicy.AS_NEEDED);
+		center.setVbarPolicy(ScrollBarPolicy.NEVER);
+		center.setHbarPolicy(ScrollBarPolicy.NEVER);
 
 		// GridPane inputPane = new GridPane();
 		// inputPane.add(console, 0, 0);

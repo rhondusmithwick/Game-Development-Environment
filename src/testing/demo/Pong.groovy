@@ -8,7 +8,6 @@ import javax.script.ScriptEngine
 import model.component.movement.Orientation
 import model.component.movement.Position
 import model.component.visual.ImagePath
-import model.entity.Entity
 import model.physics.PhysicsEngine
 import usecases.SystemManager
 import api.IEntity
@@ -38,12 +37,8 @@ public class Pong {
 		shell.setVariable("game", this.model);
 		IEntitySystem universe = this.model.getEntitySystem();
 		shell.setVariable("universe", universe);
-		shell.setVariable("demo", new GroovyDemoTest());
-
-		IEntity platform = new Entity();
-		// TODO: add Collision component to platform, make sure it's immovable
-		//		platform.addComponents(new Collision());
-		universe.addEntity(platform);
+		GroovyDemoTest test = new GroovyDemoTest();
+		shell.setVariable("demo", test);
 	}
 
 	public void update(double dt) {
