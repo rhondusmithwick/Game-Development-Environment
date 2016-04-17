@@ -163,6 +163,34 @@ public class PhysicsEngine implements IPhysicsEngine {
 		return hitBoxes;
 	}
 	
+	private void getSideOfCollision(Position firstEntityPos, Position secondEntityPos) {
+		Vector entityOneToTwo = new Vector(firstEntityPos.getX()-secondEntityPos.getX(),
+											firstEntityPos.getX()-secondEntityPos.getY());
+		Vector referenceVector = new Vector(0, 1);
+		double angle = Math.acos(getDotProduct(entityOneToTwo, referenceVector));
+		if (angle >= 315 || angle < 45) {
+			//TOP COLLISION
+		}
+		else if (angle < 315 && angle >= 225) {
+			//LEFT COLLISION
+		}
+		else if (angle < 225 && angle >= 135) {
+			//BOT COLLISION
+		}
+		else { //angle < 135 && angle >=45
+			//RIGHT COLLISION
+		}
+	}
+	
+	private double getDotProduct(Vector a, Vector b) {
+		return a.getXComponent()*b.getXComponent() + a.getYComponent()*b.getYComponent();
+	}
+	
+	private Vector normalizePosition(Vector entityDiff) {
+		double length = Math.sqrt(Math.pow(entityDiff.getXComponent(), 2) + Math.pow(entityDiff.getYComponent(), 2));
+		return new Vector(entityPos.getX()/length, entityPos.getY()/length);
+	}
+	
 	public void setGravityActive(boolean gravityActive) {
 		this.gravityActive = gravityActive;
 	}
