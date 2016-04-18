@@ -1,12 +1,7 @@
 package events;
 
-import java.util.Observable;
-
 import api.IComponent;
 import api.IEntitySystem;
-import api.ISerializable;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 /***
  * 

@@ -8,7 +8,6 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
-
 /**
  * This is the main program, it is basically boilerplate to create
  * an animated scene.
