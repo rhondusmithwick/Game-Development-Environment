@@ -18,8 +18,10 @@ import javafx.scene.shape.Rectangle;
 
 public class DefaultsMaker {
 	
+
 	private final static String backgroundName = "Default Waterfall Background";
 	private final static String backgroundPath = "resources/images/movingwaterfall.gif";
+
 	private final static String platformName = "Default Mario Platform";
 	private final static String platformPath = "resources/images/marioplatform.jpeg";
 	private final static String character1Name = "Character 1";
@@ -74,6 +76,7 @@ public class DefaultsMaker {
 	}
 	
 	private static Rectangle imagePathToFitRectangle(ImagePath path){
+
 		if (path.getImageHeight()==0 || path.getImageWidth() == 0){
 		}
 		return new Rectangle((int) path.getImageHeight(), (int) path.getImageWidth());
