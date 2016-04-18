@@ -24,9 +24,9 @@ import datamanagement.XMLWriter;
  */
 public class EventSystem implements Observer, IEventSystem {
 
-	IEntitySystem universe;
-	InputSystem inputSystem;
-	Map<Trigger, Action> actionMap = new HashMap<>();
+	private IEntitySystem universe;
+	private InputSystem inputSystem;
+	private Map<Trigger, Action> actionMap = new HashMap<>();
 
 	public EventSystem(IEntitySystem universe, InputSystem inputSystem) {
 		this.universe = universe;
