@@ -32,16 +32,16 @@ import view.Utilities;
 public class EditorEnvironment extends Editor {
 
 	private BorderPane environmentPane;
-	private VBox entityOptions;
-	private IEntitySystem entitiesInEnvironment;
+	private IEntitySystem myEntitySystem;
 	private SubScene gameScene;
 	private Group gameRoot;
 	private ResourceBundle myResources;
-	private ObservableList<ISerializable> entitiesToDisplay;
-	private ObservableList<ISerializable> finalEnvironmentList;
+	private ObservableList<ISerializable> masterEntityList;
+	private ObservableList<ISerializable> allEnvironmentsList;
 	private VBox leftPane;
 	private VBox rightPane;
-	private VBox entitiesCurrentlyIn;
+	private VBox masterEntityButtons;
+	private VBox environmentEntityButtons;
 	private TextField nameField;
 
 	public EditorEnvironment(String language, ISerializable toEdit, ObservableList<ISerializable> masterList,
@@ -50,9 +50,9 @@ public class EditorEnvironment extends Editor {
 		masterList.addListener((ListChangeListener<? super ISerializable>) c -> {
 			this.updateDisplay(masterList);
 		});
-		entitiesToDisplay = masterList;
-		entitiesInEnvironment = (IEntitySystem) toEdit;
-		finalEnvironmentList = addToList;
+		masterEntityList = masterList;
+		myEntitySystem = (IEntitySystem) toEdit;
+		allEnvironmentsList = addToList;
 		addLayoutComponents();
 		
 		/*// TODO: don't hard code
@@ -92,21 +92,21 @@ public class EditorEnvironment extends Editor {
 
 	private TextField setNameDisplay() {
 		nameField = new TextField();
-		if (entitiesInEnvironment.getName().equals("")) {
+		if (myEntitySystem.getName().equals("")) {
 			nameField.setText(myResources.getString("environmentName"));
 		} else {
-			nameField.setText(entitiesInEnvironment.getName());
+			nameField.setText(myEntitySystem.getName());
 		}
 		return nameField;
 	}
 
 	private ScrollPane setEntityOptionsDisplay() {
-		entityOptions = new VBox();
-		if (entitiesToDisplay.isEmpty()) {
+		masterEntityButtons = new VBox();
+		if (masterEntityList.isEmpty()) {
 			loadDefaults();
 		}
-		populateVbox(entityOptions, entitiesToDisplay);
-		return (new ScrollPane(entityOptions));
+		populateVbox(masterEntityButtons, masterEntityList);
+		return (new ScrollPane(masterEntityButtons));
 	}
 
 	private void populateVbox(VBox vbox, ObservableList<ISerializable> entityPopulation) {
@@ -123,10 +123,10 @@ public class EditorEnvironment extends Editor {
 	public void loadDefaults() {
 		if (Utilities.showAlert(myResources.getString("addDefaults"), myResources.getString("addDefaultsQuestion"),
 				myResources.getString("defaultsMessage"), AlertType.CONFIRMATION)) {
-			entitiesToDisplay.add(DefaultsMaker.loadBackgroundDefault());
+			masterEntityList.add(DefaultsMaker.loadBackgroundDefault());
 			//entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay));
-			entitiesToDisplay.add(DefaultsMaker.loadCharacter1Default());
-			entitiesToDisplay.add(DefaultsMaker.loadCharacter2Default());
+			masterEntityList.add(DefaultsMaker.loadCharacter1Default());
+			masterEntityList.add(DefaultsMaker.loadCharacter2Default());
 		}
 	}
 
@@ -141,8 +141,8 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private ScrollPane setEntitiesInEnvironmentDisplay() {
-		entitiesCurrentlyIn = new VBox();
-		return (new ScrollPane(entitiesCurrentlyIn));
+		environmentEntityButtons = new VBox();
+		return (new ScrollPane(environmentEntityButtons));
 	}
 
 	private void setGameScene() {
@@ -150,7 +150,7 @@ public class EditorEnvironment extends Editor {
 		gameScene = new SubScene(gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()),
 				GUISize.HEIGHT_MINUS_TAB.getSize());
 		gameScene.setFill(Color.WHITE);
-		for (IEntity entity : entitiesInEnvironment.getAllEntities()) {
+		for (IEntity entity : myEntitySystem.getAllEntities()) {
 			addToScene(entity);
 		}
 	}
@@ -160,34 +160,46 @@ public class EditorEnvironment extends Editor {
 			if (!entity.hasComponent(Position.class) || !entity.hasComponent(ImagePath.class)) {
 				addComponents(entity);
 			}
-			Position pos = entity.getComponent(Position.class);
-			ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
-			DragAndResize.makeResizable(entity.getComponent(ImagePath.class), pos);
-			entitiesInEnvironment.addEntity(entity);
-			Button entityInButton = new Button(entity.getName());
-			entityInButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-	            @Override
-	            public void handle(MouseEvent event) {
-	                MouseButton button = event.getButton();
-	                if(button==MouseButton.PRIMARY){
-	                		entityLeftClicked(entity,entityInButton);
-	                }
-	                else if(button == MouseButton.SECONDARY){
-	                	entityRightClicked(entity,entityInButton);
-	                }
-	            }
-	        });
-			entitiesCurrentlyIn.getChildren().add(entityInButton);
-			entityView.setTranslateX(pos.getX());
-			entityView.setTranslateY(pos.getY());
-			gameRoot.getChildren().add(entityView);
-
+			myEntitySystem.addEntity(makeResizable(entity));
+			environmentEntityButtons.getChildren().add(createEntityButton(entity));
+			gameRoot.getChildren().add(createEntityImageView(entity));
 		} catch (Exception e) {
 			Utilities.showAlert(myResources.getString("error"), null, myResources.getString("unableToAdd"),
 				AlertType.ERROR);
 		}
 	}
 	
+	private ImageView createEntityImageView(IEntity entity) {
+		Position pos = entity.getComponent(Position.class);
+		ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
+		entityView.setTranslateX(pos.getX());
+		entityView.setTranslateY(pos.getY());
+		return entityView;
+	}
+
+	private Button createEntityButton(IEntity entity) {
+		Button entityInButton = new Button(entity.getName());
+		entityInButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                MouseButton button = event.getButton();
+                if(button==MouseButton.PRIMARY){
+                		entityLeftClicked(entity,entityInButton);
+                }
+                else if(button == MouseButton.SECONDARY){
+                	entityRightClicked(entity,entityInButton);
+                }
+            }
+        });
+		return entityInButton;
+	}
+
+	private IEntity makeResizable(IEntity entity) {
+		Position pos = entity.getComponent(Position.class);
+		DragAndResize.makeResizable(entity.getComponent(ImagePath.class), pos);
+		return entity;
+	}
+
 	private void entityRightClicked(IEntity entity, Button entityButton) {
 		removeFromDisplay(entity,entityButton);
 	}
@@ -215,13 +227,13 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void updateDisplay(ObservableList<ISerializable> masterList) {
-		entitiesToDisplay = masterList;
-		populateVbox(entityOptions, entitiesToDisplay);
+		masterEntityList = masterList;
+		populateVbox(masterEntityButtons, masterEntityList);
 	}
 
 	@Override
 	public void updateEditor() {
-		populateVbox(entityOptions, entitiesToDisplay);
+		populateVbox(masterEntityButtons, masterEntityList);
 	}
 
 	@Override
@@ -233,9 +245,9 @@ public class EditorEnvironment extends Editor {
 
 	private void saveEnvironment() {
 		String name = getName();
-		entitiesInEnvironment.setName(name);
-		finalEnvironmentList.remove(entitiesInEnvironment);
-		finalEnvironmentList.add(entitiesInEnvironment);
+		myEntitySystem.setName(name);
+		allEnvironmentsList.remove(myEntitySystem);
+		allEnvironmentsList.add(myEntitySystem);
 		environmentPane.getChildren().clear();
 		environmentPane.setCenter(saveMessage(myResources.getString("saveMessage")));
 	}
@@ -274,12 +286,12 @@ public class EditorEnvironment extends Editor {
 
 	private void removeFromDisplay(IEntity entity, Button entityButton) {
 		gameRoot.getChildren().remove(entity.getComponent(ImagePath.class).getImageView());
-		entitiesInEnvironment.removeEntity(entity.getID());
-		entitiesCurrentlyIn.getChildren().remove(entityButton);
+		myEntitySystem.removeEntity(entity.getID());
+		environmentEntityButtons.getChildren().remove(entityButton);
 	}
 
 	public IEntitySystem getEntitySystem() {
-		return entitiesInEnvironment;
+		return myEntitySystem;
 	}
 
 	@Override
@@ -289,15 +301,15 @@ public class EditorEnvironment extends Editor {
 
 	@Override
 	public void addSerializable(ISerializable serialize) {
-		entitiesInEnvironment.addEntity((IEntity) serialize);
+		myEntitySystem.addEntity((IEntity) serialize);
 	}
 
 	public boolean displayContains(IEntity checkEntity) {
-		return entitiesToDisplay.contains(checkEntity);
+		return masterEntityList.contains(checkEntity);
 	}
 
 	public boolean environmentContains(IEntity checkEntity) {
-		return entitiesInEnvironment.containsEntity(checkEntity);
+		return myEntitySystem.containsEntity(checkEntity);
 	}
 
 	/*
