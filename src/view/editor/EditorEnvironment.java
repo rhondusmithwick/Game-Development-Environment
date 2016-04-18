@@ -1,6 +1,11 @@
 package view.editor;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import api.IEntity;
 import api.IEntitySystem;
@@ -8,6 +13,7 @@ import api.ISerializable;
 import enums.GUISize;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
 import javafx.scene.SubScene;
@@ -25,6 +31,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
+import model.entity.EntitySystem;
 import view.DefaultsMaker;
 import view.DragAndResize;
 import view.Utilities;
@@ -54,29 +61,27 @@ public class EditorEnvironment extends Editor {
 		myEntitySystem = (IEntitySystem) toEdit;
 		allEnvironmentsList = addToList;
 		addLayoutComponents();
-		
-		/*// TODO: don't hard code
-		double MILLISECOND_DELAY = 10;
-		double SECOND_DELAY = MILLISECOND_DELAY/1000;
-		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> this.step(SECOND_DELAY));
-		Timeline animation = new Timeline();
-		animation.setCycleCount(Timeline.INDEFINITE);
-		animation.getKeyFrames().add(frame);
-		animation.play();*/
+
+		/*
+		 * // TODO: don't hard code double MILLISECOND_DELAY = 10; double
+		 * SECOND_DELAY = MILLISECOND_DELAY/1000; KeyFrame frame = new
+		 * KeyFrame(Duration.millis(MILLISECOND_DELAY), e ->
+		 * this.step(SECOND_DELAY)); Timeline animation = new Timeline();
+		 * animation.setCycleCount(Timeline.INDEFINITE);
+		 * animation.getKeyFrames().add(frame); animation.play();
+		 */
 	}
 
-/*	private void step(double dt) {
-		IPhysicsEngine p = new PhysicsEngine(null);
-		p.update(getEntitySystem(), dt);
-		for(IEntity e: getEntitySystem().getEntitiesWithComponent(Position.class)) {
-			ImagePath imagePath = e.getComponent(ImagePath.class);
-			ImageView imageView = imagePath.getImageView();
-			Position pos = e.getComponent(Position.class);
-			imageView.setTranslateX(pos.getX());
-			imageView.setTranslateY(pos.getY());
-		}
-	}*/
-	
+	/*
+	 * private void step(double dt) { IPhysicsEngine p = new
+	 * PhysicsEngine(null); p.update(getEntitySystem(), dt); for(IEntity e:
+	 * getEntitySystem().getEntitiesWithComponent(Position.class)) { ImagePath
+	 * imagePath = e.getComponent(ImagePath.class); ImageView imageView =
+	 * imagePath.getImageView(); Position pos = e.getComponent(Position.class);
+	 * imageView.setTranslateX(pos.getX()); imageView.setTranslateY(pos.getY());
+	 * } }
+	 */
+
 	private void addLayoutComponents() {
 		environmentPane = new BorderPane();
 		setLeftPane();
@@ -113,10 +118,15 @@ public class EditorEnvironment extends Editor {
 		vbox.getChildren().clear();
 		for (ISerializable entity : entityPopulation) {
 			Button addEntityButton = Utilities.makeButton(((IEntity) entity).getName(),
-					e -> addToScene(Utilities.copyEntity((IEntity) entity)));
+					e -> addToSystemAndScene(Utilities.copyEntity((IEntity) entity)));
 			(addEntityButton).setMaxWidth(Double.MAX_VALUE);
 			vbox.getChildren().add(addEntityButton);
 		}
+	}
+
+	private void addToSystemAndScene(IEntity entity) {
+		myEntitySystem.addEntity(makeResizable(entity));
+		addToScene(entity);
 	}
 
 	@Override
@@ -124,7 +134,7 @@ public class EditorEnvironment extends Editor {
 		if (Utilities.showAlert(myResources.getString("addDefaults"), myResources.getString("addDefaultsQuestion"),
 				myResources.getString("defaultsMessage"), AlertType.CONFIRMATION)) {
 			masterEntityList.add(DefaultsMaker.loadBackgroundDefault());
-			//entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay));
+			// entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay));
 			masterEntityList.add(DefaultsMaker.loadCharacter1Default());
 			masterEntityList.add(DefaultsMaker.loadCharacter2Default());
 		}
@@ -154,21 +164,21 @@ public class EditorEnvironment extends Editor {
 			addToScene(entity);
 		}
 	}
-	
+
 	private void addToScene(IEntity entity) {
 		try {
 			if (!entity.hasComponent(Position.class) || !entity.hasComponent(ImagePath.class)) {
 				addComponents(entity);
 			}
-			myEntitySystem.addEntity(makeResizable(entity));
+			makeResizable(entity);
 			environmentEntityButtons.getChildren().add(createEntityButton(entity));
 			gameRoot.getChildren().add(createEntityImageView(entity));
 		} catch (Exception e) {
 			Utilities.showAlert(myResources.getString("error"), null, myResources.getString("unableToAdd"),
-				AlertType.ERROR);
+					AlertType.ERROR);
 		}
 	}
-	
+
 	private ImageView createEntityImageView(IEntity entity) {
 		Position pos = entity.getComponent(Position.class);
 		ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
@@ -180,17 +190,16 @@ public class EditorEnvironment extends Editor {
 	private Button createEntityButton(IEntity entity) {
 		Button entityInButton = new Button(entity.getName());
 		entityInButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                MouseButton button = event.getButton();
-                if(button==MouseButton.PRIMARY){
-                		entityLeftClicked(entity,entityInButton);
-                }
-                else if(button == MouseButton.SECONDARY){
-                	entityRightClicked(entity,entityInButton);
-                }
-            }
-        });
+			@Override
+			public void handle(MouseEvent event) {
+				MouseButton button = event.getButton();
+				if (button == MouseButton.PRIMARY) {
+					entityLeftClicked(entity, entityInButton);
+				} else if (button == MouseButton.SECONDARY) {
+					entityRightClicked(entity, entityInButton, event);
+				}
+			}
+		});
 		return entityInButton;
 	}
 
@@ -199,30 +208,52 @@ public class EditorEnvironment extends Editor {
 		DragAndResize.makeResizable(entity.getComponent(ImagePath.class), pos);
 		return entity;
 	}
-
-	private void entityRightClicked(IEntity entity, Button entityButton) {
-		removeFromDisplay(entity,entityButton);
-	}
 	
-	private void entityLeftClicked(IEntity entity, Button entityInButton) {
-		highlight(entity);
+	private void entityRightClicked(IEntity entity, Button entityButton, MouseEvent event) {
+		highlight(entity, true);
+		Map<String, EventHandler<ActionEvent>> menuMap = new HashMap<String, EventHandler<ActionEvent>>();
+		menuMap.put(myResources.getString("remove"), e -> removeFromDisplay(entity, entityButton));
+		menuMap.put(myResources.getString("sendBack"), e -> sendToBack(entity));
+		entityButton.setContextMenu(Utilities.createContextMenu(menuMap));
 	}
 
-	private void highlight(IEntity entity) {
-		ImageView view = entity.getComponent(ImagePath.class).getImageView();
-		
-		if(view.getEffect() != null){
-			view.setEffect(null);
+	private void sendToBack(IEntity entity) {
+		myEntitySystem = reorder(entity, myEntitySystem);
+		environmentEntityButtons.getChildren().clear();
+		gameRoot.getChildren().clear();
+		for (IEntity addEntity : myEntitySystem.getAllEntities()) {
+			addToScene(addEntity);
 		}
-		else{
-		int depth = 70;
-        DropShadow borderGlow = new DropShadow();
-        borderGlow.setOffsetY(0f);
-        borderGlow.setOffsetX(0f);
-        borderGlow.setColor(Color.YELLOW);
-        borderGlow.setWidth(depth);
-        borderGlow.setHeight(depth);
-        view.setEffect(borderGlow);
+	}
+
+	private IEntitySystem reorder(IEntity entity, IEntitySystem entitySystem) {
+		entitySystem.removeEntity(entity.getID());
+		Collection<IEntity> entitiesLeft = entitySystem.getAllEntities();
+		List<IEntity> allEntitiesIn = new ArrayList<IEntity>();
+		allEntitiesIn.addAll(entitiesLeft);
+		entitySystem = new EntitySystem();
+		entitySystem.addEntity(entity);
+		entitySystem.addEntities(allEntitiesIn);
+		return entitySystem;
+	}
+
+	private void entityLeftClicked(IEntity entity, Button entityInButton) {
+		highlight(entity, false);
+	}
+
+	private void highlight(IEntity entity, boolean alwaysHighlight) {
+		ImageView view = entity.getComponent(ImagePath.class).getImageView();
+		if (view.getEffect() != null && !alwaysHighlight) {
+			view.setEffect(null);
+		} else {
+			int depth = 70;
+			DropShadow borderGlow = new DropShadow();
+			borderGlow.setOffsetY(0f);
+			borderGlow.setOffsetX(0f);
+			borderGlow.setColor(Color.YELLOW);
+			borderGlow.setWidth(depth);
+			borderGlow.setHeight(depth);
+			view.setEffect(borderGlow);
 		}
 	}
 
@@ -311,13 +342,5 @@ public class EditorEnvironment extends Editor {
 	public boolean environmentContains(IEntity checkEntity) {
 		return myEntitySystem.containsEntity(checkEntity);
 	}
-
-	/*
-	 * entityView.setOnMouseClicked(new EventHandler<MouseEvent>() {
-	 * 
-	 * @Override public void handle(MouseEvent event) { MouseButton button =
-	 * event.getButton(); if (button == MouseButton.SECONDARY) {
-	 * removeFromDisplay(entityView, newEntity); } } });
-	 */
 
 }
