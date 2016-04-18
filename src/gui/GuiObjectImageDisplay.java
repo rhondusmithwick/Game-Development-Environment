@@ -40,6 +40,9 @@ public class GuiObjectImageDisplay extends GuiObject {
 	}
 
 	private void setImage(File file) {
+		if(file==null){
+			return;
+		}
 		property.setValue(file.getPath());
 		preview.setImage(new Image(file.toURI().toString()));
 		preview.setFitHeight(100);

@@ -1,4 +1,6 @@
 package view.editor.eventeditor;
+import java.util.ResourceBundle;
+
 import api.ISerializable;
 import javafx.collections.ObservableList;
 import model.entity.Entity;
@@ -6,9 +8,10 @@ import model.entity.Entity;
 
 public class EntityTable extends Table
 {
-	public EntityTable(ObservableList<ISerializable> entities, TableManager manager)
+	
+	public EntityTable(ObservableList<ISerializable> entities, TableManager manager, String language)
 	{
-		super(manager, "Pick Entity");	// TODO resource file
+		super(manager, ResourceBundle.getBundle(language).getString("pickEntity"));	// TODO resource file
 		
 		// Add change listener
 		getTable().

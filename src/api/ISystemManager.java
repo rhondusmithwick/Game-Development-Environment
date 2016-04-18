@@ -3,7 +3,6 @@ package api;
 import java.util.List;
 
 import datamanagement.XMLReader;
-import javafx.animation.Timeline;
 
 /**
  * Created by rhondusmithwick on 3/31/16.
@@ -13,29 +12,19 @@ import javafx.animation.Timeline;
 public interface ISystemManager extends ISerializable {
 
 	/**
+	 * This will play the game loop.
+	 */
+	void play();
+
+	/**
 	 * This will pause the game loop.
 	 */
 	void pauseLoop();
 
 	/**
-	 * This will build the game's loop.
-	 *
-	 * @return the game's loop
-	 */
-	Timeline buildLoop();
-
-	/**
 	 * This will step the game's loop.
 	 */
 	void step(double dt);
-
-	/**
-	 * Get all systems.
-	 *
-	 * @return a list of the systems
-	 */
-	@Deprecated
-	List<ISystem> getSystems();
 
 	/**
 	 * Get the current entity system

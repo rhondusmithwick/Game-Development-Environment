@@ -28,7 +28,7 @@ import model.entity.EntitySystem;
 import model.physics.PhysicsEngine;
 
 public class BenTest extends Application {
-	private static final String IMAGE_PATH = "resources/RhonduSmithwick.JPG";
+	private static final String IMAGE_PATH = "resources/testing/RhonduSmithwick.JPG";
 	private static ImageView testSprite; // BAD PRACTICE: USE final WHENEVER
 											// POSSIBLE, DON'T BE LIKE ME!
 	private static IPhysicsEngine physics; // TODO: remove these things
@@ -59,7 +59,7 @@ public class BenTest extends Application {
 		IEntitySystem system = new EntitySystem();
 		system.addEntities(list);
 		// TODO: don't lazy-initialize!
-		physics = new PhysicsEngine(system);
+		physics = new PhysicsEngine();
 
 		// TODO: seriously, don't lazy-initialize
 		testSprite = createImage(character.getComponent(ImagePath.class), character.getComponent(Position.class));
