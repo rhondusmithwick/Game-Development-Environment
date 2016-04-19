@@ -1,9 +1,14 @@
 package testing.demo
 
+import javafx.scene.image.ImageView
 import model.component.character.Health
 import model.component.character.Score
 import model.component.movement.Position
 import model.component.movement.Velocity
+import model.component.physics.Collision
+import model.component.physics.Gravity
+import model.component.physics.Mass
+import model.component.physics.RestitutionCoefficient
 import model.component.visual.ImagePath
 import model.entity.Entity
 import api.IEntity
@@ -14,41 +19,37 @@ import api.ISystemManager
  * Created by Tom on 4/13/2016.
  */
 class GroovyDemoTest {
-	String IMAGE_PATH = "resources/RhonduSmithwick.JPG"
-
-	IEntity getCharacter0() {
+	IEntity getRhondu() {
 		IEntity character = new Entity()
 		character.addComponent(new Health((double) 100))
 		character.addComponent(new Score((double) 100))
-		Position pos = new Position(250.0, 250.0)
+		Position pos = new Position(200.0, 0.0)
 		character.addComponent(pos)
-		character.addComponent(new ImagePath(IMAGE_PATH))
-		character.addComponent(new Velocity(10.0, 10.0))
+		ImagePath path = new ImagePath();
+		ImageView img = path.getImageView();
+		img.setScaleX(0.10)
+		img.setScaleY(0.10)
+		character.addComponents(path, new Velocity(20.0, -20.0), new Gravity(400),
+				new Collision(Arrays.asList("rhondu")), new RestitutionCoefficient(0.2), new Mass(5))
 		return character
 	}
 
-	IEntity getCharacter1() {
-		IEntity character = new Entity()
-		character.addComponent(new Health((double) 100))
-		character.addComponent(new Score((double) 100))
-		Position pos = new Position(250.0, 250.0)
-		character.addComponent(pos)
-		character.addComponent(new ImagePath(IMAGE_PATH))
-		character.addComponent(new Velocity(10.0, -10.0))
-		return character
+	IEntity getPlatform() {
+		IEntity platform = new Entity();
+		ImagePath path = new ImagePath();
+		ImageView img = path.getImageView();
+		//		img.setScaleX(0.10)
+		//		img.setScaleY(0.10)
+		platform.addComponents(path, new Position(100, 300));
+		// TODO: fix crash with the following components added
+		//				new Collision(Arrays.asList("platform")), new RestitutionCoefficient(0.2), new Mass(100));
+		return platform;
 	}
 
-	static void run(ISystemManager game) {
+	IEntity run(ISystemManager game) {
 		IEntitySystem universe = game.getEntitySystem()
-		GroovyDemoTest test = new GroovyDemoTest()
-		universe.addEntities(test.getCharacter0(), test.getCharacter1())
-	}
-
-	static void saveSystem(IEntitySystem universe) {
-		universe.serialize("test.sav")
-	}
-
-	static void loadSystem(ISystemManager game, String filename) {
-		game.evaluate("test.sav")
+		IEntity r = this.getRhondu()
+		universe.addEntities(r, this.getPlatform());
+		return r
 	}
 }

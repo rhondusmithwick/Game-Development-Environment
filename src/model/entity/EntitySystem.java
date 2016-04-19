@@ -3,6 +3,7 @@ package model.entity;
 import java.util.Collection;
 import java.util.Map;
 
+import api.IComponent;
 import api.IEntity;
 import api.IEntitySystem;
 
@@ -66,7 +67,8 @@ public class EntitySystem implements IEntitySystem {
 	@Override
 	public boolean removeEntity(String id) {
 		if (containsID(id)) {
-			entities.remove(id);
+			IEntity entity = entities.remove(id);
+			entity.getAllComponents().stream().forEach(IComponent::removeBindings);
 			return true;
 		}
 		return false;

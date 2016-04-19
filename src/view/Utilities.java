@@ -1,13 +1,14 @@
 package view;
 
 import java.io.File;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.security.CodeSource;
 import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Optional;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -19,14 +20,14 @@ import api.IEntity;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.TitledPane;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
@@ -83,17 +84,16 @@ public class Utilities {
 		alert.show();
 	}
 
-	public static TableView<String> makeSingleColumnTable( String title, double width )
-	{
+	public static TableView<String> makeSingleColumnTable(String title, double width) {
 		TableView<String> table = new TableView<String>();
 		table.setPrefWidth(width);
 		TableColumn column = new TableColumn(title);
 		column.minWidthProperty().bind(table.prefWidthProperty());
 		column.maxWidthProperty().bind(table.prefWidthProperty());
 		table.getColumns().add(column);
-		
+
 		table.setEditable(true);
-		
+
 		return table;
 	}
 
@@ -269,13 +269,17 @@ public class Utilities {
 	/**
 	 * Creates a Titled Pane, with all content already inside.
 	 * 
-	 * @param String title: Title that will appear on the top of the Pane
-	 * @param Node content: Content to be added. It can be a Group or a VBox or HBox.
-	 * @param boolean collapsable: If it's collapsable, the pane will not be expanded. If it isn't, it will.
+	 * @param String
+	 *            title: Title that will appear on the top of the Pane
+	 * @param Node
+	 *            content: Content to be added. It can be a Group or a VBox or
+	 *            HBox.
+	 * @param boolean
+	 *            collapsable: If it's collapsable, the pane will not be
+	 *            expanded. If it isn't, it will.
 	 * @return TitledPane pane, already initialized.
 	 */
-	public static TitledPane makeTitledPane(String title, Node content, boolean collapsable)
-	{
+	public static TitledPane makeTitledPane(String title, Node content, boolean collapsable) {
 		TitledPane pane = new TitledPane(title, content);
 		pane.setCollapsible(collapsable);
 		pane.setExpanded(!collapsable);
@@ -313,6 +317,15 @@ public class Utilities {
 		return files;
 	}
 
+	/**
+	 * Creates an IEntity copy of the given IEntity with the same specs,
+	 * components, and component values.
+	 * 
+	 * @param IEntity
+	 *            entity: given IEntity to copy
+	 * @return IEntity newEntity: returned copy of the given IEntity
+	 */
+
 	public static IEntity copyEntity(IEntity entity) {
 		IEntity newEntity = new Entity(entity.getName());
 		newEntity.setSpecs(entity.getSpecs());
@@ -343,6 +356,18 @@ public class Utilities {
 		filters.add(new FileChooser.ExtensionFilter("JPG", "*.jpg"));
 		filters.add(new FileChooser.ExtensionFilter("PNG", "*.png"));
 		return filters;
+	}
+
+	public static ContextMenu createContextMenu(Map<String, EventHandler<ActionEvent>> menuMap) {
+		ContextMenu context = new ContextMenu();
+		List<MenuItem> menuItems = new ArrayList<MenuItem>();
+		for (Entry<String, EventHandler<ActionEvent>> entry : menuMap.entrySet()) {
+			MenuItem item = new MenuItem(entry.getKey());
+			item.setOnAction(entry.getValue());
+			menuItems.add(item);
+		}
+		context.getItems().addAll(menuItems);
+		return context;
 	}
 
 }

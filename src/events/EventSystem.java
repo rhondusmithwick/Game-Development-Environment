@@ -22,10 +22,11 @@ import datamanagement.XMLWriter;
  *         triggers in some sort of factory fashion
  *
  */
-public class EventSystem implements Observer, IEventSystem{
-	IEntitySystem universe;
-	InputSystem inputSystem;
-	Map<Trigger, Action> actionMap = new HashMap<>();
+public class EventSystem implements Observer, IEventSystem {
+
+	private IEntitySystem universe;
+	private InputSystem inputSystem;
+	private Map<Trigger, Action> actionMap = new HashMap<>();
 
 	public EventSystem(IEntitySystem universe, InputSystem inputSystem) {
 		this.universe = universe;
