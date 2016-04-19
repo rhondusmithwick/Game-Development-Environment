@@ -1,5 +1,5 @@
 package gui;
- 
+
 import java.util.ResourceBundle;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleObjectProperty;
@@ -14,50 +14,28 @@ import javafx.beans.property.SimpleObjectProperty;
 
 
 public class GuiObjectFactory {
-	private static final String GUI_RESOURCES = "guiComponents";
+	private static final String GUI_RESOURCES = "guiObject/guiComponents";
+	private static final String GUI_FACTORY = "guiObject/GuiObjectFactory";
 	private String myLanguage;
+	private ResourceBundle myBundle = ResourceBundle.getBundle(GUI_FACTORY);
 
 	public GuiObjectFactory(String language){
 		myLanguage=  language;
 	}
 	@SuppressWarnings("unchecked")
-	public GuiObject createNewGuiObject(String type, SimpleObjectProperty<?> property, Object object){
+	public GuiObject createNewGuiObject(String type, SimpleObjectProperty<?> property, Object object){ 
+		if(myBundle.containsKey(type)) {
+			String obj = myBundle.getString(type);
+			switch(obj){
+				case("GuiObjectSlider"):{
+					return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
+				}
+				case("GuiObjectImageDisplay"):{
+					return new GuiObjectImageDisplay(type, GUI_RESOURCES, myLanguage, (Property<String>) property, object);
+				}
 
-		switch(type){
-			case("Attack"):{
-				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
 			}
-			case("Defense"):{
-				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
-			}
-			case("Beta"):{
-				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
-			}
-			case("Health"):{
-				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
-			}
-			case("Lives"):{
-				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
-			}
-			case("Mass"):{
-				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
-			}
-			case("Orientation"):{
-				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
-			}
-			case("Score"):{
-				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
-			}
-			case("Speed"):{
-				return new GuiObjectSlider(type, GUI_RESOURCES,null, property, object);
-			}
-			case("ImagePath"):{
-				System.out.println(property.getName());
-				return new GuiObjectImageDisplay(type, GUI_RESOURCES, myLanguage, (Property<String>) property, object);
-			}
-
 		}
-		
 		return null;
 	}
 }

@@ -1,0 +1,75 @@
+.vbox {
+	-fx-background-color: rgb(74, 181, 128);
+}
+
+.hbox {
+	-fx-background-color: rgb(203, 222, 213);
+	-fx-border-style: dashed;
+	-fx-border-color: white;
+}
+
+.tab-pane {
+	-fx-background-color: rgb(74, 181, 128);
+}
+
+.tab-pane *.tab {
+	-fx-font-size: 14px;
+	-fx-font-family: "baskerville";
+	-fx-text-fill: black;
+	-fx-font-weight: bold;
+	-fx-background-color: white;
+	-fx-border-color: black black transparent black;
+	-fx-border-radius: 2;
+}
+
+.button {
+	-fx-font-size: 14px;
+	-fx-font-family: "baskerville";
+	-fx-text-fill: black;
+	-fx-font-weight: bold;
+	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+.button:hover, .combo-box:hover {
+	-fx-background-color: white;
+}
+
+.combo-box {
+	-fx-font-size: 14px;
+	-fx-font-family: "baskerville";
+	-fx-font-weight: bold;
+	-fx-text-fill: black;
+	-fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1 );
+}
+
+.label {
+	-fx-font-size: 16px;
+	-fx-font-family: "baskerville";
+	-fx-font-weight: bold;
+	-fx-text-fill: black;
+	-fx-background-color: aliceblue;
+	-fx-border-color: black;
+	-fx-padding: 5
+}
+
+.scroll-pane {
+	-fx-border-color: black;
+	-fx-border-radius: 2;
+}
+
+.text-field {
+	-fx-font-size: 12px;
+	-fx-font-family: "baskerville";
+	-fx-border-color: black;
+	-fx-border-radius: 2;
+}
+
+.title-text {
+	-fx-font-size: 48px;
+	-fx-font-family: "baskerville";
+	-fx-font-weight: bold;
+	-fx-text-alignment: center;
+	-fx-fill: white;
+	-fx-stroke: black;
+    -fx-stroke-width: 1;
+}

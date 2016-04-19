@@ -1,19 +1,16 @@
 package usecases;
 
-import java.util.List;
+import java.io.IOException;
+import java.io.ObjectInputStream;
 
 import api.IEntitySystem;
 import api.IEventSystem;
 import api.IPhysicsEngine;
-import api.ISystem;
 import api.ISystemManager;
-import javafx.animation.Timeline;
-
-import java.util.List;
-
+import events.EventSystem;
+import events.InputSystem;
 import model.entity.EntitySystem;
 import model.physics.PhysicsEngine;
-
 
 /**
  * Created by rhondusmithwick on 3/31/16.
@@ -21,26 +18,26 @@ import model.physics.PhysicsEngine;
  * @author Rhondu Smithwick
  */
 public class SystemManager implements ISystemManager {
-	// private IEventSystem eventSystem;
+	private transient IEventSystem eventSystem;
 	private IEntitySystem universe = new EntitySystem();
-	private IPhysicsEngine physics = new PhysicsEngine(null);
+	private transient IPhysicsEngine physics = new PhysicsEngine();
+	private boolean isRunning = true;
 
 	public SystemManager() {
+		this.eventSystem = new EventSystem(universe, new InputSystem(universe));
+		// eventSystem.init(universe);
 	}
 
 	@Override
 	public void pauseLoop() {
-
-	}
-
-	@Override
-	public Timeline buildLoop() {
-		return null;
+		this.isRunning = false;
 	}
 
 	@Override
 	public void step(double dt) {
-		physics.update(universe, dt);
+		if (this.isRunning) {
+			physics.update(universe, dt);
+		}
 	}
 
 	@Override
@@ -50,13 +47,17 @@ public class SystemManager implements ISystemManager {
 
 	@Override
 	public IEventSystem getEventSystem() {
-		// TODO Auto-generated method stub
-		return null;
+		return this.eventSystem;
 	}
 
 	@Override
-	public List<ISystem> getSystems() {
-		// TODO Auto-generated method stub
-		return null;
+	public void play() {
+		this.isRunning = true;
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+		this.eventSystem = new EventSystem(universe, new InputSystem(universe));
+		this.physics = new PhysicsEngine();
 	}
 }

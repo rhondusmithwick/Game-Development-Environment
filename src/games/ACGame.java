@@ -38,7 +38,11 @@ public class ACGame {
 	private final InputSystem inputSystem = new InputSystem(universe);
 	private final EventSystem eventSystem = new EventSystem(universe, inputSystem);
 	private final PhysicsEngine physics = new PhysicsEngine();
+<<<<<<< HEAD
 	private final String BG_IMAGE_PATH = "resources/images/movingwaterfall.gif";
+=======
+	private IEntity character;
+>>>>>>> 0b79d97d435fa38fbacc3be9cb50331a6d43819d
 	private final String IMAGE_PATH = "resources/images/blastoise.png";
 	private final String IMAGE_PATH2 = "resources/images/charizard.png";
 	private final String healthScriptPath = "resources/groovyScripts/ACGameTestScript.groovy";
