@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
@@ -83,6 +84,13 @@ public interface IEntity extends ISerializable {
         Preconditions.checkArgument(validIndex, "No such index");
         return componentStorage.get(index);
     }
+
+    /**
+     * Return all the component classes this entity contains.
+     *
+     * @return all the component classes this entity contains
+     */
+    Set<Class<? extends IComponent>> getComponentClasses();
 
     /**
      * Check if this entity has this component.
@@ -216,6 +224,15 @@ public interface IEntity extends ISerializable {
     @SuppressWarnings("unchecked")
     default List<Boolean> removeComponents(Class<? extends IComponent>... componentClassesToRemove) {
         return removeComponents(Arrays.asList(componentClassesToRemove));
+    }
+
+    /**
+     * Remove all the components of this entity.
+     *
+     * @return true if all components removed
+     */
+    default Boolean removeAllComponents() {
+        return getComponentClasses().stream().map(this::removeComponent).allMatch(p -> p.equals(true));
     }
 
     /**

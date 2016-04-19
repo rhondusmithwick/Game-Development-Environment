@@ -14,6 +14,7 @@ import javafx.collections.ObservableMap;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -67,6 +68,11 @@ public class Entity implements IEntity {
     @Override
     public Collection<IComponent> getAllComponents() {    	
         return componentMap.values().stream().flatMap(Collection::stream).collect(Collectors.toList());
+    }
+
+    @Override
+    public Set<Class<? extends IComponent>> getComponentClasses() {
+        return componentMap.keySet();
     }
 
     @Override
