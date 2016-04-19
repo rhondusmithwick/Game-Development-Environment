@@ -48,8 +48,8 @@ class GroovyDemoTest {
 
 	IEntity run(ISystemManager game) {
 		IEntitySystem universe = game.getEntitySystem()
-		IEntity s = this.getRhondu()
-		universe.addEntities(s, this.getPlatform());
-		return s
+		IEntity r = this.getRhondu()
+		universe.addEntities(r, this.getPlatform());
+		return r
 	}
 }
