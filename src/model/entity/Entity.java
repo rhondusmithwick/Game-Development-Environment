@@ -102,7 +102,8 @@ public class Entity implements IEntity {
     @Override
     public Boolean removeComponent(Class<? extends IComponent> componentClassToRemove) {
         if (componentMap.containsKey(componentClassToRemove)) {
-            componentMap.remove(componentClassToRemove);
+            List<IComponent> components = componentMap.remove(componentClassToRemove);
+            components.stream().forEach(IComponent::removeBindings);
             return true;
         }
         return false;
