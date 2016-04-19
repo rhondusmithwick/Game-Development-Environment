@@ -31,7 +31,7 @@ public interface IComponent extends ISerializable {
     /**
      * Gets any properties this component holds.
      *
-     * @return all the properties this coompoennt holds
+     * @return all the properties this component holds
      */
     default List<SimpleObjectProperty<?>> getProperties() {
         return Collections.emptyList();

@@ -42,6 +42,8 @@ public class TableManager
 	public void entityWasClicked(Entity entity)
 	{
 		setDefaultTriggerString(null);
+		componentTable.refreshTable();
+		propertyTable.refreshTable();
 		componentTable.fillEntries(entity);
 		this.entity = entity;
 	}
@@ -49,6 +51,7 @@ public class TableManager
 	public void componentWasClicked(IComponent component)
 	{
 		setDefaultTriggerString(null);
+		propertyTable.refreshTable();
 		propertyTable.fillEntries(component);
 		this.component = component;
 	}
