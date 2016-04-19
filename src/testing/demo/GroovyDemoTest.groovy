@@ -40,7 +40,7 @@ class GroovyDemoTest {
 		ImageView img = path.getImageView();
 		//		img.setScaleX(0.10)
 		//		img.setScaleY(0.10)
-		platform.addComponents(path, new Position(100, 300));
+		platform.addComponents(path, new Position(100, 300));//, new Collision(Arrays.asList("platform")), new RestitutionCoefficient(0.2), new Mass(100));
 		// TODO: fix crash with the following components added
 		//				new Collision(Arrays.asList("platform")), new RestitutionCoefficient(0.2), new Mass(100));
 		return platform;
