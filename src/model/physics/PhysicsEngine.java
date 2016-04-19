@@ -92,7 +92,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 	@Override
 	public void applyCollisions(IEntitySystem universe, boolean dynamicsOn) {
 		List<IEntity> collidableEntities = new ArrayList<IEntity>(
-				universe.getEntitiesWithComponents(Collision.class, ImagePath.class, RestitutionCoefficient.class));
+				universe.getEntitiesWithComponents(Collision.class, ImagePath.class, RestitutionCoefficient.class, Velocity.class));
 		clearCollisionComponents(collidableEntities);
 
 		for (int i = 0; i < collidableEntities.size(); i++) {
