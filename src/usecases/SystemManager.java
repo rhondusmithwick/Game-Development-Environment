@@ -1,5 +1,8 @@
 package usecases;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+
 import api.IEntitySystem;
 import api.IEventSystem;
 import api.IPhysicsEngine;
@@ -15,9 +18,9 @@ import model.physics.PhysicsEngine;
  * @author Rhondu Smithwick
  */
 public class SystemManager implements ISystemManager {
-	private IEventSystem eventSystem;
+	private transient IEventSystem eventSystem;
 	private IEntitySystem universe = new EntitySystem();
-	private IPhysicsEngine physics = new PhysicsEngine();
+	private transient IPhysicsEngine physics = new PhysicsEngine();
 	private boolean isRunning = true;
 
 	public SystemManager() {
@@ -50,5 +53,11 @@ public class SystemManager implements ISystemManager {
 	@Override
 	public void play() {
 		this.isRunning = true;
+	}
+
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+		this.eventSystem = new EventSystem(universe, new InputSystem(universe));
+		this.physics = new PhysicsEngine();
 	}
 }
