@@ -4,6 +4,7 @@ import view.editor.gameeditor.SaveGame;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import datamanagement.XMLReader;
+import enums.GUISize;
 import api.IEntity;
 import api.IEntitySystem;
 import api.ISerializable;
@@ -27,7 +28,6 @@ public class GamePlayer {
 		Scene scene = new Scene(gameView.getView());
 		myStage.setScene(scene);
 		loadGame(savedGame);
-
 	}
 
 	private void loadGame(String savedGame) {
