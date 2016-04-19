@@ -86,6 +86,15 @@ public interface IEntitySystem extends ISerializable {
 	}
 
 	/**
+	 * Annihilate everything as our good friend Tom puts it.
+	 * @see #getAllIDS()
+	 * @see #removeEntity(String)
+	 */
+	default void clear() {
+		getAllIDS().stream().forEach(this::removeEntity);
+	}
+
+	/**
 	 * Check whether this system contains an entity with provided ID.
 	 *
 	 * @param id

@@ -1,5 +1,8 @@
 package testing.demo;
 
+import api.IEntity;
+import api.IEntitySystem;
+import api.ISystemManager;
 import groovy.lang.GroovyShell;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -9,10 +12,15 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
+import model.component.movement.Orientation;
+import model.component.movement.Position;
+import model.component.visual.ImagePath;
+import usecases.SystemManager;
 
 /**
  * 
@@ -30,10 +38,11 @@ public class View {
 	private final ConsoleTextArea console = new ConsoleTextArea();
 	private final Button evaluateButton = new Button("Evaluate");
 	private final Button loadButton = new Button("Load");
-	// private final ScriptEngine engine = new
-	// ScriptEngineManager().getEngineByName("Groovy");
+	// private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("Groovy");
 	private final GroovyShell shell = new GroovyShell(); // MUST USE SHELL
-	private final Pong game = new Pong(root, shell);
+	private final ISystemManager model = new SystemManager();
+	private final Pong game = new Pong(shell, model); // TODO: move to level hierarchy
+	IEntitySystem universe = model.getEntitySystem();
 
 	public View(Stage stage) {
 		this.myStage = stage;
@@ -53,7 +62,28 @@ public class View {
 	}
 
 	private void step(double dt) { // game loop
-		game.update(dt);
+		// simulate
+		model.step(dt);
+
+		// render
+		root.getChildren().clear();
+		for (IEntity e : model.getEntitySystem().getAllEntities()) {
+			if (e.hasComponents(ImagePath.class, Position.class)) {
+				ImagePath display = e.getComponent(ImagePath.class);
+				ImageView imageView = display.getImageView();
+
+				Position pos = e.getComponent(Position.class);
+				imageView.setTranslateX(pos.getX());
+				imageView.setTranslateY(pos.getY());
+
+				if (e.hasComponent(Orientation.class)) {
+					Orientation o = e.getComponent(Orientation.class);
+					imageView.setRotate(o.getOrientation());
+				}
+
+				root.getChildren().add(imageView);
+			}
+		}
 	}
 
 	private BorderPane createBorderPane() {

@@ -14,6 +14,7 @@ import javafx.collections.ObservableMap;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -70,6 +71,11 @@ public class Entity implements IEntity {
     }
 
     @Override
+    public Set<Class<? extends IComponent>> getComponentClasses() {
+        return componentMap.keySet();
+    }
+
+    @Override
     public <T extends IComponent> List<T> getComponentList(Class<T> componentClass) {
         if (!hasComponent(componentClass)) {
             return null;
@@ -102,7 +108,8 @@ public class Entity implements IEntity {
     @Override
     public Boolean removeComponent(Class<? extends IComponent> componentClassToRemove) {
         if (componentMap.containsKey(componentClassToRemove)) {
-            componentMap.remove(componentClassToRemove);
+            List<IComponent> components = componentMap.remove(componentClassToRemove);
+            components.stream().forEach(IComponent::removeBindings);
             return true;
         }
         return false;
