@@ -1,6 +1,6 @@
-package games;
+package testing.games;
 
-import games.ACGame;
+import testing.games.ACGame;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;

@@ -1,4 +1,4 @@
-package games;
+package testing.games;
 
 import datamanagement.XMLReader;
 import events.Action;
@@ -6,33 +6,54 @@ import events.EventSystem;
 import events.InputSystem;
 import events.KeyTrigger;
 import events.PropertyTrigger;
+<<<<<<< HEAD:src/games/ACGame.java
+=======
+import events.Trigger;
+>>>>>>> e897cf2dca9927012f184763f9a491a2e3a42bca:src/testing/games/ACGame.java
 import model.component.character.Health;
 import model.component.character.Score;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
+import model.component.physics.Gravity;
 import model.component.visual.ImagePath;
 import model.entity.EntitySystem;
 import model.physics.PhysicsEngine;
 import api.IEntity;
 import api.IEntitySystem;
+<<<<<<< HEAD:src/games/ACGame.java
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+=======
+
+import java.io.File;
+import java.io.IOException;
+
+import testing.games.ACGameXChangeListener;
+>>>>>>> e897cf2dca9927012f184763f9a491a2e3a42bca:src/testing/games/ACGame.java
 
 import javafx.scene.Group;
 import javafx.scene.Scene;
+<<<<<<< HEAD:src/games/ACGame.java
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
+=======
+>>>>>>> e897cf2dca9927012f184763f9a491a2e3a42bca:src/testing/games/ACGame.java
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import model.entity.Entity;
 
 public class ACGame {
 	
+<<<<<<< HEAD:src/games/ACGame.java
     public final String TITLE = "Ani's and Carolyn's game";
 	private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
     public final int KEY_INPUT_SPEED = 5;
 	//private final Image BACKGROUND_IMAGE = new Image(getClass().getClassLoader().getResourceAsStream("src/resources/images/grassplatform.jpg"));
+=======
+    public static final String TITLE = "Ani's and Carolyn's game";
+    public static final int KEY_INPUT_SPEED = 5;
+>>>>>>> e897cf2dca9927012f184763f9a491a2e3a42bca:src/testing/games/ACGame.java
     private static Group root;
 	private final IEntitySystem universe = new EntitySystem();
 	private final InputSystem inputSystem = new InputSystem(universe);
@@ -42,14 +63,22 @@ public class ACGame {
 	private final String BG_IMAGE_PATH = "resources/images/movingwaterfall.gif";
 =======
 	private IEntity character;
+<<<<<<< HEAD:src/games/ACGame.java
 >>>>>>> 0b79d97d435fa38fbacc3be9cb50331a6d43819d
+=======
+	private IEntity platform;
+>>>>>>> e897cf2dca9927012f184763f9a491a2e3a42bca:src/testing/games/ACGame.java
 	private final String IMAGE_PATH = "resources/images/blastoise.png";
 	private final String IMAGE_PATH2 = "resources/images/charizard.png";
 	private final String healthScriptPath = "resources/groovyScripts/ACGameTestScript.groovy";
 	private final String moveRightScriptPath = "resources/groovyScripts/keyInputMoveRight.groovy";
 	private final String moveLeftScriptPath = "resources/groovyScripts/keyInputMoveLeft.groovy";
+<<<<<<< HEAD:src/games/ACGame.java
 	private final String moveRightScriptPath2 = "resources/groovyScripts/keyInputMoveRight2.groovy";
 	private final String moveLeftScriptPath2 = "resources/groovyScripts/keyInputMoveLeft2.groovy";
+=======
+	private final String jumpScriptPath = "resources/groovyScripts/keyInputJump.groovy";
+>>>>>>> e897cf2dca9927012f184763f9a491a2e3a42bca:src/testing/games/ACGame.java
 	private static ImageView charSpr; 
     
     private Scene myScene;
@@ -84,6 +113,7 @@ public class ACGame {
     	addCharacter2();
     }
 
+<<<<<<< HEAD:src/games/ACGame.java
     private void addBackground() { 
     	IEntity background = new Entity("Background");
     	background.forceAddComponent(new ImagePath(BG_IMAGE_PATH), true);
@@ -94,6 +124,9 @@ public class ACGame {
     }
 	private void addCharacter1() {
 		IEntity character;
+=======
+	private void addCharacter() {
+>>>>>>> e897cf2dca9927012f184763f9a491a2e3a42bca:src/testing/games/ACGame.java
 		int var = 0;
 		if(var==0) {
 			character = new Entity("Anolyn");
@@ -102,18 +135,34 @@ public class ACGame {
 			Position pos = new Position(100.0, 300);
 			character.forceAddComponent(pos, true);
 			character.forceAddComponent(new ImagePath(IMAGE_PATH), true);
+			character.forceAddComponent(new Velocity(0,0), true);
 			universe.addEntity(character);
+<<<<<<< HEAD:src/games/ACGame.java
 	    	//character.addComponent(new ImagePath(IMAGE_PATH));
+=======
+	    	character.addComponent(new ImagePath(IMAGE_PATH));
+	    	character.addComponent(new Gravity(5000));
+>>>>>>> e897cf2dca9927012f184763f9a491a2e3a42bca:src/testing/games/ACGame.java
 			character.serialize("character.xml");
+			platform = new Entity("platform");
+			
 	    	eventSystem.registerEvent(new PropertyTrigger(character.getID(), character.getComponent(Position.class), 0, universe, inputSystem), new Action(healthScriptPath));
 			eventSystem.registerEvent(new KeyTrigger("D", universe, inputSystem), new Action(moveRightScriptPath));
 			eventSystem.registerEvent(new KeyTrigger("A", universe, inputSystem), new Action(moveLeftScriptPath));
+<<<<<<< HEAD:src/games/ACGame.java
+=======
+			eventSystem.registerEvent(new KeyTrigger("W", universe, inputSystem), new Action(jumpScriptPath));
+>>>>>>> e897cf2dca9927012f184763f9a491a2e3a42bca:src/testing/games/ACGame.java
 	    	eventSystem.saveEventsToFile("eventtest.xml");
+	    	EventFileWriter w = new EventFileWriter();
+	    	w.addEvent(KeyTrigger.class.toString().split(" ")[1],"A",moveLeftScriptPath);
+	    	w.addEvent(KeyTrigger.class.toString().split(" ")[1],"D",moveRightScriptPath);
+	    	w.writeEventsToFile("eventTest2.xml");
 		}
 		else {
 			character = new XMLReader<IEntity>().readSingleFromFile("character.xml");
 			universe.addEntity(character);
-			eventSystem.readEventsFromFile("eventtest.xml");
+			eventSystem.readEventsFromFilePath("eventtest.xml");
 		}
 		charSpr = drawCharacter(character);
 	}
@@ -157,8 +206,6 @@ public class ACGame {
 		ImageView charSprite = imgPath.getImageView();
 		charSprite.setFitHeight(100);
 		charSprite.setPreserveRatio(true);
-		charSprite.xProperty().bind(character.getComponent(Position.class).xProperty());
-		charSprite.yProperty().bind(character.getComponent(Position.class).yProperty());
 		root.getChildren().add(charSprite);
 		return charSprite;
 	}

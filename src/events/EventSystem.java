@@ -1,12 +1,12 @@
 package events;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-
 import api.IEntitySystem;
 import api.IEventSystem;
 import datamanagement.XMLReader;
@@ -32,7 +32,7 @@ public class EventSystem implements Observer, IEventSystem {
 		this.universe = universe;
 		this.inputSystem = inputSystem;
 	}
-
+	
 	public void registerEvent(Trigger trigger, Action action) {
 		actionMap.put(trigger, action);
 		trigger.addObserver(this);
@@ -43,17 +43,28 @@ public class EventSystem implements Observer, IEventSystem {
 		Action action = actionMap.get(((Trigger) o));
 		action.activate(universe);
 	}
-
-	public void saveEventsToFile(String filepath) {
+	
+	public File saveEventsToFile(String filepath) {
 		stopObservingTriggers(actionMap);
 		new XMLWriter<EventContainer>().writeToFile(filepath, convertMapToList(actionMap));
 		watchTriggers(actionMap);
+		return new File(filepath);
 	}
 
-	public void readEventsFromFile(String filepath) {
-		List<EventContainer> eventList = new XMLReader<EventContainer>().readFromFile(filepath);
+	public void readEventsFromFilePath(String filepath) {
+		List<EventContainer> eventList= new XMLReader<EventContainer>().readFromFile(filepath);
 		actionMap = convertListToMap(eventList);
 		watchTriggers(actionMap);
+	}
+	
+	public void readEventsFromFile(File file) {
+		List<EventContainer> eventList= new XMLReader<EventContainer>().readFromFile(file.getPath());
+		actionMap = convertListToMap(eventList);
+		watchTriggers(actionMap);
+	}
+	
+	public String returnEventsAsString() {
+		return new XMLWriter<EventContainer>().writeToString(convertMapToList(actionMap));
 	}
 
 	private Map<Trigger, Action> convertListToMap(List<EventContainer> eventList) {
@@ -83,6 +94,12 @@ public class EventSystem implements Observer, IEventSystem {
 		for (Trigger trigger : map.keySet()) {
 			trigger.addObserver(this);
 		}
+	}
+
+	@Override
+	public void readEventsFromFile(String filepath) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
