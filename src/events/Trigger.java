@@ -16,7 +16,7 @@ import javafx.beans.value.ObservableValue;
  */
 public abstract class Trigger extends Observable implements ChangeListener, ISerializable  {
 	
-	public abstract <T extends IComponent> void clearListener(IEntitySystem universe);
+	public abstract <T extends IComponent> void clearListener(IEntitySystem universe, InputSystem inputSystem);
 
 	public abstract <T extends IComponent> void addHandler(IEntitySystem universe, InputSystem inputSystem);
 	

@@ -35,7 +35,7 @@ public class PropertyTrigger extends Trigger{
 		notifyObservers();
 	}
 	
-	public <T extends IComponent> void clearListener(IEntitySystem universe) {
+	public <T extends IComponent> void clearListener(IEntitySystem universe, InputSystem inputSystem) {
 		try {
 			universe.getEntity(entityID).getComponent((Class<T>) Class.forName(componentName)).getProperties().get(index).removeListener(this);
 		} catch (ClassNotFoundException e) {

@@ -48,6 +48,10 @@ public class InputSystem {
     	currentChar.addListener(listener);
     }
     
+    public void unListenToKeyPress(ChangeListener listener) {
+    	currentChar.removeListener(listener);
+    }
+    
     private void toggleQueues() {
     	if (fillQ == q1) { 
     		fillQ = q2; 

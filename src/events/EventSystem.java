@@ -118,7 +118,7 @@ public class EventSystem implements Observer, IEventSystem {
     }
 
     private void clearListeners() {
-        actionMap.keySet().stream().forEach(trigger -> trigger.clearListener(universe));
+        actionMap.keySet().stream().forEach(trigger -> trigger.clearListener(universe, inputSystem));
     }
 
     private void writeObject(ObjectOutputStream out)
