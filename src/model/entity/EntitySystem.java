@@ -1,7 +1,10 @@
 package model.entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import api.IComponent;
 import api.IEntity;
@@ -18,7 +21,6 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  * @author Rhondu Smithwick
  */
 public class EntitySystem implements IEntitySystem {
-	
 	
 	/**
 	 * The entities in this system.
