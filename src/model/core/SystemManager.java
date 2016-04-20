@@ -1,4 +1,4 @@
-package usecases;
+package model.core;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
