@@ -18,7 +18,7 @@ public class Animator {
 		ImagePath imagePath = entity.getComponent(ImagePath.class);
 		ResourceBundle myResources = ResourceBundle.getBundle(imagePath.getSpriteProperties());
         ImageView imageView = imagePath.getImageView();
-        imageView.setViewport(new Rectangle2D(Double.parseDouble(myResources.getString(move+"OffsetX")), Double.parseDouble(myResources.getString(move+"OffsetY")), imagePath.getImageWidth(), imagePath.getImageHeight()));
+        //imageView.setViewport(new Rectangle2D(Double.parseDouble(myResources.getString(move+"OffsetX")), Double.parseDouble(myResources.getString(move+"OffsetY")), imagePath.getImageWidth(), imagePath.getImageHeight()));
 
         final Animation animation = new SpriteAnimation(
                 imageView,
