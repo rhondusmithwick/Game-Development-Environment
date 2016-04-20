@@ -6,6 +6,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
+import com.google.common.collect.Maps;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import api.IComponent;
@@ -35,6 +37,7 @@ public class EntitySystem implements IEntitySystem {
 	private IEventSystem eventSystem = new EventSystem(this, null); // TODO:
 																	// update
 	private IPhysicsEngine physics = new PhysicsEngine();
+	private String eventSystemPath;
 
 	public EntitySystem() {
 		this("");
@@ -46,7 +49,7 @@ public class EntitySystem implements IEntitySystem {
 
 	@Override
 	public IEntity createEntity() {
-		Entity entity = new Entity();
+		IEntity entity = new Entity();
 		addEntity(entity);
 		return entity;
 	}
@@ -131,6 +134,15 @@ public class EntitySystem implements IEntitySystem {
 	@Override
 	public IPhysicsEngine getPhysicsEngine() {
 		return this.physics;
+	}
+
+	public String getEventSystemPath() {
+		return eventSystemPath;
+	}
+
+	@Override
+	public void setEventSystemPath(String eventSystemPath) {
+		this.eventSystemPath = eventSystemPath;
 	}
 
 }

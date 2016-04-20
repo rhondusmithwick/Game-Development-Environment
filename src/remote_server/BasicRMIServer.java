@@ -128,4 +128,16 @@ public class BasicRMIServer extends UnicastRemoteObject implements IEntitySystem
 		return null;
 	}
 
+	@Override
+	public String getEventSystemPath() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void setEventSystemPath(String eventSystemPath) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

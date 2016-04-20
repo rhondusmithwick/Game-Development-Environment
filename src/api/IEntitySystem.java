@@ -76,6 +76,21 @@ public interface IEntitySystem extends ISerializable {
 	IPhysicsEngine getPhysicsEngine();
 
 	/**
+	 * Gets the Entity System's event system's XML path
+	 * 
+	 * @return string of event system file path
+	 */
+	String getEventSystemPath();
+
+	/**
+	 * Sets the Entity System's event system's XML path
+	 * 
+	 * @param path
+	 *            string of event system file path
+	 */
+	void setEventSystemPath(String eventSystemPath);
+
+	/**
 	 * Creates an entity.
 	 *
 	 * @return the entity created
