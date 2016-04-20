@@ -1,12 +1,17 @@
 package events;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+
+import api.IEntity;
 import api.IEntitySystem;
 import api.IEventSystem;
 import datamanagement.XMLReader;
@@ -24,7 +29,7 @@ import datamanagement.XMLWriter;
  */
 public class EventSystem implements Observer, IEventSystem {
 
-	private IEntitySystem universe;
+	private transient IEntitySystem universe;
 	private InputSystem inputSystem;
 	private Map<Trigger, Action> actionMap = new HashMap<>();
 
@@ -33,6 +38,7 @@ public class EventSystem implements Observer, IEventSystem {
 		this.inputSystem = inputSystem;
 	}
 
+	@Override
 	public void registerEvent(Trigger trigger, Action action) {
 		actionMap.put(trigger, action);
 		trigger.addObserver(this);
@@ -43,7 +49,15 @@ public class EventSystem implements Observer, IEventSystem {
 		Action action = actionMap.get(((Trigger) o));
 		action.activate(universe);
 	}
-	
+
+
+	@Override
+	public void setUniverse(IEntitySystem universe) {
+		this.universe = universe;
+		addHandlers();
+	}
+
+	@Override
 	public File saveEventsToFile(String filepath) {
 		stopObservingTriggers(actionMap);
 		new XMLWriter<EventContainer>().writeToFile(filepath, convertMapToList(actionMap));
@@ -51,18 +65,21 @@ public class EventSystem implements Observer, IEventSystem {
 		return new File(filepath);
 	}
 
+	@Override
 	public void readEventsFromFilePath(String filepath) {
 		List<EventContainer> eventList= new XMLReader<EventContainer>().readFromFile(filepath);
 		actionMap = convertListToMap(eventList);
 		watchTriggers(actionMap);
 	}
-	
+
+	@Override
 	public void readEventsFromFile(File file) {
 		List<EventContainer> eventList= new XMLReader<EventContainer>().readFromFile(file.getPath());
 		actionMap = convertListToMap(eventList);
 		watchTriggers(actionMap);
 	}
-	
+
+	@Override
 	public String returnEventsAsString() {
 		return new XMLWriter<EventContainer>().writeToString(convertMapToList(actionMap));
 	}
@@ -94,6 +111,27 @@ public class EventSystem implements Observer, IEventSystem {
 		for (Trigger trigger : map.keySet()) {
 			trigger.addObserver(this);
 		}
+	}
+
+	private void addHandlers() {
+		actionMap.keySet().stream().forEach(trigger -> trigger.addHandler(universe, inputSystem));
+	}
+
+	private void clearListeners() {
+		actionMap.keySet().stream().forEach(trigger -> trigger.clearListener(universe));
+	}
+
+	private void writeObject(ObjectOutputStream out)
+			throws IOException {
+		clearListeners();
+		stopObservingTriggers(actionMap);
+		out.defaultWriteObject();
+	}
+
+	private void readObject(ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+		watchTriggers(actionMap);
 	}
 
 }

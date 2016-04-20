@@ -30,4 +30,6 @@ public interface IEventSystem extends Observer, ISerializable {
 	void readEventsFromFile(File file);
 	
 	String returnEventsAsString();
+
+	void setUniverse(IEntitySystem universe);
 }
