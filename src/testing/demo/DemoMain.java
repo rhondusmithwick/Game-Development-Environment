@@ -3,6 +3,8 @@ package testing.demo;
 
 import enums.GUISize;
 import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 public class DemoMain extends Application {
@@ -19,7 +21,12 @@ public class DemoMain extends Application {
 		myStage.setTitle("VOOGA");
 		myStage.setWidth(GUISize.MAIN_SIZE.getSize());
 		myStage.setHeight(GUISize.MAIN_SIZE.getSize());
-		View view = new View(myStage);
+
+		View view = new View();
+		Pane pane = view.getPane();
+		Scene scene = new Scene(pane, 500, 500);
+		stage.setScene(scene);
+		stage.show();
 	}
 
 	/**

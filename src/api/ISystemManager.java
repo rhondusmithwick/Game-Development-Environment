@@ -1,5 +1,6 @@
 package api;
 
+import java.io.File;
 import java.util.List;
 
 import datamanagement.XMLReader;
@@ -9,7 +10,7 @@ import datamanagement.XMLReader;
  *
  * @author Rhondu Smithwick
  */
-public interface ISystemManager extends ISerializable {
+public interface ISystemManager {
 
 	/**
 	 * This will play the game loop.
@@ -27,12 +28,44 @@ public interface ISystemManager extends ISerializable {
 	void step(double dt);
 
 	/**
-	 * Get the current entity system
+	 * Get the main entity system
 	 *
 	 * @return IEntitySystem-type entity system
 	 */
 	IEntitySystem getEntitySystem();
 
+	/**
+	 * Get the shared entity system
+	 *
+	 * @return IEntitySystem-type entity system
+	 */
+	IEntitySystem getSharedEntitySystem();
+
+	void saveEntitySystem(String filename);
+
+	void saveSharedEntitySystem(String filename);
+
+	void loadEntitySystem(String filename);
+
+	void loadSharedEntitySystem(String filename);
+
+	File saveEntitySystemToFile();
+
+	File saveSharedEntitySystemToFile();
+
+	void loadEntitySystemFromFile(File file);
+
+	void loadSharedEntitySystemFromFile(File file);
+
+	void moveEntitiesToMainSystem(IEntity... entities);
+
+	void moveEntitiesToMainSystem(String... ids);
+
+	void moveEntitiesToSharedSystem(IEntity... entities);
+
+	void moveEntitiesToSharedSystem(String... ids);
+
+	@Deprecated
 	/**
 	 * Get the current event system
 	 *
@@ -40,6 +73,7 @@ public interface ISystemManager extends ISerializable {
 	 */
 	IEventSystem getEventSystem();
 
+	@Deprecated
 	/**
 	 * Reads objects from file with specified fileName. Must be of type T.
 	 *
@@ -53,6 +87,7 @@ public interface ISystemManager extends ISerializable {
 		return new XMLReader<T>().readFromFile(fileName);
 	}
 
+	@Deprecated
 	/**
 	 * Reads objects from specified string. Must be of type T.
 	 *
@@ -65,4 +100,5 @@ public interface ISystemManager extends ISerializable {
 	static <T extends ISerializable> List<T> evaluateString(String stringToReadFrom) {
 		return new XMLReader<T>().readFromString(stringToReadFrom);
 	}
+
 }

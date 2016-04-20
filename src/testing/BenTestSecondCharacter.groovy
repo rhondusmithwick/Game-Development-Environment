@@ -19,7 +19,7 @@ class BenTestSecondCharacter {
 		IEntity character = new Entity()
 		character.addComponent(new Health((double) 100))
 		character.addComponent(new Score((double) 100))
-		Position pos = new Position(0.0, 0.0)
+		Position pos = new Position(300.0, 250.0)
 		character.addComponent(pos)
 		character.addComponent(new ImagePath(IMAGE_PATH))
 		character.addComponent(new Velocity(-50.0, 0.0))
