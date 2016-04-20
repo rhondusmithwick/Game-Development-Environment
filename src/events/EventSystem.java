@@ -64,6 +64,7 @@ public class EventSystem implements Observer, IEventSystem {
         stopObservingTriggers(actionMap);
         new XMLWriter<Pair<Trigger, List<Action>>>().writeToFile(filepath, convertMapToList(actionMap));
         watchTriggers(actionMap);
+        addHandlers();
         return new File(filepath);
     }
 
@@ -72,6 +73,7 @@ public class EventSystem implements Observer, IEventSystem {
         List<Pair<Trigger, List<Action>>> eventList = new XMLReader<Pair<Trigger, List<Action>>>().readFromFile(filepath);
         actionMap = convertListToMap(eventList);
         watchTriggers(actionMap);
+        addHandlers();
     }
 
     @Override
@@ -79,6 +81,7 @@ public class EventSystem implements Observer, IEventSystem {
         List<Pair<Trigger, List<Action>>> eventList = new XMLReader<Pair<Trigger, List<Action>>>().readFromFile(file.getPath());
         actionMap = convertListToMap(eventList);
         watchTriggers(actionMap);
+        addHandlers();
     }
 
     @Override
@@ -91,8 +94,7 @@ public class EventSystem implements Observer, IEventSystem {
         for (Pair<Trigger, List<Action>> event : eventList) {
             Trigger trigger = event._1();
             List<Action> actionList = event._2();
-            actionList.stream().forEach(action -> actionMap.put(trigger, action));
-            trigger.addHandler(universe, inputSystem);
+            actionList.stream().forEach(action -> returnMap.put(trigger, action));
         }
         return returnMap;
     }
