@@ -1,13 +1,15 @@
 package events;
 
 import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
-
 import utility.Pair;
 import api.IEntitySystem;
 import api.IEventSystem;
@@ -26,76 +28,116 @@ import datamanagement.XMLWriter;
  */
 public class EventSystem implements Observer, IEventSystem {
 
-	private IEntitySystem universe;
+	private transient IEntitySystem universe;
 	private InputSystem inputSystem;
-	private Map<Trigger, Action> actionMap = new HashMap<>();
+	private Map<Trigger, List<Action>> actionMap = new HashMap<>();
 
 	public EventSystem(IEntitySystem universe, InputSystem inputSystem) {
 		this.universe = universe;
 		this.inputSystem = inputSystem;
 	}
 
+	@Override
 	public void registerEvent(Trigger trigger, Action action) {
-		actionMap.put(trigger, action);
-		trigger.addObserver(this);
+		if(actionMap.containsKey(trigger)) {
+			List<Action> tempList = actionMap.get(trigger);
+			tempList.add(action);
+		}
+		else {
+			List<Action> newList = new ArrayList<>();
+			newList.add(action);
+			actionMap.put(trigger, newList);
+			trigger.addObserver(this);
+		}
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		Action action = actionMap.get(((Trigger) o));
-		action.activate(universe);
+		actionMap.get((Trigger)o).stream().forEach(e->e.activate(universe));
 	}
-	
+
+
+	@Override
+	public void setUniverse(IEntitySystem universe) {
+		this.universe = universe;
+		addHandlers();
+	}
+
+	@Override
 	public File saveEventsToFile(String filepath) {
 		stopObservingTriggers(actionMap);
-		new XMLWriter<Pair<Trigger,Action>>().writeToFile(filepath, convertMapToList(actionMap));
+		new XMLWriter<Pair<Trigger, List<Action>>>().writeToFile(filepath, convertMapToList(actionMap));
 		watchTriggers(actionMap);
 		return new File(filepath);
 	}
 
+	@Override
 	public void readEventsFromFilePath(String filepath) {
-		List<Pair<Trigger,Action>> eventList= new XMLReader<Pair<Trigger,Action>>().readFromFile(filepath);
+		List<Pair<Trigger, List<Action>>> eventList= new XMLReader<Pair<Trigger, List<Action>>>().readFromFile(filepath);
 		actionMap = convertListToMap(eventList);
 		watchTriggers(actionMap);
-	}
-	
-	public void readEventsFromFile(File file) {
-		List<Pair<Trigger,Action>> eventList= new XMLReader<Pair<Trigger,Action>>().readFromFile(file.getPath());
-		actionMap = convertListToMap(eventList);
-		watchTriggers(actionMap);
-	}
-	
-	public String returnEventsAsString() {
-		return new XMLWriter<Pair<Trigger,Action>>().writeToString(convertMapToList(actionMap));
 	}
 
-	private Map<Trigger, Action> convertListToMap(List<Pair<Trigger,Action>> eventList) {
-		Map<Trigger, Action> returnMap = new HashMap<>();
-		for (Pair<Trigger,Action> event : eventList) {
-			returnMap.put(event.getTrigger(), event.getAction());
-			event.getTrigger().addHandler(universe, inputSystem);
+	@Override
+	public void readEventsFromFile(File file) {
+		List<Pair<Trigger, List<Action>>> eventList= new XMLReader<Pair<Trigger, List<Action>>>().readFromFile(file.getPath());
+		actionMap = convertListToMap(eventList);
+		watchTriggers(actionMap);
+	}
+
+	@Override
+	public String returnEventsAsString() {
+		return new XMLWriter<Pair<Trigger, List<Action>>>().writeToString(convertMapToList(actionMap));
+	}
+
+	private Map<Trigger, List<Action>> convertListToMap(List<Pair<Trigger, List<Action>>> eventList) {
+		Map<Trigger, List<Action>> returnMap = new HashMap<>();
+		for (Pair<Trigger, List<Action>> event : eventList) {
+			returnMap.put(event._1(), event._2());
+			event._1().addHandler(universe, inputSystem);
 		}
 		return returnMap;
 	}
 
-	private List<Pair<Trigger,Action>> convertMapToList(Map<Trigger, Action> map) {
-		List<Pair<Trigger,Action>> returnList = new ArrayList<>();
+	private List<Pair<Trigger, List<Action>>> convertMapToList(Map<Trigger, List<Action>> map) {
+		List<Pair<Trigger, List<Action>>> returnList = new ArrayList<>();
 		for (Trigger trigger : map.keySet()) {
-			returnList.add(new Pair<Trigger,Action>(trigger, map.get(trigger)));
+			returnList.add(new Pair<Trigger, List<Action>>(trigger, map.get(trigger)));
 		}
 		return returnList;
 	}
 
-	private void stopObservingTriggers(Map<Trigger, Action> map) {
+	private void stopObservingTriggers(Map<Trigger, List<Action>> map) {
 		for (Trigger trigger : map.keySet()) {
 			trigger.deleteObserver(this);
 		}
 	}
 
-	private void watchTriggers(Map<Trigger, Action> map) {
+	private void watchTriggers(Map<Trigger, List<Action>> map) {
 		for (Trigger trigger : map.keySet()) {
 			trigger.addObserver(this);
 		}
+	}
+
+	private void addHandlers() {
+		actionMap.keySet().stream().forEach(trigger -> trigger.addHandler(universe, inputSystem));
+	}
+
+	private void clearListeners() {
+		actionMap.keySet().stream().forEach(trigger -> trigger.clearListener(universe));
+	}
+
+	private void writeObject(ObjectOutputStream out)
+			throws IOException {
+		clearListeners();
+		stopObservingTriggers(actionMap);
+		out.defaultWriteObject();
+	}
+
+	private void readObject(ObjectInputStream in)
+			throws IOException, ClassNotFoundException {
+		in.defaultReadObject();
+		watchTriggers(actionMap);
 	}
 
 }

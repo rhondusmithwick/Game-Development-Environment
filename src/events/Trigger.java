@@ -19,4 +19,17 @@ public abstract class Trigger extends Observable implements ChangeListener, ISer
 	public abstract <T extends IComponent> void clearListener(IEntitySystem universe);
 
 	public abstract <T extends IComponent> void addHandler(IEntitySystem universe, InputSystem inputSystem);
+	
+	public abstract String getID();
+	
+	@Override
+	public boolean equals(Object o) {
+		if(!(o instanceof Trigger)) {
+			return false;
+		}
+		Trigger t = (Trigger)o;
+		return t.getID().equals(this.getID());
+	}
+
+	
 }

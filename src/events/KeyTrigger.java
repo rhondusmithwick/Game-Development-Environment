@@ -44,4 +44,9 @@ public class KeyTrigger extends Trigger{
 	public <T extends IComponent> void addHandler(IEntitySystem universe, InputSystem inputSystem) {
 		inputSystem.listenToKeyPress(this);
 	}
+
+	@Override
+	public String getID() {
+		return key;
+	}
 }

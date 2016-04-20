@@ -16,6 +16,7 @@ import javafx.beans.value.ObservableValue;
  */
 public class PropertyTrigger extends Trigger{
 
+	private String triggerID;
 	private String entityID;
 	private String componentName;
 	private int index;
@@ -24,6 +25,7 @@ public class PropertyTrigger extends Trigger{
 		this.entityID = entityID;
 		this.componentName= component.getClass().toString().split(" ")[1];
 		this.index = index;
+		this.triggerID=PropertyTrigger.class.toString()+":"+this.entityID+":"+this.componentName+":"+this.index;
 		addHandler(universe, inputSystem);
 	}
 	
@@ -48,6 +50,11 @@ public class PropertyTrigger extends Trigger{
 		} catch (ClassNotFoundException e) {
 			e.printStackTrace();
 		}
+	}
+
+	@Override
+	public String getID() {
+		return triggerID;
 	}
 
 }
