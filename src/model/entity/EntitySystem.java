@@ -1,11 +1,15 @@
 package model.entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import api.IComponent;
 import api.IEntity;
 import api.IEntitySystem;
+
 import com.google.common.collect.Maps;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
@@ -18,13 +22,13 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
  */
 public class EntitySystem implements IEntitySystem {
 	
-	
 	/**
 	 * The entities in this system.
 	 */
 	@XStreamAlias("entities")
 	private final Map<String, IEntity> entities = Maps.newLinkedHashMap();
 	private String name;
+	private String eventSystemPath;
 
 	public EntitySystem(){
 		this("");
@@ -86,6 +90,16 @@ public class EntitySystem implements IEntitySystem {
 	@Override
 	public boolean isEmpty() {
 		return this.getAllEntities().isEmpty();
+	}
+
+	@Override
+	public String getEventSystemPath() {
+		return eventSystemPath;
+	}
+
+	@Override
+	public void setEventSystemPath(String eventSystemPath) {
+		this.eventSystemPath = eventSystemPath;
 	}
 
 }
