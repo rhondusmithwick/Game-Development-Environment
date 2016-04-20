@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
+
+import utility.Pair;
 import api.IEntitySystem;
 import api.IEventSystem;
 import datamanagement.XMLReader;
@@ -46,40 +48,40 @@ public class EventSystem implements Observer, IEventSystem {
 	
 	public File saveEventsToFile(String filepath) {
 		stopObservingTriggers(actionMap);
-		new XMLWriter<EventContainer>().writeToFile(filepath, convertMapToList(actionMap));
+		new XMLWriter<Pair<Trigger,Action>>().writeToFile(filepath, convertMapToList(actionMap));
 		watchTriggers(actionMap);
 		return new File(filepath);
 	}
 
 	public void readEventsFromFilePath(String filepath) {
-		List<EventContainer> eventList= new XMLReader<EventContainer>().readFromFile(filepath);
+		List<Pair<Trigger,Action>> eventList= new XMLReader<Pair<Trigger,Action>>().readFromFile(filepath);
 		actionMap = convertListToMap(eventList);
 		watchTriggers(actionMap);
 	}
 	
 	public void readEventsFromFile(File file) {
-		List<EventContainer> eventList= new XMLReader<EventContainer>().readFromFile(file.getPath());
+		List<Pair<Trigger,Action>> eventList= new XMLReader<Pair<Trigger,Action>>().readFromFile(file.getPath());
 		actionMap = convertListToMap(eventList);
 		watchTriggers(actionMap);
 	}
 	
 	public String returnEventsAsString() {
-		return new XMLWriter<EventContainer>().writeToString(convertMapToList(actionMap));
+		return new XMLWriter<Pair<Trigger,Action>>().writeToString(convertMapToList(actionMap));
 	}
 
-	private Map<Trigger, Action> convertListToMap(List<EventContainer> eventList) {
+	private Map<Trigger, Action> convertListToMap(List<Pair<Trigger,Action>> eventList) {
 		Map<Trigger, Action> returnMap = new HashMap<>();
-		for (EventContainer event : eventList) {
+		for (Pair<Trigger,Action> event : eventList) {
 			returnMap.put(event.getTrigger(), event.getAction());
 			event.getTrigger().addHandler(universe, inputSystem);
 		}
 		return returnMap;
 	}
 
-	private List<EventContainer> convertMapToList(Map<Trigger, Action> map) {
-		List<EventContainer> returnList = new ArrayList<>();
+	private List<Pair<Trigger,Action>> convertMapToList(Map<Trigger, Action> map) {
+		List<Pair<Trigger,Action>> returnList = new ArrayList<>();
 		for (Trigger trigger : map.keySet()) {
-			returnList.add(new EventContainer(trigger, map.get(trigger)));
+			returnList.add(new Pair<Trigger,Action>(trigger, map.get(trigger)));
 		}
 		return returnList;
 	}
