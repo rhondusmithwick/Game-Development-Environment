@@ -1,6 +1,5 @@
 package api;
 
-import java.io.File;
 import java.util.List;
 
 import datamanagement.XMLReader;
@@ -48,14 +47,6 @@ public interface ISystemManager {
 	void loadEntitySystem(String filename);
 
 	void loadSharedEntitySystem(String filename);
-
-	File saveEntitySystemToFile();
-
-	File saveSharedEntitySystemToFile();
-
-	void loadEntitySystemFromFile(File file);
-
-	void loadSharedEntitySystemFromFile(File file);
 
 	void moveEntitiesToMainSystem(IEntity... entities);
 

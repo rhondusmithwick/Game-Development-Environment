@@ -1,11 +1,7 @@
 package usecases;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
 
 import api.IEntity;
 import api.IEntitySystem;
@@ -92,41 +88,6 @@ public class SystemManager implements ISystemManager {
 	@Override
 	public void loadSharedEntitySystem(String filename) {
 		this.sharedUniverse = new XMLReader<IEntitySystem>().readSingleFromFile(filename);
-	}
-
-	@Override
-	public File saveEntitySystemToFile() {
-		String result = this.universe.serializeToString();
-		return new File(result);
-	}
-
-	@Override
-	public File saveSharedEntitySystemToFile() {
-		String result = this.sharedUniverse.serializeToString();
-		return new File(result);
-	}
-
-	// TODO: merge with XMLReader
-	private String fileToString(File file) {
-		String s = "";
-		try {
-			s = Files.toString(file, Charsets.UTF_8);
-		} catch (IOException e) {
-			System.out.println("Error: SystemManager.fileToString() failed.");
-		}
-		return s;
-	}
-
-	@Override
-	public void loadEntitySystemFromFile(File file) {
-		String result = this.fileToString(file);
-		this.universe = new XMLReader<IEntitySystem>().readSingleFromString(result);
-	}
-
-	@Override
-	public void loadSharedEntitySystemFromFile(File file) {
-		String result = this.fileToString(file);
-		this.sharedUniverse = new XMLReader<IEntitySystem>().readSingleFromString(result);
 	}
 
 	private IEntity[] idsToEntityArray(IEntitySystem system, String... ids) {
