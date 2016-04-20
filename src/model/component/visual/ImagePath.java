@@ -34,7 +34,10 @@ public class ImagePath implements IComponent {
 	private double timeSinceLastFrame, elapsedTime;
 	private final double frameDuration, totalDuration;
 	private String spriteName;
-	private static final String PROPERTIES_DIR = "spriteProperties.";
+	private static final String PROPERTIES_DIR = "spriteProperties."; // TODO:
+																		// resource
+																		// file
+	private int zLevel = 0;
 
 	public ImagePath() {
 		this("resources/testing/RhonduSmithwick.JPG");
@@ -202,6 +205,24 @@ public class ImagePath implements IComponent {
 
 	public void incrementFrameIndex() {
 		this.setFrameIndex(this.getFrameIndex() + 1);
+	}
+
+	/**
+	 * Sets the z-layer order.
+	 *
+	 * @param z the z-layer order (1=>send to back, 1=>send to front)
+	 */
+	public void setZLevel(int z) {
+		this.zLevel = z;
+	}
+
+	/**
+	 * Gets the z-layer order.
+	 *
+	 * @return the z-layer order (1=>send to back, 1=>send to front)
+	 */
+	public int getZLevel() {
+		return this.zLevel;
 	}
 
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
