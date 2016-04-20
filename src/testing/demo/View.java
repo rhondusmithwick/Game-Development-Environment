@@ -8,14 +8,13 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
-import javafx.stage.Stage;
+import javafx.scene.layout.Pane;
 import javafx.util.Duration;
 import model.component.movement.Orientation;
 import model.component.movement.Position;
@@ -33,32 +32,34 @@ public class View {
 	private final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
 	private final double gapSize = 10;
 
-	private final Stage myStage;
 	private final Group root = new Group();
 	private final ConsoleTextArea console = new ConsoleTextArea();
 	private final Button evaluateButton = new Button("Evaluate");
 	private final Button loadButton = new Button("Load");
-	// private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("Groovy");
+	// private final ScriptEngine engine = new
+	// ScriptEngineManager().getEngineByName("Groovy");
 	private final GroovyShell shell = new GroovyShell(); // MUST USE SHELL
 	private final ISystemManager model = new SystemManager();
-	private final Pong game = new Pong(shell, model); // TODO: move to level hierarchy
-	IEntitySystem universe = model.getEntitySystem();
+	private final Pong game = new Pong(shell, model); // TODO: move to level
+														// hierarchy
+	private final IEntitySystem universe = model.getEntitySystem();
+	private final BorderPane pane;
 
-	public View(Stage stage) {
-		this.myStage = stage;
+	public View() {
 		this.initEngine();
 		this.initConsole();
 		this.initButtons();
-		BorderPane pane = this.createBorderPane();
-		Scene scene = new Scene(pane, 500, 500);
-		stage.setScene(scene);
-		stage.show();
+		this.pane = this.createBorderPane();
 
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> this.step(SECOND_DELAY));
 		Timeline animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
 		animation.getKeyFrames().add(frame);
 		animation.play();
+	}
+
+	public Pane getPane() {
+		return this.pane;
 	}
 
 	private void step(double dt) { // game loop
