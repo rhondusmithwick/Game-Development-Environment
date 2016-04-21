@@ -2,6 +2,7 @@ package view;
 
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.layout.Pane;
@@ -58,7 +59,7 @@ public class Authoring {
 			return myScene;
 		}
 		
-		public void createTab(Pane tabContent, String key, boolean closable){
+		public void createTab(ScrollPane tabContent, String key, boolean closable){
 			Tab tab = new Tab(myResources.getString(key));
 			tab.setContent(tabContent);
 			tab.setClosable(closable);

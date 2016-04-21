@@ -2,14 +2,15 @@ package voogasalad_can18_cw223;
 
 import static org.junit.Assert.assertEquals;
 
+import api.ILevel;
+import model.entity.Level;
 import org.junit.Test;
 
 import api.IEntity;
-import api.IEntitySystem;
+import api.ILevel;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.entity.Entity;
-import model.entity.EntitySystem;
 
 public class VoogaTesting {
 
@@ -21,7 +22,7 @@ public class VoogaTesting {
 		e.forceAddComponent(pos, true);
 		e.forceAddComponent(v, true);
 		// IPhysicsEngine p = new PhysicsEngine(null);
-		IEntitySystem universe = new EntitySystem();
+		ILevel universe = new Level();
 		universe.addEntity(e);
 		// p.update(universe, 2);
 		// System.out.println(pos.getX()+" "+pos.getY());
@@ -37,7 +38,7 @@ public class VoogaTesting {
 		e.forceAddComponent(pos, true);
 		e.forceAddComponent(v, true);
 		// IPhysicsEngine p = new PhysicsEngine(null);
-		IEntitySystem universe = new EntitySystem();
+		ILevel universe = new Level();
 		universe.addEntity(e);
 		// p.applyImpulse(e, new Vector(10, 20));
 		assertEquals(Math.abs(v.getVX() - 11.0) < 0.0001, true);

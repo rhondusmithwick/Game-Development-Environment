@@ -1,15 +1,13 @@
 package events;
 
-import api.IEntitySystem;
+import api.ILevel;
 import api.ISerializable;
+import com.google.common.base.Charsets;
+import com.google.common.io.Files;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
-
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -21,11 +19,11 @@ import java.util.Map;
  *
  * @author Rhondu Smithwick
  */
-public class Action implements ISerializable{
+public class Action implements ISerializable {
 
-    private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
     private final String script;
     private final Map<String, Object> parameters = new HashMap<>();
+    private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
 
     public Action(String scriptPath) {
         script = getScriptFromPath(scriptPath);
@@ -36,7 +34,7 @@ public class Action implements ISerializable{
         this.parameters.putAll(parameters);
     }
 
-    public void activate(IEntitySystem universe) {
+    public void activate(ILevel universe) {
         engine.put("universe", universe);
         parameters.entrySet().stream().forEach(e -> engine.put(e.getKey(), e.getValue()));
         try {
@@ -66,14 +64,14 @@ public class Action implements ISerializable{
         in.defaultReadObject();
         engine = new ScriptEngineManager().getEngineByName("groovy");
     }
-    
+
     private String getScriptFromPath(String scriptPath) {
-    	String script = "";
-		try {
-			script = Files.toString(new File(scriptPath), Charsets.UTF_8);
-		} catch (IOException e) {
-			System.out.println("Groovy script not found at " + scriptPath);
-		}
+        String script = "";
+        try {
+            script = Files.toString(new File(scriptPath), Charsets.UTF_8);
+        } catch (IOException e) {
+            System.out.println("Groovy script not found at " + scriptPath);
+        }
         return script;
     }
 }

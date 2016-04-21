@@ -1,7 +1,7 @@
 package view;
 
 import api.IEntity;
-import api.IEntitySystem;
+import api.ILevel;
 import api.ISystemManager;
 import api.IView;
 import groovy.lang.GroovyShell;
@@ -44,7 +44,7 @@ public class View implements IView {
 	private final ISystemManager model = new SystemManager();
 	private final Pong game = new Pong(shell, model); // TODO: move to level
 														// hierarchy
-	private final IEntitySystem universe = model.getEntitySystem();
+	private final ILevel universe = model.getEntitySystem();
 	private final BorderPane pane;
 
 	public View() {

@@ -1,4 +1,4 @@
-package events;
+/*package events;
 
 import java.io.File;
 import java.io.IOException;
@@ -130,4 +130,4 @@ public class AniEventSystem implements Observer, IEventSystem {
 		return null;
 	}
 	
-}
+}*/

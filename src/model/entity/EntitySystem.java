@@ -1,4 +1,4 @@
-package model.entity;
+/*package model.entity;
 
 import java.io.File;
 import java.util.Collection;
@@ -24,12 +24,12 @@ import model.physics.PhysicsEngine;
  * system.
  *
  * @author Rhondu Smithwick
- */
+ *
 public class EntitySystem implements IEntitySystem {
 
 	/**
 	 * The entities in this system.
-	 */
+	 *
 	@XStreamAlias("entities")
 	private final Map<String, IEntity> entities = Maps.newLinkedHashMap();
 	private String name;
@@ -144,4 +144,4 @@ public class EntitySystem implements IEntitySystem {
 		this.eventSystemPath = eventSystemPath;
 	}
 
-}
+}*/

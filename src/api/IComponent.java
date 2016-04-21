@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
+import static javafx.scene.input.KeyCode.T;
 
 /**
  * This is the interface for all components, which hold data.
@@ -38,6 +39,21 @@ public interface IComponent extends ISerializable {
     }
 
     /**
+     * Get property with specified name.
+     * @param name of property to get
+     * @return the property
+     * @throws IllegalArgumentException if no such property
+     */
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
+    default SimpleObjectProperty<?> getProperty(String name)  throws IllegalArgumentException{
+        Predicate<SimpleObjectProperty<?>> isRight = (s) -> (Objects.equals(s.getName(), name));
+        Optional<SimpleObjectProperty<?>> rightProperty = getProperties().stream().filter(isRight).findFirst();
+        boolean hasProperty = rightProperty.isPresent();
+        Preconditions.checkArgument(hasProperty, "No such property with this name is present");
+        return rightProperty.get();
+    }
+
+    /**
      * Gets a specific property with specified value class and with specified name.
      * <p>
      * Example call for a position:
@@ -49,15 +65,12 @@ public interface IComponent extends ISerializable {
      * @return specific property of specified class and with name
      * @throws IllegalArgumentException if incorrect propertyClass or no property with this name is present
      */
-    @SuppressWarnings({"unchecked", "OptionalGetWithoutIsPresent"})
+    @SuppressWarnings("unchecked")
     default <T> SimpleObjectProperty<T> getProperty(Class<T> propertyClass, String name) throws IllegalArgumentException {
-        Predicate<SimpleObjectProperty<?>> isRight = (s) -> (Objects.equals(s.getName(), name));
-        Optional<SimpleObjectProperty<?>> rightProperty = getProperties().stream().filter(isRight).findFirst();
-        boolean hasProperty = rightProperty.isPresent();
-        Preconditions.checkArgument(hasProperty, "No such property with this name is present");
-        boolean rightClass = propertyClass.isInstance(rightProperty.get().get());
+        SimpleObjectProperty<?> property = getProperty(name);
+        boolean rightClass = propertyClass.isInstance(property.get());
         Preconditions.checkArgument(rightClass, "Incorrect value class");
-        return (SimpleObjectProperty<T>) rightProperty.get();
+        return (SimpleObjectProperty<T>) property;
     }
 
     /**

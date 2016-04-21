@@ -1,4 +1,4 @@
-package events;
+/*package events;
 
 import java.io.File;
 import java.io.IOException;
@@ -55,4 +55,4 @@ public final class ActionFactory {
 		}
 		return script;
     }
-}
+}*/
