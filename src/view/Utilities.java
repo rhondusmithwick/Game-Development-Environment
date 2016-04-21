@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -22,6 +24,7 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
@@ -194,26 +197,6 @@ public class Utilities {
 	}
 
 	/**
-	 * Directs file chooser box to the appropriate directory to use files from
-	 * this project
-	 * 
-	 * @return File directory: local directory being returned
-	 */
-
-	private static File getLocalDir() {
-		ProtectionDomain pd = Utilities.class.getProtectionDomain();
-		CodeSource cs = pd.getCodeSource();
-		URL localDir = cs.getLocation();
-		File directory;
-		try {
-			directory = new File(localDir.toURI());
-		} catch (URISyntaxException e) {
-			directory = new File(localDir.getPath());
-		}
-		return directory;
-	}
-
-	/**
 	 * Shows a text input dialog where user can enter in text of their choosing.
 	 * User response is returned, i.e. the entered text
 	 * 
@@ -279,11 +262,11 @@ public class Utilities {
 	 *            expanded. If it isn't, it will.
 	 * @return TitledPane pane, already initialized.
 	 */
+	
 	public static TitledPane makeTitledPane(String title, Node content, boolean collapsable) {
 		TitledPane pane = new TitledPane(title, content);
 		pane.setCollapsible(collapsable);
 		pane.setExpanded(!collapsable);
-
 		return pane;
 	}
 
@@ -331,7 +314,6 @@ public class Utilities {
 		newEntity.setSpecs(entity.getSpecs());
 		for (IComponent component : entity.getAllComponents()) {
 			newEntity.addComponent(component.clone(component.getClass()));
-			// newEntity.forceAddComponent(component, true);
 			componentInitialization(newEntity, entity);
 		}
 		return newEntity;
@@ -369,5 +351,23 @@ public class Utilities {
 		context.getItems().addAll(menuItems);
 		return context;
 	}
+	
+	   /**
+	    * Creates a new slider, setting all necessary intervals and locations. 
+	    *
+	    * @param ChangeListener<Number>				the change the slider is listening to and event/method it calls when the change occurs
+	    * @param start 							the start of the slider range
+	    *  @param end 							the end of the slider range
+	    *   @param incr 							the increment of the slider range
+	    * @return slider 							the new slider
+	    * 
+	    */
+	    public static Slider makeSlider(ChangeListener<Number> listener, double start, double end, double currVal){
+	    	Slider slider = new Slider(start, end, currVal);
+	     	slider.setShowTickMarks(true);
+	        ChangeListener<Number> changer = listener;
+	        slider.valueProperty().addListener(changer);
+	        return slider;
+	    }
 
 }
