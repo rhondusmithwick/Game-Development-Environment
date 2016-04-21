@@ -4,6 +4,7 @@ import javafx.animation.Animation;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
@@ -74,6 +75,8 @@ class SpriteUtility {
 
     private Group spriteGroup;
 	private Rectangle selectedRectangle;
+
+    private final SimpleObjectProperty<Boolean> changeColor = new SimpleObjectProperty<>(this, "ChangeColor", true);
 
     public void init(Stage stage, Dimension2D dimensions) {
         mainPane = new BorderPane();
@@ -174,6 +177,14 @@ class SpriteUtility {
         spriteImage = new ImageView(initFileChooser());
         initImageViewHandlers(spriteImage);
         spriteGroup.getChildren().add(spriteImage);
+        spriteGroup.setOnMouseClicked(e -> {
+            if (changeColor.get()) {
+                double x = e.getX();
+                double y = e.getY();
+                ColorChanger changer = new ColorChanger(spriteImage.getImage(), x, y, Color.TRANSPARENT);
+                spriteImage.setImage(changer.getImage());
+            }
+        });
     }
 
     private void animationPreview() {
