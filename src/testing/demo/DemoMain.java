@@ -31,7 +31,7 @@ public class DemoMain extends Application {
 		View view = new View();
 		Pane pane = view.getPane();
 		Group root = new Group();
-		Scene scene = new Scene(root, 500, 500);
+		Scene scene = new Scene(pane, 500, 500);
 		music = new ThemeMusic("resources/music/finalCountdown.mp3");
 		music.play();
 		Button button = new Button("Mute");
@@ -49,15 +49,15 @@ public class DemoMain extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
-	
+
 	private void mute() {
-		if(music.isPlaying()) {
+		if (music.isPlaying()) {
 			music.pause();
 		} else {
 			music.play();
 		}
 	}
-	
+
 	private void shoot() {
 		SoundEffect effect = new SoundEffect("resources/soundfx/laser.mp3");
 		effect.play();
