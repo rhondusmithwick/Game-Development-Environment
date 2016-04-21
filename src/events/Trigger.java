@@ -16,18 +16,20 @@ import javafx.beans.value.ObservableValue;
  */
 public abstract class Trigger extends Observable implements ChangeListener, ISerializable  {
 	
-	public abstract <T extends IComponent> void clearListener(IEntitySystem universe, InputSystem inputSystem);
+	public abstract void clearListener(IEntitySystem universe, InputSystem inputSystem);
 
-	public abstract <T extends IComponent> void addHandler(IEntitySystem universe, InputSystem inputSystem);
+	public abstract void addHandler(IEntitySystem universe, InputSystem inputSystem);
 	
-	public abstract String getID();
+	public String getID() {
+		return toString();
+	}
 	
 	@Override
 	public boolean equals(Object o) {
 		if(!(o instanceof Trigger)) {
 			return false;
 		}
-		Trigger t = (Trigger)o;
+		Trigger t = (Trigger) o;
 		return t.getID().equals(this.getID());
 	}
 
