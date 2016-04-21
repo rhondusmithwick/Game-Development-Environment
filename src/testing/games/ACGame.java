@@ -40,9 +40,10 @@ public class ACGame {
     private static Group root;
 	private final IEntitySystem universe = new EntitySystem();
 	private final InputSystem inputSystem = new InputSystem(universe);
-	private final EventSystem eventSystem = new EventSystem(universe, inputSystem);
+	private final EventSystem eventSystem = new EventSystem(universe);
 	private final PhysicsEngine physics = new PhysicsEngine();
 	private IEntity character;
+	private IEntity characterCopy;
 	private IEntity platform;
 	private final String IMAGE_PATH = "resources/images/blastoise.png";
 	private final String healthScriptPath = "resources/groovyScripts/ACGameTestScript.groovy";
@@ -93,7 +94,8 @@ public class ACGame {
 	    	character.addComponent(new Gravity(5000));
 			character.serialize("character.xml");
 			platform = new Entity("platform");
-			
+			characterCopy = character.clone(Entity.class);
+			universe.addEntity(platform);
 	    	eventSystem.registerEvent(new PropertyTrigger(character.getID(), character.getComponent(Position.class), 0, universe, inputSystem), new Action(healthScriptPath));
 			eventSystem.registerEvent(new KeyTrigger("D", universe, inputSystem), new Action(moveRightScriptPath));
 			eventSystem.registerEvent(new KeyTrigger("A", universe, inputSystem), new Action(moveLeftScriptPath));

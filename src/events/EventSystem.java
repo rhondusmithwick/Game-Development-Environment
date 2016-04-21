@@ -32,9 +32,9 @@ public class EventSystem implements Observer, IEventSystem {
     private InputSystem inputSystem;
     private ListMultimap<Trigger, Action> actionMap = ArrayListMultimap.create();
 
-    public EventSystem(IEntitySystem universe, InputSystem inputSystem) {
+    public EventSystem(IEntitySystem universe) {
         this.universe = universe;
-        this.inputSystem = inputSystem;
+        this.inputSystem = new InputSystem(universe);
     }
 
     @Override

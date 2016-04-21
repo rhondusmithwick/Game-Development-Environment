@@ -30,7 +30,7 @@ public class InputSystem {
     	processQ = q2;
     }
 
-    public void take(KeyEvent k) {
+    public void takeInput(KeyEvent k) {
 		fillQ.add(k);
     }
     

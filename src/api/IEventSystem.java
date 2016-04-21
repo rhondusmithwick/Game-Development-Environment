@@ -3,6 +3,7 @@ package api;
 import java.io.File;
 import java.util.Observer;
 
+import javafx.scene.input.KeyEvent;
 import events.Action;
 import events.Trigger;
 
@@ -32,4 +33,8 @@ public interface IEventSystem extends Observer, ISerializable {
 	String returnEventsAsString();
 
 	void setUniverse(IEntitySystem universe);
+
+	void takeInput(KeyEvent k);
+
+	void updateInputs();
 }
