@@ -43,7 +43,7 @@ public class AuthoringStartUp extends StartUpMenu {
 	}
 	
 	private void addImage() {
-		Image image = new Image(new File("resources/trump.jpg").toURI().toString());
+		Image image = new Image(new File("resources/testing/RhonduSmithwick.JPG").toURI().toString());
 		ImageView imageView = new ImageView(image);
 		imageView.setFitHeight(300);
 		imageView.setPreserveRatio(true);
