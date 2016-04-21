@@ -89,7 +89,7 @@ public class ACGame {
 			platform = new Entity("platform");
 
 			eventSystem.registerEvent(
-					new PropertyTrigger(character.getID(), Position.class, "Y", universe, inputSystem),
+					PropertyTrigger.createPropertyTrigger(character.getID(), Position.class, "Y"),
 					new Action(healthScriptPath));
 			eventSystem.registerEvent(new KeyTrigger("D"), new Action(moveRightScriptPath));
 			eventSystem.registerEvent(new KeyTrigger("A"), new Action(moveLeftScriptPath));
