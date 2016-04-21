@@ -7,7 +7,6 @@ import java.util.ResourceBundle;
 import api.IEntity;
 import api.ILevel;
 import api.ISerializable;
-import api.ISystemManager;
 import datamanagement.XMLReader;
 import enums.DefaultStrings;
 import enums.GUISize;
