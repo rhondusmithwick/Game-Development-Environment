@@ -8,7 +8,6 @@ import java.util.function.Function;
 
 import api.IEntity;
 import api.ILevel;
-import api.ILevel;
 import api.IPhysicsEngine;
 import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
@@ -93,7 +92,8 @@ public class PhysicsEngine implements IPhysicsEngine {
 	@Override
 	public void applyCollisions(ILevel universe, boolean dynamicsOn) {
 		List<IEntity> collidableEntities = new ArrayList<IEntity>(
-				universe.getEntitiesWithComponents(Collision.class, ImagePath.class, RestitutionCoefficient.class, Velocity.class));
+				universe.getEntitiesWithComponents(Collision.class, ImagePath.class,
+						RestitutionCoefficient.class, Velocity.class, Mass.class));
 		clearCollisionComponents(collidableEntities);
 
 		for (int i = 0; i < collidableEntities.size(); i++) {
@@ -178,7 +178,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 		return hitBoxes;
 	}
 	
-	private void applyFriction(IEntitySystem universe, double secondsPassed) {
+	private void applyFriction(ILevel universe, double secondsPassed) {
 		//coefficient of friction is 0.62
 		//only applied for things that slide
 		//not for player characters, but for objects getting pushed around
