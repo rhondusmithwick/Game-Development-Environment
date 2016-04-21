@@ -26,12 +26,9 @@ public class SystemManager implements ISystemManager {
     private List<String> details;
     private ILevel universe = new Level();
     private ILevel sharedUniverse = new Level();
-    private transient IEventSystem eventSystem;
-    private transient IPhysicsEngine physics = new PhysicsEngine();
     private boolean isRunning = true;
 
     public SystemManager() {
-        this.eventSystem = new EventSystem(universe);
         // eventSystem.init(universe);
     }
 
@@ -43,8 +40,7 @@ public class SystemManager implements ISystemManager {
     @Override
     public void step(double dt) {
         if (this.isRunning) {
-            physics.update(universe, dt);
-            eventSystem.updateInputs(dt);
+            universe.update(dt);
         }
     }
 
@@ -54,19 +50,12 @@ public class SystemManager implements ISystemManager {
     }
 
     @Override
-    public IEventSystem getEventSystem() {
-        return this.eventSystem;
-    }
-
-    @Override
     public void play() {
         this.isRunning = true;
     }
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        this.eventSystem = new EventSystem(universe);
-        this.physics = new PhysicsEngine();
     }
 
     @Override
@@ -152,4 +141,9 @@ public class SystemManager implements ISystemManager {
     public List<String> getDetails() {
         return details;
     }
+
+	@Override
+	public IEventSystem getEventSystem() {
+		return universe.getEventSystem();
+	}
 }
