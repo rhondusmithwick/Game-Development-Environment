@@ -38,14 +38,16 @@ import javafx.util.converter.NumberStringConverter;
 import view.Utilities;
 
 public class SpriteUtility extends Application{
-    private ScrollPane pane;
+    private static final double DURATION_MIN = 100;
+	private static final double DURATION_MAX = 3000;
+	private static final double DURATION_DEFAULT = 1000;
+	private ScrollPane pane;
     private Rectangle rect;
-	private Button addButton;
+    private List<List<Object>> animationList;
 	private List<Rectangle> rectangleList;
 	private ImageView spriteImage;
 	private HBox hbox;
 	private VBox animationPropertiesBox;
-	private Button saveButton;
 	private TextField animationName;
 	private File spriteSheet;
 	private ImageView previewImage;
@@ -60,8 +62,6 @@ public class SpriteUtility extends Application{
 	private DoubleProperty rectX;
 	private DoubleProperty rectY;
 	private Slider durationSlider;
-	private Label durationLabel;
-	private Label durationValueLabel;
 	
     public static void main(String[] args) {
         launch(args);
@@ -72,9 +72,6 @@ public class SpriteUtility extends Application{
         pane = new ScrollPane();
         Scene scene = new Scene(pane, 800, 600);
         stage.setScene(scene);
-
-
-        
         initializeGui();
         stage.show();
 
@@ -83,6 +80,7 @@ public class SpriteUtility extends Application{
 
 	private void initializeGui() {		
 		rectangleList = new ArrayList<Rectangle>();
+		animationList = new ArrayList<List<Object>>();
 	    hbox = new HBox();
 	    buttonBox = new VBox();
 	    animationPropertiesBox = new VBox();
@@ -90,22 +88,53 @@ public class SpriteUtility extends Application{
 
 		initNewImage();
         initRectangle();
-        initAddButton();
+        initAddFrameButton();
         initAnimationGUIElements();
-        initPreviewButton();
-        initSaveButton();
-        initNewSpriteButton();
+        initPreviewAnimationButton();
+        initSaveAnimationButton();
+        initNewAnimationButton();
+        initSaveSpriteSheetButton();
+        initNewSpriteSheetButton();
+        
         hbox.getChildren().addAll(spriteImage, buttonBox, animationPropertiesBox);
         scrollGroup.getChildren().addAll(hbox, rect);
         pane.setContent(scrollGroup);
 
 	}
 
+	private void initNewAnimationButton() {
+		Button newAnimationButton = new Button("New Animation");
+		buttonBox.getChildren().add(newAnimationButton);
+		newAnimationButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				initAnimationGUIElements();
+				rectangleList = new ArrayList<Rectangle>();
+
+			}
+		}
+		);
+	}
+
+	private void initSaveSpriteSheetButton() {
+		Button saveSpriteSheetButton = new Button("Save Animations to File");
+		buttonBox.getChildren().add(saveSpriteSheetButton);
+		saveSpriteSheetButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				initAnimationGUIElements();
+				rectangleList = new ArrayList<Rectangle>();
+
+			}
+		}
+		);
+	}
+
 	private void initNewImage() {
 		spriteImage = new ImageView(initFileChooser());
         initImageViewHandlers(spriteImage);
 	}
-    private void initNewSpriteButton() {
+    private void initNewSpriteSheetButton() {
     	Button newSpriteButton = new Button("New Sprite");
     	buttonBox.getChildren().add(newSpriteButton);
     	newSpriteButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -118,7 +147,7 @@ public class SpriteUtility extends Application{
     	);
 	}
 
-	private void initPreviewButton() {
+	private void initPreviewAnimationButton() {
     	Button previewButton = new Button("Preview Animation");
     	previewButton.setMinWidth(100);
 		buttonBox.getChildren().add(previewButton);
@@ -128,11 +157,11 @@ public class SpriteUtility extends Application{
     			@Override
     			public void handle(ActionEvent arg0) {
     				populateRectanglePropertyLists();
-    				initNewAnimation();
+    				initAnimationPreview();
     				}
     		});
     	}
-	private void initNewAnimation() {
+	private void initAnimationPreview() {
 		buttonBox.getChildren().remove(previewImage);
 		previewImage = new ImageView( new Image(spriteSheet.toURI().toString()));
 		Animation animation = new ComplexAnimation(
@@ -145,27 +174,31 @@ public class SpriteUtility extends Application{
 	}
 	//add error handling; can't be empty
     private void initAnimationGUIElements() {
+    	for (Rectangle rectangle: rectangleList){
+    		scrollGroup.getChildren().remove(rectangle);
+    	}
+    	animationPropertiesBox.getChildren().clear();
     	animationName = new TextField("Animation Name");
-    	durationSlider = new Slider(100,3000,1000);
-    	durationLabel = new Label("Duration");
-    	durationValueLabel = new Label();
+    	durationSlider = new Slider(DURATION_MIN,DURATION_MAX,DURATION_DEFAULT);
+    	Label durationTextLabel = new Label("Duration");
+    	Label durationValueLabel = new Label();
     	durationValueLabel.setText(String.format("%.2f", durationSlider.getValue()));
     	durationSlider.valueProperty().addListener(new ChangeListener<Number>() {
             public void changed(ObservableValue<? extends Number> ov,
                     Number old_val, Number new_val) {
                         durationValueLabel.setText(String.format("%.2f", new_val));
-                        initNewAnimation();
+                        initAnimationPreview();
                 }
     	}
             );
-    	animationPropertiesBox.getChildren().addAll(animationName, durationLabel,durationSlider, durationValueLabel);
+    	animationPropertiesBox.getChildren().addAll(animationName, durationTextLabel,durationSlider, durationValueLabel);
     	
 	}
 
 //reordering functionality?
 //need to write to properties file
-	private void initSaveButton() {
-		saveButton = new Button("Save Sprite Properties");
+	private void initSaveAnimationButton() {
+		Button saveButton = new Button("Save Animation");
 		saveButton.setMinWidth(100);
 		buttonBox.getChildren().add(saveButton);
 		saveButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -173,15 +206,10 @@ public class SpriteUtility extends Application{
 			@Override
 			public void handle(ActionEvent arg0) {
 				populateRectanglePropertyLists();
-				System.out.println("x" + xList);
-				System.out.println("y" + yList);
-				System.out.println("width"+ widthList);
-				System.out.println("height"+ heightList);
-
-				System.out.println("Count" + rectangleList.size());
-				System.out.println(animationName.getText());
+				List<Object> animationProperties =Arrays.asList(animationName.getText(),durationSlider.getValue(),xList,yList,widthList,heightList);
+				animationList.add(animationProperties);
+				System.out.println(animationList);
 			}
-
 
             });
 
@@ -201,8 +229,8 @@ public class SpriteUtility extends Application{
 
 		}
 	}
-	private void initAddButton() {
-		addButton = new Button("Add Frame");
+	private void initAddFrameButton() {
+		Button addButton = new Button("Add Frame");
         addButton.setMinWidth(100);
         buttonBox.getChildren().add(addButton);
 
@@ -218,6 +246,8 @@ public class SpriteUtility extends Application{
 	}
 	protected void addRectangleToDisplay(Rectangle clone) {
 		List<String> propertyList = Arrays.asList("x","y","width","height");
+	    scrollGroup.getChildren().add(clone);
+
 		for (String propertyName: propertyList){
 			Label label = new Label(propertyName);
 			TextField field = new TextField();
@@ -262,7 +292,6 @@ public class SpriteUtility extends Application{
 	    r.setHeight(rect.getHeight());
 	    r.setFill(Color.TRANSPARENT);
 	    r.setStroke(Color.RED);
-	    scrollGroup.getChildren().add(r);
 	    return r;
 	    }
 
