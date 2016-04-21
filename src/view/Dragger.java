@@ -54,18 +54,17 @@ public class Dragger {
 
 	protected void mouseOver(MouseEvent event) {
 			setInitialCoordinates(event);
-			rect.setCursor(Cursor.MOVE);
+			rect.setCursor(Cursor.OPEN_HAND);
 	}
 
 	protected void mousePressed(MouseEvent event) {
+		rect.setCursor(Cursor.CLOSED_HAND);
 		setInitialCoordinates(event);
 		dragging = true;
 	}
 
 
 	protected void mouseDragged(MouseEvent event) {
-		//double mouseX = event.getX() + shape.getBoundsInParent().getMinX();
-		//double mouseY = event.getY() + shape.getBoundsInParent().getMinY();
 		if (dragging) {
 			rect.setX(event.getX());
 			rect.setY(event.getY());

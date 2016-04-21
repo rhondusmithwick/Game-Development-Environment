@@ -28,6 +28,7 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
@@ -242,7 +243,7 @@ public class SpriteUtility extends Application {
 		return r;
 	}
 
-	private void initRectangle() {
+	private Rectangle initRectangle() {
 		rect = new Rectangle();
 		rect.widthProperty().unbind();
 		rect.heightProperty().unbind();
@@ -257,6 +258,7 @@ public class SpriteUtility extends Application {
 
 		Dragger.makeDraggable(rect);
 		spriteGroup.getChildren().add(rect);
+		return rect;
 	}
 
 	private Image initFileChooser() {
@@ -292,10 +294,18 @@ public class SpriteUtility extends Application {
 
 	private void mousePressed(MouseEvent event) {
 		spriteImage.setCursor(Cursor.CLOSED_HAND);
+		if (event.getButton() == MouseButton.PRIMARY){
+		spriteGroup.getChildren().remove(rect);
+		rect = initRectangle();
 		rect.setX(event.getX());
 		rect.setY(event.getY());
 		rectinitX.set(event.getX());
 		rectinitY.set(event.getY());
+		}
+		else if (event.getButton() == MouseButton.SECONDARY){
+		rect.setX(event.getX());
+		rect.setY(event.getY());
+		}
 	}
 
 	private void mouseDragged(MouseEvent event) {
