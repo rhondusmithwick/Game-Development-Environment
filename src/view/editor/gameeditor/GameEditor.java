@@ -1,7 +1,7 @@
 package view.editor.gameeditor;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.ResourceBundle;
 import api.IDataReader;
 import api.IEntity;
@@ -11,16 +11,15 @@ import api.ISystemManager;
 import datamanagement.XMLReader;
 import enums.DefaultStrings;
 import enums.GUISize;
-import enums.Indexes;
 import enums.ViewInsets;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import model.core.SystemManager;
 import view.Authoring;
 import view.Utilities;
 import view.editor.Editor;
@@ -36,7 +35,7 @@ public class GameEditor extends Editor  {
 	private ObservableList<ILevel> masterEnvironmentList;
 	private ISystemManager system;
 	private GameDetails gameDetails;
-	private ObjectDisplay entDisp, envDisp, eventDisplay;
+	private ObjectDisplay entDisp, envDisp;
 	private ScrollPane scrollPane;
 
 	public GameEditor(Authoring authEnv, String language, String fileName){
@@ -49,12 +48,10 @@ public class GameEditor extends Editor  {
 		gameDetails = new GameDetails(language);
 		myResources = ResourceBundle.getBundle(language);
 		this.authEnv=authEnv;
-		this.system=new SystemManager();
 		this.masterEntityList = FXCollections.observableArrayList();
 		this.masterEnvironmentList = FXCollections.observableArrayList();
 		entDisp = new EntityDisplay(myLanguage, masterEntityList, authEnv);
 		envDisp = new EnvironmentDisplay(myLanguage, masterEnvironmentList, masterEntityList, authEnv);
-		eventDisplay = new EventDisplay(myLanguage, masterEntityList, authEnv);
 
 
 		// TEST
@@ -78,13 +75,8 @@ public class GameEditor extends Editor  {
 	
 
 	private void loadFile(String fileName) {
-		IDataReader<ISystemManager> xReader  = new XMLReader<>();
-		system = xReader.readSingleFromFile(DefaultStrings.CREATE_LOC.getDefault() + fileName + DefaultStrings.XML.getDefault());
-		gameDetails.setDetails(system.getDetails());
-		masterEntityList.addAll(system.getSharedEntitySystem().getAllEntities());
-		if(system.getEntitySystem() != null){
-			masterEnvironmentList.add(system.getEntitySystem());
-		}
+		gameDetails.setDetails(new XMLReader<List<String>>().readSingleFromFile(DefaultStrings.CREATE_LOC.getDefault() + fileName + "/metadata.xml"));
+
 		
 
 	}
@@ -119,19 +111,14 @@ public class GameEditor extends Editor  {
 	private VBox leftPane() {
 		VBox temp = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
 		temp.getChildren().addAll(gameDetails.getElements());
-		temp.getChildren().addAll(Arrays.asList(entDisp.makeNewObject(), envDisp.makeNewObject(), eventDisplay.makeNewObject(), Utilities.makeButton(myResources.getString("saveGame"), e->saveGame())));
+		temp.getChildren().addAll(Arrays.asList(entDisp.makeNewObject(), envDisp.makeNewObject(), Utilities.makeButton(myResources.getString("saveGame"), e->saveGame())));
 
 		return temp;
 	}
 	
 	private void saveGame() {
-		system.getSharedEntitySystem().addEntities(new ArrayList<IEntity>(masterEntityList));
-		if(masterEnvironmentList.size()>0){
-				system.setEntitySystem(masterEnvironmentList.get(0));
-		}
-		system.setDetails(gameDetails.getGameDetails());
-		String name = DefaultStrings.CREATE_LOC.getDefault() + gameDetails.getGameDetails().get(Indexes.GAME_NAME.getIndex()) + DefaultStrings.XML.getDefault();
-		system.saveSystem(name);
+		new GameSaver().saveGame(masterEnvironmentList, masterEntityList, gameDetails.getGameDetails());
+		Utilities.showAlert("", "", myResources.getString("saved"), AlertType.INFORMATION);
 	}
 
 

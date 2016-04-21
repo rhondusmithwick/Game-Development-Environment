@@ -1,6 +1,5 @@
 package view.gameplaying;
 
-import view.editor.gameeditor.SaveGame;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import datamanagement.XMLReader;
@@ -15,7 +14,7 @@ import javafx.stage.Stage;
 
 public class GamePlayer {
 
-	private SaveGame loaded;
+	//private SaveGame loaded;
 	private GameView gameView;
 	private Stage myStage;
 
@@ -31,7 +30,7 @@ public class GamePlayer {
 	}
 
 	private void loadGame(String savedGame) {
-		loaded = new XMLReader<SaveGame>().readSingleFromFile(savedGame);
+		//loaded = new XMLReader<SaveGame>().readSingleFromFile(savedGame);
 		displayEntities();
 		
 
@@ -39,15 +38,15 @@ public class GamePlayer {
 
 	private void displayEntities() {
 		
-		for (ISerializable system: loaded.getEnvironments()){
-			for (IEntity entity: ((ILevel) system).getAllEntities()){
-					ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
-					entityView.setLayoutX(entity.getComponent(Position.class).getX());
-					entityView.setLayoutY(entity.getComponent(Position.class).getY());
-					gameView.addToView(entityView);
-			}
+		//for (ISerializable system: loaded.getEnvironments()){
+			//for (IEntity entity: ((ILevel) system).getAllEntities()){
+					//ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
+					//entityView.setLayoutX(entity.getComponent(Position.class).getX());
+					//entityView.setLayoutY(entity.getComponent(Position.class).getY());
+					//gameView.addToView(entityView);
+			//}
 
-		}		
+		//}		
 	}
 
 }
