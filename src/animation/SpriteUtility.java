@@ -5,7 +5,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javafx.animation.Animation;
 import javafx.application.Application;
@@ -37,13 +39,17 @@ import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 import view.Utilities;
 
+import java.util.AbstractMap.SimpleEntry;
+import java.util.Map.Entry;
+
 public class SpriteUtility extends Application{
     private static final double DURATION_MIN = 100;
 	private static final double DURATION_MAX = 3000;
 	private static final double DURATION_DEFAULT = 1000;
+	
 	private ScrollPane pane;
     private Rectangle rect;
-    private List<List<Object>> animationList;
+    private Map<String,Map> animationList;
 	private List<Rectangle> rectangleList;
 	private ImageView spriteImage;
 	private HBox hbox;
@@ -80,7 +86,7 @@ public class SpriteUtility extends Application{
 
 	private void initializeGui() {		
 		rectangleList = new ArrayList<Rectangle>();
-		animationList = new ArrayList<List<Object>>();
+		animationList = new HashMap<String,Map>();
 	    hbox = new HBox();
 	    buttonBox = new VBox();
 	    animationPropertiesBox = new VBox();
@@ -93,7 +99,7 @@ public class SpriteUtility extends Application{
         initPreviewAnimationButton();
         initSaveAnimationButton();
         initNewAnimationButton();
-        initSaveSpriteSheetButton();
+        initSaveSpritePropertiesButton();
         initNewSpriteSheetButton();
         
         hbox.getChildren().addAll(spriteImage, buttonBox, animationPropertiesBox);
@@ -116,7 +122,7 @@ public class SpriteUtility extends Application{
 		);
 	}
 
-	private void initSaveSpriteSheetButton() {
+	private void initSaveSpritePropertiesButton() {
 		Button saveSpriteSheetButton = new Button("Save Animations to File");
 		buttonBox.getChildren().add(saveSpriteSheetButton);
 		saveSpriteSheetButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -174,6 +180,7 @@ public class SpriteUtility extends Application{
 	}
 	//add error handling; can't be empty
     private void initAnimationGUIElements() {
+    	buttonBox.getChildren().remove(previewImage);
     	for (Rectangle rectangle: rectangleList){
     		scrollGroup.getChildren().remove(rectangle);
     	}
@@ -206,16 +213,29 @@ public class SpriteUtility extends Application{
 			@Override
 			public void handle(ActionEvent arg0) {
 				populateRectanglePropertyLists();
-				List<Object> animationProperties =Arrays.asList(animationName.getText(),durationSlider.getValue(),xList,yList,widthList,heightList);
-				animationList.add(animationProperties);
+				HashMap<String,String> moveAnimationMap = new HashMap<String,String>();
+				String name = animationName.getText();
+				moveAnimationMap.put("Duration",String.format("%.2f",durationSlider.getValue()));
+				moveAnimationMap.put("X",convertToString(xList));
+				moveAnimationMap.put("Y",convertToString(yList));
+				moveAnimationMap.put("Width",convertToString(widthList));
+				moveAnimationMap.put("Height",convertToString(heightList));
+				animationList.put(name, moveAnimationMap);
 				System.out.println(animationList);
 			}
 
             });
 
-
 	}
 	
+	protected String convertToString(List<Double> list){
+		StringBuilder str = new StringBuilder();		
+		for (Double value: list){
+			str.append(value.toString()+",");
+		}
+		return str.toString();
+	}
+
 	private void populateRectanglePropertyLists() {
 		xList = new ArrayList<Double>();
 		yList = new ArrayList<Double>();
@@ -311,9 +331,9 @@ public class SpriteUtility extends Application{
 	}
 
 	private void initImageViewHandlers(ImageView spriteImage) {
-		spriteImage.setOnMouseDragged(RectangleMouseHandler);
-        spriteImage.setOnMousePressed(RectangleMouseHandler);
-        spriteImage.setOnMouseReleased(RectangleMouseHandler);
+		spriteImage.setOnMouseDragged(RectangleDrawerHandler);
+        spriteImage.setOnMousePressed(RectangleDrawerHandler);
+        spriteImage.setOnMouseReleased(RectangleDrawerHandler);
 	}
 
     private Image initFileChooser() {
@@ -321,7 +341,7 @@ public class SpriteUtility extends Application{
 		return new Image(spriteSheet.toURI().toString());
 	}
 
-    EventHandler<MouseEvent> RectangleMouseHandler = new EventHandler<MouseEvent>() {
+    EventHandler<MouseEvent> RectangleDrawerHandler = new EventHandler<MouseEvent>() {
 
         @Override
         public void handle(MouseEvent mouseEvent) {
