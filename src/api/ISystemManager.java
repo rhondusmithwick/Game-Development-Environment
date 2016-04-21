@@ -92,4 +92,14 @@ public interface ISystemManager {
 		return new XMLReader<T>().readFromString(stringToReadFrom);
 	}
 
+	void setEntitySystem(IEntitySystem system);
+
+	IEntitySystem getUniverse();
+
+	void saveSystem(String filename);
+
+	List<String> getDetails();
+
+	void setDetails(List<String> list);
+
 }
