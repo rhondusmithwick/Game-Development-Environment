@@ -1,38 +1,72 @@
 package api;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-import java.util.Set;
+import com.google.common.collect.Collections2;
+import datamanagement.XMLReader;
+
+import java.io.File;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.Collections2;
-
-import datamanagement.XMLReader;
-
 /**
- * The interface for an EntitySystem, which holds all the entities.
+ * The interface for an Level, which holds all the entities.
  *
  * @author Rhondu Smithwick, Tom Wu
  */
-public interface IEntitySystem extends ISerializable {
+public interface ILevel extends ISerializable {
 
 	/**
 	 * Names the entity System
 	 *
-	 * @param The
-	 *            string with the name
+	 * @param name
+	 *            with the name
 	 */
 	void setName(String name);
 
 	/**
 	 * Gets the Entity Systems name
 	 *
-	 * @return stirng entity system name
+	 * @return string entity system name
 	 */
 	String getName();
+
+	/**
+	 * Gets the metadata about this level
+	 * 
+	 * @return Metadata in the form of a map
+	 */
+	Map<String, String> getMetadata();
+
+	/**
+	 * Add a piece of metadata to this level
+	 * 
+	 * @param key
+	 *            the field name (e.g. "Description")
+	 * @param value
+	 *            the field value
+	 */
+	void addMetadata(String key, String value);
+
+	/**
+	 * Sets the metadata
+	 * 
+	 * @param metadata
+	 */
+	void setMetadata(Map<String, String> metadata);
+
+	void init(List<File> groovyScripts);
+
+	void update(double dt);
+
+	/**
+	 * @return event system
+	 */
+	IEventSystem getEventSystem();
+
+	/**
+	 * @return physics engine
+	 */
+	IPhysicsEngine getPhysicsEngine();
 
 	/**
 	 * Gets the Entity System's event system's XML path
@@ -40,14 +74,15 @@ public interface IEntitySystem extends ISerializable {
 	 * @return string of event system file path
 	 */
 	String getEventSystemPath();
-	
+
 	/**
 	 * Sets the Entity System's event system's XML path
 	 * 
-	 * @param path string of event system file path
+	 * @param eventSystemPath
+	 *            string of event system file path
 	 */
 	void setEventSystemPath(String eventSystemPath);
-	
+
 	/**
 	 * Creates an entity.
 	 *
@@ -101,6 +136,7 @@ public interface IEntitySystem extends ISerializable {
 
 	/**
 	 * Annihilate everything as our good friend Tom puts it.
+	 * 
 	 * @see #getAllIDS()
 	 * @see #removeEntity(String)
 	 */

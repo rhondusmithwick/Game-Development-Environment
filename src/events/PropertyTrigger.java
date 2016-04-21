@@ -1,48 +1,61 @@
 package events;
 
 import api.IComponent;
+<<<<<<< HEAD
 import api.IEntitySystem;
+=======
+import api.IEntity;
+import api.ILevel;
+import javafx.beans.property.SimpleObjectProperty;
+>>>>>>> 4b37dbfbef7ed6e05fe66b5a93ac860c3b44c630
 import javafx.beans.value.ObservableValue;
+
+
 /***
- * 
- * @author Anirudh Jonnavithula, Carolyn Yao
- * Implements a ChangeListener that listens to change in a SimpleObjectProperty for now, signals EventSystem
- * potential subclasses: PropertyTrigger, KeyTrigger, CollisionTrigger?, OtherEventTrigger
+ * @author Anirudh Jonnavithula, Carolyn Yao Implements a ChangeListener that
+ *         listens to change in a SimpleObjectProperty for now, signals
+ *         EventSystem potential subclasses: PropertyTrigger, KeyTrigger,
+ *         CollisionTrigger?, OtherEventTrigger
  */
-public class PropertyTrigger extends Trigger{
 
-	private String entityID;
-	private String componentName;
-	private int index;
-	
-	public PropertyTrigger(String entityID, IComponent component, int index, IEntitySystem universe, InputSystem inputSystem) {
-		this.entityID = entityID;
-		this.componentName= component.getClass().toString().split(" ")[1];
-		this.index = index;
-		addHandler(universe, inputSystem);
-	}
-	
-	@Override
-	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
-		setChanged();
-		notifyObservers();
-	}
-	
-	public <T extends IComponent> void clearListener(IEntitySystem universe) {
-		try {
-			universe.getEntity(entityID).getComponent((Class<T>) Class.forName(componentName)).getProperties().get(index).removeListener(this);
-		} catch (ClassNotFoundException e) {
-			System.out.println("Could not remove the listener because class was not found.");
-		}
-	}
+public class PropertyTrigger extends Trigger {
+    private final String entityID;
+    private final Class<? extends IComponent> componentClass;
+    private final String propertyName;
 
-	@Override
-	public <T extends IComponent> void addHandler(IEntitySystem universe, InputSystem inputSystem) {
-		try {
-			universe.getEntity(entityID).getComponent((Class<T>) Class.forName(componentName)).getProperties().get(index).addListener(this);
-		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
-		}
-	}
+    public PropertyTrigger(String entityID, Class<? extends IComponent> componentClass, String propertyName) {
+        this.entityID = entityID;
+        this.componentClass = componentClass;
+        this.propertyName = propertyName;
+    }
+
+    @Override
+    public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+        setChanged();
+        notifyObservers();
+    }
+
+    @Override
+    public void clearListener(ILevel universe, InputSystem inputSystem) {
+        getProperty(universe).removeListener(this);
+
+    }
+
+    @Override
+    public void addHandler(ILevel universe, InputSystem inputSystem) {
+        getProperty(universe).addListener(this);
+    }
+
+    private SimpleObjectProperty<?> getProperty(ILevel universe) {
+        IEntity entity = universe.getEntity(entityID);
+        IComponent component = entity.getComponent(componentClass);
+        return component.getProperty(propertyName);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("%s; %s; %s; %s", getClass().getSimpleName(), entityID, componentClass.getSimpleName(),
+                propertyName);
+    }
 
 }

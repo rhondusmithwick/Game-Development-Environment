@@ -6,6 +6,6 @@ package api;
  *
  * @author Tom Wu
  */
-public interface ISystem extends IEntitySystem, IEventSystem {
+public interface ISystem extends ILevel, IEventSystem {
 
 }

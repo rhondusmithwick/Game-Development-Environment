@@ -1,8 +1,9 @@
-package testing.demo;
+package view;
 
 import api.IEntity;
-import api.IEntitySystem;
+import api.ILevel;
 import api.ISystemManager;
+import api.IView;
 import groovy.lang.GroovyShell;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -19,14 +20,15 @@ import javafx.util.Duration;
 import model.component.movement.Orientation;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
-import usecases.SystemManager;
+import model.core.SystemManager;
+import testing.demo.Pong;
 
 /**
  * 
  * @author Tom
  *
  */
-public class View {
+public class View implements IView {
 
 	private final double MILLISECOND_DELAY = 10;
 	private final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
@@ -42,7 +44,7 @@ public class View {
 	private final ISystemManager model = new SystemManager();
 	private final Pong game = new Pong(shell, model); // TODO: move to level
 														// hierarchy
-	private final IEntitySystem universe = model.getEntitySystem();
+	private final ILevel universe = model.getEntitySystem();
 	private final BorderPane pane;
 
 	public View() {

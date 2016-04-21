@@ -1,15 +1,15 @@
 package api;
 
-import java.util.List;
-
 import datamanagement.XMLReader;
+
+import java.util.List;
 
 /**
  * Created by rhondusmithwick on 3/31/16.
  *
  * @author Rhondu Smithwick
  */
-public interface ISystemManager extends ISerializable {
+public interface ISystemManager {
 
 	/**
 	 * This will play the game loop.
@@ -27,12 +27,36 @@ public interface ISystemManager extends ISerializable {
 	void step(double dt);
 
 	/**
-	 * Get the current entity system
+	 * Get the main entity system
 	 *
 	 * @return IEntitySystem-type entity system
 	 */
-	IEntitySystem getEntitySystem();
+	ILevel getEntitySystem();
 
+	/**
+	 * Get the shared entity system
+	 *
+	 * @return IEntitySystem-type entity system
+	 */
+	ILevel getSharedEntitySystem();
+
+	void saveLevel(String filename);
+
+	void saveSharedLevel(String filename);
+
+	void loadLevel(String filename);
+
+	void loadSharedLevel(String filename);
+
+	void moveEntitiesToMainSystem(IEntity... entities);
+
+	void moveEntitiesToMainSystem(String... ids);
+
+	void moveEntitiesToSharedSystem(IEntity... entities);
+
+	void moveEntitiesToSharedSystem(String... ids);
+
+	@Deprecated
 	/**
 	 * Get the current event system
 	 *
@@ -40,6 +64,7 @@ public interface ISystemManager extends ISerializable {
 	 */
 	IEventSystem getEventSystem();
 
+	@Deprecated
 	/**
 	 * Reads objects from file with specified fileName. Must be of type T.
 	 *
@@ -53,6 +78,7 @@ public interface ISystemManager extends ISerializable {
 		return new XMLReader<T>().readFromFile(fileName);
 	}
 
+	@Deprecated
 	/**
 	 * Reads objects from specified string. Must be of type T.
 	 *
@@ -65,4 +91,17 @@ public interface ISystemManager extends ISerializable {
 	static <T extends ISerializable> List<T> evaluateString(String stringToReadFrom) {
 		return new XMLReader<T>().readFromString(stringToReadFrom);
 	}
+
+	@Deprecated
+	// Use load method instead of setter
+	void setEntitySystem(ILevel system);
+
+	ILevel getUniverse();
+
+	void saveSystem(String filename);
+
+	List<String> getDetails();
+
+	void setDetails(List<String> list);
+
 }

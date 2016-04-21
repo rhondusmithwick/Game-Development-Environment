@@ -8,6 +8,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -25,6 +26,7 @@ public abstract class StartUpMenu {
 	private static final String CSS = "resources/cssFiles/";
 	private static final String MAIN_THEME = "finalCountdown.mp3";
 	private static final String MAIN_CSS = "main.css";
+	private ScrollPane scrollPane;
 	
 	public StartUpMenu(Stage myStage){
 		this.myStage = myStage;
@@ -38,10 +40,11 @@ public abstract class StartUpMenu {
 		myStage.show();
 	}
 	
-	protected Group createDisplay(){
+	protected ScrollPane createDisplay(){
 		root = new Group();
 		createVBox();
-		return root;
+		scrollPane = new ScrollPane(root);
+		return scrollPane;
 	}
 	
 	private void setMusic(String file) {

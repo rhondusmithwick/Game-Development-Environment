@@ -84,11 +84,6 @@ public class Position implements IComponent {
     }
 
     @Override
-    public boolean unique() {
-        return true;
-    }
-
-    @Override
     public List<SimpleObjectProperty<?>> getProperties() {
         return twoProperty.getProperties();
     }
