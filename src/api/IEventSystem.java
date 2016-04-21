@@ -25,7 +25,7 @@ public interface IEventSystem extends Observer, ISerializable {
 
 	void registerEvent(Trigger trigger, Action action);
 
-	void readEventsFromFilePath(String filepath);
+	void readEventFromFile(String filepath);
 
 	File saveEventsToFile(String filepath);
 
