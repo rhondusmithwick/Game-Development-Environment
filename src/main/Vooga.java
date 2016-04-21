@@ -8,6 +8,7 @@ import enums.DefaultStrings;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
@@ -23,7 +24,7 @@ public class Vooga extends StartUpMenu {
 	private Stage myStage;
 	private ResourceBundle myResources;
 	private ComboBox<String> languages;
-	private Group root;
+	private ScrollPane root;
 
 	public Vooga(Stage stage) {
 		super(stage);
@@ -33,7 +34,7 @@ public class Vooga extends StartUpMenu {
 
 	
 	@Override
-	protected Group createDisplay() {
+	protected ScrollPane createDisplay() {
 		root = super.createDisplay();
 		titleText();
 		setLanguage();

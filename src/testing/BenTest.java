@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import api.IEntity;
-import api.IEntitySystem;
+import api.ILevel;
 import api.IPhysicsEngine;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -24,7 +24,7 @@ import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
-import model.entity.EntitySystem;
+import model.entity.Level;
 import model.physics.PhysicsEngine;
 
 public class BenTest extends Application {
@@ -56,7 +56,7 @@ public class BenTest extends Application {
 		character.removeComponents(Velocity.class, Score.class);
 		list.add(character);
 
-		IEntitySystem system = new EntitySystem();
+		ILevel system = new Level();
 		system.addEntities(list);
 		// TODO: don't lazy-initialize!
 		physics = new PhysicsEngine();
@@ -75,7 +75,7 @@ public class BenTest extends Application {
 
 	}
 
-	private void step(double dt, List<IEntity> list, IEntitySystem system) {
+	private void step(double dt, List<IEntity> list, ILevel system) {
 		physics.update(system, dt);
 		System.out.println("dt=" + dt);
 		drawEntities(list);

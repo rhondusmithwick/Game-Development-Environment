@@ -42,7 +42,7 @@ public interface ISerializable extends Serializable {
      * @throws IllegalArgumentException if objectClass snot same class
      */
     default <T extends ISerializable> T clone(Class<T> objectClass) {
-        boolean sameClass = objectClass.equals(getClass());
+        boolean sameClass = getClass().isAssignableFrom(objectClass);
         Preconditions.checkArgument(sameClass, "Not the same class so cannot clone.");
         String clonedString = serializeToString();
         Object obj = new XMLReader<T>().readSingleFromString(clonedString);

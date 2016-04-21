@@ -10,6 +10,7 @@ import events.Action;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -22,6 +23,7 @@ import view.editor.Editor;
 public class KeyBindingEditor extends Editor 
 {
 	private boolean keyListenerIsActive;
+	private ScrollPane scrollPane;
 	private HBox pane;
 	
 	private VBox inputBox;
@@ -34,6 +36,7 @@ public class KeyBindingEditor extends Editor
 	
 	public KeyBindingEditor(String language, ObservableList<ISerializable> masterEnvironmentList)
 	{
+		scrollPane = new ScrollPane();
 		myResources = ResourceBundle.getBundle(language);
 		keyListenerIsActive = false;
 		pane = new HBox(GUISize.EVENT_EDITOR_PADDING.getSize());
@@ -103,9 +106,9 @@ public class KeyBindingEditor extends Editor
 	}
 
 	@Override
-	public Pane getPane() 
+	public ScrollPane getPane() 
 	{
-		return pane;
+		return scrollPane;
 	}
 
 	@Override
@@ -113,6 +116,8 @@ public class KeyBindingEditor extends Editor
 	{
 		makeInputBox();
 		makeGroovyBox();
+		
+		scrollPane.setContent(pane);
 	}
 
 	@Override

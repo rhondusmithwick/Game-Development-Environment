@@ -11,7 +11,7 @@ import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 
 import api.IEntity;
-import api.IEntitySystem;
+import api.ILevel;
 import api.IPhysicsEngine;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -25,7 +25,7 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
-import model.entity.EntitySystem;
+import model.entity.Level;
 import model.physics.PhysicsEngine;
 import testing.BenTestCharacter;
 
@@ -51,7 +51,7 @@ public class BasicRMIClient extends Application{
 		
 		try { 
 			System.setSecurityManager(new RMISecurityManager());
-			EntitySystem universe = (EntitySystem) Naming.lookup("rmi://localhost/entitysystem_server");
+			Level universe = (Level) Naming.lookup("rmi://localhost/entitysystem_server");
 			universe.addEntities(list);
 			physics = new PhysicsEngine();
 			testSprite = createImage(character.getComponent(ImagePath.class), character.getComponent(Position.class));
@@ -68,7 +68,7 @@ public class BasicRMIClient extends Application{
 		}
 	}
 
-	private void step(double dt, List<IEntity> list, IEntitySystem system) {
+	private void step(double dt, List<IEntity> list, ILevel system) {
 		physics.update(system, dt);
 		drawEntities(list);
 	}

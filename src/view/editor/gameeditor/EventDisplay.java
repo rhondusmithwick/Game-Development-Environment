@@ -3,6 +3,7 @@ package view.editor.gameeditor;
 import java.util.ResourceBundle;
 
 import api.IEditor;
+import api.IEntity;
 import api.ISerializable;
 import enums.DefaultStrings;
 import enums.GUISize;
@@ -27,30 +28,20 @@ public class EventDisplay extends ObjectDisplay
 	private Authoring authoringEnvironment;
 	private String language;
 	private ResourceBundle myResources;
-	private ObservableList<ISerializable> masterEntityList;
+	private ObservableList<IEntity> masterEntityList;
 	private final EditorFactory editFact = new EditorFactory();
 	private ObservableList<ISerializable> masterEnvironmentList;
 	
-	public EventDisplay(String language, ObservableList<ISerializable> masterEnvironmentList, ObservableList<ISerializable> masterEntityList,  Authoring authoringEnvironment)
+
+	public EventDisplay(String language,ObservableList<IEntity> masterEntityList, Authoring authoringEnvironment)
 	{
-		super(language, authoringEnvironment, masterEntityList);
-		this.masterEnvironmentList = masterEnvironmentList;
+		super(language, authoringEnvironment,masterEntityList);
 		this.language=language;
 		this.masterEntityList = masterEntityList;
 		this.authoringEnvironment = authoringEnvironment;
 		this.language = language;
 		this.myResources = ResourceBundle.getBundle(language);
-	}
-
-	@Override
-	public void createEditor(Class<?> editName, ISerializable toEdit, ObservableList<ISerializable> environmentList) 
-	{
-		IEditor editor = editFact.createEditor(editName, language, toEdit, masterEntityList, environmentList);
-		System.out.println(environmentList);	// TODO remove this, this is Testing
-		editor.populateLayout();
-		authoringEnvironment.createTab(editor.getPane(), editName.getSimpleName(), true);
-	}
-	
+	}	
 	@Override
 	protected void addNewObjects(VBox container) 
 	{

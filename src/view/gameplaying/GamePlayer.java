@@ -6,7 +6,7 @@ import model.component.visual.ImagePath;
 import datamanagement.XMLReader;
 import enums.GUISize;
 import api.IEntity;
-import api.IEntitySystem;
+import api.ILevel;
 import api.ISerializable;
 import api.ISystemManager;
 import javafx.scene.Scene;
@@ -40,7 +40,7 @@ public class GamePlayer {
 	private void displayEntities() {
 		
 		for (ISerializable system: loaded.getEnvironments()){
-			for (IEntity entity: ((IEntitySystem) system).getAllEntities()){
+			for (IEntity entity: ((ILevel) system).getAllEntities()){
 					ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
 					entityView.setLayoutX(entity.getComponent(Position.class).getX());
 					entityView.setLayoutY(entity.getComponent(Position.class).getY());

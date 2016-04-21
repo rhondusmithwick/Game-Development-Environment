@@ -1,52 +1,16 @@
 package view.editor.eventeditor;
 
 import javafx.scene.layout.Pane;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
-import view.Authoring;
-import view.Utilities;
 import view.editor.Editor;
-import api.IEditor;
 import api.ISerializable;
-import enums.DefaultStrings;
-import enums.FileExtensions;
 import enums.GUISize;
 import enums.ViewInsets;
-import events.Action;
-import events.Trigger;
 import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.FileChooser.ExtensionFilter;
-import model.entity.Entity;
 
 /**
  * 
@@ -60,22 +24,25 @@ import model.entity.Entity;
 public class EditorEvent extends Editor
 {
 	private final Pane pane;
+	private final ScrollPane scrollPane;
 	private final TabPane tabPane;
-	private final ResourceBundle myResources;
-	
-	
+	private ResourceBundle myResources;
 	
 	private final Tab propertyTab;
 	private final PropertyEventEditor propertyEventEditor;
 	private final KeyBindingEditor keyBindingEditor;
 	
 	public EditorEvent(String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> masterEnvironmentList)
-	{
-		
+	{	
 		propertyEventEditor = new PropertyEventEditor(language, toEdit, masterList, masterEnvironmentList);
 		keyBindingEditor = new KeyBindingEditor(language, masterEnvironmentList);
+
+		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
+		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
+		// pane.setAlignment(Pos.TOP_LEFT);
+		myResources = ResourceBundle.getBundle(language);
+		scrollPane = new ScrollPane(pane);
 		
-		pane = new Pane();
 		tabPane = new TabPane();
 		propertyTab = new Tab();
 		
@@ -105,9 +72,9 @@ public class EditorEvent extends Editor
 	public void loadDefaults() {}
 
 	@Override
-	public Pane getPane() 
+	public ScrollPane getPane() 
 	{
-		return pane;
+		return scrollPane;
 	}
 
 	@Override

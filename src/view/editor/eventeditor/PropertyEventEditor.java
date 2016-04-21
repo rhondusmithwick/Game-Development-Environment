@@ -4,7 +4,6 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
-import api.IEntitySystem;
 import api.ISerializable;
 import enums.GUISize;
 import enums.ViewInsets;
@@ -14,6 +13,7 @@ import events.Trigger;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -24,6 +24,7 @@ import view.editor.Editor;
 
 public class PropertyEventEditor extends Editor
 {
+	private final ScrollPane scrollPane;
 	private final VBox pane;
 	private final ResourceBundle myResources;
 	
@@ -55,13 +56,15 @@ public class PropertyEventEditor extends Editor
 		
 		actionButtons = new HashMap<String, Button>();
 		
-		inputSystem = new InputSystem((IEntitySystem)environmentList.get(0));
+		inputSystem = new InputSystem();
 		tableManager = new TableManager(masterList, language, this, environmentList, inputSystem );
 		
 		trigger = null;
 		action = null;
 		
 		populateLayout();
+		
+		scrollPane = new ScrollPane(pane);
 	}
 
 	private VBox makeGroovySide()
@@ -137,9 +140,9 @@ public class PropertyEventEditor extends Editor
 	}
 	
 	@Override
-	public Pane getPane() 
+	public ScrollPane getPane() 
 	{
-		return pane;
+		return scrollPane;
 	}
 
 	@Override

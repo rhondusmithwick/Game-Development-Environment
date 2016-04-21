@@ -3,7 +3,6 @@ package view.editor.eventeditor;
 import java.util.ResourceBundle;
 
 import api.IComponent;
-import api.IEntitySystem;
 import api.ISerializable;
 import events.InputSystem;
 import events.PropertyTrigger;
@@ -12,7 +11,6 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.HBox;
 import model.entity.Entity;
-import model.entity.EntitySystem;
 
 public class TableManager 
 {
@@ -74,7 +72,8 @@ public class TableManager
 		editor.triggerSet(entity.getName() + " - " + 
 				splitClassName[splitClassName.length - 1] + " - " + 
 				property.getName(),
-				new PropertyTrigger(entity.getID(), component, propertyIndex, (IEntitySystem)environmentList.get(0), inputSystem) 
+				// new PropertyTrigger(entity.getID(), component, propertyIndex, (IEntitySystem)environmentList.get(0), inputSystem)
+				null
 				);	
 	
 	}

@@ -1,6 +1,7 @@
 package testing.demo;
 
-import api.IEntitySystem
+import api.ILevel
+import api.ILevel
 import api.ISystemManager
 
 /**
@@ -18,7 +19,7 @@ public class Pong {
 		//		this.engine.put("universe", this.model.getEntitySystem());
 		//		this.engine.put("demo", new GroovyDemoTest());
 		shell.setVariable("game", model);
-		IEntitySystem universe = model.getEntitySystem();
+		ILevel universe = model.getEntitySystem();
 		shell.setVariable("universe", universe);
 		GroovyDemoTest test = new GroovyDemoTest();
 		shell.setVariable("demo", test);

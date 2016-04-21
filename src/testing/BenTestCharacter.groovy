@@ -27,7 +27,7 @@ class BenTestCharacter {
 		character.addComponent(new Mass(30.0))
 		character.addComponent(new Gravity())
 		character.addComponent(new Collision(null))
-		character.addComponent(new RestitutionCoefficient(0.2))
+		character.addComponent(new RestitutionCoefficient(0))
 		return character
 	}
 }
