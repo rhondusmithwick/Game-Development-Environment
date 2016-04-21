@@ -126,7 +126,9 @@ class SpriteUtility {
     		}
     	}
     }
-
+    /*
+     * Initialize all animation gui elements (i.e. left side of pane)
+     */
 	private void initAnimationProperties() {
         buttonBox.getChildren().remove(previewImage);
         animationPropertiesBox.getChildren().clear();
@@ -161,10 +163,11 @@ class SpriteUtility {
 	}
 
     private void reInitialize() {
-        initAnimationProperties();
         spriteGroup.getChildren().removeAll(rectangleList);
         rectangleList = new ArrayList<>();
         animationList = new TreeMap<String,Map>();
+        initAnimationProperties();
+
     }
 
     private void initNewImage() {
