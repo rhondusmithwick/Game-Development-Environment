@@ -3,18 +3,19 @@ package view;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 
 public class Dragger {
 
-	private Shape shape;
+	private Rectangle rect;
 
 	private boolean dragging;
 	private double clickX;
 	private double clickY;
 
-	private Dragger(Shape rectangle) {
-		shape = rectangle;
+	private Dragger(Rectangle rectangle) {
+		rect = rectangle;
 	}
 
 	private void setInitialCoordinates(MouseEvent event) {
@@ -22,7 +23,7 @@ public class Dragger {
 		clickY = event.getY();
 	}
 
-	public static void makeDraggable(Shape rectangle) {
+	public static void makeDraggable(Rectangle rectangle) {
 		final Dragger dragger = new Dragger(rectangle);
 
 		rectangle.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -53,7 +54,7 @@ public class Dragger {
 
 	protected void mouseOver(MouseEvent event) {
 			setInitialCoordinates(event);
-			shape.setCursor(Cursor.MOVE);
+			rect.setCursor(Cursor.MOVE);
 	}
 
 	protected void mousePressed(MouseEvent event) {
@@ -63,20 +64,18 @@ public class Dragger {
 
 
 	protected void mouseDragged(MouseEvent event) {
-		double mouseX = event.getX() + shape.getBoundsInParent().getMinX();
-		double mouseY = event.getY() + shape.getBoundsInParent().getMinY();
+		//double mouseX = event.getX() + shape.getBoundsInParent().getMinX();
+		//double mouseY = event.getY() + shape.getBoundsInParent().getMinY();
 		if (dragging) {
-			double translateX = mouseX - clickX;
-			double translateY = mouseY - clickY;
-			shape.setTranslateX(translateX);
-			shape.setTranslateY(translateY);
+			rect.setX(event.getX());
+			rect.setY(event.getY());
 			return;
 		}
 	}
 
 	protected void mouseReleased(MouseEvent event) {
 		dragging = false;
-		shape.setCursor(Cursor.DEFAULT);
+		rect.setCursor(Cursor.DEFAULT);
 	}
 
 }
