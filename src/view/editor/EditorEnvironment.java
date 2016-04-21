@@ -8,7 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import api.IEntity;
-import api.IEntitySystem;
+import api.ILevel;
+import api.ILevel;
 import api.ISerializable;
 import enums.GUISize;
 import javafx.collections.ListChangeListener;
@@ -26,23 +27,21 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
-import model.entity.EntitySystem;
+import model.entity.Level;
 import view.DefaultsMaker;
 import view.DragAndResize;
-import view.Dragger;
 import view.Utilities;
 
 public class EditorEnvironment extends Editor {
 
 	private BorderPane environmentPane;
-	private IEntitySystem myEntitySystem;
+	private ILevel myEntitySystem;
 	private SubScene gameScene;
 	private Group gameRoot;
 	private ResourceBundle myResources;
@@ -53,6 +52,7 @@ public class EditorEnvironment extends Editor {
 	private VBox masterEntityButtons;
 	private VBox environmentEntityButtons;
 	private TextField nameField;
+	private ScrollPane scrollPane;
 
 	public EditorEnvironment(String language, ISerializable toEdit, ObservableList<ISerializable> masterList,
 			ObservableList<ISerializable> addToList) {
@@ -61,8 +61,7 @@ public class EditorEnvironment extends Editor {
 			this.updateDisplay(masterList);
 		});
 		masterEntityList = masterList;
-		System.out.println("First Entity: " + ((IEntity) masterEntityList.get(0)).getID());
-		myEntitySystem = (IEntitySystem) toEdit;
+		myEntitySystem = (ILevel) toEdit;
 		allEnvironmentsList = addToList;
 		addLayoutComponents();
 
@@ -88,6 +87,7 @@ public class EditorEnvironment extends Editor {
 
 	private void addLayoutComponents() {
 		environmentPane = new BorderPane();
+		scrollPane = new ScrollPane(environmentPane);
 		setLeftPane();
 		setRightPane();
 		setGameScene();
@@ -174,7 +174,7 @@ public class EditorEnvironment extends Editor {
 			if (!entity.hasComponent(Position.class) || !entity.hasComponent(ImagePath.class)) {
 				addComponents(entity);
 			}
-			//Shape rectangle = new Rectangle(200,200);
+			//Rectangle rectangle = new Rectangle(200,200);
 			//rectangle.setFill(Color.BLUE);
 			//makeDraggable(rectangle);
 			makeResizable(entity);
@@ -185,7 +185,6 @@ public class EditorEnvironment extends Editor {
 			Utilities.showAlert(myResources.getString("error"), null, myResources.getString("unableToAdd"),
 					AlertType.ERROR);
 		}
-		System.out.println("entity to add to Scene" + entity.getID());
 	}
 
 	private ImageView createEntityImageView(IEntity entity) {
@@ -219,8 +218,8 @@ public class EditorEnvironment extends Editor {
 	}
 	
 	//LOOK HERE FOR MAKING A SHAPE DRAGGABLE
-	private Shape makeDraggable(Shape rectangle) {
-		Dragger.makeDraggable(rectangle);
+	private Shape makeDraggable(Rectangle rectangle) {
+		DragAndResize.makeResizable(rectangle);
 		return rectangle;
 	}
 	
@@ -241,12 +240,12 @@ public class EditorEnvironment extends Editor {
 		}
 	}
 
-	private IEntitySystem reorder(IEntity entity, IEntitySystem entitySystem) {
+	private ILevel reorder(IEntity entity, ILevel entitySystem) {
 		entitySystem.removeEntity(entity.getID());
 		Collection<IEntity> entitiesLeft = entitySystem.getAllEntities();
 		List<IEntity> allEntitiesIn = new ArrayList<IEntity>();
 		allEntitiesIn.addAll(entitiesLeft);
-		entitySystem = new EntitySystem();
+		entitySystem = new Level();
 		entitySystem.addEntity(entity);
 		entitySystem.addEntities(allEntitiesIn);
 		return entitySystem;
@@ -336,13 +335,13 @@ public class EditorEnvironment extends Editor {
 		environmentEntityButtons.getChildren().remove(entityButton);
 	}
 
-	public IEntitySystem getEntitySystem() {
+	public ILevel getEntitySystem() {
 		return myEntitySystem;
 	}
 
 	@Override
-	public Pane getPane() {
-		return environmentPane;
+	public ScrollPane getPane() {
+		return scrollPane;
 	}
 
 	@Override

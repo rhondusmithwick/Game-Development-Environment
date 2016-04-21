@@ -24,7 +24,7 @@
 //import javafx.stage.Stage;
 //import model.component.movement.Position;
 //import model.entity.Entity;
-//import model.entity.EntitySystem;
+//import model.entity.Level;
 //
 ///**
 // * Created by rhondusmithwick on 4/10/16.
@@ -33,7 +33,7 @@
 // */
 //public class InputSystemTesting extends Application implements ChangeListener {
 //
-//	private final IEntitySystem universe = new EntitySystem();
+//	private final IEntitySystem universe = new Level();
 //	private final InputSystem inputSystem = new InputSystem(universe);
 //
 //	private final String KEY_BINDINGS = "/propertyFiles/keyBindings.properties";

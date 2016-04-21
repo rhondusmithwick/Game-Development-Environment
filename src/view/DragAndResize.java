@@ -2,8 +2,12 @@ package view;
 
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
+import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
 
@@ -21,23 +25,38 @@ public class DragAndResize {
 	private double clickY;
 	private double minW;
 	private double minH;
+	
+	private Node node;
+	private Rectangle shape;
 	private Position position;
 	private final ImageView image;
 	private final ImagePath component;
 
 	private DragAndResize(ImagePath component, Position aPos) {
 		this.component = component;
-		image = component.getImageView();
-		position = aPos;
+		this.image = component.getImageView();
+		this.node = component.getImageView();
+		this.position = aPos;
+		this.shape = new Rectangle();
 		minW = image.minWidth(image.getFitHeight());
 		minH = image.minHeight(image.getFitWidth());
 	}
 
+	public DragAndResize(Rectangle shape) {
+		this.component = new ImagePath();
+		this.node = shape;
+		this.image = new ImageView();
+		this.position = new Position();
+		this.shape = shape;
+		minW = shape.minWidth(0);
+		minH = shape.minHeight(0);
+	}
+
 	private void setInitialCoordinates(MouseEvent event) {
-		parentMinX = image.getBoundsInParent().getMinX();
-		parentMinY = image.getBoundsInParent().getMinY();
-		parentHeight = image.getBoundsInParent().getHeight();
-		parentWidth = image.getBoundsInParent().getWidth();
+		parentMinX = node.getBoundsInParent().getMinX();
+		parentMinY = node.getBoundsInParent().getMinY();
+		parentHeight = node.getBoundsInParent().getHeight();
+		parentWidth = node.getBoundsInParent().getWidth();
 		clickX = event.getX();
 		clickY = event.getY();
 	}
@@ -47,43 +66,53 @@ public class DragAndResize {
 			return;
 		}
 		component.setImageHeight(height);
+		shape.setHeight(height);
 	}
 
 	public static void makeResizable(ImagePath component, Position aPos) {
 		final DragAndResize resizer = new DragAndResize(component, aPos);
 		ImageView anImage = component.getImageView();
-		anImage.setOnMousePressed(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				resizer.mousePressed(event);
-			}
-		});
-		anImage.setOnMouseDragged(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				resizer.mouseDragged(event);
-			}
-		});
-		anImage.setOnMouseMoved(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				resizer.mouseOver(event);
-			}
-		});
-		anImage.setOnMouseReleased(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				resizer.mouseReleased(event);
-			}
-		});
+		set(anImage,resizer);
+	}
+	
+	public static void makeResizable(Rectangle aShape){
+		final DragAndResize resizer = new DragAndResize(aShape);
+		set(aShape,resizer);
+	}
+	
+	public static void set(Node node, DragAndResize resizer){
+	node.setOnMousePressed(new EventHandler<MouseEvent>() {
+		@Override
+		public void handle(MouseEvent event) {
+			resizer.mousePressed(event);
+		}
+	});
+	node.setOnMouseDragged(new EventHandler<MouseEvent>() {
+		@Override
+		public void handle(MouseEvent event) {
+			resizer.mouseDragged(event);
+		}
+	});
+	node.setOnMouseMoved(new EventHandler<MouseEvent>() {
+		@Override
+		public void handle(MouseEvent event) {
+			resizer.mouseOver(event);
+		}
+	});
+	node.setOnMouseReleased(new EventHandler<MouseEvent>() {
+		@Override
+		public void handle(MouseEvent event) {
+			resizer.mouseReleased(event);
+		}
+	});
 	}
 
 	protected void mouseOver(MouseEvent event) {
 		setInitialCoordinates(event);
 		if (isInResizeZone(event) || resizing) {
-			image.setCursor(Cursor.S_RESIZE);
+			node.setCursor(Cursor.S_RESIZE);
 		} else {
-			image.setCursor(Cursor.DEFAULT);
+			node.setCursor(Cursor.DEFAULT);
 		}
 	}
 
@@ -104,15 +133,15 @@ public class DragAndResize {
 	}
 
 	protected void mouseDragged(MouseEvent event) {
-		double mouseX = event.getX() + image.getBoundsInParent().getMinX();
-		double mouseY = event.getY() + image.getBoundsInParent().getMinY();
+		double mouseX = event.getX() + node.getBoundsInParent().getMinX();
+		double mouseY = event.getY() + node.getBoundsInParent().getMinY();
 		if (dragging) {
 			double translateX = mouseX - clickX;
 			double translateY = mouseY - clickY;
 			position.setX(translateX);
-			image.setTranslateX(translateX);
+			node.setTranslateX(translateX);
 			position.setY(translateY);
-			image.setTranslateY(translateY);
+			node.setTranslateY(translateY);
 			return;
 		} else {
 			if (isInBottomResize(event) || resizing) {
@@ -125,7 +154,7 @@ public class DragAndResize {
 	protected void mouseReleased(MouseEvent event) {
 		resizing = false;
 		dragging = false;
-		image.setCursor(Cursor.DEFAULT);
+		node.setCursor(Cursor.DEFAULT);
 	}
 
 }

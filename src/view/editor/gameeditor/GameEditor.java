@@ -5,7 +5,7 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 import api.IDataReader;
 import api.IEntity;
-import api.IEntitySystem;
+import api.ILevel;
 import api.ISerializable;
 import api.ISystemManager;
 import datamanagement.XMLReader;
@@ -14,15 +14,13 @@ import enums.GUISize;
 import enums.Indexes;
 import enums.ViewInsets;
 import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import model.core.SystemManager;
-import model.entity.EntitySystem;
 import view.Authoring;
 import view.Utilities;
 import view.editor.Editor;
@@ -35,12 +33,11 @@ public class GameEditor extends Editor  {
 	private Authoring authEnv;
 	private String myLanguage;
 	private ObservableList<IEntity> masterEntityList;
-	private ObservableList<IEntitySystem> masterEnvironmentList;
-	private IEntitySystem masterEntitySystem;
+	private ObservableList<ILevel> masterEnvironmentList;
 	private ISystemManager system;
 	private GameDetails gameDetails;
 	private ObjectDisplay entDisp, envDisp, eventDisplay;
-
+	private ScrollPane scrollPane;
 
 	public GameEditor(Authoring authEnv, String language, String fileName){
 		this(authEnv, language);
@@ -55,16 +52,6 @@ public class GameEditor extends Editor  {
 		this.system=new SystemManager();
 		this.masterEntityList = FXCollections.observableArrayList();
 		this.masterEnvironmentList = FXCollections.observableArrayList();
-		masterEntitySystem = new EntitySystem();
-		masterEntityList.addListener(new ListChangeListener<ISerializable>() {
-			@Override
-			public void onChanged(@SuppressWarnings("rawtypes") ListChangeListener.Change change) {
-				masterEntitySystem.clear();
-				for(ISerializable s: masterEntityList){
-					masterEntitySystem.addEntity((IEntity) s);
-				}
-			}
-		});
 		entDisp = new EntityDisplay(myLanguage, masterEntityList, authEnv);
 		envDisp = new EnvironmentDisplay(myLanguage, masterEnvironmentList, masterEntityList, authEnv);
 		eventDisplay = new EventDisplay(myLanguage, masterEntityList, authEnv);
@@ -86,6 +73,7 @@ public class GameEditor extends Editor  {
 		pane = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
 		pane.setAlignment(Pos.TOP_LEFT);
+		scrollPane = new ScrollPane(pane);
 	}
 	
 
@@ -94,24 +82,26 @@ public class GameEditor extends Editor  {
 		system = xReader.readSingleFromFile(DefaultStrings.CREATE_LOC.getDefault() + fileName + DefaultStrings.XML.getDefault());
 		gameDetails.setDetails(system.getDetails());
 		masterEntityList.addAll(system.getSharedEntitySystem().getAllEntities());
-		//masterEnvironmentList.add(system.getEntitySystem());
+		if(system.getEntitySystem() != null){
+			masterEnvironmentList.add(system.getEntitySystem());
+		}
 		
 
 	}
 
 
 	@Override
-	public Pane getPane() {
+	public ScrollPane getPane() {
 		populateLayout();
-		return pane;
+		return scrollPane;
 	}
 
 	@Override
 	public void populateLayout() {
 		VBox right = rightPane();
 		VBox left = leftPane();
-		left.prefWidthProperty().bind(pane.widthProperty().divide(2));
-		right.prefWidthProperty().bind(pane.widthProperty().divide(2));
+		left.prefWidthProperty().bind(scrollPane.widthProperty().divide(2));
+		right.prefWidthProperty().bind(scrollPane.widthProperty().divide(2));
 		HBox container = new HBox(GUISize.GAME_EDITOR_PADDING.getSize());
 		container.getChildren().addAll(left, right);
 		pane.getChildren().addAll(container);
@@ -136,7 +126,9 @@ public class GameEditor extends Editor  {
 	
 	private void saveGame() {
 		system.getSharedEntitySystem().addEntities(new ArrayList<IEntity>(masterEntityList));
-		//system.setEntitySystem(masterEnvironmentList.get(0));
+		if(masterEnvironmentList.size()>0){
+				system.setEntitySystem(masterEnvironmentList.get(0));
+		}
 		system.setDetails(gameDetails.getGameDetails());
 		String name = DefaultStrings.CREATE_LOC.getDefault() + gameDetails.getGameDetails().get(Indexes.GAME_NAME.getIndex()) + DefaultStrings.XML.getDefault();
 		system.saveSystem(name);

@@ -9,6 +9,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -19,7 +20,7 @@ import view.Utilities;
 public class AuthoringStartUp extends StartUpMenu {
 
 	private Stage myStage;
-	private Group root;
+	private ScrollPane root;
 	private Authoring authEnv;
 	private Scene myScene;
 	private ResourceBundle myResources;
@@ -34,7 +35,7 @@ public class AuthoringStartUp extends StartUpMenu {
 	}
 
 	@Override
-	protected Group createDisplay() {
+	protected ScrollPane createDisplay() {
 		root = super.createDisplay();
 		addImage();
 		createGame();
@@ -43,7 +44,7 @@ public class AuthoringStartUp extends StartUpMenu {
 	}
 	
 	private void addImage() {
-		Image image = new Image(new File("resources/trump.jpg").toURI().toString());
+		Image image = new Image(new File("resources/testing/RhonduSmithwick.JPG").toURI().toString());
 		ImageView imageView = new ImageView(image);
 		imageView.setFitHeight(300);
 		imageView.setPreserveRatio(true);

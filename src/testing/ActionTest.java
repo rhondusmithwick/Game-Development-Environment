@@ -7,7 +7,7 @@
 //import events.UniverseAction;
 //import model.component.movement.Position;
 //import model.entity.Entity;
-//import model.entity.EntitySystem;
+//import model.entity.Level;
 //import org.junit.Test;
 //
 //import java.io.File;
@@ -21,7 +21,7 @@
 // * @author Rhondu Smithwick
 // */
 //public class ActionTest {
-//    private final EntitySystem universe = new EntitySystem();
+//    private final Level universe = new Level();
 //
 //    private final String MOVE_SCRIPT = "resources/groovyScripts/SignalScript.groovy";
 //

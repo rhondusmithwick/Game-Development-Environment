@@ -23,7 +23,7 @@
 //import model.component.movement.Velocity;
 //import model.component.visual.ImagePath;
 //import model.entity.Entity;
-//import model.entity.EntitySystem;
+//import model.entity.Level;
 //import model.physics.PhysicsEngine;
 //
 //public class AnimationTest extends Application {
@@ -56,7 +56,7 @@
 //				true);
 //		list.add(character);
 //
-//		IEntitySystem system = new EntitySystem();
+//		IEntitySystem system = new Level();
 //		system.addEntities(list);
 //		// TODO: don't lazy-initialize!
 //		physics = new PhysicsEngine(system);

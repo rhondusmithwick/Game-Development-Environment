@@ -1,12 +1,10 @@
 package testing;
 
-import java.io.File;
 import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
 
 import api.IEntity;
-import api.IEntitySystem;
+import api.ILevel;
+import api.ILevel;
 import api.IPhysicsEngine;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -14,15 +12,13 @@ import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.component.movement.Position;
-import model.component.physics.Collision;
 import model.component.visual.ImagePath;
-import model.entity.EntitySystem;
+import model.entity.Level;
 import model.physics.PhysicsEngine;
 
 public class BenTestGroovy extends Application {
@@ -49,7 +45,7 @@ public class BenTestGroovy extends Application {
 		rhonduEntity.getComponent(ImagePath.class).getImageView().setFitHeight(100);
 		rhonduEntity2.getComponent(ImagePath.class).getImageView().setFitHeight(100);
 		
-		IEntitySystem system = new EntitySystem();
+		ILevel system = new Level();
 		system.addEntities(rhonduEntity, rhonduEntity2);
 		IPhysicsEngine physics = new PhysicsEngine();
 
@@ -62,12 +58,12 @@ public class BenTestGroovy extends Application {
 		animation.play();
 	}
 
-	private void step(double dt, IEntitySystem system, IPhysicsEngine physics) {
+	private void step(double dt, ILevel system, IPhysicsEngine physics) {
 		physics.update(system, dt);
 		drawEntities(system);
 	}
 
-	private void drawEntities(IEntitySystem s) {
+	private void drawEntities(ILevel s) {
 		Collection<IEntity> list = s.getAllEntities();
 		for (IEntity entity : list) {
 			Position pos = entity.getComponent(Position.class);
