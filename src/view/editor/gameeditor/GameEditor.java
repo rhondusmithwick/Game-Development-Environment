@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 import api.IDataReader;
 import api.IDataWriter;
+import api.IEntity;
+import api.IEntitySystem;
 import api.ISerializable;
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
@@ -13,12 +15,14 @@ import enums.GUISize;
 import enums.Indexes;
 import enums.ViewInsets;
 import javafx.collections.FXCollections;
+import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import model.entity.EntitySystem;
 import view.Authoring;
 import view.Utilities;
 import view.editor.Editor;
@@ -32,7 +36,7 @@ public class GameEditor extends Editor  {
 	private String myLanguage;
 	private ObservableList<ISerializable> masterEntityList;
 	private ObservableList<ISerializable> masterEnvironmentList;
-
+	private IEntitySystem masterEntitySystem;
 	private GameDetails gameDetails;
 	private ObjectDisplay entDisp, envDisp, eventDisplay;
 
@@ -49,7 +53,16 @@ public class GameEditor extends Editor  {
 		this.authEnv=authEnv;
 		this.masterEntityList = FXCollections.observableArrayList();
 		this.masterEnvironmentList = FXCollections.observableArrayList();
-		
+		masterEntitySystem = new EntitySystem();
+		masterEntityList.addListener(new ListChangeListener<ISerializable>() {
+			@Override
+			public void onChanged(@SuppressWarnings("rawtypes") ListChangeListener.Change change) {
+				masterEntitySystem.clear();
+				for(ISerializable s: masterEntityList){
+					masterEntitySystem.addEntity((IEntity) s);
+				}
+			}
+		});
 		entDisp = new EntityDisplay(myLanguage, masterEntityList, authEnv);
 		envDisp = new EnvironmentDisplay(myLanguage, masterEnvironmentList, masterEntityList, authEnv);
 		eventDisplay = new EventDisplay(myLanguage, masterEntityList, authEnv);
