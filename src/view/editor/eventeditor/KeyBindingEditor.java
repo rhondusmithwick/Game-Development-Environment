@@ -34,7 +34,7 @@ public class KeyBindingEditor extends Editor
 	private final ResourceBundle myResources;
 	private Action currentAction;
 	
-	public KeyBindingEditor(String language, ObservableList<ISerializable> masterEnvironmentList)
+	public KeyBindingEditor(String language)
 	{
 		scrollPane = new ScrollPane();
 		myResources = ResourceBundle.getBundle(language);
@@ -100,10 +100,7 @@ public class KeyBindingEditor extends Editor
 	}
 	
 	@Override
-	public void loadDefaults() {
-		// TODO Auto-generated method stub
-		
-	}
+	public void loadDefaults() {}
 
 	@Override
 	public ScrollPane getPane() 

@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import api.IEntity;
 import api.ISerializable;
 import enums.GUISize;
 import enums.ViewInsets;
@@ -42,7 +43,7 @@ public class PropertyEventEditor extends Editor
 	private Action action;
 	private final InputSystem inputSystem;
 	
-	public PropertyEventEditor(String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> environmentList)
+	public PropertyEventEditor(String language, ObservableList<IEntity> masterList)
 	{
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
@@ -57,7 +58,7 @@ public class PropertyEventEditor extends Editor
 		actionButtons = new HashMap<String, Button>();
 		
 		inputSystem = new InputSystem();
-		tableManager = new TableManager(masterList, language, this, environmentList, inputSystem );
+		tableManager = new TableManager(masterList, language, this, inputSystem );
 		
 		trigger = null;
 		action = null;

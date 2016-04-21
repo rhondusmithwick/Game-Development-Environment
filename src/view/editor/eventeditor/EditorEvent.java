@@ -3,6 +3,7 @@ package view.editor.eventeditor;
 import javafx.scene.layout.Pane;
 import java.util.ResourceBundle;
 import view.editor.Editor;
+import api.IEntity;
 import api.ISerializable;
 import enums.GUISize;
 import enums.ViewInsets;
@@ -21,7 +22,7 @@ import javafx.scene.layout.VBox;
 /*
  * TODO: Clean this shit up
  */
-public class EditorEvent extends Editor
+public class EditorEvent
 {
 	private final Pane pane;
 	private final ScrollPane scrollPane;
@@ -32,10 +33,10 @@ public class EditorEvent extends Editor
 	private final PropertyEventEditor propertyEventEditor;
 	private final KeyBindingEditor keyBindingEditor;
 	
-	public EditorEvent(String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> masterEnvironmentList)
+	public EditorEvent(String language, ObservableList<IEntity> masterList)
 	{	
-		propertyEventEditor = new PropertyEventEditor(language, toEdit, masterList, masterEnvironmentList);
-		keyBindingEditor = new KeyBindingEditor(language, masterEnvironmentList);
+		propertyEventEditor = new PropertyEventEditor(language, masterList);
+		keyBindingEditor = new KeyBindingEditor(language);
 
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
@@ -68,19 +69,9 @@ public class EditorEvent extends Editor
 	
 	public void populateLayout() {}
 
-	@Override
-	public void loadDefaults() {}
 
-	@Override
 	public ScrollPane getPane() 
 	{
 		return scrollPane;
 	}
-
-	@Override
-	public void addSerializable(ISerializable serialize) {}
-
-	@Override
-	public void updateEditor() {}
-
 }

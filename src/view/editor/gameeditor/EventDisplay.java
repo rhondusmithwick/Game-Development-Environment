@@ -51,6 +51,13 @@ public class EventDisplay extends ObjectDisplay
 	@Override
 	public Node makeNewObject() {
 		return Utilities.makeButton(myResources.getString(DefaultStrings.EVENT_EDITOR_NAME.getDefault()), 
-				e->createEditor(EditorEvent.class, new Entity(), masterEnvironmentList));
+				e -> createEventEditor());//createEditor(EditorEvent.class, new Entity(), masterEnvironmentList));
 		}
+	
+	private void createEventEditor()
+	{
+		EditorEvent editor = new EditorEvent(language,  masterEntityList);
+		editor.populateLayout();
+		authoringEnvironment.createTab(editor.getPane(), editor.getClass().getSimpleName(), true);
+	}
 }

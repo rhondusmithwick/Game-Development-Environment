@@ -76,8 +76,6 @@ public class GameEditor extends Editor  {
 		if(system.getEntitySystem() != null){
 			masterEnvironmentList.add(system.getEntitySystem());
 		}
-		
-
 	}
 
 

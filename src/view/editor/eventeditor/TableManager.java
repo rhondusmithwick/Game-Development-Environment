@@ -3,6 +3,7 @@ package view.editor.eventeditor;
 import java.util.ResourceBundle;
 
 import api.IComponent;
+import api.IEntity;
 import api.ISerializable;
 import events.InputSystem;
 import events.PropertyTrigger;
@@ -21,14 +22,13 @@ public class TableManager
 	
 	private Entity entity;
 	private IComponent component;
-	private int propertyIndex;
+	private String propertyName;
 	private String language;
 	private PropertyEventEditor editor;
 	private final InputSystem inputSystem;
-	private final ObservableList<ISerializable> environmentList;
 	
-	public TableManager(ObservableList<ISerializable> entityList, String language, 
-			PropertyEventEditor editor, ObservableList<ISerializable> environmentList,
+	public TableManager(ObservableList<IEntity> entityList, String language, 
+			PropertyEventEditor editor, 
 			InputSystem inputSystem)
 	{
 		container = new HBox();
@@ -37,7 +37,6 @@ public class TableManager
 		componentTable = new ComponentTable(this, language);
 		propertyTable = new PropertyTable(this, language);
 		this.editor = editor;
-		this.environmentList = environmentList;
 		this.inputSystem = inputSystem; 
 		
 		
@@ -64,16 +63,14 @@ public class TableManager
 	
 	public void propertyWasClicked(SimpleObjectProperty property)
 	{
-		propertyIndex = component.getProperties().indexOf(property);
-		System.out.println(propertyIndex);
+		propertyName = property.getName();
 		
 		String[] splitClassName = component.getClass().toString().split("\\.");
 
 		editor.triggerSet(entity.getName() + " - " + 
 				splitClassName[splitClassName.length - 1] + " - " + 
 				property.getName(),
-				// new PropertyTrigger(entity.getID(), component, propertyIndex, (IEntitySystem)environmentList.get(0), inputSystem)
-				null
+				new PropertyTrigger(entity.getID(), component.getClass(), propertyName)
 				);	
 	
 	}
