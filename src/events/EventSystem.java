@@ -9,6 +9,8 @@ import datamanagement.XMLWriter;
 import javafx.scene.input.KeyEvent;
 import utility.Pair;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -31,6 +33,7 @@ public class EventSystem implements Observer, IEventSystem {
     private final InputSystem inputSystem = new InputSystem();
     private transient ILevel universe;
     private ListMultimap<Trigger, Action> actionMap = ArrayListMultimap.create();
+    private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
 
     public EventSystem(ILevel universe) {
         setUniverse(universe);
@@ -58,7 +61,7 @@ public class EventSystem implements Observer, IEventSystem {
     @Override
     public void update(Observable o, Object arg) {
         List<Action> actions = actionMap.get((Trigger) o);
-        actions.stream().forEach(e -> e.activate(universe));
+        actions.stream().forEach(e -> e.activate(engine, universe));
     }
 
     private void unbindEvents() {
@@ -148,6 +151,7 @@ public class EventSystem implements Observer, IEventSystem {
 
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
+        engine = new ScriptEngineManager().getEngineByName("groovy");
         watchTriggers(actionMap);
     }
 

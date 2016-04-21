@@ -1,51 +1,16 @@
 package view.editor.eventeditor;
 
 import javafx.scene.layout.Pane;
-
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.ResourceBundle;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
-
-import view.Authoring;
-import view.Utilities;
 import view.editor.Editor;
-import api.IEditor;
 import api.ISerializable;
-import enums.DefaultStrings;
-import enums.FileExtensions;
 import enums.GUISize;
 import enums.ViewInsets;
-import events.Action;
-import events.Trigger;
 import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
-import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
-import javafx.stage.FileChooser.ExtensionFilter;
-import model.entity.Entity;
 
 /**
  * 
@@ -58,126 +23,53 @@ import model.entity.Entity;
  */
 public class EditorEvent extends Editor
 {
-	private final VBox pane;
-	private final ResourceBundle myResources;
+	private final Pane pane;
+	private final ScrollPane scrollPane;
+	private final TabPane tabPane;
+	private ResourceBundle myResources;
 	
-	private final HashMap<String, Button> actionButtons;
-	private Text triggerText;
-	private Text actionText;
+	private final Tab propertyTab;
+	private final PropertyEventEditor propertyEventEditor;
+	private final KeyBindingEditor keyBindingEditor;
 	
-	private Button chooseFileButton;
-	private Button makeEventButton;
-	private TableManager tableManager;
-	private ScrollPane scrollPane;
-	private Trigger trigger;
-	private Action action;
-	
-	public EditorEvent(String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> addToList)
-	{
+	public EditorEvent(String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> masterEnvironmentList)
+	{	
+		propertyEventEditor = new PropertyEventEditor(language, toEdit, masterList, masterEnvironmentList);
+		keyBindingEditor = new KeyBindingEditor(language, masterEnvironmentList);
+
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
-		pane.setAlignment(Pos.TOP_LEFT);
+		// pane.setAlignment(Pos.TOP_LEFT);
 		myResources = ResourceBundle.getBundle(language);
 		scrollPane = new ScrollPane(pane);
-		triggerText = new Text();
-		actionText = new Text();
-		chooseFileButton = new Button();
-		makeEventButton = new Button();
 		
-		actionButtons = new HashMap<String, Button>();
+		tabPane = new TabPane();
+		propertyTab = new Tab();
 		
-		tableManager = new TableManager(masterList, language, this );
+		pane.getChildren().add(tabPane);
 		
-		trigger = null;
-		action = null;
+		
+		myResources = ResourceBundle.getBundle(language);
+
+		// TODO: Put editors in map and use cool for loop for this
+		populateEditorTab(propertyEventEditor);
+		populateEditorTab(keyBindingEditor);
 	}
 
-	public void setActions(ObservableList<String> actions)
+	private void populateEditorTab(Editor editor)
 	{
-		/*
-		this.actions = actions;
-
-		((TableView<String>)entityCustomizables.get(myResources.getString("actionsPane"))).setItems(actions);
-		*/
-	}
-
-	private VBox makeGroovySide()
-	{
-		VBox container = new VBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
-		// Adding now the Groovy Table
-		chooseFileButton = Utilities.makeButton("Choose Groovy Script", e -> getFile());	// TODO resource
+		Tab newTab = new Tab();
 		
-		container.getChildren().addAll(chooseFileButton);
-		return container;
-	}
-
-	private void getFile()
-	{
-		File groovyFile = null;
-		
-		groovyFile = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("groovy", "*.groovy"), "Select your groovy script!");
-		if ( groovyFile != null )
-		{
-			actionSet(groovyFile.getName(), new Action(groovyFile.toString()));
-		}
-	}
-
-	private void makeTables()
-	{
-		
-		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
-
-		container.getChildren().add(tableManager.getContainer());	
-		container.getChildren().add(makeGroovySide());
-		
-		pane.getChildren().add(container);
+		newTab.setContent(editor.getPane());
+		newTab.setClosable(false);
+		tabPane.getTabs().add(newTab);
+		newTab.setText(myResources.getString(editor.getClass().toString().split(" ")[1]));
 	}
 	
-	private void makeBottomPart()
-	{
-		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
-		
-		triggerSet("Not yet Defined", null);	// TODO resource
-		actionSet("Not yet Defined", null);
-		
-		makeEventButton = Utilities.makeButton("MAKE EVENT!", e -> makeEvent());	// TODO resource
-		makeEventButton.setDisable(true);
-		
-		container.getChildren().addAll(triggerText, actionText, makeEventButton);
-		
-		pane.getChildren().add(container);
-	}
-	
-	private void makeEvent()
-	{
-		
-	}
-	
-	public void populateLayout() 
-	{
-		makeTables();
-		makeBottomPart();
-	}
+	public void populateLayout() {}
 
-	public void triggerSet(String triggerString, Trigger trigger)
-	{
-		this.trigger = trigger;
-		triggerText.setText("TRIGGER: \n" + triggerString);	// TODO resource
-		makeEventButton.setDisable( (this.trigger == null) || (this.action == null) );
-	}
-	
-	private void actionSet(String actionString, Action action)
-	{
-		this.action = action;
-		actionText.setText("ACTION:\n" + actionString);	// TODO resource
-		makeEventButton.setDisable( (this.trigger == null) || (this.action == null) );
-	}
-	
 	@Override
-	public void loadDefaults() {
-		// TODO Auto-generated method stub
-
-	}
+	public void loadDefaults() {}
 
 	@Override
 	public ScrollPane getPane() 
@@ -186,15 +78,9 @@ public class EditorEvent extends Editor
 	}
 
 	@Override
-	public void addSerializable(ISerializable serialize) {
-		// TODO Auto-generated method stub
-
-	}
+	public void addSerializable(ISerializable serialize) {}
 
 	@Override
-	public void updateEditor() {
-		// TODO Auto-generated method stub
-
-	}
+	public void updateEditor() {}
 
 }
