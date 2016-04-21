@@ -11,8 +11,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
-
-import static com.sun.tools.doclint.Entity.prop;
 import static javafx.scene.input.KeyCode.T;
 
 /**

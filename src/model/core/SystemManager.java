@@ -22,7 +22,7 @@ import java.util.List;
  * @author Rhondu Smithwick
  */
 public class SystemManager implements ISystemManager {
-
+	
     private List<String> details;
     private ILevel universe = new Level();
     private ILevel sharedUniverse = new Level();
@@ -151,5 +151,4 @@ public class SystemManager implements ISystemManager {
     public List<String> getDetails() {
         return details;
     }
-
 }
