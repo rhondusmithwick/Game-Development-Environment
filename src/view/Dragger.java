@@ -14,6 +14,7 @@ public class Dragger {
 	private double clickX;
 	private double clickY;
 
+
 	private Dragger(Rectangle rectangle) {
 		rect = rectangle;
 	}
@@ -61,6 +62,7 @@ public class Dragger {
 		rect.setCursor(Cursor.CLOSED_HAND);
 		setInitialCoordinates(event);
 		dragging = true;
+    	
 	}
 
 
