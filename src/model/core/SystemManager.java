@@ -44,6 +44,7 @@ public class SystemManager implements ISystemManager {
     public void step(double dt) {
         if (this.isRunning) {
             physics.update(universe, dt);
+            eventSystem.updateInputs(dt);
         }
     }
 

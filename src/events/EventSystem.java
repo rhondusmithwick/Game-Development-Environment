@@ -31,7 +31,7 @@ public class EventSystem implements Observer, IEventSystem {
     private final InputSystem inputSystem = new InputSystem();
     private transient ILevel universe;
     private ListMultimap<Trigger, Action> actionMap = ArrayListMultimap.create();
-
+    private double timer = 0;
     public EventSystem(ILevel universe) {
         setUniverse(universe);
     }
@@ -46,7 +46,7 @@ public class EventSystem implements Observer, IEventSystem {
     }
 
     @Override
-    public void updateInputs() {
+    public void updateInputs(double dt) {
         this.inputSystem.processInputs();
     }
 
