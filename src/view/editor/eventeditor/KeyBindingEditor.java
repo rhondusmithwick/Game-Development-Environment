@@ -1,10 +1,13 @@
 package view.editor.eventeditor;
 
+import java.io.File;
 import java.util.ResourceBundle;
 
 import api.ISerializable;
 import enums.GUISize;
 import enums.ViewInsets;
+import events.Action;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.input.KeyCode;
@@ -12,6 +15,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.stage.FileChooser;
+import view.Utilities;
 import view.editor.Editor;
 
 public class KeyBindingEditor extends Editor 
@@ -22,10 +27,12 @@ public class KeyBindingEditor extends Editor
 	private VBox inputBox;
 	private KeyCode currentKey;
 	private Button listenToKey;
+	private Button chooseFileButton;
 	private Text keyInputText;
 	private final ResourceBundle myResources;
+	private Action currentAction;
 	
-	public KeyBindingEditor(String language)
+	public KeyBindingEditor(String language, ObservableList<ISerializable> masterEnvironmentList)
 	{
 		myResources = ResourceBundle.getBundle(language);
 		keyListenerIsActive = false;
@@ -33,9 +40,10 @@ public class KeyBindingEditor extends Editor
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
 		pane.setAlignment(Pos.TOP_LEFT);
 		inputBox = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
-		makeInputBox();
-		pane.getChildren().add(inputBox);
-		pane.setOnKeyPressed(e -> keyWasPressed(e.getCode()));	
+		
+		pane.setOnKeyPressed(e -> keyWasPressed(e.getCode()));
+		
+		populateLayout();
 	}
 	
 	private void keyWasPressed(KeyCode code)
@@ -50,12 +58,36 @@ public class KeyBindingEditor extends Editor
 	
 	private void makeInputBox()
 	{
-		listenToKey = new Button("Press a Key!");	// TODO: resource
-		listenToKey.setOnAction(e -> listenButtonPress());
+		listenToKey = Utilities.makeButton("Press a Key!", e -> listenButtonPress()); // TODO: resource
 		
 		keyInputText = new Text("No Key Pressed!");	// TODO: resource
 		
 		inputBox.getChildren().addAll(listenToKey, keyInputText);
+		
+		pane.getChildren().add(inputBox);
+	}
+	
+	private void makeGroovyBox()
+	{
+		VBox container = new VBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
+		// Adding now the Groovy Table
+		chooseFileButton = Utilities.makeButton("Choose Groovy Script", e -> getFile());	// TODO resource
+		
+		container.getChildren().addAll(chooseFileButton);
+		
+		pane.getChildren().add(container);
+	}
+	
+
+	private void getFile()
+	{
+		File groovyFile = null;
+		
+		groovyFile = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("groovy", "*.groovy"), "Select your groovy script!");
+		if ( groovyFile != null )
+		{
+			currentAction = new Action(groovyFile.getAbsolutePath());
+		}
 	}
 	
 	private void listenButtonPress()
@@ -77,7 +109,11 @@ public class KeyBindingEditor extends Editor
 	}
 
 	@Override
-	public void populateLayout() {}
+	public void populateLayout() 
+	{
+		makeInputBox();
+		makeGroovyBox();
+	}
 
 	@Override
 	public void addSerializable(ISerializable serialize) {}

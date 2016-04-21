@@ -52,7 +52,7 @@ public class GameEditor extends Editor  {
 		
 		entDisp = new EntityDisplay(myLanguage, masterEntityList, authEnv);
 		envDisp = new EnvironmentDisplay(myLanguage, masterEnvironmentList, masterEntityList, authEnv);
-		eventDisplay = new EventDisplay(myLanguage, masterEntityList, authEnv);
+		eventDisplay = new EventDisplay(myLanguage, masterEnvironmentList, masterEntityList, authEnv);
 
 		setPane();
 	}

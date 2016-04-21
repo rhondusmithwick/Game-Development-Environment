@@ -29,10 +29,12 @@ public class EventDisplay extends ObjectDisplay
 	private ResourceBundle myResources;
 	private ObservableList<ISerializable> masterEntityList;
 	private final EditorFactory editFact = new EditorFactory();
+	private ObservableList<ISerializable> masterEnvironmentList;
 	
-	public EventDisplay(String language,ObservableList<ISerializable> masterEntityList, Authoring authoringEnvironment)
+	public EventDisplay(String language, ObservableList<ISerializable> masterEnvironmentList, ObservableList<ISerializable> masterEntityList,  Authoring authoringEnvironment)
 	{
-		super(language, authoringEnvironment,masterEntityList);
+		super(language, authoringEnvironment, masterEntityList);
+		this.masterEnvironmentList = masterEnvironmentList;
 		this.language=language;
 		this.masterEntityList = masterEntityList;
 		this.authoringEnvironment = authoringEnvironment;
@@ -41,22 +43,23 @@ public class EventDisplay extends ObjectDisplay
 	}
 
 	@Override
-	public void createEditor(Class<?> editName, ISerializable toEdit, ObservableList<ISerializable> otherList) 
+	public void createEditor(Class<?> editName, ISerializable toEdit, ObservableList<ISerializable> environmentList) 
 	{
-		IEditor editor = editFact.createEditor(editName, language, toEdit, masterEntityList, otherList);
+		IEditor editor = editFact.createEditor(editName, language, toEdit, masterEntityList, environmentList);
+		System.out.println(environmentList);	// TODO remove this, this is Testing
 		editor.populateLayout();
 		authoringEnvironment.createTab(editor.getPane(), editName.getSimpleName(), true);
 	}
 	
 	@Override
-	protected void addNewObjects(VBox container) {
+	protected void addNewObjects(VBox container) 
+	{
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public Node makeNewObject() {
 		return Utilities.makeButton(myResources.getString(DefaultStrings.EVENT_EDITOR_NAME.getDefault()), 
-				e->createEditor(EditorEvent.class, new Entity(), FXCollections.observableArrayList()));
+				e->createEditor(EditorEvent.class, new Entity(), masterEnvironmentList));
 		}
 }

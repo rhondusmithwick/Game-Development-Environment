@@ -4,10 +4,12 @@ import java.io.File;
 import java.util.HashMap;
 import java.util.ResourceBundle;
 
+import api.IEntitySystem;
 import api.ISerializable;
 import enums.GUISize;
 import enums.ViewInsets;
 import events.Action;
+import events.InputSystem;
 import events.Trigger;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -37,8 +39,9 @@ public class PropertyEventEditor extends Editor
 	
 	private Trigger trigger;
 	private Action action;
+	private final InputSystem inputSystem;
 	
-	public PropertyEventEditor(String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> addToList)
+	public PropertyEventEditor(String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> environmentList)
 	{
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
@@ -52,7 +55,8 @@ public class PropertyEventEditor extends Editor
 		
 		actionButtons = new HashMap<String, Button>();
 		
-		tableManager = new TableManager(masterList, language, this );
+		inputSystem = new InputSystem((IEntitySystem)environmentList.get(0));
+		tableManager = new TableManager(masterList, language, this, environmentList, inputSystem );
 		
 		trigger = null;
 		action = null;

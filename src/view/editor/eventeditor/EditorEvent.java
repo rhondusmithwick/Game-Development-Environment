@@ -69,11 +69,11 @@ public class EditorEvent extends Editor
 	private final PropertyEventEditor propertyEventEditor;
 	private final KeyBindingEditor keyBindingEditor;
 	
-	public EditorEvent(String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> addToList)
+	public EditorEvent(String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> masterEnvironmentList)
 	{
 		
-		propertyEventEditor = new PropertyEventEditor(language, toEdit, masterList, addToList);
-		keyBindingEditor = new KeyBindingEditor(language);
+		propertyEventEditor = new PropertyEventEditor(language, toEdit, masterList, masterEnvironmentList);
+		keyBindingEditor = new KeyBindingEditor(language, masterEnvironmentList);
 		
 		pane = new Pane();
 		tabPane = new TabPane();
@@ -99,9 +99,7 @@ public class EditorEvent extends Editor
 		newTab.setText(myResources.getString(editor.getClass().toString().split(" ")[1]));
 	}
 	
-	public void populateLayout() 
-	{
-	}
+	public void populateLayout() {}
 
 	@Override
 	public void loadDefaults() {}
