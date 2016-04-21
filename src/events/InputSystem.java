@@ -20,7 +20,7 @@ public class InputSystem {
 
     private SimpleObjectProperty<KeyEvent> currentChar = new SimpleObjectProperty<>();
 
-    public void take(KeyEvent k) {
+    public void takeInput(KeyEvent k) {
         fillQ.add(k);
     }
 

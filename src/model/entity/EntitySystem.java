@@ -16,7 +16,6 @@ import api.IEntitySystem;
 import api.IEventSystem;
 import api.IPhysicsEngine;
 import events.EventSystem;
-import events.InputSystem;
 import model.physics.PhysicsEngine;
 
 /**
@@ -35,7 +34,7 @@ public class EntitySystem implements IEntitySystem {
 	private final Map<String, IEntity> entities = Maps.newLinkedHashMap();
 	private String name;
 	private Map<String, String> metadata = Maps.newLinkedHashMap();
-	private IEventSystem eventSystem = new EventSystem(this, new InputSystem()); // TODO:
+	private IEventSystem eventSystem = new EventSystem(this);
 	// update
 	private IPhysicsEngine physics = new PhysicsEngine();
 	private String eventSystemPath;
