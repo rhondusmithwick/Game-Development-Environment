@@ -35,7 +35,7 @@ public class EntitySystem implements IEntitySystem {
 	private final Map<String, IEntity> entities = Maps.newLinkedHashMap();
 	private String name;
 	private Map<String, String> metadata = Maps.newLinkedHashMap();
-	private IEventSystem eventSystem = new EventSystem(this, new InputSystem(this)); // TODO:
+	private IEventSystem eventSystem = new EventSystem(this, new InputSystem()); // TODO:
 	// update
 	private IPhysicsEngine physics = new PhysicsEngine();
 	private String eventSystemPath;

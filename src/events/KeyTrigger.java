@@ -16,13 +16,12 @@ import javafx.scene.input.KeyEvent;
  * Authors: Carolyn Yao, Anirudh Jonnavithula
  */
 
-public class KeyTrigger extends Trigger{
+public class KeyTrigger extends Trigger {
 	
 	private String key; 
 	
-	public KeyTrigger(String key, IEntitySystem universe, InputSystem inputSystem) { 
+	public KeyTrigger(String key) {
 		this.key = key; 
-		addHandler(universe, inputSystem);
 	}
 	
 	@Override
@@ -34,17 +33,17 @@ public class KeyTrigger extends Trigger{
 	}
 
 	@Override
-	public <T extends IComponent> void clearListener(IEntitySystem universe, InputSystem inputSystem) {
+	public void clearListener(IEntitySystem universe, InputSystem inputSystem) {
 		inputSystem.unListenToKeyPress(this);
 	}
 
 	@Override
-	public <T extends IComponent> void addHandler(IEntitySystem universe, InputSystem inputSystem) {
+	public  void addHandler(IEntitySystem universe, InputSystem inputSystem) {
 		inputSystem.listenToKeyPress(this);
 	}
 
-	@Override
-	public String getID() {
-		return key;
+
+	public String toString() {
+		return String.format("%s; %s", getClass().getSimpleName(), key);
 	}
 }

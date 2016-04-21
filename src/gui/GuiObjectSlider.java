@@ -22,7 +22,7 @@ public class GuiObjectSlider extends GuiObject{
 		slider = new Slider(Integer.parseInt(getResourceBundle().getString(name+"Min")),Integer.parseInt(getResourceBundle().getString(name+ "Max")), (double) object); 
 		slider.setShowTickMarks(true);
 		slider.setBlockIncrement(Integer.parseInt(getResourceBundle().getString(name+"Increment")));
-		slider.setValue((Double) property.getValue()); 
+		slider.setValue((Double) property.getValue());
 		textLabel = new Label(getResourceBundle().getString(getObjectName()+"Label"));
 		numLabel = new Label(Double.toString(slider.getValue()));
 		numLabel.textProperty().bind(Bindings.convert(slider.valueProperty()));

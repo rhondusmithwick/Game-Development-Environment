@@ -2,8 +2,6 @@ package model.core;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import api.IEntity;
@@ -13,15 +11,11 @@ import api.IPhysicsEngine;
 import api.ISystemManager;
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
-import enums.Indexes;
-import events.Action;
 import events.EventSystem;
 import events.InputSystem;
-import events.Trigger;
 import model.entity.Entity;
 import model.entity.EntitySystem;
 import model.physics.PhysicsEngine;
-import utility.Pair;
 
 /**
  * Created by rhondusmithwick on 3/31/16.
@@ -38,7 +32,7 @@ public class SystemManager implements ISystemManager {
 	private boolean isRunning = true;
 
 	public SystemManager() {
-		this.eventSystem = new EventSystem(universe, new InputSystem(universe));
+		this.eventSystem = new EventSystem(universe, new InputSystem());
 		// eventSystem.init(universe);
 	}
 
@@ -133,33 +127,30 @@ public class SystemManager implements ISystemManager {
 	public void moveEntitiesToSharedSystem(String... ids) {
 		this.moveEntitiesToSharedSystem(this.idsToEntityArray(this.universe, ids));
 	}
-	
+
 	@Override
 	public IEntitySystem getUniverse() {
 		return universe;
 	}
-	
+
 	@Override
-	public void setEntitySystem(IEntitySystem system){
-		this.universe=system;
+	public void setEntitySystem(IEntitySystem system) {
+		this.universe = system;
 	}
-	
+
 	@Override
-	public void saveSystem(String filename){
+	public void saveSystem(String filename) {
 		new XMLWriter<ISystemManager>().writeToFile(filename, this);
 	}
-	
+
 	@Override
-	public void setDetails(List<String> list){
-		this.details=list;
+	public void setDetails(List<String> list) {
+		this.details = list;
 	}
-	
+
 	@Override
-	public List<String> getDetails(){
+	public List<String> getDetails() {
 		return details;
 	}
-	
-	
-	
-	
+
 }
