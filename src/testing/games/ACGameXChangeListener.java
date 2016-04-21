@@ -1,4 +1,4 @@
-package games;
+package testing.games;
 
 import api.IEntity;
 import javafx.beans.value.ChangeListener;

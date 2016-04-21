@@ -10,6 +10,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.component.audio.SoundEffect;
 import model.component.audio.ThemeMusic;
+import view.View;
 
 public class DemoMain extends Application {
 

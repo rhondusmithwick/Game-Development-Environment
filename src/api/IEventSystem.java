@@ -1,5 +1,6 @@
 package api;
 
+import java.io.File;
 import java.util.Observer;
 
 import events.Action;
@@ -21,9 +22,14 @@ public interface IEventSystem extends Observer, ISerializable {
 	// void init(IEntitySystem universe);
 
 	void registerEvent(Trigger trigger, Action action);
+	
+	void readEventsFromFilePath(String filepath);
+	
+	File saveEventsToFile(String filepath);
+	
+	void readEventsFromFile(File file);
+	
+	String returnEventsAsString();
 
-	void saveEventsToFile(String filepath);
-
-	void readEventsFromFile(String filepath);
-
+	void setUniverse(IEntitySystem universe);
 }
