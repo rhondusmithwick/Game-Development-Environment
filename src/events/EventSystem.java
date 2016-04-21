@@ -145,85 +145,11 @@ public class EventSystem implements Observer, IEventSystem {
         this.unbindEvents();
         out.defaultWriteObject();
     }
-
-<<<<<<< HEAD
-	private IEntitySystem universe;
-	private InputSystem inputSystem;
-	private Map<Trigger, Action> actionMap = new HashMap<>();
-
-	public EventSystem(IEntitySystem universe, InputSystem inputSystem) {
-		this.universe = universe;
-		this.inputSystem = inputSystem;
-	}
-	
-	public void registerEvent(Trigger trigger, Action action) {
-		actionMap.put(trigger, action);
-		trigger.addObserver(this);
-	}
-
-	@Override
-	public void update(Observable o, Object arg) {
-		Action action = actionMap.get(((Trigger) o));
-		action.activate(universe);
-	}
-	
-	public File saveEventsToFile(String filepath) {
-		stopObservingTriggers(actionMap);
-		new XMLWriter<EventContainer>().writeToFile(filepath, convertMapToList(actionMap));
-		watchTriggers(actionMap);
-		return new File(filepath);
-	}
-
-	public void readEventsFromFilePath(String filepath) {
-		List<EventContainer> eventList= new XMLReader<EventContainer>().readFromFile(filepath);
-		actionMap = convertListToMap(eventList);
-		watchTriggers(actionMap);
-	}
-	
-	public void readEventsFromFile(File file) {
-		List<EventContainer> eventList= new XMLReader<EventContainer>().readFromFile(file.getPath());
-		actionMap = convertListToMap(eventList);
-		watchTriggers(actionMap);
-	}
-	
-	public String returnEventsAsString() {
-		return new XMLWriter<EventContainer>().writeToString(convertMapToList(actionMap));
-	}
-
-	private Map<Trigger, Action> convertListToMap(List<EventContainer> eventList) {
-		Map<Trigger, Action> returnMap = new HashMap<>();
-		for (EventContainer event : eventList) {
-			returnMap.put(event.getTrigger(), event.getAction());
-			event.getTrigger().addHandler(universe, inputSystem);
-		}
-		return returnMap;
-	}
-
-	private List<EventContainer> convertMapToList(Map<Trigger, Action> map) {
-		List<EventContainer> returnList = new ArrayList<>();
-		for (Trigger trigger : map.keySet()) {
-			returnList.add(new EventContainer(trigger, map.get(trigger)));
-		}
-		return returnList;
-	}
-
-	private void stopObservingTriggers(Map<Trigger, Action> map) {
-		for (Trigger trigger : map.keySet()) {
-			trigger.deleteObserver(this);
-		}
-	}
-
-	private void watchTriggers(Map<Trigger, Action> map) {
-		for (Trigger trigger : map.keySet()) {
-			trigger.addObserver(this);
-		}
-	}
-=======
+    
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         watchTriggers(actionMap);
     }
->>>>>>> 4b37dbfbef7ed6e05fe66b5a93ac860c3b44c630
 
 	@Override
 	public void readEventsFromFile(String filepath) {

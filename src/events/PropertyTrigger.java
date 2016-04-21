@@ -1,13 +1,9 @@
 package events;
 
 import api.IComponent;
-<<<<<<< HEAD
-import api.IEntitySystem;
-=======
 import api.IEntity;
 import api.ILevel;
 import javafx.beans.property.SimpleObjectProperty;
->>>>>>> 4b37dbfbef7ed6e05fe66b5a93ac860c3b44c630
 import javafx.beans.value.ObservableValue;
 
 
