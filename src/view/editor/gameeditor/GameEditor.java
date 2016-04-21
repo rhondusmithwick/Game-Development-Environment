@@ -36,7 +36,6 @@ public class GameEditor extends Editor  {
 	private String myLanguage;
 	private ObservableList<IEntity> masterEntityList;
 	private ObservableList<IEntitySystem> masterEnvironmentList;
-	private IEntitySystem masterEntitySystem;
 	private ISystemManager system;
 	private GameDetails gameDetails;
 	private ObjectDisplay entDisp, envDisp, eventDisplay;
@@ -55,16 +54,6 @@ public class GameEditor extends Editor  {
 		this.system=new SystemManager();
 		this.masterEntityList = FXCollections.observableArrayList();
 		this.masterEnvironmentList = FXCollections.observableArrayList();
-		masterEntitySystem = new EntitySystem();
-		masterEntityList.addListener(new ListChangeListener<ISerializable>() {
-			@Override
-			public void onChanged(@SuppressWarnings("rawtypes") ListChangeListener.Change change) {
-				masterEntitySystem.clear();
-				for(ISerializable s: masterEntityList){
-					masterEntitySystem.addEntity((IEntity) s);
-				}
-			}
-		});
 		entDisp = new EntityDisplay(myLanguage, masterEntityList, authEnv);
 		envDisp = new EnvironmentDisplay(myLanguage, masterEnvironmentList, masterEntityList, authEnv);
 		eventDisplay = new EventDisplay(myLanguage, masterEntityList, authEnv);
@@ -94,7 +83,9 @@ public class GameEditor extends Editor  {
 		system = xReader.readSingleFromFile(DefaultStrings.CREATE_LOC.getDefault() + fileName + DefaultStrings.XML.getDefault());
 		gameDetails.setDetails(system.getDetails());
 		masterEntityList.addAll(system.getSharedEntitySystem().getAllEntities());
-		//masterEnvironmentList.add(system.getEntitySystem());
+		if(system.getEntitySystem() != null){
+			masterEnvironmentList.add(system.getEntitySystem());
+		}
 		
 
 	}
@@ -136,7 +127,9 @@ public class GameEditor extends Editor  {
 	
 	private void saveGame() {
 		system.getSharedEntitySystem().addEntities(new ArrayList<IEntity>(masterEntityList));
-		//system.setEntitySystem(masterEnvironmentList.get(0));
+		if(masterEnvironmentList.size()>0){
+				system.setEntitySystem(masterEnvironmentList.get(0));
+		}
 		system.setDetails(gameDetails.getGameDetails());
 		String name = DefaultStrings.CREATE_LOC.getDefault() + gameDetails.getGameDetails().get(Indexes.GAME_NAME.getIndex()) + DefaultStrings.XML.getDefault();
 		system.saveSystem(name);

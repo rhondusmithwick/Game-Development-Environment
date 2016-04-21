@@ -61,7 +61,6 @@ public class EditorEnvironment extends Editor {
 			this.updateDisplay(masterList);
 		});
 		masterEntityList = masterList;
-		System.out.println("First Entity: " + ((IEntity) masterEntityList.get(0)).getID());
 		myEntitySystem = (IEntitySystem) toEdit;
 		allEnvironmentsList = addToList;
 		addLayoutComponents();
@@ -185,7 +184,6 @@ public class EditorEnvironment extends Editor {
 			Utilities.showAlert(myResources.getString("error"), null, myResources.getString("unableToAdd"),
 					AlertType.ERROR);
 		}
-		System.out.println("entity to add to Scene" + entity.getID());
 	}
 
 	private ImageView createEntityImageView(IEntity entity) {
