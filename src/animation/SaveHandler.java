@@ -23,6 +23,7 @@ public class SaveHandler {
             Map<String, String> props = maps.get(animationName);
             for (Entry<String, String> prop : props.entrySet()) {
                 String key = animationName + prop.getKey();
+                System.out.println(key);
                 properties.put(key, prop.getValue());
             }
         }

@@ -37,19 +37,20 @@ import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
+import view.Dragger;
 import view.Utilities;
 
-import java.util.AbstractMap.SimpleEntry;
-import java.util.Map.Entry;
 
 public class SpriteUtility extends Application{
     private static final double DURATION_MIN = 100;
 	private static final double DURATION_MAX = 3000;
 	private static final double DURATION_DEFAULT = 1000;
+	private static final String CSS = "resources/cssFiles/";
+	private static final String MAIN_CSS = "main.css";
 	
 	private ScrollPane pane;
     private Rectangle rect;
-    private Map<String,Map> animationList;
+    private Map<String,Map<String,String>> animationList;
 	private List<Rectangle> rectangleList;
 	private ImageView spriteImage;
 	private HBox hbox;
@@ -77,16 +78,16 @@ public class SpriteUtility extends Application{
 	public void start(Stage stage) throws Exception {
         pane = new ScrollPane();
         Scene scene = new Scene(pane, 800, 600);
+		scene.getStylesheets().add(new File(CSS + MAIN_CSS).toURI().toString());
+
         stage.setScene(scene);
         initializeGui();
         stage.show();
-
-		
 	}
 
 	private void initializeGui() {		
 		rectangleList = new ArrayList<Rectangle>();
-		animationList = new HashMap<String,Map>();
+		animationList = new HashMap<String,Map<String, String>>();
 	    hbox = new HBox();
 	    buttonBox = new VBox();
 	    animationPropertiesBox = new VBox();
@@ -128,6 +129,11 @@ public class SpriteUtility extends Application{
 		saveSpriteSheetButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
+				FileChooser fileChooser = new FileChooser();
+	            fileChooser.setTitle("Save Image");
+	            Stage stage = new Stage();
+	            File file = fileChooser.showSaveDialog(stage);
+				SaveHandler.save(file.toString(), animationList);
 				initAnimationGUIElements();
 				rectangleList = new ArrayList<Rectangle>();
 
@@ -313,7 +319,7 @@ public class SpriteUtility extends Application{
 	    r.setFill(Color.TRANSPARENT);
 	    r.setStroke(Color.RED);
 	    return r;
-	    }
+	}
 
 	private void initRectangle() {
 		rect = new Rectangle(); 
@@ -328,6 +334,7 @@ public class SpriteUtility extends Application{
         rect.heightProperty().bind(rectY.subtract(rectinitY));
         rect.setFill(Color.TRANSPARENT);
         rect.setStroke(Color.BLACK);
+        //Dragger.makeDraggable(rect);
 	}
 
 	private void initImageViewHandlers(ImageView spriteImage) {
