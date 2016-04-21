@@ -7,39 +7,44 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import javafx.animation.Animation;
 import javafx.application.Application;
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.Property;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 import view.Utilities;
 
 public class SpriteUtility extends Application{
-    BorderPane pane;
+    ScrollPane pane;
     Rectangle rect;
     SimpleDoubleProperty rectinitX = new SimpleDoubleProperty();
     SimpleDoubleProperty rectinitY = new SimpleDoubleProperty();
     SimpleDoubleProperty rectX = new SimpleDoubleProperty();
     SimpleDoubleProperty rectY = new SimpleDoubleProperty();
+	List<Double> xList = new ArrayList<Double>();
+	List<Double> yList = new ArrayList<Double>();
+	List<Double> widthList = new ArrayList<Double>();
+	List<Double> heightList = new ArrayList<Double>();
 	private Button addButton;
 	protected ArrayList<Rectangle> rectangleList;
 	private ImageView spriteImage;
@@ -48,6 +53,11 @@ public class SpriteUtility extends Application{
 	private Button saveButton;
 	private TextField columnField;
 	private TextField animationName;
+	private File spriteSheet;
+	private ImageView previewImage;
+	private VBox buttonBox;
+	private Group group;
+	private TextField speedField;
 	
     public static void main(String[] args) {
         launch(args);
@@ -55,11 +65,13 @@ public class SpriteUtility extends Application{
 
     @Override
 	public void start(Stage stage) throws Exception {
-        pane = new BorderPane();
+        pane = new ScrollPane();
         Scene scene = new Scene(pane, 800, 600);
         stage.setScene(scene);
 		rectangleList = new ArrayList<Rectangle>();
         hbox = new HBox();
+        buttonBox = new VBox();
+
         animationPropertiesBox = new VBox();
 
         spriteImage = new ImageView(initFileChooser());
@@ -73,9 +85,10 @@ public class SpriteUtility extends Application{
         initPreviewButton();
         initSaveButton();
 
-        animationPropertiesBox.getChildren().add(addButton);
-        hbox.getChildren().addAll(spriteImage, animationPropertiesBox);
-        pane.getChildren().addAll(hbox, rect);
+        hbox.getChildren().addAll(spriteImage, buttonBox, animationPropertiesBox);
+        group = new Group();
+        group.getChildren().addAll(hbox, rect);
+        pane.setContent(group);
         stage.show();
 
 		
@@ -83,13 +96,42 @@ public class SpriteUtility extends Application{
     private void initPreviewButton() {
     	Button previewButton = new Button("Preview Animation");
     	previewButton.setMinWidth(100);
-	}
+		buttonBox.getChildren().add(previewButton);
+
+    	previewButton.setOnAction(new EventHandler<ActionEvent>() {
+    		
+    			@Override
+    			public void handle(ActionEvent arg0) {
+    				populateRectanglePropertyLists();
+    				//needs to throw parseDouble errors
+    				if(speedField.getText()==""){
+    					System.out.println("Speed Field is Empty");
+    				}else if (columnField.getText()==""){
+    					System.out.println("Column Field is Empty");
+    				}else{
+    				buttonBox.getChildren().remove(previewImage);
+    				previewImage = new ImageView( new Image(spriteSheet.toURI().toString()));
+    				Animation animation = new ComplexAnimation(
+    						previewImage, Duration.millis(Double.parseDouble(speedField.getText())), rectangleList.size(), Integer.parseInt(columnField.getText()), xList, yList, widthList, heightList
+    						);
+    				animation.setCycleCount(Animation.INDEFINITE);
+
+    				animation.play();
+    				buttonBox.getChildren().add(previewImage);
+    				}
+
+    			}
+    			
+    			
+	});
+    	}
 
 	//add error handling; can't be empty
     private void initTextFields() {
     	columnField = new TextField("Columns");
     	animationName = new TextField("Animation Name");
-    	animationPropertiesBox.getChildren().addAll(animationName, columnField);
+    	speedField = new TextField("Speed");
+    	animationPropertiesBox.getChildren().addAll(animationName, columnField, speedField);
     	
 	}
 
@@ -98,21 +140,12 @@ public class SpriteUtility extends Application{
 	private void initSaveButton() {
 		saveButton = new Button("Save Sprite Properties");
 		saveButton.setMinWidth(100);
-		animationPropertiesBox.getChildren().add(saveButton);
+		buttonBox.getChildren().add(saveButton);
 		saveButton.setOnAction(new EventHandler<ActionEvent>() {
-		List<String> xList = new ArrayList<String>();
-		List<String> yList = new ArrayList<String>();
-		List<String> widthList = new ArrayList<String>();
-		List<String> heightList = new ArrayList<String>();
+
 			@Override
 			public void handle(ActionEvent arg0) {
-				for (Rectangle rect: rectangleList){
-					xList.add(Double.toString(rect.xProperty().get()));
-					yList.add(Double.toString(rect.yProperty().get()));
-					widthList.add(Double.toString(rect.widthProperty().get()));
-					heightList.add(Double.toString(rect.heightProperty().get()));
-
-				}
+				populateRectanglePropertyLists();
 				System.out.println("x" + xList);
 				System.out.println("y" + yList);
 				System.out.println("width"+ widthList);
@@ -122,15 +155,27 @@ public class SpriteUtility extends Application{
 				System.out.println(columnField.getText());
 				System.out.println(animationName.getText());
 			}
+
+
             });
 
 
 	}
 	
+	private void populateRectanglePropertyLists() {
+		for (Rectangle rect: rectangleList){
+			xList.add(rect.xProperty().get());
+			yList.add(rect.yProperty().get());
+			widthList.add(rect.widthProperty().get());
+			heightList.add(rect.heightProperty().get());
 
+		}
+	}
 	private void initAddButton() {
 		addButton = new Button("Add Frame");
         addButton.setMinWidth(100);
+        buttonBox.getChildren().add(addButton);
+
         addButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
@@ -138,7 +183,6 @@ public class SpriteUtility extends Application{
 				Rectangle clone = cloneRect(rect);
 				rectangleList.add(clone);
 				addRectangleToDisplay(clone);
-				System.out.println(rectangleList);
 			}
             });
 	}
@@ -177,19 +221,6 @@ public class SpriteUtility extends Application{
 			}
 			
 		}
-//		TextField x = new TextField();
-//		TextField y = new TextField();
-//		TextField width = new TextField();
-//		TextField height = new TextField();
-//		x.setMinWidth(50);
-//		y.setMinWidth(50);
-//		width.setMinWidth(50);
-//		height.setMinWidth(50);
-//		rectangleListBox.getChildren().addAll(x,y,width,height);
-//		Bindings.bindBidirectional(x.textProperty(),clone.xProperty(), converter);
-//		Bindings.bindBidirectional(y.textProperty(),clone.yProperty(), converter);
-//		Bindings.bindBidirectional(width.textProperty(),clone.widthProperty(), converter);
-//		Bindings.bindBidirectional(height.textProperty(),clone.heightProperty(), converter);
 
 	}
 
@@ -201,7 +232,7 @@ public class SpriteUtility extends Application{
 	    r.setHeight(rect.getHeight());
 	    r.setFill(Color.TRANSPARENT);
 	    r.setStroke(Color.RED);
-	    pane.getChildren().add(r);
+	    group.getChildren().add(r);
 	    return r;
 	    }
 
@@ -220,7 +251,7 @@ public class SpriteUtility extends Application{
 	}
 
     private Image initFileChooser() {
-		File spriteSheet = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("All Images", "*.*"), "Choose a spritesheet");
+		spriteSheet = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("All Images", "*.*"), "Choose a spritesheet");
 		return new Image(spriteSheet.toURI().toString());
 	}
 
