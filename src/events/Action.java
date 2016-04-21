@@ -7,12 +7,10 @@ import com.google.common.io.Files;
 
 import javax.script.Bindings;
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 import javax.script.SimpleBindings;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputStream;
 import java.util.Map;
 
 
@@ -24,7 +22,6 @@ import java.util.Map;
 public class Action implements ISerializable {
     private final String script;
     private final Bindings parameters;
-    private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
 
     public Action(String scriptPath) {
         script = getScriptFromPath(scriptPath);
@@ -36,7 +33,7 @@ public class Action implements ISerializable {
         this.parameters.putAll(parameters);
     }
 
-    public void activate(ILevel universe) {
+    public void activate(ScriptEngine engine, ILevel universe) {
         parameters.put("universe", universe);
         try {
             engine.eval(getScript(), parameters);
@@ -59,11 +56,6 @@ public class Action implements ISerializable {
 
     public Object removeParameter(String key) {
         return getParameters().remove(key);
-    }
-
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        engine = new ScriptEngineManager().getEngineByName("groovy");
     }
 
     private String getScriptFromPath(String scriptPath) {
