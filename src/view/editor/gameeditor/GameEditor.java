@@ -103,8 +103,8 @@ public class GameEditor extends Editor  {
 	public void populateLayout() {
 		VBox right = rightPane();
 		VBox left = leftPane();
-		left.prefWidthProperty().bind(pane.widthProperty().divide(2));
-		right.prefWidthProperty().bind(pane.widthProperty().divide(2));
+		left.prefWidthProperty().bind(scrollPane.widthProperty().divide(2));
+		right.prefWidthProperty().bind(scrollPane.widthProperty().divide(2));
 		HBox container = new HBox(GUISize.GAME_EDITOR_PADDING.getSize());
 		container.getChildren().addAll(left, right);
 		pane.getChildren().addAll(container);
