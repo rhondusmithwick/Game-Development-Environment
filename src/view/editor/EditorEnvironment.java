@@ -53,6 +53,7 @@ public class EditorEnvironment extends Editor {
 	private VBox masterEntityButtons;
 	private VBox environmentEntityButtons;
 	private TextField nameField;
+	private ScrollPane scrollPane;
 
 	public EditorEnvironment(String language, ISerializable toEdit, ObservableList<ISerializable> masterList,
 			ObservableList<ISerializable> addToList) {
@@ -87,6 +88,7 @@ public class EditorEnvironment extends Editor {
 
 	private void addLayoutComponents() {
 		environmentPane = new BorderPane();
+		scrollPane = new ScrollPane(environmentPane);
 		setLeftPane();
 		setRightPane();
 		setGameScene();
@@ -339,8 +341,8 @@ public class EditorEnvironment extends Editor {
 	}
 
 	@Override
-	public Pane getPane() {
-		return environmentPane;
+	public ScrollPane getPane() {
+		return scrollPane;
 	}
 
 	@Override

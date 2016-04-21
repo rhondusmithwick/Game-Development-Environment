@@ -1,4 +1,4 @@
-.vbox {
+.vbox, .tab-pane {
 	-fx-background-color: rgb(74, 181, 128);
 }
 
@@ -8,8 +8,8 @@
 	-fx-border-color: white;
 }
 
-.tab-pane {
-	-fx-background-color: rgb(74, 181, 128);
+.scroll-pane {
+	-fx-background: rgb(74, 181, 128);
 }
 
 .tab-pane *.tab {

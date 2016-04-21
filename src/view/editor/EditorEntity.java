@@ -9,6 +9,7 @@ import model.entity.Entity;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -34,9 +35,11 @@ public class EditorEntity extends Editor{
 	private Button saveButton;
 	private ResourceBundle myResources;
 	private TextField name;
+	private ScrollPane scrollPane;
 
 	public EditorEntity(String language, ISerializable toEdit, ObservableList<ISerializable> addToList, ObservableList<ISerializable> emptyList) {
 		editorPane = new GridPane();
+		scrollPane = new ScrollPane(editorPane);
 		myLanguage = language;
 		myResources = ResourceBundle.getBundle(language);
 		myEntity = (Entity) toEdit;
@@ -50,8 +53,8 @@ public class EditorEntity extends Editor{
 	}
 
 	@Override
-	public Pane getPane() {
-		return editorPane;
+	public ScrollPane getPane() {
+		return scrollPane;
 	}
 
 	@Override
@@ -74,7 +77,8 @@ public class EditorEntity extends Editor{
 		}
 		saveButton = Utilities.makeButton(myResources.getString("saveEntity"), e-> addSerializable(myEntity));
 		vbox.getChildren().add(saveButton);
-		editorPane.getChildren().add(vbox);
+		ScrollPane scroll = new ScrollPane(vbox);	
+		editorPane.getChildren().add(scroll);
 
 	}
 	
