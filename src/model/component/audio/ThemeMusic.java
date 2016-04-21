@@ -32,4 +32,8 @@ public class ThemeMusic implements IComponent {
 		mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
 		play();
 	}
+	
+	public boolean isPlaying() {
+		return mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING;
+	}
 }

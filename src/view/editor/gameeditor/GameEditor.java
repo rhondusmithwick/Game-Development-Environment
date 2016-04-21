@@ -18,6 +18,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -39,7 +40,7 @@ public class GameEditor extends Editor  {
 	private ISystemManager system;
 	private GameDetails gameDetails;
 	private ObjectDisplay entDisp, envDisp, eventDisplay;
-
+	private ScrollPane scrollPane;
 
 	public GameEditor(Authoring authEnv, String language, String fileName){
 		this(authEnv, language);
@@ -75,6 +76,7 @@ public class GameEditor extends Editor  {
 		pane = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
 		pane.setAlignment(Pos.TOP_LEFT);
+		scrollPane = new ScrollPane(pane);
 	}
 	
 
@@ -92,17 +94,17 @@ public class GameEditor extends Editor  {
 
 
 	@Override
-	public Pane getPane() {
+	public ScrollPane getPane() {
 		populateLayout();
-		return pane;
+		return scrollPane;
 	}
 
 	@Override
 	public void populateLayout() {
 		VBox right = rightPane();
 		VBox left = leftPane();
-		left.prefWidthProperty().bind(pane.widthProperty().divide(2));
-		right.prefWidthProperty().bind(pane.widthProperty().divide(2));
+		left.prefWidthProperty().bind(scrollPane.widthProperty().divide(2));
+		right.prefWidthProperty().bind(scrollPane.widthProperty().divide(2));
 		HBox container = new HBox(GUISize.GAME_EDITOR_PADDING.getSize());
 		container.getChildren().addAll(left, right);
 		pane.getChildren().addAll(container);
