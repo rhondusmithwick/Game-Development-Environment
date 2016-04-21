@@ -12,7 +12,6 @@ import api.ISystemManager;
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
 import events.EventSystem;
-import events.InputSystem;
 import model.entity.Entity;
 import model.entity.EntitySystem;
 import model.physics.PhysicsEngine;
@@ -32,7 +31,7 @@ public class SystemManager implements ISystemManager {
 	private boolean isRunning = true;
 
 	public SystemManager() {
-		this.eventSystem = new EventSystem(universe, new InputSystem());
+		this.eventSystem = new EventSystem(universe);
 		// eventSystem.init(universe);
 	}
 
@@ -65,7 +64,7 @@ public class SystemManager implements ISystemManager {
 
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
-		this.eventSystem = new EventSystem(universe, new InputSystem());
+		this.eventSystem = new EventSystem(universe);
 		this.physics = new PhysicsEngine();
 	}
 

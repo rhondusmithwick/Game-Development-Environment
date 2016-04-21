@@ -15,6 +15,7 @@ import javafx.beans.value.ObservableValue;
  */
 public class PropertyTrigger extends Trigger {
 
+<<<<<<< HEAD
     private final String entityID;
     private final Class<? extends IComponent> componentClass;
     private final String propertyName;
@@ -53,4 +54,47 @@ public class PropertyTrigger extends Trigger {
         return String.format("%s; %s; %s; %s", getClass().getSimpleName(), entityID, componentClass.getSimpleName(),
                 propertyName);
     }
+=======
+	private final String entityID;
+	private final Class<? extends IComponent> componentClass;
+	private final String propertyName;
+
+	public PropertyTrigger(String entityID, Class<? extends IComponent> componentClass, String propertyName,
+			IEntitySystem universe, InputSystem inputSystem) {
+		this.entityID = entityID;
+		this.componentClass = componentClass;
+		this.propertyName = propertyName;
+		// addHandler(universe, inputSystem);
+	}
+
+	@Override
+	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+		setChanged();
+		notifyObservers();
+	}
+
+	@Override
+	public void clearListener(IEntitySystem universe, InputSystem inputSystem) {
+		getProperty(universe).removeListener(this);
+
+	}
+
+	@Override
+	public void addHandler(IEntitySystem universe, InputSystem inputSystem) {
+		getProperty(universe).addListener(this);
+	}
+
+	private SimpleObjectProperty<?> getProperty(IEntitySystem universe) {
+		IEntity entity = universe.getEntity(entityID);
+		IComponent component = entity.getComponent(componentClass);
+		Class<?> propertyClass = component.getPropertyNamesAndClasses().get(propertyName);
+		return entity.getComponent(componentClass).getProperty(propertyClass, propertyName);
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%s; %s; %s; %s", getClass().getSimpleName(), entityID, componentClass.getSimpleName(),
+				propertyName);
+	}
+>>>>>>> f393e1c073b7bce81e9d1f8f37c6e941a9c5fb14
 }

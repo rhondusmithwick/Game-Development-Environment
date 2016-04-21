@@ -35,7 +35,7 @@ public class ACGame {
 	private static Group root;
 	private final IEntitySystem universe = new EntitySystem();
 	private final InputSystem inputSystem = new InputSystem();
-	private final EventSystem eventSystem = new EventSystem(universe, inputSystem);
+	private final EventSystem eventSystem = new EventSystem(universe);
 	private final PhysicsEngine physics = new PhysicsEngine();
 	private IEntity character;
 	private IEntity platform;
@@ -63,7 +63,7 @@ public class ACGame {
 		root = new Group();
 		// Create a place to see the shapes
 		myScene = new Scene(root, width, height, Color.WHITE);
-		myScene.setOnKeyPressed(e -> inputSystem.take(e));
+		myScene.setOnKeyPressed(e -> eventSystem.takeInput(e));
 		initEngine();
 		return myScene;
 	}
@@ -109,7 +109,8 @@ public class ACGame {
 
 	public void step(double dt) {
 		physics.update(universe, dt);
-		inputSystem.processInputs();
+		// inputSystem.processInputs();
+		eventSystem.updateInputs();
 		// moveEntity(character, 1);
 	}
 
