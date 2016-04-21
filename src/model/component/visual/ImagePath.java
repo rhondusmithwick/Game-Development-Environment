@@ -34,9 +34,8 @@ public class ImagePath implements IComponent {
 	private double timeSinceLastFrame, elapsedTime;
 	private final double frameDuration, totalDuration;
 	private String spriteName;
-	private static final String PROPERTIES_DIR = "spriteProperties."; // TODO:
-																		// resource
-																		// file
+	// TODO: resource file
+	private static final String PROPERTIES_DIR = "spriteProperties.";
 	private int zLevel = 0;
 
 	public ImagePath() {
@@ -79,10 +78,7 @@ public class ImagePath implements IComponent {
 		this.imagePathProperty = new SingleProperty<>("ImagePath", imagePath);
 		this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", imageHeight);
 		this.spriteName = spriteName;
-		File resource = new File(imagePath);
-		Image image = new Image(resource.toURI().toString());
-		this.imageView = new ImageView(image);
-		this.imageView.setPreserveRatio(true);
+		this.imageView = this.createImageView(imagePath);
 		this.viewport = viewport;
 		this.frameIndex = 0;
 		this.isAnimated = isAnimated;
@@ -90,6 +86,16 @@ public class ImagePath implements IComponent {
 		this.frameDuration = frameDurationMillis;
 		this.totalDuration = totalDurationMillis;
 		this.maxFrameIndex = maxFrameIndex;
+	}
+
+	private ImageView createImageView(String imagePath) {
+		File resource = new File(imagePath);
+		Image image = new Image(resource.toURI().toString());
+		ImageView imageView = new ImageView(image);
+		imageView.setPreserveRatio(true);
+		imageView.setFitWidth(this.getImageWidth());
+		imageView.setFitHeight(this.getImageHeight());
+		return imageView;
 	}
 
 	/**
@@ -210,7 +216,8 @@ public class ImagePath implements IComponent {
 	/**
 	 * Sets the z-layer order.
 	 *
-	 * @param z the z-layer order (1=>send to back, 1=>send to front)
+	 * @param z
+	 *            the z-layer order (1=>send to back, 1=>send to front)
 	 */
 	public void setZLevel(int z) {
 		this.zLevel = z;
@@ -227,13 +234,7 @@ public class ImagePath implements IComponent {
 
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
-		// reconstruct imageView
-		File resource = new File(this.imagePathProperty().get());
-		Image image = new Image(resource.toURI().toString());
-		this.imageView = new ImageView(image);
-		imageView.setFitHeight(imageHeightProperty().get());
-		imageView.setFitWidth(imageWidthProperty().get());
-		imageView.setPreserveRatio(true);
+		this.imageView = this.createImageView(getImagePath());
 	}
 
 	public String getSpriteProperties() {
