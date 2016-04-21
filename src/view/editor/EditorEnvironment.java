@@ -29,11 +29,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import model.entity.EntitySystem;
 import view.DefaultsMaker;
 import view.DragAndResize;
+import view.Dragger;
 import view.Utilities;
 
 public class EditorEnvironment extends Editor {
@@ -170,9 +173,13 @@ public class EditorEnvironment extends Editor {
 			if (!entity.hasComponent(Position.class) || !entity.hasComponent(ImagePath.class)) {
 				addComponents(entity);
 			}
+			//Shape rectangle = new Rectangle(200,200);
+			//rectangle.setFill(Color.BLUE);
+			//makeDraggable(rectangle);
 			makeResizable(entity);
 			environmentEntityButtons.getChildren().add(createEntityButton(entity));
 			gameRoot.getChildren().add(createEntityImageView(entity));
+			//gameRoot.getChildren().add(rectangle);
 		} catch (Exception e) {
 			Utilities.showAlert(myResources.getString("error"), null, myResources.getString("unableToAdd"),
 					AlertType.ERROR);
@@ -207,6 +214,12 @@ public class EditorEnvironment extends Editor {
 		Position pos = entity.getComponent(Position.class);
 		DragAndResize.makeResizable(entity.getComponent(ImagePath.class), pos);
 		return entity;
+	}
+	
+	//LOOK HERE FOR MAKING A SHAPE DRAGGABLE
+	private Shape makeDraggable(Shape rectangle) {
+		Dragger.makeDraggable(rectangle);
+		return rectangle;
 	}
 	
 	private void entityRightClicked(IEntity entity, Button entityButton, MouseEvent event) {
