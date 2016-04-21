@@ -9,7 +9,7 @@ import enums.GUISize;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
-import model.entity.EntitySystem;
+import model.entity.Level;
 
 public abstract class Editor implements IEditor {
 	private List<IEntity> entityList;
@@ -26,8 +26,8 @@ public abstract class Editor implements IEditor {
 	}
 	
 	public void createEntity(){
-		EntitySystem entitySystem = new EntitySystem();
-		IEntity entity = entitySystem.createEntity();
+		Level level = new Level();
+		IEntity entity = level.createEntity();
 		addEntity(entity);
 	}
 	

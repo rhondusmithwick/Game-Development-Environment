@@ -3,6 +3,7 @@ package view.editor.gameeditor;
 import java.util.ResourceBundle;
 
 import api.IEditor;
+import api.IEntity;
 import api.ISerializable;
 import enums.DefaultStrings;
 import enums.GUISize;
@@ -27,25 +28,16 @@ public class EventDisplay extends ObjectDisplay
 	private Authoring authoringEnvironment;
 	private String language;
 	private ResourceBundle myResources;
-	private ObservableList<ISerializable> masterEntityList;
+	private ObservableList<IEntity> masterEntityList;
 	private final EditorFactory editFact = new EditorFactory();
 	
-	public EventDisplay(String language,ObservableList<ISerializable> masterEntityList, Authoring authoringEnvironment)
-	{
-		super(language, authoringEnvironment,masterEntityList);
+	public EventDisplay(String language,ObservableList<IEntity> masterEntityList, Authoring authoringEnvironment)
+	{super(language, authoringEnvironment,masterEntityList);
 		this.language=language;
 		this.masterEntityList = masterEntityList;
 		this.authoringEnvironment = authoringEnvironment;
 		this.language = language;
 		this.myResources = ResourceBundle.getBundle(language);
-	}
-
-	@Override
-	public void createEditor(Class<?> editName, ISerializable toEdit, ObservableList<ISerializable> otherList) 
-	{
-		IEditor editor = editFact.createEditor(editName, language, toEdit, masterEntityList, otherList);
-		editor.populateLayout();
-		authoringEnvironment.createTab(editor.getPane(), editName.getSimpleName(), true);
 	}
 	
 	@Override

@@ -28,6 +28,7 @@ import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
@@ -67,7 +68,7 @@ public class EditorEvent extends Editor
 	private Button chooseFileButton;
 	private Button makeEventButton;
 	private TableManager tableManager;
-	
+	private ScrollPane scrollPane;
 	private Trigger trigger;
 	private Action action;
 	
@@ -77,7 +78,7 @@ public class EditorEvent extends Editor
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
 		pane.setAlignment(Pos.TOP_LEFT);
 		myResources = ResourceBundle.getBundle(language);
-		
+		scrollPane = new ScrollPane(pane);
 		triggerText = new Text();
 		actionText = new Text();
 		chooseFileButton = new Button();
@@ -179,9 +180,9 @@ public class EditorEvent extends Editor
 	}
 
 	@Override
-	public Pane getPane() 
+	public ScrollPane getPane() 
 	{
-		return pane;
+		return scrollPane;
 	}
 
 	@Override

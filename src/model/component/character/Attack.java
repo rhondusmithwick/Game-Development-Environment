@@ -54,11 +54,6 @@ public class Attack implements IComponent {
     }
 
     @Override
-    public boolean unique() {
-        return true;
-    }
-
-    @Override
     public List<SimpleObjectProperty<?>> getProperties() {
         return singleProperty.getProperties();
     }

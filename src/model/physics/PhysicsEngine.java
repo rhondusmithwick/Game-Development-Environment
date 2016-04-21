@@ -7,7 +7,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 
 import api.IEntity;
-import api.IEntitySystem;
+import api.ILevel;
+import api.ILevel;
 import api.IPhysicsEngine;
 import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
@@ -39,7 +40,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void update(IEntitySystem universe, double dt) {
+	public void update(ILevel universe, double dt) {
 		Collection<IEntity> dynamicEntities = universe.getEntitiesWithComponents(Position.class, Velocity.class,
 				ImagePath.class);
 		dynamicEntities.stream().forEach(p -> {
@@ -79,7 +80,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 		}
 	}
 
-	public void applyGravity(IEntitySystem universe, double secondsPassed) {
+	public void applyGravity(ILevel universe, double secondsPassed) {
 		Collection<IEntity> entitiesSubjectToGravity = universe.getEntitiesWithComponents(Gravity.class,
 				Velocity.class);
 		entitiesSubjectToGravity.stream().forEach(entity -> {
@@ -90,7 +91,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 	}
 
 	@Override
-	public void applyCollisions(IEntitySystem universe, boolean dynamicsOn) {
+	public void applyCollisions(ILevel universe, boolean dynamicsOn) {
 		List<IEntity> collidableEntities = new ArrayList<IEntity>(
 				universe.getEntitiesWithComponents(Collision.class, ImagePath.class, RestitutionCoefficient.class, Velocity.class));
 		clearCollisionComponents(collidableEntities);
