@@ -1,9 +1,9 @@
 package view.editor.gameeditor;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-import api.IDataReader;
 import api.IEntity;
 import api.ILevel;
 import api.ISerializable;
@@ -33,7 +33,6 @@ public class GameEditor extends Editor  {
 	private String myLanguage;
 	private ObservableList<IEntity> masterEntityList;
 	private ObservableList<ILevel> masterEnvironmentList;
-	private ISystemManager system;
 	private GameDetails gameDetails;
 	private ObjectDisplay entDisp, envDisp;
 	private ScrollPane scrollPane;
@@ -75,12 +74,23 @@ public class GameEditor extends Editor  {
 	
 
 	private void loadFile(String fileName) {
-		gameDetails.setDetails(new XMLReader<List<String>>().readSingleFromFile(DefaultStrings.CREATE_LOC.getDefault() + fileName + "/metadata.xml"));
-
+		fileName = DefaultStrings.CREATE_LOC.getDefault() + fileName;
+		gameDetails.setDetails(new XMLReader<List<String>>().readSingleFromFile(fileName + "/metadata.xml"));
+		masterEntityList.addAll(new XMLReader<List<IEntity>>().readSingleFromFile((fileName + "/entities.xml")));
+		loadLevels(fileName);
 		
 
 	}
 
+
+	private void loadLevels(String fileName) {
+		fileName = fileName + "/levels/";
+		File file = new File(fileName);
+		for(File f: file.listFiles()){
+			masterEnvironmentList.add(new XMLReader<ILevel>().readSingleFromFile(f.getPath()));
+		}
+		
+	}
 
 	@Override
 	public ScrollPane getPane() {

@@ -312,7 +312,10 @@ public class Utilities {
 		File[] fileList = directory.listFiles();
 		for (File file : fileList) {
 			String name = file.getName();
-			if(file.isDirectory()){
+			if(name.contains(".")){
+				files.add(name.substring(0, name.lastIndexOf('.')));
+			}
+			else{
 				files.add(name);
 			}
 		}

@@ -9,7 +9,6 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import api.IEntity;
 import api.ILevel;
-import api.ILevel;
 import api.ISerializable;
 import enums.GUISize;
 import javafx.collections.ListChangeListener;
