@@ -65,7 +65,7 @@ public class SystemManager implements ISystemManager {
 
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
-		this.eventSystem = new EventSystem(universe, new InputSystem(universe));
+		this.eventSystem = new EventSystem(universe, new InputSystem());
 		this.physics = new PhysicsEngine();
 	}
 
