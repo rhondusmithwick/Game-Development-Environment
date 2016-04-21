@@ -21,7 +21,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.collections.ObservableList;
-import javafx.geometry.Pos;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -33,7 +32,7 @@ import enums.DefaultStrings;
 import enums.GUISize;
 /**
  * 
- * @author Melissa Zhang
+ * @author Melissa Zhang & Cali Nelson
  *
  */
 
@@ -41,7 +40,6 @@ public class EditorEntity extends Editor{
 	
 	private GridPane editorPane;
 	private IEntity myEntity;
-	private VBox vbox;
 	private String myLanguage;
 	private ObservableList<ISerializable> entityList;
 	private Button saveButton, addButton;

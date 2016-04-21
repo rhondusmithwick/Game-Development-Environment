@@ -5,14 +5,14 @@ import api.ISerializable;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
+import javax.script.Bindings;
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
+import javax.script.SimpleBindings;
 import java.io.File;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.HashMap;
 import java.util.Map;
+
 
 /**
  * Created by rhondusmithwick on 4/9/16.
@@ -20,13 +20,12 @@ import java.util.Map;
  * @author Rhondu Smithwick
  */
 public class Action implements ISerializable {
-
     private final String script;
-    private final Map<String, Object> parameters = new HashMap<>();
-    private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
+    private final Bindings parameters;
 
     public Action(String scriptPath) {
         script = getScriptFromPath(scriptPath);
+        parameters = new SimpleBindings();
     }
 
     public Action(String scriptPath, Map<String, Object> parameters) {
@@ -34,11 +33,10 @@ public class Action implements ISerializable {
         this.parameters.putAll(parameters);
     }
 
-    public void activate(ILevel universe) {
-        engine.put("universe", universe);
-        parameters.entrySet().stream().forEach(e -> engine.put(e.getKey(), e.getValue()));
+    public void activate(ScriptEngine engine, ILevel universe) {
+        parameters.put("universe", universe);
         try {
-            engine.eval(getScript());
+            engine.eval(getScript(), parameters);
         } catch (ScriptException e) {
             e.printStackTrace();
         }
@@ -58,11 +56,6 @@ public class Action implements ISerializable {
 
     public Object removeParameter(String key) {
         return getParameters().remove(key);
-    }
-
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        engine = new ScriptEngineManager().getEngineByName("groovy");
     }
 
     private String getScriptFromPath(String scriptPath) {

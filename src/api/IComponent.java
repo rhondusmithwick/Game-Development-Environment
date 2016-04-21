@@ -11,7 +11,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
-import static javafx.scene.input.KeyCode.T;
 
 /**
  * This is the interface for all components, which hold data.
@@ -19,20 +18,11 @@ import static javafx.scene.input.KeyCode.T;
  * @author Rhondu Smithwick, Tom Wu
  */
 public interface IComponent extends ISerializable {
-    /**
-     * Returns if only one of this component is allowed.
-     *
-     * @return whether only one of these components is allowed for an Entity
-     */
-    @Deprecated
-    default boolean unique() {
-        return false;
-    }
 
     /**
      * Gets any properties this component holds.
      *
-     * @return all the properties this coompoennt holds
+     * @return all the properties this component holds
      */
     default List<SimpleObjectProperty<?>> getProperties() {
         return Collections.emptyList();

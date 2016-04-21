@@ -8,13 +8,13 @@ import java.util.function.Function;
 
 import api.IEntity;
 import api.ILevel;
-import api.ILevel;
 import api.IPhysicsEngine;
 import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.Collision;
+import model.component.physics.Friction;
 import model.component.physics.Gravity;
 import model.component.physics.Mass;
 import model.component.physics.RestitutionCoefficient;
@@ -55,7 +55,10 @@ public class PhysicsEngine implements IPhysicsEngine {
 		if (gravityActive) {
 			applyGravity(universe, dt);
 		}
-
+		if (frictionActive) {
+			applyFriction(universe, dt);
+		}
+		
 		dynamicEntities.stream().forEach(p -> {
 			Position pos = p.getComponent(Position.class);
 			Velocity velocity = p.getComponent(Velocity.class);
@@ -89,7 +92,8 @@ public class PhysicsEngine implements IPhysicsEngine {
 	@Override
 	public void applyCollisions(ILevel universe, boolean dynamicsOn) {
 		List<IEntity> collidableEntities = new ArrayList<IEntity>(
-				universe.getEntitiesWithComponents(Collision.class, ImagePath.class, RestitutionCoefficient.class));
+				universe.getEntitiesWithComponents(Collision.class, ImagePath.class,
+						RestitutionCoefficient.class, Velocity.class, Mass.class));
 		clearCollisionComponents(collidableEntities);
 
 		for (int i = 0; i < collidableEntities.size(); i++) {
@@ -173,7 +177,50 @@ public class PhysicsEngine implements IPhysicsEngine {
 		}
 		return hitBoxes;
 	}
-
+	
+	private void applyFriction(ILevel universe, double secondsPassed) {
+		//coefficient of friction is 0.62
+		//only applied for things that slide
+		//not for player characters, but for objects getting pushed around
+		List<IEntity> frictionProneEntities = new ArrayList<IEntity>(
+				universe.getEntitiesWithComponents(Friction.class, Gravity.class, Velocity.class));
+		for (IEntity entity : frictionProneEntities) {
+			double friction = entity.getComponent(Friction.class).getFriction();
+			double gravity = entity.getComponent(Gravity.class).getGravity();
+			double acceleration = friction*gravity;
+			Velocity velocity = entity.getComponent(Velocity.class);
+			velocity.add(Math.max(- velocity.getVX(), -acceleration*secondsPassed), 0);
+		}
+	}
+	
+	private void getSideOfCollision(Position firstEntityPos, Position secondEntityPos) {
+		Vector entityOneToTwo = new Vector(firstEntityPos.getX()-secondEntityPos.getX(),
+											firstEntityPos.getX()-secondEntityPos.getY());
+		Vector referenceVector = new Vector(0, 1);
+		double angle = Math.acos(getDotProduct(entityOneToTwo, referenceVector));
+		if (angle >= 315 || angle < 45) {
+			//TOP COLLISION
+		}
+		else if (angle < 315 && angle >= 225) {
+			//LEFT COLLISION
+		}
+		else if (angle < 225 && angle >= 135) {
+			//BOT COLLISION
+		}
+		else { //angle < 135 && angle >=45
+			//RIGHT COLLISION
+		}
+	}
+	
+	private double getDotProduct(Vector a, Vector b) {
+		return a.getXComponent()*b.getXComponent() + a.getYComponent()*b.getYComponent();
+	}
+	
+	private Vector normalizePosition(Vector entityDiff) {
+		double length = Math.sqrt(Math.pow(entityDiff.getXComponent(), 2) + Math.pow(entityDiff.getYComponent(), 2));
+		return new Vector(entityDiff.getXComponent()/length, entityDiff.getYComponent()/length);
+	}
+	
 	public void setGravityActive(boolean gravityActive) {
 		this.gravityActive = gravityActive;
 	}

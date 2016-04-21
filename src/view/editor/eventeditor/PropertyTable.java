@@ -21,7 +21,13 @@ public class PropertyTable extends Table
 		getTable().
         getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> 
         	{
+        		try{
         		manager.propertyWasClicked((SimpleObjectProperty)observableValue.getValue().getData());
+        		} catch (Exception e)
+        		{
+        			// Do nothing....? I know it's bad code, but all it does it print trace, and continues normally.
+        			// TODO: Fix this, it looks horrible.
+        		}
         	}
         	);
    	}
