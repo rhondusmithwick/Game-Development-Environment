@@ -173,7 +173,7 @@ public class EditorEnvironment extends Editor {
 			if (!entity.hasComponent(Position.class) || !entity.hasComponent(ImagePath.class)) {
 				addComponents(entity);
 			}
-			//Shape rectangle = new Rectangle(200,200);
+			//Rectangle rectangle = new Rectangle(200,200);
 			//rectangle.setFill(Color.BLUE);
 			//makeDraggable(rectangle);
 			makeResizable(entity);
@@ -217,8 +217,8 @@ public class EditorEnvironment extends Editor {
 	}
 	
 	//LOOK HERE FOR MAKING A SHAPE DRAGGABLE
-	private Shape makeDraggable(Shape rectangle) {
-		Dragger.makeDraggable(rectangle);
+	private Shape makeDraggable(Rectangle rectangle) {
+		DragAndResize.makeResizable(rectangle);
 		return rectangle;
 	}
 	
