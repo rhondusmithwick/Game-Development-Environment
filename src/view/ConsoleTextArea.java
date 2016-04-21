@@ -1,4 +1,4 @@
-package testing.demo;
+package view;
 
 import javafx.scene.control.TextArea;
 

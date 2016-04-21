@@ -23,8 +23,8 @@ import java.util.Map;
  */
 public class Action implements ISerializable{
 
-    private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
-    private transient String script; 
+    private ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
+    private String script; 
     private String scriptPath;
     private final Map<String, Object> parameters = new HashMap<>();
 
