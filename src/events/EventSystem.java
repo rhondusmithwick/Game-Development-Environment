@@ -29,12 +29,14 @@ import java.util.stream.Collectors;
 public class EventSystem implements Observer, IEventSystem {
 
     private transient IEntitySystem universe;
-    private InputSystem inputSystem;
+    private final InputSystem inputSystem = new InputSystem();
     private ListMultimap<Trigger, Action> actionMap = ArrayListMultimap.create();
 
-    public EventSystem(IEntitySystem universe, InputSystem inputSystem) {
-        this.universe = universe;
-        this.inputSystem = inputSystem;
+    public EventSystem() {
+    }
+
+    public EventSystem(IEntitySystem universe) {
+        setUniverse(universe);
     }
 
     @Override
@@ -55,7 +57,10 @@ public class EventSystem implements Observer, IEventSystem {
 
     @Override
     public void setUniverse(IEntitySystem universe) {
+        stopObservingTriggers(actionMap);
+        clearListeners();
         this.universe = universe;
+        watchTriggers(actionMap);
         addHandlers();
     }
 
