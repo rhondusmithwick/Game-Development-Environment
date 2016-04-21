@@ -151,10 +151,4 @@ public class EventSystem implements Observer, IEventSystem {
         watchTriggers(actionMap);
     }
 
-	@Override
-	public void readEventsFromFile(String filepath) {
-		// TODO Auto-generated method stub
-		
-	}
-
 }
