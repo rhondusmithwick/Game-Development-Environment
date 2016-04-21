@@ -23,9 +23,9 @@ public class TableManager
 	private IComponent component;
 	private int propertyIndex;
 	private String language;
-	private EditorEvent editor;
+	private PropertyEventEditor editor;
 	
-	public TableManager(ObservableList<ISerializable> entityList, String language, EditorEvent editor)
+	public TableManager(ObservableList<ISerializable> entityList, String language, PropertyEventEditor editor)
 	{
 		container = new HBox();
 		this.language = language;
