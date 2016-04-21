@@ -6,8 +6,6 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
-import static javafx.scene.input.KeyCode.Y;
-
 
 /**
  * Created by rhondusmithwick on 4/21/16.
