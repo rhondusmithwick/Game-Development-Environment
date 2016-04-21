@@ -1,13 +1,16 @@
 package events;
 
-import api.IEntitySystem;
 import api.IEventSystem;
+import api.ILevel;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
+import javafx.scene.input.KeyEvent;
 import utility.Pair;
 
+import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -27,14 +30,13 @@ import java.util.stream.Collectors;
  *         triggers in some sort of factory fashion
  */
 public class EventSystem implements Observer, IEventSystem {
-
-    private transient IEntitySystem universe;
-    private InputSystem inputSystem;
+    private final InputSystem inputSystem = new InputSystem();
+    private transient ILevel universe;
     private ListMultimap<Trigger, Action> actionMap = ArrayListMultimap.create();
+    private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
 
-    public EventSystem(IEntitySystem universe, InputSystem inputSystem) {
-        this.universe = universe;
-        this.inputSystem = inputSystem;
+    public EventSystem(ILevel universe) {
+        setUniverse(universe);
     }
 
     @Override
@@ -47,41 +49,60 @@ public class EventSystem implements Observer, IEventSystem {
     }
 
     @Override
-    public void update(Observable o, Object arg) {
-        List<Action> actions = actionMap.get((Trigger) o);
-        actions.stream().forEach(e -> e.activate(universe));
+    public void updateInputs() {
+        this.inputSystem.processInputs();
     }
 
+    @Override
+    public void takeInput(KeyEvent k) {
+        this.inputSystem.takeInput(k);
+    }
 
     @Override
-    public void setUniverse(IEntitySystem universe) {
-        this.universe = universe;
+    public void update(Observable o, Object arg) {
+        List<Action> actions = actionMap.get((Trigger) o);
+        actions.stream().forEach(e -> e.activate(engine, universe));
+    }
+
+    private void unbindEvents() {
+        stopObservingTriggers(actionMap);
+        clearListeners();
+    }
+
+    private void bindEvents() {
+        watchTriggers(actionMap);
         addHandlers();
+    }
+
+    @Override
+    public void setUniverse(ILevel universe) {
+        this.unbindEvents();
+        this.universe = universe;
+        this.bindEvents();
     }
 
     @Override
     public File saveEventsToFile(String filepath) {
-        stopObservingTriggers(actionMap);
+        this.unbindEvents();
         new XMLWriter<Pair<Trigger, List<Action>>>().writeToFile(filepath, convertMapToList(actionMap));
-        watchTriggers(actionMap);
-        addHandlers();
+        this.bindEvents();
         return new File(filepath);
     }
 
     @Override
     public void readEventsFromFilePath(String filepath) {
-        List<Pair<Trigger, List<Action>>> eventList = new XMLReader<Pair<Trigger, List<Action>>>().readFromFile(filepath);
+        List<Pair<Trigger, List<Action>>> eventList = new XMLReader<Pair<Trigger, List<Action>>>()
+                .readFromFile(filepath);
         actionMap = convertListToMap(eventList);
-        watchTriggers(actionMap);
-        addHandlers();
+        this.bindEvents();
     }
 
     @Override
     public void readEventsFromFile(File file) {
-        List<Pair<Trigger, List<Action>>> eventList = new XMLReader<Pair<Trigger, List<Action>>>().readFromFile(file.getPath());
+        List<Pair<Trigger, List<Action>>> eventList = new XMLReader<Pair<Trigger, List<Action>>>()
+                .readFromFile(file.getPath());
         actionMap = convertListToMap(eventList);
-        watchTriggers(actionMap);
-        addHandlers();
+        this.bindEvents();
     }
 
     @Override
@@ -123,16 +144,14 @@ public class EventSystem implements Observer, IEventSystem {
         actionMap.keySet().stream().forEach(trigger -> trigger.clearListener(universe, inputSystem));
     }
 
-    private void writeObject(ObjectOutputStream out)
-            throws IOException {
-        clearListeners();
-        stopObservingTriggers(actionMap);
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        this.unbindEvents();
         out.defaultWriteObject();
     }
 
-    private void readObject(ObjectInputStream in)
-            throws IOException, ClassNotFoundException {
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
+        engine = new ScriptEngineManager().getEngineByName("groovy");
         watchTriggers(actionMap);
     }
 

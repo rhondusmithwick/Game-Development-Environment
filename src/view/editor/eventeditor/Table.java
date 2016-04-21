@@ -49,4 +49,10 @@ public abstract class Table
 	{
 		return entries;
 	}
+	
+	public void refreshTable()
+	{
+		entries.clear();
+		table.refresh();
+	}
 }

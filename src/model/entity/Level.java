@@ -6,26 +6,23 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.google.common.collect.Maps;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import api.IComponent;
 import api.IEntity;
-import api.IEntitySystem;
 import api.IEventSystem;
+import api.ILevel;
 import api.IPhysicsEngine;
 import events.EventSystem;
 import model.physics.PhysicsEngine;
 
 /**
- * Implementation of an entity system. This implementation is focused on the
- * IDs. It spawns entities based on the next available ID and adds them to the
- * system.
+ * Implementation of a Level. This implementation is focused on the IDs. It
+ * spawns entities based on the next available ID and adds them to the system.
  *
  * @author Rhondu Smithwick
  */
-public class EntitySystem implements IEntitySystem {
+public class Level implements ILevel {
 
 	/**
 	 * The entities in this system.
@@ -34,16 +31,15 @@ public class EntitySystem implements IEntitySystem {
 	private final Map<String, IEntity> entities = Maps.newLinkedHashMap();
 	private String name;
 	private Map<String, String> metadata = Maps.newLinkedHashMap();
-	private IEventSystem eventSystem = new EventSystem(this, null); // TODO:
-																	// update
+	private IEventSystem eventSystem = new EventSystem(this);
 	private IPhysicsEngine physics = new PhysicsEngine();
 	private String eventSystemPath;
 
-	public EntitySystem() {
+	public Level() {
 		this("");
 	}
 
-	public EntitySystem(String name) {
+	public Level(String name) {
 		this.name = name;
 	}
 
@@ -85,14 +81,14 @@ public class EntitySystem implements IEntitySystem {
 	}
 
 	@Override
-	public void setName(String name) {
-		this.name = name;
-
+	public String getName() {
+		return this.name;
 	}
 
 	@Override
-	public String getName() {
-		return this.name;
+	public void setName(String name) {
+		this.name = name;
+
 	}
 
 	@Override
@@ -106,13 +102,13 @@ public class EntitySystem implements IEntitySystem {
 	}
 
 	@Override
-	public void addMetadata(String key, String value) {
-		this.metadata.put(key, value);
+	public void setMetadata(Map<String, String> metadata) {
+		this.metadata = metadata;
 	}
 
 	@Override
-	public void setMetadata(Map<String, String> metadata) {
-		this.metadata = metadata;
+	public void addMetadata(String key, String value) {
+		this.metadata.put(key, value);
 	}
 
 	@Override
@@ -124,6 +120,7 @@ public class EntitySystem implements IEntitySystem {
 	@Override
 	public void update(double dt) {
 		// TODO: call the scripts' update() methods
+		physics.update(this, dt);
 	}
 
 	@Override
