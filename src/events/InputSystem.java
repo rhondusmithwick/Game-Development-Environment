@@ -21,7 +21,7 @@ public class InputSystem {
     private SimpleObjectProperty<KeyEvent> currentChar = new SimpleObjectProperty<>();
 
     public void takeInput(KeyEvent k) {
-        fillQ.add(k);
+		fillQ.add(k);
     }
 
     public void processInputs() {

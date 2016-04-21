@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 
+import static javafx.scene.input.KeyCode.T;
 
 /**
  * This is the interface for all components, which hold data.

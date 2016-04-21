@@ -42,7 +42,6 @@ public class ACGame {
     private final String moveLeftScriptPath = "resources/groovyScripts/keyInputMoveLeft.groovy";
     private final String jumpScriptPath = "resources/groovyScripts/keyInputJump.groovy";
     private static ImageView charSpr;
-
     private Scene myScene;
 
     /**
@@ -129,7 +128,7 @@ public class ACGame {
         }
         return new Action(script);
     }
-
+    
     private void moveEntity(IEntity character, int move) {
         Position pos = character.getComponent(Position.class);
         pos.setX(pos.getX() + move);
