@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 import api.IEntity;
 import model.component.visual.ImagePath;
 import javafx.animation.Animation;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 

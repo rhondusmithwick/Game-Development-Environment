@@ -12,6 +12,8 @@ import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
@@ -19,6 +21,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -35,12 +38,10 @@ import javafx.util.converter.NumberStringConverter;
 import view.Utilities;
 
 public class SpriteUtility extends Application{
-    ScrollPane pane;
-    Rectangle rect;
-
-
+    private ScrollPane pane;
+    private Rectangle rect;
 	private Button addButton;
-	protected List<Rectangle> rectangleList;
+	private List<Rectangle> rectangleList;
 	private ImageView spriteImage;
 	private HBox hbox;
 	private VBox animationPropertiesBox;
@@ -50,7 +51,6 @@ public class SpriteUtility extends Application{
 	private ImageView previewImage;
 	private VBox buttonBox;
 	private Group scrollGroup;
-	private TextField speedField;
 	private List<Double> widthList;
 	private List<Double> heightList;
 	private List<Double> yList;
@@ -59,6 +59,9 @@ public class SpriteUtility extends Application{
 	private DoubleProperty rectinitY;
 	private DoubleProperty rectX;
 	private DoubleProperty rectY;
+	private Slider durationSlider;
+	private Label durationLabel;
+	private Label durationValueLabel;
 	
     public static void main(String[] args) {
         launch(args);
@@ -88,7 +91,7 @@ public class SpriteUtility extends Application{
 		initNewImage();
         initRectangle();
         initAddButton();
-        initTextFields();
+        initAnimationGUIElements();
         initPreviewButton();
         initSaveButton();
         initNewSpriteButton();
@@ -125,33 +128,37 @@ public class SpriteUtility extends Application{
     			@Override
     			public void handle(ActionEvent arg0) {
     				populateRectanglePropertyLists();
-    				//needs to throw parseDouble errors
-    				if(speedField.getText().equals("")){
-    					System.out.println("Speed Field is Empty");
+    				initNewAnimation();
     				}
-    				else{
-    				buttonBox.getChildren().remove(previewImage);
-    				previewImage = new ImageView( new Image(spriteSheet.toURI().toString()));
-    				Animation animation = new ComplexAnimation(
-    						previewImage, Duration.millis(Double.parseDouble(speedField.getText())), rectangleList.size(), xList, yList, widthList, heightList
-    						);
-    				animation.setCycleCount(Animation.INDEFINITE);
-
-    				animation.play();
-    				buttonBox.getChildren().add(previewImage);
-    				}
-
-    			}
-    			
-    			
-	});
+    		});
     	}
+	private void initNewAnimation() {
+		buttonBox.getChildren().remove(previewImage);
+		previewImage = new ImageView( new Image(spriteSheet.toURI().toString()));
+		Animation animation = new ComplexAnimation(
+				previewImage, Duration.millis(durationSlider.getValue()), rectangleList.size(), xList, yList, widthList, heightList
+				);
+		animation.setCycleCount(Animation.INDEFINITE);
 
+		animation.play();
+		buttonBox.getChildren().add(previewImage);
+	}
 	//add error handling; can't be empty
-    private void initTextFields() {
+    private void initAnimationGUIElements() {
     	animationName = new TextField("Animation Name");
-    	speedField = new TextField("Speed");
-    	animationPropertiesBox.getChildren().addAll(animationName, speedField);
+    	durationSlider = new Slider(100,3000,1000);
+    	durationLabel = new Label("Duration");
+    	durationValueLabel = new Label();
+    	durationValueLabel.setText(String.format("%.2f", durationSlider.getValue()));
+    	durationSlider.valueProperty().addListener(new ChangeListener<Number>() {
+            public void changed(ObservableValue<? extends Number> ov,
+                    Number old_val, Number new_val) {
+                        durationValueLabel.setText(String.format("%.2f", new_val));
+                        initNewAnimation();
+                }
+    	}
+            );
+    	animationPropertiesBox.getChildren().addAll(animationName, durationLabel,durationSlider, durationValueLabel);
     	
 	}
 
