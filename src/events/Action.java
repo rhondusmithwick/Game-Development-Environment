@@ -24,12 +24,11 @@ import java.util.Map;
 public class Action implements ISerializable{
 
     private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
-    private transient String script; 
-    private String scriptPath;
+    private final String script;
     private final Map<String, Object> parameters = new HashMap<>();
 
     public Action(String scriptPath) {
-        setScriptPath(scriptPath);
+        script = getScriptFromPath(scriptPath);
     }
 
     public Action(String scriptPath, Map<String, Object> parameters) {
@@ -46,24 +45,8 @@ public class Action implements ISerializable{
             e.printStackTrace();
         }
     }
-    
-    public void setScriptPath(String scriptPath) {
-    	this.scriptPath = scriptPath;
-		
-    }
-    
-    public String getScriptPath() {
-    	return scriptPath;
-    }
-
-    public void setScript(String script) {
-        this.script = script;
-    }
 
     public String getScript() {
-    	if(script==null) {
-    		setScriptFromPath(scriptPath);
-    	}
         return script;
     }
 
@@ -82,16 +65,15 @@ public class Action implements ISerializable{
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         engine = new ScriptEngineManager().getEngineByName("groovy");
-
     }
     
-    private void setScriptFromPath(String scriptPath) {
-    	String scr = null;
+    private String getScriptFromPath(String scriptPath) {
+    	String script = "";
 		try {
-			scr = Files.toString(new File(scriptPath), Charsets.UTF_8);
-			setScript(scr);
+			script = Files.toString(new File(scriptPath), Charsets.UTF_8);
 		} catch (IOException e) {
 			System.out.println("Groovy script not found at " + scriptPath);
 		}
+        return script;
     }
 }

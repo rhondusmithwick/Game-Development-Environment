@@ -1,6 +1,7 @@
 package usecases;
 
 import api.ISystemManager;
+import model.core.SystemManager;
 
 /**
  * Created by rhondusmithwick on 3/31/16.

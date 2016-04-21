@@ -27,7 +27,6 @@ public class KeyTrigger extends Trigger{
 	
 	@Override
 	public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-		System.out.println(((KeyEvent)newValue).getCode());
 		if (((KeyEvent) newValue).getCode() == KeyCode.getKeyCode(key)) { 
 			setChanged();
 			notifyObservers();
@@ -35,13 +34,17 @@ public class KeyTrigger extends Trigger{
 	}
 
 	@Override
-	public <T extends IComponent> void clearListener(IEntitySystem universe) {
-		// TODO Auto-generated method stub
-		
+	public <T extends IComponent> void clearListener(IEntitySystem universe, InputSystem inputSystem) {
+		inputSystem.unListenToKeyPress(this);
 	}
 
 	@Override
 	public <T extends IComponent> void addHandler(IEntitySystem universe, InputSystem inputSystem) {
 		inputSystem.listenToKeyPress(this);
+	}
+
+	@Override
+	public String getID() {
+		return key;
 	}
 }
