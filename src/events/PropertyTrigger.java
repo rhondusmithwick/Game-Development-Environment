@@ -6,6 +6,7 @@ import api.IEntitySystem;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 
+
 /***
  * @author Anirudh Jonnavithula, Carolyn Yao Implements a ChangeListener that
  *         listens to change in a SimpleObjectProperty for now, signals
@@ -18,12 +19,10 @@ public class PropertyTrigger extends Trigger {
     private final Class<? extends IComponent> componentClass;
     private final String propertyName;
 
-    public PropertyTrigger(String entityID, Class<? extends IComponent> componentClass, String propertyName,
-                           IEntitySystem universe, InputSystem inputSystem) {
+    private PropertyTrigger(String entityID, Class<? extends IComponent> componentClass, String propertyName) {
         this.entityID = entityID;
         this.componentClass = componentClass;
         this.propertyName = propertyName;
-        addHandler(universe, inputSystem);
     }
 
     @Override
@@ -46,8 +45,7 @@ public class PropertyTrigger extends Trigger {
     private SimpleObjectProperty<?> getProperty(IEntitySystem universe) {
         IEntity entity = universe.getEntity(entityID);
         IComponent component = entity.getComponent(componentClass);
-        Class<?> propertyClass = component.getPropertyNamesAndClasses().get(propertyName);
-        return entity.getComponent(componentClass).getProperty(propertyClass, propertyName);
+        return component.getProperty(propertyName);
     }
 
     @Override
