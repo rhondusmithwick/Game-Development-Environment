@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Implementation of an entity system. This implementation is focused on the
+ * Implementation of a Level. This implementation is focused on the
  * IDs. It spawns entities based on the next available ID and adds them to the
  * system.
  *
