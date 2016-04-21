@@ -1,6 +1,7 @@
 package events;
 
-import api.IEntitySystem;
+import api.ILevel;
+import api.ILevel;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.input.KeyEvent;
@@ -23,7 +24,7 @@ public class InputSystem {
     
     private SimpleObjectProperty<KeyEvent> currentChar = new SimpleObjectProperty<>(); 
 
-    public InputSystem(IEntitySystem universe) {
+    public InputSystem(ILevel universe) {
     	q1 = new PriorityQueue<>();
     	q2 = new PriorityQueue<>();
     	fillQ = q1; 

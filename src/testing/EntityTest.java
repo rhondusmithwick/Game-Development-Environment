@@ -29,7 +29,7 @@ public class EntityTest {
 //    private static final String DEFAULT_FILE_NAME = "resources/savedComponents/playerDefault.xml";
 //    private static final String LOAD_FILE_NAME = "resources/savedEntities/player.xml";
 //
-//    private final IEntitySystem entitySystem = new EntitySystem();
+//    private final IEntitySystem entitySystem = new Level();
 
 
     @Before

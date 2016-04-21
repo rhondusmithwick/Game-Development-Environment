@@ -1,7 +1,8 @@
 package events;
 
-import api.IEntitySystem;
+import api.ILevel;
 import api.IEventSystem;
+import api.ILevel;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import datamanagement.XMLReader;
@@ -28,11 +29,11 @@ import java.util.stream.Collectors;
  */
 public class EventSystem implements Observer, IEventSystem {
 
-    private transient IEntitySystem universe;
+    private transient ILevel universe;
     private InputSystem inputSystem;
     private ListMultimap<Trigger, Action> actionMap = ArrayListMultimap.create();
 
-    public EventSystem(IEntitySystem universe, InputSystem inputSystem) {
+    public EventSystem(ILevel universe, InputSystem inputSystem) {
         this.universe = universe;
         this.inputSystem = inputSystem;
     }
@@ -54,7 +55,7 @@ public class EventSystem implements Observer, IEventSystem {
 
 
     @Override
-    public void setUniverse(IEntitySystem universe) {
+    public void setUniverse(ILevel universe) {
         this.universe = universe;
         addHandlers();
     }

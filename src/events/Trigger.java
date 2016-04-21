@@ -3,7 +3,8 @@ package events;
 import java.util.Observable;
 
 import api.IComponent;
-import api.IEntitySystem;
+import api.ILevel;
+import api.ILevel;
 import api.ISerializable;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
@@ -16,9 +17,9 @@ import javafx.beans.value.ObservableValue;
  */
 public abstract class Trigger extends Observable implements ChangeListener, ISerializable  {
 	
-	public abstract <T extends IComponent> void clearListener(IEntitySystem universe, InputSystem inputSystem);
+	public abstract <T extends IComponent> void clearListener(ILevel universe, InputSystem inputSystem);
 
-	public abstract <T extends IComponent> void addHandler(IEntitySystem universe, InputSystem inputSystem);
+	public abstract <T extends IComponent> void addHandler(ILevel universe, InputSystem inputSystem);
 	
 	public abstract String getID();
 	

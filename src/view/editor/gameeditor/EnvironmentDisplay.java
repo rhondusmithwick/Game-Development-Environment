@@ -3,23 +3,24 @@ package view.editor.gameeditor;
 import java.util.ResourceBundle;
 
 import api.IEntity;
-import api.IEntitySystem;
+import api.ILevel;
+import api.ILevel;
 import api.ISerializable;
 import enums.DefaultStrings;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
-import model.entity.EntitySystem;
+import model.entity.Level;
 import view.Authoring;
 import view.Utilities;
 import view.editor.EditorEnvironment;
 
 public class EnvironmentDisplay extends ObjectDisplay{
-	private ObservableList<IEntitySystem> masterEnvList;
+	private ObservableList<ILevel> masterEnvList;
 	private ResourceBundle myResources;
 	
-	public EnvironmentDisplay(String language, ObservableList<IEntitySystem> masterEnvList, ObservableList<IEntity> masterEntList, Authoring authEnv){
+	public EnvironmentDisplay(String language, ObservableList<ILevel> masterEnvList, ObservableList<IEntity> masterEntList, Authoring authEnv){
 		
 		super(language, authEnv, masterEntList);
 		this.masterEnvList = masterEnvList;
@@ -42,7 +43,7 @@ public class EnvironmentDisplay extends ObjectDisplay{
 	}
 
 	@SuppressWarnings("unchecked")
-	private void addEnvironmentToScroll(IEntitySystem eSystem, VBox container) {
+	private void addEnvironmentToScroll(ILevel eSystem, VBox container) {
 		container.getChildren().add(Utilities.makeButton(eSystem.getName(), f->createEditor(EditorEnvironment.class, eSystem, (ObservableList<ISerializable>) ((ObservableList<?>) masterEnvList ))));
 	}
 	
@@ -51,7 +52,7 @@ public class EnvironmentDisplay extends ObjectDisplay{
 	@Override
 	public Node makeNewObject(){
 		return Utilities.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
-			e->createEditor(EditorEnvironment.class, new EntitySystem(), (ObservableList<ISerializable>) ((ObservableList<?>) masterEnvList )));
+			e->createEditor(EditorEnvironment.class, new Level(), (ObservableList<ISerializable>) ((ObservableList<?>) masterEnvList )));
 	}
 
 

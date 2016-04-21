@@ -6,13 +6,11 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
-import com.google.common.collect.Maps;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
 import api.IComponent;
 import api.IEntity;
-import api.IEntitySystem;
+import api.ILevel;
 import api.IEventSystem;
 import api.IPhysicsEngine;
 import events.EventSystem;
@@ -25,7 +23,7 @@ import model.physics.PhysicsEngine;
  *
  * @author Rhondu Smithwick
  */
-public class EntitySystem implements IEntitySystem {
+public class Level implements ILevel {
 
 	/**
 	 * The entities in this system.
@@ -39,11 +37,11 @@ public class EntitySystem implements IEntitySystem {
 	private IPhysicsEngine physics = new PhysicsEngine();
 	private String eventSystemPath;
 
-	public EntitySystem() {
+	public Level() {
 		this("");
 	}
 
-	public EntitySystem(String name) {
+	public Level(String name) {
 		this.name = name;
 	}
 
