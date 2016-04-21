@@ -11,7 +11,6 @@ import javafx.util.Duration;
 public class ComplexAnimation extends Transition{
     private final ImageView imageView;
     private final int count;
-    private final int columns;
     private final List<Double> offsetX;
     private final List<Double> offsetY;
     private final List<Double> width;
@@ -22,12 +21,11 @@ public class ComplexAnimation extends Transition{
     public ComplexAnimation(
             ImageView imageView, 
             Duration duration, 
-            int count,   int columns,
+            int count,  
             List<Double> offsetX, List<Double> offsetY,
             List<Double> width,   List<Double> height) {
         this.imageView = imageView;
         this.count     = count;
-        this.columns   = columns;
         this.offsetX   = offsetX;
         this.offsetY   = offsetY;
         this.width     = width;
@@ -38,10 +36,10 @@ public class ComplexAnimation extends Transition{
 
 	@Override
 	protected void interpolate(double k) {
-        final int index = Math.min((int) Math.floor(k * count), count - 1);
+        final int index = Math.min((int) Math.floor(k * count), count-1);
         if (index != lastIndex) {
-            final double x = (index % columns) * width.get(index)  + offsetX.get(index);
-            final double y = (index / columns) * height.get(index) + offsetY.get(index);
+            final double x = offsetX.get(index);
+            final double y = offsetY.get(index);
             imageView.setViewport(new Rectangle2D(x, y, width.get(index), height.get(index)));
             lastIndex = index;		
         }	

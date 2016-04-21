@@ -37,27 +37,28 @@ import view.Utilities;
 public class SpriteUtility extends Application{
     ScrollPane pane;
     Rectangle rect;
-    SimpleDoubleProperty rectinitX = new SimpleDoubleProperty();
-    SimpleDoubleProperty rectinitY = new SimpleDoubleProperty();
-    SimpleDoubleProperty rectX = new SimpleDoubleProperty();
-    SimpleDoubleProperty rectY = new SimpleDoubleProperty();
-	List<Double> xList = new ArrayList<Double>();
-	List<Double> yList = new ArrayList<Double>();
-	List<Double> widthList = new ArrayList<Double>();
-	List<Double> heightList = new ArrayList<Double>();
+
+
 	private Button addButton;
-	protected ArrayList<Rectangle> rectangleList;
+	protected List<Rectangle> rectangleList;
 	private ImageView spriteImage;
 	private HBox hbox;
 	private VBox animationPropertiesBox;
 	private Button saveButton;
-	private TextField columnField;
 	private TextField animationName;
 	private File spriteSheet;
 	private ImageView previewImage;
 	private VBox buttonBox;
-	private Group group;
+	private Group scrollGroup;
 	private TextField speedField;
+	private List<Double> widthList;
+	private List<Double> heightList;
+	private List<Double> yList;
+	private List<Double> xList;
+	private DoubleProperty rectinitX;
+	private DoubleProperty rectinitY;
+	private DoubleProperty rectX;
+	private DoubleProperty rectY;
 	
     public static void main(String[] args) {
         launch(args);
@@ -68,32 +69,53 @@ public class SpriteUtility extends Application{
         pane = new ScrollPane();
         Scene scene = new Scene(pane, 800, 600);
         stage.setScene(scene);
-		rectangleList = new ArrayList<Rectangle>();
-        hbox = new HBox();
-        buttonBox = new VBox();
 
-        animationPropertiesBox = new VBox();
 
-        spriteImage = new ImageView(initFileChooser());
         
-        initImageViewHandlers(spriteImage);
-
-        initRectangle();
-        
-        initAddButton();
-        initTextFields();
-        initPreviewButton();
-        initSaveButton();
-
-        hbox.getChildren().addAll(spriteImage, buttonBox, animationPropertiesBox);
-        group = new Group();
-        group.getChildren().addAll(hbox, rect);
-        pane.setContent(group);
+        initializeGui();
         stage.show();
 
 		
 	}
-    private void initPreviewButton() {
+
+	private void initializeGui() {		
+		rectangleList = new ArrayList<Rectangle>();
+	    hbox = new HBox();
+	    buttonBox = new VBox();
+	    animationPropertiesBox = new VBox();
+	    scrollGroup = new Group();
+
+		initNewImage();
+        initRectangle();
+        initAddButton();
+        initTextFields();
+        initPreviewButton();
+        initSaveButton();
+        initNewSpriteButton();
+        hbox.getChildren().addAll(spriteImage, buttonBox, animationPropertiesBox);
+        scrollGroup.getChildren().addAll(hbox, rect);
+        pane.setContent(scrollGroup);
+
+	}
+
+	private void initNewImage() {
+		spriteImage = new ImageView(initFileChooser());
+        initImageViewHandlers(spriteImage);
+	}
+    private void initNewSpriteButton() {
+    	Button newSpriteButton = new Button("New Sprite");
+    	buttonBox.getChildren().add(newSpriteButton);
+    	newSpriteButton.setOnAction(new EventHandler<ActionEvent>() {
+
+			@Override
+			public void handle(ActionEvent arg0) {
+				initializeGui();
+			}
+    	}
+    	);
+	}
+
+	private void initPreviewButton() {
     	Button previewButton = new Button("Preview Animation");
     	previewButton.setMinWidth(100);
 		buttonBox.getChildren().add(previewButton);
@@ -104,15 +126,14 @@ public class SpriteUtility extends Application{
     			public void handle(ActionEvent arg0) {
     				populateRectanglePropertyLists();
     				//needs to throw parseDouble errors
-    				if(speedField.getText()==""){
+    				if(speedField.getText().equals("")){
     					System.out.println("Speed Field is Empty");
-    				}else if (columnField.getText()==""){
-    					System.out.println("Column Field is Empty");
-    				}else{
+    				}
+    				else{
     				buttonBox.getChildren().remove(previewImage);
     				previewImage = new ImageView( new Image(spriteSheet.toURI().toString()));
     				Animation animation = new ComplexAnimation(
-    						previewImage, Duration.millis(Double.parseDouble(speedField.getText())), rectangleList.size(), Integer.parseInt(columnField.getText()), xList, yList, widthList, heightList
+    						previewImage, Duration.millis(Double.parseDouble(speedField.getText())), rectangleList.size(), xList, yList, widthList, heightList
     						);
     				animation.setCycleCount(Animation.INDEFINITE);
 
@@ -128,10 +149,9 @@ public class SpriteUtility extends Application{
 
 	//add error handling; can't be empty
     private void initTextFields() {
-    	columnField = new TextField("Columns");
     	animationName = new TextField("Animation Name");
     	speedField = new TextField("Speed");
-    	animationPropertiesBox.getChildren().addAll(animationName, columnField, speedField);
+    	animationPropertiesBox.getChildren().addAll(animationName, speedField);
     	
 	}
 
@@ -152,7 +172,6 @@ public class SpriteUtility extends Application{
 				System.out.println("height"+ heightList);
 
 				System.out.println("Count" + rectangleList.size());
-				System.out.println(columnField.getText());
 				System.out.println(animationName.getText());
 			}
 
@@ -163,6 +182,10 @@ public class SpriteUtility extends Application{
 	}
 	
 	private void populateRectanglePropertyLists() {
+		xList = new ArrayList<Double>();
+		yList = new ArrayList<Double>();
+		widthList = new ArrayList<Double>();
+		heightList = new ArrayList<Double>();
 		for (Rectangle rect: rectangleList){
 			xList.add(rect.xProperty().get());
 			yList.add(rect.yProperty().get());
@@ -232,12 +255,19 @@ public class SpriteUtility extends Application{
 	    r.setHeight(rect.getHeight());
 	    r.setFill(Color.TRANSPARENT);
 	    r.setStroke(Color.RED);
-	    group.getChildren().add(r);
+	    scrollGroup.getChildren().add(r);
 	    return r;
 	    }
 
 	private void initRectangle() {
-		rect = new Rectangle();
+		rect = new Rectangle(); 
+		rect.widthProperty().unbind();
+		rect.heightProperty().unbind();
+		rectinitX = new SimpleDoubleProperty();
+	    rectinitY = new SimpleDoubleProperty();
+	    rectX = new SimpleDoubleProperty();
+	    rectY = new SimpleDoubleProperty();
+
         rect.widthProperty().bind(rectX.subtract(rectinitX));
         rect.heightProperty().bind(rectY.subtract(rectinitY));
         rect.setFill(Color.TRANSPARENT);
