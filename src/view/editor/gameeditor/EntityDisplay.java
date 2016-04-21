@@ -20,12 +20,12 @@ import view.editor.EditorEntity;
 public class EntityDisplay extends ObjectDisplay{
 
 	private ResourceBundle myResources;
-	private ObservableList<ISerializable> masterEntList;
+	private ObservableList<IEntity> masterEntList;
 	private ComboBox<String> templateBox;
 	private final EntityFactory entFact = new EntityFactory();
 	private String language;
 	
-	public EntityDisplay(String language,ObservableList<ISerializable> masterEntList, Authoring authEnv){
+	public EntityDisplay(String language,ObservableList<IEntity> masterEntList, Authoring authEnv){
 		super(language, authEnv,masterEntList);
 		this.language=language;
 		this.masterEntList = masterEntList;
@@ -35,10 +35,11 @@ public class EntityDisplay extends ObjectDisplay{
 	}
 	
 	
+	@SuppressWarnings("unchecked")
 	@Override
 	public ScrollPane init() {
 		ScrollPane scroll = super.init();
-		addListeners(masterEntList);
+		addListeners( (ObservableList<ISerializable>) ((ObservableList<?>) masterEntList) );
 		return scroll;
 	}
 

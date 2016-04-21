@@ -39,12 +39,12 @@ public class EditorFactory {
 	public Editor createEditor(Class<?> name, String language, ISerializable toEdit,
 			ObservableList<ISerializable> masterEntityList, ObservableList<ISerializable> entitySystemList) {
 		Editor editor = null;
-
 		try {
 			editor = (Editor) name
 					.getConstructor(String.class, ISerializable.class, ObservableList.class, ObservableList.class)
 					.newInstance(language, toEdit, masterEntityList, entitySystemList);
 		} catch (Exception e) {
+			e.printStackTrace();
 			Utilities.showAlert(ResourceBundle.getBundle(language).getString("error"), null,
 					ResourceBundle.getBundle(language).getString("noEditorCreated"), AlertType.ERROR);
 		}
