@@ -48,7 +48,7 @@ public class PropertyTrigger extends Trigger{
 		try {
 			universe.getEntity(entityID).getComponent((Class<T>) Class.forName(componentName)).getProperties().get(index).addListener(this);
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
+			e.printStackTrace(); // TODO: handle
 		}
 	}
 
