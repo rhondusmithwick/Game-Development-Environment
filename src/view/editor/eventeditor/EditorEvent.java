@@ -22,7 +22,7 @@ import javafx.scene.layout.VBox;
 /*
  * TODO: Clean this shit up
  */
-public class EditorEvent
+public class EditorEvent extends Editor
 {
 	private final Pane pane;
 	private final ScrollPane scrollPane;
