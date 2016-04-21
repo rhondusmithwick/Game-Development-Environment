@@ -18,7 +18,6 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
@@ -50,9 +49,9 @@ public class SpriteUtility extends Application {
 	private BorderPane mainPane;
 	private VBox animationPropertiesBox;
 	private VBox buttonBox;
-	private SubScene spriteScene;
 
 	private Rectangle rect;
+	private double margin = 8;
 
 	private Map<String, Map> animationList;
 	private List<Rectangle> rectangleList;
@@ -290,6 +289,20 @@ public class SpriteUtility extends Application {
 
 	private void mouseReleased(MouseEvent event) {
 		spriteImage.setCursor(Cursor.DEFAULT);
+	}
+	
+	protected boolean isInResizeZone(MouseEvent event) {
+		return isInBottomResize(event);
+	}
+
+	private boolean isInBottomResize(MouseEvent event) {
+		double innerBottomSide = rect.getY() + rect.getHeight() - margin;
+		System.out.println("inner bottom side " + innerBottomSide);
+		double outerBottomSide = rect.getY() + rect.getBoundsInParent().getHeight();
+		System.out.println("outer bottom side " + outerBottomSide);
+		System.out.println("event X" + event.getX());
+		System.out.println("event Y" + event.getY());
+		return ((event.getY() > innerBottomSide) && (event.getY() < outerBottomSide));
 	}
 
 	private void mousePressed(MouseEvent event) {
