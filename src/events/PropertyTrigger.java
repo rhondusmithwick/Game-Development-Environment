@@ -3,7 +3,8 @@ package events;
 import java.util.Observable;
 
 import api.IComponent;
-import api.IEntitySystem;
+import api.ILevel;
+import api.ILevel;
 import api.ISerializable;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
@@ -21,7 +22,7 @@ public class PropertyTrigger extends Trigger{
 	private String componentName;
 	private int index;
 	
-	public PropertyTrigger(String entityID, IComponent component, int index, IEntitySystem universe, InputSystem inputSystem) {
+	public PropertyTrigger(String entityID, IComponent component, int index, ILevel universe, InputSystem inputSystem) {
 		this.entityID = entityID;
 		this.componentName= component.getClass().toString().split(" ")[1];
 		this.index = index;
@@ -35,7 +36,7 @@ public class PropertyTrigger extends Trigger{
 		notifyObservers();
 	}
 	
-	public <T extends IComponent> void clearListener(IEntitySystem universe, InputSystem inputSystem) {
+	public <T extends IComponent> void clearListener(ILevel universe, InputSystem inputSystem) {
 		try {
 			universe.getEntity(entityID).getComponent((Class<T>) Class.forName(componentName)).getProperties().get(index).removeListener(this);
 		} catch (ClassNotFoundException e) {
@@ -44,7 +45,7 @@ public class PropertyTrigger extends Trigger{
 	}
 
 	@Override
-	public <T extends IComponent> void addHandler(IEntitySystem universe, InputSystem inputSystem) {
+	public <T extends IComponent> void addHandler(ILevel universe, InputSystem inputSystem) {
 		try {
 			universe.getEntity(entityID).getComponent((Class<T>) Class.forName(componentName)).getProperties().get(index).addListener(this);
 		} catch (ClassNotFoundException e) {

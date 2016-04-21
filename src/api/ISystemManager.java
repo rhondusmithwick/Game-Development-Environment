@@ -1,8 +1,8 @@
 package api;
 
-import java.util.List;
-
 import datamanagement.XMLReader;
+
+import java.util.List;
 
 /**
  * Created by rhondusmithwick on 3/31/16.
@@ -31,22 +31,22 @@ public interface ISystemManager {
 	 *
 	 * @return IEntitySystem-type entity system
 	 */
-	IEntitySystem getEntitySystem();
+	ILevel getEntitySystem();
 
 	/**
 	 * Get the shared entity system
 	 *
 	 * @return IEntitySystem-type entity system
 	 */
-	IEntitySystem getSharedEntitySystem();
+	ILevel getSharedEntitySystem();
 
-	void saveEntitySystem(String filename);
+	void saveLevel(String filename);
 
-	void saveSharedEntitySystem(String filename);
+	void saveSharedLevel(String filename);
 
-	void loadEntitySystem(String filename);
+	void loadLevel(String filename);
 
-	void loadSharedEntitySystem(String filename);
+	void loadSharedLevel(String filename);
 
 	void moveEntitiesToMainSystem(IEntity... entities);
 
@@ -92,9 +92,11 @@ public interface ISystemManager {
 		return new XMLReader<T>().readFromString(stringToReadFrom);
 	}
 
-	void setEntitySystem(IEntitySystem system);
+	@Deprecated
+	// Use load method instead of setter
+	void setEntitySystem(ILevel system);
 
-	IEntitySystem getUniverse();
+	ILevel getUniverse();
 
 	void saveSystem(String filename);
 

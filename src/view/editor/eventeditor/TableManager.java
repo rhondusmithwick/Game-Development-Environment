@@ -3,14 +3,12 @@ package view.editor.eventeditor;
 import java.util.ResourceBundle;
 
 import api.IComponent;
-import api.IEntitySystem;
 import api.ISerializable;
 import events.Trigger;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.HBox;
 import model.entity.Entity;
-import model.entity.EntitySystem;
 
 public class TableManager 
 {

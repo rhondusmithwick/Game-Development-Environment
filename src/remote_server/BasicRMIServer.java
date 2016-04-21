@@ -10,13 +10,13 @@ import java.util.List;
 import java.util.Map;
 
 import api.IEntity;
-import api.IEntitySystem;
+import api.ILevel;
 import api.IEventSystem;
 import api.IPhysicsEngine;
 
 @Deprecated
 // does not have to be IEntity
-public class BasicRMIServer extends UnicastRemoteObject implements IEntitySystem {
+public class BasicRMIServer extends UnicastRemoteObject implements ILevel {
 
 	public BasicRMIServer() throws RemoteException {
 		super();

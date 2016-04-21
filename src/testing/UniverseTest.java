@@ -14,7 +14,7 @@
 //import events.Trigger;
 //import model.component.character.Health;
 //import model.entity.Entity;
-//import model.entity.EntitySystem;
+//import model.entity.Level;
 //
 ///**
 // * Created by rhondusmithwick on 4/12/16.
@@ -22,7 +22,7 @@
 // * @author Rhondu Smithwick
 // */
 //public class UniverseTest {
-//    IEntitySystem universe = new EntitySystem();
+//    IEntitySystem universe = new Level();
 //
 //    public static void main(String[] args) {
 //        new UniverseTest().test();

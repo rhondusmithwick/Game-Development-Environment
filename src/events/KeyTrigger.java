@@ -3,7 +3,8 @@ package events;
 import java.util.Observable;
 
 import api.IComponent;
-import api.IEntitySystem;
+import api.ILevel;
+import api.ILevel;
 import api.ISerializable;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -20,7 +21,7 @@ public class KeyTrigger extends Trigger{
 	
 	private String key; 
 	
-	public KeyTrigger(String key, IEntitySystem universe, InputSystem inputSystem) { 
+	public KeyTrigger(String key, ILevel universe, InputSystem inputSystem) {
 		this.key = key; 
 		addHandler(universe, inputSystem);
 	}
@@ -34,12 +35,12 @@ public class KeyTrigger extends Trigger{
 	}
 
 	@Override
-	public <T extends IComponent> void clearListener(IEntitySystem universe, InputSystem inputSystem) {
+	public <T extends IComponent> void clearListener(ILevel universe, InputSystem inputSystem) {
 		inputSystem.unListenToKeyPress(this);
 	}
 
 	@Override
-	public <T extends IComponent> void addHandler(IEntitySystem universe, InputSystem inputSystem) {
+	public <T extends IComponent> void addHandler(ILevel universe, InputSystem inputSystem) {
 		inputSystem.listenToKeyPress(this);
 	}
 

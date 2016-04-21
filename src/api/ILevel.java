@@ -1,30 +1,24 @@
 package api;
 
+import com.google.common.collect.Collections2;
+import datamanagement.XMLReader;
+
 import java.io.File;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import com.google.common.collect.Collections2;
-
-import datamanagement.XMLReader;
-
 /**
- * The interface for an EntitySystem, which holds all the entities.
+ * The interface for an Level, which holds all the entities.
  *
  * @author Rhondu Smithwick, Tom Wu
  */
-public interface IEntitySystem extends ISerializable {
+public interface ILevel extends ISerializable {
 
 	/**
 	 * Names the entity System
 	 *
-	 * @param string
+	 * @param name
 	 *            with the name
 	 */
 	void setName(String name);
@@ -56,8 +50,7 @@ public interface IEntitySystem extends ISerializable {
 	/**
 	 * Sets the metadata
 	 * 
-	 * @param updated
-	 *            metadata
+	 * @param metadata
 	 */
 	void setMetadata(Map<String, String> metadata);
 
@@ -85,7 +78,7 @@ public interface IEntitySystem extends ISerializable {
 	/**
 	 * Sets the Entity System's event system's XML path
 	 * 
-	 * @param path
+	 * @param eventSystemPath
 	 *            string of event system file path
 	 */
 	void setEventSystemPath(String eventSystemPath);

@@ -1,6 +1,7 @@
 package events;
 
-import api.IEntitySystem;
+import api.ILevel;
+import api.ILevel;
 import api.ISerializable;
 
 import javax.script.ScriptEngine;
@@ -36,7 +37,7 @@ public class Action implements ISerializable{
         this.parameters.putAll(parameters);
     }
 
-    public void activate(IEntitySystem universe) {
+    public void activate(ILevel universe) {
         engine.put("universe", universe);
         parameters.entrySet().stream().forEach(e -> engine.put(e.getKey(), e.getValue()));
         try {

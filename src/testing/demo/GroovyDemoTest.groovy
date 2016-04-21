@@ -1,5 +1,6 @@
 package testing.demo
 
+import api.ILevel
 import javafx.scene.image.ImageView
 import model.component.character.Health
 import model.component.character.Score
@@ -12,7 +13,7 @@ import model.component.physics.RestitutionCoefficient
 import model.component.visual.ImagePath
 import model.entity.Entity
 import api.IEntity
-import api.IEntitySystem
+import api.ILevel
 import api.ISystemManager
 
 /**
@@ -47,7 +48,7 @@ class GroovyDemoTest {
 	}
 
 	IEntity run(ISystemManager game) {
-		IEntitySystem universe = game.getEntitySystem()
+		ILevel universe = game.getEntitySystem()
 		IEntity r = this.getRhondu()
 		universe.addEntities(r, this.getPlatform());
 		return r

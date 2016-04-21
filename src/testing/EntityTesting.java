@@ -2,7 +2,8 @@ package testing;
 
 import api.IComponent;
 import api.IEntity;
-import api.IEntitySystem;
+import api.ILevel;
+import api.ILevel;
 import datamanagement.XMLWriter;
 import model.component.character.Attack;
 import model.component.character.Defense;
@@ -12,7 +13,7 @@ import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.Mass;
 import model.entity.Entity;
-import model.entity.EntitySystem;
+import model.entity.Level;
 
 import java.util.Arrays;
 import java.util.HashMap;
@@ -30,7 +31,7 @@ class EntityTesting implements Tester {
     private static final String DEFAULT_FILE_NAME = "resources/savedComponents/playerDefault.xml";
     private static final String LOAD_FILE_NAME = "resources/savedEntities/player.xml";
 
-    private final IEntitySystem entitySystem = new EntitySystem();
+    private final ILevel entitySystem = new Level();
 
     public static void main(String[] args) {
         new EntityTesting().test();

@@ -1,11 +1,11 @@
 package testing;
 
 import api.IEntity;
-import api.IEntitySystem;
+import api.ILevel;
 import events.Action;
 import model.component.movement.Position;
 import model.entity.Entity;
-import model.entity.EntitySystem;
+import model.entity.Level;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -19,7 +19,7 @@ import static org.junit.Assert.assertEquals;
 public class ScriptTest {
 
     private static final String TELEPORT_PATH = "resources/providedScripts/Teleport.groovy";
-    private final IEntitySystem universe = new EntitySystem();
+    private final ILevel universe = new Level();
     private String ID;
 
     @Before

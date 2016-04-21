@@ -6,23 +6,19 @@ import events.EventSystem;
 import events.InputSystem;
 import events.KeyTrigger;
 import events.PropertyTrigger;
-import events.Trigger;
 import model.component.character.Health;
 import model.component.character.Score;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.Gravity;
 import model.component.visual.ImagePath;
-import model.entity.EntitySystem;
+import model.entity.Level;
 import model.physics.PhysicsEngine;
-import api.IComponent;
 import api.IEntity;
-import api.IEntitySystem;
+import api.ILevel;
 
 import java.io.File;
 import java.io.IOException;
-
-import testing.games.ACGameXChangeListener;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -38,7 +34,7 @@ public class ACGame {
     public static final String TITLE = "Ani's and Carolyn's game";
     public static final int KEY_INPUT_SPEED = 5;
     private static Group root;
-	private final IEntitySystem universe = new EntitySystem();
+	private final ILevel universe = new Level();
 	private final InputSystem inputSystem = new InputSystem(universe);
 	private final EventSystem eventSystem = new EventSystem(universe, inputSystem);
 	private final PhysicsEngine physics = new PhysicsEngine();
