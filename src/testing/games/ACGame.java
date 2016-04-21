@@ -106,7 +106,7 @@ public class ACGame {
     public void step(double dt) {
         physics.update(universe, dt);
         // inputSystem.processInputs();
-        eventSystem.updateInputs();
+        eventSystem.updateInputs(dt);
         // moveEntity(character, 1);
     }
 

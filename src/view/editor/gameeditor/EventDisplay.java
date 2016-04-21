@@ -30,25 +30,27 @@ public class EventDisplay extends ObjectDisplay
 	private ResourceBundle myResources;
 	private ObservableList<IEntity> masterEntityList;
 	private final EditorFactory editFact = new EditorFactory();
+	private ObservableList<ISerializable> masterEnvironmentList;
 	
+
 	public EventDisplay(String language,ObservableList<IEntity> masterEntityList, Authoring authoringEnvironment)
-	{super(language, authoringEnvironment,masterEntityList);
+	{
+		super(language, authoringEnvironment,masterEntityList);
 		this.language=language;
 		this.masterEntityList = masterEntityList;
 		this.authoringEnvironment = authoringEnvironment;
 		this.language = language;
 		this.myResources = ResourceBundle.getBundle(language);
-	}
-	
+	}	
 	@Override
-	protected void addNewObjects(VBox container) {
+	protected void addNewObjects(VBox container) 
+	{
 		// TODO Auto-generated method stub
-		
 	}
 
 	@Override
 	public Node makeNewObject() {
 		return Utilities.makeButton(myResources.getString(DefaultStrings.EVENT_EDITOR_NAME.getDefault()), 
-				e->createEditor(EditorEvent.class, new Entity(), FXCollections.observableArrayList()));
+				e->createEditor(EditorEvent.class, new Entity(), masterEnvironmentList));
 		}
 }
