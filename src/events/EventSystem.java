@@ -35,7 +35,6 @@ public class EventSystem implements Observer, IEventSystem {
     private ListMultimap<Trigger, Action> actionMap = ArrayListMultimap.create();
     private double timer = 0;
     private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
-    
     public EventSystem(ILevel universe) {
         setUniverse(universe);
     }
