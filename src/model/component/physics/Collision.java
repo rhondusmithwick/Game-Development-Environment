@@ -11,10 +11,17 @@ import javafx.geometry.Bounds;
  * @author Roxanne and Tom
  *
  */
-public class Collision implements IComponent {
+public class Collision implements IComponent {	
+	public static final String TOP = "top";
+	public static final String BOTTOM = "bottom";
+	public static final String LEFT = "left";
+	public static final String RIGHT = "right";
+	
 	private Bounds mask;
 	private Collection<String> IDs;
 	private Collection<String> collidingIDs;
+	// TEMPORARY UNTIL IDS CONVERTED TO STRING PROPERTY
+	public String collidingSide = "";
 
 	public Collision(Bounds mask, Collection<String> IDs) {
 		this.mask = mask;

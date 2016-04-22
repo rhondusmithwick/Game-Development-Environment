@@ -43,7 +43,7 @@ public class DemoMain extends Application {
 
 	/**
 	 * Launches our program.
-	 * 
+	 * ;demo.
 	 * @param args
 	 */
 	public static void main(String[] args) {
