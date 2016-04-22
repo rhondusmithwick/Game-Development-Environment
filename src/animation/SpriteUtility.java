@@ -9,7 +9,8 @@ import javafx.geometry.Dimension2D;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.SubScene;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -48,7 +49,6 @@ class SpriteUtility {
     private BorderPane mainPane;
     private VBox animationPropertiesBox;
     private VBox buttonBox;
-    private SubScene spriteScene;
 
     private Rectangle rect;
 
@@ -75,15 +75,19 @@ class SpriteUtility {
     private Group spriteGroup;
 	private Rectangle selectedRectangle;
 
-    private final SimpleObjectProperty<Boolean> changeColor = new SimpleObjectProperty<>(this, "ChangeColor", false);
+    private final SimpleObjectProperty<Boolean> changeColorProperty = new SimpleObjectProperty<>(this, "ChangeColor", false);
 	private Button activateTransparencyButton;
+	private Canvas canvas;
+	private Scene scene;
 
     public void init(Stage stage, Dimension2D dimensions) {
         mainPane = new BorderPane();
-        Scene scene = new Scene(mainPane, dimensions.getWidth(), dimensions.getHeight());
+        scene = new Scene(mainPane, dimensions.getWidth(), dimensions.getHeight());
         stage.setScene(scene);
         initializeGui();
         selectedRectangle = null;
+
+
     }
 
     private void initializeGui() {
@@ -115,17 +119,25 @@ class SpriteUtility {
         addButton(UtilityUtilities.makeButton("Delete Frame",e -> deleteFrame(selectedRectangle)), buttonBox);
         activateTransparencyButton  = UtilityUtilities.makeButton("Activate Transparency", e-> makeTransparent());
         addButton(activateTransparencyButton, buttonBox);
+        addButton(UtilityUtilities.makeButton("Save Image", e-> saveImage(spriteImage)),buttonBox);
     }
 
-    private void makeTransparent() {
-    	if (changeColor.get()==true){
-    		activateTransparencyButton.setText("Activate Transparency");
+    private void saveImage(ImageView image) {
+    	//Save this shit
+	}
 
-    		changeColor.set(false);
+	private void makeTransparent() {
+    	if (changeColorProperty.get()){
+    		activateTransparencyButton.setText("Activate Transparency");
+    		changeColorProperty.set(false);
+    		scene.setCursor(Cursor.DEFAULT);
+
     	}else{
     		activateTransparencyButton.setText("Deactivate Transparency");
-    		changeColor.set(true);
-    		spriteImage.setCursor(Cursor.CROSSHAIR);
+    		changeColorProperty.set(true);
+			scene.setCursor(Cursor.CROSSHAIR);
+
+
     	}
 	}
 
@@ -189,20 +201,24 @@ class SpriteUtility {
 
     private void initNewImage() {
         spriteImage = new ImageView(initFileChooser());
-        initImageViewHandlers(spriteImage);
         spriteGroup.getChildren().add(spriteImage);
-        spriteGroup.setOnMouseClicked(e -> {
-            if (changeColor.get()) {
-                double x = e.getX();
-                double y = e.getY();
-                ColorChanger changer = new ColorChanger(spriteImage.getImage(), x, y, Color.TRANSPARENT);
-                changer.change();
-                spriteImage.setImage(changer.getImage());
-            }
-        });
+        canvas = new Canvas(spriteImage.getBoundsInParent().getWidth(),spriteImage.getBoundsInParent().getHeight());
+        canvas.layoutXProperty().set(spriteImage.getLayoutX());
+        canvas.layoutYProperty().set(spriteImage.getLayoutY());
+
+        initCanvasHandlers(canvas);
+        spriteGroup.getChildren().add(canvas);
+
     }
 
-    private void animationPreview() {
+    private void initCanvasHandlers(Canvas canvas2) {
+        canvas2.setOnMouseDragged(this::mouseDragged);
+        canvas2.setOnMousePressed(this::mousePressed);
+        canvas2.setOnMouseReleased(this::mouseReleased);
+        canvas2.setOnMouseClicked(this::mouseClicked);
+	}
+
+	private void animationPreview() {
         populateRectanglePropertyLists();
         initAnimationPreview();
     }
@@ -322,6 +338,7 @@ class SpriteUtility {
      * Initializes initial rectangle drawer
      */
 	private Rectangle initRectangleDrawer() {
+        spriteGroup.getChildren().remove(rect);
         rect = new Rectangle();
         rect.widthProperty().unbind();
         rect.heightProperty().unbind();
@@ -344,37 +361,54 @@ class SpriteUtility {
         return new Image(spriteSheet.toURI().toString());
     }
 
-    private void initImageViewHandlers(ImageView spriteImage) {
-        spriteImage.setOnMouseDragged(this::mouseDragged);
-        spriteImage.setOnMousePressed(this::mousePressed);
-        spriteImage.setOnMouseReleased(this::mouseReleased);
-    }
 
     private void mouseReleased(MouseEvent event) {
+
     		rect.widthProperty().unbind();
         rect.heightProperty().unbind();
         Dragger.makeDraggable(rect);
         spriteImage.setCursor(Cursor.DEFAULT);
+
+    	if (changeColorProperty.get()){
+			scene.setCursor(Cursor.CROSSHAIR);
+    	}else{
+    		scene.setCursor(Cursor.DEFAULT);
+    		canvas.setCursor(Cursor.DEFAULT);
+    	}
+    	
+
     }
 
     private void mousePressed(MouseEvent event) {
-        spriteImage.setCursor(Cursor.CLOSED_HAND);
-        if (event.getButton() == MouseButton.PRIMARY) {
-            spriteGroup.getChildren().remove(rect);
-            rect = initRectangleDrawer();
-            rect.setX(event.getX());
-            rect.setY(event.getY());
-            rectinitX.set(event.getX());
-            rectinitY.set(event.getY());
-        } else if (event.getButton() == MouseButton.SECONDARY) {
-            rect.setX(event.getX());
-            rect.setY(event.getY());
-        }
+    	if(!changeColorProperty.get()){
+	        canvas.setCursor(Cursor.CLOSED_HAND);
+	    	if (event.getButton() == MouseButton.PRIMARY) {
+	            rect = initRectangleDrawer();
+	            rect.setX(event.getX());
+	            rect.setY(event.getY());
+	            rectinitX.set(event.getX());
+	            rectinitY.set(event.getY());
+	        } else if (event.getButton() == MouseButton.SECONDARY) {
+	            rect.setX(event.getX());
+	            rect.setY(event.getY());
+	        }
+    	}
     }
 
     private void mouseDragged(MouseEvent event) {
         rectX.set(event.getX());
         rectY.set(event.getY());
+    }
+    private void mouseClicked(MouseEvent event){
+            if (changeColorProperty.get()) {
+                double x = event.getX();
+                double y = event.getY();
+                ColorChanger colorChanger = new ColorChanger(spriteImage.getImage(), x, y, Color.TRANSPARENT);
+                colorChanger.change();
+                spriteImage.setImage(colorChanger.getImage());
+
+            }
+        
     }
 
 }
