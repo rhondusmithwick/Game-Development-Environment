@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class RestitutionCoefficient implements IComponent {
 
-    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Coefficient of Restitution", 0.0);
+    private final SingleProperty<Double> singleProperty = new SingleProperty<>("CoefficientofRestitution", 0.0);
 
     public RestitutionCoefficient() {
     }

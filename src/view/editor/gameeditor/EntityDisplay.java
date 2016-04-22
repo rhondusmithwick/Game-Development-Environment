@@ -1,5 +1,7 @@
 package view.editor.gameeditor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import api.IEntity;
 import api.ISerializable;
@@ -56,7 +58,9 @@ public class EntityDisplay extends ObjectDisplay{
 	@Override
 	public Node makeNewObject(){
 		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
-		templateBox = Utilities.makeComboBox(myResources.getString("entType"), Utilities.getAllFromDirectory(DefaultStrings.TEMPLATE_DIREC_LOC.getDefault()), null);
+		List<String> titles = new ArrayList<>();
+		Utilities.getAllFromDirectory(DefaultStrings.TEMPLATE_DIREC_LOC.getDefault()).forEach(e-> titles.add(myResources.getString(e)));
+		templateBox = Utilities.makeComboBox(myResources.getString("entType"), titles, null);
 		container.getChildren().add(templateBox);
 		
 		container.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENTITY_EDITOR_NAME.getDefault()), 
@@ -64,13 +68,16 @@ public class EntityDisplay extends ObjectDisplay{
 		
 		return container;
 	}
-	
+
+
+
 	private void entityWithTemplate(){
-		String template = templateBox.getSelectionModel().getSelectedItem();
-		templateBox.getSelectionModel().clearSelection();
-		if(template == null){
+		String selected = templateBox.getSelectionModel().getSelectedItem();
+		if(selected == null){
 			return;
 		}
+		String template = myResources.getString(selected);
+		templateBox.getSelectionModel().clearSelection();
 		IEntity newEntity = entFact.createEntity(template, language);
 		createEditor(EditorEntity.class, newEntity, FXCollections.observableArrayList());
 	}
