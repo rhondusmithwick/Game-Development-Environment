@@ -50,7 +50,7 @@ public abstract class ObjectDisplay {
 	
 	@SuppressWarnings("unchecked")
 	public void createEditor(Class<?> editName, ISerializable toEdit, ObservableList<ISerializable> otherList) {
-		System.out.print(toEdit);
+		//System.out.print(toEdit);
 		IEditor editor = editFact.createEditor(editName, language, toEdit, (ObservableList<ISerializable>) ((ObservableList<?>) masterEntityList), otherList);
 		editor.populateLayout();
 		authEnv.createTab(editor.getPane(), editName.getSimpleName(), true);
