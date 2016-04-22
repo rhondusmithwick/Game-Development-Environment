@@ -29,7 +29,6 @@ import javafx.util.Duration;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 import view.Dragger;
-import view.Utilities;
 
 import java.io.File;
 import java.lang.reflect.Method;
@@ -77,6 +76,7 @@ class SpriteUtility {
 	private Rectangle selectedRectangle;
 
     private final SimpleObjectProperty<Boolean> changeColor = new SimpleObjectProperty<>(this, "ChangeColor", false);
+	private Button activateTransparencyButton;
 
     public void init(Stage stage, Dimension2D dimensions) {
         mainPane = new BorderPane();
@@ -106,16 +106,30 @@ class SpriteUtility {
     }
 
     private void initButtons() {
-        addButton(Utilities.makeButton("Save Animations to File", e -> reInitialize()), buttonBox);
-        addButton(Utilities.makeButton("New Animation", e -> reInitialize()), buttonBox);
-        addButton(Utilities.makeButton("New Sprite", e -> initializeGui()), buttonBox);
-        addButton(Utilities.makeButton("Preview Animation", e -> animationPreview()), buttonBox);
-        addButton(Utilities.makeButton("Save Animation", e -> saveAnimation()), buttonBox);
-        addButton(Utilities.makeButton("Add Frame", e -> addFrame()), buttonBox);
-        addButton(Utilities.makeButton("Delete Frame",e -> deleteFrame(selectedRectangle)), buttonBox);
+        addButton(UtilityUtilities.makeButton("Save Animations to File", e -> reInitialize()), buttonBox);
+        addButton(UtilityUtilities.makeButton("New Animation", e -> reInitialize()), buttonBox);
+        addButton(UtilityUtilities.makeButton("New Sprite", e -> initializeGui()), buttonBox);
+        addButton(UtilityUtilities.makeButton("Preview Animation", e -> animationPreview()), buttonBox);
+        addButton(UtilityUtilities.makeButton("Save Animation", e -> saveAnimation()), buttonBox);
+        addButton(UtilityUtilities.makeButton("Add Frame", e -> addFrame()), buttonBox);
+        addButton(UtilityUtilities.makeButton("Delete Frame",e -> deleteFrame(selectedRectangle)), buttonBox);
+        activateTransparencyButton  = UtilityUtilities.makeButton("Activate Transparency", e-> makeTransparent());
+        addButton(activateTransparencyButton, buttonBox);
     }
 
-    private void deleteFrame(Rectangle frameToDelete) {
+    private void makeTransparent() {
+    	if (changeColor.get()==true){
+    		activateTransparencyButton.setText("Activate Transparency");
+
+    		changeColor.set(false);
+    	}else{
+    		activateTransparencyButton.setText("Deactivate Transparency");
+    		changeColor.set(true);
+    		spriteImage.setCursor(Cursor.CROSSHAIR);
+    	}
+	}
+
+	private void deleteFrame(Rectangle frameToDelete) {
     	if(frameToDelete!= null){
     		for (Rectangle existingRect: rectangleList){
     			if (existingRect == frameToDelete){
@@ -157,7 +171,7 @@ class SpriteUtility {
         durationSlider = new Slider(DURATION_MIN, DURATION_MAX, DURATION_DEFAULT);
         Label durationTextLabel = new Label("Duration");
         Label durationValueLabel = new Label(String.format("%.2f", durationSlider.getValue()));
-        durationSlider = Utilities.makeSlider((ov, old_val, new_val) -> {
+        durationSlider = UtilityUtilities.makeSlider((ov, old_val, new_val) -> {
             durationValueLabel.setText(String.format("%.2f", new_val));
             initAnimationPreview();
         }, DURATION_MIN, DURATION_MAX, DURATION_DEFAULT);
@@ -326,7 +340,7 @@ class SpriteUtility {
     }
 
     private Image initFileChooser() {
-        spriteSheet = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("All Images", "*.*"),
+        spriteSheet = UtilityUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("All Images", "*.*"),
                 "Choose a spritesheet");
         return new Image(spriteSheet.toURI().toString());
     }
