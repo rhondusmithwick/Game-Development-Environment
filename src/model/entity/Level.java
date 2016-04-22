@@ -1,8 +1,6 @@
 package model.entity;
 
-import java.io.File;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.Maps;
@@ -112,9 +110,11 @@ public class Level implements ILevel {
 	}
 
 	@Override
-	public void init(List<File> groovyScripts) {
-		// TODO: class-load all Groovy scripts (pass in physics too) and call
-		// their init() methods
+	public void init() {
+		String key = "script";
+		if (this.metadata.containsKey(key)) {
+			String value = this.metadata.get(key);
+		}
 	}
 
 	@Override

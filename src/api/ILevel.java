@@ -1,12 +1,17 @@
 package api;
 
-import com.google.common.collect.Collections2;
-import datamanagement.XMLReader;
-
-import java.io.File;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import com.google.common.collect.Collections2;
+
+import datamanagement.XMLReader;
 
 /**
  * The interface for an Level, which holds all the entities.
@@ -54,7 +59,7 @@ public interface ILevel extends ISerializable {
 	 */
 	void setMetadata(Map<String, String> metadata);
 
-	void init(List<File> groovyScripts);
+	void init();
 
 	void update(double dt);
 
