@@ -1,21 +1,10 @@
 package animation;
 
-import java.io.File;
-import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 import javafx.animation.Animation;
-import javafx.application.Application;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.event.EventHandler;
+import javafx.geometry.Dimension2D;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -41,289 +30,282 @@ import javafx.util.converter.NumberStringConverter;
 import view.Dragger;
 import view.Utilities;
 
-public class SpriteUtility extends Application {
-	private static final double DURATION_MIN = 100;
-	private static final double DURATION_MAX = 3000;
-	private static final double DURATION_DEFAULT = 1000;
+import java.io.File;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-	private BorderPane mainPane;
-	private VBox animationPropertiesBox;
-	private VBox buttonBox;
+class SpriteUtility {
+    private static final double DURATION_MIN = 100;
+    private static final double DURATION_MAX = 3000;
+    private static final double DURATION_DEFAULT = 1000;
 
-	private Rectangle rect;
-	private double margin = 8;
+    private BorderPane mainPane;
+    private VBox animationPropertiesBox;
+    private VBox buttonBox;
+    private SubScene spriteScene;
+    private double margin = 8;
 
-	private Map<String, Map> animationList;
-	private List<Rectangle> rectangleList;
+    private Rectangle rect;
 
-	private File spriteSheet;
-	private ImageView spriteImage;
-	private ImageView previewImage;
+    private Map<String, Map> animationList;
+    private List<Rectangle> rectangleList;
 
-	private TextField animationName;
+    private File spriteSheet;
+    private ImageView spriteImage;
+    private ImageView previewImage;
 
-	private List<Double> widthList;
-	private List<Double> heightList;
-	private List<Double> yList;
-	private List<Double> xList;
-	private DoubleProperty rectinitX;
-	private DoubleProperty rectinitY;
-	private DoubleProperty rectX;
-	private DoubleProperty rectY;
+    private TextField animationName;
 
-	private Slider durationSlider;
+    private List<Double> widthList;
+    private List<Double> heightList;
+    private List<Double> yList;
+    private List<Double> xList;
+    private DoubleProperty rectinitX;
+    private DoubleProperty rectinitY;
+    private DoubleProperty rectX;
+    private DoubleProperty rectY;
 
-	private ScrollPane spriteScroll;
-	private Group spriteGroup;
+    private Slider durationSlider;
 
-	public static void main(String[] args) {
-		launch(args);
-	}
+    private Group spriteGroup;
 
-	@Override
-	public void start(Stage stage) throws Exception {
-		mainPane = new BorderPane();
-		Scene scene = new Scene(mainPane, 800, 600);
-		stage.setScene(scene);
-		initializeGui();
-		stage.show();
-	}
+    public void init(Stage stage, Dimension2D dimensions) {
+        mainPane = new BorderPane();
+        Scene scene = new Scene(mainPane, dimensions.getWidth(), dimensions.getHeight());
+        stage.setScene(scene);
+        initializeGui();
+    }
 
-	private void initializeGui() {
-		rectangleList = new ArrayList<Rectangle>();
-		animationList = new HashMap<String, Map>();
+    private void initializeGui() {
+        rectangleList = new ArrayList<>();
+        animationList = new HashMap<>();
 
-		buttonBox = new VBox();
-		animationPropertiesBox = new VBox();
-		spriteGroup = new Group();
-		spriteScroll = new ScrollPane(spriteGroup);
+        buttonBox = new VBox();
+        animationPropertiesBox = new VBox();
+        spriteGroup = new Group();
+        ScrollPane spriteScroll = new ScrollPane(spriteGroup);
 
-		initNewImage();
-		initRectangle();
-		initAnimationGUIElements();
-		initButtons();
+        initNewImage();
+        initRectangle();
+        initAnimationGUIElements();
+        initButtons();
 
-		mainPane.setCenter(spriteScroll);
-		mainPane.setRight(buttonBox);
-		mainPane.setLeft(animationPropertiesBox);
-	}
+        mainPane.setCenter(spriteScroll);
+        mainPane.setRight(buttonBox);
+        mainPane.setLeft(animationPropertiesBox);
+    }
 
-	private void initButtons() {
-		addButton(Utilities.makeButton("Save Animations to File", e -> reInitialize()), buttonBox);
-		addButton(Utilities.makeButton("New Animcation", e -> reInitialize()), buttonBox);
-		addButton(Utilities.makeButton("New Sprite", e -> initializeGui()), buttonBox);
-		addButton(Utilities.makeButton("Preview Animation", e -> animationPreview()), buttonBox);
-		addButton(Utilities.makeButton("Save Animation", e -> saveAnimation()), buttonBox);
-		addButton(Utilities.makeButton("Add Frame", e -> addFrame()), buttonBox);
-	}
+    private void initButtons() {
+        addButton(Utilities.makeButton("Save Animations to File", e -> reInitialize()), buttonBox);
+        addButton(Utilities.makeButton("New Animcation", e -> reInitialize()), buttonBox);
+        addButton(Utilities.makeButton("New Sprite", e -> initializeGui()), buttonBox);
+        addButton(Utilities.makeButton("Preview Animation", e -> animationPreview()), buttonBox);
+        addButton(Utilities.makeButton("Save Animation", e -> saveAnimation()), buttonBox);
+        addButton(Utilities.makeButton("Add Frame", e -> addFrame()), buttonBox);
+    }
 
-	private void addButton(Button button, VBox box) {
-		button.setMaxWidth(Double.MAX_VALUE);
-		box.getChildren().add(button);
-	}
+    private void addButton(Button button, VBox box) {
+        button.setMaxWidth(Double.MAX_VALUE);
+        box.getChildren().add(button);
+    }
 
-	// add error handling; can't be empty
-	private void initAnimationGUIElements() {
-		buttonBox.getChildren().remove(previewImage);
-		spriteGroup.getChildren().removeAll(rectangleList);
+    // add error handling; can't be empty
+    private void initAnimationGUIElements() {
+        buttonBox.getChildren().remove(previewImage);
+        spriteGroup.getChildren().removeAll(rectangleList);
 
-		animationPropertiesBox.getChildren().clear();
-		animationName = new TextField("Animation Name");
+        animationPropertiesBox.getChildren().clear();
+        animationName = new TextField("Animation Name");
 
-		durationSlider = new Slider(DURATION_MIN, DURATION_MAX, DURATION_DEFAULT);
-		Label durationTextLabel = new Label("Duration");
-		Label durationValueLabel = new Label(String.format("%.2f", durationSlider.getValue()));
-		durationSlider = Utilities.makeSlider(new ChangeListener<Number>() {
-			public void changed(ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
-				durationValueLabel.setText(String.format("%.2f", new_val));
-				initAnimationPreview();
-			}
-		}, DURATION_MIN, DURATION_MAX, DURATION_DEFAULT);
-		animationPropertiesBox.getChildren().addAll(animationName, durationTextLabel, durationSlider,
-				durationValueLabel);
-	}
+        durationSlider = new Slider(DURATION_MIN, DURATION_MAX, DURATION_DEFAULT);
+        Label durationTextLabel = new Label("Duration");
+        Label durationValueLabel = new Label(String.format("%.2f", durationSlider.getValue()));
+        durationSlider = Utilities.makeSlider((ov, old_val, new_val) -> {
+            durationValueLabel.setText(String.format("%.2f", new_val));
+            initAnimationPreview();
+        }, DURATION_MIN, DURATION_MAX, DURATION_DEFAULT);
+        animationPropertiesBox.getChildren().addAll(animationName, durationTextLabel, durationSlider,
+                durationValueLabel);
+    }
 
-	private void reInitialize() {
-		initAnimationGUIElements();
-		rectangleList = new ArrayList<Rectangle>();
-		// animationList = new HashMap<String,Map>();
-	}
+    private void reInitialize() {
+        initAnimationGUIElements();
+        rectangleList = new ArrayList<>();
+        // animationList = new HashMap<String,Map>();
+    }
 
-	private void initNewImage() {
-		spriteImage = new ImageView(initFileChooser());
-		initImageViewHandlers(spriteImage);
-		spriteGroup.getChildren().add(spriteImage);
-	}
+    private void initNewImage() {
+        spriteImage = new ImageView(initFileChooser());
+        initImageViewHandlers(spriteImage);
+        spriteGroup.getChildren().add(spriteImage);
+    }
 
-	private void animationPreview() {
-		populateRectanglePropertyLists();
-		initAnimationPreview();
-	}
+    private void animationPreview() {
+        populateRectanglePropertyLists();
+        initAnimationPreview();
+    }
 
-	private void initAnimationPreview() {
-		buttonBox.getChildren().remove(previewImage);
-		previewImage = new ImageView(new Image(spriteSheet.toURI().toString()));
-		Animation animation = new ComplexAnimation(previewImage, Duration.millis(durationSlider.getValue()),
-				rectangleList.size(), xList, yList, widthList, heightList);
-		animation.setCycleCount(Animation.INDEFINITE);
-		animation.play();
-		buttonBox.getChildren().add(previewImage);
-	}
+    private void initAnimationPreview() {
+        buttonBox.getChildren().remove(previewImage);
+        previewImage = new ImageView(new Image(spriteSheet.toURI().toString()));
+        Animation animation = new ComplexAnimation(previewImage, Duration.millis(durationSlider.getValue()),
+                rectangleList.size(), xList, yList, widthList, heightList);
+        animation.setCycleCount(Animation.INDEFINITE);
+        animation.play();
+        buttonBox.getChildren().add(previewImage);
+    }
 
-	private void saveAnimation() {
-		populateRectanglePropertyLists();
-		HashMap<String, String> moveAnimationMap = new HashMap<String, String>();
-		String name = animationName.getText();
-		moveAnimationMap.put("Duration", String.format("%.2f", durationSlider.getValue()));
-		moveAnimationMap.put("X", convertToString(xList));
-		moveAnimationMap.put("Y", convertToString(yList));
-		moveAnimationMap.put("Width", convertToString(widthList));
-		moveAnimationMap.put("Height", convertToString(heightList));
-		animationList.put(name, moveAnimationMap);
-		System.out.println(animationList);
-	}
+    private void saveAnimation() {
+        populateRectanglePropertyLists();
+        HashMap<String, String> moveAnimationMap = new HashMap<>();
+        String name = animationName.getText();
+        moveAnimationMap.put("Duration", String.format("%.2f", durationSlider.getValue()));
+        moveAnimationMap.put("X", convertToString(xList));
+        moveAnimationMap.put("Y", convertToString(yList));
+        moveAnimationMap.put("Width", convertToString(widthList));
+        moveAnimationMap.put("Height", convertToString(heightList));
+        animationList.put(name, moveAnimationMap);
+        System.out.println(animationList);
+    }
 
-	protected String convertToString(List<Double> list) {
-		StringBuilder str = new StringBuilder();
-		for (Double value : list) {
-			str.append(value.toString() + ",");
-		}
-		return str.toString();
-	}
+    private String convertToString(List<Double> list) {
+        StringBuilder str = new StringBuilder();
+        for (Double value : list) {
+            str.append(value.toString()).append(",");
+        }
+        return str.toString();
+    }
 
-	private void populateRectanglePropertyLists() {
-		xList = new ArrayList<Double>();
-		yList = new ArrayList<Double>();
-		widthList = new ArrayList<Double>();
-		heightList = new ArrayList<Double>();
-		for (Rectangle rect : rectangleList) {
-			xList.add(rect.xProperty().get());
-			yList.add(rect.yProperty().get());
-			widthList.add(rect.widthProperty().get());
-			heightList.add(rect.heightProperty().get());
-		}
-	}
+    private void populateRectanglePropertyLists() {
+        xList = new ArrayList<>();
+        yList = new ArrayList<>();
+        widthList = new ArrayList<>();
+        heightList = new ArrayList<>();
+        for (Rectangle rect : rectangleList) {
+            xList.add(rect.xProperty().get());
+            yList.add(rect.yProperty().get());
+            widthList.add(rect.widthProperty().get());
+            heightList.add(rect.heightProperty().get());
+        }
+    }
 
-	private void addFrame() {
-		Rectangle clone = cloneRect(rect);
-		rectangleList.add(clone);
-		addRectangleToDisplay(clone);
-	}
+    private void addFrame() {
+        Rectangle clone = cloneRect(rect);
+        rectangleList.add(clone);
+        addRectangleToDisplay(clone);
+    }
 
-	protected void addRectangleToDisplay(Rectangle clone) {
-		List<String> propertyList = Arrays.asList("x", "y", "width", "height");
-		spriteGroup.getChildren().add(clone);
-		for (String propertyName : propertyList) {
-			Label label = new Label(propertyName);
-			TextField field = new TextField();
-			field.setMinWidth(50);
-			animationPropertiesBox.getChildren().addAll(label, field);
-			try {
-				Method method = clone.getClass().getMethod(propertyName + "Property");
-				StringConverter<Number> converter = new NumberStringConverter();
-				DoubleProperty rectProperty;
-				rectProperty = (DoubleProperty) method.invoke(clone);
-				Bindings.bindBidirectional(field.textProperty(), rectProperty, converter);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
+    private void addRectangleToDisplay(Rectangle clone) {
+        List<String> propertyList = Arrays.asList("x", "y", "width", "height");
+        spriteGroup.getChildren().add(clone);
+        for (String propertyName : propertyList) {
+            Label label = new Label(propertyName);
+            TextField field = new TextField();
+            field.setMinWidth(50);
+            animationPropertiesBox.getChildren().addAll(label, field);
+            try {
+                Method method = clone.getClass().getMethod(propertyName + "Property");
+                StringConverter<Number> converter = new NumberStringConverter();
+                DoubleProperty rectProperty;
+                rectProperty = (DoubleProperty) method.invoke(clone);
+                Bindings.bindBidirectional(field.textProperty(), rectProperty, converter);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
-	protected Rectangle cloneRect(Rectangle rect) {
-		Rectangle r = new Rectangle();
-		r.setX(rect.getX());
-		r.setY(rect.getY());
-		r.setWidth(rect.getWidth());
-		r.setHeight(rect.getHeight());
-		r.setFill(Color.TRANSPARENT);
-		r.setStroke(Color.RED);
-		Dragger.makeDraggable(r);
-		return r;
-	}
+    private Rectangle cloneRect(Rectangle rect) {
+        Rectangle r = new Rectangle();
+        r.setX(rect.getX());
+        r.setY(rect.getY());
+        r.setWidth(rect.getWidth());
+        r.setHeight(rect.getHeight());
+        r.setFill(Color.TRANSPARENT);
+        r.setStroke(Color.RED);
+        Dragger.makeDraggable(r);
+        return r;
+    }
 
-	private Rectangle initRectangle() {
-		rect = new Rectangle();
-		rect.widthProperty().unbind();
-		rect.heightProperty().unbind();
-		rectinitX = new SimpleDoubleProperty();
-		rectinitY = new SimpleDoubleProperty();
-		rectX = new SimpleDoubleProperty();
-		rectY = new SimpleDoubleProperty();
-		rect.widthProperty().bind(rectX.subtract(rectinitX));
-		rect.heightProperty().bind(rectY.subtract(rectinitY));
-		rect.setFill(Color.TRANSPARENT);
-		rect.setStroke(Color.BLACK);
+    private Rectangle initRectangle() {
+        rect = new Rectangle();
+        rect.widthProperty().unbind();
+        rect.heightProperty().unbind();
+        rectinitX = new SimpleDoubleProperty();
+        rectinitY = new SimpleDoubleProperty();
+        rectX = new SimpleDoubleProperty();
+        rectY = new SimpleDoubleProperty();
+        rect.widthProperty().bind(rectX.subtract(rectinitX));
+        rect.heightProperty().bind(rectY.subtract(rectinitY));
+        rect.setFill(Color.TRANSPARENT);
+        rect.setStroke(Color.BLACK);
 
-		Dragger.makeDraggable(rect);
-		spriteGroup.getChildren().add(rect);
-		return rect;
-	}
+        Dragger.makeDraggable(rect);
+        spriteGroup.getChildren().add(rect);
+        return rect;
+    }
 
-	private Image initFileChooser() {
-		spriteSheet = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("All Images", "*.*"),
-				"Choose a spritesheet");
-		return new Image(spriteSheet.toURI().toString());
-	}
-
-	private void initImageViewHandlers(ImageView spriteImage) {
-		spriteImage.setOnMouseDragged(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				mouseDragged(event);
-			}
-		});
-		spriteImage.setOnMousePressed(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				mousePressed(event);
-			}
-		});
-		spriteImage.setOnMouseReleased(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				mouseReleased(event);
-			}
-		});
-	}
-
-	private void mouseReleased(MouseEvent event) {
-		spriteImage.setCursor(Cursor.DEFAULT);
-	}
-	
+    private Image initFileChooser() {
+        spriteSheet = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("All Images", "*.*"),
+                "Choose a spritesheet");
+        return new Image(spriteSheet.toURI().toString());
+    }
+    
 	protected boolean isInResizeZone(MouseEvent event) {
 		return isInBottomResize(event);
 	}
 
 	private boolean isInBottomResize(MouseEvent event) {
-		double innerBottomSide = rect.getY() + rect.getHeight() - margin;
+		double innerBottomSide = rect.getY() + rect.getHeight();
 		System.out.println("inner bottom side " + innerBottomSide);
-		double outerBottomSide = rect.getY() + rect.getBoundsInParent().getHeight();
+		double outerBottomSide = rect.getY() + rect.getBoundsInParent().getHeight() + margin;
 		System.out.println("outer bottom side " + outerBottomSide);
 		System.out.println("event X" + event.getX());
 		System.out.println("event Y" + event.getY());
 		return ((event.getY() > innerBottomSide) && (event.getY() < outerBottomSide));
 	}
+    
 
-	private void mousePressed(MouseEvent event) {
-		spriteImage.setCursor(Cursor.CLOSED_HAND);
-		if (event.getButton() == MouseButton.PRIMARY){
-		spriteGroup.getChildren().remove(rect);
-		rect = initRectangle();
-		rect.setX(event.getX());
-		rect.setY(event.getY());
-		rectinitX.set(event.getX());
-		rectinitY.set(event.getY());
-		}
-		else if (event.getButton() == MouseButton.SECONDARY){
-		rect.setX(event.getX());
-		rect.setY(event.getY());
-		}
-	}
+    private void initImageViewHandlers(ImageView spriteImage) {
+        spriteImage.setOnMouseDragged(this::mouseDragged);
+        spriteImage.setOnMousePressed(this::mousePressed);
+        spriteImage.setOnMouseReleased(this::mouseReleased);
+        spriteImage.setOnMouseMoved(this::mouseOver);
+    }
+    
+    private void mouseOver(MouseEvent event){
+    		if (isInResizeZone(event)) {
+			rect.setCursor(Cursor.S_RESIZE);
+		} 
+    }
+    
 
-	private void mouseDragged(MouseEvent event) {
-		rectX.set(event.getX());
-		rectY.set(event.getY());
-	}
+    private void mouseReleased(MouseEvent event) {
+        spriteImage.setCursor(Cursor.DEFAULT);
+    }
+
+    private void mousePressed(MouseEvent event) {
+        spriteImage.setCursor(Cursor.CLOSED_HAND);
+        if (event.getButton() == MouseButton.PRIMARY) {
+            spriteGroup.getChildren().remove(rect);
+            rect = initRectangle();
+            rect.setX(event.getX());
+            rect.setY(event.getY());
+            rectinitX.set(event.getX());
+            rectinitY.set(event.getY());
+        } else if (event.getButton() == MouseButton.SECONDARY) {
+            rect.setX(event.getX());
+            rect.setY(event.getY());
+        }
+    }
+
+    private void mouseDragged(MouseEvent event) {
+        rectX.set(event.getX());
+        rectY.set(event.getY());
+    }
 
 }

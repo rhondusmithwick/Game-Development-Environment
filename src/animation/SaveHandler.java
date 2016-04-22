@@ -12,7 +12,7 @@ import java.util.Properties;
  *
  * @author Rhondu Smithwick
  */
-public class SaveHandler {
+class SaveHandler {
 
     private SaveHandler() {
     }
@@ -23,7 +23,6 @@ public class SaveHandler {
             Map<String, String> props = maps.get(animationName);
             for (Entry<String, String> prop : props.entrySet()) {
                 String key = animationName + prop.getKey();
-                System.out.println(key);
                 properties.put(key, prop.getValue());
             }
         }

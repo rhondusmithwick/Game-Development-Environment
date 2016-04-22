@@ -30,20 +30,6 @@ public class Dragger {
 		//rect.heightProperty().bind(rectY.subtract(rectinitY));
 	}
 
-	protected boolean isInResizeZone(MouseEvent event) {
-		return isInBottomResize(event);
-	}
-
-	private boolean isInBottomResize(MouseEvent event) {
-		double innerBottomSide = rect.getY() + rect.getHeight() - margin;
-		System.out.println("inner bottom side " + innerBottomSide);
-		double outerBottomSide = rect.getY() + rect.getBoundsInParent().getHeight();
-		System.out.println("outer bottom side " + outerBottomSide);
-		System.out.println("event X" + event.getX());
-		System.out.println("event Y" + event.getY());
-		return ((event.getY() > innerBottomSide) && (event.getY() < outerBottomSide));
-	}
-
 	private void setInitialCoordinates(MouseEvent event) {
 		rectinitX.set(event.getX());
 		rectinitY.set(event.getY());
@@ -80,21 +66,21 @@ public class Dragger {
 
 	protected void mouseOver(MouseEvent event) {
 		setInitialCoordinates(event);
-		if (isInResizeZone(event)) {
-			rect.setCursor(Cursor.S_RESIZE);
-		} else {
-			rect.setCursor(Cursor.OPEN_HAND);
-		}
+		//if (isInResizeZone(event)) {
+			//rect.setCursor(Cursor.S_RESIZE);
+		//} else {
+			//rect.setCursor(Cursor.OPEN_HAND);
+		//}
 	}
 
 	protected void mousePressed(MouseEvent event) {
-		if (isInResizeZone(event)) {
+		//if (isInResizeZone(event)) {
 			rect.setCursor(Cursor.S_RESIZE);
 			resizing = true;
-		} else {
+		//} else {
 			rect.setCursor(Cursor.CLOSED_HAND);
 			dragging = true;
-		}
+		//}
 		setInitialCoordinates(event);
 	}
 
