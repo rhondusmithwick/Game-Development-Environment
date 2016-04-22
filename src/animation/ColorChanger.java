@@ -1,10 +1,14 @@
 package animation;
 
+import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 
 /**
@@ -18,6 +22,9 @@ public final class ColorChanger {
     private final Color oldColor;
     private final WritableImage writableImage;
     private final PixelWriter writer;
+    private final Point2D startPoint;
+
+    private final ExecutorService service = Executors.newFixedThreadPool(5);
 
     public ColorChanger(Image image, double x, double y, Color newColor) {
         this.newColor = newColor;
@@ -25,9 +32,21 @@ public final class ColorChanger {
         this.reader = writableImage.getPixelReader();
         this.writer = writableImage.getPixelWriter();
         this.oldColor = getColor((int) x, (int) y);
-        recurse((int) x, (int) y);
+        startPoint = new Point2D(x, y);
     }
 
+    public void change() {
+        attemptRecurse((int) startPoint.getX(), (int) startPoint.getY());
+    }
+
+    private void attemptRecurse(int x, int y) {
+        try {
+//          service.submit(() -> recurse(x, y));
+            recurse(x, y);
+        } catch (StackOverflowError e) {
+            return;
+        }
+    }
 
     private void recurse(int x, int y) {
         if (!testPoint(x, y)) {
@@ -36,18 +55,11 @@ public final class ColorChanger {
         writer.setColor(x, y, newColor);
         for (int i = -1; i <= 1; i++ ) {
             for (int j = -1; j <= 1; j++) {
-                if (i == j) continue;;
-                recurse(x + i, y + j);
+                if (i != 0 || j != 0) {
+                   attemptRecurse(x + i, y + j);
+                }
             }
         }
-    }
-
-    public WritableImage getImage() {
-        return writableImage;
-    }
-
-    public Color getColor(int x, int y) {
-        return reader.getColor(x, y);
     }
 
     private boolean testPoint(int x, int y) {
@@ -58,5 +70,15 @@ public final class ColorChanger {
         Color currentColor = getColor(x, y);
         return currentColor.equals(oldColor);
     }
+
+    public WritableImage getImage() {
+        return writableImage;
+    }
+
+    private Color getColor(int x, int y) {
+        return reader.getColor(x, y);
+    }
+
+
 
 }

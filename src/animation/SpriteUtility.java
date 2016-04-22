@@ -76,7 +76,7 @@ class SpriteUtility {
     private Group spriteGroup;
 	private Rectangle selectedRectangle;
 
-    private final SimpleObjectProperty<Boolean> changeColor = new SimpleObjectProperty<>(this, "ChangeColor", false);
+    private final SimpleObjectProperty<Boolean> changeColor = new SimpleObjectProperty<>(this, "ChangeColor", true);
 
     public void init(Stage stage, Dimension2D dimensions) {
         mainPane = new BorderPane();
@@ -182,6 +182,7 @@ class SpriteUtility {
                 double x = e.getX();
                 double y = e.getY();
                 ColorChanger changer = new ColorChanger(spriteImage.getImage(), x, y, Color.TRANSPARENT);
+                changer.change();
                 spriteImage.setImage(changer.getImage());
             }
         });
