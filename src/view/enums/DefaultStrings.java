@@ -23,7 +23,8 @@ public enum DefaultStrings {
 	MUSIC("resources/music/"),
 	METADATA_LOC("/metadata.xml"),
 	ENTITIES_LOC("/entities.xml"),
-	LEVELS_LOC("/levels/");
+	LEVELS_LOC("/levels/"),
+	TEMP_LIST("_templatelist");
 	
 
 
