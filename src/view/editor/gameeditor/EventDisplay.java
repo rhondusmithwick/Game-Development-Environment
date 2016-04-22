@@ -5,8 +5,6 @@ import java.util.ResourceBundle;
 import api.IEditor;
 import api.IEntity;
 import api.ISerializable;
-import enums.DefaultStrings;
-import enums.GUISize;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -20,6 +18,8 @@ import view.Utilities;
 import view.editor.EditorEntity;
 import view.editor.EditorFactory;
 import view.editor.eventeditor.EditorEvent;
+import view.enums.DefaultStrings;
+import view.enums.GUISize;
 
 public class EventDisplay extends ObjectDisplay
 {

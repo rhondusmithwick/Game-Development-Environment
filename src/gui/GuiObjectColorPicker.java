@@ -7,7 +7,6 @@ import javafx.beans.property.Property;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.ColorPicker;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -40,13 +39,11 @@ public class GuiObjectColorPicker extends GuiObject{
 		colorPicker.setOnAction(event);
 	}
 	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void bindProperty(Property property){
 		colorPicker.valueProperty().bindBidirectional(property);
 	}
-	@Override
-	public Control getControl() {
-		return colorPicker;
-	}
+
 
 	@Override
 	public Object getGuiNode() {

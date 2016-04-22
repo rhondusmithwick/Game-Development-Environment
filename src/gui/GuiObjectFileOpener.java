@@ -11,7 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
 
 
 public class GuiObjectFileOpener extends GuiObject{
@@ -32,11 +31,8 @@ public class GuiObjectFileOpener extends GuiObject{
 		return null;
 	}
 
-	@Override
-	public Control getControl() {
-		return button;
-	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
 	public Object getGuiNode() {
 		button.setOnAction(new EventHandler() {

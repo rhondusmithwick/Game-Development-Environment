@@ -98,7 +98,7 @@ public class ACGame {
         } else {
             character = new XMLReader<IEntity>().readSingleFromFile("character.xml");
             universe.addEntity(character);
-            eventSystem.readEventsFromFilePath("eventtest.xml");
+            eventSystem.readEventFromFile("eventtest.xml");
         }
         charSpr = drawCharacter(character);
     }

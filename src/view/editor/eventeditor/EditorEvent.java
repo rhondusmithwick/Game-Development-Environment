@@ -3,9 +3,9 @@ package view.editor.eventeditor;
 import javafx.scene.layout.Pane;
 import java.util.ResourceBundle;
 import view.editor.Editor;
+import view.enums.GUISize;
+import view.enums.ViewInsets;
 import api.ISerializable;
-import enums.GUISize;
-import enums.ViewInsets;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -68,8 +68,6 @@ public class EditorEvent extends Editor
 	
 	public void populateLayout() {}
 
-	@Override
-	public void loadDefaults() {}
 
 	@Override
 	public ScrollPane getPane() 
@@ -77,8 +75,6 @@ public class EditorEvent extends Editor
 		return scrollPane;
 	}
 
-	@Override
-	public void addSerializable(ISerializable serialize) {}
 
 	@Override
 	public void updateEditor() {}

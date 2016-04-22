@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import api.ISerializable;
-import enums.GUISize;
-import enums.ViewInsets;
 import events.Action;
 import events.InputSystem;
 import events.Trigger;
@@ -21,6 +19,8 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import view.Utilities;
 import view.editor.Editor;
+import view.enums.GUISize;
+import view.enums.ViewInsets;
 
 public class PropertyEventEditor extends Editor
 {
@@ -144,12 +144,6 @@ public class PropertyEventEditor extends Editor
 	{
 		return scrollPane;
 	}
-
-	@Override
-	public void loadDefaults() {}
-
-	@Override
-	public void addSerializable(ISerializable serialize) {}
 
 	@Override
 	public void updateEditor() {}

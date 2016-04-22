@@ -84,6 +84,7 @@ public class Utilities {
 		alert.show();
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static TableView<String> makeSingleColumnTable(String title, double width) {
 		TableView<String> table = new TableView<String>();
 		table.setPrefWidth(width);
@@ -200,6 +201,7 @@ public class Utilities {
 	 * @return File directory: local directory being returned
 	 */
 
+	@SuppressWarnings("unused")
 	private static File getLocalDir() {
 		ProtectionDomain pd = Utilities.class.getProtectionDomain();
 		CodeSource cs = pd.getCodeSource();
@@ -312,7 +314,12 @@ public class Utilities {
 		File[] fileList = directory.listFiles();
 		for (File file : fileList) {
 			String name = file.getName();
-			files.add(name.substring(0, name.lastIndexOf('.')));
+			if(name.contains(".")){
+				files.add(name.substring(0, name.lastIndexOf('.')));
+			}
+			else{
+				files.add(name);
+			}
 		}
 		return files;
 	}

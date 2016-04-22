@@ -1,4 +1,4 @@
-package enums;
+package view.enums;
 
 public enum GUISize {
 
@@ -9,7 +9,9 @@ public enum GUISize {
     MAIN_SIZE(800),
     ORIG_MENU_PADDING(30),
     GAME_EDITOR_PADDING(20),
+    ENTITY_EDITOR_PADDING(10),
     GAME_EDITOR_HBOX_PADDING(50),
+    GRIDPANE_COLUMNS(3),
     ICON_SIZE(50),
 	EVENT_EDITOR_PADDING(20),
 	EVENT_EDITOR_HBOX_PADDING(10),
@@ -20,7 +22,11 @@ public enum GUISize {
 	SCROLL_PAD(5),
 	VOOGA_PAD(10),
 	EVENT_EDITOR_TABLE_WIDTH(AUTHORING_WIDTH.getSize()/4 - 10),
-	SAVE_MESSAGE_FONT(40);
+	SAVE_MESSAGE_FONT(40), 
+	INTRO_PIC(300), 
+	HALF(2), 
+	ONE(1), 
+	HALF_COLUMNS(3/2);
 
 
     private final int size;
