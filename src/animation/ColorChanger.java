@@ -7,6 +7,9 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
+import java.util.LinkedList;
+import java.util.Queue;
+
 
 /**
  * Created by rhondusmithwick on 4/21/16.
@@ -31,35 +34,29 @@ public final class ColorChanger {
     }
 
     public void change() {
-        attemptRecurse((int) startPoint.getX(), (int) startPoint.getY());
-    }
-
-    private void attemptRecurse(int x, int y) {
-        try {
-            recurse(x, y);
-        } catch (StackOverflowError e) {
-            return;
-        }
-    }
-
-    private void recurse(int x, int y) {
-        if (shouldChangeColor(x, y)) {
-            writer.setColor(x, y, newColor);
-            sweep(x, y);
-        }
-    }
-
-    private void sweep(int x, int y) {
-        for (int i = -1; i <= 1; i++) {
-            for (int j = -1; j <= 1; j++) {
-                if (i != 0 || j != 0) {
-                    int newX = x + i;
-                    int newY = y + j;
-                    if (isValid(newX, newY)) {
-                        attemptRecurse(newX, newY);
+        Queue<Point2D> queue = new LinkedList<>();
+        boolean[][] seenMarker = new boolean[(int) writableImage.getWidth()][(int) writableImage.getHeight()];
+        queue.add(startPoint);
+        while (!queue.isEmpty()) {
+            Point2D current = queue.poll();
+            int x = (int) current.getX();
+            int y = (int) current.getY();
+            seenMarker[x][y] = true;
+            if (shouldChangeColor(x, y)) {
+                writer.setColor(x, y, newColor);
+                for (int i = -1; i <= 1; i++) {
+                    for (int j = -1; j <= 1; j++) {
+                        if (i != 0 || j != 0) {
+                            int newX = x + i;
+                            int newY = y + j;
+                            if (isValid(newX, newY) && !seenMarker[newX][newY]) {
+                                queue.add(new Point2D(newX, newY));
+                            }
+                        }
                     }
                 }
             }
+
         }
     }
 
@@ -82,4 +79,5 @@ public final class ColorChanger {
                 && (y >= 0)
                 && (y < writableImage.getHeight());
     }
+
 }
