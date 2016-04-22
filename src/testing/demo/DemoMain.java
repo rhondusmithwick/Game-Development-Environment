@@ -33,7 +33,7 @@ public class DemoMain extends Application {
 		Group root = new Group();
 		Scene scene = new Scene(pane, 500, 500);
 		music = new ThemeMusic("resources/music/finalCountdown.mp3");
-		music.play();
+		// music.play();
 		Button button = new Button("Mute");
 		button.setOnAction(e -> shoot());
 		root.getChildren().add(button);
