@@ -1,5 +1,9 @@
 package view;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 import api.IEntity;
 import api.ILevel;
 import api.ISystemManager;
@@ -7,6 +11,7 @@ import api.IView;
 import groovy.lang.GroovyShell;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.control.Button;
@@ -16,9 +21,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
+import javafx.scene.shape.Shape;
 import javafx.util.Duration;
 import model.component.movement.Orientation;
 import model.component.movement.Position;
+import model.component.physics.Collision;
 import model.component.visual.ImagePath;
 import model.core.SystemManager;
 import testing.demo.Pong;
@@ -64,6 +73,43 @@ public class View implements IView {
 		return this.pane;
 	}
 
+	private ImageView getUpdatedImageView(IEntity e) {
+		ImagePath display = e.getComponent(ImagePath.class);
+		ImageView imageView = display.getImageView();
+
+		Position pos = e.getComponent(Position.class);
+		imageView.setTranslateX(pos.getX());
+		imageView.setTranslateY(pos.getY());
+
+		if (e.hasComponent(Orientation.class)) {
+			Orientation o = e.getComponent(Orientation.class);
+			imageView.setRotate(o.getOrientation());
+		}
+
+		return imageView;
+	}
+
+	private Collection<Shape> getCollisionShapes(IEntity e) {
+		List<Collision> collisions = e.getComponentList(Collision.class);
+		Collection<Bounds> bounds = new ArrayList<Bounds>();
+		for (Collision c : collisions) {
+			bounds.add(c.getMask());
+		}
+		Collection<Shape> shapes = new ArrayList<Shape>();
+		for (Bounds b : bounds) {
+			if (b == null) {
+				System.out.println(e.getName());
+				continue;
+			}
+			Shape r = new Rectangle(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
+			double val = Math.random();
+			r.setFill(new Color(val, val, val, val));
+			shapes.add(r);
+		}
+		return shapes;
+
+	}
+
 	private void step(double dt) { // game loop
 		// simulate
 		model.step(dt);
@@ -72,19 +118,8 @@ public class View implements IView {
 		root.getChildren().clear();
 		for (IEntity e : model.getEntitySystem().getAllEntities()) {
 			if (e.hasComponents(ImagePath.class, Position.class)) {
-				ImagePath display = e.getComponent(ImagePath.class);
-				ImageView imageView = display.getImageView();
-
-				Position pos = e.getComponent(Position.class);
-				imageView.setTranslateX(pos.getX());
-				imageView.setTranslateY(pos.getY());
-
-				if (e.hasComponent(Orientation.class)) {
-					Orientation o = e.getComponent(Orientation.class);
-					imageView.setRotate(o.getOrientation());
-				}
-
-				root.getChildren().add(imageView);
+				root.getChildren().add(this.getUpdatedImageView(e));
+				root.getChildren().addAll(this.getCollisionShapes(e));
 			}
 		}
 	}
