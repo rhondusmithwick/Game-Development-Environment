@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import view.Utilities;
 import view.enums.DefaultStrings;
@@ -46,6 +48,7 @@ public class EditorEntity extends Editor{
 	private List<String> myComponents;
 	private HBox container;
 	private GuiObjectFactory guiFactory;
+	private Map<String, String> componentMap;
 
 	public EditorEntity(String language, ISerializable toEdit, ObservableList<ISerializable> addToList, ObservableList<ISerializable> emptyList) {
 		editorPane = new GridPane();
@@ -58,14 +61,20 @@ public class EditorEntity extends Editor{
 		entityList = addToList;
 		editorPane.setHgap(GUISize.ENTITY_EDITOR_PADDING.getSize());
 		editorPane.setVgap(GUISize.ENTITY_EDITOR_PADDING.getSize());
-		getComponents(DefaultStrings.COMPONENT_LOC.getDefault());
+		getComponents();
 	}
 
-	private void getComponents(String loc) {
-		myLocs = ResourceBundle.getBundle(loc);
+	private void getComponents() {
+		componentMap = new HashMap<>();
+		myLocs = ResourceBundle.getBundle(DefaultStrings.COMPONENT_LOC.getDefault());
 		Enumeration<String> iter = myLocs.getKeys();
+		String curr = null;
+		String name = null;
 		while(iter.hasMoreElements()) {
-			myComponents.add(iter.nextElement());
+			curr = iter.nextElement();
+			name = myResources.getString(curr);
+			componentMap.put(name, curr);
+			myComponents.add(name);
 		}
 	}
 
@@ -87,7 +96,7 @@ public class EditorEntity extends Editor{
 		addButton = Utilities.makeButton(myResources.getString("addComponent"), e-> addComponent());
 		editorPane.add(saveButton, GUISize.HALF_COLUMNS.getSize() + GUISize.ONE.getSize(), row+GUISize.ONE.getSize());
 		componentBox = Utilities.makeComboBox(myResources.getString("chooseComponent"), myComponents, null);
-		container.getChildren().addAll(Arrays.asList(componentBox, addButton));
+		container.getChildren().addAll(Arrays.asList(componentBox, addButton, saveButton));
 		editorPane.add(container, GUISize.HALF_COLUMNS.getSize()+GUISize.ONE.getSize(), row+GUISize.ONE.getSize());
 	}
 
@@ -109,13 +118,13 @@ public class EditorEntity extends Editor{
 	}
 
 	private void addComponent() {
-		String selected = componentBox.getSelectionModel().getSelectedItem();
+		String selected = componentMap.get(componentBox.getSelectionModel().getSelectedItem());
 		componentBox.getSelectionModel().clearSelection();
 		componentBox.getItems().remove(selected);
 		if(selected != null) {
 			try {
 				IComponent component = (IComponent) Class.forName(myLocs.getString(selected)).getConstructor().newInstance();
-				myEntity.addComponent(component);
+				myEntity.forceAddComponent(component, true);
 				addObject(component);
 			} catch (Exception e) {
 				Utilities.showError(myResources.getString("error"), myResources.getString("addCompError"));
