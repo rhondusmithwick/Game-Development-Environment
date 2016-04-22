@@ -5,6 +5,7 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
@@ -32,7 +33,10 @@ import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 import view.Dragger;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -129,7 +133,18 @@ class SpriteUtility {
     }
 
     private void saveImage(ImageView image) {
-        //Save this shit
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Image");
+        File file = fileChooser.showSaveDialog(new Stage());
+        if (file != null) {
+            try {
+                BufferedImage imageToWrite = SwingFXUtils.fromFXImage(image.getImage(),
+                        null);
+                ImageIO.write(imageToWrite, "png", file);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private void makeTransparent() {
@@ -373,16 +388,23 @@ class SpriteUtility {
 
     private void keyPress(KeyEvent event) {
         KeyCode keycode = event.getCode();
-        if (keycode == KeyCode.ENTER) {
-            addFrame();
-        } else if (keycode == KeyCode.RIGHT) {
-            selectedRectangle.setLayoutX(selectedRectangle.getLayoutX() + KEY_INPUT_SPEED);
-        } else if (keycode == KeyCode.LEFT) {
-            selectedRectangle.setLayoutX(selectedRectangle.getLayoutX() - KEY_INPUT_SPEED);
-        } else if (keycode == KeyCode.UP) {
-            selectedRectangle.setLayoutY(selectedRectangle.getLayoutY() - KEY_INPUT_SPEED);
-        } else if (keycode == KeyCode.DOWN) {
-            selectedRectangle.setLayoutY(selectedRectangle.getLayoutY() + KEY_INPUT_SPEED);
+        switch (keycode) {
+            case ENTER:
+                addFrame();
+                break;
+            case RIGHT:
+                selectedRectangle.setLayoutX(selectedRectangle.getLayoutX() + KEY_INPUT_SPEED);
+                break;
+            case LEFT:
+                selectedRectangle.setLayoutX(selectedRectangle.getLayoutX() - KEY_INPUT_SPEED);
+                break;
+            case UP:
+                selectedRectangle.setLayoutY(selectedRectangle.getLayoutY() - KEY_INPUT_SPEED);
+                break;
+            case DOWN:
+                selectedRectangle.setLayoutY(selectedRectangle.getLayoutY() + KEY_INPUT_SPEED);
+                break;
+            default:
         }
 
     }
