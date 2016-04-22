@@ -2,20 +2,19 @@ package main;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.ResourceBundle;
-
-import javafx.scene.control.Button;
+import java.util.ResourceBundle;import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import view.Utilities;
 import view.beginningmenus.AuthoringStartUp;
 import view.beginningmenus.StartUpMenu;
 import view.enums.DefaultStrings;
+import view.enums.FileExtensions;
+import view.enums.GUISize;
 import view.gameplaying.GamePlayer;
 
 public class Vooga extends StartUpMenu {
@@ -42,11 +41,11 @@ public class Vooga extends StartUpMenu {
 	}
 	
 	private void titleText() {
-		Text text = new Text("MakeGamesGreatAgain Presents:\nVOOGASalad");
+		Text text = new Text(myResources.getString("titleScreen"));
 		text.getStyleClass().add("title-text");
-		Image image = new Image(new File("resources/testing/RhonduSmithwick.JPG").toURI().toString());
+		Image image = new Image(new File(DefaultStrings.RHONDU.getDefault()).toURI().toString());
 		ImageView imageView = new ImageView(image);
-		imageView.setFitHeight(300);
+		imageView.setFitHeight(GUISize.INTRO_PIC.getSize());
 		imageView.setPreserveRatio(true);
 		super.addNodesToVBox(Arrays.asList(text, imageView));
 	}
@@ -60,7 +59,7 @@ public class Vooga extends StartUpMenu {
 
 
 	private void createPlayer() {
-		File file = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("XML","*.xml"), "Choose a saved game");
+		File file = Utilities.promptAndGetFile(FileExtensions.XML.getFilter(), myResources.getString("chooseGame"));
 		if (file!= null){
 			GamePlayer gamePlayer = new GamePlayer(myStage, getLanguage());
 			gamePlayer.init(file.getPath());
@@ -83,7 +82,7 @@ public class Vooga extends StartUpMenu {
 	}
 
 	private void setLanguage() {
-		languages = Utilities.makeComboBox(myResources.getString("dispLang"), Arrays.asList("english", "spanish", "arabic"), null);
+		languages = Utilities.makeComboBox(myResources.getString("dispLang"), Arrays.asList("english", "arabic"), null);
 		super.addNodesToVBox(Arrays.asList(languages));
 		
 	}

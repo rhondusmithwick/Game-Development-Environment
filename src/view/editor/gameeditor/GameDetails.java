@@ -100,6 +100,10 @@ public class GameDetails {
 	}
 	
 	public List<String> getGameDetails(){
-		return Arrays.asList(name.getText(), desc.getText(), iconPath);
+		String nameText = name.getText();
+		if(nameText.isEmpty()){
+			nameText = DefaultStrings.DEF_NAME.getDefault();
+		}
+		return Arrays.asList(nameText, desc.getText(), iconPath);
 	}
 }
