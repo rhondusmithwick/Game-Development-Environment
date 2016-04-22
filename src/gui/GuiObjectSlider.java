@@ -1,11 +1,9 @@
 package gui;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
@@ -17,7 +15,7 @@ public class GuiObjectSlider extends GuiObject{
 	private Label numLabel;
 
 
-	public GuiObjectSlider(String name, String resourceBundle,EventHandler<ActionEvent> event, Property<?> property, Object object) {
+	public GuiObjectSlider(String name, String resourceBundle,String language, SimpleObjectProperty<?> property, Object object) {
 		super(name, resourceBundle);
 		slider = new Slider(Integer.parseInt(getResourceBundle().getString(name+"Min")),Integer.parseInt(getResourceBundle().getString(name+ "Max")), (double) object); 
 		slider.setShowTickMarks(true);
@@ -31,7 +29,8 @@ public class GuiObjectSlider extends GuiObject{
 
 
 
-	private void bindProperty(Property property) {
+	@SuppressWarnings("rawtypes")
+	private void bindProperty(SimpleObjectProperty property) {
 		slider.valueProperty().addListener(new ChangeListener<Number>() {
             @SuppressWarnings("unchecked")
 			public void changed(ObservableValue<? extends Number> ov,Number old_val, Number new_val) {

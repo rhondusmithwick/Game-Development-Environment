@@ -5,7 +5,6 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 import enums.GUISize;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
