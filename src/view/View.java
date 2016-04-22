@@ -51,8 +51,8 @@ public class View implements IView {
 	// ScriptEngineManager().getEngineByName("Groovy");
 	private final GroovyShell shell = new GroovyShell(); // MUST USE SHELL
 	private final ISystemManager model = new SystemManager();
-	private final Pong game = new Pong(shell, model); // TODO: move to level
-														// hierarchy
+	// TODO: move to level hierarchy
+	private final Pong game = new Pong(shell, model);
 	private final ILevel universe = model.getEntitySystem();
 	private final BorderPane pane;
 

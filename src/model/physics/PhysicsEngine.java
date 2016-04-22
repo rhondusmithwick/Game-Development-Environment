@@ -197,7 +197,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 		Vector entityOneToTwo = new Vector(firstEntityPos.getX()-secondEntityPos.getX(),
 											firstEntityPos.getX()-secondEntityPos.getY());
 		Vector referenceVector = new Vector(0, 1);
-		double angle = Math.acos(getDotProduct(entityOneToTwo, referenceVector));
+		double angle = Math.acos(entityOneToTwo.getDotProduct(referenceVector));
 		if (angle >= 315 || angle < 45) {
 			//TOP COLLISION
 		}
@@ -212,15 +212,6 @@ public class PhysicsEngine implements IPhysicsEngine {
 		}
 	}
 	
-	private double getDotProduct(Vector a, Vector b) {
-		return a.getXComponent()*b.getXComponent() + a.getYComponent()*b.getYComponent();
-	}
-	
-	private Vector normalizePosition(Vector entityDiff) {
-		double length = Math.sqrt(Math.pow(entityDiff.getXComponent(), 2) + Math.pow(entityDiff.getYComponent(), 2));
-		return new Vector(entityDiff.getXComponent()/length, entityDiff.getYComponent()/length);
-	}
-	
 	public void setGravityActive(boolean gravityActive) {
 		this.gravityActive = gravityActive;
 	}
@@ -232,4 +223,5 @@ public class PhysicsEngine implements IPhysicsEngine {
 	public void setFrictionActive(boolean frictionActive) {
 		this.frictionActive = frictionActive;
 	}
+	
 }
