@@ -31,7 +31,7 @@ class GroovyDemoTest {
 		img.setScaleX(0.10)
 		img.setScaleY(0.10)
 		character.addComponents(path, new Velocity(20.0, -20.0), new Gravity(400),
-				new Collision(Arrays.asList("rhondu")), new RestitutionCoefficient(0.2), new Mass(5))
+				new Collision(Arrays.asList("rhondu")), new RestitutionCoefficient(1.0), new Mass(5))
 		return character
 	}
 
@@ -41,14 +41,13 @@ class GroovyDemoTest {
 		ImageView img = path.getImageView();
 		//		img.setScaleX(0.10)
 		//		img.setScaleY(0.10)
-		platform.addComponents(path, new Position(100, 300), new Collision(Arrays.asList("platform")), new RestitutionCoefficient(0.2), new Mass(100));
+		platform.addComponents(path, new Position(100, 300), new Gravity(0),
+				new Collision(Arrays.asList("platform")), new RestitutionCoefficient(1.0), new Mass(100));
 		return platform;
 	}
 
-	IEntity run(ISystemManager game) {
+	void run(ISystemManager game) {
 		ILevel universe = game.getEntitySystem()
-		IEntity r = this.getRhondu()
-		universe.addEntities(r, this.getPlatform());
-		return r
+		universe.addEntities(this.getRhondu(), this.getPlatform());
 	}
 }

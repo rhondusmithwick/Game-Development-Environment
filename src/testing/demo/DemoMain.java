@@ -1,7 +1,6 @@
 
 package testing.demo;
 
-import enums.GUISize;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -11,6 +10,7 @@ import javafx.stage.Stage;
 import model.component.audio.SoundEffect;
 import model.component.audio.ThemeMusic;
 import view.View;
+import view.enums.GUISize;
 
 public class DemoMain extends Application {
 
@@ -33,7 +33,7 @@ public class DemoMain extends Application {
 		Group root = new Group();
 		Scene scene = new Scene(pane, 500, 500);
 		music = new ThemeMusic("resources/music/finalCountdown.mp3");
-		music.play();
+		// music.play();
 		Button button = new Button("Mute");
 		button.setOnAction(e -> shoot());
 		root.getChildren().add(button);

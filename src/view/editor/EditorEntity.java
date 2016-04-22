@@ -1,6 +1,5 @@
 package view.editor;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -8,6 +7,8 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.ResourceBundle;
 import view.Utilities;
+import view.enums.DefaultStrings;
+import view.enums.GUISize;
 import gui.GuiObject;
 import gui.GuiObjectFactory;
 import model.entity.Entity;
@@ -23,8 +24,6 @@ import javafx.scene.layout.HBox;
 import api.IComponent;
 import api.IEntity;
 import api.ISerializable;
-import enums.DefaultStrings;
-import enums.GUISize;
 /**
  * 
  * @author Melissa Zhang & Cali Nelson
@@ -43,10 +42,10 @@ public class EditorEntity extends Editor{
 	private ScrollPane scrollPane;
 	private int row = 0;
 	private int column = 0;
-	private int maxColumns = GUISize.GRIDPANE_COLUMNS.getSize();
 	private ComboBox<String> componentBox;
 	private List<String> myComponents;
 	private HBox container;
+	private GuiObjectFactory guiFactory;
 
 	public EditorEntity(String language, ISerializable toEdit, ObservableList<ISerializable> addToList, ObservableList<ISerializable> emptyList) {
 		editorPane = new GridPane();
@@ -59,25 +58,15 @@ public class EditorEntity extends Editor{
 		entityList = addToList;
 		editorPane.setHgap(GUISize.ENTITY_EDITOR_PADDING.getSize());
 		editorPane.setVgap(GUISize.ENTITY_EDITOR_PADDING.getSize());
-		//System.out.println(language);
 		getComponents(DefaultStrings.COMPONENT_LOC.getDefault());
-		//System.out.println(myComponents);
 	}
 
 	private void getComponents(String loc) {
 		myLocs = ResourceBundle.getBundle(loc);
 		Enumeration<String> iter = myLocs.getKeys();
 		while(iter.hasMoreElements()) {
-			//String key = iter.nextElement();
-			//System.out.println(key);
 			myComponents.add(iter.nextElement());
 		}
-	}
-
-	@Override
-	public void loadDefaults() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -94,49 +83,42 @@ public class EditorEntity extends Editor{
 		for (IComponent component: componentList){
 			addObject(component);
 		}
-		saveButton = Utilities.makeButton(myResources.getString("saveEntity"), e-> addSerializable(myEntity));
+		saveButton = Utilities.makeButton(myResources.getString("saveEntity"), e-> save());
 		addButton = Utilities.makeButton(myResources.getString("addComponent"), e-> addComponent());
-		editorPane.add(saveButton, maxColumns/2, row+1);
-		//		editorPane.add(addButton, 3, row);
+		editorPane.add(saveButton, GUISize.HALF_COLUMNS.getSize() + GUISize.ONE.getSize(), row+GUISize.ONE.getSize());
 		componentBox = Utilities.makeComboBox(myResources.getString("chooseComponent"), myComponents, null);
 		container.getChildren().addAll(Arrays.asList(componentBox, addButton));
-		editorPane.add(container, maxColumns/2+1, row+1);
-		//System.out.println(myComponents);
+		editorPane.add(container, GUISize.HALF_COLUMNS.getSize()+GUISize.ONE.getSize(), row+GUISize.ONE.getSize());
 	}
 
 	private void addObject(IComponent component) {
-		GuiObjectFactory guiFactory = new GuiObjectFactory(myLanguage);
-		for (SimpleObjectProperty<?> property: component.getProperties()){
-			GuiObject object = guiFactory.createNewGuiObject(property.getName(), property, property.getValue());
-			if (object!=null){
-				editorPane.add((Node) object.getGuiNode(), column++, row);
-				if(column > maxColumns) {
-					row++;
-					column = 0;
-				}
-				//System.out.println(property.getName());
-				myComponents.remove(property.getName());
+		guiFactory = new GuiObjectFactory(myLanguage);
+		component.getProperties().stream().forEach(e->addVisualObject(e));
+	}
+
+	private void addVisualObject(SimpleObjectProperty<?> property) {
+		GuiObject object = guiFactory.createNewGuiObject(property.getName(), property, property.getValue());
+		if (object!=null){
+			editorPane.add((Node) object.getGuiNode(), column++, row);
+			if(column > GUISize.GRIDPANE_COLUMNS.getSize()) {
+				row++;
+				column = 0;
 			}
+			myComponents.remove(property.getName());
 		}
-		//System.out.println(myComponents);
 	}
 
 	private void addComponent() {
-		//		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
-		//
-		//		templateBox = Utilities.makeComboBox(myResources.getString("chooseComponent"), list, null);
 		String selected = componentBox.getSelectionModel().getSelectedItem();
 		componentBox.getSelectionModel().clearSelection();
 		componentBox.getItems().remove(selected);
 		if(selected != null) {
 			try {
-				//String a = ResourceBundle.getBundle("propertyFiles/componentLocations").getString(selected);
 				IComponent component = (IComponent) Class.forName(myLocs.getString(selected)).getConstructor().newInstance();
-				//System.out.println(a);
 				myEntity.addComponent(component);
 				addObject(component);
 			} catch (Exception e) {
-				e.printStackTrace();
+				Utilities.showError(myResources.getString("error"), myResources.getString("addCompError"));
 			}
 		}
 	}
@@ -147,12 +129,11 @@ public class EditorEntity extends Editor{
 		populateLayout();
 	}
 
-	@Override
-	public void addSerializable(ISerializable serialize) {	
-		((IEntity) serialize).setName(name.getText());
-		((IEntity) serialize).getAllComponents().stream().forEach(e->removeBinding(e));
-		entityList.remove(serialize);
-		entityList.add(serialize);
+	private void save() {	
+		myEntity.setName(name.getText());
+		myEntity.getAllComponents().stream().forEach(e->removeBinding(e));
+		entityList.remove(myEntity);
+		entityList.add(myEntity);
 		editorPane.getChildren().clear();
 		editorPane.getChildren().add((saveMessage(myResources.getString("saveMessage"))));
 

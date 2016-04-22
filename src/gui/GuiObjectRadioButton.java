@@ -8,7 +8,7 @@ import javafx.beans.property.ListProperty;
 import javafx.beans.property.Property;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Control;
+
 import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.Toggle;
@@ -23,6 +23,7 @@ public class GuiObjectRadioButton extends GuiObject{
 	private Label radioLabel;
 	private ToggleGroup radioButtonGroup;
 	private int initialToggle;
+	@SuppressWarnings("unchecked")
 	public GuiObjectRadioButton(String name, String resourceBundle,EventHandler<ActionEvent> event, Property<?> property, ListProperty<?> list, ISerializable serial) {
 		super(name, resourceBundle);
 		buttonList = new ArrayList<RadioButton>();
@@ -35,6 +36,7 @@ public class GuiObjectRadioButton extends GuiObject{
 		bindProperty(property);
 	
 	}
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public void bindProperty(Property property){
 		((Property) radioButtonGroup.selectedToggleProperty()).bindBidirectional(property);
 	}
@@ -84,10 +86,6 @@ public class GuiObjectRadioButton extends GuiObject{
 	@Override
 	public Object getCurrentValue() {
 		// TODO Auto-generated method stub
-		return null;
-	}
-	@Override
-	public Control getControl() {
 		return null;
 	}
 	@Override
