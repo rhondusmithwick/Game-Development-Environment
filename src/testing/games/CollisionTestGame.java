@@ -60,7 +60,7 @@ import java.io.IOException;
 
 public class CollisionTestGame {
 
-    public static final String TITLE = "Ani's and Carolyn's game";
+    public static final String TITLE = "Collision test game";
     public static final int KEY_INPUT_SPEED = 5;
     private static Group root;
     private final ILevel universe = new Level();
@@ -69,7 +69,7 @@ public class CollisionTestGame {
     private IEntity character;
     private IEntity platform;
     private final String IMAGE_PATH = "resources/images/blastoise.png";
-    private final String healthScriptPath = "resources/groovyScripts/ACGameTestScript.groovy";
+    private final String healthScriptPath = "resources/groovyScripts/ACGameHealthDie.groovy";
     private final String moveRightScriptPath = "resources/groovyScripts/keyInputMoveRight.groovy";
     private final String moveLeftScriptPath = "resources/groovyScripts/keyInputMoveLeft.groovy";
     private final String jumpScriptPath = "resources/groovyScripts/keyInputJump.groovy";
@@ -105,8 +105,7 @@ public class CollisionTestGame {
         if (var == 0) {
             character = new Entity("Anolyn");
             character.forceAddComponent(new Health((double) 100), true);
-            character.forceAddComponent(new Score((double) 100), true);
-            character.forceAddComponent(new Collision("")); // instantiated by string instead of collection
+            character.addComponent(new Collision("")); // instantiated by string instead of collection
             Position pos = new Position(100.0, 100.0);
             character.forceAddComponent(pos, true);
             character.forceAddComponent(new ImagePath(IMAGE_PATH), true);
@@ -120,18 +119,19 @@ public class CollisionTestGame {
             eventSystem.registerEvent(
                     new PropertyTrigger(character.getID(), Position.class, "Y"),
                     new Action(healthScriptPath));
-            // adding collision test
+
             eventSystem.registerEvent(
                     new PropertyTrigger(character.getID(), Collision.class, "Collision ID"),
                     new Action(healthScriptPath));
+
             eventSystem.registerEvent(new KeyTrigger("D"), new Action(moveRightScriptPath));
             eventSystem.registerEvent(new KeyTrigger("A"), new Action(moveLeftScriptPath));
             eventSystem.registerEvent(new KeyTrigger("W"), new Action(jumpScriptPath));
-            eventSystem.saveEventsToFile("eventtest.xml");
-            EventFileWriter w = new EventFileWriter();
-            w.addEvent(KeyTrigger.class.toString().split(" ")[1], "A", moveLeftScriptPath);
-            w.addEvent(KeyTrigger.class.toString().split(" ")[1], "D", moveRightScriptPath);
-            w.writeEventsToFile("eventTest2.xml");
+            //eventSystem.saveEventsToFile("eventtest.xml");
+            //EventFileWriter w = new EventFileWriter();
+            //w.addEvent(KeyTrigger.class.toString().split(" ")[1], "A", moveLeftScriptPath);
+            //w.addEvent(KeyTrigger.class.toString().split(" ")[1], "D", moveRightScriptPath);
+            //w.writeEventsToFile("eventTest2.xml");
         } else {
             character = new XMLReader<IEntity>().readSingleFromFile("character.xml");
             universe.addEntity(character);
