@@ -4,9 +4,10 @@ import javafx.scene.layout.Pane;
 import java.util.ResourceBundle;
 import view.editor.Editor;
 import api.IEntity;
+import api.ILevel;
+import view.enums.GUISize;
+import view.enums.ViewInsets;
 import api.ISerializable;
-import enums.GUISize;
-import enums.ViewInsets;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -33,13 +34,13 @@ public class EditorEvent extends Editor
 	private final PropertyEventEditor propertyEventEditor;
 	private final KeyBindingEditor keyBindingEditor;
 	
-	public EditorEvent(String language, ObservableList<IEntity> masterList)
+	public EditorEvent(String language, ObservableList<IEntity> masterList, ObservableList<ILevel> levelList)
 	{	
-		propertyEventEditor = new PropertyEventEditor(language, masterList);
+		propertyEventEditor = new PropertyEventEditor(language, masterList, levelList);
 		keyBindingEditor = new KeyBindingEditor(language);
 
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
-		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
+		pane.setPadding(ViewInsets.EVENT_EDIT.getInset());
 		// pane.setAlignment(Pos.TOP_LEFT);
 		myResources = ResourceBundle.getBundle(language);
 		scrollPane = new ScrollPane(pane);
@@ -74,13 +75,6 @@ public class EditorEvent extends Editor
 	{
 		return scrollPane;
 	}
-
-	@Override
-	public void loadDefaults() {}
-
-	@Override
-	public void addSerializable(ISerializable serialize) 
-	{}
 
 	@Override
 	public void updateEditor() {}

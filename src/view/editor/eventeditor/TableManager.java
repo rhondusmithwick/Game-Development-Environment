@@ -1,14 +1,18 @@
 package view.editor.eventeditor;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import api.IComponent;
 import api.IEntity;
+import api.ILevel;
 import api.ISerializable;
 import events.InputSystem;
 import events.PropertyTrigger;
 import events.Trigger;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.HBox;
 import model.entity.Entity;
@@ -26,6 +30,7 @@ public class TableManager
 	private String language;
 	private PropertyEventEditor editor;
 	private final InputSystem inputSystem;
+	private ObservableList<ISerializable> selectedEntities;
 	
 	public TableManager(ObservableList<IEntity> entityList, String language, 
 			PropertyEventEditor editor, 
@@ -36,18 +41,19 @@ public class TableManager
 		entityTable = new EntityTable(entityList, this, language);
 		componentTable = new ComponentTable(this, language);
 		propertyTable = new PropertyTable(this, language);
+		selectedEntities = FXCollections.emptyObservableList();
 		
 		this.editor = editor;
 		this.inputSystem = inputSystem; 
 		
 		
-		setDefaultTriggerString(null);
+		editor.resetTrigger();
 		fillLayout();
 	}
 	
 	public void entityWasClicked(Entity entity)
 	{
-		setDefaultTriggerString(null);
+		editor.resetTrigger();
 		componentTable.refreshTable();
 		propertyTable.refreshTable();
 		componentTable.fillEntries(entity);
@@ -56,7 +62,7 @@ public class TableManager
 	
 	public void componentWasClicked(IComponent component)
 	{
-		setDefaultTriggerString(null);
+		editor.resetTrigger();
 		propertyTable.refreshTable();
 		propertyTable.fillEntries(component);
 		this.component = component;
@@ -68,12 +74,19 @@ public class TableManager
 		
 		String[] splitClassName = component.getClass().toString().split("\\.");
 
-		editor.triggerSet(entity.getName() + " - " + 
-				splitClassName[splitClassName.length - 1] + " - " + 
-				property.getName(),
-				new PropertyTrigger(entity.getID(), component.getClass(), propertyName)
-				);	
+		editor.triggerSet(entity.getName(), component, property);
+	}
 	
+	public void levelWasPicked(List<ILevel> levels)
+	{
+		selectedEntities.clear();
+		
+		for ( ILevel level: levels )
+		{
+			selectedEntities.addAll(level.getAllEntities());
+		}
+		
+		entityTable.levelWasPicked(selectedEntities);
 	}
 	
 	public void allBoxChanged(String event)
@@ -89,11 +102,6 @@ public class TableManager
 	public HBox getContainer()
 	{
 		return container;
-	}
-	
-	private void setDefaultTriggerString(Trigger trigger)
-	{
-		editor.triggerSet(ResourceBundle.getBundle(language).getString("notYetDefined"), trigger);
 	}
 	
 }

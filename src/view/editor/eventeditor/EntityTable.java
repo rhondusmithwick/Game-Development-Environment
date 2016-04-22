@@ -1,4 +1,6 @@
 package view.editor.eventeditor;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.ResourceBundle;
 
 import api.IEntity;
@@ -9,6 +11,7 @@ import model.entity.Entity;
 
 public class EntityTable extends Table
 {
+	private ArrayList<String> entityNames;
 	
 	public EntityTable(ObservableList<IEntity> entities, TableManager manager, String language)
 	{
@@ -21,6 +24,7 @@ public class EntityTable extends Table
         		manager.entityWasClicked((Entity)observableValue.getValue().getData());
         	}
         	);
+		entityNames = new ArrayList<String>();
 		
 		fillEntries(entities);
    	}
@@ -31,11 +35,21 @@ public class EntityTable extends Table
 	{
 		for (ISerializable entity: (ObservableList<ISerializable>)dataHolder)
 		{
-			getEntries().add(new Entry(entity, ((Entity)entity).getName()));
+			if ( entityNames.contains( ((Entity)entity).getName() ))
+				continue;
+			else
+			{
+				entityNames.add( ((Entity)entity).getName() );
+				getEntries().add(new Entry(entity, ((Entity)entity).getName()));
+			}
 		}
-		
-	
 	}
 	
-	
+	public void levelWasPicked(ObservableList<ISerializable> newEntities)
+	{
+		refreshTable();
+		entityNames.clear();
+		if ( !newEntities.isEmpty() )
+			fillEntries(newEntities);
+	}
 }

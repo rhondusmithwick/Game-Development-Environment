@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 import api.ISerializable;
-import enums.GUISize;
-import enums.ViewInsets;
 import events.Action;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -19,6 +17,8 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import view.Utilities;
 import view.editor.Editor;
+import view.enums.GUISize;
+import view.enums.ViewInsets;
 
 public class KeyBindingEditor extends Editor 
 {
@@ -100,9 +100,6 @@ public class KeyBindingEditor extends Editor
 	}
 	
 	@Override
-	public void loadDefaults() {}
-
-	@Override
 	public ScrollPane getPane() 
 	{
 		return scrollPane;
@@ -117,8 +114,6 @@ public class KeyBindingEditor extends Editor
 		scrollPane.setContent(pane);
 	}
 
-	@Override
-	public void addSerializable(ISerializable serialize) {}
 
 	@Override
 	public void updateEditor() {}

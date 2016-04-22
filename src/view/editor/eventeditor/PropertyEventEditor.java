@@ -1,17 +1,19 @@
 package view.editor.eventeditor;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.ResourceBundle;
 
+import api.IComponent;
 import api.IEntity;
 import api.ILevel;
 import api.ISerializable;
-import enums.GUISize;
-import enums.ViewInsets;
 import events.Action;
 import events.InputSystem;
 import events.Trigger;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
@@ -23,8 +25,10 @@ import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import view.Utilities;
 import view.editor.Editor;
+import view.enums.GUISize;
+import view.enums.ViewInsets;
 
-public class PropertyEventEditor extends Editor
+public class PropertyEventEditor extends EventEditorTab
 {
 	private final ScrollPane scrollPane;
 	private final VBox pane;
@@ -44,16 +48,29 @@ public class PropertyEventEditor extends Editor
 	private Trigger trigger;
 	private Action action;
 	private final InputSystem inputSystem;
-	// private final ObservableList<ILevel> levelList;
 	
-	public PropertyEventEditor(String language, ObservableList<IEntity> masterList)//, ObservableList<ILevel> levelList)
+	private String chosenEntityName;
+	private IComponent chosenComponent;
+	private SimpleObjectProperty property;
+	
+	private boolean triggerOK, actionOK;
+	private ArrayList<ILevel> selectedLevelList;
+	
+	private final String language;
+	
+	public PropertyEventEditor(String language, ObservableList<IEntity> masterList, ObservableList<ILevel> levelList)
 	{
 		// this.levelList = levelList;
-		levelPicker = new LevelPicker(language, null);
+		levelPicker = new LevelPicker(language, levelList, this);
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
 		pane.setAlignment(Pos.TOP_LEFT);
+		this.language = language;
+		
 		myResources = ResourceBundle.getBundle(language);
+		
+		triggerOK = false;
+		actionOK = false;
 		
 		triggerText = new Text();
 		actionText = new Text();
@@ -108,8 +125,8 @@ public class PropertyEventEditor extends Editor
 	{
 		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
 		
-		triggerSet("Not yet Defined", null);	// TODO resource
-		actionSet("Not yet Defined", null);
+		resetTrigger();
+		resetAction();
 		
 		makeEventButton = Utilities.makeButton("MAKE EVENT!", e -> makeEvent());	// TODO resource
 		makeEventButton.setDisable(true);
@@ -122,6 +139,11 @@ public class PropertyEventEditor extends Editor
 	private void makeEvent()
 	{
 		// TODO: well, make Event
+		// I think the Entity table now only shows entities through names
+		// So the trigger has to be created here.
+		
+		// Cycle through all levels that were chosen, get their Event System
+		// Make Triggers, and map them with action, on each of the Event Systems
 	}
 	
 	public void populateLayout() 
@@ -130,18 +152,37 @@ public class PropertyEventEditor extends Editor
 		makeBottomPart();
 	}
 
-	public void triggerSet(String triggerString, Trigger trigger)
+	public void triggerSet(String entityName, IComponent component, SimpleObjectProperty property)
 	{
-		this.trigger = trigger;
-		triggerText.setText("TRIGGER: \n" + triggerString);	// TODO resource
-		makeEventButton.setDisable( (this.trigger == null) || (this.action == null) );
+		String[] splitClassName = component.getClass().toString().split("\\.");
+		
+		triggerText.setText("TRIGGER: \n" + entityName + " - " + 
+				splitClassName[splitClassName.length - 1] + " - " + 
+				property.getName());	// TODO resource
+		
+		triggerOK = true;
+		makeEventButton.setDisable( !triggerOK || !actionOK );
+	}
+	
+	public void resetTrigger()
+	{
+		triggerText.setText(ResourceBundle.getBundle(language).getString("notYetDefined"));
+		triggerOK = false;
+	}
+	
+	public void resetAction()
+	{
+		actionText.setText(ResourceBundle.getBundle(language).getString("notYetDefined"));
+		actionOK = false;
 	}
 	
 	private void actionSet(String actionString, Action action)
 	{
 		this.action = action;
 		actionText.setText("ACTION:\n" + actionString);	// TODO resource
-		makeEventButton.setDisable( (this.trigger == null) || (this.action == null) );
+		actionOK = true;
+		
+		makeEventButton.setDisable( !triggerOK || !actionOK );
 	}
 	
 	@Override
@@ -151,12 +192,13 @@ public class PropertyEventEditor extends Editor
 	}
 
 	@Override
-	public void loadDefaults() {}
-
-	@Override
-	public void addSerializable(ISerializable serialize) {}
-
-	@Override
 	public void updateEditor() {}
+
+	@Override
+	public void choseLevels(List<ILevel> levels) 
+	{
+		tableManager.levelWasPicked(levels);
+		this.selectedLevelList = (ArrayList<ILevel>) levels;
+	}
 	
 }

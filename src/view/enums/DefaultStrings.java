@@ -1,4 +1,4 @@
-package enums;
+package view.enums;
 
 import model.component.movement.Position;
 
@@ -15,10 +15,17 @@ public enum DefaultStrings {
 	TEMPLATE_DIREC_LOC("resources/templates/"),
 	TEMPLATE_BUNDLE_LOC("templates/"),
 	POSITION_COMP_NAME(Position.class.getName()),
-	BACKGROUND_TEMPLATE_PATH("templates/Background"), 
-	PLATFORM_TEMPLATE_PATH("templates/PlatformSprite"),
 	XML(".xml"), 
-	CHARACTER_TEMPLATE_PATH("templates/player");
+	CSS_LOCATION("resources/cssFiles/"),
+	MAIN_CSS("main.css"), 
+	RHONDU("resources/testing/RhonduSmithwick.JPG"), 
+	THEME("finalCountdown.mp3"), 
+	MUSIC("resources/music/"),
+	METADATA_LOC("/metadata.xml"),
+	ENTITIES_LOC("/entities.xml"),
+	LEVELS_LOC("/levels/");
+	
+
 
     private final String content;
 

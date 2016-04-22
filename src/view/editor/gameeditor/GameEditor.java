@@ -6,11 +6,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import api.IEntity;
 import api.ILevel;
-import api.ISerializable;
 import datamanagement.XMLReader;
-import enums.DefaultStrings;
-import enums.GUISize;
-import enums.ViewInsets;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -22,6 +18,9 @@ import javafx.scene.layout.VBox;
 import view.Authoring;
 import view.Utilities;
 import view.editor.Editor;
+import view.enums.DefaultStrings;
+import view.enums.GUISize;
+import view.enums.ViewInsets;
 
 public class GameEditor extends Editor  {
 
@@ -50,7 +49,7 @@ public class GameEditor extends Editor  {
 		this.masterEnvironmentList = FXCollections.observableArrayList();
 		entDisp = new EntityDisplay(myLanguage, masterEntityList, authEnv);
 		envDisp = new EnvironmentDisplay(myLanguage, masterEnvironmentList, masterEntityList, authEnv);
-		eventDisplay = new EventDisplay(myLanguage, masterEntityList, authEnv);
+		eventDisplay = new EventDisplay(myLanguage, masterEntityList, masterEnvironmentList, authEnv);
 		setPane();
 	}
 
@@ -66,14 +65,14 @@ public class GameEditor extends Editor  {
 	private void loadFile(String fileName) {
 
 		fileName = DefaultStrings.CREATE_LOC.getDefault() + fileName;
-		gameDetails.setDetails(new XMLReader<List<String>>().readSingleFromFile(fileName + "/metadata.xml"));
-		masterEntityList.addAll(new XMLReader<List<IEntity>>().readSingleFromFile((fileName + "/entities.xml")));
+		gameDetails.setDetails(new XMLReader<List<String>>().readSingleFromFile(fileName + DefaultStrings.METADATA_LOC.getDefault()));
+		masterEntityList.addAll(new XMLReader<List<IEntity>>().readSingleFromFile((fileName + DefaultStrings.ENTITIES_LOC.getDefault())));
 		loadLevels(fileName);
 	}
 
 
 	private void loadLevels(String fileName) {
-		fileName = fileName + "/levels/";
+		fileName = fileName + DefaultStrings.LEVELS_LOC.getDefault();
 		File file = new File(fileName);
 		for(File f: file.listFiles()){
 			masterEnvironmentList.add(new XMLReader<ILevel>().readSingleFromFile(f.getPath()));
@@ -91,8 +90,8 @@ public class GameEditor extends Editor  {
 	public void populateLayout() {
 		VBox right = rightPane();
 		VBox left = leftPane();
-		left.prefWidthProperty().bind(scrollPane.widthProperty().divide(2));
-		right.prefWidthProperty().bind(scrollPane.widthProperty().divide(2));
+		left.prefWidthProperty().bind(scrollPane.widthProperty().divide(GUISize.HALF.getSize()));
+		right.prefWidthProperty().bind(scrollPane.widthProperty().divide(GUISize.HALF.getSize()));
 		HBox container = new HBox(GUISize.GAME_EDITOR_PADDING.getSize());
 		container.getChildren().addAll(left, right);
 		pane.getChildren().addAll(container);
@@ -126,9 +125,5 @@ public class GameEditor extends Editor  {
 		populateLayout();
 	}
 
-	@Override
-	public void addSerializable(ISerializable serialize) {}
-	@Override
-	public void loadDefaults() {}
 
 }

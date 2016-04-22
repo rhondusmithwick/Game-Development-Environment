@@ -4,9 +4,7 @@ import java.util.ResourceBundle;
 
 import api.IEntity;
 import api.ILevel;
-import api.ILevel;
 import api.ISerializable;
-import enums.DefaultStrings;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ScrollPane;
@@ -15,6 +13,7 @@ import model.entity.Level;
 import view.Authoring;
 import view.Utilities;
 import view.editor.EditorEnvironment;
+import view.enums.DefaultStrings;
 
 public class EnvironmentDisplay extends ObjectDisplay{
 	private ObservableList<ILevel> masterEnvList;

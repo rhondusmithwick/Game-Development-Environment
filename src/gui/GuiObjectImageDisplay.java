@@ -3,30 +3,30 @@ package gui;
 import java.io.File;
 import java.util.ResourceBundle;
 
-import enums.GUISize;
-import javafx.beans.property.Property;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import view.Utilities;
+import view.enums.GUISize;
 
 public class GuiObjectImageDisplay extends GuiObject {
 	
 	private ImageView preview;
 	private Button setImage;
 	private ResourceBundle myResources;
-	private Property<String> property;
+	private SimpleObjectProperty<String> property;
 	
 	
-	public GuiObjectImageDisplay(String name, String resourceBundle, String language, Property<String> property, Object object) {
+	@SuppressWarnings("unchecked")
+	public GuiObjectImageDisplay(String name, String resourceBundle, String language, SimpleObjectProperty<?> property, Object object) {
 		super(name, resourceBundle);
 		myResources= ResourceBundle.getBundle(language);
-		setImage = Utilities.makeButton(name, e->changeImage());
-		this.property=property;
+		setImage = Utilities.makeButton(myResources.getString(name), e->changeImage());
+		this.property=(SimpleObjectProperty<String>) property;
 		this.preview=new ImageView();
-		setImage(new File(property.getValue()));
+		setImage(new File(this.property.getValue()));
 	}
 
 	private void changeImage(){
@@ -45,7 +45,7 @@ public class GuiObjectImageDisplay extends GuiObject {
 		}
 		property.setValue(file.getPath());
 		preview.setImage(new Image(file.toURI().toString()));
-		preview.setFitHeight(100);
+		preview.setFitHeight(GUISize.PREVIEW_SIZE.getSize());
 		preview.setPreserveRatio(true);
 	}
 
@@ -54,11 +54,6 @@ public class GuiObjectImageDisplay extends GuiObject {
 	@Override
 	public Object getCurrentValue() {
 		return property.getValue();
-	}
-
-	@Override
-	public Control getControl() {
-		return null;
 	}
 
 	@Override

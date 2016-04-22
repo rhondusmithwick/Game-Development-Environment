@@ -5,9 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 
 import api.ILevel;
-import enums.GUISize;
-import enums.ViewInsets;
-import javafx.collections.ObservableList;
+import view.enums.GUISize;
+import view.enums.ViewInsets;import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ScrollPane;
@@ -22,10 +21,12 @@ public class LevelPicker
 	private CheckBox allBox;
 	private final HashMap<CheckBox, ILevel> checkBoxMap;
 	private ArrayList<ILevel> selectedLevels;
+	private final EventEditorTab eventAuthoring;
 	
-	public LevelPicker(String language, ObservableList<ILevel> levelList)
+	public LevelPicker(String language, ObservableList<ILevel> levelList, EventEditorTab eventAuthoring)
 	{
 		checkBoxMap = new HashMap<CheckBox, ILevel>();
+		this.eventAuthoring = eventAuthoring;
 		this.levelList = levelList;
 		selectedLevels = new ArrayList<ILevel>();
 		
@@ -41,18 +42,19 @@ public class LevelPicker
 	{
 		allBox = new CheckBox("ALL");	// TODO resource
 		allBox.setOnAction(e -> allBoxCheck(allBox.isSelected()));
+		vbox.getChildren().add(allBox);
 		
 		if ( levelList != null )
 		{
 			for ( ILevel level: levelList )
 			{
+				System.out.println("YES!");
 				CheckBox newCheckbox = new CheckBox(level.getName());
 				newCheckbox.setOnAction(e -> levelCheck());
 				checkBoxMap.put(newCheckbox, level);
+				vbox.getChildren().add(newCheckbox);
 			}
 		}
-		
-		vbox.getChildren().add(allBox);
 	}
 	
 	private void allBoxCheck(boolean isSelected)
@@ -75,6 +77,8 @@ public class LevelPicker
 				selectedLevels.add(checkBoxMap.get(checkbox));
 			}
 		}
+		
+		eventAuthoring.choseLevels(selectedLevels);
 	}
 	
 	public ScrollPane getPane()
