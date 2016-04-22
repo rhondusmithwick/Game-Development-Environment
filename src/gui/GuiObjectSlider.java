@@ -1,5 +1,7 @@
 package gui;
 
+import java.util.ResourceBundle;
+
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
@@ -12,15 +14,17 @@ public class GuiObjectSlider extends GuiObject{
 	private Slider slider;
 	private Label textLabel;
 	private Label numLabel;
+	private ResourceBundle myResources;
 
 
 	public GuiObjectSlider(String name, String resourceBundle,String language, SimpleObjectProperty<?> property, Object object) {
 		super(name, resourceBundle);
+		this.myResources = ResourceBundle.getBundle(language);
 		slider = new Slider(Integer.parseInt(getResourceBundle().getString(name+"Min")),Integer.parseInt(getResourceBundle().getString(name+ "Max")), (double) object); 
 		slider.setShowTickMarks(true);
 		slider.setBlockIncrement(Integer.parseInt(getResourceBundle().getString(name+"Increment")));
 		slider.setValue((Double) property.getValue());
-		textLabel = new Label(getResourceBundle().getString(getObjectName()+"Label"));
+		textLabel = new Label(myResources.getString(getObjectName()));
 		numLabel = new Label(Double.toString(slider.getValue()));
 		numLabel.textProperty().bind(Bindings.convert(slider.valueProperty()));
 		bindProperty(property);

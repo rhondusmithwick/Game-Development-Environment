@@ -23,7 +23,7 @@ public class GuiObjectImageDisplay extends GuiObject {
 	public GuiObjectImageDisplay(String name, String resourceBundle, String language, SimpleObjectProperty<?> property, Object object) {
 		super(name, resourceBundle);
 		myResources= ResourceBundle.getBundle(language);
-		setImage = Utilities.makeButton(name, e->changeImage());
+		setImage = Utilities.makeButton(myResources.getString(name), e->changeImage());
 		this.property=(SimpleObjectProperty<String>) property;
 		this.preview=new ImageView();
 		setImage(new File(this.property.getValue()));
@@ -45,7 +45,7 @@ public class GuiObjectImageDisplay extends GuiObject {
 		}
 		property.setValue(file.getPath());
 		preview.setImage(new Image(file.toURI().toString()));
-		preview.setFitHeight(100);
+		preview.setFitHeight(GUISize.PREVIEW_SIZE.getSize());
 		preview.setPreserveRatio(true);
 	}
 
