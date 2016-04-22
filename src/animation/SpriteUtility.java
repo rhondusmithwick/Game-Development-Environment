@@ -365,9 +365,10 @@ class SpriteUtility {
         rectDrawer.setStroke(Color.BLACK);
         scene.setOnKeyPressed(this::keyPress);
 
-        Dragger.makeDraggable(rectDrawer);
+        //makeSelected(rectDrawer);
+
         spriteGroup.getChildren().add(rectDrawer);
-        makeSelected(rectDrawer);
+
         return rectDrawer;
     }
 
@@ -384,6 +385,7 @@ class SpriteUtility {
         }else if (keycode == KeyCode.DOWN){
         	selectedRectangle.setLayoutY(selectedRectangle.getLayoutY()-5);
         }
+
     }
 
 	private Image initFileChooser() {
@@ -394,12 +396,19 @@ class SpriteUtility {
 
 
     private void mouseReleased(MouseEvent event) {
+
+    	rectDrawer.widthProperty().unbind();
+        rectDrawer.heightProperty().unbind();
+        Dragger.makeDraggable(rectDrawer);
+        spriteImageView.setCursor(Cursor.DEFAULT);
+
     	if (changeColorProperty.get()){
 			canvas.setCursor(Cursor.CROSSHAIR);
     	}else{
     		canvas.setCursor(Cursor.DEFAULT);
     	}
     	
+
     }
 
     private void mousePressed(MouseEvent event) {

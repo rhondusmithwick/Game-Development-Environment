@@ -25,7 +25,7 @@ public class DragAndResize {
 	private double clickY;
 	private double minW;
 	private double minH;
-	
+
 	private Node node;
 	private Rectangle shape;
 	private Position position;
@@ -72,39 +72,39 @@ public class DragAndResize {
 	public static void makeResizable(ImagePath component, Position aPos) {
 		final DragAndResize resizer = new DragAndResize(component, aPos);
 		ImageView anImage = component.getImageView();
-		set(anImage,resizer);
+		set(anImage, resizer);
 	}
-	
-	public static void makeResizable(Rectangle aShape){
+
+	public static void makeResizable(Rectangle aShape) {
 		final DragAndResize resizer = new DragAndResize(aShape);
-		set(aShape,resizer);
+		set(aShape, resizer);
 	}
-	
-	public static void set(Node node, DragAndResize resizer){
-	node.setOnMousePressed(new EventHandler<MouseEvent>() {
-		@Override
-		public void handle(MouseEvent event) {
-			resizer.mousePressed(event);
-		}
-	});
-	node.setOnMouseDragged(new EventHandler<MouseEvent>() {
-		@Override
-		public void handle(MouseEvent event) {
-			resizer.mouseDragged(event);
-		}
-	});
-	node.setOnMouseMoved(new EventHandler<MouseEvent>() {
-		@Override
-		public void handle(MouseEvent event) {
-			resizer.mouseOver(event);
-		}
-	});
-	node.setOnMouseReleased(new EventHandler<MouseEvent>() {
-		@Override
-		public void handle(MouseEvent event) {
-			resizer.mouseReleased(event);
-		}
-	});
+
+	public static void set(Node node, DragAndResize resizer) {
+		node.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				resizer.mousePressed(event);
+			}
+		});
+		node.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				resizer.mouseDragged(event);
+			}
+		});
+		node.setOnMouseMoved(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				resizer.mouseOver(event);
+			}
+		});
+		node.setOnMouseReleased(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				resizer.mouseReleased(event);
+			}
+		});
 	}
 
 	protected void mouseOver(MouseEvent event) {
