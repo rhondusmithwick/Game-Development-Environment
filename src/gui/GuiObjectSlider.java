@@ -20,7 +20,7 @@ public class GuiObjectSlider extends GuiObject{
 	public GuiObjectSlider(String name, String resourceBundle,String language, SimpleObjectProperty<?> property, Object object) {
 		super(name, resourceBundle);
 		this.myResources = ResourceBundle.getBundle(language);
-		slider = new Slider(Integer.parseInt(getResourceBundle().getString(name+"Min")),Integer.parseInt(getResourceBundle().getString(name+ "Max")), (double) object); 
+		slider = new Slider(Integer.parseInt(getResourceBundle().getString(name+"Min")),Integer.parseInt(getResourceBundle().getString(name+ "Max")), (Double) object); 
 		slider.setShowTickMarks(true);
 		slider.setBlockIncrement(Integer.parseInt(getResourceBundle().getString(name+"Increment")));
 		slider.setValue((Double) property.getValue());
