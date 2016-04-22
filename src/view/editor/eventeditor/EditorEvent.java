@@ -69,9 +69,20 @@ public class EditorEvent extends Editor
 	
 	public void populateLayout() {}
 
-
+	@Override
 	public ScrollPane getPane() 
 	{
 		return scrollPane;
 	}
+
+	@Override
+	public void loadDefaults() {}
+
+	@Override
+	public void addSerializable(ISerializable serialize) 
+	{}
+
+	@Override
+	public void updateEditor() {}
+	
 }

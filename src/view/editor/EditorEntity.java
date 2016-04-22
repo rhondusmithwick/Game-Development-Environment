@@ -102,8 +102,6 @@ public class EditorEntity extends Editor{
 		entityList.add(serialize);
 		editorPane.getChildren().clear();
 		editorPane.getChildren().add((saveMessage(myResources.getString("saveMessage"))));
-		
-
 	}
 
 	private void removeBinding(IComponent e) {

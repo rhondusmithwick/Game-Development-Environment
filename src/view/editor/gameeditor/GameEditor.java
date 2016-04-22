@@ -134,6 +134,4 @@ public class GameEditor extends Editor  {
 	@Override
 	public void loadDefaults() {}
 
-
-
 }
