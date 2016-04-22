@@ -3,7 +3,6 @@ package view.beginningmenus;
 import java.io.File;
 import java.util.List;
 
-import enums.GUISize;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -13,6 +12,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import view.enums.DefaultStrings;
+import view.enums.GUISize;
 
 public abstract class StartUpMenu {
 
@@ -22,10 +23,8 @@ public abstract class StartUpMenu {
 	private VBox myVBox;
 	private Media media;
 	private MediaPlayer mediaPlayer;
-	private static final String MUSIC = "resources/music/";
-	private static final String CSS = "resources/cssFiles/";
-	private static final String MAIN_THEME = "finalCountdown.mp3";
-	private static final String MAIN_CSS = "main.css";
+
+
 	private ScrollPane scrollPane;
 	
 	public StartUpMenu(Stage myStage){
@@ -34,8 +33,8 @@ public abstract class StartUpMenu {
 
 	public void init() {
 		myScene = new Scene(createDisplay(), GUISize.MAIN_SIZE.getSize(), GUISize.MAIN_SIZE.getSize());
-		myScene.getStylesheets().add(new File(CSS + MAIN_CSS).toURI().toString());
-		setMusic(MUSIC + MAIN_THEME);
+		myScene.getStylesheets().add(new File(DefaultStrings.CSS_LOCATION.getDefault() + DefaultStrings.MAIN_CSS.getDefault()).toURI().toString());
+		setMusic(DefaultStrings.MUSIC.getDefault() + DefaultStrings.THEME.getDefault());
 		myStage.setScene(myScene);
 		myStage.show();
 	}

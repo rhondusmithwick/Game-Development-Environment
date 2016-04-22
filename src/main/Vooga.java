@@ -4,8 +4,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.ResourceBundle;
 
-import enums.DefaultStrings;
-import javafx.scene.Group;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
@@ -17,6 +15,7 @@ import javafx.stage.Stage;
 import view.Utilities;
 import view.beginningmenus.AuthoringStartUp;
 import view.beginningmenus.StartUpMenu;
+import view.enums.DefaultStrings;
 import view.gameplaying.GamePlayer;
 
 public class Vooga extends StartUpMenu {

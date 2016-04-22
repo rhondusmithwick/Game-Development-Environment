@@ -1,4 +1,4 @@
-package enums;
+package view.enums;
 
 import javafx.geometry.Insets;
 
