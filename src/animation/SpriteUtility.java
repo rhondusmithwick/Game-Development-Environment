@@ -119,9 +119,14 @@ class SpriteUtility {
         addButton(UtilityUtilities.makeButton("Delete Frame",e -> deleteFrame(selectedRectangle)), buttonBox);
         activateTransparencyButton  = UtilityUtilities.makeButton("Activate Transparency", e-> makeTransparent());
         addButton(activateTransparencyButton, buttonBox);
+        addButton(UtilityUtilities.makeButton("Save Image", e-> saveImage(spriteImage)),buttonBox);
     }
 
-    private void makeTransparent() {
+    private void saveImage(ImageView image) {
+    	//Save this shit
+	}
+
+	private void makeTransparent() {
     	if (changeColorProperty.get()){
     		activateTransparencyButton.setText("Activate Transparency");
     		changeColorProperty.set(false);
