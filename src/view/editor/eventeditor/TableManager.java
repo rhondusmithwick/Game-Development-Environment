@@ -4,6 +4,8 @@ import java.util.ResourceBundle;
 
 import api.IComponent;
 import api.ISerializable;
+import events.InputSystem;
+import events.PropertyTrigger;
 import events.Trigger;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
@@ -21,9 +23,13 @@ public class TableManager
 	private IComponent component;
 	private int propertyIndex;
 	private String language;
-	private EditorEvent editor;
+	private PropertyEventEditor editor;
+	private final InputSystem inputSystem;
+	private final ObservableList<ISerializable> environmentList;
 	
-	public TableManager(ObservableList<ISerializable> entityList, String language, EditorEvent editor)
+	public TableManager(ObservableList<ISerializable> entityList, String language, 
+			PropertyEventEditor editor, ObservableList<ISerializable> environmentList,
+			InputSystem inputSystem)
 	{
 		container = new HBox();
 		this.language = language;
@@ -31,6 +37,8 @@ public class TableManager
 		componentTable = new ComponentTable(this, language);
 		propertyTable = new PropertyTable(this, language);
 		this.editor = editor;
+		this.environmentList = environmentList;
+		this.inputSystem = inputSystem; 
 		
 		
 		setDefaultTriggerString(null);
@@ -40,6 +48,8 @@ public class TableManager
 	public void entityWasClicked(Entity entity)
 	{
 		setDefaultTriggerString(null);
+		componentTable.refreshTable();
+		propertyTable.refreshTable();
 		componentTable.fillEntries(entity);
 		this.entity = entity;
 	}
@@ -47,6 +57,7 @@ public class TableManager
 	public void componentWasClicked(IComponent component)
 	{
 		setDefaultTriggerString(null);
+		propertyTable.refreshTable();
 		propertyTable.fillEntries(component);
 		this.component = component;
 	}
@@ -61,8 +72,10 @@ public class TableManager
 		editor.triggerSet(entity.getName() + " - " + 
 				splitClassName[splitClassName.length - 1] + " - " + 
 				property.getName(),
-				null);
-				//new Trigger(entity.getID(), component, propertyIndex, null) );	// TODO: universe...!?
+				// new PropertyTrigger(entity.getID(), component, propertyIndex, (IEntitySystem)environmentList.get(0), inputSystem)
+				null
+				);	
+	
 	}
 	
 	private void fillLayout()
