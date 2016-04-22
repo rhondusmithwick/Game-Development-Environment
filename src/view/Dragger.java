@@ -1,13 +1,13 @@
 package view;
 
-import javafx.beans.binding.DoubleExpression;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ObservableValue;
+import javafx.beans.value.WritableDoubleValue;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 
 public class Dragger {
 
@@ -21,14 +21,20 @@ public class Dragger {
 
 	private boolean resizing;
 
-	private DoubleProperty rectX = new SimpleDoubleProperty();
-	private DoubleProperty rectY = new SimpleDoubleProperty();
+	private DoubleProperty rectWidth = new SimpleDoubleProperty();
+	private DoubleProperty rectHeight = new SimpleDoubleProperty();
+
+	private WritableDoubleValue rectX;
+
+	private WritableDoubleValue rectY;
 
 
 	private Dragger(Rectangle rectangle) {
 		rect = rectangle;
-		//rect.widthProperty().bind(rectX.subtract(rectinitX));
-		//rect.heightProperty().bind(rectY.subtract(rectinitY));
+		//rectWidth.set(rect.getWidth());
+		//rectHeight.set(rect.getHeight());
+		//rect.widthProperty().bind(rectWidth );
+		//rect.heightProperty().bind(rectHeight);
 	}
 
 	private void setInitialCoordinates(MouseEvent event) {
@@ -67,23 +73,32 @@ public class Dragger {
 
 	protected void mouseOver(MouseEvent event) {
 		setInitialCoordinates(event);
-		//if (isInResizeZone(event)) {
-			//rect.setCursor(Cursor.S_RESIZE);
-		//} else {
-			//rect.setCursor(Cursor.OPEN_HAND);
-		//}
+		if (isInResizeZone(event)) {
+			rect.setCursor(Cursor.SE_RESIZE);
+		} else {
+			rect.setCursor(Cursor.OPEN_HAND);
+		}
 	}
 
 	protected void mousePressed(MouseEvent event) {
-		//if (isInResizeZone(event)) {
-			//rect.setCursor(Cursor.S_RESIZE);
-			//resizing = true;
-		//} else {
+		if (isInResizeZone(event)) {
+			rect.setCursor(Cursor.SE_RESIZE);
+			resizing = true;
+		} else {
 			rect.setCursor(Cursor.CLOSED_HAND);
 			dragging = true;
-		//}
+		}
 		setInitialCoordinates(event);
 
+	}
+
+	private boolean isInResizeZone(MouseEvent event) {
+		double innerBottomSide = rect.getY()+rect.getHeight() - margin;
+		double outerBottomSide = rect.getY()+rect.getHeight(); 
+		double innerRightSide = rect.getX() + rect.getWidth() - margin;
+		double outerRightSide = rect.getX() + rect.getWidth();
+		return ((event.getY() > innerBottomSide) && (event.getY() < outerBottomSide) &&
+				(event.getX() > innerRightSide) && (event.getX() < outerRightSide));
 	}
 
 	protected void mouseDragged(MouseEvent event) {
@@ -92,8 +107,8 @@ public class Dragger {
 			rect.setY(event.getY());
 			return;
 		} else if (resizing) {
-			rectX.set(event.getX());
-			rectY.set(event.getY());
+			rect.widthProperty().set(event.getX() - rect.getX());
+			rect.heightProperty().set(event.getY() - rect.getY());
 		}
 	}
 

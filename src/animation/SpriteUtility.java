@@ -49,7 +49,6 @@ class SpriteUtility {
     private VBox animationPropertiesBox;
     private VBox buttonBox;
     private SubScene spriteScene;
-    private double margin = 8;
 
     private Rectangle rect;
 
@@ -334,8 +333,7 @@ class SpriteUtility {
         rect.heightProperty().bind(rectY.subtract(rectinitY));
         rect.setFill(Color.TRANSPARENT);
         rect.setStroke(Color.BLACK);
-
-        Dragger.makeDraggable(rect);
+        
         spriteGroup.getChildren().add(rect);
         return rect;
     }
@@ -345,37 +343,17 @@ class SpriteUtility {
                 "Choose a spritesheet");
         return new Image(spriteSheet.toURI().toString());
     }
-    
-	protected boolean isInResizeZone(MouseEvent event) {
-		return isInBottomResize(event);
-	}
-
-	private boolean isInBottomResize(MouseEvent event) {
-		double innerBottomSide = rect.getY() + rect.getHeight();
-		System.out.println("inner bottom side " + innerBottomSide);
-		double outerBottomSide = rect.getY() + rect.getBoundsInParent().getHeight() + margin;
-		System.out.println("outer bottom side " + outerBottomSide);
-		System.out.println("event X" + event.getX());
-		System.out.println("event Y" + event.getY());
-		return ((event.getY() > innerBottomSide) && (event.getY() < outerBottomSide));
-	}
-    
 
     private void initImageViewHandlers(ImageView spriteImage) {
         spriteImage.setOnMouseDragged(this::mouseDragged);
         spriteImage.setOnMousePressed(this::mousePressed);
         spriteImage.setOnMouseReleased(this::mouseReleased);
-        spriteImage.setOnMouseMoved(this::mouseOver);
     }
-    
-    private void mouseOver(MouseEvent event){
-    		if (isInResizeZone(event)) {
-			rect.setCursor(Cursor.S_RESIZE);
-		} 
-    }
-    
 
     private void mouseReleased(MouseEvent event) {
+    		rect.widthProperty().unbind();
+        rect.heightProperty().unbind();
+        Dragger.makeDraggable(rect);
         spriteImage.setCursor(Cursor.DEFAULT);
     }
 
