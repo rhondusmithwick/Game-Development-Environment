@@ -76,7 +76,7 @@ class SpriteUtility {
     private Group spriteGroup;
 	private Rectangle selectedRectangle;
 
-    private final SimpleObjectProperty<Boolean> changeColor = new SimpleObjectProperty<>(this, "ChangeColor", true);
+    private final SimpleObjectProperty<Boolean> changeColor = new SimpleObjectProperty<>(this, "ChangeColor", false);
 
     public void init(Stage stage, Dimension2D dimensions) {
         mainPane = new BorderPane();

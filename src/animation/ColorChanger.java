@@ -72,5 +72,4 @@ public final class ColorChanger {
         return reader.getColor(x, y);
     }
 
-
 }
