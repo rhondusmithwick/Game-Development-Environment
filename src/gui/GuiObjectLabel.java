@@ -1,29 +1,22 @@
 package gui;
 
 
-import javafx.beans.property.Property;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-
+import java.util.ResourceBundle;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Label;
 
 
 public class GuiObjectLabel extends GuiObject{
 	private Label myLabel;
+	private ResourceBundle myResources;
 	
-	public GuiObjectLabel(String name, String resourceBundle,EventHandler<ActionEvent> event, Property<?> property) {
+	public GuiObjectLabel(String name, String resourceBundle,String language, SimpleObjectProperty<?> property, Object object) {
 		super(name, resourceBundle);
-		myLabel = new Label(getResourceBundle().getString(getObjectName()+ "LABEL"));
-		bindProperty(property);
+		myResources = ResourceBundle.getBundle(language);
+		myLabel = new Label(myResources.getString(name) + myResources.getString("true"));
 
 	}
 
-
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	private void bindProperty(Property property) {
-		myLabel.textProperty().bind(property);
-		
-	}
 
 
 	@Override
