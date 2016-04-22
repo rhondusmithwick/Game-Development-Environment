@@ -1,8 +1,8 @@
 package api;
 
-import datamanagement.XMLReader;
-
 import java.util.List;
+
+import datamanagement.XMLReader;
 
 /**
  * Created by rhondusmithwick on 3/31/16.
@@ -98,6 +98,7 @@ public interface ISystemManager {
 
 	ILevel getUniverse();
 
+	@Deprecated
 	void saveSystem(String filename);
 
 	List<String> getDetails();

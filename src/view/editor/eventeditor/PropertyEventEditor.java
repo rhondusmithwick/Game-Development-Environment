@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import api.IEntity;
+import api.ILevel;
 import api.ISerializable;
 import enums.GUISize;
 import enums.ViewInsets;
@@ -28,6 +29,7 @@ public class PropertyEventEditor extends Editor
 	private final ScrollPane scrollPane;
 	private final VBox pane;
 	private final ResourceBundle myResources;
+	private final LevelPicker levelPicker;
 	
 	private final HashMap<String, Button> actionButtons;
 	private Text triggerText;
@@ -42,9 +44,12 @@ public class PropertyEventEditor extends Editor
 	private Trigger trigger;
 	private Action action;
 	private final InputSystem inputSystem;
+	// private final ObservableList<ILevel> levelList;
 	
-	public PropertyEventEditor(String language, ObservableList<IEntity> masterList)
+	public PropertyEventEditor(String language, ObservableList<IEntity> masterList)//, ObservableList<ILevel> levelList)
 	{
+		// this.levelList = levelList;
+		levelPicker = new LevelPicker(language, null);
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
 		pane.setAlignment(Pos.TOP_LEFT);
@@ -91,11 +96,10 @@ public class PropertyEventEditor extends Editor
 
 	private void makeTables()
 	{
-		
 		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
 
+		container.getChildren().add(levelPicker.getPane());
 		container.getChildren().add(tableManager.getContainer());	
-		container.getChildren().add(makeGroovySide());
 		
 		pane.getChildren().add(container);
 	}
@@ -111,7 +115,7 @@ public class PropertyEventEditor extends Editor
 		makeEventButton.setDisable(true);
 		
 		container.getChildren().addAll(triggerText, actionText, makeEventButton);
-		
+		container.getChildren().add(makeGroovySide());
 		pane.getChildren().add(container);
 	}
 	

@@ -36,6 +36,7 @@ public class TableManager
 		entityTable = new EntityTable(entityList, this, language);
 		componentTable = new ComponentTable(this, language);
 		propertyTable = new PropertyTable(this, language);
+		
 		this.editor = editor;
 		this.inputSystem = inputSystem; 
 		
@@ -73,6 +74,11 @@ public class TableManager
 				new PropertyTrigger(entity.getID(), component.getClass(), propertyName)
 				);	
 	
+	}
+	
+	public void allBoxChanged(String event)
+	{
+		System.out.println(event);
 	}
 	
 	private void fillLayout()
