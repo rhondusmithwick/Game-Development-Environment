@@ -32,13 +32,15 @@ import javafx.scene.shape.Shape;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import model.entity.Level;
-import view.DefaultsMaker;
 import view.DragAndResize;
 import view.Utilities;
+import view.enums.DefaultEntities;
 import view.enums.GUISize;
 
 public class EditorEnvironment extends Editor {
 
+	private static final int SINGLE = 1;
+	private static final int DEPTH = 70;
 	private BorderPane environmentPane;
 	private ILevel myEntitySystem;
 	private SubScene gameScene;
@@ -136,10 +138,10 @@ public class EditorEnvironment extends Editor {
 	public void loadDefaults() {
 		if (Utilities.showAlert(myResources.getString("addDefaults"), myResources.getString("addDefaultsQuestion"),
 				myResources.getString("defaultsMessage"), AlertType.CONFIRMATION)) {
-			masterEntityList.add(DefaultsMaker.loadBackgroundDefault());
+			masterEntityList.add(DefaultEntities.BACKGROUND.getDefault());
 			// entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay));
-			masterEntityList.add(DefaultsMaker.loadCharacter1Default());
-			masterEntityList.add(DefaultsMaker.loadCharacter2Default());
+			masterEntityList.add(DefaultEntities.CHAR_1.getDefault());
+			masterEntityList.add(DefaultEntities.CHAR_2.getDefault());
 		}
 	}
 
@@ -259,13 +261,12 @@ public class EditorEnvironment extends Editor {
 		if (view.getEffect() != null && !alwaysHighlight) {
 			view.setEffect(null);
 		} else {
-			int depth = 70;
 			DropShadow borderGlow = new DropShadow();
 			borderGlow.setOffsetY(0f);
 			borderGlow.setOffsetX(0f);
 			borderGlow.setColor(Color.YELLOW);
-			borderGlow.setWidth(depth);
-			borderGlow.setHeight(depth);
+			borderGlow.setWidth(DEPTH);
+			borderGlow.setHeight(DEPTH);
 			view.setEffect(borderGlow);
 		}
 	}
@@ -316,7 +317,7 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void addPositionComponent(IEntity entity) {
-		entity.setSpec(Position.class, 1);
+		entity.setSpec(Position.class, SINGLE);
 		Position pos = new Position();
 		entity.addComponent(pos);
 	}
@@ -324,7 +325,7 @@ public class EditorEnvironment extends Editor {
 	private void addImagePathComponent(IEntity entity) {
 		File file = Utilities.promptAndGetFile(Utilities.getImageFilters(),
 				myResources.getString("pickImagePathImage"));
-		entity.setSpec(ImagePath.class, 1);
+		entity.setSpec(ImagePath.class, SINGLE);
 		entity.addComponent(new ImagePath(file.getPath()));
 	}
 
