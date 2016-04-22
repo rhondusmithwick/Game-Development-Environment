@@ -7,9 +7,6 @@ import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-
 
 /**
  * Created by rhondusmithwick on 4/21/16.
@@ -23,8 +20,6 @@ public final class ColorChanger {
     private final WritableImage writableImage;
     private final PixelWriter writer;
     private final Point2D startPoint;
-
-    private final ExecutorService service = Executors.newFixedThreadPool(5);
 
     public ColorChanger(Image image, double x, double y, Color newColor) {
         this.newColor = newColor;
@@ -41,7 +36,6 @@ public final class ColorChanger {
 
     private void attemptRecurse(int x, int y) {
         try {
-//          service.submit(() -> recurse(x, y));
             recurse(x, y);
         } catch (StackOverflowError e) {
             return;
@@ -49,14 +43,13 @@ public final class ColorChanger {
     }
 
     private void recurse(int x, int y) {
-        if (!testPoint(x, y)) {
-            return;
-        }
-        writer.setColor(x, y, newColor);
-        for (int i = -1; i <= 1; i++ ) {
-            for (int j = -1; j <= 1; j++) {
-                if (i != 0 || j != 0) {
-                   attemptRecurse(x + i, y + j);
+        if (testPoint(x, y)) {
+            writer.setColor(x, y, newColor);
+            for (int i = -1; i <= 1; i++) {
+                for (int j = -1; j <= 1; j++) {
+                    if (i != 0 || j != 0) {
+                        attemptRecurse(x + i, y + j);
+                    }
                 }
             }
         }
@@ -78,7 +71,6 @@ public final class ColorChanger {
     private Color getColor(int x, int y) {
         return reader.getColor(x, y);
     }
-
 
 
 }
