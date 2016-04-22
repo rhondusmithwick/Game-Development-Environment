@@ -5,13 +5,11 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.event.EventHandler;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
@@ -19,7 +17,6 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.WritableImage;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
@@ -84,6 +81,7 @@ class SpriteUtility {
 	private Canvas canvas;
 	private Scene scene;
 	private Image spriteImage;
+	private ScrollPane spriteScroll;
 
     public void init(Stage stage, Dimension2D dimensions) {
         mainPane = new BorderPane();
@@ -102,7 +100,7 @@ class SpriteUtility {
         buttonBox = new VBox();
         animationPropertiesBox = new VBox();
         spriteGroup = new Group();
-        ScrollPane spriteScroll = new ScrollPane(spriteGroup);
+        spriteScroll = new ScrollPane(spriteGroup);
 
         initNewImage();
         initRectangleDrawer();
@@ -338,6 +336,7 @@ class SpriteUtility {
 			removeSelectEffect(rect);
 			}
 		}
+
 	}
 
 
@@ -363,10 +362,10 @@ class SpriteUtility {
         rectDrawer.heightProperty().bind(rectY.subtract(rectinitY));
         rectDrawer.setFill(Color.TRANSPARENT);
         rectDrawer.setStroke(Color.BLACK);
-        scene.setOnKeyPressed(this::keyPress);
-
-        //makeSelected(rectDrawer);
-
+        
+        spriteGroup.requestFocus(); //ugh someone fix this
+        scene.setOnKeyPressed(this::keyPress); //this line keeps fucking up
+        makeSelected(rectDrawer);
         spriteGroup.getChildren().add(rectDrawer);
 
         return rectDrawer;
@@ -381,9 +380,9 @@ class SpriteUtility {
         }else if (keycode == KeyCode.LEFT){
         	selectedRectangle.setLayoutX(selectedRectangle.getLayoutX()-5);
         }else if (keycode == KeyCode.UP){
-        	selectedRectangle.setLayoutY(selectedRectangle.getLayoutY()+5);
-        }else if (keycode == KeyCode.DOWN){
         	selectedRectangle.setLayoutY(selectedRectangle.getLayoutY()-5);
+        }else if (keycode == KeyCode.DOWN){
+        	selectedRectangle.setLayoutY(selectedRectangle.getLayoutY()+5);
         }
 
     }
