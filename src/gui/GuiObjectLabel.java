@@ -4,7 +4,7 @@ package gui;
 import javafx.beans.property.Property;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.control.Control;
+
 import javafx.scene.control.Label;
 
 
@@ -19,6 +19,7 @@ public class GuiObjectLabel extends GuiObject{
 	}
 
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	private void bindProperty(Property property) {
 		myLabel.textProperty().bind(property);
 		
@@ -30,10 +31,7 @@ public class GuiObjectLabel extends GuiObject{
 		return myLabel.getText();
 	}
 
-	@Override
-	public Control getControl() {
-		return myLabel;
-	}
+
 
 	@Override
 	public Object getGuiNode() {

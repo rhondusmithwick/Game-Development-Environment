@@ -5,9 +5,9 @@ import java.util.ResourceBundle;
 
 import api.IComponent;
 import api.IEntity;
-import enums.DefaultStrings;
 import model.entity.Entity;
 import view.Utilities;
+import view.enums.DefaultStrings;
 
 public class EntityFactory {
 	
