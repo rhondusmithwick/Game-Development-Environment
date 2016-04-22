@@ -8,7 +8,7 @@ import javafx.beans.property.SimpleObjectProperty;
 /**
  * This is part of my masterpiece code. I reused this from my CellSociety project. This class introduces polymorphism and abstraction to the GUI elements. 
  * This Factory class creates GuiObjects that are linked to an agent. 
- * @author Melissa Zhang
+ * @author Melissa Zhang, Ben Zhang, Cali Nelson
  *
  */
 

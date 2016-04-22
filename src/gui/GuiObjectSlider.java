@@ -4,7 +4,6 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.control.Control;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.VBox;
@@ -44,13 +43,6 @@ public class GuiObjectSlider extends GuiObject{
 	@Override
 	public Object getCurrentValue() {
 		return slider.getValue();
-	}
-
-
-
-	@Override
-	public Control getControl() {
-		return slider;
 	}
 
 

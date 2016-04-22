@@ -5,7 +5,6 @@ import java.util.ResourceBundle;
 import enums.GUISize;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
@@ -54,11 +53,6 @@ public class GuiObjectImageDisplay extends GuiObject {
 	@Override
 	public Object getCurrentValue() {
 		return property.getValue();
-	}
-
-	@Override
-	public Control getControl() {
-		return null;
 	}
 
 	@Override
