@@ -1,15 +1,12 @@
 package view.editor;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Set;
-import java.util.AbstractMap.SimpleEntry;
-import java.util.regex.Pattern;
-
 import view.Utilities;
 import gui.GuiObject;
 import gui.GuiObjectFactory;
@@ -23,8 +20,6 @@ import javafx.scene.control.TextField;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import api.IComponent;
 import api.IEntity;
 import api.ISerializable;
@@ -37,17 +32,18 @@ import enums.GUISize;
  */
 
 public class EditorEntity extends Editor{
-	
+
 	private GridPane editorPane;
 	private IEntity myEntity;
 	private String myLanguage;
 	private ObservableList<ISerializable> entityList;
 	private Button saveButton, addButton;
-	private ResourceBundle myResources;
+	private ResourceBundle myResources, myLocs;
 	private TextField name;
 	private ScrollPane scrollPane;
 	private int row = 0;
 	private int column = 0;
+	private int maxColumns = GUISize.GRIDPANE_COLUMNS.getSize();
 	private ComboBox<String> componentBox;
 	private List<String> myComponents;
 	private HBox container;
@@ -57,30 +53,31 @@ public class EditorEntity extends Editor{
 		scrollPane = new ScrollPane(editorPane);
 		myComponents = new ArrayList<String>();
 		myLanguage = language;
-		container = new HBox(5);
+		container = new HBox(GUISize.ENTITY_EDITOR_PADDING.getSize());
 		myResources = ResourceBundle.getBundle(language);
 		myEntity = (Entity) toEdit;
 		entityList = addToList;
-		editorPane.setHgap(10);
+		editorPane.setHgap(GUISize.ENTITY_EDITOR_PADDING.getSize());
+		editorPane.setVgap(GUISize.ENTITY_EDITOR_PADDING.getSize());
 		//System.out.println(language);
-		getComponents("propertyFiles/componentLocations");
-		System.out.println(myComponents);
+		getComponents(DefaultStrings.COMPONENT_LOC.getDefault());
+		//System.out.println(myComponents);
 	}
-	
+
 	private void getComponents(String loc) {
-        ResourceBundle resources = ResourceBundle.getBundle(loc);
-        Enumeration<String> iter = resources.getKeys();
-        while(iter.hasMoreElements()) {
-        	//String key = iter.nextElement();
-        	//System.out.println(key);
-            myComponents.add(iter.nextElement());
-        }
-    }
+		myLocs = ResourceBundle.getBundle(loc);
+		Enumeration<String> iter = myLocs.getKeys();
+		while(iter.hasMoreElements()) {
+			//String key = iter.nextElement();
+			//System.out.println(key);
+			myComponents.add(iter.nextElement());
+		}
+	}
 
 	@Override
 	public void loadDefaults() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -93,42 +90,57 @@ public class EditorEntity extends Editor{
 		name = Utilities.makeTextArea(myResources.getString("enterName"));
 		name.setText(myEntity.getName());
 		editorPane.add(name, column++, row);
-		GuiObjectFactory guiFactory = new GuiObjectFactory(myLanguage);
 		Collection<IComponent> componentList = myEntity.getAllComponents();
 		for (IComponent component: componentList){
-			for (SimpleObjectProperty<?> property: component.getProperties()){
-				GuiObject object = guiFactory.createNewGuiObject(property.getName(), property, property.getValue());
-				if (object!=null){
-					editorPane.add((Node) object.getGuiNode(), column++, row);
-					if(column > 4) {
-						row++;
-						column = 0;
-					}
-					myComponents.remove(property.getName());
-				}
-			}
+			addObject(component);
 		}
 		saveButton = Utilities.makeButton(myResources.getString("saveEntity"), e-> addSerializable(myEntity));
 		addButton = Utilities.makeButton(myResources.getString("addComponent"), e-> addComponent());
-		editorPane.add(saveButton, 2, row+1);
-//		editorPane.add(addButton, 3, row);
+		editorPane.add(saveButton, maxColumns/2, row+1);
+		//		editorPane.add(addButton, 3, row);
 		componentBox = Utilities.makeComboBox(myResources.getString("chooseComponent"), myComponents, null);
 		container.getChildren().addAll(Arrays.asList(componentBox, addButton));
-		editorPane.add(container, 3, row+1);
-		System.out.println(myComponents);
+		editorPane.add(container, maxColumns/2+1, row+1);
+		//System.out.println(myComponents);
 	}
-	
+
+	private void addObject(IComponent component) {
+		GuiObjectFactory guiFactory = new GuiObjectFactory(myLanguage);
+		for (SimpleObjectProperty<?> property: component.getProperties()){
+			GuiObject object = guiFactory.createNewGuiObject(property.getName(), property, property.getValue());
+			if (object!=null){
+				editorPane.add((Node) object.getGuiNode(), column++, row);
+				if(column > maxColumns) {
+					row++;
+					column = 0;
+				}
+				//System.out.println(property.getName());
+				myComponents.remove(property.getName());
+			}
+		}
+		//System.out.println(myComponents);
+	}
+
 	private void addComponent() {
-//		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
-//
-//		templateBox = Utilities.makeComboBox(myResources.getString("chooseComponent"), list, null);
+		//		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
+		//
+		//		templateBox = Utilities.makeComboBox(myResources.getString("chooseComponent"), list, null);
 		String selected = componentBox.getSelectionModel().getSelectedItem();
 		componentBox.getSelectionModel().clearSelection();
+		componentBox.getItems().remove(selected);
 		if(selected != null) {
-			
+			try {
+				//String a = ResourceBundle.getBundle("propertyFiles/componentLocations").getString(selected);
+				IComponent component = (IComponent) Class.forName(myLocs.getString(selected)).getConstructor().newInstance();
+				//System.out.println(a);
+				myEntity.addComponent(component);
+				addObject(component);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
-	
+
 
 	@Override
 	public void updateEditor() {
@@ -143,7 +155,7 @@ public class EditorEntity extends Editor{
 		entityList.add(serialize);
 		editorPane.getChildren().clear();
 		editorPane.getChildren().add((saveMessage(myResources.getString("saveMessage"))));
-		
+
 
 	}
 
