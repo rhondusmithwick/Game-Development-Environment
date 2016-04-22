@@ -134,8 +134,7 @@ public class EditorEnvironment extends Editor {
 		addToScene(entity);
 	}
 
-	@Override
-	public void loadDefaults() {
+	private void loadDefaults() {
 		if (Utilities.showAlert(myResources.getString("addDefaults"), myResources.getString("addDefaultsQuestion"),
 				myResources.getString("defaultsMessage"), AlertType.CONFIRMATION)) {
 			masterEntityList.add(DefaultEntities.BACKGROUND.getDefault());
@@ -342,11 +341,6 @@ public class EditorEnvironment extends Editor {
 	@Override
 	public ScrollPane getPane() {
 		return scrollPane;
-	}
-
-	@Override
-	public void addSerializable(ISerializable serialize) {
-		myEntitySystem.addEntity((IEntity) serialize);
 	}
 
 	public boolean displayContains(IEntity checkEntity) {

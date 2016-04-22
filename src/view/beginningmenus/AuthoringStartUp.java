@@ -15,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import view.Authoring;
 import view.Utilities;
+import view.enums.DefaultStrings;
 import view.enums.GUISize;
 
 public class AuthoringStartUp extends StartUpMenu {
@@ -44,9 +45,9 @@ public class AuthoringStartUp extends StartUpMenu {
 	}
 	
 	private void addImage() {
-		Image image = new Image(new File("resources/testing/RhonduSmithwick.JPG").toURI().toString());
+		Image image = new Image(new File(DefaultStrings.RHONDU.getDefault()).toURI().toString());
 		ImageView imageView = new ImageView(image);
-		imageView.setFitHeight(300);
+		imageView.setFitHeight(GUISize.INTRO_PIC.getSize());
 		imageView.setPreserveRatio(true);
 		super.addNodesToVBox(Arrays.asList(imageView));
 	}
@@ -54,7 +55,7 @@ public class AuthoringStartUp extends StartUpMenu {
 	private void loadGame(){
 		HBox container = new HBox(GUISize.ORIG_MENU_PADDING.getSize());
 		container.setAlignment(Pos.CENTER);
-		games = Utilities.makeComboBox(myResources.getString("chooseGame"), Utilities.getAllFromDirectory("resources/createdGames"), null);
+		games = Utilities.makeComboBox(myResources.getString("chooseGame"), Utilities.getAllFromDirectory(DefaultStrings.CREATE_LOC.getDefault()), null);
 		Button loadGame = Utilities.makeButton(myResources.getString("loadGame"), e->createAuthoringFromFile());
 		container.getChildren().addAll(games, loadGame);
 		super.addNodesToVBox(Arrays.asList(container));

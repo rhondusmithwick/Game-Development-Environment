@@ -18,17 +18,17 @@ public class GameSaver {
 	@SuppressWarnings("unchecked")
 	public void saveGame(ObservableList<ILevel> levels, ObservableList<IEntity> entityList, List<String> details){
 		String fileName = getDirectory(details);
-		new XMLWriter<List<String>>().writeToFile(fileName + "/metadata.xml", details);
-		new XMLWriter<List<IEntity>>().writeToFile(fileName+"/entities.xml", new ArrayList<IEntity>(entityList));
+		new XMLWriter<List<String>>().writeToFile(fileName + DefaultStrings.METADATA_LOC.getDefault(), details);
+		new XMLWriter<List<IEntity>>().writeToFile(fileName+DefaultStrings.ENTITIES_LOC.getDefault(), new ArrayList<IEntity>(entityList));
 		saveLevels(levels, fileName);
 	}
 
 
 	private void saveLevels(ObservableList<ILevel> levels, String fileName) {
-		File levelFile = new File(fileName + "/levels");
+		File levelFile = new File(fileName + DefaultStrings.LEVELS_LOC.getDefault());
 		levelFile.mkdirs();
 		for(ILevel level: levels){
-			new XMLWriter<ILevel>().writeToFile(fileName + "/levels/" + level.getName() + ".xml", level);
+			new XMLWriter<ILevel>().writeToFile(fileName + DefaultStrings.LEVELS_LOC.getDefault() + level.getName() + DefaultStrings.XML.getDefault(), level);
 		}
 	}
 

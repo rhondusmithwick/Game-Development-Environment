@@ -4,7 +4,6 @@ import java.util.ResourceBundle;
 
 import api.IEntity;
 import api.ILevel;
-import api.ILevel;
 import api.ISerializable;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;

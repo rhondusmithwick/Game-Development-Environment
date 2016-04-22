@@ -39,10 +39,7 @@ public class GameDetails {
 		name = (TextField) nameBox.getChildren().get(1);
 		descriptionBox = createTextEntry("gDesc");
 		desc = (TextField) descriptionBox.getChildren().get(1);
-		//nameBox.getStyleClass().add("hbox");
-		//descriptionBox.getStyleClass().add("hbox");
 		showIcon();
-		//iconBox.getStyleClass().add("hbox");
 		
 	}
 

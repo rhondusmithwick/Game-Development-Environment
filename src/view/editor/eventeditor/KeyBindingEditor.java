@@ -99,11 +99,6 @@ public class KeyBindingEditor extends Editor
 		keyInputText.setText("Listening....");
 	}
 	
-	@Override
-	public void loadDefaults() {
-		// TODO Auto-generated method stub
-		
-	}
 
 	@Override
 	public ScrollPane getPane() 
@@ -120,8 +115,6 @@ public class KeyBindingEditor extends Editor
 		scrollPane.setContent(pane);
 	}
 
-	@Override
-	public void addSerializable(ISerializable serialize) {}
 
 	@Override
 	public void updateEditor() {}

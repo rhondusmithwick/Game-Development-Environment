@@ -22,7 +22,11 @@ public enum GUISize {
 	SCROLL_PAD(5),
 	VOOGA_PAD(10),
 	EVENT_EDITOR_TABLE_WIDTH(AUTHORING_WIDTH.getSize()/4 - 10),
-	SAVE_MESSAGE_FONT(40);
+	SAVE_MESSAGE_FONT(40), 
+	INTRO_PIC(300), 
+	HALF(2), 
+	ONE(1), 
+	HALF_COLUMNS(3/2);
 
 
     private final int size;

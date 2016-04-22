@@ -146,12 +146,6 @@ public class PropertyEventEditor extends Editor
 	}
 
 	@Override
-	public void loadDefaults() {}
-
-	@Override
-	public void addSerializable(ISerializable serialize) {}
-
-	@Override
 	public void updateEditor() {}
 	
 }
