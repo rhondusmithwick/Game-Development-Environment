@@ -43,23 +43,27 @@ public final class ColorChanger {
     }
 
     private void recurse(int x, int y) {
-        if (testPoint(x, y)) {
+        if (shouldChangeColor(x, y)) {
             writer.setColor(x, y, newColor);
-            for (int i = -1; i <= 1; i++) {
-                for (int j = -1; j <= 1; j++) {
-                    if (i != 0 || j != 0) {
-                        attemptRecurse(x + i, y + j);
+            sweep(x, y);
+        }
+    }
+
+    private void sweep(int x, int y) {
+        for (int i = -1; i <= 1; i++) {
+            for (int j = -1; j <= 1; j++) {
+                if (i != 0 || j != 0) {
+                    int newX = x + i;
+                    int newY = y + j;
+                    if (isValid(newX, newY)) {
+                        attemptRecurse(newX, newY);
                     }
                 }
             }
         }
     }
 
-    private boolean testPoint(int x, int y) {
-        if (x < 0 || x >= writableImage.getWidth() ||
-                y < 0 || y >= writableImage.getHeight()) {
-            return false;
-        }
+    private boolean shouldChangeColor(int x, int y) {
         Color currentColor = getColor(x, y);
         return currentColor.equals(oldColor);
     }
@@ -72,4 +76,10 @@ public final class ColorChanger {
         return reader.getColor(x, y);
     }
 
+    private boolean isValid(int x, int y) {
+        return (x >= 0)
+                && (x < writableImage.getWidth())
+                && (y >= 0)
+                && (y < writableImage.getHeight());
+    }
 }

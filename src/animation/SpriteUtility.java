@@ -1,11 +1,14 @@
 package animation;
 
+
+import static animation.SaveHandler.saveImage;
+import static animation.SaveHandler.saveAnimations;
+
 import javafx.animation.Animation;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.geometry.Dimension2D;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
@@ -33,10 +36,7 @@ import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 import view.Dragger;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -129,22 +129,7 @@ class SpriteUtility {
         addButton(UtilityUtilities.makeButton("Delete Frame", e -> deleteFrame(selectedRectangle)), buttonBox);
         activateTransparencyButton = UtilityUtilities.makeButton("Activate Transparency", e -> makeTransparent());
         addButton(activateTransparencyButton, buttonBox);
-        addButton(UtilityUtilities.makeButton("Save Image", e -> saveImage(spriteImageView)), buttonBox);
-    }
-
-    private void saveImage(ImageView image) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save Image");
-        File file = fileChooser.showSaveDialog(new Stage());
-        if (file != null) {
-            try {
-                BufferedImage imageToWrite = SwingFXUtils.fromFXImage(image.getImage(),
-                        null);
-                ImageIO.write(imageToWrite, "png", file);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        addButton(UtilityUtilities.makeButton("Save Image", e -> saveImage(spriteImageView.getImage())), buttonBox);
     }
 
     private void makeTransparent() {
