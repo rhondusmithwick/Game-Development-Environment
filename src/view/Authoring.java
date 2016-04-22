@@ -5,13 +5,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
-import javafx.scene.layout.Pane;
 import view.editor.gameeditor.GameEditor;
+import view.enums.DefaultStrings;
+import view.enums.GUISize;
 
 import java.io.File;
 import java.util.ResourceBundle;
-
-import enums.GUISize;
 
 public class Authoring {
 		
@@ -19,8 +18,6 @@ public class Authoring {
 		private Scene myScene;
 		private TabPane display;
 		private String language, fileName;
-		private static final String CSS = "resources/cssFiles/";
-		private static final String MAIN_CSS = "main.css";
 
 		/**
 		 * Constructor that takes in the language choice of the user.
@@ -53,7 +50,7 @@ public class Authoring {
 			
 			createTab(gEdit.getPane(), "gDeets", false);
 			myScene = new Scene(display,GUISize.AUTHORING_WIDTH.getSize(), GUISize.AUTHORING_HEIGHT.getSize());
-			myScene.getStylesheets().add(new File(CSS + MAIN_CSS).toURI().toString());
+			myScene.getStylesheets().add(new File(DefaultStrings.CSS_LOCATION.getDefault() + DefaultStrings.MAIN_CSS.getDefault()).toURI().toString());
 			display.prefHeightProperty().bind(height);
 			display.prefWidthProperty().bind(width);
 			return myScene;

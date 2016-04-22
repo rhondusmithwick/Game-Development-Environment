@@ -1,11 +1,17 @@
 .vbox {
-	-fx-background-color: rgb(74, 181, 128);
+	-fx-spacing: 20;
+	-fx-alignment: center;
+}
+
+.grid-pane {
+	-fx-hgap: 10;
+	-fx-vgap: 10;
+	-fx-alignment: center;
 }
 
 .hbox {
-	-fx-background-color: rgb(203, 222, 213);
-	-fx-border-style: dashed;
-	-fx-border-color: white;
+	-fx-spacing: 10;
+	-fx-alignment: center;
 }
 
 .scroll-pane {

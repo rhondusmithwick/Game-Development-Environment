@@ -3,11 +3,9 @@ package view;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
 
@@ -17,15 +15,12 @@ public class DragAndResize {
 
 	private boolean resizing;
 	private boolean dragging;
-	private double parentMinX;
 	private double parentMinY;
 	private double parentHeight;
-	private double parentWidth;
 	private double clickX;
 	private double clickY;
-	private double minW;
 	private double minH;
-	
+
 	private Node node;
 	private Rectangle shape;
 	private Position position;
@@ -38,7 +33,6 @@ public class DragAndResize {
 		this.node = component.getImageView();
 		this.position = aPos;
 		this.shape = new Rectangle();
-		minW = image.minWidth(image.getFitHeight());
 		minH = image.minHeight(image.getFitWidth());
 	}
 
@@ -48,15 +42,12 @@ public class DragAndResize {
 		this.image = new ImageView();
 		this.position = new Position();
 		this.shape = shape;
-		minW = shape.minWidth(0);
 		minH = shape.minHeight(0);
 	}
 
 	private void setInitialCoordinates(MouseEvent event) {
-		parentMinX = node.getBoundsInParent().getMinX();
 		parentMinY = node.getBoundsInParent().getMinY();
 		parentHeight = node.getBoundsInParent().getHeight();
-		parentWidth = node.getBoundsInParent().getWidth();
 		clickX = event.getX();
 		clickY = event.getY();
 	}
@@ -74,37 +65,37 @@ public class DragAndResize {
 		ImageView anImage = component.getImageView();
 		set(anImage,resizer);
 	}
-	
+
 	public static void makeResizable(Rectangle aShape){
 		final DragAndResize resizer = new DragAndResize(aShape);
 		set(aShape,resizer);
 	}
-	
+
 	public static void set(Node node, DragAndResize resizer){
-	node.setOnMousePressed(new EventHandler<MouseEvent>() {
-		@Override
-		public void handle(MouseEvent event) {
-			resizer.mousePressed(event);
-		}
-	});
-	node.setOnMouseDragged(new EventHandler<MouseEvent>() {
-		@Override
-		public void handle(MouseEvent event) {
-			resizer.mouseDragged(event);
-		}
-	});
-	node.setOnMouseMoved(new EventHandler<MouseEvent>() {
-		@Override
-		public void handle(MouseEvent event) {
-			resizer.mouseOver(event);
-		}
-	});
-	node.setOnMouseReleased(new EventHandler<MouseEvent>() {
-		@Override
-		public void handle(MouseEvent event) {
-			resizer.mouseReleased(event);
-		}
-	});
+		node.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				resizer.mousePressed(event);
+			}
+		});
+		node.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				resizer.mouseDragged(event);
+			}
+		});
+		node.setOnMouseMoved(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				resizer.mouseOver(event);
+			}
+		});
+		node.setOnMouseReleased(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				resizer.mouseReleased(event);
+			}
+		});
 	}
 
 	protected void mouseOver(MouseEvent event) {

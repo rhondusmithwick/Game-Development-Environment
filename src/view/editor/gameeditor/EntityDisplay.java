@@ -1,10 +1,11 @@
 package view.editor.gameeditor;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 import api.IEntity;
 import api.ISerializable;
-import enums.DefaultStrings;
-import enums.GUISize;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -16,6 +17,8 @@ import model.entity.Entity;
 import view.Authoring;
 import view.Utilities;
 import view.editor.EditorEntity;
+import view.enums.DefaultStrings;
+import view.enums.GUISize;
 
 public class EntityDisplay extends ObjectDisplay{
 
@@ -24,6 +27,7 @@ public class EntityDisplay extends ObjectDisplay{
 	private ComboBox<String> templateBox;
 	private final EntityFactory entFact = new EntityFactory();
 	private String language;
+	Map<String, String> templates;
 	
 	public EntityDisplay(String language,ObservableList<IEntity> masterEntList, Authoring authEnv){
 		super(language, authEnv,masterEntList);
@@ -56,7 +60,10 @@ public class EntityDisplay extends ObjectDisplay{
 	@Override
 	public Node makeNewObject(){
 		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
-		templateBox = Utilities.makeComboBox(myResources.getString("entType"), Utilities.getAllFromDirectory(DefaultStrings.TEMPLATE_DIREC_LOC.getDefault()), null);
+		templates = new HashMap<>();
+		ResourceBundle tempNames = ResourceBundle.getBundle(language+DefaultStrings.TEMP_LIST.getDefault());
+		Utilities.getAllFromDirectory(DefaultStrings.TEMPLATE_DIREC_LOC.getDefault()).forEach(e-> templates.put(tempNames.getString(e), e));
+		templateBox = Utilities.makeComboBox(myResources.getString("entType"), new ArrayList<String>(templates.keySet()), null);
 		container.getChildren().add(templateBox);
 		
 		container.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENTITY_EDITOR_NAME.getDefault()), 
@@ -64,9 +71,11 @@ public class EntityDisplay extends ObjectDisplay{
 		
 		return container;
 	}
-	
+
+
+
 	private void entityWithTemplate(){
-		String template = templateBox.getSelectionModel().getSelectedItem();
+		String template = templates.get(templateBox.getSelectionModel().getSelectedItem());
 		templateBox.getSelectionModel().clearSelection();
 		if(template == null){
 			return;

@@ -5,11 +5,11 @@ import java.util.List;
 
 import api.IEditor;
 import api.IEntity;
-import enums.GUISize;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 import model.entity.Level;
+import view.enums.GUISize;
 
 public abstract class Editor implements IEditor {
 	private List<IEntity> entityList;

@@ -2,12 +2,12 @@ package view.editor.eventeditor;
 
 import java.util.ResourceBundle;
 
-import enums.GUISize;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import view.enums.GUISize;
 
 public abstract class Table 
 {
