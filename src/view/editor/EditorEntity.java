@@ -49,6 +49,7 @@ public class EditorEntity extends Editor{
 	private HBox dropdownMenu;
 	private VBox container;
 	private GuiObjectFactory guiFactory;
+	private final ComponentFactory componentFactory = new ComponentFactory();
 
 	public EditorEntity(String language, ISerializable toEdit, ObservableList<ISerializable> addToList, ObservableList<ISerializable> emptyList) {
 		editorPane = new GridPane();
@@ -118,18 +119,21 @@ public class EditorEntity extends Editor{
 		String selected = myResources.getString(componentBox.getSelectionModel().getSelectedItem());
 		componentBox.getSelectionModel().clearSelection();
 		componentBox.getItems().remove(selected);
+
 		if(selected != null) {
 			try {
-				IComponent component = (IComponent) Class.forName(myLocs.getString(selected)).getConstructor().newInstance();
+				IComponent component = componentFactory.getComponent(Class.forName(myLocs.getString(selected)), myEntity);
 				myEntity.forceAddComponent(component, true);
 				addObject(component);
 			} catch (Exception e) {
+				e.printStackTrace();
 				Utilities.showError(myResources.getString("error"), myResources.getString("addCompError"));
 			}
 		}
 		adjustMenu();
 	}
 	
+
 	private void adjustMenu() {
 		if(row == GridPane.getRowIndex(container)) {
 			editorPane.getChildren().remove(container);

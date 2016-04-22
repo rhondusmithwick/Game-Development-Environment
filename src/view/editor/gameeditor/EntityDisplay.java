@@ -72,11 +72,12 @@ public class EntityDisplay extends ObjectDisplay{
 
 
 	private void entityWithTemplate(){
-		String template = myResources.getString(templateBox.getSelectionModel().getSelectedItem());
-		templateBox.getSelectionModel().clearSelection();
-		if(template == null){
+		String selected = templateBox.getSelectionModel().getSelectedItem();
+		if(selected == null){
 			return;
 		}
+		String template = myResources.getString(selected);
+		templateBox.getSelectionModel().clearSelection();
 		IEntity newEntity = entFact.createEntity(template, language);
 		createEditor(EditorEntity.class, newEntity, FXCollections.observableArrayList());
 	}
