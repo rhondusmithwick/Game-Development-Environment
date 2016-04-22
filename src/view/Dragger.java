@@ -24,6 +24,7 @@ public class Dragger {
 	private DoubleProperty rectX = new SimpleDoubleProperty();
 	private DoubleProperty rectY = new SimpleDoubleProperty();
 
+
 	private Dragger(Rectangle rectangle) {
 		rect = rectangle;
 		//rect.widthProperty().bind(rectX.subtract(rectinitX));
@@ -75,13 +76,14 @@ public class Dragger {
 
 	protected void mousePressed(MouseEvent event) {
 		//if (isInResizeZone(event)) {
-			rect.setCursor(Cursor.S_RESIZE);
-			resizing = true;
+			//rect.setCursor(Cursor.S_RESIZE);
+			//resizing = true;
 		//} else {
 			rect.setCursor(Cursor.CLOSED_HAND);
 			dragging = true;
 		//}
 		setInitialCoordinates(event);
+
 	}
 
 	protected void mouseDragged(MouseEvent event) {
