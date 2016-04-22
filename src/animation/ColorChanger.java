@@ -1,14 +1,16 @@
 package animation;
 
-import javafx.geometry.Point2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.PixelReader;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 import javafx.scene.paint.Color;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
+import java.util.function.Predicate;
 
 
 /**
@@ -17,67 +19,91 @@ import java.util.Queue;
  * @author Rhondu Smithwick
  */
 public final class ColorChanger {
+
     private final PixelReader reader;
     private final Color newColor;
     private final Color oldColor;
     private final WritableImage writableImage;
     private final PixelWriter writer;
-    private final Point2D startPoint;
+    private final Pixel rootPixel;
+    private final boolean[][] seenMarker;
 
     public ColorChanger(Image image, double x, double y, Color newColor) {
         this.newColor = newColor;
         writableImage = new WritableImage(image.getPixelReader(), (int) image.getWidth(), (int) image.getHeight());
         this.reader = writableImage.getPixelReader();
         this.writer = writableImage.getPixelWriter();
-        this.oldColor = getColor((int) x, (int) y);
-        startPoint = new Point2D(x, y);
+        this.rootPixel = new Pixel((int) x, (int) y);
+        this.oldColor = rootPixel.getColor();
+        this.seenMarker = new boolean[(int) writableImage.getWidth()][(int) writableImage.getHeight()];
     }
 
     public void change() {
-        Queue<Point2D> queue = new LinkedList<>();
-        boolean[][] seenMarker = new boolean[(int) writableImage.getWidth()][(int) writableImage.getHeight()];
-        queue.add(startPoint);
+        Queue<Pixel> queue = new LinkedList<>();
+        queue.add(rootPixel);
         while (!queue.isEmpty()) {
-            Point2D current = queue.poll();
-            int x = (int) current.getX();
-            int y = (int) current.getY();
-            seenMarker[x][y] = true;
-            if (shouldChangeColor(x, y)) {
-                writer.setColor(x, y, newColor);
-                for (int i = -1; i <= 1; i++) {
-                    for (int j = -1; j <= 1; j++) {
-                        if (i != 0 || j != 0) {
-                            int newX = x + i;
-                            int newY = y + j;
-                            if (isValid(newX, newY) && !seenMarker[newX][newY]) {
-                                queue.add(new Point2D(newX, newY));
-                            }
-                        }
-                    }
-                }
+            Pixel current = queue.poll();
+            current.setSeen();
+            if (current.shouldChangeColor()) {
+                current.changeToNewColor();
+                Predicate<Pixel> validNeighbor = (p) -> (p.isValid() && !p.haveSeen());
+                current.getNeighbors().stream()
+                        .filter(validNeighbor)
+                        .forEach(queue::add);
             }
-
         }
-    }
-
-    private boolean shouldChangeColor(int x, int y) {
-        Color currentColor = getColor(x, y);
-        return currentColor.equals(oldColor);
     }
 
     public WritableImage getImage() {
         return writableImage;
     }
 
-    private Color getColor(int x, int y) {
-        return reader.getColor(x, y);
-    }
+    private class Pixel {
+        private final int x;
+        private final int y;
 
-    private boolean isValid(int x, int y) {
-        return (x >= 0)
-                && (x < writableImage.getWidth())
-                && (y >= 0)
-                && (y < writableImage.getHeight());
-    }
+        private Pixel(int x, int y) {
+            this.x = x;
+            this.y = y;
+        }
 
+        private Color getColor() {
+            return reader.getColor(x, y);
+        }
+
+        private void changeToNewColor() {
+            writer.setColor(x, y, newColor);
+        }
+
+        private boolean isValid() {
+            return (x >= 0)
+                    && (x < writableImage.getWidth())
+                    && (y >= 0)
+                    && (y < writableImage.getHeight());
+        }
+
+        private boolean haveSeen() {
+            return seenMarker[x][y];
+        }
+
+        private void setSeen() {
+            seenMarker[x][y] = true;
+        }
+
+        private boolean shouldChangeColor() {
+            return getColor().equals(oldColor);
+        }
+
+        private List<Pixel> getNeighbors() {
+            List<Pixel> neighbors = new ArrayList<>();
+            for (int i = -1; i <= 1; i++) {
+                for (int j = -1; j <= 1; j++) {
+                    if (i != 0 || j != 0) {
+                        neighbors.add(new Pixel(x + i, y + j));
+                    }
+                }
+            }
+            return neighbors;
+        }
+    }
 }
