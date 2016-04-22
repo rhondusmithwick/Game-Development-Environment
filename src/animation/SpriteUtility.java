@@ -9,7 +9,6 @@ import javafx.geometry.Dimension2D;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.SubScene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
@@ -50,7 +49,6 @@ class SpriteUtility {
     private BorderPane mainPane;
     private VBox animationPropertiesBox;
     private VBox buttonBox;
-    private SubScene spriteScene;
 
     private Rectangle rect;
 
@@ -202,9 +200,7 @@ class SpriteUtility {
         canvas = new Canvas(spriteImage.getBoundsInParent().getWidth(),spriteImage.getBoundsInParent().getHeight());
         canvas.layoutXProperty().set(spriteImage.getLayoutX());
         canvas.layoutYProperty().set(spriteImage.getLayoutY());
-        GraphicsContext gc = canvas.getGraphicsContext2D();
-        gc.setFill(Color.BLUE);
-        gc.fillRect(75,75,100,100);
+
         initCanvasHandlers(canvas);
         spriteGroup.getChildren().add(canvas);
 
@@ -337,6 +333,7 @@ class SpriteUtility {
      * Initializes initial rectangle drawer
      */
 	private Rectangle initRectangleDrawer() {
+        spriteGroup.getChildren().remove(rect);
         rect = new Rectangle();
         rect.widthProperty().unbind();
         rect.heightProperty().unbind();
@@ -375,7 +372,6 @@ class SpriteUtility {
     	if(!changeColorProperty.get()){
 	        canvas.setCursor(Cursor.CLOSED_HAND);
 	    	if (event.getButton() == MouseButton.PRIMARY) {
-	            spriteGroup.getChildren().remove(rect);
 	            rect = initRectangleDrawer();
 	            rect.setX(event.getX());
 	            rect.setY(event.getY());
