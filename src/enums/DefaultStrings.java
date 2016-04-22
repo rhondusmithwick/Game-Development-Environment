@@ -10,6 +10,7 @@ public enum DefaultStrings {
 	ENTITY_EDITOR_NAME("EditorEntity"),
 	ENVIRONMENT_EDITOR_NAME("EditorEnvironment"),
 	LANG_LOC("propertyFiles/"), 
+	COMPONENT_LOC("propertyFiles/componentLocations"),
 	CREATE_LOC("resources/createdGames/"),
 	TEMPLATE_DIREC_LOC("resources/templates/"),
 	TEMPLATE_BUNDLE_LOC("templates/"),
