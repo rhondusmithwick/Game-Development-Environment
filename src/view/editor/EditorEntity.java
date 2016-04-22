@@ -58,14 +58,15 @@ public class EditorEntity extends Editor{
 		entityList = addToList;
 		editorPane.setHgap(GUISize.ENTITY_EDITOR_PADDING.getSize());
 		editorPane.setVgap(GUISize.ENTITY_EDITOR_PADDING.getSize());
-		getComponents(DefaultStrings.COMPONENT_LOC.getDefault());
+		getComponents();
 	}
 
-	private void getComponents(String loc) {
-		myLocs = ResourceBundle.getBundle(loc);
+	private void getComponents() {
+		myLocs = ResourceBundle.getBundle(DefaultStrings.COMPONENT_LOC.getDefault());
 		Enumeration<String> iter = myLocs.getKeys();
 		while(iter.hasMoreElements()) {
-			myComponents.add(iter.nextElement());
+
+			myComponents.add(myResources.getString(iter.nextElement()));
 		}
 	}
 
