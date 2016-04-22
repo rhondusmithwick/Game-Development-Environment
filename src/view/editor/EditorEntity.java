@@ -8,6 +8,8 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.ResourceBundle;
 import view.Utilities;
+import view.enums.DefaultStrings;
+import view.enums.GUISize;
 import gui.GuiObject;
 import gui.GuiObjectFactory;
 import model.entity.Entity;
@@ -23,8 +25,6 @@ import javafx.scene.layout.HBox;
 import api.IComponent;
 import api.IEntity;
 import api.ISerializable;
-import enums.DefaultStrings;
-import enums.GUISize;
 /**
  * 
  * @author Melissa Zhang & Cali Nelson

@@ -10,7 +10,6 @@ import java.util.ResourceBundle;
 import api.IEntity;
 import api.ILevel;
 import api.ISerializable;
-import enums.GUISize;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -36,6 +35,7 @@ import model.entity.Level;
 import view.DefaultsMaker;
 import view.DragAndResize;
 import view.Utilities;
+import view.enums.GUISize;
 
 public class EditorEnvironment extends Editor {
 

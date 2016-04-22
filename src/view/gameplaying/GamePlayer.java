@@ -2,8 +2,8 @@ package view.gameplaying;
 
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
+import view.enums.GUISize;
 import datamanagement.XMLReader;
-import enums.GUISize;
 import api.IEntity;
 import api.ILevel;
 import api.ISerializable;

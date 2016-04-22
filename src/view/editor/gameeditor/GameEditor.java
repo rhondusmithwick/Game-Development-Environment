@@ -8,9 +8,6 @@ import api.IEntity;
 import api.ILevel;
 import api.ISerializable;
 import datamanagement.XMLReader;
-import enums.DefaultStrings;
-import enums.GUISize;
-import enums.ViewInsets;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -22,6 +19,9 @@ import javafx.scene.layout.VBox;
 import view.Authoring;
 import view.Utilities;
 import view.editor.Editor;
+import view.enums.DefaultStrings;
+import view.enums.GUISize;
+import view.enums.ViewInsets;
 
 public class GameEditor extends Editor  {
 

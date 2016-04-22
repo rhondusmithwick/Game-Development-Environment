@@ -3,8 +3,6 @@ package view.editor.gameeditor;
 import java.util.ResourceBundle;
 import api.IEntity;
 import api.ISerializable;
-import enums.DefaultStrings;
-import enums.GUISize;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -16,6 +14,8 @@ import model.entity.Entity;
 import view.Authoring;
 import view.Utilities;
 import view.editor.EditorEntity;
+import view.enums.DefaultStrings;
+import view.enums.GUISize;
 
 public class EntityDisplay extends ObjectDisplay{
 

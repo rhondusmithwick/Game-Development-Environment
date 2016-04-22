@@ -2,13 +2,14 @@ package gui;
 
 import java.io.File;
 import java.util.ResourceBundle;
-import enums.GUISize;
+
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import view.Utilities;
+import view.enums.GUISize;
 
 public class GuiObjectImageDisplay extends GuiObject {
 	

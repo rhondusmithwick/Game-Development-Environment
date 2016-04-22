@@ -7,9 +7,9 @@ import java.util.List;
 import api.IEntity;
 import api.ILevel;
 import datamanagement.XMLWriter;
-import enums.DefaultStrings;
-import enums.Indexes;
 import javafx.collections.ObservableList;
+import view.enums.DefaultStrings;
+import view.enums.Indexes;
 
 
 public class GameSaver {

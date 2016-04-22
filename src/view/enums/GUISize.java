@@ -1,4 +1,4 @@
-package enums;
+package view.enums;
 
 public enum GUISize {
 

@@ -3,7 +3,7 @@ package view.beginningmenus;
 import java.io.File;
 import java.util.Arrays;
 import java.util.ResourceBundle;
-import enums.GUISize;
+
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -15,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import view.Authoring;
 import view.Utilities;
+import view.enums.GUISize;
 
 public class AuthoringStartUp extends StartUpMenu {
 

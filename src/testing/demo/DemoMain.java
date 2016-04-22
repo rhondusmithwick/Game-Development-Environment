@@ -1,7 +1,6 @@
 
 package testing.demo;
 
-import enums.GUISize;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -11,6 +10,7 @@ import javafx.stage.Stage;
 import model.component.audio.SoundEffect;
 import model.component.audio.ThemeMusic;
 import view.View;
+import view.enums.GUISize;
 
 public class DemoMain extends Application {
 

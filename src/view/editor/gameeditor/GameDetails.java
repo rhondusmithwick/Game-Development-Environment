@@ -4,10 +4,7 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
-import enums.DefaultStrings;
-import enums.FileExtensions;
-import enums.GUISize;
-import enums.Indexes;
+
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
@@ -18,6 +15,10 @@ import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import view.Utilities;
+import view.enums.DefaultStrings;
+import view.enums.FileExtensions;
+import view.enums.GUISize;
+import view.enums.Indexes;
 
 public class GameDetails {
 	

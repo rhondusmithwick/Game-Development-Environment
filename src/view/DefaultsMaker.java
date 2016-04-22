@@ -5,7 +5,6 @@ import java.util.List;
 
 import api.IEntity;
 import api.ISerializable;
-import enums.DefaultStrings;
 import javafx.collections.ObservableList;
 import model.component.character.Defense;
 import model.component.character.Health;
@@ -14,35 +13,28 @@ import model.component.movement.Position;
 import model.component.physics.Mass;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
+import view.enums.DefaultStrings;
 import javafx.scene.shape.Rectangle;
 
 public class DefaultsMaker {
 	
 
-	private final static String backgroundName = "Default Waterfall Background";
-	private final static String backgroundPath = "resources/images/movingwaterfall.gif";
 
-	private final static String platformName = "Default Mario Platform";
-	private final static String platformPath = "resources/images/marioplatform.jpeg";
-	private final static String character1Name = "Character 1";
-	private final static String character1Path = "resources/images/white.png";
-	private final static String character2Name = "Character 2";
-	private final static String character2Path = "resources/images/blastoise.png";
 	
 	public static IEntity loadBackgroundDefault(){
-		IEntity entity = new Entity(backgroundName);
+		IEntity entity = new Entity(DefaultStrings.BACKGROUND_NAME.getDefault());
 		entity.loadSpecsFromPropertiesFile(DefaultStrings.BACKGROUND_TEMPLATE_PATH.getDefault());
 		entity.addComponent(new Position());
-		ImagePath path = new ImagePath(backgroundPath);
+		ImagePath path = new ImagePath(DefaultStrings.BACKGROUND_PATH.getDefault());
 	    entity.addComponent(path);
 		return entity;
 	}
 		
 	public static IEntity loadPlatformDefault(ObservableList<ISerializable> masterEntities){
-		IEntity entity = new Entity(platformName);
+		IEntity entity = new Entity(DefaultStrings.PLATFORM_NAME.getDefault());
 		entity.loadSpecsFromPropertiesFile(DefaultStrings.PLATFORM_TEMPLATE_PATH.getDefault());
 		entity.addComponent(new Position());
-		ImagePath path = new ImagePath(platformPath);
+		ImagePath path = new ImagePath(DefaultStrings.PLATFORM_PATH.getDefault());
 		entity.addComponent(path);
 		//entity.addComponent(new Collision(imagePathToFitRectangle(entity.getComponent(ImagePath.class)),
 			//entityListToIDs(masterEntities)));
@@ -50,10 +42,10 @@ public class DefaultsMaker {
 	}
 			
 	public static IEntity loadCharacter1Default(){
-		IEntity entity = new Entity(character1Name);
+		IEntity entity = new Entity(DefaultStrings.CHAR_1_NAME.getDefault());
 		entity.loadSpecsFromPropertiesFile(DefaultStrings.CHARACTER_TEMPLATE_PATH.getDefault());
 		entity.addComponent(new Position());
-		ImagePath path = new ImagePath(character1Path);
+		ImagePath path = new ImagePath(DefaultStrings.CHAR_1_PATH.getDefault());
 		entity.addComponent(path);
 		entity.addComponent(new Defense(25));
 		entity.addComponent(new Health(100));
@@ -63,10 +55,10 @@ public class DefaultsMaker {
 	}
 	
 	public static IEntity loadCharacter2Default(){
-		IEntity entity = new Entity(character2Name);
+		IEntity entity = new Entity(DefaultStrings.CHAR_2_NAME.getDefault());
 		entity.loadSpecsFromPropertiesFile(DefaultStrings.CHARACTER_TEMPLATE_PATH.getDefault());
 		entity.addComponent(new Position());
-		ImagePath path = new ImagePath(character2Path);
+		ImagePath path = new ImagePath(DefaultStrings.CHAR_2_PATH.getDefault());
 		entity.addComponent(path);
 		entity.addComponent(new Defense(25));
 		entity.addComponent(new Health(100));

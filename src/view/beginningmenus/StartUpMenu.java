@@ -3,7 +3,6 @@ package view.beginningmenus;
 import java.io.File;
 import java.util.List;
 
-import enums.GUISize;
 import javafx.geometry.Pos;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -13,6 +12,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.stage.Stage;
+import view.enums.GUISize;
 
 public abstract class StartUpMenu {
 
