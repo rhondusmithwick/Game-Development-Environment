@@ -21,8 +21,6 @@ public class Collision implements IComponent {
 	private Bounds mask;
 	private SingleProperty<String> maskIDProperty = new SingleProperty<>("MaskID", "");
 	private SingleProperty<String> collidingIDsProperty = new SingleProperty<>("CollidingIDs", "");
-	// TEMPORARY UNTIL IDS CONVERTED TO STRING PROPERTY
-	public String collidingSide = "";
 
 
 	public Collision(Bounds mask, String ID) {
@@ -69,9 +67,13 @@ public class Collision implements IComponent {
 	public void addCollidingID(String collidingIDs) {
 		this.collidingIDsProperty().set(this.getCollidingIDs()+"~"+collidingIDs);
 	}
+	
+	public void addCollisionSide(String side) {
+		this.collidingIDsProperty().set(this.getCollidingIDs()+"_"+side);
+	}
 
 	public void clearCollidingIDs() {
-		this.collidingIDsProperty().set("");
+		this.collidingIDsProperty().set("CollidingIDs");
 	}
 
 	@Override

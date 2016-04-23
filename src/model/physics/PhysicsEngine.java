@@ -83,8 +83,8 @@ public class PhysicsEngine implements IPhysicsEngine {
 				Velocity.class, Position.class, Collision.class);
 		
 		entitiesSubjectToGravity.stream().forEach(entity -> {
-			System.out.println(entity.getComponent(Collision.class).collidingSide);
-			if (!entity.getComponent(Collision.class).collidingSide.equals("bottom")) {
+			System.out.println(entity.getComponent(Collision.class).getCollidingIDs());
+			if (!entity.getComponent(Collision.class).getCollidingIDs().contains(Collision.BOTTOM)) {
 				Position pos = entity.getComponent(Position.class);
 				double gravity = entity.getComponent(Gravity.class).getGravity();
 				pos.add(0, secondsPassed*secondsPassed*gravity);				
@@ -113,6 +113,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 			for (Bounds secondHitBox : secondHitBoxes) {
 				if (firstHitBox.intersects(secondHitBox)) {
 					addCollisionIDs(firstEntity, secondEntity);
+					getSideOfCollision(firstEntity, secondEntity);
 					changeVelocityAfterCollision(firstEntity, secondEntity);
 					break;
 				}
@@ -125,7 +126,6 @@ public class PhysicsEngine implements IPhysicsEngine {
 			entity.getComponent(Collision.class).clearCollidingIDs();
 			entity.getComponent(Collision.class)
 				  .setMask(entity.getComponent(ImagePath.class).getImageView().getBoundsInParent());
-			entity.getComponent(Collision.class).collidingSide = "";
 		}
 	}
 
@@ -138,7 +138,6 @@ public class PhysicsEngine implements IPhysicsEngine {
 		double mass2 = secondEntity.getComponent(Mass.class).getMass();
 		Velocity velocity2 = getVelocityComponent(secondEntity);
 
-		getSideOfCollision(firstEntity, secondEntity);
 		if (isHorizontalCollision(firstEntity, secondEntity)) {
 			setVelocityComponent(mass1, mass2, velocity1, velocity2, restitution, (Velocity v) -> v.getVX(),
 					(Velocity v, Double val) -> v.setVX(val));			
@@ -150,8 +149,8 @@ public class PhysicsEngine implements IPhysicsEngine {
 	}
 	
 	private boolean isVerticalCollision(IEntity firstEntity, IEntity secondEntity) {
-		if (firstEntity.getComponent(Collision.class).collidingSide == "top" ||
-				secondEntity.getComponent(Collision.class).collidingSide == "top") {
+		if (firstEntity.getComponent(Collision.class).getCollidingIDs().endsWith(Collision.TOP) ||
+				secondEntity.getComponent(Collision.class).getCollidingIDs().endsWith(Collision.TOP)) {
 			System.out.println("VERTICAL");
 			return true;
 		}
@@ -159,8 +158,8 @@ public class PhysicsEngine implements IPhysicsEngine {
 	}
 	
 	private boolean isHorizontalCollision(IEntity firstEntity, IEntity secondEntity) {
-		if (firstEntity.getComponent(Collision.class).collidingSide == "left" ||
-				secondEntity.getComponent(Collision.class).collidingSide == "left") {
+		if (firstEntity.getComponent(Collision.class).getCollidingIDs().endsWith(Collision.LEFT) ||
+				secondEntity.getComponent(Collision.class).getCollidingIDs().endsWith(Collision.LEFT)) {
 			System.out.println("HORIZONTAL");
 			return true;
 		}
@@ -278,23 +277,23 @@ public class PhysicsEngine implements IPhysicsEngine {
 		double angle = Math.acos(entityOneToTwo.getDotProduct(referenceVector));
 		System.out.println(angle);
 		if (angle >= 315 || angle < 45) {
-			firstColl.collidingSide = "top";
-			secondColl.collidingSide = "bottom";		
+			firstColl.addCollisionSide(Collision.BOTTOM);
+			secondColl.addCollisionSide(Collision.TOP);	
 		}
 		else if (angle < 315 && angle >= 225) {
 			//LEFT COLLISION
-			firstColl.collidingSide = "left";
-			secondColl.collidingSide = "right";	
+			firstColl.addCollisionSide(Collision.RIGHT);
+			secondColl.addCollisionSide(Collision.LEFT);	
 		}
 		else if (angle < 225 && angle >= 135) {
 			//BOT COLLISION
-			firstColl.collidingSide = "bottom";
-			secondColl.collidingSide = "top";	
+			firstColl.addCollisionSide(Collision.TOP);
+			secondColl.addCollisionSide(Collision.BOTTOM);		
 		}
 		else { //angle < 135 && angle >=45
 			//RIGHT COLLISION
-			firstColl.collidingSide = "right";
-			secondColl.collidingSide = "left";	
+			firstColl.addCollisionSide(Collision.LEFT);
+			secondColl.addCollisionSide(Collision.RIGHT);		
 		}
 	}
 	
