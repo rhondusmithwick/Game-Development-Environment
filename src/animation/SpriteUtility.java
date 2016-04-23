@@ -45,13 +45,13 @@ import java.util.function.Predicate;
 import static animation.SaveHandler.saveImage;
 
 class SpriteUtility {
-	private static final String SAVE_ANIMATIONS_TO_FILE = "Save Animations to File";
-	private static final String NEW_ANIMATION = "New Animation";
-	private static final String NEW_SPRITE = "New Sprite";
-	private static final String PREVIEW_ANIMATION = "Preview Animation";
-	private static final String SAVE_ANIMATION = "Save Animation";
-	private static final String ADD_FRAME = "Add Frame";
-	private static final String DELETE_FRAME = "Delete Frame";
+    private static final String SAVE_ANIMATIONS_TO_FILE = "Save Animations to File";
+    private static final String NEW_ANIMATION = "New Animation";
+    private static final String NEW_SPRITE = "New Sprite";
+    private static final String PREVIEW_ANIMATION = "Preview Animation";
+    private static final String SAVE_ANIMATION = "Save Animation";
+    private static final String ADD_FRAME = "Add Frame";
+    private static final String DELETE_FRAME = "Delete Frame";
 
     private static final double DURATION_MIN = 100;
     private static final double DURATION_MAX = 3000;
@@ -60,7 +60,7 @@ class SpriteUtility {
 
     private static final String SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,0,50,0.8), 10, 0, 0, 0)";
     private static final String NO_SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0, 0, 0)";
-    
+
     private BorderPane mainPane;
     private VBox animationPropertiesBox;
     private VBox buttonBox;
@@ -93,7 +93,7 @@ class SpriteUtility {
     private Canvas canvas;
     private Scene scene;
     private Image spriteImage;
-	private ScrollPane spriteScroll;
+    private ScrollPane spriteScroll;
 
     public void init(Stage stage, Dimension2D dimensions) {
         mainPane = new BorderPane();
@@ -103,8 +103,8 @@ class SpriteUtility {
     }
 
     private void initializeGui() {
-    		selectedRectangle = null;
-    	
+        selectedRectangle = null;
+
         rectangleList = new ArrayList<>();
         animationList = new HashMap<>();
 
@@ -124,7 +124,7 @@ class SpriteUtility {
     }
 
     private void initButtons() {
-    		addButton(UtilityUtilities.makeButton(SAVE_ANIMATIONS_TO_FILE, e -> reInitialize()), buttonBox);
+        addButton(UtilityUtilities.makeButton(SAVE_ANIMATIONS_TO_FILE, e -> reInitialize()), buttonBox);
         addButton(UtilityUtilities.makeButton(NEW_ANIMATION, e -> reInitialize()), buttonBox);
         addButton(UtilityUtilities.makeButton(NEW_SPRITE, e -> initializeGui()), buttonBox);
         addButton(UtilityUtilities.makeButton(PREVIEW_ANIMATION, e -> animationPreview()), buttonBox);
@@ -135,7 +135,7 @@ class SpriteUtility {
         addButton(activateTransparencyButton, buttonBox);
         addButton(UtilityUtilities.makeButton("Save Image", e -> saveImage(spriteImageView.getImage())), buttonBox);
     }
-    
+
     private void addButton(Button button, VBox box) {
         button.setMaxWidth(Double.MAX_VALUE);
         box.getChildren().add(button);
@@ -182,8 +182,6 @@ class SpriteUtility {
         initAnimationNameAndDurationFields();
         rectangleList.stream().forEach(this::displayRectangleListProperties);
     }
-
-
 
 
     /*
@@ -373,7 +371,7 @@ class SpriteUtility {
         spriteScroll.setOnKeyPressed(this::keyPress); //this line keeps fucking up
         makeSelected(rectDrawer);
         spriteGroup.getChildren().add(rectDrawer);
-        
+
 
         return rectDrawer;
     }
@@ -386,19 +384,15 @@ class SpriteUtility {
                 break;
             case RIGHT:
                 selectedRectangle.setX(selectedRectangle.getX() + KEY_INPUT_SPEED);
-                event.consume();
                 break;
             case LEFT:
                 selectedRectangle.setX(selectedRectangle.getX() - KEY_INPUT_SPEED);
-                event.consume();
                 break;
             case UP:
                 selectedRectangle.setY(selectedRectangle.getY() - KEY_INPUT_SPEED);
-                event.consume();
                 break;
             case DOWN:
                 selectedRectangle.setY(selectedRectangle.getY() + KEY_INPUT_SPEED);
-                event.consume();
                 break;
             default:
         }
