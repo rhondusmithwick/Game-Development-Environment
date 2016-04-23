@@ -1,6 +1,5 @@
 package animation;
 
-
 import javafx.animation.Animation;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -46,6 +45,14 @@ import java.util.function.Predicate;
 import static animation.SaveHandler.saveImage;
 
 class SpriteUtility {
+	private static final String SAVE_ANIMATIONS_TO_FILE = "Save Animations to File";
+	private static final String NEW_ANIMATION = "New Animation";
+	private static final String NEW_SPRITE = "New Sprite";
+	private static final String PREVIEW_ANIMATION = "Preview Animation";
+	private static final String SAVE_ANIMATION = "Save Animation";
+	private static final String ADD_FRAME = "Add Frame";
+	private static final String DELETE_FRAME = "Delete Frame";
+
     private static final double DURATION_MIN = 100;
     private static final double DURATION_MAX = 3000;
     private static final double DURATION_DEFAULT = 1000;
@@ -53,11 +60,10 @@ class SpriteUtility {
 
     private static final String SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,0,50,0.8), 10, 0, 0, 0)";
     private static final String NO_SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0, 0, 0)";
+    
     private BorderPane mainPane;
     private VBox animationPropertiesBox;
     private VBox buttonBox;
-
-    private Rectangle rectDrawer;
 
     private Map<String, Map> animationList;
     private List<Rectangle> rectangleList;
@@ -80,31 +86,32 @@ class SpriteUtility {
 
     private Group spriteGroup;
     private Rectangle selectedRectangle;
+    private Rectangle rectDrawer;
 
     private final SimpleObjectProperty<Boolean> changeColorProperty = new SimpleObjectProperty<>(this, "ChangeColor", false);
     private Button activateTransparencyButton;
     private Canvas canvas;
     private Scene scene;
     private Image spriteImage;
+	private ScrollPane spriteScroll;
 
     public void init(Stage stage, Dimension2D dimensions) {
         mainPane = new BorderPane();
         scene = new Scene(mainPane, dimensions.getWidth(), dimensions.getHeight());
         stage.setScene(scene);
         initializeGui();
-        selectedRectangle = null;
-
-
     }
 
     private void initializeGui() {
+    		selectedRectangle = null;
+    	
         rectangleList = new ArrayList<>();
         animationList = new HashMap<>();
 
         buttonBox = new VBox();
         animationPropertiesBox = new VBox();
         spriteGroup = new Group();
-        ScrollPane spriteScroll = new ScrollPane(spriteGroup);
+        spriteScroll = new ScrollPane(spriteGroup);
 
         initNewImage();
         initRectangleDrawer();
@@ -112,21 +119,26 @@ class SpriteUtility {
         initButtons();
 
         mainPane.setCenter(spriteScroll);
-        mainPane.setRight(buttonBox);
-        mainPane.setLeft(animationPropertiesBox);
+        mainPane.setRight(new ScrollPane(buttonBox));
+        mainPane.setLeft(new ScrollPane(animationPropertiesBox));
     }
 
     private void initButtons() {
-        addButton(UtilityUtilities.makeButton("Save Animations to File", e -> reInitialize()), buttonBox);
-        addButton(UtilityUtilities.makeButton("New Animation", e -> reInitialize()), buttonBox);
-        addButton(UtilityUtilities.makeButton("New Sprite", e -> initializeGui()), buttonBox);
-        addButton(UtilityUtilities.makeButton("Preview Animation", e -> animationPreview()), buttonBox);
-        addButton(UtilityUtilities.makeButton("Save Animation", e -> saveAnimation()), buttonBox);
-        addButton(UtilityUtilities.makeButton("Add Frame", e -> addFrame()), buttonBox);
-        addButton(UtilityUtilities.makeButton("Delete Frame", e -> deleteFrame(selectedRectangle)), buttonBox);
+    		addButton(UtilityUtilities.makeButton(SAVE_ANIMATIONS_TO_FILE, e -> reInitialize()), buttonBox);
+        addButton(UtilityUtilities.makeButton(NEW_ANIMATION, e -> reInitialize()), buttonBox);
+        addButton(UtilityUtilities.makeButton(NEW_SPRITE, e -> initializeGui()), buttonBox);
+        addButton(UtilityUtilities.makeButton(PREVIEW_ANIMATION, e -> animationPreview()), buttonBox);
+        addButton(UtilityUtilities.makeButton(SAVE_ANIMATION, e -> saveAnimation()), buttonBox);
+        addButton(UtilityUtilities.makeButton(ADD_FRAME, e -> addFrame()), buttonBox);
+        addButton(UtilityUtilities.makeButton(DELETE_FRAME, e -> deleteFrame(selectedRectangle)), buttonBox);
         activateTransparencyButton = UtilityUtilities.makeButton("Activate Transparency", e -> makeTransparent());
         addButton(activateTransparencyButton, buttonBox);
         addButton(UtilityUtilities.makeButton("Save Image", e -> saveImage(spriteImageView.getImage())), buttonBox);
+    }
+    
+    private void addButton(Button button, VBox box) {
+        button.setMaxWidth(Double.MAX_VALUE);
+        box.getChildren().add(button);
     }
 
     private void makeTransparent() {
@@ -171,10 +183,7 @@ class SpriteUtility {
         rectangleList.stream().forEach(this::displayRectangleListProperties);
     }
 
-    private void addButton(Button button, VBox box) {
-        button.setMaxWidth(Double.MAX_VALUE);
-        box.getChildren().add(button);
-    }
+
 
 
     /*
@@ -360,10 +369,11 @@ class SpriteUtility {
         rectDrawer.setFill(Color.TRANSPARENT);
         rectDrawer.setStroke(Color.BLACK);
 
-        spriteGroup.requestFocus(); //ugh someone fix this
-        scene.setOnKeyPressed(this::keyPress); //this line keeps fucking up
+        spriteScroll.requestFocus(); //ugh someone fix this
+        spriteScroll.setOnKeyPressed(this::keyPress); //this line keeps fucking up
         makeSelected(rectDrawer);
         spriteGroup.getChildren().add(rectDrawer);
+        
 
         return rectDrawer;
     }
@@ -375,20 +385,24 @@ class SpriteUtility {
                 addFrame();
                 break;
             case RIGHT:
-                selectedRectangle.setLayoutX(selectedRectangle.getLayoutX() + KEY_INPUT_SPEED);
+                selectedRectangle.setX(selectedRectangle.getX() + KEY_INPUT_SPEED);
+                event.consume();
                 break;
             case LEFT:
-                selectedRectangle.setLayoutX(selectedRectangle.getLayoutX() - KEY_INPUT_SPEED);
+                selectedRectangle.setX(selectedRectangle.getX() - KEY_INPUT_SPEED);
+                event.consume();
                 break;
             case UP:
-                selectedRectangle.setLayoutY(selectedRectangle.getLayoutY() - KEY_INPUT_SPEED);
+                selectedRectangle.setY(selectedRectangle.getY() - KEY_INPUT_SPEED);
+                event.consume();
                 break;
             case DOWN:
-                selectedRectangle.setLayoutY(selectedRectangle.getLayoutY() + KEY_INPUT_SPEED);
+                selectedRectangle.setY(selectedRectangle.getY() + KEY_INPUT_SPEED);
+                event.consume();
                 break;
             default:
         }
-
+        event.consume();
     }
 
     private Image initFileChooser() {
