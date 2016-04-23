@@ -1,7 +1,5 @@
 package model.core;
 
-import java.util.List;
-
 import api.IEntity;
 import api.IEventSystem;
 import api.ILevel;
@@ -17,7 +15,6 @@ import model.entity.Level;
  */
 public class SystemManager implements ISystemManager {
 
-	private List<String> details;
 	private ILevel universe = new Level();
 	private ILevel sharedUniverse = new Level();
 	private boolean isRunning = true;
@@ -122,26 +119,4 @@ public class SystemManager implements ISystemManager {
 		return universe;
 	}
 
-	@Deprecated
-	@Override
-	public void setEntitySystem(ILevel system) {
-		this.universe = system;
-	}
-
-	@Deprecated
-	@Override
-	public void saveSystem(String filename) {
-		// new XMLWriter<ISystemManager>().writeToFile(filename, this);
-		this.saveLevel(filename);
-	}
-
-	@Override
-	public void setDetails(List<String> list) {
-		this.details = list;
-	}
-
-	@Override
-	public List<String> getDetails() {
-		return details;
-	}
 }

@@ -92,17 +92,9 @@ public interface ISystemManager {
 		return new XMLReader<T>().readFromString(stringToReadFrom);
 	}
 
-	@Deprecated
-	// Use load method instead of setter
-	void setEntitySystem(ILevel system);
+
 
 	ILevel getUniverse();
 
-	@Deprecated
-	void saveSystem(String filename);
-
-	List<String> getDetails();
-
-	void setDetails(List<String> list);
 
 }
