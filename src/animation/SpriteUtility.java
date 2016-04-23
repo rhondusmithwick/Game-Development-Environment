@@ -38,15 +38,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.function.Predicate;
-
+import static animation.SaveHandler.saveImage;
+import static animation.SaveHandler.saveAnimations;
 import static animation.DoubleConstants.DURATION_DEFAULT;
 import static animation.DoubleConstants.DURATION_MAX;
 import static animation.DoubleConstants.DURATION_MIN;
 import static animation.DoubleConstants.KEY_INPUT_SPEED;
-import static animation.SaveHandler.saveImage;
 import static animation.StringConstants.ADD_FRAME;
+import static animation.StringConstants.ANIMATION_NAME_PROMPT;
 import static animation.StringConstants.DELETE_FRAME;
 import static animation.StringConstants.NEW_ANIMATION;
 import static animation.StringConstants.NEW_SPRITE;
@@ -65,14 +65,14 @@ class SpriteUtility {
     private final ScrollPane spriteScroll = new ScrollPane(spriteGroup);
     private final Scene scene = new Scene(mainPane, DoubleConstants.WIDTH.get(), DoubleConstants.HEIGHT.get());
 
-    private final Map<String, Map> animationList = new HashMap<>();
+    private final Map<String, Map<String, String>> animationList = new HashMap<>();
     private final List<Rectangle> rectangleList = new ArrayList<>();
 
     private final ImageView spriteImageView = new ImageView();
     private final ImageView previewImageView = new ImageView();
     private final Canvas canvas = new Canvas();
 
-    private TextField animationName;
+    private final TextField animationName = new TextField();
 
     private final List<Double> widthList = new ArrayList<>();
     private final List<Double> heightList = new ArrayList<>();
@@ -100,6 +100,7 @@ class SpriteUtility {
     private void initializeGui() {
         selectedRectangle = null;
         spriteGroup.getChildren().clear();
+        animationList.clear();
         initNewImage();
         initCanvas();
         initRectangleDrawer();
@@ -111,7 +112,7 @@ class SpriteUtility {
     }
 
     private void initButtons() {
-        addButton(UtilityUtilities.makeButton(SAVE_ANIMATIONS_TO_FILE.get(), e -> reInitialize()), buttonBox);
+        addButton(UtilityUtilities.makeButton(SAVE_ANIMATIONS_TO_FILE.get(), e -> saveAnimations(animationList)), buttonBox);
         addButton(UtilityUtilities.makeButton(NEW_ANIMATION.get(), e -> reInitialize()), buttonBox);
         addButton(UtilityUtilities.makeButton(NEW_SPRITE.get(), e -> initializeGui()), buttonBox);
         addButton(UtilityUtilities.makeButton(PREVIEW_ANIMATION.get(), e -> animationPreview()), buttonBox);
@@ -172,7 +173,7 @@ class SpriteUtility {
      * Initialize sprite sheet gui properties like animation name and duration
      */
     private void initAnimationNameAndDurationFields() {
-        animationName = new TextField("Animation Name");
+        animationName.setText(ANIMATION_NAME_PROMPT.get());
         Label durationTextLabel = new Label("Duration");
         Label durationValueLabel = new Label("0.0");
         durationSlider = UtilityUtilities.makeSlider((ov, old_val, new_val) -> {
@@ -186,7 +187,6 @@ class SpriteUtility {
     private void reInitialize() {
         spriteGroup.getChildren().removeAll(rectangleList);
         rectangleList.clear();
-        animationList.clear();
         initAnimationProperties();
     }
 
@@ -227,9 +227,10 @@ class SpriteUtility {
         buttonBox.getChildren().add(previewImageView);
     }
 
+
     private void saveAnimation() {
         populateRectanglePropertyLists();
-        Map<String, String> moveAnimationMap = new TreeMap<>();
+        Map<String, String> moveAnimationMap = new HashMap<>();
         String name = animationName.getText();
         moveAnimationMap.put("duration", String.format("%.2f", durationSlider.getValue()));
         moveAnimationMap.put("xList", xList.toString());
@@ -237,7 +238,6 @@ class SpriteUtility {
         moveAnimationMap.put("width", widthList.toString());
         moveAnimationMap.put("height", heightList.toString());
         animationList.put(name, moveAnimationMap);
-        System.out.println(animationList);
     }
 
     /*

@@ -24,7 +24,7 @@ class SaveHandler {
     private SaveHandler() {
     }
 
-    public static void saveAnimations(String fileName, Map<String, Map<String, String>> maps) {
+    public static void saveAnimations(Map<String, Map<String, String>> maps) {
         Properties properties = new Properties();
         for (String animationName : maps.keySet()) {
             Map<String, String> props = maps.get(animationName);
@@ -33,8 +33,13 @@ class SaveHandler {
                 properties.put(key, prop.getValue());
             }
         }
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Save Animation To File");
+        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter ("PROPERTIES Dateien (*.properties)", "*.properties");
+        fileChooser.getExtensionFilters().add (extFilter);
+        File file = fileChooser.showSaveDialog(new Stage());
         try {
-            properties.store(new FileWriter(new File(fileName)), "MELISSA IS MAKING ME USE THIS WEIRD ASS MAP");
+            properties.store(new FileWriter(file), "MELISSA IS MAKING ME USE THIS WEIRD ASS MAP");
         } catch (IOException e) {
             e.printStackTrace();
         }

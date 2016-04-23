@@ -13,6 +13,7 @@ public enum StringConstants {
     SAVE_ANIMATION("Save Animation"),
     ADD_FRAME("Add Frame"),
     DELETE_FRAME("Delete Frame"),
+    ANIMATION_NAME_PROMPT("Enter Animation Name."),
     SELECT_EFFECT("-fx-effect: dropshadow(three-pass-box, rgba(0,0,50,0.8), 10, 0, 0, 0)"),
     NO_SELECT_EFFECT("-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0, 0, 0)");
 
