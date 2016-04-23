@@ -6,7 +6,6 @@ package animation;
  * @author Rhondu Smithwick
  */
 public enum DoubleConstants {
-
     WIDTH(800),
     HEIGHT(600),
     DURATION_MIN(100),

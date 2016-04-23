@@ -68,8 +68,9 @@ class SpriteUtility {
     private final Map<String, Map> animationList = new HashMap<>();
     private final List<Rectangle> rectangleList = new ArrayList<>();
 
-    private ImageView spriteImageView;
-    private ImageView previewImageView;
+    private final ImageView spriteImageView = new ImageView();
+    private final ImageView previewImageView = new ImageView();
+    private final Canvas canvas = new Canvas();
 
     private TextField animationName;
 
@@ -89,7 +90,6 @@ class SpriteUtility {
     private Rectangle rectDrawer;
 
     private Button activateTransparencyButton;
-    private Canvas canvas;
     private Image spriteImage;
 
     public void init(Stage stage) {
@@ -99,12 +99,12 @@ class SpriteUtility {
 
     private void initializeGui() {
         selectedRectangle = null;
-
+        spriteGroup.getChildren().clear();
         initNewImage();
+        initCanvas();
         initRectangleDrawer();
         initAnimationProperties();
         initButtons();
-
         mainPane.setCenter(spriteScroll);
         mainPane.setRight(new ScrollPane(buttonBox));
         mainPane.setLeft(new ScrollPane(animationPropertiesBox));
@@ -192,15 +192,17 @@ class SpriteUtility {
 
     private void initNewImage() {
         spriteImage = initFileChooser();
-        spriteImageView = new ImageView(spriteImage);
+        spriteImageView.setImage(spriteImage);
         spriteGroup.getChildren().add(spriteImageView);
-        canvas = new Canvas(spriteImageView.getBoundsInParent().getWidth(), spriteImageView.getBoundsInParent().getHeight());
-        canvas.layoutXProperty().set(spriteImageView.getLayoutX());
-        canvas.layoutYProperty().set(spriteImageView.getLayoutY());
+        canvas.setHeight(spriteImageView.getBoundsInLocal().getWidth());
+        canvas.setWidth(spriteImageView.getBoundsInLocal().getHeight());
+    }
 
+    private void initCanvas() {
+        canvas.layoutXProperty().bind(spriteImageView.layoutXProperty());
+        canvas.layoutYProperty().bind(spriteImageView.layoutYProperty());
         initCanvasHandlers(canvas);
         spriteGroup.getChildren().add(canvas);
-
     }
 
     private void initCanvasHandlers(Canvas canvas2) {
@@ -217,7 +219,7 @@ class SpriteUtility {
 
     private void initAnimationPreview() {
         buttonBox.getChildren().remove(previewImageView);
-        previewImageView = new ImageView(spriteImage);
+        previewImageView.setImage(spriteImage);
         Animation animation = new ComplexAnimation(previewImageView, Duration.millis(durationSlider.getValue()),
                 rectangleList.size(), xList, yList, widthList, heightList);
         animation.setCycleCount(Animation.INDEFINITE);
@@ -289,11 +291,7 @@ class SpriteUtility {
     }
 
     private Rectangle cloneRect(Rectangle rect) {
-        Rectangle r = new Rectangle();
-        r.setX(rect.getX());
-        r.setY(rect.getY());
-        r.setWidth(rect.getWidth());
-        r.setHeight(rect.getHeight());
+        Rectangle r = new Rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
         r.setFill(Color.TRANSPARENT);
         r.setStroke(Color.RED);
         Dragger.makeDraggable(r);
