@@ -107,10 +107,7 @@ class SpriteUtility {
 
     private void initNewImage() {
         model.setSpriteImage(initFileChooser());
-        ImageView spriteImageView = model.getSpriteImageView();
-        gui.getSpriteGroup().getChildren().add(spriteImageView);
-        gui.getCanvas().setHeight(spriteImageView.getBoundsInLocal().getWidth());
-        gui.getCanvas().setWidth(spriteImageView.getBoundsInLocal().getHeight());
+        gui.initNewImage(model.getSpriteImageView());
     }
 
     private void initCanvas() {
@@ -140,45 +137,23 @@ class SpriteUtility {
         gui.getButtonBox().getChildren().add(model.getPreviewImageView());
     }
 
-
     private void addFrame() {
         Rectangle clone = model.cloneRect(model.getRectDrawer());
         model.getRectangleList().add(clone);
         gui.addRectangleToDisplay(clone);
     }
 
-
-
     /*
    * Initializes initial rectangle drawer
    */
-    private Rectangle initRectangleDrawer() {
+    private void initRectangleDrawer() {
         gui.getSpriteGroup().getChildren().remove(model.getRectDrawer());
-        model.setRectDrawer(new Rectangle());
-        model.getRectDrawer().widthProperty().unbind();
-        model.getRectDrawer().heightProperty().unbind();
-        model.rectinitXProperty().set(0.0);
-        model.rectinitYProperty().set(0.0);
-        model.rectXProperty().set(0.0);
-        model.rectYProperty().set(0.0);
-        model.getRectDrawer().widthProperty().bind(model.rectXProperty().subtract(model.rectinitXProperty()));
-        model.getRectDrawer().heightProperty().bind(model.rectYProperty().subtract(model.rectinitYProperty()));
-        model.getRectDrawer().setFill(Color.TRANSPARENT);
-        model.getRectDrawer().setStroke(Color.BLACK);
+        model.resetRectangleDrawer();
         gui.getSpriteScroll().requestFocus(); //ugh someone fix this
         gui.getSpriteScroll().setOnKeyPressed(this::keyPress); //this line keeps fucking up
         model.makeSelected(model.getRectDrawer());
         gui.getSpriteGroup().getChildren().add(model.getRectDrawer());
-        return model.getRectDrawer();
     }
-
-//    private void initRectangleDrawer() {
-//        gui.getSpriteGroup().getChildren().remove(model.getRectDrawer());
-//        model.resetRectangleDrawer();
-//        gui.getSpriteScroll().requestFocus(); //ugh someone fix this
-//        gui.getSpriteScroll().setOnKeyPressed(this::keyPress); //this line keeps fucking up
-//        gui.getSpriteGroup().getChildren().add(model.getRectDrawer());
-//    }
 
     private void keyPress(KeyEvent event) {
         KeyCode keycode = event.getCode();
@@ -192,14 +167,12 @@ class SpriteUtility {
         event.consume();
     }
 
-
     private Image initFileChooser() {
         File spriteSheet = UtilityUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("All Images", "*.*"),
                 "Choose a spritesheet");
         spriteSheetPath = spriteSheet.toURI().toString();
         return new Image(spriteSheetPath);
     }
-
 
     private void mouseReleased(MouseEvent event) {
         model.getRectDrawer().widthProperty().unbind();
@@ -217,24 +190,11 @@ class SpriteUtility {
         if (!changeColorProperty.get()) {
             gui.getCanvas().setCursor(Cursor.CLOSED_HAND);
             if (event.getButton() == MouseButton.PRIMARY) {
-                model.setRectDrawer(initRectangleDrawer());
-                model.getRectDrawer().setX(event.getX());
-                model.getRectDrawer().setY(event.getY());
-                model.rectinitXProperty().set(event.getX());
-                model.rectinitYProperty().set(event.getY());
-            } else if (event.getButton() == MouseButton.SECONDARY) {
-                model.getRectDrawer().setX(event.getX());
-                model.getRectDrawer().setY(event.getY());
+                initRectangleDrawer();
             }
+            model.handleMousePressed(event);
         }
     }
-
-//    private void handleMousePressed(MouseEvent event) {
-//        if (!changeColorProperty.get()) {
-//            gui.getCanvas().setCursor(Cursor.CLOSED_HAND);
-//            model.handleMousePressed(event);
-//        }
-//    }
 
 
     private void handleMouseClicked(MouseEvent event) {

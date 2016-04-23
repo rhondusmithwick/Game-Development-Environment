@@ -97,7 +97,7 @@ public class Model {
     }
 
     public void handleArrowKey(KeyEvent event) {
-        switch(event.getCode()) {
+        switch (event.getCode()) {
             case RIGHT:
                 selectedRectangle.setX(selectedRectangle.getX() + KEY_INPUT_SPEED.get());
                 break;
@@ -115,7 +115,7 @@ public class Model {
     }
 
     public void changeColor(double x, double y) {
-        Image image =  new ColorChanger(spriteImage, x, y, Color.TRANSPARENT).changeImage();
+        Image image = new ColorChanger(spriteImage, x, y, Color.TRANSPARENT).changeImage();
         setSpriteImage(image);
     }
 
@@ -145,31 +145,29 @@ public class Model {
         return r;
     }
 
-//    public void resetRectangleDrawer() {
-//        this.rectDrawer = new Rectangle();
-//        rectinitX.set(0.0);
-//        rectinitY.set(0.0);
-//        rectX.set(0.0);
-//        rectY.set(0.0);
-//        rectDrawer.widthProperty().bind(rectX.subtract(rectinitX));
-//        rectDrawer.heightProperty().bind(rectY.subtract(rectinitY));
-//        rectDrawer.setFill(Color.TRANSPARENT);
-//        rectDrawer.setStroke(Color.BLACK);
-//        makeSelected(rectDrawer);
-//    }
-//
-//    public void handleMousePressed(MouseEvent event) {
-//        if (event.getButton() == MouseButton.PRIMARY) {
-//            resetRectangleDrawer();
-//            rectDrawer.setX(event.getX());
-//            rectDrawer.setY(event.getY());
-//            rectinitX.set(event.getX());
-//            rectinitY.set(event.getY());
-//        } else if (event.getButton() == MouseButton.SECONDARY) {
-//            rectDrawer.setX(event.getX());
-//            rectDrawer.setY(event.getY());
-//        }
-//    }
+    public void resetRectangleDrawer() {
+        this.rectDrawer = new Rectangle();
+        rectinitX.set(0.0);
+        rectinitY.set(0.0);
+        rectX.set(0.0);
+        rectY.set(0.0);
+        rectDrawer.widthProperty().bind(rectX.subtract(rectinitX));
+        rectDrawer.heightProperty().bind(rectY.subtract(rectinitY));
+        rectDrawer.setFill(Color.TRANSPARENT);
+        rectDrawer.setStroke(Color.BLACK);
+    }
+
+    public void handleMousePressed(MouseEvent event) {
+        if (event.getButton() == MouseButton.PRIMARY) {
+            rectDrawer.setX(event.getX());
+            rectDrawer.setY(event.getY());
+            rectinitX.set(event.getX());
+            rectinitY.set(event.getY());
+        } else if (event.getButton() == MouseButton.SECONDARY) {
+            rectDrawer.setX(event.getX());
+            rectDrawer.setY(event.getY());
+        }
+    }
 
     public void handleMouseDragged(MouseEvent event) {
         rectX.set(event.getX());
@@ -188,7 +186,6 @@ public class Model {
         imageView.setStyle(NO_SELECT_EFFECT.get());
     }
 
-
     public Map<String, Map<String, String>> getAnimationList() {
         return animationList;
     }
@@ -205,64 +202,12 @@ public class Model {
         return previewImageView;
     }
 
-    public List<Double> getWidthList() {
-        return widthList;
-    }
-
-    public List<Double> getHeightList() {
-        return heightList;
-    }
-
-    public List<Double> getyList() {
-        return yList;
-    }
-
-    public List<Double> getxList() {
-        return xList;
-    }
-
-    public double getRectinitX() {
-        return rectinitX.get();
-    }
-
-    public DoubleProperty rectinitXProperty() {
-        return rectinitX;
-    }
-
-    public double getRectinitY() {
-        return rectinitY.get();
-    }
-
-    public DoubleProperty rectinitYProperty() {
-        return rectinitY;
-    }
-
-    public double getRectX() {
-        return rectX.get();
-    }
-
-    public DoubleProperty rectXProperty() {
-        return rectX;
-    }
-
-    public double getRectY() {
-        return rectY.get();
-    }
-
-    public DoubleProperty rectYProperty() {
-        return rectY;
-    }
-
     public Rectangle getSelectedRectangle() {
         return selectedRectangle;
     }
 
     public void setSelectedRectangle(Rectangle selectedRectangle) {
         this.selectedRectangle = selectedRectangle;
-    }
-
-    public void setRectDrawer(Rectangle rectDrawer) {
-        this.rectDrawer = rectDrawer;
     }
 
     public Rectangle getRectDrawer() {

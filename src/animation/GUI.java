@@ -3,6 +3,7 @@ package animation;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.geometry.Bounds;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -12,6 +13,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
@@ -60,9 +62,6 @@ public class GUI {
         return durationSlider;
     }
 
-    /*
-            * Initialize sprite sheet gui properties like animation name and duration
-        */
     public void initAnimationNameAndDurationFields(SpriteUtility spriteUtility) {
         getAnimationName().setText(ANIMATION_NAME_PROMPT.get());
         Label durationTextLabel = new Label("Duration");
@@ -74,7 +73,6 @@ public class GUI {
         getAnimationPropertiesBox().getChildren().addAll(getAnimationName(), durationTextLabel, durationSlider,
                 durationValueLabel);
     }
-
 
     public void addRectangleToDisplay(Rectangle clone) {
         spriteGroup.getChildren().add(clone);
@@ -99,6 +97,13 @@ public class GUI {
         }
     }
 
+    public void initNewImage(ImageView imageView) {
+        spriteGroup.getChildren().add(imageView);
+        Bounds bounds = imageView.getBoundsInLocal();
+        canvas.setHeight(bounds.getWidth());
+        canvas.setWidth(bounds.getHeight());
+    }
+
     private void makeTransparent() {
         if (changeColorProperty.get()) {
             activateTransparencyButton.setText("Activate Transparency");
@@ -113,18 +118,6 @@ public class GUI {
 
     public ScrollPane getSpriteScroll() {
         return spriteScroll;
-    }
-
-    public Boolean getChangeColorProperty() {
-        return changeColorProperty.get();
-    }
-
-    public SimpleObjectProperty<Boolean> changeColorPropertyProperty() {
-        return changeColorProperty;
-    }
-
-    public BorderPane getMainPane() {
-        return mainPane;
     }
 
     public VBox getAnimationPropertiesBox() {
