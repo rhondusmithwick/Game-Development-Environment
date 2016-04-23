@@ -45,23 +45,12 @@ import java.util.function.Predicate;
 import static animation.SaveHandler.saveImage;
 
 class SpriteUtility {
-    private static final String SAVE_ANIMATIONS_TO_FILE = "Save Animations to File";
-    private static final String NEW_ANIMATION = "New Animation";
-    private static final String NEW_SPRITE = "New Sprite";
-    private static final String PREVIEW_ANIMATION = "Preview Animation";
-    private static final String SAVE_ANIMATION = "Save Animation";
-    private static final String ADD_FRAME = "Add Frame";
-    private static final String DELETE_FRAME = "Delete Frame";
-
     private static final Dimension2D dimensions = new Dimension2D(800, 600);
 
     private static final double DURATION_MIN = 100;
     private static final double DURATION_MAX = 3000;
     private static final double DURATION_DEFAULT = 1000;
     private static final double KEY_INPUT_SPEED = 5;
-
-    private static final String SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,0,50,0.8), 10, 0, 0, 0)";
-    private static final String NO_SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0, 0, 0)";
 
     private final SimpleObjectProperty<Boolean> changeColorProperty = new SimpleObjectProperty<>(this, "ChangeColor", false);
     private final BorderPane mainPane = new BorderPane();
@@ -117,13 +106,13 @@ class SpriteUtility {
     }
 
     private void initButtons() {
-        addButton(UtilityUtilities.makeButton(SAVE_ANIMATIONS_TO_FILE, e -> reInitialize()), buttonBox);
-        addButton(UtilityUtilities.makeButton(NEW_ANIMATION, e -> reInitialize()), buttonBox);
-        addButton(UtilityUtilities.makeButton(NEW_SPRITE, e -> initializeGui()), buttonBox);
-        addButton(UtilityUtilities.makeButton(PREVIEW_ANIMATION, e -> animationPreview()), buttonBox);
-        addButton(UtilityUtilities.makeButton(SAVE_ANIMATION, e -> saveAnimation()), buttonBox);
-        addButton(UtilityUtilities.makeButton(ADD_FRAME, e -> addFrame()), buttonBox);
-        addButton(UtilityUtilities.makeButton(DELETE_FRAME, e -> deleteFrame(selectedRectangle)), buttonBox);
+        addButton(UtilityUtilities.makeButton(StringConstants.SAVE_ANIMATIONS_TO_FILE.getContent(), e -> reInitialize()), buttonBox);
+        addButton(UtilityUtilities.makeButton(StringConstants.NEW_ANIMATION.getContent(), e -> reInitialize()), buttonBox);
+        addButton(UtilityUtilities.makeButton(StringConstants.NEW_SPRITE.getContent(), e -> initializeGui()), buttonBox);
+        addButton(UtilityUtilities.makeButton(StringConstants.PREVIEW_ANIMATION.getContent(), e -> animationPreview()), buttonBox);
+        addButton(UtilityUtilities.makeButton(StringConstants.SAVE_ANIMATION.getContent(), e -> saveAnimation()), buttonBox);
+        addButton(UtilityUtilities.makeButton(StringConstants.ADD_FRAME.getContent(), e -> addFrame()), buttonBox);
+        addButton(UtilityUtilities.makeButton(StringConstants.DELETE_FRAME.getContent(), e -> deleteFrame(selectedRectangle)), buttonBox);
         activateTransparencyButton = UtilityUtilities.makeButton("Activate Transparency", e -> makeTransparent());
         addButton(activateTransparencyButton, buttonBox);
         addButton(UtilityUtilities.makeButton("Save Image", e -> saveImage(spriteImageView.getImage())), buttonBox);
@@ -323,11 +312,11 @@ class SpriteUtility {
 
 
     private void addSelectEffect(Rectangle img) {
-        img.setStyle(SELECT_EFFECT);
+        img.setStyle(StringConstants.SELECT_EFFECT.getContent());
     }
 
     private void removeSelectEffect(Rectangle imageView) {
-        imageView.setStyle(NO_SELECT_EFFECT);
+        imageView.setStyle(StringConstants.NO_SELECT_EFFECT.getContent());
     }
 
     /*
