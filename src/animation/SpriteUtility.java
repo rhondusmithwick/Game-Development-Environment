@@ -97,22 +97,26 @@ class SpriteUtility {
 
     private void initializeGui() {
         selectedRectangle = null;
-        spriteGroup.getChildren().clear();
-        animationList.clear();
-        initNewImage();
-        initCanvas();
-        initRectangleDrawer();
-        initAnimationProperties();
+        reinitializeGui();
         initButtons();
         mainPane.setCenter(spriteScroll);
         mainPane.setRight(new ScrollPane(buttonBox));
         mainPane.setLeft(new ScrollPane(animationPropertiesBox));
     }
 
+    private void reinitializeGui() {
+        spriteGroup.getChildren().clear();
+        animationList.clear();
+        initNewImage();
+        initCanvas();
+        initRectangleDrawer();
+        reInitialize();
+    }
+
     private void initButtons() {
         addButton(makeButton(SAVE_ANIMATIONS_TO_FILE.get(), e -> saveAnimations(spriteSheetPath, animationList)), buttonBox);
         addButton(makeButton(NEW_ANIMATION.get(), e -> reInitialize()), buttonBox);
-        addButton(makeButton(NEW_SPRITE.get(), e -> initializeGui()), buttonBox);
+        addButton(makeButton(NEW_SPRITE.get(), e -> reinitializeGui()), buttonBox);
         addButton(makeButton(PREVIEW_ANIMATION.get(), e -> animationPreview()), buttonBox);
         addButton(makeButton(SAVE_ANIMATION.get(), e -> saveAnimation()), buttonBox);
         addButton(makeButton(ADD_FRAME.get(), e -> addFrame()), buttonBox);
@@ -269,7 +273,6 @@ class SpriteUtility {
      */
     private void displayRectangleListProperties(Rectangle clone) {
         List<String> propertyList = Arrays.asList("x", "y", "width", "height");
-
         for (String propertyName : propertyList) {
             Label label = new Label(propertyName);
             TextField field = new TextField();
@@ -277,9 +280,8 @@ class SpriteUtility {
             animationPropertiesBox.getChildren().addAll(label, field);
             try {
                 Method method = clone.getClass().getMethod(propertyName + "Property");
+                DoubleProperty rectProperty = (DoubleProperty) method.invoke(clone);
                 StringConverter<Number> converter = new NumberStringConverter();
-                DoubleProperty rectProperty;
-                rectProperty = (DoubleProperty) method.invoke(clone);
                 Bindings.bindBidirectional(field.textProperty(), rectProperty, converter);
             } catch (Exception e) {
                 e.printStackTrace();
@@ -297,7 +299,7 @@ class SpriteUtility {
     }
 
     private void makeSelectable(Rectangle r) {
-        r.setOnMouseClicked(e -> makeSelectable(r));
+        r.setOnMouseClicked(e -> makeSelected(r));
     }
 
     private void makeSelected(Rectangle r) {
