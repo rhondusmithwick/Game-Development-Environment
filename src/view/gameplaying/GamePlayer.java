@@ -1,15 +1,6 @@
 package view.gameplaying;
 
-import model.component.movement.Position;
-import model.component.visual.ImagePath;
-import view.enums.GUISize;
-import datamanagement.XMLReader;
-import api.IEntity;
-import api.ILevel;
-import api.ISerializable;
-import api.ISystemManager;
 import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 
 public class GamePlayer {
