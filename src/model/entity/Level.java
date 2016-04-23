@@ -147,7 +147,9 @@ public class Level implements ILevel {
 	@Override
 	public void update(double dt) {
 		// physics.update(this, dt);
-		this.gameScripts.stream().forEachOrdered(e -> e.update(dt));
+		for (IGameScript gameScript : gameScripts) {
+			gameScript.update(dt);
+		}
 	}
 
 	@Override

@@ -26,6 +26,7 @@ public class SystemManager implements ISystemManager {
 
 	public SystemManager() {
 		this.universe.addMetadata("script", "Pong"); // TODO: remove
+		this.universe.init(shell, this);
 	}
 
 	@Override
