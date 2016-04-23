@@ -5,10 +5,8 @@ import java.util.Collection;
 import java.util.List;
 
 import api.IEntity;
-import api.ILevel;
 import api.ISystemManager;
 import api.IView;
-import groovy.lang.GroovyShell;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Bounds;
@@ -29,8 +27,6 @@ import model.component.movement.Orientation;
 import model.component.movement.Position;
 import model.component.physics.Collision;
 import model.component.visual.ImagePath;
-import model.core.SystemManager;
-import testing.demo.Pong;
 
 /**
  * 
@@ -49,14 +45,11 @@ public class View implements IView {
 	private final Button loadButton = new Button("Load");
 	// private final ScriptEngine engine = new
 	// ScriptEngineManager().getEngineByName("Groovy");
-	private final GroovyShell shell = new GroovyShell(); // MUST USE SHELL
-	private final ISystemManager model = new SystemManager();
-	// TODO: move to level hierarchy
-	private final Pong game = new Pong(shell, model);
-	private final ILevel universe = model.getEntitySystem();
+	private final ISystemManager model;
 	private final BorderPane pane;
 
-	public View() {
+	public View(ISystemManager model) {
+		this.model = model;
 		this.initEngine();
 		this.initConsole();
 		this.initButtons();
@@ -183,9 +176,9 @@ public class View implements IView {
 		console.println("\n----------------");
 		try {
 			// Object result = engine.eval(command);
-			Object result = shell.evaluate(command);
+			Object result = model.getShell().evaluate(command);
 			if (result != null) {
-				console.print(result.toString());
+				console.println(result.toString());
 			}
 		} catch (Exception e) {
 			console.println(e.getMessage());

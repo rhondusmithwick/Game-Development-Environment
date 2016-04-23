@@ -9,6 +9,7 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.component.audio.SoundEffect;
 import model.component.audio.ThemeMusic;
+import model.core.SystemManager;
 import view.View;
 import view.enums.GUISize;
 
@@ -28,7 +29,7 @@ public class DemoMain extends Application {
 		myStage.setWidth(GUISize.MAIN_SIZE.getSize());
 		myStage.setHeight(GUISize.MAIN_SIZE.getSize());
 
-		View view = new View();
+		View view = new View(new SystemManager());
 		Pane pane = view.getPane();
 		Group root = new Group();
 		Scene scene = new Scene(pane, 500, 500);

@@ -11,6 +11,8 @@ import api.IEntity;
 import api.IEventSystem;
 import api.ILevel;
 import api.IPhysicsEngine;
+import api.ISystemManager;
+import groovy.lang.GroovyShell;
 
 @Deprecated
 // does not have to be IEntity
@@ -103,9 +105,9 @@ public class BasicRMIServer extends UnicastRemoteObject implements ILevel {
 	}
 
 	@Override
-	public void init() {
+	public String init(GroovyShell shell, ISystemManager game) {
 		// TODO Auto-generated method stub
-
+		return null;
 	}
 
 	@Override
