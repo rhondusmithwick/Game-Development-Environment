@@ -27,7 +27,7 @@ import static animation.StringConstants.SELECT_EFFECT;
 /**
  * Created by rhondusmithwick on 4/23/16.
  *
- * @author Rhondu Smithwick
+ * @author Rhondu Smithwick, Melissa Zhang
  */
 public class Model {
     private final Map<String, Map<String, String>> animationList = new HashMap<>();
@@ -127,12 +127,12 @@ public class Model {
 
     public void makeSelected(Rectangle r) {
         addSelectEffect(r);
-        setSelectedRectangle(r);
-        if (getRectDrawer() != getSelectedRectangle()) {
-            removeSelectEffect(getRectDrawer());
+        this.selectedRectangle = r;
+        if (rectDrawer != selectedRectangle) {
+            removeSelectEffect(rectDrawer);
         }
-        Predicate<Rectangle> notSelected = (rect) -> (rect != getSelectedRectangle());
-        getRectangleList().stream().filter(notSelected).forEach(this::removeSelectEffect);
+        Predicate<Rectangle> notSelected = (rect) -> (rect != selectedRectangle);
+        rectangleList.stream().filter(notSelected).forEach(this::removeSelectEffect);
     }
 
 

@@ -32,9 +32,9 @@ import static animation.StringConstants.ANIMATION_NAME_PROMPT;
 /**
  * Created by rhondusmithwick on 4/23/16.
  *
- * @author Rhondu Smithwick
+ * @author Rhondu Smithwick, Melissa Zhang
  */
-public class GUI {
+class GUI {
     private final SimpleObjectProperty<Boolean> changeColorProperty = new SimpleObjectProperty<>(this, "ChangeColor", false);
     private final BorderPane mainPane = new BorderPane();
     private final VBox animationPropertiesBox = new VBox();
@@ -58,11 +58,8 @@ public class GUI {
         mainPane.setLeft(new ScrollPane(animationPropertiesBox));
     }
 
-    public Slider getDurationSlider() {
-        return durationSlider;
-    }
-
     public void initAnimationNameAndDurationFields(SpriteUtility spriteUtility) {
+        animationPropertiesBox.getChildren().clear();
         getAnimationName().setText(ANIMATION_NAME_PROMPT.get());
         Label durationTextLabel = new Label("Duration");
         Label durationValueLabel = new Label("0.0");
@@ -70,7 +67,7 @@ public class GUI {
             durationValueLabel.setText(String.format("%.2f", new_val.floatValue()));
             spriteUtility.initAnimationPreview();
         }, DURATION_MIN.get(), DURATION_MAX.get(), DURATION_DEFAULT.get());
-        getAnimationPropertiesBox().getChildren().addAll(getAnimationName(), durationTextLabel, durationSlider,
+        animationPropertiesBox.getChildren().addAll(getAnimationName(), durationTextLabel, durationSlider,
                 durationValueLabel);
     }
 
@@ -116,12 +113,17 @@ public class GUI {
         }
     }
 
-    public ScrollPane getSpriteScroll() {
-        return spriteScroll;
+    public void addButton(Button button, VBox box) {
+        button.setMaxWidth(Double.MAX_VALUE);
+        box.getChildren().add(button);
     }
 
-    public VBox getAnimationPropertiesBox() {
-        return animationPropertiesBox;
+    public Slider getDurationSlider() {
+        return durationSlider;
+    }
+
+    public ScrollPane getSpriteScroll() {
+        return spriteScroll;
     }
 
     public Scene getScene() {

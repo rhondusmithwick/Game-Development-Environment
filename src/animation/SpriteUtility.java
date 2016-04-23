@@ -4,15 +4,12 @@ import javafx.animation.Animation;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
-import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
@@ -32,6 +29,11 @@ import static animation.StringConstants.SAVE_ANIMATION;
 import static animation.StringConstants.SAVE_ANIMATIONS_TO_FILE;
 import static animation.UtilityUtilities.makeButton;
 
+/**
+ * The class for the Animation Utility.
+ *
+ * @author Melissa Zhang, Rhondu Smithwick, Bruna Liborio
+ */
 class SpriteUtility {
     private final SimpleObjectProperty<Boolean> changeColorProperty = new SimpleObjectProperty<>(this, "ChangeColor", false);
     private final GUI gui = new GUI(changeColorProperty);
@@ -48,7 +50,6 @@ class SpriteUtility {
         reinitializeGui();
         initButtons();
         gui.init();
-
     }
 
     private void reinitializeGui() {
@@ -61,22 +62,16 @@ class SpriteUtility {
     }
 
     private void initButtons() {
-        addButton(makeButton(SAVE_ANIMATIONS_TO_FILE.get(), e -> saveAnimations(spriteSheetPath, model.getAnimationList())), gui.getButtonBox());
-        addButton(makeButton(NEW_ANIMATION.get(), e -> reInitialize()), gui.getButtonBox());
-        addButton(makeButton(NEW_SPRITE.get(), e -> reinitializeGui()), gui.getButtonBox());
-        addButton(makeButton(PREVIEW_ANIMATION.get(), e -> animationPreview()), gui.getButtonBox());
-        addButton(makeButton(SAVE_ANIMATION.get(), e -> model.saveAnimation(gui.getAnimationName().getText(), gui.getDurationSlider().getValue())), gui.getButtonBox());
-        addButton(makeButton(ADD_FRAME.get(), e -> addFrame()), gui.getButtonBox());
-        addButton(makeButton(DELETE_FRAME.get(), e -> deleteFrame(model.getSelectedRectangle())), gui.getButtonBox());
-        addButton(gui.getActivateTransparencyButton(), gui.getButtonBox());
-        addButton(makeButton("Save Image", e -> saveImage(model.getSpriteImage())), gui.getButtonBox());
+        gui.addButton(makeButton(SAVE_ANIMATIONS_TO_FILE.get(), e -> saveAnimations(spriteSheetPath, model.getAnimationList())), gui.getButtonBox());
+        gui.addButton(makeButton(NEW_ANIMATION.get(), e -> reInitialize()), gui.getButtonBox());
+        gui.addButton(makeButton(NEW_SPRITE.get(), e -> reinitializeGui()), gui.getButtonBox());
+        gui.addButton(makeButton(PREVIEW_ANIMATION.get(), e -> animationPreview()), gui.getButtonBox());
+        gui.addButton(makeButton(SAVE_ANIMATION.get(), e -> model.saveAnimation(gui.getAnimationName().getText(), gui.getDurationSlider().getValue())), gui.getButtonBox());
+        gui.addButton(makeButton(ADD_FRAME.get(), e -> addFrame()), gui.getButtonBox());
+        gui.addButton(makeButton(DELETE_FRAME.get(), e -> deleteFrame(model.getSelectedRectangle())), gui.getButtonBox());
+        gui.addButton(gui.getActivateTransparencyButton(), gui.getButtonBox());
+        gui.addButton(makeButton("Save Image", e -> saveImage(model.getSpriteImage())), gui.getButtonBox());
     }
-
-    private void addButton(Button button, VBox box) {
-        button.setMaxWidth(Double.MAX_VALUE);
-        box.getChildren().add(button);
-    }
-
 
     private void deleteFrame(Rectangle frameToDelete) {
         if (frameToDelete != null) {
@@ -88,12 +83,8 @@ class SpriteUtility {
         }
     }
 
-    /*
-     * Initialize all animation gui elements (i.e. left side of pane)
-     */
     private void initAnimationProperties() {
         gui.getButtonBox().getChildren().remove(model.getPreviewImageView());
-        gui.getAnimationPropertiesBox().getChildren().clear();
         gui.initAnimationNameAndDurationFields(this);
         model.getRectangleList().stream().forEach(gui::displayRectangleListProperties);
     }
