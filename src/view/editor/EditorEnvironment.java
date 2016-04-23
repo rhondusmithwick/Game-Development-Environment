@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+
 import api.IEntity;
 import api.ILevel;
 import api.ISerializable;
@@ -41,19 +42,20 @@ public class EditorEnvironment extends Editor {
 
 	private static final int SINGLE = 1;
 	private static final int DEPTH = 70;
-	private BorderPane environmentPane;
+	private BorderPane environmentPane = new BorderPane();
 	private ILevel myEntitySystem;
-	private SubScene gameScene;
-	private Group gameRoot;
+	private Group gameRoot = new Group();
+	private SubScene gameScene = new SubScene(gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()),
+			GUISize.HEIGHT_MINUS_TAB.getSize());
 	private ResourceBundle myResources;
 	private ObservableList<ISerializable> masterEntityList;
 	private ObservableList<ISerializable> allEnvironmentsList;
-	private VBox leftPane;
-	private VBox rightPane;
-	private VBox masterEntityButtons;
-	private VBox environmentEntityButtons;
-	private TextField nameField;
-	private ScrollPane scrollPane;
+	private VBox leftPane = new VBox();
+	private VBox rightPane = new VBox();
+	private VBox masterEntityButtons = new VBox();
+	private VBox environmentEntityButtons = new VBox();
+	private TextField nameField = new TextField();
+	private ScrollPane scrollPane = new ScrollPane(environmentPane);
 
 	public EditorEnvironment(String language, ISerializable toEdit, ObservableList<ISerializable> masterList,
 			ObservableList<ISerializable> addToList) {
@@ -65,43 +67,20 @@ public class EditorEnvironment extends Editor {
 		myEntitySystem = (ILevel) toEdit;
 		allEnvironmentsList = addToList;
 		addLayoutComponents();
-
-		/*
-		 * // TODO: don't hard code double MILLISECOND_DELAY = 10; double
-		 * SECOND_DELAY = MILLISECOND_DELAY/1000; KeyFrame frame = new
-		 * KeyFrame(Duration.millis(MILLISECOND_DELAY), e ->
-		 * this.step(SECOND_DELAY)); Timeline animation = new Timeline();
-		 * animation.setCycleCount(Timeline.INDEFINITE);
-		 * animation.getKeyFrames().add(frame); animation.play();
-		 */
 	}
 
-	/*
-	 * private void step(double dt) { IPhysicsEngine p = new
-	 * PhysicsEngine(null); p.update(getEntitySystem(), dt); for(IEntity e:
-	 * getEntitySystem().getEntitiesWithComponent(Position.class)) { ImagePath
-	 * imagePath = e.getComponent(ImagePath.class); ImageView imageView =
-	 * imagePath.getImageView(); Position pos = e.getComponent(Position.class);
-	 * imageView.setTranslateX(pos.getX()); imageView.setTranslateY(pos.getY());
-	 * } }
-	 */
-
 	private void addLayoutComponents() {
-		environmentPane = new BorderPane();
-		scrollPane = new ScrollPane(environmentPane);
 		setLeftPane();
 		setRightPane();
 		setGameScene();
 	}
 
 	private void setLeftPane() {
-		leftPane = new VBox();
 		leftPane.getChildren().add(setNameDisplay());
 		leftPane.getChildren().add(setEntityOptionsDisplay());
 	}
 
 	private TextField setNameDisplay() {
-		nameField = new TextField();
 		if (myEntitySystem.getName().equals("")) {
 			nameField.setText(myResources.getString("environmentName"));
 		} else {
@@ -111,7 +90,6 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private ScrollPane setEntityOptionsDisplay() {
-		masterEntityButtons = new VBox();
 		if (masterEntityList.isEmpty()) {
 			loadDefaults();
 		}
@@ -145,24 +123,15 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void setRightPane() {
-		rightPane = new VBox();
 		rightPane.getChildren().add(setSaveButton());
-		rightPane.getChildren().add(setEntitiesInEnvironmentDisplay());
+		rightPane.getChildren().add(new ScrollPane(environmentEntityButtons));
 	}
 
 	private Button setSaveButton() {
 		return Utilities.makeButton(myResources.getString("saveEnvironment"), e -> saveEnvironment());
 	}
 
-	private ScrollPane setEntitiesInEnvironmentDisplay() {
-		environmentEntityButtons = new VBox();
-		return (new ScrollPane(environmentEntityButtons));
-	}
-
 	private void setGameScene() {
-		gameRoot = new Group();
-		gameScene = new SubScene(gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()),
-				GUISize.HEIGHT_MINUS_TAB.getSize());
 		gameScene.setFill(Color.WHITE);
 		for (IEntity entity : myEntitySystem.getAllEntities()) {
 			addToScene(entity);
@@ -174,13 +143,13 @@ public class EditorEnvironment extends Editor {
 			if (!entity.hasComponent(Position.class) || !entity.hasComponent(ImagePath.class)) {
 				addComponents(entity);
 			}
-			//Rectangle rectangle = new Rectangle(200,200);
-			//rectangle.setFill(Color.BLUE);
-			//makeDraggable(rectangle);
+			// Rectangle rectangle = new Rectangle(200,200);
+			// rectangle.setFill(Color.BLUE);
+			// makeDraggable(rectangle);
 			makeResizable(entity);
 			environmentEntityButtons.getChildren().add(createEntityButton(entity));
 			gameRoot.getChildren().add(createEntityImageView(entity));
-			//gameRoot.getChildren().add(rectangle);
+			// gameRoot.getChildren().add(rectangle);
 		} catch (Exception e) {
 			Utilities.showAlert(myResources.getString("error"), null, myResources.getString("unableToAdd"),
 					AlertType.ERROR);
@@ -216,13 +185,13 @@ public class EditorEnvironment extends Editor {
 		DragAndResize.makeResizable(entity.getComponent(ImagePath.class), pos);
 		return entity;
 	}
-	
-	//LOOK HERE FOR MAKING A SHAPE DRAGGABLE
+
+	// LOOK HERE FOR MAKING A SHAPE DRAGGABLE
 	private Shape makeDraggable(Rectangle rectangle) {
 		DragAndResize.makeResizable(rectangle);
 		return rectangle;
 	}
-	
+
 	private void entityRightClicked(IEntity entity, Button entityButton, MouseEvent event) {
 		highlight(entity, true);
 		Map<String, EventHandler<ActionEvent>> menuMap = new HashMap<String, EventHandler<ActionEvent>>();
