@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URI;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Properties;
@@ -24,8 +25,9 @@ class SaveHandler {
     private SaveHandler() {
     }
 
-    public static void saveAnimations(Map<String, Map<String, String>> maps) {
+    public static void saveAnimations(String spriteSheetPath, Map<String, Map<String, String>> maps) {
         Properties properties = new Properties();
+        properties.put("FilePath", spriteSheetPath);
         for (String animationName : maps.keySet()) {
             Map<String, String> props = maps.get(animationName);
             for (Entry<String, String> prop : props.entrySet()) {

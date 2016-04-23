@@ -33,6 +33,7 @@ import view.Dragger;
 
 import java.io.File;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -55,8 +56,6 @@ import static animation.StringConstants.SAVE_ANIMATION;
 import static animation.StringConstants.SAVE_ANIMATIONS_TO_FILE;
 
 class SpriteUtility {
-
-
     private final SimpleObjectProperty<Boolean> changeColorProperty = new SimpleObjectProperty<>(this, "ChangeColor", false);
     private final BorderPane mainPane = new BorderPane();
     private final VBox animationPropertiesBox = new VBox();
@@ -64,14 +63,11 @@ class SpriteUtility {
     private final Group spriteGroup = new Group();
     private final ScrollPane spriteScroll = new ScrollPane(spriteGroup);
     private final Scene scene = new Scene(mainPane, DoubleConstants.WIDTH.get(), DoubleConstants.HEIGHT.get());
-
     private final Map<String, Map<String, String>> animationList = new HashMap<>();
     private final List<Rectangle> rectangleList = new ArrayList<>();
-
     private final ImageView spriteImageView = new ImageView();
     private final ImageView previewImageView = new ImageView();
     private final Canvas canvas = new Canvas();
-
     private final TextField animationName = new TextField();
 
     private final List<Double> widthList = new ArrayList<>();
@@ -91,6 +87,7 @@ class SpriteUtility {
 
     private Button activateTransparencyButton;
     private Image spriteImage;
+    private String spriteSheetPath;
 
     public void init(Stage stage) {
         stage.setScene(scene);
@@ -112,7 +109,7 @@ class SpriteUtility {
     }
 
     private void initButtons() {
-        addButton(UtilityUtilities.makeButton(SAVE_ANIMATIONS_TO_FILE.get(), e -> saveAnimations(animationList)), buttonBox);
+        addButton(UtilityUtilities.makeButton(SAVE_ANIMATIONS_TO_FILE.get(), e -> saveAnimations(spriteSheetPath, animationList)), buttonBox);
         addButton(UtilityUtilities.makeButton(NEW_ANIMATION.get(), e -> reInitialize()), buttonBox);
         addButton(UtilityUtilities.makeButton(NEW_SPRITE.get(), e -> initializeGui()), buttonBox);
         addButton(UtilityUtilities.makeButton(PREVIEW_ANIMATION.get(), e -> animationPreview()), buttonBox);
@@ -342,8 +339,6 @@ class SpriteUtility {
         spriteScroll.setOnKeyPressed(this::keyPress); //this line keeps fucking up
         makeSelected(rectDrawer);
         spriteGroup.getChildren().add(rectDrawer);
-
-
         return rectDrawer;
     }
 
@@ -373,7 +368,8 @@ class SpriteUtility {
     private Image initFileChooser() {
         File spriteSheet = UtilityUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("All Images", "*.*"),
                 "Choose a spritesheet");
-        return new Image(spriteSheet.toURI().toString());
+        spriteSheetPath = spriteSheet.toURI().toString();
+        return new Image(spriteSheetPath);
     }
 
 
