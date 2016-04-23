@@ -23,7 +23,7 @@ public enum StringConstants {
         this.content = content;
     }
 
-    public String getContent() {
+    public String get() {
         return content;
     }
 }

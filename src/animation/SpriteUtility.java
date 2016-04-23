@@ -5,7 +5,6 @@ import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.geometry.Dimension2D;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Scene;
@@ -42,15 +41,21 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Predicate;
 
+import static animation.DoubleConstants.DURATION_DEFAULT;
+import static animation.DoubleConstants.DURATION_MAX;
+import static animation.DoubleConstants.DURATION_MIN;
+import static animation.DoubleConstants.KEY_INPUT_SPEED;
 import static animation.SaveHandler.saveImage;
+import static animation.StringConstants.ADD_FRAME;
+import static animation.StringConstants.DELETE_FRAME;
+import static animation.StringConstants.NEW_ANIMATION;
+import static animation.StringConstants.NEW_SPRITE;
+import static animation.StringConstants.PREVIEW_ANIMATION;
+import static animation.StringConstants.SAVE_ANIMATION;
+import static animation.StringConstants.SAVE_ANIMATIONS_TO_FILE;
 
 class SpriteUtility {
-    private static final Dimension2D dimensions = new Dimension2D(800, 600);
 
-    private static final double DURATION_MIN = 100;
-    private static final double DURATION_MAX = 3000;
-    private static final double DURATION_DEFAULT = 1000;
-    private static final double KEY_INPUT_SPEED = 5;
 
     private final SimpleObjectProperty<Boolean> changeColorProperty = new SimpleObjectProperty<>(this, "ChangeColor", false);
     private final BorderPane mainPane = new BorderPane();
@@ -58,7 +63,7 @@ class SpriteUtility {
     private final VBox buttonBox = new VBox();
     private final Group spriteGroup = new Group();
     private final ScrollPane spriteScroll = new ScrollPane(spriteGroup);
-    private final Scene scene = new Scene(mainPane, dimensions.getWidth(), dimensions.getHeight());
+    private final Scene scene = new Scene(mainPane, DoubleConstants.WIDTH.get(), DoubleConstants.HEIGHT.get());
 
     private final Map<String, Map> animationList = new HashMap<>();
     private final List<Rectangle> rectangleList = new ArrayList<>();
@@ -106,13 +111,13 @@ class SpriteUtility {
     }
 
     private void initButtons() {
-        addButton(UtilityUtilities.makeButton(StringConstants.SAVE_ANIMATIONS_TO_FILE.getContent(), e -> reInitialize()), buttonBox);
-        addButton(UtilityUtilities.makeButton(StringConstants.NEW_ANIMATION.getContent(), e -> reInitialize()), buttonBox);
-        addButton(UtilityUtilities.makeButton(StringConstants.NEW_SPRITE.getContent(), e -> initializeGui()), buttonBox);
-        addButton(UtilityUtilities.makeButton(StringConstants.PREVIEW_ANIMATION.getContent(), e -> animationPreview()), buttonBox);
-        addButton(UtilityUtilities.makeButton(StringConstants.SAVE_ANIMATION.getContent(), e -> saveAnimation()), buttonBox);
-        addButton(UtilityUtilities.makeButton(StringConstants.ADD_FRAME.getContent(), e -> addFrame()), buttonBox);
-        addButton(UtilityUtilities.makeButton(StringConstants.DELETE_FRAME.getContent(), e -> deleteFrame(selectedRectangle)), buttonBox);
+        addButton(UtilityUtilities.makeButton(SAVE_ANIMATIONS_TO_FILE.get(), e -> reInitialize()), buttonBox);
+        addButton(UtilityUtilities.makeButton(NEW_ANIMATION.get(), e -> reInitialize()), buttonBox);
+        addButton(UtilityUtilities.makeButton(NEW_SPRITE.get(), e -> initializeGui()), buttonBox);
+        addButton(UtilityUtilities.makeButton(PREVIEW_ANIMATION.get(), e -> animationPreview()), buttonBox);
+        addButton(UtilityUtilities.makeButton(SAVE_ANIMATION.get(), e -> saveAnimation()), buttonBox);
+        addButton(UtilityUtilities.makeButton(ADD_FRAME.get(), e -> addFrame()), buttonBox);
+        addButton(UtilityUtilities.makeButton(DELETE_FRAME.get(), e -> deleteFrame(selectedRectangle)), buttonBox);
         activateTransparencyButton = UtilityUtilities.makeButton("Activate Transparency", e -> makeTransparent());
         addButton(activateTransparencyButton, buttonBox);
         addButton(UtilityUtilities.makeButton("Save Image", e -> saveImage(spriteImageView.getImage())), buttonBox);
@@ -173,7 +178,7 @@ class SpriteUtility {
         durationSlider = UtilityUtilities.makeSlider((ov, old_val, new_val) -> {
             durationValueLabel.setText(String.format("%.2f", new_val.floatValue()));
             initAnimationPreview();
-        }, DURATION_MIN, DURATION_MAX, DURATION_DEFAULT);
+        }, DURATION_MIN.get(), DURATION_MAX.get(), DURATION_DEFAULT.get());
         animationPropertiesBox.getChildren().addAll(animationName, durationTextLabel, durationSlider,
                 durationValueLabel);
     }
@@ -312,11 +317,11 @@ class SpriteUtility {
 
 
     private void addSelectEffect(Rectangle img) {
-        img.setStyle(StringConstants.SELECT_EFFECT.getContent());
+        img.setStyle(StringConstants.SELECT_EFFECT.get());
     }
 
     private void removeSelectEffect(Rectangle imageView) {
-        imageView.setStyle(StringConstants.NO_SELECT_EFFECT.getContent());
+        imageView.setStyle(StringConstants.NO_SELECT_EFFECT.get());
     }
 
     /*
@@ -351,16 +356,16 @@ class SpriteUtility {
                 addFrame();
                 break;
             case RIGHT:
-                selectedRectangle.setX(selectedRectangle.getX() + KEY_INPUT_SPEED);
+                selectedRectangle.setX(selectedRectangle.getX() + KEY_INPUT_SPEED.get());
                 break;
             case LEFT:
-                selectedRectangle.setX(selectedRectangle.getX() - KEY_INPUT_SPEED);
+                selectedRectangle.setX(selectedRectangle.getX() - KEY_INPUT_SPEED.get());
                 break;
             case UP:
-                selectedRectangle.setY(selectedRectangle.getY() - KEY_INPUT_SPEED);
+                selectedRectangle.setY(selectedRectangle.getY() - KEY_INPUT_SPEED.get());
                 break;
             case DOWN:
-                selectedRectangle.setY(selectedRectangle.getY() + KEY_INPUT_SPEED);
+                selectedRectangle.setY(selectedRectangle.getY() + KEY_INPUT_SPEED.get());
                 break;
             default:
         }
