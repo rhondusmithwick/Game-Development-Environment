@@ -1,16 +1,11 @@
 package view.editor.eventeditor;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 
 import api.IComponent;
 import api.IEntity;
 import api.ILevel;
 import api.ISerializable;
-import events.InputSystem;
-import events.PropertyTrigger;
-import events.Trigger;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,25 +21,22 @@ public class TableManager
 	
 	private Entity entity;
 	private IComponent component;
-	private String propertyName;
 	private String language;
 	private PropertyEventEditor editor;
-	private final InputSystem inputSystem;
+	
 	private ObservableList<ISerializable> selectedEntities;
 	
-	public TableManager(ObservableList<IEntity> entityList, String language, 
-			PropertyEventEditor editor, 
-			InputSystem inputSystem)
+	public TableManager(ObservableList<IEntity> entityList, String language, PropertyEventEditor editor )
 	{
 		container = new HBox();
 		this.language = language;
 		entityTable = new EntityTable(entityList, this, language);
 		componentTable = new ComponentTable(this, language);
 		propertyTable = new PropertyTable(this, language);
-		selectedEntities = FXCollections.emptyObservableList();
+		selectedEntities = FXCollections.observableArrayList();
 		
 		this.editor = editor;
-		this.inputSystem = inputSystem; 
+		 
 		
 		
 		editor.resetTrigger();
@@ -68,17 +60,14 @@ public class TableManager
 		this.component = component;
 	}
 	
-	public void propertyWasClicked(SimpleObjectProperty property)
+	public void propertyWasClicked(SimpleObjectProperty<?> property)
 	{
-		propertyName = property.getName();
-		
-		String[] splitClassName = component.getClass().toString().split("\\.");
-
 		editor.triggerSet(entity.getName(), component, property);
 	}
 	
 	public void levelWasPicked(List<ILevel> levels)
 	{
+		
 		selectedEntities.clear();
 		
 		for ( ILevel level: levels )

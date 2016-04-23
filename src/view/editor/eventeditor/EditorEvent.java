@@ -41,7 +41,8 @@ public class EditorEvent extends Editor
 
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.EVENT_EDIT.getInset());
-		// pane.setAlignment(Pos.TOP_LEFT);
+		pane.setPrefWidth(GUISize.EVENT_EDITOR_WIDTH.getSize());
+
 		myResources = ResourceBundle.getBundle(language);
 		scrollPane = new ScrollPane(pane);
 		

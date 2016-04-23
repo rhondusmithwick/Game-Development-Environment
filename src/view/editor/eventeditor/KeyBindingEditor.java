@@ -3,15 +3,12 @@ package view.editor.eventeditor;
 import java.io.File;
 import java.util.ResourceBundle;
 
-import api.ISerializable;
 import events.Action;
-import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
@@ -55,15 +52,15 @@ public class KeyBindingEditor extends Editor
 			return;
 		
 		currentKey = code;
-		keyInputText.setText("Key: " + code.getName());	// TODO: resource
+		keyInputText.setText(myResources.getString("key")+ code.getName());	
 		keyListenerIsActive = false;
 	}
 	
 	private void makeInputBox()
 	{
-		listenToKey = Utilities.makeButton("Press a Key!", e -> listenButtonPress()); // TODO: resource
+		listenToKey = Utilities.makeButton(myResources.getString("pressKey"), e -> listenButtonPress());
 		
-		keyInputText = new Text("No Key Pressed!");	// TODO: resource
+		keyInputText = new Text(myResources.getString("noKeyPressed"));	
 		
 		inputBox.getChildren().addAll(listenToKey, keyInputText);
 		
@@ -74,7 +71,7 @@ public class KeyBindingEditor extends Editor
 	{
 		VBox container = new VBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
 		// Adding now the Groovy Table
-		chooseFileButton = Utilities.makeButton("Choose Groovy Script", e -> getFile());	// TODO resource
+		chooseFileButton = Utilities.makeButton(myResources.getString("chooseGroovy"), e -> getFile());
 		
 		container.getChildren().addAll(chooseFileButton);
 		
@@ -86,7 +83,7 @@ public class KeyBindingEditor extends Editor
 	{
 		File groovyFile = null;
 		
-		groovyFile = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("groovy", "*.groovy"), "Select your groovy script!");
+		groovyFile = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("groovy", "*.groovy"), myResources.getString("selectGroovy"));
 		if ( groovyFile != null )
 		{
 			currentAction = new Action(groovyFile.getAbsolutePath());
