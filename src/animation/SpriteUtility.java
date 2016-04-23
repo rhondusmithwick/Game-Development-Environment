@@ -1,14 +1,10 @@
 package animation;
 
 import javafx.animation.Animation;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -21,28 +17,19 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import javafx.util.StringConverter;
-import javafx.util.converter.NumberStringConverter;
 import view.Dragger;
 
 import java.io.File;
-import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
-import java.util.function.Predicate;
 
-import static animation.DoubleConstants.KEY_INPUT_SPEED;
 import static animation.SaveHandler.saveAnimations;
 import static animation.SaveHandler.saveImage;
 import static animation.StringConstants.ADD_FRAME;
 import static animation.StringConstants.DELETE_FRAME;
 import static animation.StringConstants.NEW_ANIMATION;
 import static animation.StringConstants.NEW_SPRITE;
-import static animation.StringConstants.NO_SELECT_EFFECT;
 import static animation.StringConstants.PREVIEW_ANIMATION;
 import static animation.StringConstants.SAVE_ANIMATION;
 import static animation.StringConstants.SAVE_ANIMATIONS_TO_FILE;
-import static animation.StringConstants.SELECT_EFFECT;
 import static animation.UtilityUtilities.makeButton;
 
 class SpriteUtility {
@@ -108,7 +95,7 @@ class SpriteUtility {
         gui.getButtonBox().getChildren().remove(model.getPreviewImageView());
         gui.getAnimationPropertiesBox().getChildren().clear();
         gui.initAnimationNameAndDurationFields(this);
-        model.getRectangleList().stream().forEach(this::displayRectangleListProperties);
+        model.getRectangleList().stream().forEach(gui::displayRectangleListProperties);
     }
 
 
@@ -135,10 +122,10 @@ class SpriteUtility {
     }
 
     private void initCanvasHandlers(Canvas canvas2) {
-        canvas2.setOnMouseDragged(this::mouseDragged);
-        canvas2.setOnMousePressed(this::mousePressed);
+        canvas2.setOnMouseDragged(model::handleMouseDragged);
+        canvas2.setOnMousePressed(this::handleMousePressed);
         canvas2.setOnMouseReleased(this::mouseReleased);
-        canvas2.setOnMouseClicked(this::mouseClicked);
+        canvas2.setOnMouseClicked(this::handleMouseClicked);
     }
 
     private void animationPreview() {
@@ -155,72 +142,16 @@ class SpriteUtility {
 
 
     private void addFrame() {
-        Rectangle clone = cloneRect(model.getRectDrawer());
+        Rectangle clone = model.cloneRect(model.getRectDrawer());
         model.getRectangleList().add(clone);
-        addRectangleToDisplay(clone);
+        gui.addRectangleToDisplay(clone);
     }
 
-    private void addRectangleToDisplay(Rectangle clone) {
-        gui.getSpriteGroup().getChildren().add(clone);
-        displayRectangleListProperties(clone);
-    }
+
 
     /*
-     * Puts properties of all frames on GUI i.e. x, y, width, height; Makes them editable
-     */
-    private void displayRectangleListProperties(Rectangle clone) {
-        List<String> propertyList = Arrays.asList("x", "y", "width", "height");
-        for (String propertyName : propertyList) {
-            Label label = new Label(propertyName);
-            TextField field = new TextField();
-            field.setMinWidth(50);
-            gui.getAnimationPropertiesBox().getChildren().addAll(label, field);
-            try {
-                Method method = clone.getClass().getMethod(propertyName + "Property");
-                DoubleProperty rectProperty = (DoubleProperty) method.invoke(clone);
-                StringConverter<Number> converter = new NumberStringConverter();
-                Bindings.bindBidirectional(field.textProperty(), rectProperty, converter);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private Rectangle cloneRect(Rectangle rect) {
-        Rectangle r = new Rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-        r.setFill(Color.TRANSPARENT);
-        r.setStroke(Color.RED);
-        Dragger.makeDraggable(r);
-        makeSelectable(r);
-        return r;
-    }
-
-    private void makeSelectable(Rectangle r) {
-        r.setOnMouseClicked(e -> makeSelected(r));
-    }
-
-    private void makeSelected(Rectangle r) {
-        addSelectEffect(r);
-        model.setSelectedRectangle(r);
-        if (model.getRectDrawer() != model.getSelectedRectangle()) {
-            removeSelectEffect(model.getRectDrawer());
-        }
-        Predicate<Rectangle> notSelected = (rect) -> (rect != model.getSelectedRectangle());
-        model.getRectangleList().stream().filter(notSelected).forEach(this::removeSelectEffect);
-    }
-
-
-    private void addSelectEffect(Rectangle img) {
-        img.setStyle(SELECT_EFFECT.get());
-    }
-
-    private void removeSelectEffect(Rectangle imageView) {
-        imageView.setStyle(NO_SELECT_EFFECT.get());
-    }
-
-    /*
-     * Initializes initial rectangle drawer
-     */
+   * Initializes initial rectangle drawer
+   */
     private Rectangle initRectangleDrawer() {
         gui.getSpriteGroup().getChildren().remove(model.getRectDrawer());
         model.setRectDrawer(new Rectangle());
@@ -236,10 +167,18 @@ class SpriteUtility {
         model.getRectDrawer().setStroke(Color.BLACK);
         gui.getSpriteScroll().requestFocus(); //ugh someone fix this
         gui.getSpriteScroll().setOnKeyPressed(this::keyPress); //this line keeps fucking up
-        makeSelected(model.getRectDrawer());
+        model.makeSelected(model.getRectDrawer());
         gui.getSpriteGroup().getChildren().add(model.getRectDrawer());
         return model.getRectDrawer();
     }
+
+//    private void initRectangleDrawer() {
+//        gui.getSpriteGroup().getChildren().remove(model.getRectDrawer());
+//        model.resetRectangleDrawer();
+//        gui.getSpriteScroll().requestFocus(); //ugh someone fix this
+//        gui.getSpriteScroll().setOnKeyPressed(this::keyPress); //this line keeps fucking up
+//        gui.getSpriteGroup().getChildren().add(model.getRectDrawer());
+//    }
 
     private void keyPress(KeyEvent event) {
         KeyCode keycode = event.getCode();
@@ -272,11 +211,9 @@ class SpriteUtility {
         } else {
             gui.getCanvas().setCursor(Cursor.DEFAULT);
         }
-
-
     }
 
-    private void mousePressed(MouseEvent event) {
+    private void handleMousePressed(MouseEvent event) {
         if (!changeColorProperty.get()) {
             gui.getCanvas().setCursor(Cursor.CLOSED_HAND);
             if (event.getButton() == MouseButton.PRIMARY) {
@@ -292,15 +229,17 @@ class SpriteUtility {
         }
     }
 
-    private void mouseDragged(MouseEvent event) {
-        model.rectXProperty().set(event.getX());
-        model.rectYProperty().set(event.getY());
-    }
+//    private void handleMousePressed(MouseEvent event) {
+//        if (!changeColorProperty.get()) {
+//            gui.getCanvas().setCursor(Cursor.CLOSED_HAND);
+//            model.handleMousePressed(event);
+//        }
+//    }
 
-    private void mouseClicked(MouseEvent event) {
+
+    private void handleMouseClicked(MouseEvent event) {
         if (changeColorProperty.get()) {
             model.changeColor(event.getX(), event.getY());
         }
     }
-
 }

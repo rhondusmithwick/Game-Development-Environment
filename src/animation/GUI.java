@@ -1,5 +1,7 @@
 package animation;
 
+import javafx.beans.binding.Bindings;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
@@ -12,6 +14,13 @@ import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
+import javafx.util.StringConverter;
+import javafx.util.converter.NumberStringConverter;
+
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.List;
 
 import static animation.DoubleConstants.DURATION_DEFAULT;
 import static animation.DoubleConstants.DURATION_MAX;
@@ -66,6 +75,29 @@ public class GUI {
                 durationValueLabel);
     }
 
+
+    public void addRectangleToDisplay(Rectangle clone) {
+        spriteGroup.getChildren().add(clone);
+        displayRectangleListProperties(clone);
+    }
+
+    public void displayRectangleListProperties(Rectangle clone) {
+        List<String> propertyList = Arrays.asList("x", "y", "width", "height");
+        for (String propertyName : propertyList) {
+            Label label = new Label(propertyName);
+            TextField field = new TextField();
+            field.setMinWidth(50);
+            animationPropertiesBox.getChildren().addAll(label, field);
+            try {
+                Method method = clone.getClass().getMethod(propertyName + "Property");
+                DoubleProperty rectProperty = (DoubleProperty) method.invoke(clone);
+                StringConverter<Number> converter = new NumberStringConverter();
+                Bindings.bindBidirectional(field.textProperty(), rectProperty, converter);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     private void makeTransparent() {
         if (changeColorProperty.get()) {
