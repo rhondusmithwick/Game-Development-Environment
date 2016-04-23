@@ -1,8 +1,7 @@
 package view.editor.gameeditor;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 import java.util.ResourceBundle;
 import api.IEntity;
 import api.ISerializable;
@@ -27,7 +26,6 @@ public class EntityDisplay extends ObjectDisplay{
 	private ComboBox<String> templateBox;
 	private final EntityFactory entFact = new EntityFactory();
 	private String language;
-	Map<String, String> templates;
 	
 	public EntityDisplay(String language,ObservableList<IEntity> masterEntList, Authoring authEnv){
 		super(language, authEnv,masterEntList);
@@ -60,10 +58,9 @@ public class EntityDisplay extends ObjectDisplay{
 	@Override
 	public Node makeNewObject(){
 		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
-		templates = new HashMap<>();
-		ResourceBundle tempNames = ResourceBundle.getBundle(language+DefaultStrings.TEMP_LIST.getDefault());
-		Utilities.getAllFromDirectory(DefaultStrings.TEMPLATE_DIREC_LOC.getDefault()).forEach(e-> templates.put(tempNames.getString(e), e));
-		templateBox = Utilities.makeComboBox(myResources.getString("entType"), new ArrayList<String>(templates.keySet()), null);
+		List<String> titles = new ArrayList<>();
+		Utilities.getAllFromDirectory(DefaultStrings.TEMPLATE_DIREC_LOC.getDefault()).forEach(e-> titles.add(myResources.getString(e)));
+		templateBox = Utilities.makeComboBox(myResources.getString("entType"), titles, null);
 		container.getChildren().add(templateBox);
 		
 		container.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENTITY_EDITOR_NAME.getDefault()), 
@@ -75,11 +72,12 @@ public class EntityDisplay extends ObjectDisplay{
 
 
 	private void entityWithTemplate(){
-		String template = templates.get(templateBox.getSelectionModel().getSelectedItem());
-		templateBox.getSelectionModel().clearSelection();
-		if(template == null){
+		String selected = templateBox.getSelectionModel().getSelectedItem();
+		if(selected == null){
 			return;
 		}
+		String template = myResources.getString(selected);
+		templateBox.getSelectionModel().clearSelection();
 		IEntity newEntity = entFact.createEntity(template, language);
 		createEditor(EditorEntity.class, newEntity, FXCollections.observableArrayList());
 	}

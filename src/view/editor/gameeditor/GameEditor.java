@@ -125,8 +125,4 @@ public class GameEditor extends Editor  {
 	public void updateEditor() {
 		populateLayout();
 	}
-
-
-
-
 }

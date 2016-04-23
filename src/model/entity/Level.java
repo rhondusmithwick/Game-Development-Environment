@@ -1,9 +1,11 @@
 package model.entity;
 
-import java.io.File;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import com.google.common.collect.Maps;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -11,10 +13,14 @@ import com.thoughtworks.xstream.annotations.XStreamAlias;
 import api.IComponent;
 import api.IEntity;
 import api.IEventSystem;
+import api.IGameScript;
 import api.ILevel;
 import api.IPhysicsEngine;
+import api.ISystemManager;
 import events.EventSystem;
+import groovy.lang.GroovyShell;
 import model.physics.PhysicsEngine;
+import view.enums.DefaultStrings;
 
 /**
  * Implementation of a Level. This implementation is focused on the IDs. It
@@ -34,6 +40,8 @@ public class Level implements ILevel {
 	private IEventSystem eventSystem = new EventSystem(this);
 	private IPhysicsEngine physics = new PhysicsEngine();
 	private String eventSystemPath;
+	private ResourceBundle scriptLocs = ResourceBundle.getBundle(DefaultStrings.SCRIPTS_LOC.getDefault());
+	private List<IGameScript> gameScripts = new ArrayList<IGameScript>();
 
 	public Level() {
 		this("");
@@ -112,15 +120,36 @@ public class Level implements ILevel {
 	}
 
 	@Override
-	public void init(List<File> groovyScripts) {
-		// TODO: class-load all Groovy scripts (pass in physics too) and call
-		// their init() methods
+	public String init(GroovyShell shell, ISystemManager game) {
+		String returnMessage = "";
+		String key = "script";
+		if (this.metadata.containsKey(key)) {
+			String value = this.metadata.get(key);
+			String[] scripts = value.split(",");
+			for (String script : scripts) {
+				try {
+					IGameScript gameScript = (IGameScript) Class.forName(scriptLocs.getString(script)).getConstructor()
+							.newInstance();
+					gameScript.init(shell, game);
+					gameScripts.add(gameScript);
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchMethodException | SecurityException
+						| ClassNotFoundException e) {
+					returnMessage += (e.getMessage() + "\n");
+				}
+			}
+		} else {
+			returnMessage = "No scripts";
+		}
+		return returnMessage;
 	}
 
 	@Override
 	public void update(double dt) {
-		// TODO: call the scripts' update() methods
-		physics.update(this, dt);
+		// physics.update(this, dt);
+		for (IGameScript gameScript : gameScripts) {
+			gameScript.update(dt);
+		}
 	}
 
 	@Override

@@ -11,6 +11,7 @@ public enum DefaultStrings {
 	ENVIRONMENT_EDITOR_NAME("EditorEnvironment"),
 	LANG_LOC("propertyFiles/"), 
 	COMPONENT_LOC("propertyFiles/componentLocations"),
+	SCRIPTS_LOC("propertyFiles/scriptLocations"),
 	CREATE_LOC("resources/createdGames/"),
 	TEMPLATE_DIREC_LOC("resources/templates/"),
 	TEMPLATE_BUNDLE_LOC("templates/"),
@@ -24,7 +25,8 @@ public enum DefaultStrings {
 	METADATA_LOC("/metadata.xml"),
 	ENTITIES_LOC("/entities.xml"),
 	LEVELS_LOC("/levels/"),
-	TEMP_LIST("_templatelist");
+	TEMP_LIST("_templatelist"),
+	DEF_NAME("DefaultName");
 	
 
 

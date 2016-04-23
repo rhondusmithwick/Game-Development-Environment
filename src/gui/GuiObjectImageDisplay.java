@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import view.Utilities;
 import view.enums.GUISize;
 
@@ -58,7 +58,7 @@ public class GuiObjectImageDisplay extends GuiObject {
 
 	@Override
 	public Object getGuiNode() {
-		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
+		VBox container = new VBox(GUISize.GUI_IM_DISP.getSize());
 		container.getChildren().addAll(preview, setImage);
 		return container;
 	}

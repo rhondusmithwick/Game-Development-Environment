@@ -49,8 +49,10 @@ public class Visible implements IComponent {
         return visibleProperty().get();
     }
 
+
     public void setVisible(boolean visible) {
         visibleProperty().set(visible);
+        
     }
 
     @Override
