@@ -10,6 +10,12 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.VBox;
 
+/**
+ * 
+ * @author calinelson
+ *
+ */
+
 public class GuiObjectSlider extends GuiObject{
 	private Slider slider;
 	private Label textLabel;
@@ -20,14 +26,27 @@ public class GuiObjectSlider extends GuiObject{
 	public GuiObjectSlider(String name, String resourceBundle,String language, SimpleObjectProperty<?> property, Object object) {
 		super(name, resourceBundle);
 		this.myResources = ResourceBundle.getBundle(language);
-		slider = new Slider(Integer.parseInt(getResourceBundle().getString(name+"Min")),Integer.parseInt(getResourceBundle().getString(name+ "Max")), (Double) object); 
-		slider.setShowTickMarks(true);
-		slider.setBlockIncrement(Integer.parseInt(getResourceBundle().getString(name+"Increment")));
-		slider.setValue((Double) property.getValue());
+		createSlider(name, property, object);
 		textLabel = new Label(myResources.getString(getObjectName()));
 		numLabel = new Label(Double.toString(slider.getValue()));
 		numLabel.textProperty().bind(Bindings.convert(slider.valueProperty()));
 		bindProperty(property);
+	}
+
+
+
+	private void createSlider(String name, SimpleObjectProperty<?> property, Object object) {
+		if(object.getClass().equals(Integer.class)){
+			slider = new Slider(Integer.parseInt(getResourceBundle().getString(name+"Min")),Integer.parseInt(getResourceBundle().getString(name+ "Max")), (Integer) object);
+			slider.setMajorTickUnit(Integer.parseInt(getResourceBundle().getString(name+"MajorIncrement")));
+			slider.setMinorTickCount(Integer.parseInt(getResourceBundle().getString(name + "MinorIncrement")));
+			slider.setSnapToTicks(true);
+			slider.setValue((Integer) property.getValue());
+			
+		}else{
+			slider = new Slider(Double.parseDouble(getResourceBundle().getString(name+"Min")),Double.parseDouble(getResourceBundle().getString(name+ "Max")), (Double) object); 
+			slider.setValue((Double) property.getValue());
+		}
 	}
 
 
@@ -38,6 +57,7 @@ public class GuiObjectSlider extends GuiObject{
             @SuppressWarnings("unchecked")
 			public void changed(ObservableValue<? extends Number> ov,Number old_val, Number new_val) {
             	property.setValue(slider.valueProperty().get());
+            
             }
         });
 	}
