@@ -50,7 +50,7 @@ public abstract class StartUpMenu {
         media = new Media(new File(file).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayer.play();	
+//        mediaPlayer.play();	TODO: rm
 	}
 
 	private void createVBox() {

@@ -11,6 +11,8 @@ import java.util.ResourceBundle;
 import api.IEntity;
 import api.ILevel;
 import api.ISerializable;
+import api.ISystemManager;
+import api.IView;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -32,21 +34,25 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
+import model.core.SystemManager;
 import model.entity.Level;
 import view.DragAndResize;
 import view.Utilities;
+import view.View;
 import view.enums.DefaultEntities;
 import view.enums.GUISize;
 
 public class EditorEnvironment extends Editor {
 
+	// TODO: resources
 	private static final int SINGLE = 1;
 	private static final int DEPTH = 70;
 	private BorderPane environmentPane = new BorderPane();
 	private ILevel myEntitySystem;
 	private Group gameRoot = new Group();
-	private SubScene gameScene = new SubScene(gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()),
-			GUISize.HEIGHT_MINUS_TAB.getSize());
+	// private SubScene gameScene = new SubScene(gameRoot,
+	// (GUISize.TWO_THIRDS_OF_SCREEN.getSize()),
+	// GUISize.HEIGHT_MINUS_TAB.getSize());
 	private ResourceBundle myResources;
 	private ObservableList<ISerializable> masterEntityList;
 	private ObservableList<ISerializable> allEnvironmentsList;
@@ -57,6 +63,10 @@ public class EditorEnvironment extends Editor {
 	private TextField nameField = new TextField();
 	private ScrollPane scrollPane = new ScrollPane(environmentPane);
 
+	private ISystemManager game;
+	private IView view;
+	private SubScene gameScene;
+
 	public EditorEnvironment(String language, ISerializable toEdit, ObservableList<ISerializable> masterList,
 			ObservableList<ISerializable> addToList) {
 		myResources = ResourceBundle.getBundle(language);
@@ -64,7 +74,11 @@ public class EditorEnvironment extends Editor {
 			this.updateDisplay(masterList);
 		});
 		masterEntityList = masterList;
-		myEntitySystem = (ILevel) toEdit;
+		this.myEntitySystem = (ILevel) toEdit; // TODO: casting check
+
+		game = new SystemManager(this.myEntitySystem);
+		view = new View(game, gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize());
+
 		allEnvironmentsList = addToList;
 		addLayoutComponents();
 	}
@@ -108,8 +122,10 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void addToSystemAndScene(IEntity entity) {
-		myEntitySystem.addEntity(makeResizable(entity));
-		addToScene(entity);
+		this.myEntitySystem.addEntities(entity);
+		// TODO: rm
+		// myEntitySystem.addEntity(makeResizable(entity));
+		// addToScene(entity);
 	}
 
 	private void loadDefaults() {
@@ -132,6 +148,10 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void setGameScene() {
+		// gameScene = new SubScene(gameRoot,
+		// (GUISize.TWO_THIRDS_OF_SCREEN.getSize()),
+		// GUISize.HEIGHT_MINUS_TAB.getSize());
+		gameScene = this.view.getSubScene();
 		gameScene.setFill(Color.WHITE);
 		for (IEntity entity : myEntitySystem.getAllEntities()) {
 			addToScene(entity);
@@ -146,9 +166,11 @@ public class EditorEnvironment extends Editor {
 			// Rectangle rectangle = new Rectangle(200,200);
 			// rectangle.setFill(Color.BLUE);
 			// makeDraggable(rectangle);
-			makeResizable(entity);
+			// TODO: rm
+			// makeResizable(entity);
 			environmentEntityButtons.getChildren().add(createEntityButton(entity));
-			gameRoot.getChildren().add(createEntityImageView(entity));
+			// TODO: rm
+			// gameRoot.getChildren().add(createEntityImageView(entity));
 			// gameRoot.getChildren().add(rectangle);
 		} catch (Exception e) {
 			Utilities.showAlert(myResources.getString("error"), null, myResources.getString("unableToAdd"),
@@ -156,13 +178,15 @@ public class EditorEnvironment extends Editor {
 		}
 	}
 
-	private ImageView createEntityImageView(IEntity entity) {
-		Position pos = entity.getComponent(Position.class);
-		ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
-		entityView.setTranslateX(pos.getX());
-		entityView.setTranslateY(pos.getY());
-		return entityView;
-	}
+	// TODO: rm
+	// private ImageView createEntityImageView(IEntity entity) {
+	// Position pos = entity.getComponent(Position.class);
+	// ImageView entityView =
+	// entity.getComponent(ImagePath.class).getImageView();
+	// entityView.setTranslateX(pos.getX());
+	// entityView.setTranslateY(pos.getY());
+	// return entityView;
+	// }
 
 	private Button createEntityButton(IEntity entity) {
 		Button entityInButton = new Button(entity.getName());
@@ -180,11 +204,12 @@ public class EditorEnvironment extends Editor {
 		return entityInButton;
 	}
 
-	private IEntity makeResizable(IEntity entity) {
-		Position pos = entity.getComponent(Position.class);
-		DragAndResize.makeResizable(entity.getComponent(ImagePath.class), pos);
-		return entity;
-	}
+	// TODO: rm
+	// private IEntity makeResizable(IEntity entity) {
+	// Position pos = entity.getComponent(Position.class);
+	// DragAndResize.makeResizable(entity.getComponent(ImagePath.class), pos);
+	// return entity;
+	// }
 
 	// LOOK HERE FOR MAKING A SHAPE DRAGGABLE
 	private Shape makeDraggable(Rectangle rectangle) {
