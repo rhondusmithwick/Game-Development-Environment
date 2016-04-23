@@ -9,7 +9,6 @@ import java.util.ResourceBundle;
 import api.IComponent;
 import api.IEntity;
 import api.ILevel;
-import api.ISerializable;
 import events.Action;
 import events.InputSystem;
 import events.Trigger;
@@ -19,12 +18,10 @@ import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import view.Utilities;
-import view.editor.Editor;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
 
@@ -35,7 +32,6 @@ public class PropertyEventEditor extends EventEditorTab
 	private final ResourceBundle myResources;
 	private final LevelPicker levelPicker;
 	
-	private final HashMap<String, Button> actionButtons;
 	private Text triggerText;
 	private Text actionText;
 	
@@ -76,8 +72,6 @@ public class PropertyEventEditor extends EventEditorTab
 		actionText = new Text();
 		chooseFileButton = new Button();
 		makeEventButton = new Button();
-		
-		actionButtons = new HashMap<String, Button>();
 		
 		inputSystem = new InputSystem();
 		tableManager = new TableManager(masterList, language, this, inputSystem );
