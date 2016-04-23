@@ -131,29 +131,6 @@ public class SystemManager implements ISystemManager {
 		return universe;
 	}
 
-	@Deprecated
-	@Override
-	public void setEntitySystem(ILevel system) {
-		this.universe = system;
-	}
-
-	@Deprecated
-	@Override
-	public void saveSystem(String filename) {
-		// new XMLWriter<ISystemManager>().writeToFile(filename, this);
-		this.saveLevel(filename);
-	}
-
-	@Override
-	public void setDetails(List<String> list) {
-		this.details = list;
-	}
-
-	@Override
-	public List<String> getDetails() {
-		return details;
-	}
-
 	@Override
 	public GroovyShell getShell() {
 		return this.shell;
