@@ -125,12 +125,6 @@ public class SystemManager implements ISystemManager {
 		this.moveEntitiesToSharedSystem(this.idsToEntityArray(this.universe, ids));
 	}
 
-	@Deprecated
-	@Override
-	public ILevel getUniverse() {
-		return universe;
-	}
-
 	@Override
 	public GroovyShell getShell() {
 		return this.shell;
