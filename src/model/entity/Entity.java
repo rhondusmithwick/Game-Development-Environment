@@ -1,5 +1,6 @@
 package model.entity;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
@@ -95,7 +96,7 @@ public class Entity implements IEntity {
 	@Override
 	public <T extends IComponent> List<T> getComponentList(Class<T> componentClass) {
 		if (!hasComponent(componentClass)) {
-			return null;
+			return new ArrayList<T>();
 		}
 		List<IComponent> currentComponents = componentMap.get(componentClass);
 		return Lists.transform(currentComponents, componentClass::cast);

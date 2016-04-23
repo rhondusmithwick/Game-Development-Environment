@@ -27,6 +27,7 @@ public class Vector {
 	}
 
 	public double getDotProduct(Vector b) {
+		System.out.println(this.getXComponent() * b.getXComponent() + this.getYComponent() * b.getYComponent());
 		return this.getXComponent() * b.getXComponent() + this.getYComponent() * b.getYComponent();
 	}
 

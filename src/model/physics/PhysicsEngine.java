@@ -48,12 +48,11 @@ public class PhysicsEngine implements IPhysicsEngine {
 			imageView.setTranslateX(pos.getX());
 			imageView.setTranslateY(pos.getY());
 		});
-
-		if (collisionDetectionActive) {
-			applyCollisions(universe, true);
-		}
 		if (gravityActive) {
 			applyGravity(universe, dt);
+		}
+		if (collisionDetectionActive) {
+			applyCollisions(universe, true);
 		}
 		if (frictionActive) {
 			applyFriction(universe, dt);
@@ -81,19 +80,22 @@ public class PhysicsEngine implements IPhysicsEngine {
 
 	public void applyGravity(ILevel universe, double secondsPassed) {
 		Collection<IEntity> entitiesSubjectToGravity = universe.getEntitiesWithComponents(Gravity.class,
-				Velocity.class);
+				Velocity.class, Position.class, Collision.class);
+		
 		entitiesSubjectToGravity.stream().forEach(entity -> {
-			Velocity entityVelocity = entity.getComponent(Velocity.class);
-			double gravity = entity.getComponent(Gravity.class).getGravity();
-			entityVelocity.setVXY(entityVelocity.getVX(), gravity * secondsPassed);
+			System.out.println(entity.getComponent(Collision.class).collidingSide);
+			if (!entity.getComponent(Collision.class).collidingSide.equals("bottom")) {
+				Position pos = entity.getComponent(Position.class);
+				double gravity = entity.getComponent(Gravity.class).getGravity();
+				pos.add(0, secondsPassed*secondsPassed*gravity);				
+			}
 		});
 	}
 
 	@Override
 	public void applyCollisions(ILevel universe, boolean dynamicsOn) {
 		List<IEntity> collidableEntities = new ArrayList<IEntity>(
-				universe.getEntitiesWithComponents(Collision.class, ImagePath.class,
-						RestitutionCoefficient.class, Velocity.class, Mass.class));
+				universe.getEntitiesWithComponents(Collision.class, ImagePath.class, Mass.class));
 		clearCollisionComponents(collidableEntities);
 
 		for (int i = 0; i < collidableEntities.size(); i++) {
@@ -122,26 +124,92 @@ public class PhysicsEngine implements IPhysicsEngine {
 		for (IEntity entity : collidableEntities) {
 			entity.getComponent(Collision.class).clearCollidingIDs();
 			entity.getComponent(Collision.class)
-					.setMask(entity.getComponent(ImagePath.class).getImageView().getBoundsInParent());
+				  .setMask(entity.getComponent(ImagePath.class).getImageView().getBoundsInParent());
+			entity.getComponent(Collision.class).collidingSide = "";
 		}
 	}
 
 	public void changeVelocityAfterCollision(IEntity firstEntity, IEntity secondEntity) {
-		// CALCULATE COEFFICIENT OF RESTITUTION - MAKE IT A COMPONENT FOR EACH
-		// ENTITY
-		double restitution = (firstEntity.getComponent(RestitutionCoefficient.class).getRestitutionCoefficient()
-				+ secondEntity.getComponent(RestitutionCoefficient.class).getRestitutionCoefficient()) / 2;
+		double restitution = getCollisionRestitution(firstEntity, secondEntity);
 
 		double mass1 = firstEntity.getComponent(Mass.class).getMass();
-		Velocity velocity1 = firstEntity.getComponent(Velocity.class);
+		Velocity velocity1 = getVelocityComponent(firstEntity);
 
 		double mass2 = secondEntity.getComponent(Mass.class).getMass();
-		Velocity velocity2 = secondEntity.getComponent(Velocity.class);
+		Velocity velocity2 = getVelocityComponent(secondEntity);
 
-		setVelocityComponent(mass1, mass2, velocity1, velocity2, restitution, (Velocity v) -> v.getVX(),
-				(Velocity v, Double val) -> v.setVX(val));
-		setVelocityComponent(mass1, mass2, velocity1, velocity2, restitution, (Velocity v) -> v.getVY(),
-				(Velocity v, Double val) -> v.setVY(val));
+		getSideOfCollision(firstEntity, secondEntity);
+		if (isHorizontalCollision(firstEntity, secondEntity)) {
+			setVelocityComponent(mass1, mass2, velocity1, velocity2, restitution, (Velocity v) -> v.getVX(),
+					(Velocity v, Double val) -> v.setVX(val));			
+		}
+		if (isVerticalCollision(firstEntity,secondEntity)) {
+			setVelocityComponent(mass1, mass2, velocity1, velocity2, restitution, (Velocity v) -> v.getVY(),
+					(Velocity v, Double val) -> v.setVY(val));			
+		}
+	}
+	
+	private boolean isVerticalCollision(IEntity firstEntity, IEntity secondEntity) {
+		if (firstEntity.getComponent(Collision.class).collidingSide == "top" ||
+				secondEntity.getComponent(Collision.class).collidingSide == "top") {
+			System.out.println("VERTICAL");
+			return true;
+		}
+			return false;
+	}
+	
+	private boolean isHorizontalCollision(IEntity firstEntity, IEntity secondEntity) {
+		if (firstEntity.getComponent(Collision.class).collidingSide == "left" ||
+				secondEntity.getComponent(Collision.class).collidingSide == "left") {
+			System.out.println("HORIZONTAL");
+			return true;
+		}
+			return false;
+	}
+	
+	/**
+	 * 
+	 * @param firstEntity
+	 * @param secondEntity
+	 * @return the coefficient of restitution to be used for a collision
+	 * between the two entities given
+	 */
+	private double getCollisionRestitution(IEntity firstEntity, IEntity secondEntity) {
+		double firstRestitution = getEntityRestitution(firstEntity);
+		double secondRestitution = getEntityRestitution(secondEntity);
+		if (firstRestitution < 0 && secondRestitution < 0) {
+			return 0.5;
+		}
+		else if (firstRestitution < 0 || secondRestitution < 0) {
+			return Math.max(firstRestitution, secondRestitution);
+		}
+		else {
+			return (firstRestitution + secondRestitution) / 2;
+		}		
+	}
+	
+	/**
+	 * 
+	 * @param entity
+	 * @return the coefficient of restitution of the given entity,
+	 * or -1 if none exists
+	 */
+	private double getEntityRestitution(IEntity entity) {
+		if (entity.getComponentList(RestitutionCoefficient.class).size() == 0) {
+			return -1;
+		}
+		else {
+			return entity.getComponent(RestitutionCoefficient.class).getRestitutionCoefficient();
+		}
+	}
+	
+	private Velocity getVelocityComponent(IEntity entity) {
+		if (entity.getComponentList(Velocity.class).size() == 0) {
+			return new Velocity(0, 0);
+		}
+		else {
+			return entity.getComponent(Velocity.class);
+		}
 	}
 
 	private void setVelocityComponent(double mass1, double mass2, Velocity velocity1, Velocity velocity2,
@@ -155,7 +223,6 @@ public class PhysicsEngine implements IPhysicsEngine {
 				+ ((mass2 * restitution * (initialVelocity2 - initialVelocity1)) / (mass1 + mass2));
 		double finalVelocity2 = velocityBeforeRestitution
 				+ ((mass1 * restitution * (initialVelocity1 - initialVelocity2)) / (mass1 + mass2));
-
 		setVelocity.accept(velocity1, finalVelocity1);
 		setVelocity.accept(velocity2, finalVelocity2);
 	}
@@ -193,22 +260,41 @@ public class PhysicsEngine implements IPhysicsEngine {
 		}
 	}
 	
-	private void getSideOfCollision(Position firstEntityPos, Position secondEntityPos) {
-		Vector entityOneToTwo = new Vector(firstEntityPos.getX()-secondEntityPos.getX(),
-											firstEntityPos.getX()-secondEntityPos.getY());
+	private void getSideOfCollision(IEntity firstEntity, IEntity secondEntity) {
+		Position firstPos = firstEntity.getComponent(Position.class);
+		Position secondPos = secondEntity.getComponent(Position.class);
+		
+		double firstX = firstEntity.getComponent(Position.class).getX()+firstEntity.getComponent(ImagePath.class).getImageWidth()/2;
+		double firstY = firstEntity.getComponent(Position.class).getY()+firstEntity.getComponent(ImagePath.class).getImageHeight()/2;
+		double secondX = secondEntity.getComponent(Position.class).getX()+secondEntity.getComponent(ImagePath.class).getImageWidth()/2;
+		double secondY = secondEntity.getComponent(Position.class).getY()+secondEntity.getComponent(ImagePath.class).getImageHeight()/2;
+		
+		Collision firstColl = firstEntity.getComponent(Collision.class);
+		Collision secondColl = secondEntity.getComponent(Collision.class);
+		
+		Vector entityOneToTwo = (new Vector(firstX - secondX,
+											firstY - secondY)).normalizePosition();
 		Vector referenceVector = new Vector(0, 1);
 		double angle = Math.acos(entityOneToTwo.getDotProduct(referenceVector));
+		System.out.println(angle);
 		if (angle >= 315 || angle < 45) {
-			//TOP COLLISION
+			firstColl.collidingSide = "top";
+			secondColl.collidingSide = "bottom";		
 		}
 		else if (angle < 315 && angle >= 225) {
 			//LEFT COLLISION
+			firstColl.collidingSide = "left";
+			secondColl.collidingSide = "right";	
 		}
 		else if (angle < 225 && angle >= 135) {
 			//BOT COLLISION
+			firstColl.collidingSide = "bottom";
+			secondColl.collidingSide = "top";	
 		}
 		else { //angle < 135 && angle >=45
 			//RIGHT COLLISION
+			firstColl.collidingSide = "right";
+			secondColl.collidingSide = "left";	
 		}
 	}
 	

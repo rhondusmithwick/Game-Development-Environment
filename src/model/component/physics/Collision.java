@@ -12,10 +12,18 @@ import utility.SingleProperty;
  * @author Roxanne and Tom
  *
  */
-public class Collision implements IComponent {
+public class Collision implements IComponent {	
+	public static final String TOP = "top";
+	public static final String BOTTOM = "bottom";
+	public static final String LEFT = "left";
+	public static final String RIGHT = "right";
+	
 	private Bounds mask;
 	private SingleProperty<String> maskIDProperty = new SingleProperty<>("MaskID", "");
 	private SingleProperty<String> collidingIDsProperty = new SingleProperty<>("CollidingIDs", "");
+	// TEMPORARY UNTIL IDS CONVERTED TO STRING PROPERTY
+	public String collidingSide = "";
+
 
 	public Collision(Bounds mask, String ID) {
 		this.mask = mask;
@@ -59,7 +67,7 @@ public class Collision implements IComponent {
 	}
 
 	public void addCollidingID(String collidingIDs) {
-		this.collidingIDsProperty().set(collidingIDs);
+		this.collidingIDsProperty().set(this.getCollidingIDs()+"~"+collidingIDs);
 	}
 
 	public void clearCollidingIDs() {
