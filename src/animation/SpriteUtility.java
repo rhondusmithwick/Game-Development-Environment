@@ -53,6 +53,8 @@ class SpriteUtility {
     private static final String ADD_FRAME = "Add Frame";
     private static final String DELETE_FRAME = "Delete Frame";
 
+    private static final Dimension2D dimensions = new Dimension2D(800, 600);
+
     private static final double DURATION_MIN = 100;
     private static final double DURATION_MAX = 3000;
     private static final double DURATION_DEFAULT = 1000;
@@ -61,57 +63,48 @@ class SpriteUtility {
     private static final String SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,0,50,0.8), 10, 0, 0, 0)";
     private static final String NO_SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0, 0, 0)";
 
-    private BorderPane mainPane;
-    private VBox animationPropertiesBox;
-    private VBox buttonBox;
+    private final SimpleObjectProperty<Boolean> changeColorProperty = new SimpleObjectProperty<>(this, "ChangeColor", false);
+    private final BorderPane mainPane = new BorderPane();
+    private final VBox animationPropertiesBox = new VBox();
+    private final VBox buttonBox = new VBox();
+    private final Group spriteGroup = new Group();
+    private final ScrollPane spriteScroll = new ScrollPane(spriteGroup);
+    private final Scene scene = new Scene(mainPane, dimensions.getWidth(), dimensions.getHeight());
 
-    private Map<String, Map> animationList;
-    private List<Rectangle> rectangleList;
+    private final Map<String, Map> animationList = new HashMap<>();
+    private final List<Rectangle> rectangleList = new ArrayList<>();
 
     private ImageView spriteImageView;
     private ImageView previewImageView;
 
     private TextField animationName;
 
-    private List<Double> widthList;
-    private List<Double> heightList;
-    private List<Double> yList;
-    private List<Double> xList;
-    private DoubleProperty rectinitX;
-    private DoubleProperty rectinitY;
-    private DoubleProperty rectX;
-    private DoubleProperty rectY;
+    private final List<Double> widthList = new ArrayList<>();
+    private final List<Double> heightList = new ArrayList<>();
+    private final List<Double> yList = new ArrayList<>();
+    private final List<Double> xList = new ArrayList<>();
+    private final DoubleProperty rectinitX = new SimpleDoubleProperty(this, "rectinitX", 0.0);
+    private final DoubleProperty rectinitY = new SimpleDoubleProperty(this, "rectinitY", 0.0);
+    private final DoubleProperty rectX = new SimpleDoubleProperty(this, "rectX", 0.0);
+    private final DoubleProperty rectY = new SimpleDoubleProperty(this, "rectY", 0.0);
 
     private Slider durationSlider;
 
-    private Group spriteGroup;
+
     private Rectangle selectedRectangle;
     private Rectangle rectDrawer;
 
-    private final SimpleObjectProperty<Boolean> changeColorProperty = new SimpleObjectProperty<>(this, "ChangeColor", false);
     private Button activateTransparencyButton;
     private Canvas canvas;
-    private Scene scene;
     private Image spriteImage;
-    private ScrollPane spriteScroll;
 
-    public void init(Stage stage, Dimension2D dimensions) {
-        mainPane = new BorderPane();
-        scene = new Scene(mainPane, dimensions.getWidth(), dimensions.getHeight());
+    public void init(Stage stage) {
         stage.setScene(scene);
         initializeGui();
     }
 
     private void initializeGui() {
         selectedRectangle = null;
-
-        rectangleList = new ArrayList<>();
-        animationList = new HashMap<>();
-
-        buttonBox = new VBox();
-        animationPropertiesBox = new VBox();
-        spriteGroup = new Group();
-        spriteScroll = new ScrollPane(spriteGroup);
 
         initNewImage();
         initRectangleDrawer();
@@ -146,13 +139,10 @@ class SpriteUtility {
             activateTransparencyButton.setText("Activate Transparency");
             changeColorProperty.set(false);
             canvas.setCursor(Cursor.DEFAULT);
-
         } else {
             activateTransparencyButton.setText("Deactivate Transparency");
             changeColorProperty.set(true);
             canvas.setCursor(Cursor.CROSSHAIR);
-
-
         }
     }
 
@@ -189,11 +179,10 @@ class SpriteUtility {
      */
     private void initAnimationNameAndDurationFields() {
         animationName = new TextField("Animation Name");
-        durationSlider = new Slider(DURATION_MIN, DURATION_MAX, DURATION_DEFAULT);
         Label durationTextLabel = new Label("Duration");
-        Label durationValueLabel = new Label(String.format("%.2f", durationSlider.getValue()));
+        Label durationValueLabel = new Label("0.0");
         durationSlider = UtilityUtilities.makeSlider((ov, old_val, new_val) -> {
-            durationValueLabel.setText(String.format("%.2f", new_val));
+            durationValueLabel.setText(String.format("%.2f", new_val.floatValue()));
             initAnimationPreview();
         }, DURATION_MIN, DURATION_MAX, DURATION_DEFAULT);
         animationPropertiesBox.getChildren().addAll(animationName, durationTextLabel, durationSlider,
@@ -202,10 +191,9 @@ class SpriteUtility {
 
     private void reInitialize() {
         spriteGroup.getChildren().removeAll(rectangleList);
-        rectangleList = new ArrayList<>();
-        animationList = new TreeMap<>();
+        rectangleList.clear();
+        animationList.clear();
         initAnimationProperties();
-
     }
 
     private void initNewImage() {
@@ -245,38 +233,30 @@ class SpriteUtility {
 
     private void saveAnimation() {
         populateRectanglePropertyLists();
-        TreeMap<String, String> moveAnimationMap = new TreeMap<>();
+        Map<String, String> moveAnimationMap = new TreeMap<>();
         String name = animationName.getText();
-        moveAnimationMap.put("Duration", String.format("%.2f", durationSlider.getValue()));
-        moveAnimationMap.put("X", convertListToString(xList));
-        moveAnimationMap.put("Y", convertListToString(yList));
-        moveAnimationMap.put("Width", convertListToString(widthList));
-        moveAnimationMap.put("Height", convertListToString(heightList));
+        moveAnimationMap.put("duration", String.format("%.2f", durationSlider.getValue()));
+        moveAnimationMap.put("xList", xList.toString());
+        moveAnimationMap.put("yList", yList.toString());
+        moveAnimationMap.put("width", widthList.toString());
+        moveAnimationMap.put("height", heightList.toString());
         animationList.put(name, moveAnimationMap);
         System.out.println(animationList);
-    }
-
-    private String convertListToString(List<Double> list) {
-        StringBuilder str = new StringBuilder();
-        for (Double value : list) {
-            str.append(value.toString()).append(",");
-        }
-        return str.toString();
     }
 
     /*
      * 
      */
     private void populateRectanglePropertyLists() {
-        xList = new ArrayList<>();
-        yList = new ArrayList<>();
-        widthList = new ArrayList<>();
-        heightList = new ArrayList<>();
+        xList.clear();
+        yList.clear();
+        widthList.clear();
+        heightList.clear();
         for (Rectangle rect : rectangleList) {
-            xList.add(rect.xProperty().get());
-            yList.add(rect.yProperty().get());
-            widthList.add(rect.widthProperty().get());
-            heightList.add(rect.heightProperty().get());
+            xList.add(rect.getX());
+            yList.add(rect.getY());
+            widthList.add(rect.getWidth());
+            heightList.add(rect.getHeight());
         }
     }
 
@@ -358,15 +338,14 @@ class SpriteUtility {
         rectDrawer = new Rectangle();
         rectDrawer.widthProperty().unbind();
         rectDrawer.heightProperty().unbind();
-        rectinitX = new SimpleDoubleProperty();
-        rectinitY = new SimpleDoubleProperty();
-        rectX = new SimpleDoubleProperty();
-        rectY = new SimpleDoubleProperty();
+        rectinitX.set(0.0);
+        rectinitY.set(0.0);
+        rectX.set(0.0);
+        rectY.set(0.0);
         rectDrawer.widthProperty().bind(rectX.subtract(rectinitX));
         rectDrawer.heightProperty().bind(rectY.subtract(rectinitY));
         rectDrawer.setFill(Color.TRANSPARENT);
         rectDrawer.setStroke(Color.BLACK);
-
         spriteScroll.requestFocus(); //ugh someone fix this
         spriteScroll.setOnKeyPressed(this::keyPress); //this line keeps fucking up
         makeSelected(rectDrawer);

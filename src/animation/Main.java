@@ -10,8 +10,6 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-    private static final Dimension2D dimensions = new Dimension2D(800, 600);
-
     public static void main(String[] args) {
         launch(args);
     }
@@ -19,7 +17,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
         SpriteUtility spriteUtility = new SpriteUtility();
-        spriteUtility.init(primaryStage, dimensions);
+        spriteUtility.init(primaryStage);
         primaryStage.show();
     }
 }
