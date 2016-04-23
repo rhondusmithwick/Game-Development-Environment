@@ -24,7 +24,8 @@ public enum DefaultStrings {
 	METADATA_LOC("/metadata.xml"),
 	ENTITIES_LOC("/entities.xml"),
 	LEVELS_LOC("/levels/"),
-	TEMP_LIST("_templatelist");
+	TEMP_LIST("_templatelist"),
+	DEF_NAME("DefaultName");
 	
 
 
