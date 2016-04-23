@@ -1,6 +1,5 @@
 package animation;
 
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,23 +9,12 @@ import java.util.List;
  * @author Rhondu Smithwick
  */
 public class Pixel {
-
     private final int x;
     private final int y;
 
     public Pixel(int x, int y) {
         this.x = x;
         this.y = y;
-    }
-
-
-
-    public int getX() {
-        return x;
-    }
-
-    public int getY() {
-        return y;
     }
 
     public List<Pixel> getNeighbors() {
@@ -40,4 +28,13 @@ public class Pixel {
         }
         return neighbors;
     }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
+    }
+
 }

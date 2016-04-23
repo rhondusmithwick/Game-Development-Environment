@@ -147,9 +147,9 @@ public class ImagePath implements IComponent {
 	private void updateViewport() {
 		double width = this.viewport.getWidth();
 		double height = this.viewport.getHeight();
-		double offsetX = this.frameIndex * width; // TODO: change to offsetX +
+		double offsetX = this.frameIndex * width; // TODO: changeImage to offsetX +
 													// ...
-		double offsetY = 0.0; // TODO: change to offsetX + ...
+		double offsetY = 0.0; // TODO: changeImage to offsetX + ...
 		this.viewport = new Rectangle2D(offsetX, offsetY, width, height);
 	}
 

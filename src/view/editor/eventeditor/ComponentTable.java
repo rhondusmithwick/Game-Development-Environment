@@ -17,7 +17,7 @@ public class ComponentTable extends Table
 	{
 		super(manager, ResourceBundle.getBundle(language).getString("pickComponent"));	// TODO resource file
 
-		// Add change listener
+		// Add changeImage listener
 		getTable().
         getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> 
         	{

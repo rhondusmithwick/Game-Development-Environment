@@ -355,7 +355,7 @@ public class Utilities {
 	   /**
 	    * Creates a new slider, setting all necessary intervals and locations. 
 	    *
-	    * @param ChangeListener<Number>				the change the slider is listening to and event/method it calls when the change occurs
+	    * @param ChangeListener<Number>				the changeImage the slider is listening to and event/method it calls when the changeImage occurs
 	    * @param start 							the start of the slider range
 	    *  @param end 							the end of the slider range
 	    *   @param incr 							the increment of the slider range

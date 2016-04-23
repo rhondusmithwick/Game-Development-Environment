@@ -1,9 +1,6 @@
 package animation;
 
 
-import static animation.SaveHandler.saveImage;
-import static animation.SaveHandler.saveAnimations;
-
 import javafx.animation.Animation;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
@@ -46,6 +43,8 @@ import java.util.Map;
 import java.util.TreeMap;
 import java.util.function.Predicate;
 
+import static animation.SaveHandler.saveImage;
+
 class SpriteUtility {
     private static final double DURATION_MIN = 100;
     private static final double DURATION_MAX = 3000;
@@ -63,7 +62,6 @@ class SpriteUtility {
     private Map<String, Map> animationList;
     private List<Rectangle> rectangleList;
 
-    private File spriteSheet;
     private ImageView spriteImageView;
     private ImageView previewImageView;
 
@@ -88,7 +86,6 @@ class SpriteUtility {
     private Canvas canvas;
     private Scene scene;
     private Image spriteImage;
-    private ScrollPane spriteScroll;
 
     public void init(Stage stage, Dimension2D dimensions) {
         mainPane = new BorderPane();
@@ -107,7 +104,7 @@ class SpriteUtility {
         buttonBox = new VBox();
         animationPropertiesBox = new VBox();
         spriteGroup = new Group();
-        spriteScroll = new ScrollPane(spriteGroup);
+        ScrollPane spriteScroll = new ScrollPane(spriteGroup);
 
         initNewImage();
         initRectangleDrawer();
@@ -395,7 +392,7 @@ class SpriteUtility {
     }
 
     private Image initFileChooser() {
-        spriteSheet = UtilityUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("All Images", "*.*"),
+        File spriteSheet = UtilityUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("All Images", "*.*"),
                 "Choose a spritesheet");
         return new Image(spriteSheet.toURI().toString());
     }
@@ -440,9 +437,7 @@ class SpriteUtility {
         if (changeColorProperty.get()) {
             double x = event.getX();
             double y = event.getY();
-            ColorChanger colorChanger = new ColorChanger(spriteImageView.getImage(), x, y, Color.TRANSPARENT);
-            colorChanger.change();
-            spriteImage = colorChanger.getImage();
+            spriteImage = new ColorChanger(spriteImageView.getImage(), x, y, Color.TRANSPARENT).changeImage();
             spriteImageView.setImage(spriteImage);
         }
     }

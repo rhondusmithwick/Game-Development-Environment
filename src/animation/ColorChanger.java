@@ -10,14 +10,16 @@ import java.util.LinkedList;
 import java.util.Queue;
 import java.util.function.Predicate;
 
-
 /**
- * Created by rhondusmithwick on 4/21/16.
+ * A class to changeImage the color of an image, with particular emphasis on background colors.
+ * <p>
+ * <p>Given a point, it will take the color at the point and changeImage all places with that color to the provided new color.</p>
+ * <p>The implementation stops when it hits a color that is different, so it is most useful for background colors.</p>
+ * <p>This implementation uses a Breadth First Search to change the color of the pixels.</p>
  *
  * @author Rhondu Smithwick
  */
-public final class ColorChanger {
-
+public class ColorChanger {
     private final PixelReader reader;
     private final Color newColor;
     private final Color oldColor;
@@ -28,7 +30,7 @@ public final class ColorChanger {
 
     public ColorChanger(Image image, double x, double y, Color newColor) {
         this.newColor = newColor;
-        writableImage = new WritableImage(image.getPixelReader(), (int) image.getWidth(), (int) image.getHeight());
+        this.writableImage = new WritableImage(image.getPixelReader(), (int) image.getWidth(), (int) image.getHeight());
         this.reader = writableImage.getPixelReader();
         this.writer = writableImage.getPixelWriter();
         this.rootPixel = new Pixel((int) x, (int) y);
@@ -36,21 +38,19 @@ public final class ColorChanger {
         this.seenMarker = new boolean[(int) writableImage.getWidth()][(int) writableImage.getHeight()];
     }
 
-    public void change() {
+    public Image changeImage() {
         Queue<Pixel> queue = new LinkedList<>();
         queue.add(rootPixel);
         while (!queue.isEmpty()) {
             Pixel current = queue.poll();
-            setSeen(rootPixel);
             setSeen(current);
             if (shouldChangeColor(current)) {
                 changeToNewColor(current);
-                Predicate<Pixel> validNeighbor = (p) -> (isValid(p) && !haveSeen(p));
-                current.getNeighbors().stream()
-                        .filter(validNeighbor)
-                        .forEach(queue::add);
+                Predicate<Pixel> isValidNeighbor = (p) -> (isValid(p) && !haveSeen(p));
+                current.getNeighbors().stream().filter(isValidNeighbor).forEach(queue::add);
             }
         }
+        return writableImage;
     }
 
     private void setSeen(Pixel pixel) {
@@ -81,10 +81,6 @@ public final class ColorChanger {
     private boolean shouldChangeColor(Pixel pixel) {
         Color pixelColor = getColor(pixel);
         return pixelColor.equals(oldColor);
-    }
-
-    public WritableImage getImage() {
-        return writableImage;
     }
 
 }

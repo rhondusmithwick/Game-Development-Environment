@@ -13,7 +13,7 @@ public class EntityTable extends Table
 	{
 		super(manager, ResourceBundle.getBundle(language).getString("pickEntity"));	// TODO resource file
 		
-		// Add change listener
+		// Add changeImage listener
 		getTable().
         getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> 
         	{
