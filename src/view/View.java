@@ -2,9 +2,7 @@ package view;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import api.IEntity;
 import api.ISystemManager;
@@ -59,8 +57,10 @@ public class View implements IView {
 	private final ISystemManager model;
 	private BorderPane pane;
 	private SubScene subScene;
-	private IEntity mousedOver;
-	private Set<IEntity> selected = new HashSet<IEntity>();
+	// private IEntity mousedOver;
+	private boolean resizing = false, dragging = false;
+	private IEntity selectedSprite;
+	private double clickX, clickY;
 
 	public View(ISystemManager model) {
 		this.model = model;
@@ -104,6 +104,7 @@ public class View implements IView {
 		this.root = gameRoot;
 		SubScene subScene = new SubScene(gameRoot, width, height);
 		// this.pane.setCenter(subScene);
+		this.allowDragging();
 		return subScene;
 	}
 
@@ -126,7 +127,7 @@ public class View implements IView {
 		ImagePath path = e.getComponent(ImagePath.class);
 		ImageView imageView = path.getImageView();
 
-		imageView.setOnMouseEntered(event -> {
+		imageView.setOnMouseMoved(event -> {
 			if (this.isInBottomResizeRegion(imageView, event)) {
 				imageView.setCursor(Cursor.S_RESIZE);
 			} else {
@@ -134,8 +135,19 @@ public class View implements IView {
 			}
 		});
 
-		// TODO: use mouseEntered and Exited
 		imageView.setOnMousePressed(event -> {
+			if (this.isInBottomResizeRegion(imageView, event)) {
+				this.resizing = true;
+				this.dragging = false;
+			} else {
+				this.dragging = true;
+				this.resizing = false;
+			}
+			this.selectedSprite = e;
+			this.clickX = event.getX();
+			this.clickY = event.getY();
+
+			// TODO: use mouseEntered and Exited
 			if (imageView.getEffect() == null) {
 				this.highlight(imageView);
 			} else {
@@ -143,19 +155,62 @@ public class View implements IView {
 			}
 		});
 
+		imageView.setOnMouseReleased(event -> {
+			this.dragging = false;
+			this.resizing = false;
+			this.selectedSprite = null;
+		});
+
 		// TODO: figure out why this doesn't work
 		// imageView.setOnMouseExited(event -> {
 		// this.dehighlight(imageView);
+		// })
+
+		// imageView.setOnMouseDragged(event -> {
+		// this.mouseDragged(e, event);
 		// });
 	}
 
-	private boolean isInRegion(Node node, MouseEvent event) {
-		double x = node.getBoundsInParent().getMinX();
-		double y = node.getBoundsInParent().getMinY();
-		double width = node.getBoundsInParent().getWidth();
-		double height = node.getBoundsInParent().getHeight();
-		return (event.getX() > x && event.getX() < x + width) && (event.getY() > y && event.getY() < y + height);
+	private void allowDragging() {
+		root.setOnMouseDragged(event -> {
+			if (this.selectedSprite != null) {
+				mouseDragged(this.selectedSprite, event);
+			}
+		});
 	}
+
+	private void mouseDragged(IEntity e, MouseEvent event) {
+		ImagePath path = e.getComponent(ImagePath.class);
+		ImageView node = path.getImageView();
+		Position position = e.getComponent(Position.class);
+
+		double mouseX = event.getX();// + node.getBoundsInParent().getMinX();
+		double mouseY = event.getY();// + node.getBoundsInParent().getMinY();
+		if (dragging) {
+			double translateX = mouseX - clickX;
+			double translateY = mouseY - clickY;
+			position.setX(translateX);
+			// node.setTranslateX(translateX);
+			position.setY(translateY);
+			// node.setTranslateY(translateY);
+		} else if (resizing) {
+			// double newHeight = mouseY;
+			// resizeHeight(newHeight);
+			path.setImageHeight(event.getY() - position.getY());
+		} else { // TODO: rm
+			System.out.println("Not resizing or dragging?!");
+		}
+	}
+
+	// TODO: rm
+	// private boolean isInRegion(Node node, MouseEvent event) {
+	// double x = node.getBoundsInParent().getMinX();
+	// double y = node.getBoundsInParent().getMinY();
+	// double width = node.getBoundsInParent().getWidth();
+	// double height = node.getBoundsInParent().getHeight();
+	// return (event.getX() > x && event.getX() < x + width) && (event.getY() >
+	// y && event.getY() < y + height);
+	// }
 
 	private boolean isInBottomResizeRegion(Node node, MouseEvent event) {
 		double parentHeight = node.getBoundsInParent().getHeight();

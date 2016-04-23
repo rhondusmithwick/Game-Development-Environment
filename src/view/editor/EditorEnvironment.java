@@ -30,13 +30,11 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import model.core.SystemManager;
 import model.entity.Level;
-import view.DragAndResize;
+//import view.DragAndResize;
 import view.Utilities;
 import view.View;
 import view.enums.DefaultEntities;
@@ -211,11 +209,11 @@ public class EditorEnvironment extends Editor {
 	// return entity;
 	// }
 
-	// LOOK HERE FOR MAKING A SHAPE DRAGGABLE
-	private Shape makeDraggable(Rectangle rectangle) {
-		DragAndResize.makeResizable(rectangle);
-		return rectangle;
-	}
+	// TODO: LOOK HERE FOR MAKING A SHAPE DRAGGABLE
+	// private Shape makeDraggable(Rectangle rectangle) {
+	// DragAndResize.makeResizable(rectangle);
+	// return rectangle;
+	// }
 
 	private void entityRightClicked(IEntity entity, Button entityButton, MouseEvent event) {
 		highlight(entity, true);
