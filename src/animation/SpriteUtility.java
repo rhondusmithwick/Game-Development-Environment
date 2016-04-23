@@ -33,13 +33,13 @@ import view.Dragger;
 
 import java.io.File;
 import java.lang.reflect.Method;
-import java.net.URI;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Predicate;
+import static animation.UtilityUtilities.makeButton;
 import static animation.SaveHandler.saveImage;
 import static animation.SaveHandler.saveAnimations;
 import static animation.DoubleConstants.DURATION_DEFAULT;
@@ -51,9 +51,11 @@ import static animation.StringConstants.ANIMATION_NAME_PROMPT;
 import static animation.StringConstants.DELETE_FRAME;
 import static animation.StringConstants.NEW_ANIMATION;
 import static animation.StringConstants.NEW_SPRITE;
+import static animation.StringConstants.NO_SELECT_EFFECT;
 import static animation.StringConstants.PREVIEW_ANIMATION;
 import static animation.StringConstants.SAVE_ANIMATION;
 import static animation.StringConstants.SAVE_ANIMATIONS_TO_FILE;
+import static animation.StringConstants.SELECT_EFFECT;
 
 class SpriteUtility {
     private final SimpleObjectProperty<Boolean> changeColorProperty = new SimpleObjectProperty<>(this, "ChangeColor", false);
@@ -80,12 +82,11 @@ class SpriteUtility {
     private final DoubleProperty rectY = new SimpleDoubleProperty(this, "rectY", 0.0);
 
     private Slider durationSlider;
-
-
     private Rectangle selectedRectangle;
     private Rectangle rectDrawer;
 
-    private Button activateTransparencyButton;
+    private final Button activateTransparencyButton = UtilityUtilities.makeButton("Activate Transparency", e -> makeTransparent());
+
     private Image spriteImage;
     private String spriteSheetPath;
 
@@ -109,16 +110,15 @@ class SpriteUtility {
     }
 
     private void initButtons() {
-        addButton(UtilityUtilities.makeButton(SAVE_ANIMATIONS_TO_FILE.get(), e -> saveAnimations(spriteSheetPath, animationList)), buttonBox);
-        addButton(UtilityUtilities.makeButton(NEW_ANIMATION.get(), e -> reInitialize()), buttonBox);
-        addButton(UtilityUtilities.makeButton(NEW_SPRITE.get(), e -> initializeGui()), buttonBox);
-        addButton(UtilityUtilities.makeButton(PREVIEW_ANIMATION.get(), e -> animationPreview()), buttonBox);
-        addButton(UtilityUtilities.makeButton(SAVE_ANIMATION.get(), e -> saveAnimation()), buttonBox);
-        addButton(UtilityUtilities.makeButton(ADD_FRAME.get(), e -> addFrame()), buttonBox);
-        addButton(UtilityUtilities.makeButton(DELETE_FRAME.get(), e -> deleteFrame(selectedRectangle)), buttonBox);
-        activateTransparencyButton = UtilityUtilities.makeButton("Activate Transparency", e -> makeTransparent());
+        addButton(makeButton(SAVE_ANIMATIONS_TO_FILE.get(), e -> saveAnimations(spriteSheetPath, animationList)), buttonBox);
+        addButton(makeButton(NEW_ANIMATION.get(), e -> reInitialize()), buttonBox);
+        addButton(makeButton(NEW_SPRITE.get(), e -> initializeGui()), buttonBox);
+        addButton(makeButton(PREVIEW_ANIMATION.get(), e -> animationPreview()), buttonBox);
+        addButton(makeButton(SAVE_ANIMATION.get(), e -> saveAnimation()), buttonBox);
+        addButton(makeButton(ADD_FRAME.get(), e -> addFrame()), buttonBox);
+        addButton(makeButton(DELETE_FRAME.get(), e -> deleteFrame(selectedRectangle)), buttonBox);
         addButton(activateTransparencyButton, buttonBox);
-        addButton(UtilityUtilities.makeButton("Save Image", e -> saveImage(spriteImageView.getImage())), buttonBox);
+        addButton(makeButton("Save Image", e -> saveImage(spriteImageView.getImage())), buttonBox);
     }
 
     private void addButton(Button button, VBox box) {
@@ -312,11 +312,11 @@ class SpriteUtility {
 
 
     private void addSelectEffect(Rectangle img) {
-        img.setStyle(StringConstants.SELECT_EFFECT.get());
+        img.setStyle(SELECT_EFFECT.get());
     }
 
     private void removeSelectEffect(Rectangle imageView) {
-        imageView.setStyle(StringConstants.NO_SELECT_EFFECT.get());
+        imageView.setStyle(NO_SELECT_EFFECT.get());
     }
 
     /*
