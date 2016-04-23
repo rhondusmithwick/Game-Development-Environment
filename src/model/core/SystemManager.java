@@ -7,6 +7,7 @@ import api.IEventSystem;
 import api.ILevel;
 import api.ISystemManager;
 import datamanagement.XMLReader;
+import groovy.lang.GroovyShell;
 import model.entity.Entity;
 import model.entity.Level;
 
@@ -18,9 +19,14 @@ import model.entity.Level;
 public class SystemManager implements ISystemManager {
 
 	private List<String> details;
+	private GroovyShell shell = new GroovyShell(); // CANNOT BE SCRIPT ENGINE
 	private ILevel universe = new Level();
 	private ILevel sharedUniverse = new Level();
 	private boolean isRunning = true;
+
+	public SystemManager() {
+		this.universe.addMetadata("script", "Pong"); // TODO: remove
+	}
 
 	@Override
 	public void pauseLoop() {
@@ -39,6 +45,7 @@ public class SystemManager implements ISystemManager {
 		return this.universe;
 	}
 
+	@Deprecated
 	@Override
 	public IEventSystem getEventSystem() {
 		System.out.println("Events deprecated in SystemManager");
@@ -117,6 +124,7 @@ public class SystemManager implements ISystemManager {
 		this.moveEntitiesToSharedSystem(this.idsToEntityArray(this.universe, ids));
 	}
 
+	@Deprecated
 	@Override
 	public ILevel getUniverse() {
 		return universe;
@@ -144,4 +152,10 @@ public class SystemManager implements ISystemManager {
 	public List<String> getDetails() {
 		return details;
 	}
+
+	@Override
+	public GroovyShell getShell() {
+		return this.shell;
+	}
+
 }
