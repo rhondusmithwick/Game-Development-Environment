@@ -37,7 +37,7 @@ public class EditorEvent extends Editor
 	public EditorEvent(String language, ObservableList<IEntity> masterList, ObservableList<ILevel> levelList)
 	{	
 		propertyEventEditor = new PropertyEventEditor(language, masterList, levelList);
-		keyBindingEditor = new KeyBindingEditor(language);
+		keyBindingEditor = new KeyBindingEditor(language, levelList);
 
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.EVENT_EDIT.getInset());

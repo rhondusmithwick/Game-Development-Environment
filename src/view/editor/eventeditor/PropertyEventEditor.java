@@ -148,7 +148,6 @@ public class PropertyEventEditor extends EventEditorTab
 	
 	private void makeEvent()
 	{
-		System.out.println("Entered");
 		// I think the Entity table now only shows entities through names
 		// So the trigger has to be created here.
 		
