@@ -40,7 +40,7 @@ class GroovyDemoTest {
 		//				img.setScaleX(0.10)
 		//				img.setScaleY(0.10)
 		platform.addComponents(path, new Position(100, 300),
-				new Collision("platform"), new RestitutionCoefficient(1.0), new Mass(100));
+				new Collision("platform"), new RestitutionCoefficient(1.1), new Mass(100));
 		return platform;
 	}
 

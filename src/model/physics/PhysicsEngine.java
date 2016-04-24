@@ -162,30 +162,29 @@ public class PhysicsEngine implements IPhysicsEngine {
 		// TODO: move entity out of collision bounds depending on relative position/side
 
 		 if (collisionIsHorizontal(firstEntity)) {
-		 setVelocityComponent(m1, m2, velocity1, velocity2, restitution,
-		 (Velocity v) -> v.getVX(),
-		 (Velocity v, Double val) -> v.setVX(val));
+			 setVelocityComponent(m1, m2, velocity1, velocity2, restitution,
+			 (Velocity v) -> v.getVX(),
+			 (Velocity v, Double val) -> v.setVX(val));
 		 }
 		 if (collisionIsVertical(firstEntity)) {
-		 setVelocityComponent(m1, m2, velocity1, velocity2, restitution,
-		 (Velocity v) -> v.getVY(),
-		 (Velocity v, Double val) -> v.setVY(val));
+			 setVelocityComponent(m1, m2, velocity1, velocity2, restitution,
+			 (Velocity v) -> v.getVY(),
+			 (Velocity v, Double val) -> v.setVY(val));
 		 }
 	}
 
 	 private boolean collisionIsFromSide(IEntity entity, String side) {
-	 return
-	 entity.getComponent(Collision.class).getCollidingIDs().endsWith(side);
+	 	return entity.getComponent(Collision.class).getCollidingIDs().endsWith(side);
 	 }
 
 	 private boolean collisionIsHorizontal(IEntity entity) {
-	 return collisionIsFromSide(entity, Collision.LEFT) ||
-	 collisionIsFromSide(entity, Collision.RIGHT);
+		 return collisionIsFromSide(entity, Collision.LEFT) ||
+		 collisionIsFromSide(entity, Collision.RIGHT);
 	 }
 
 	 private boolean collisionIsVertical(IEntity entity) {
-	 return collisionIsFromSide(entity, Collision.TOP) ||
-	 collisionIsFromSide(entity, Collision.BOTTOM);
+		 return collisionIsFromSide(entity, Collision.TOP) ||
+		 collisionIsFromSide(entity, Collision.BOTTOM);
 	 }
 
 	/**
@@ -236,20 +235,20 @@ public class PhysicsEngine implements IPhysicsEngine {
 	 velocity1, Velocity velocity2,
 	 double restitution, Function<Velocity, Double> getCoordinate,
 	 BiConsumer<Velocity, Double> setVelocity) {
-	 double initialVelocity1 = getCoordinate.apply(velocity1);
-	 double initialVelocity2 = getCoordinate.apply(velocity2);
+		 double initialVelocity1 = getCoordinate.apply(velocity1);
+		 double initialVelocity2 = getCoordinate.apply(velocity2);
 
-	 double velocityBeforeRestitution = getVelocityBeforeRestitution(mass1,
-	 mass2, initialVelocity1,
-	 initialVelocity2);
-	 double finalVelocity1 = velocityBeforeRestitution
-	 + ((mass2 * restitution * (initialVelocity2 - initialVelocity1)) / (mass1
-	 + mass2));
-	 double finalVelocity2 = velocityBeforeRestitution
-	 + ((mass1 * restitution * (initialVelocity1 - initialVelocity2)) / (mass1
-	 + mass2));
-	 setVelocity.accept(velocity1, finalVelocity1);
-	 setVelocity.accept(velocity2, finalVelocity2);
+		 double velocityBeforeRestitution = getVelocityBeforeRestitution(mass1,
+		 mass2, initialVelocity1,
+		 initialVelocity2);
+		 double finalVelocity1 = velocityBeforeRestitution
+		 + ((mass2 * restitution * (initialVelocity2 - initialVelocity1)) / (mass1
+		 + mass2));
+		 double finalVelocity2 = velocityBeforeRestitution
+		 + ((mass1 * restitution * (initialVelocity1 - initialVelocity2)) / (mass1
+		 + mass2));
+		 setVelocity.accept(velocity1, finalVelocity1);
+		 setVelocity.accept(velocity2, finalVelocity2);
 	 }
 
 	 private double getVelocityBeforeRestitution(double mass1, double mass2,
@@ -277,11 +276,11 @@ public class PhysicsEngine implements IPhysicsEngine {
 		// TODO: should depend on collision, not gravity
 		for (IEntity entity : frictionProneEntities) {
 			double friction = entity.getComponent(Friction.class).getFriction();
-			// double gravity = entity.getComponent(Gravity.class).getGravity();
-			// double acceleration = friction * gravity;
-			// Velocity velocity = entity.getComponent(Velocity.class);
-			// velocity.add(Math.max(-velocity.getVX(), -acceleration *
-			// secondsPassed), 0);
+			 double gravity = entity.getComponent(Gravity.class).getGravityY();
+			 double acceleration = friction * gravity;
+			 Velocity velocity = entity.getComponent(Velocity.class);
+			 velocity.add(Math.max(-velocity.getVX(), -acceleration *
+			 secondsPassed), 0);
 		}
 	}
 
