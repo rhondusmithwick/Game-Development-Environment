@@ -79,16 +79,16 @@ public class View implements IView {
 
 	private void startTimeline() {
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> this.step(SECOND_DELAY));
-		Timeline animation = new Timeline();
-		animation.setCycleCount(Timeline.INDEFINITE);
-		animation.getKeyFrames().add(frame);
-		animation.play();
+		Timeline timeline = new Timeline();
+		timeline.setCycleCount(Timeline.INDEFINITE);
+		timeline.getKeyFrames().add(frame);
+		timeline.play();
 	}
 
 	private SubScene createSubScene(Group root, double width, double height, Pane scene) {
 		this.root = root;
 		SubScene subScene = new SubScene(root, width, height);
-		// TODO: not printing key presses, why?!
+		// TODO: not printing key presses, why?! Remove last arg after bugfix.
 		// scene.setOnMouseMoved(e -> System.out.println(e.getX()));
 		// scene.setOnKeyTyped(e -> System.out.println(e.getCode()));
 		// scene.setOnKeyReleased(e -> System.out.println(e.getCode()));
@@ -120,11 +120,11 @@ public class View implements IView {
 
 	private Collection<Shape> getCollisionShapes(IEntity e) {
 		List<Collision> collisions = e.getComponentList(Collision.class);
-		Collection<Bounds> bounds = new ArrayList<Bounds>();
+		Collection<Bounds> bounds = new ArrayList<>();
 		for (Collision c : collisions) {
 			bounds.add(c.getMask());
 		}
-		Collection<Shape> shapes = new ArrayList<Shape>();
+		Collection<Shape> shapes = new ArrayList<>();
 		for (Bounds b : bounds) {
 			if (b == null) {
 				System.out.println("null collide mask: " + e.getName());
@@ -194,8 +194,7 @@ public class View implements IView {
 		loadButton.setOnAction(e -> this.load());
 	}
 
-	private void load() { // TODO: load from "demo.xml"
-		// this.model = new
+	private void load() { // TODO: loading
 		// XMLReader<ISystemManager>().readSingleFromFile("demo.xml");
 	}
 

@@ -1,8 +1,5 @@
 package view;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import api.IEntity;
 import api.ILevel;
 import javafx.scene.Cursor;
@@ -13,6 +10,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
+
+import java.util.HashSet;
+import java.util.Set;
 
 public class ViewUtilities {
 
@@ -26,6 +26,7 @@ public class ViewUtilities {
 	private IEntity heldDownSprite;
 	private Set<IEntity> selectedSprites = new HashSet<IEntity>();
 	private double initialMouseX, initialMouseY;
+	private long timeMouseClicked, clickThresholdMillis = 400;
 
 	public ViewUtilities(Group root, ILevel universe) {
 		this.root = root;
@@ -105,14 +106,22 @@ public class ViewUtilities {
 		imageView.setOnMouseEntered(event -> this.changeCursorForResizing(imageView, event.getY()));
 		imageView.setOnMousePressed(event -> {
 			this.holdDownSprite(e, event.getX(), event.getY());
-			// TODO: mouse click
-			if (imageView.getEffect() == null) { // not selected
-				this.highlight(e);
-			} else {
-				this.dehighlight(e);
-			}
+			timeMouseClicked = System.currentTimeMillis(); // click event tracking
+//			System.out.println("pressed");
 		});
-		imageView.setOnMouseReleased(event -> this.releaseSprite());
+		// TODO: make sure this is not hacky
+		root.setOnMouseReleased(event -> {
+			this.releaseSprite();
+			long duration = System.currentTimeMillis()-timeMouseClicked;
+			if(duration<clickThresholdMillis) {// click event handling
+				if (imageView.getEffect() == null) { // not selected
+					this.highlight(e);
+				} else {
+					this.dehighlight(e);
+				}
+			}
+//			System.out.println("released - "+duration);
+		});
 	}
 
 	public void allowDragging() {
