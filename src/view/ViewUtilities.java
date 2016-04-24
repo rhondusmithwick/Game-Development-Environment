@@ -43,7 +43,6 @@ public class ViewUtilities {
 		root.setOnContextMenuRequested(event -> {
 			for (IEntity e : this.selectedSprites) {
 				this.universe.removeEntity(e.getID());
-				System.out.println("Removed: " + e);
 			}
 			// }
 		});

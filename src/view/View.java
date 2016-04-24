@@ -50,7 +50,7 @@ public class View implements IView {
 	private final ISystemManager model;
 	private BorderPane pane;
 	private SubScene subScene;
-	// private ViewUtilities viewUtils;
+	private ViewUtilities viewUtils;
 
 	public View(ISystemManager model, Pane scene) {
 		this(model, new Group(), 200, 200, scene);
@@ -61,9 +61,9 @@ public class View implements IView {
 		this.initConsole();
 		this.initButtons();
 		this.pane = this.createBorderPane();
-		// this.viewUtils = new ViewUtilities(root, model.getEntitySystem());
-		// this.subScene = this.createSubScene(root, width, height, scene);
-		// viewUtils.allowDragging();
+		this.viewUtils = new ViewUtilities(root, model.getEntitySystem());
+		this.subScene = this.createSubScene(root, width, height, scene);
+		viewUtils.allowDragging();
 		// viewUtils.allowDeletion();
 
 		this.startTimeline();
@@ -89,10 +89,10 @@ public class View implements IView {
 		this.root = gameRoot;
 		SubScene subScene = new SubScene(gameRoot, width, height);
 		// TODO: not printing key presses, why?!
-		scene.setOnMouseMoved(e -> System.out.println(e.getX()));
-		scene.setOnKeyTyped(e -> System.out.println(e.getCode()));
-		scene.setOnKeyReleased(e -> System.out.println(e.getCode()));
-		scene.setOnKeyPressed(e -> System.out.println(e.getCode()));
+		// scene.setOnMouseMoved(e -> System.out.println(e.getX()));
+		// scene.setOnKeyTyped(e -> System.out.println(e.getCode()));
+		// scene.setOnKeyReleased(e -> System.out.println(e.getCode()));
+		// scene.setOnKeyPressed(e -> System.out.println(e.getCode()));
 		return subScene;
 	}
 
@@ -146,7 +146,7 @@ public class View implements IView {
 		root.getChildren().clear();
 		for (IEntity e : model.getEntitySystem().getAllEntities()) {
 			if (e.hasComponents(ImagePath.class, Position.class)) {
-				// viewUtils.makeSelectable(e);
+				viewUtils.makeSelectable(e);
 				root.getChildren().add(this.getUpdatedImageView(e));
 				root.getChildren().addAll(this.getCollisionShapes(e));
 			}
