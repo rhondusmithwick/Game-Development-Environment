@@ -28,15 +28,13 @@ import static animation.DoubleConstants.DURATION_DEFAULT;
 import static animation.DoubleConstants.DURATION_MAX;
 import static animation.DoubleConstants.DURATION_MIN;
 import static animation.StringConstants.ANIMATION_NAME_PROMPT;
-
+import static animation.StringConstants.STYLE_SHEET;
 /**
  * The GUI class to hold GUI objects.
  *
  * @author Rhondu Smithwick, Melissa Zhang
  */
 class GUI {
-
-    private final String STYLESHEET = "cssFiles/darktheme.css";
 
     private final SimpleObjectProperty<Boolean> changeColorProperty = new SimpleObjectProperty<>(this, "ChangeColor", false);
     private final BorderPane mainPane = new BorderPane();
@@ -56,7 +54,7 @@ class GUI {
      * @param changeColorProperty the property of whether to change color
      */
     public GUI(SimpleObjectProperty<Boolean> changeColorProperty) {
-        scene.getStylesheets().add(STYLESHEET);
+        scene.getStylesheets().add(STYLE_SHEET.get());
         this.changeColorProperty.bindBidirectional(changeColorProperty);
         mainPane.setCenter(spriteScroll);
         mainPane.setRight(new ScrollPane(buttonBox));

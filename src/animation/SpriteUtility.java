@@ -54,7 +54,7 @@ class SpriteUtility {
 
     private void reinitializeGui() {
         gui.getSpriteGroup().getChildren().clear();
-        model.getAnimationList().clear();
+        model.getAnimationMap().clear();
         initNewImage();
         initCanvas();
         initRectangleDrawer();
@@ -62,7 +62,7 @@ class SpriteUtility {
     }
 
     private void initButtons() {
-        gui.addButton(makeButton(SAVE_ANIMATIONS_TO_FILE.get(), e -> saveAnimations(spriteSheetPath, model.getAnimationList())), gui.getButtonBox());
+        gui.addButton(makeButton(SAVE_ANIMATIONS_TO_FILE.get(), e -> saveAnimations(spriteSheetPath, model.getAnimationMap())), gui.getButtonBox());
         gui.addButton(makeButton(NEW_ANIMATION.get(), e -> reInitialize()), gui.getButtonBox());
         gui.addButton(makeButton(NEW_SPRITE.get(), e -> reinitializeGui()), gui.getButtonBox());
         gui.addButton(makeButton(PREVIEW_ANIMATION.get(), e -> animationPreview()), gui.getButtonBox());
@@ -153,7 +153,7 @@ class SpriteUtility {
                 addFrame();
                 break;
             default:
-                model.handleArrowKey(event);
+                model.handleKeyInput(event);
         }
         event.consume();
     }

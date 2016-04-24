@@ -6,6 +6,7 @@ package animation;
  * @author Rhondu Smithwick
  */
 public enum StringConstants {
+    STYLE_SHEET("cssFiles/darktheme.css"),
     SAVE_ANIMATIONS_TO_FILE("Save Animations to File"),
     NEW_ANIMATION("New Animation"),
     NEW_SPRITE("New Sprite"),

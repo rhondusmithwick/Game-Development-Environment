@@ -1,12 +1,9 @@
 package animation;
 
 import javafx.animation.Animation;
-import javafx.beans.property.DoubleProperty;
-import javafx.beans.property.SimpleDoubleProperty;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -30,24 +27,17 @@ import static animation.StringConstants.SELECT_EFFECT;
  * @author Rhondu Smithwick, Melissa Zhang
  */
 public class Model {
-    private final Map<String, Map<String, String>> animationList = new HashMap<>();
-    private final List<Rectangle> rectangleList = new ArrayList<>();
     private final ImageView spriteImageView = new ImageView();
     private final ImageView previewImageView = new ImageView();
-
+    private final Map<String, Map<String, String>> animationMap = new HashMap<>();
+    private final List<Rectangle> rectangleList = new ArrayList<>();
     private final List<Double> widthList = new ArrayList<>();
     private final List<Double> heightList = new ArrayList<>();
     private final List<Double> yList = new ArrayList<>();
     private final List<Double> xList = new ArrayList<>();
-    private final DoubleProperty rectinitX = new SimpleDoubleProperty(this, "rectinitX", 0.0);
-    private final DoubleProperty rectinitY = new SimpleDoubleProperty(this, "rectinitY", 0.0);
-    private final DoubleProperty rectX = new SimpleDoubleProperty(this, "rectX", 0.0);
-    private final DoubleProperty rectY = new SimpleDoubleProperty(this, "rectY", 0.0);
-
-    private Rectangle selectedRectangle;
-    private Rectangle rectDrawer;
-
+    private final RectangleDrawer rectDrawer = new RectangleDrawer();
     private Image spriteImage;
+    private Rectangle selectedRectangle;
 
     public void populateRectanglePropertyLists() {
         xList.clear();
@@ -78,7 +68,7 @@ public class Model {
         moveAnimationMap.put("yList", yList.toString());
         moveAnimationMap.put("width", widthList.toString());
         moveAnimationMap.put("height", heightList.toString());
-        animationList.put(name, moveAnimationMap);
+        animationMap.put(name, moveAnimationMap);
     }
 
     public boolean removeRectangle(Rectangle rectangle) {
@@ -96,7 +86,7 @@ public class Model {
         return false;
     }
 
-    public void handleArrowKey(KeyEvent event) {
+    public void handleKeyInput(KeyEvent event) {
         switch (event.getCode()) {
             case RIGHT:
                 selectedRectangle.setX(selectedRectangle.getX() + KEY_INPUT_SPEED.get());
@@ -119,22 +109,15 @@ public class Model {
         setSpriteImage(image);
     }
 
-    public void setSpriteImage(Image spriteImage) {
-        this.spriteImage = spriteImage;
-        spriteImageView.setImage(spriteImage);
-    }
-
-
     public void makeSelected(Rectangle r) {
         addSelectEffect(r);
-        this.selectedRectangle = r;
-        if (rectDrawer != selectedRectangle) {
-            removeSelectEffect(rectDrawer);
+        selectedRectangle = r;
+        if (rectDrawer.getRectangle() != selectedRectangle) {
+            removeSelectEffect(rectDrawer.getRectangle());
         }
         Predicate<Rectangle> notSelected = (rect) -> (rect != selectedRectangle);
         rectangleList.stream().filter(notSelected).forEach(this::removeSelectEffect);
     }
-
 
     public Rectangle cloneRect(Rectangle rect) {
         Rectangle r = new Rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
@@ -146,50 +129,33 @@ public class Model {
     }
 
     public void resetRectangleDrawer() {
-        this.rectDrawer = new Rectangle();
-        rectinitX.set(0.0);
-        rectinitY.set(0.0);
-        rectX.set(0.0);
-        rectY.set(0.0);
-        rectDrawer.widthProperty().bind(rectX.subtract(rectinitX));
-        rectDrawer.heightProperty().bind(rectY.subtract(rectinitY));
-        rectDrawer.setFill(Color.TRANSPARENT);
-        rectDrawer.setStroke(Color.RED);
+        rectDrawer.reset();
     }
 
     public void handleMousePressed(MouseEvent event) {
-        if (event.getButton() == MouseButton.PRIMARY) {
-            rectDrawer.setX(event.getX());
-            rectDrawer.setY(event.getY());
-            rectinitX.set(event.getX());
-            rectinitY.set(event.getY());
-        } else if (event.getButton() == MouseButton.SECONDARY) {
-            rectDrawer.setX(event.getX());
-            rectDrawer.setY(event.getY());
-        }
+        rectDrawer.handleMousePressed(event);
     }
 
     public void handleMouseDragged(MouseEvent event) {
-        rectX.set(event.getX());
-        rectY.set(event.getY());
+        rectDrawer.handleMouseDragged(event);
     }
 
     private void makeSelectable(Rectangle r) {
         r.setOnMouseClicked(e -> makeSelected(r));
     }
 
-    private void addSelectEffect(Rectangle img) {
-        img.setStyle(SELECT_EFFECT.get());
-        img.setStroke(Color.RED);
+    private void addSelectEffect(Rectangle rectangle) {
+        rectangle.setStyle(SELECT_EFFECT.get());
+        rectangle.setStroke(Color.RED);
     }
 
-    private void removeSelectEffect(Rectangle imageView) {
-        imageView.setStyle(NO_SELECT_EFFECT.get());
-        imageView.setStroke(Color.SKYBLUE);
+    private void removeSelectEffect(Rectangle rectangle) {
+        rectangle.setStyle(NO_SELECT_EFFECT.get());
+        rectangle.setStroke(Color.SKYBLUE);
     }
 
-    public Map<String, Map<String, String>> getAnimationList() {
-        return animationList;
+    public Map<String, Map<String, String>> getAnimationMap() {
+        return animationMap;
     }
 
     public List<Rectangle> getRectangleList() {
@@ -213,11 +179,16 @@ public class Model {
     }
 
     public Rectangle getRectDrawer() {
-        return rectDrawer;
+        return rectDrawer.getRectangle();
     }
 
     public Image getSpriteImage() {
         return spriteImage;
+    }
+
+    public void setSpriteImage(Image spriteImage) {
+        this.spriteImage = spriteImage;
+        spriteImageView.setImage(spriteImage);
     }
 
 }
