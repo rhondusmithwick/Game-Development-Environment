@@ -10,3 +10,4 @@ import model.component.character.Health;
 
 velocity = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Velocity.class);
 velocity.setVXY(velocity.getVX()-10, velocity.getVY());
+System.out.println("changed anolyn's velocity.");

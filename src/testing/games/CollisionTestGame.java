@@ -65,6 +65,8 @@ public class CollisionTestGame {
     public static final int KEY_INPUT_SPEED = 5;
     private static Group root;
     private final ILevel universe = new Level();
+
+    //private final EventSystem eventSystem = new EventSystem(universe);
     private IEventSystem eventSystem = universe.getEventSystem();
     private final PhysicsEngine physics = new PhysicsEngine();
     //private IEntity character;
@@ -116,17 +118,17 @@ public class CollisionTestGame {
     private void addCharacter(String name, String XMLName, String imagePath, Double posX, Double posY) {
         //int var = 0;
         //if (var == 0) {
-            IEntity character = new Entity(name);
-            character.forceAddComponent(new Health((double) 100), true);
-            character.addComponent(new Collision("")); // instantiated by string instead of collection
-            Position pos = new Position(posX, posY);
-            character.forceAddComponent(pos, true);
-            character.forceAddComponent(new ImagePath(imagePath), true);
-            character.forceAddComponent(new Velocity(0, 0), true);
-            universe.addEntity(character);
-            character.addComponent(new ImagePath(imagePath));
-            //character.addComponent(new Gravity(5000));
-            character.serialize(XMLName);
+        IEntity character = new Entity(name);
+        character.forceAddComponent(new Health((double) 100), true);
+        character.addComponent(new Collision("")); // instantiated by string instead of collection
+        Position pos = new Position(posX, posY);
+        character.forceAddComponent(pos, true);
+        character.forceAddComponent(new ImagePath(imagePath), true);
+        character.forceAddComponent(new Velocity(0, 0), true);
+        universe.addEntity(character);
+        character.addComponent(new ImagePath(imagePath));
+        //character.addComponent(new Gravity(5000));
+        character.serialize(XMLName);
         //}
 //        else {
 //            character = new XMLReader<IEntity>().readSingleFromFile("character.xml");
