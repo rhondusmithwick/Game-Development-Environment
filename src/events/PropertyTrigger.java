@@ -24,7 +24,7 @@ public class PropertyTrigger extends Trigger {
         this.componentClass = componentClass;
         this.propertyName = propertyName;
     }
-
+    
     @Override
     public void changed(ObservableValue arg0, Object arg1, Object arg2) {
         setChanged();

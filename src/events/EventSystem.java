@@ -8,6 +8,7 @@ import com.google.common.collect.ListMultimap;
 
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.input.KeyEvent;
@@ -38,7 +39,7 @@ public class EventSystem implements Observer, IEventSystem {
     private final InputSystem inputSystem = new InputSystem();
     private transient ILevel universe;
     private ListMultimap<Trigger, Action> actionMap = ArrayListMultimap.create();
-    private SimpleObjectProperty<Double> timer;
+    private final SimpleDoubleProperty timer = new SimpleDoubleProperty(this, "timer", 0.0);
     private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
     public EventSystem(ILevel universe) {
         setUniverse(universe);
@@ -46,17 +47,19 @@ public class EventSystem implements Observer, IEventSystem {
 
     @Override
     public void registerEvent(Trigger trigger, Action action) {
-        actionMap.put(trigger, action);
-        if (!actionMap.containsKey(trigger)) {
+    	actionMap.put(trigger, action);
+        //if (!actionMap.containsKey(trigger)) {
             trigger.addObserver(this);
             trigger.addHandler(universe);
-        }
+        //}
+        
     }
 
     @Override
     public void updateInputs(double dt) {
         this.inputSystem.processInputs();
         timer.set(timer.get()+dt);
+        //System.out.println(timer.get());
     }
 
     @Override
@@ -86,6 +89,7 @@ public class EventSystem implements Observer, IEventSystem {
 
     @Override
     public void update(Observable o, Object arg) {
+    	System.out.println("HEREBITCH");
         List<Action> actions = actionMap.get((Trigger) o);
         actions.stream().forEach(e -> e.activate(engine, universe));
     }
