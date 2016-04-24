@@ -28,13 +28,25 @@ public class KeyTrigger extends Trigger {
     }
 
     @Override
+    @Deprecated
     public void clearListener(ILevel universe, InputSystem inputSystem) {
         inputSystem.unListenToKeyPress(this);
     }
+    
+    @Override
+    public void clearListener(ILevel universe) {
+        universe.getEventSystem().unListenToKeyPress(this);
+    }
 
     @Override
+    @Deprecated
     public void addHandler(ILevel universe, InputSystem inputSystem) {
         inputSystem.listenToKeyPress(this);
+    }
+    
+    @Override
+    public void addHandler(ILevel universe) {
+        universe.getEventSystem().listenToKeyPress(this);
     }
 
     /**/

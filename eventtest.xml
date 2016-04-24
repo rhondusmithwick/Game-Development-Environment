@@ -1,4 +1,17 @@
+<<<<<<< HEAD
 <?xml version="1.0" ?><object-stream><com.google.common.collect.ArrayListMultimap serialization="custom"><unserializable-parents></unserializable-parents><com.google.common.collect.ArrayListMultimap><default></default><int>4</int><events.KeyTrigger><changed>false</changed><obs></obs><key>A</key></events.KeyTrigger><int>1</int><events.Action><script>package groovyScripts
+=======
+<?xml version="1.0" ?><object-stream><com.google.common.collect.ArrayListMultimap serialization="custom"><unserializable-parents></unserializable-parents><com.google.common.collect.ArrayListMultimap><default></default><int>5</int><events.TimeTrigger><changed>false</changed><obs></obs><time>5.0</time></events.TimeTrigger><int>1</int><events.Action><script>package groovyScripts
+
+/**
+ * Created by ajonnav on 4/22/16.
+ * @author Anirudh Jonnavithula
+ */
+
+import model.component.physics.Gravity;
+
+universe.getEntitiesWithName("Anolyn").addComponent(new Gravity(5000));</script><parameters class="javax.script.SimpleBindings"><map></map></parameters></events.Action><events.KeyTrigger><changed>false</changed><obs></obs><key>A</key></events.KeyTrigger><int>1</int><events.Action><script>package groovyScripts
+>>>>>>> f1d3b294bf526e69419e4fb7ba08d6e900732a08
 
 /**
  * Created by carolyn on 4/13/16.
@@ -9,7 +22,28 @@ import model.component.movement.Velocity;
 import model.component.character.Health;
 
 velocity = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Velocity.class);
+<<<<<<< HEAD
 velocity.setVXY(velocity.getVX()-10, velocity.getVY());</script><parameters class="javax.script.SimpleBindings"><map></map></parameters></events.Action><events.KeyTrigger><changed>false</changed><obs></obs><key>W</key></events.KeyTrigger><int>1</int><events.Action><script>package groovyScripts
+=======
+velocity.setVXY(velocity.getVX()-10, velocity.getVY());</script><parameters class="javax.script.SimpleBindings"><map></map></parameters></events.Action><events.PropertyTrigger><changed>false</changed><obs></obs><entityID>adeacaf4-3b07-4f9f-9ae1-2dcce6ecc10e</entityID><componentClass>model.component.movement.Position</componentClass><propertyName>Y</propertyName></events.PropertyTrigger><int>1</int><events.Action><script>package groovyScripts
+
+/**
+ * Created by carolyn on 4/12/16.
+ * @author Carolyn Yao
+ */
+
+import model.component.movement.Position;
+import model.component.character.Health;
+
+position = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Position.class);
+health = universe.getEntitiesWithName("Anolyn").get(0).getComponent(Health.class);
+System.out.println(position.getX());
+if (position.getX() &gt; 500) {
+	health.setHealth(0);
+	System.out.println("HEY " + health.getHealth());
+}
+//position.setX(position.getX() + moved);</script><parameters class="javax.script.SimpleBindings"><map></map></parameters></events.Action><events.KeyTrigger><changed>false</changed><obs></obs><key>W</key></events.KeyTrigger><int>1</int><events.Action><script>package groovyScripts
+>>>>>>> f1d3b294bf526e69419e4fb7ba08d6e900732a08
 
 /**
  * Created by ajonnav on 4/16/16.
@@ -32,6 +66,7 @@ import model.component.movement.Velocity;
 import model.component.character.Health;
 
 velocity = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Velocity.class);
+<<<<<<< HEAD
 velocity.setVXY(velocity.getVX()+10, velocity.getVY());</script><parameters class="javax.script.SimpleBindings"><map></map></parameters></events.Action><events.PropertyTrigger><changed>false</changed><obs></obs><entityID>58f6dfb8-fe9c-4147-8286-bcdf4eab1d44</entityID><componentClass>model.component.movement.Position</componentClass><propertyName>Y</propertyName></events.PropertyTrigger><int>1</int><events.Action><script>package groovyScripts
 
 /**
@@ -49,3 +84,6 @@ if (position.getX() &gt; 500) {
 	health.setHealth(0);
 }
 //position.setX(position.getX() + moved);</script><parameters class="javax.script.SimpleBindings"><map></map></parameters></events.Action></com.google.common.collect.ArrayListMultimap></com.google.common.collect.ArrayListMultimap></object-stream>
+=======
+velocity.setVXY(velocity.getVX()+10, velocity.getVY());</script><parameters class="javax.script.SimpleBindings"><map></map></parameters></events.Action></com.google.common.collect.ArrayListMultimap></com.google.common.collect.ArrayListMultimap></object-stream>
+>>>>>>> f1d3b294bf526e69419e4fb7ba08d6e900732a08

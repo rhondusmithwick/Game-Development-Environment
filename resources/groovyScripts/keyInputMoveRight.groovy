@@ -8,5 +8,5 @@ package groovyScripts
 import model.component.movement.Velocity;
 import model.component.character.Health;
 
-velocity = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Velocity.class);
+velocity = universe.getEntitiesWithName("Anolyn").get(0).getComponent(Velocity.class);
 velocity.setVXY(velocity.getVX()+10, velocity.getVY());

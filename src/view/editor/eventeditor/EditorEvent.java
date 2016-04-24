@@ -3,6 +3,8 @@ package view.editor.eventeditor;
 import javafx.scene.layout.Pane;
 import java.util.ResourceBundle;
 import view.editor.Editor;
+import api.IEntity;
+import api.ILevel;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
 import api.ISerializable;
@@ -32,14 +34,15 @@ public class EditorEvent extends Editor
 	private final PropertyEventEditor propertyEventEditor;
 	private final KeyBindingEditor keyBindingEditor;
 	
-	public EditorEvent(String language, ISerializable toEdit, ObservableList<ISerializable> masterList, ObservableList<ISerializable> masterEnvironmentList)
+	public EditorEvent(String language, ObservableList<IEntity> masterList, ObservableList<ILevel> levelList)
 	{	
-		propertyEventEditor = new PropertyEventEditor(language, toEdit, masterList, masterEnvironmentList);
-		keyBindingEditor = new KeyBindingEditor(language, masterEnvironmentList);
+		propertyEventEditor = new PropertyEventEditor(language, masterList, levelList);
+		keyBindingEditor = new KeyBindingEditor(language, levelList);
 
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
-		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
-		// pane.setAlignment(Pos.TOP_LEFT);
+		pane.setPadding(ViewInsets.EVENT_EDIT.getInset());
+		pane.setPrefWidth(GUISize.EVENT_EDITOR_WIDTH.getSize());
+
 		myResources = ResourceBundle.getBundle(language);
 		scrollPane = new ScrollPane(pane);
 		
@@ -68,15 +71,13 @@ public class EditorEvent extends Editor
 	
 	public void populateLayout() {}
 
-
 	@Override
 	public ScrollPane getPane() 
 	{
 		return scrollPane;
 	}
 
-
 	@Override
 	public void updateEditor() {}
-
+	
 }

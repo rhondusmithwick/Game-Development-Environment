@@ -10,7 +10,7 @@ import model.component.character.Health;
 
 position = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Position.class);
 health = universe.getEntitiesWithName("Anolyn").get(0).getComponent(Health.class);
-System.out.println(position.getX());
+//System.out.println(position.getX());
 if (position.getX() > 500) {
 	health.setHealth(0);
 }
