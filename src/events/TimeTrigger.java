@@ -17,7 +17,6 @@ public class TimeTrigger extends Trigger{
 		Double newValue = (Double) arg2;
 		
 		if(oldValue<time && newValue>=time) {
-			System.out.println("Called this method");
 			setChanged();
 			notifyObservers();
 		}

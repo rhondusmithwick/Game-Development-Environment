@@ -5,6 +5,7 @@ package groovyScripts
  * @author Anirudh Jonnavithula
  */
 
+import model.component.movement.Velocity;
 import model.component.physics.Gravity;
 
-universe.getEntitiesWithName("Anolyn").get(0).addComponent(new Gravity(5000));
+universe.getEntitiesWithName("Anolyn").get(0).getComponent(Velocity.class).setVXY(10,10);

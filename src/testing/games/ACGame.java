@@ -36,7 +36,7 @@ public class ACGame {
     public static final int KEY_INPUT_SPEED = 5;
     private static Group root;
     private final ILevel universe = new Level();
-    private IEventSystem eventSystem;
+    private IEventSystem eventSystem=universe.getEventSystem();
     private final PhysicsEngine physics = new PhysicsEngine();
     private IEntity character;
     private final String IMAGE_PATH = "resources/images/blastoise.png";
@@ -84,10 +84,8 @@ public class ACGame {
             character.forceAddComponent(new Velocity(0, 0), true);
             universe.addEntity(character);
             character.addComponent(new ImagePath(IMAGE_PATH));
-            //character.addComponent(new Gravity(5000));
+            character.addComponent(new Gravity(5000));
             character.serialize("character.xml");
-
-            eventSystem = universe.getEventSystem();
             eventSystem.registerEvent(
                     new TimeTrigger(3.0),
                     new Action(addGravityScriptPath));
@@ -97,11 +95,6 @@ public class ACGame {
             eventSystem.registerEvent(new KeyTrigger("D"), new Action(moveRightScriptPath));
             eventSystem.registerEvent(new KeyTrigger("A"), new Action(moveLeftScriptPath));
             eventSystem.registerEvent(new KeyTrigger("W"), new Action(jumpScriptPath));
-            /*eventSystem.saveEventsToFile("eventtest.xml");
-            EventFileWriter w = new EventFileWriter();
-            w.addEvent(KeyTrigger.class.toString().split(" ")[1], "A", moveLeftScriptPath);
-            w.addEvent(KeyTrigger.class.toString().split(" ")[1], "D", moveRightScriptPath);
-            w.writeEventsToFile("eventTest2.xml");*/
         } else {
             character = new XMLReader<IEntity>().readSingleFromFile("character.xml");
             universe.addEntity(character);
@@ -111,7 +104,7 @@ public class ACGame {
     }
 
     public void step(double dt) {
-        physics.update(universe, dt);
+    	universe.getPhysicsEngine().update(universe, dt);
         // inputSystem.processInputs();
         eventSystem.updateInputs(dt);
         //moveEntity(character, 1);

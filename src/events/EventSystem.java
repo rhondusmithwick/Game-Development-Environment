@@ -89,7 +89,6 @@ public class EventSystem implements Observer, IEventSystem {
 
     @Override
     public void update(Observable o, Object arg) {
-    	System.out.println("HEREBITCH");
         List<Action> actions = actionMap.get((Trigger) o);
         actions.stream().forEach(e -> e.activate(engine, universe));
     }
