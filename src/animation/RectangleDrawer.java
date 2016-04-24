@@ -13,7 +13,6 @@ import javafx.scene.shape.Rectangle;
  * @author Rhondu Smithwick
  */
 public class RectangleDrawer {
-
     private final DoubleProperty rectinitX = new SimpleDoubleProperty(this, "rectinitX", 0.0);
     private final DoubleProperty rectinitY = new SimpleDoubleProperty(this, "rectinitY", 0.0);
     private final DoubleProperty rectX = new SimpleDoubleProperty(this, "rectX", 0.0);

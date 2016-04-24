@@ -5,7 +5,9 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.stage.FileChooser;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,36 +16,31 @@ import java.util.Map;
  *
  * @author Rhondu Smithwick, Melissa Zhang
  */
-public class Model {
+public class ImageLogic {
     private final ImageView spriteImageView = new ImageView();
     private final ImageView previewImageView = new ImageView();
-    private final Map<String, Map<String, String>> animationMap = new HashMap<>();
-    private final RectangleDrawer rectDrawer = new RectangleDrawer();
     private Image spriteImage;
-
-    public void saveAnimation(String name, Map<String, String> animationMap) {
-        this.animationMap.put(name, animationMap);
-    }
+    private String spriteSheetPath;
 
     public void changeColor(double x, double y) {
         Image image = new ColorChanger(spriteImage, x, y, Color.TRANSPARENT).changeImage();
         setSpriteImage(image);
     }
 
-    public void resetRectangleDrawer() {
-        rectDrawer.reset();
+    public void initNewImage() {
+        Image newImage = initFileChooser();
+        setSpriteImage(newImage);
     }
 
-    public void handleMousePressed(MouseEvent event) {
-        rectDrawer.handleMousePressed(event);
+    private Image initFileChooser() {
+        File spriteSheet = UtilityUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("All Images", "*.*"),
+                "Choose a spritesheet");
+        spriteSheetPath = spriteSheet.toURI().toString();
+        return new Image(spriteSheetPath);
     }
 
-    public void handleMouseDragged(MouseEvent event) {
-        rectDrawer.handleMouseDragged(event);
-    }
-
-    public Map<String, Map<String, String>> getAnimationMap() {
-        return animationMap;
+    public String getSpriteSheetPath() {
+        return spriteSheetPath;
     }
 
     public ImageView getSpriteImageView() {
@@ -54,10 +51,6 @@ public class Model {
         return previewImageView;
     }
 
-    public Rectangle getRectDrawer() {
-        return rectDrawer.getRectangle();
-    }
-
     public Image getSpriteImage() {
         return spriteImage;
     }
@@ -65,10 +58,6 @@ public class Model {
     public void setSpriteImage(Image spriteImage) {
         this.spriteImage = spriteImage;
         spriteImageView.setImage(spriteImage);
-    }
-
-    public RectangleDrawer getRectangleDrawer() {
-        return rectDrawer;
     }
 
 }
