@@ -2,21 +2,15 @@ package events;
 
 import api.IEventSystem;
 import api.ILevel;
-
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
-
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
 import javafx.beans.property.SimpleDoubleProperty;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.input.KeyEvent;
-import utility.Pair;
-
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -24,7 +18,6 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.stream.Collectors;
 
 /***
  * Created by ajonnav 04/12/16
@@ -38,6 +31,7 @@ import java.util.stream.Collectors;
  *         and create Triggers, which add listeners to said properties or keys. The
  *         Triggers are mapped to Actions in the EventSystem map. 
  */
+
 public class EventSystem implements Observer, IEventSystem {
     private final InputSystem inputSystem = new InputSystem();
     private transient ILevel universe;
@@ -51,11 +45,8 @@ public class EventSystem implements Observer, IEventSystem {
     @Override
     public void registerEvent(Trigger trigger, Action action) {
     	actionMap.put(trigger, action);
-        //if (!actionMap.containsKey(trigger)) {
-            trigger.addObserver(this);
-            trigger.addHandler(universe);
-        //}
-        
+        trigger.addObserver(this);
+        trigger.addHandler(universe);
     }
 
     @Override
