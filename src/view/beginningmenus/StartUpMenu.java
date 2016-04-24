@@ -24,33 +24,34 @@ public abstract class StartUpMenu {
 	private Media media;
 	private MediaPlayer mediaPlayer;
 
-
 	private ScrollPane scrollPane;
-	
-	public StartUpMenu(Stage myStage){
+
+	public StartUpMenu(Stage myStage) {
 		this.myStage = myStage;
 	}
 
 	public void init() {
 		myScene = new Scene(createDisplay(), GUISize.MAIN_SIZE.getSize(), GUISize.MAIN_SIZE.getSize());
-		myScene.getStylesheets().add(new File(DefaultStrings.CSS_LOCATION.getDefault() + DefaultStrings.MAIN_CSS.getDefault()).toURI().toString());
+		myScene.getStylesheets()
+				.add(new File(DefaultStrings.CSS_LOCATION.getDefault() + DefaultStrings.MAIN_CSS.getDefault()).toURI()
+						.toString());
 		setMusic(DefaultStrings.MUSIC.getDefault() + DefaultStrings.THEME.getDefault());
 		myStage.setScene(myScene);
 		myStage.show();
 	}
-	
-	protected ScrollPane createDisplay(){
+
+	protected ScrollPane createDisplay() {
 		root = new Group();
 		createVBox();
 		scrollPane = new ScrollPane(root);
 		return scrollPane;
 	}
-	
+
 	private void setMusic(String file) {
-        media = new Media(new File(file).toURI().toString());
-        mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
-        mediaPlayer.play();	
+		media = new Media(new File(file).toURI().toString());
+		mediaPlayer = new MediaPlayer(media);
+		mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+		// mediaPlayer.play(); TODO: rm
 	}
 
 	private void createVBox() {
@@ -61,8 +62,8 @@ public abstract class StartUpMenu {
 		myVBox.getStyleClass().add("vbox");
 		root.getChildren().add(myVBox);
 	}
-	
-	public void addNodesToVBox(List<Node> toAdd){
+
+	public void addNodesToVBox(List<Node> toAdd) {
 		myVBox.getChildren().addAll(toAdd);
 	}
 }

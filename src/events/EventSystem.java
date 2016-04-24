@@ -6,9 +6,9 @@ import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
+import javafx.beans.property.SimpleDoubleProperty;
+import javafx.beans.value.ChangeListener;
 import javafx.scene.input.KeyEvent;
-import utility.Pair;
-
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.io.File;
@@ -18,44 +18,67 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.stream.Collectors;
 
 /***
  * Created by ajonnav 04/12/16
  *
  * @author Anirudh Jonnavithula, Carolyn Yao For non-key events, we want to
- *         create a string "entityid:componentName:index". Register string to an
- *         action in the map. A Trigger Factory can interpret the string to
- *         create the right kind of Trigger Using this string, we generate the
- *         triggers in some sort of factory fashion
+ *         write a string that denotes which entity and which property to watch. 
+ *         For a key event, we ask the inputSystem to listen, and write the 
+ *         key character to file to write to data. 
+ *         We also write to file the Action that corresponds to the property change or 
+ *         key event. When we read the file, aka play the game, we read the strings from data files
+ *         and create Triggers, which add listeners to said properties or keys. The
+ *         Triggers are mapped to Actions in the EventSystem map. 
  */
+
 public class EventSystem implements Observer, IEventSystem {
     private final InputSystem inputSystem = new InputSystem();
     private transient ILevel universe;
     private ListMultimap<Trigger, Action> actionMap = ArrayListMultimap.create();
+    private final SimpleDoubleProperty timer = new SimpleDoubleProperty(this, "timer", 0.0);
     private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
-
     public EventSystem(ILevel universe) {
         setUniverse(universe);
     }
 
     @Override
     public void registerEvent(Trigger trigger, Action action) {
-        actionMap.put(trigger, action);
-        if (!actionMap.containsKey(trigger)) {
-            trigger.addObserver(this);
-            trigger.addHandler(universe, inputSystem);
-        }
+    	actionMap.put(trigger, action);
+        trigger.addObserver(this);
+        trigger.addHandler(universe);
     }
 
     @Override
-    public void updateInputs() {
+    public void updateInputs(double dt) {
         this.inputSystem.processInputs();
+        timer.set(timer.get()+dt);
+        //System.out.println(timer.get());
     }
 
     @Override
     public void takeInput(KeyEvent k) {
         this.inputSystem.takeInput(k);
+    }
+    
+    @Override
+    public void listenToKeyPress(ChangeListener listener) {
+        inputSystem.listenToKeyPress(listener);
+    }
+
+    @Override
+    public void unListenToKeyPress(ChangeListener listener) {
+        inputSystem.unListenToKeyPress(listener);
+    }
+    
+    @Override
+    public void listenToTimer(ChangeListener listener) {
+		timer.addListener(listener);
+	}
+
+    @Override
+    public void unListenToTimer(ChangeListener listener) {
+    	timer.removeListener(listener);
     }
 
     @Override
@@ -113,11 +136,11 @@ public class EventSystem implements Observer, IEventSystem {
     }
 
     private void addHandlers() {
-        actionMap.keySet().stream().forEach(trigger -> trigger.addHandler(universe, inputSystem));
+        actionMap.keySet().stream().forEach(trigger -> trigger.addHandler(universe));
     }
 
     private void clearListeners() {
-        actionMap.keySet().stream().forEach(trigger -> trigger.clearListener(universe, inputSystem));
+        actionMap.keySet().stream().forEach(trigger -> trigger.clearListener(universe));
     }
 
     private void unbindEvents() {
@@ -134,7 +157,7 @@ public class EventSystem implements Observer, IEventSystem {
         this.unbindEvents();
         out.defaultWriteObject();
     }
-
+    
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         engine = new ScriptEngineManager().getEngineByName("groovy");

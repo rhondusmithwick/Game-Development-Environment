@@ -1,9 +1,5 @@
 package view;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import api.IEntity;
 import api.ISystemManager;
 import api.IView;
@@ -12,6 +8,7 @@ import javafx.animation.Timeline;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.SubScene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
@@ -28,6 +25,10 @@ import model.component.movement.Position;
 import model.component.physics.Collision;
 import model.component.visual.ImagePath;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+
 /**
  * 
  * @author Tom
@@ -35,26 +36,48 @@ import model.component.visual.ImagePath;
  */
 public class View implements IView {
 
+	// TODO: resource file
 	private final double MILLISECOND_DELAY = 10;
 	private final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
-	private final double gapSize = 10;
+	private final double gapSize = 1;
 
-	private final Group root = new Group();
+	private Group root = new Group();
 	private final ConsoleTextArea console = new ConsoleTextArea();
 	private final Button evaluateButton = new Button("Evaluate");
 	private final Button loadButton = new Button("Load");
 	// private final ScriptEngine engine = new
 	// ScriptEngineManager().getEngineByName("Groovy");
 	private final ISystemManager model;
-	private final BorderPane pane;
+	private BorderPane pane;
+	private SubScene subScene;
+	private ViewUtilities viewUtils;
 
-	public View(ISystemManager model) {
+	public View(ISystemManager model, Pane scene) {
+		this(model, new Group(), 2000, 2000, scene);
+	}
+
+	public View(ISystemManager model, Group root, double width, double height, Pane scene) {
 		this.model = model;
-		this.initEngine();
 		this.initConsole();
 		this.initButtons();
-		this.pane = this.createBorderPane();
+		this.viewUtils = new ViewUtilities(root, model.getEntitySystem());
+		this.subScene = this.createSubScene(root, width, height, scene);
+		this.pane = this.createBorderPane(root, this.subScene);
+		viewUtils.allowDragging();
+		viewUtils.allowDeletion();
 
+		this.startTimeline();
+	}
+
+	public Pane getPane() {
+		return this.pane;
+	}
+
+	public SubScene getSubScene() {
+		return this.subScene;
+	}
+
+	private void startTimeline() {
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> this.step(SECOND_DELAY));
 		Timeline animation = new Timeline();
 		animation.setCycleCount(Timeline.INDEFINITE);
@@ -62,13 +85,26 @@ public class View implements IView {
 		animation.play();
 	}
 
-	public Pane getPane() {
-		return this.pane;
+	private SubScene createSubScene(Group root, double width, double height, Pane scene) {
+		this.root = root;
+		SubScene subScene = new SubScene(root, width, height);
+		// TODO: not printing key presses, why?!
+		// scene.setOnMouseMoved(e -> System.out.println(e.getX()));
+		// scene.setOnKeyTyped(e -> System.out.println(e.getCode()));
+		// scene.setOnKeyReleased(e -> System.out.println(e.getCode()));
+		// scene.setOnKeyPressed(e -> System.out.println(e.getCode()));
+		return subScene;
 	}
 
 	private ImageView getUpdatedImageView(IEntity e) {
 		ImagePath display = e.getComponent(ImagePath.class);
 		ImageView imageView = display.getImageView();
+		int z = display.getZLevel();
+		if (z == -1) {
+			imageView.toBack();
+		} else if (z == 1) {
+			imageView.toFront();
+		}
 
 		Position pos = e.getComponent(Position.class);
 		imageView.setTranslateX(pos.getX());
@@ -91,16 +127,17 @@ public class View implements IView {
 		Collection<Shape> shapes = new ArrayList<Shape>();
 		for (Bounds b : bounds) {
 			if (b == null) {
-				System.out.println(e.getName());
+				System.out.println("null collide mask: " + e.getName());
 				continue;
 			}
 			Shape r = new Rectangle(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
-			double val = Math.random();
-			r.setFill(new Color(val, val, val, val));
+			 double val = 1.0;// Math.random();
+			 r.setFill(new Color(val, val, val, val));
+			r.setStroke(Color.RED);
+			r.setStrokeWidth(2);
 			shapes.add(r);
 		}
 		return shapes;
-
 	}
 
 	private void step(double dt) { // game loop
@@ -111,31 +148,27 @@ public class View implements IView {
 		root.getChildren().clear();
 		for (IEntity e : model.getEntitySystem().getAllEntities()) {
 			if (e.hasComponents(ImagePath.class, Position.class)) {
-				root.getChildren().add(this.getUpdatedImageView(e));
+				viewUtils.makeSelectable(e);
 				root.getChildren().addAll(this.getCollisionShapes(e));
+				root.getChildren().add(this.getUpdatedImageView(e));
 			}
 		}
 	}
 
-	private BorderPane createBorderPane() {
+	private BorderPane createBorderPane(Group root, SubScene subScene) {
 		BorderPane pane = new BorderPane();
 		ScrollPane center = new ScrollPane();
 		pane.setPadding(new Insets(gapSize, gapSize, gapSize, gapSize));
 		pane.setCenter(center);
-		center.setContent(root);
-		// root.setLayoutX(0);
-		// root.setLayoutY(0);
+		// center.setContent(root);
+		center.setContent(subScene);
+		System.out.println(subScene.getRoot());
 		root.setManaged(false); // IMPORTANT
 
-		center.setPannable(true);
-		// center.setFitToHeight(false);
-		// center.setFitToWidth(false);
+		// center.setPannable(true);
 		center.setVbarPolicy(ScrollBarPolicy.NEVER);
 		center.setHbarPolicy(ScrollBarPolicy.NEVER);
 
-		// GridPane inputPane = new GridPane();
-		// inputPane.add(console, 0, 0);
-		// inputPane.add(evaluateButton, 0, 1);
 		BorderPane inputPane = new BorderPane();
 		inputPane.setTop(console);
 		inputPane.setBottom(evaluateButton);
@@ -159,10 +192,6 @@ public class View implements IView {
 		// evaluateButton.setText("Evaluate");
 		evaluateButton.setOnAction(e -> this.evaluate());
 		loadButton.setOnAction(e -> this.load());
-	}
-
-	private void initEngine() { // TODO: make it possible to import classes
-								// directly within shell
 	}
 
 	private void load() { // TODO: load from "demo.xml"
