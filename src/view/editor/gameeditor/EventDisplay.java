@@ -4,6 +4,7 @@ import java.util.ResourceBundle;
 
 import api.IEditor;
 import api.IEntity;
+import api.ILevel;
 import api.ISerializable;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -31,11 +32,14 @@ public class EventDisplay extends ObjectDisplay
 	private ObservableList<IEntity> masterEntityList;
 	private final EditorFactory editFact = new EditorFactory();
 	private ObservableList<ISerializable> masterEnvironmentList;
-	
+	private ObservableList<ILevel> levelList;
 
-	public EventDisplay(String language,ObservableList<IEntity> masterEntityList, Authoring authoringEnvironment)
+	public EventDisplay(String language,
+			ObservableList<IEntity> masterEntityList, ObservableList<ILevel> levelList, 
+			Authoring authoringEnvironment)
 	{
 		super(language, authoringEnvironment,masterEntityList);
+		this.levelList = levelList;
 		this.language=language;
 		this.masterEntityList = masterEntityList;
 		this.authoringEnvironment = authoringEnvironment;
@@ -51,6 +55,13 @@ public class EventDisplay extends ObjectDisplay
 	@Override
 	public Node makeNewObject() {
 		return Utilities.makeButton(myResources.getString(DefaultStrings.EVENT_EDITOR_NAME.getDefault()), 
-				e->createEditor(EditorEvent.class, new Entity(), masterEnvironmentList));
+				e -> createEventEditor());//createEditor(EditorEvent.class, new Entity(), masterEnvironmentList));
 		}
+	
+	private void createEventEditor()
+	{
+		EditorEvent editor = new EditorEvent(language,  masterEntityList, levelList);
+		editor.populateLayout();
+		authoringEnvironment.createTab(editor.getPane(), editor.getClass().getSimpleName(), true);
+	}
 }

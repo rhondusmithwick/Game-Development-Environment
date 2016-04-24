@@ -32,7 +32,7 @@ public class GameEditor extends Editor  {
 	private ObservableList<IEntity> masterEntityList;
 	private ObservableList<ILevel> masterEnvironmentList;
 	private GameDetails gameDetails;
-	private ObjectDisplay entDisp, envDisp;
+	private ObjectDisplay entDisp, envDisp, eventDisplay;
 	private ScrollPane scrollPane;
 
 	public GameEditor(Authoring authEnv, String language, String fileName){
@@ -49,7 +49,7 @@ public class GameEditor extends Editor  {
 		this.masterEnvironmentList = FXCollections.observableArrayList();
 		entDisp = new EntityDisplay(myLanguage, masterEntityList, authEnv);
 		envDisp = new EnvironmentDisplay(myLanguage, masterEnvironmentList, masterEntityList, authEnv);
-
+		eventDisplay = new EventDisplay(myLanguage, masterEntityList, masterEnvironmentList, authEnv);
 		setPane();
 	}
 
@@ -63,12 +63,11 @@ public class GameEditor extends Editor  {
 	
 
 	private void loadFile(String fileName) {
+
 		fileName = DefaultStrings.CREATE_LOC.getDefault() + fileName;
 		gameDetails.setDetails(new XMLReader<List<String>>().readSingleFromFile(fileName + DefaultStrings.METADATA_LOC.getDefault()));
 		masterEntityList.addAll(new XMLReader<List<IEntity>>().readSingleFromFile((fileName + DefaultStrings.ENTITIES_LOC.getDefault())));
 		loadLevels(fileName);
-		
-
 	}
 
 
@@ -110,7 +109,7 @@ public class GameEditor extends Editor  {
 	private VBox leftPane() {
 		VBox temp = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
 		temp.getChildren().addAll(gameDetails.getElements());
-		temp.getChildren().addAll(Arrays.asList(entDisp.makeNewObject(), envDisp.makeNewObject(), Utilities.makeButton(myResources.getString("saveGame"), e->saveGame())));
+		temp.getChildren().addAll(Arrays.asList(entDisp.makeNewObject(), envDisp.makeNewObject(), eventDisplay.makeNewObject(), Utilities.makeButton(myResources.getString("saveGame"), e->saveGame())));
 
 		return temp;
 	}

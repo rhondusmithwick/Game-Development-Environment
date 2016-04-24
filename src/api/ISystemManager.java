@@ -3,6 +3,7 @@ package api;
 import java.util.List;
 
 import datamanagement.XMLReader;
+import groovy.lang.GroovyShell;
 
 /**
  * Created by rhondusmithwick on 3/31/16.
@@ -92,9 +93,11 @@ public interface ISystemManager {
 		return new XMLReader<T>().readFromString(stringToReadFrom);
 	}
 
-
-
-	ILevel getUniverse();
-
+	/**
+	 * Gets the Groovy Shell
+	 * 
+	 * @return the Groovy Shell
+	 */
+	GroovyShell getShell();
 
 }
