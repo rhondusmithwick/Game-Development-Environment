@@ -26,7 +26,9 @@ public enum GUISize {
 	INTRO_PIC(300), 
 	HALF(2), 
 	ONE(1), 
-	HALF_COLUMNS(3/2);
+	HALF_COLUMNS(3/2),
+	PREVIEW_SIZE(100), 
+	GUI_IM_DISP(10);
 
 
     private final int size;

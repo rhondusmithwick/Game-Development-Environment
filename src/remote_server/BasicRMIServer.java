@@ -1,18 +1,18 @@
 package remote_server;
 
-import java.io.File;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.Collection;
-import java.util.List;
 import java.util.Map;
 
 import api.IEntity;
-import api.ILevel;
 import api.IEventSystem;
+import api.ILevel;
 import api.IPhysicsEngine;
+import api.ISystemManager;
+import groovy.lang.GroovyShell;
 
 @Deprecated
 // does not have to be IEntity
@@ -105,9 +105,9 @@ public class BasicRMIServer extends UnicastRemoteObject implements ILevel {
 	}
 
 	@Override
-	public void init(List<File> groovyScripts) {
+	public String init(GroovyShell shell, ISystemManager game) {
 		// TODO Auto-generated method stub
-
+		return null;
 	}
 
 	@Override
