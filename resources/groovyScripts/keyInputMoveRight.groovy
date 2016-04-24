@@ -1,5 +1,7 @@
 package groovyScripts
 
+import model.component.movement.Position
+
 /**
  * Created by carolyn on 4/13/16.
  * @author Carolyn Yao, Anirudh Jonnavithula

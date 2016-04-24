@@ -86,7 +86,7 @@ public class ACGame {
             character.forceAddComponent(new Velocity(0, 0), true);
             universe.addEntity(character);
             character.addComponent(new ImagePath(IMAGE_PATH));
-            character.addComponent(new Gravity(5000));
+            //character.addComponent(new Gravity(5000));
             character.serialize("character.xml");
             Map<String, Object> map = new HashMap<>();
             map.put("character", character);
