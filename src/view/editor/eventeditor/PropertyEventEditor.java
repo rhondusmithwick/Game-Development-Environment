@@ -12,6 +12,7 @@ import api.IEntity;
 import api.ILevel;
 import events.Action;
 import events.PropertyTrigger;
+import groovy.ui.SystemOutputInterceptor;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -98,7 +99,9 @@ public class PropertyEventEditor extends EventEditorTab
 		groovyFile = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("groovy", "*.groovy"), myResources.getString("selectGroovy"));
 		if ( groovyFile != null )
 		{
-			actionSet(groovyFile.getName(), new Action(groovyFile.toString()));
+			String[] splits = groovyFile.getPath().split("voogasalad_MakeGamesGreatAgain/");			
+			
+			actionSet(groovyFile.getName(), new Action(splits[splits.length - 1]));
 		}
 	}
 
