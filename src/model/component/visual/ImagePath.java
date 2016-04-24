@@ -1,11 +1,5 @@
 package model.component.visual;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.Arrays;
-import java.util.List;
-
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Rectangle2D;
@@ -13,6 +7,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utility.SingleProperty;
 import utility.TwoProperty;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Component to hold an imagePath.
@@ -62,16 +62,8 @@ public class ImagePath implements IComponent {
 	 *            width of image
 	 * @param imageHeight
 	 *            height of image
-	 * @param spritesheetPath
+	 * @param imagePath
 	 *            String path to spritesheet
-	 * @param width
-	 *            width of viewport
-	 * @param height
-	 *            height of viewport
-	 * @param offsetX
-	 *            offset in x-direction
-	 * @param offsetX
-	 *            offset in y-direction
 	 */
 	public ImagePath(String spriteName, String imagePath, double imageWidth, double imageHeight, Rectangle2D viewport,
 			boolean isAnimated, double frameDurationMillis, double totalDurationMillis, int maxFrameIndex) {

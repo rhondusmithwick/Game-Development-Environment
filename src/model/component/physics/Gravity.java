@@ -1,10 +1,10 @@
 package model.component.physics;
 
-import java.util.List;
-
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 import utility.TwoProperty;
+
+import java.util.List;
 
 /**
  * The gravity component.
@@ -13,13 +13,13 @@ import utility.TwoProperty;
  */
 public class Gravity implements IComponent {
 
-	private final TwoProperty<Double, Double> gravityProperty = new TwoProperty<>("gx", 0.0, "gy", 981.0);
+	private final TwoProperty<Double, Double> gravityProperty = new TwoProperty<>("gx", 0.0, "gy", 0.0);
 
 	/**
-	 * Empty constructor. Defaults to 9.81.
+	 * Empty constructor. Defaults to 20 down.
 	 */
 	public Gravity() {
-		this(981);
+		this(20.0);
 	}
 
 	/**

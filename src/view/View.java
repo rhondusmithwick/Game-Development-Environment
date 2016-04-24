@@ -1,9 +1,5 @@
 package view;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import api.IEntity;
 import api.ISystemManager;
 import api.IView;
@@ -28,6 +24,10 @@ import model.component.movement.Orientation;
 import model.component.movement.Position;
 import model.component.physics.Collision;
 import model.component.visual.ImagePath;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * 
@@ -131,8 +131,8 @@ public class View implements IView {
 				continue;
 			}
 			Shape r = new Rectangle(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
-			// double val = 0.5;// Math.random();
-			// r.setFill(new Color(val, val, val, val));
+			 double val = 1.0;// Math.random();
+			 r.setFill(new Color(val, val, val, val));
 			r.setStroke(Color.RED);
 			r.setStrokeWidth(2);
 			shapes.add(r);

@@ -1,12 +1,10 @@
 package testing.demo;
 
-import static org.junit.Assert.assertEquals;
-
-import org.junit.Test;
-
 import api.IEntity;
 import api.ILevel;
 import api.IPhysicsEngine;
+import javafx.application.Application;
+import javafx.stage.Stage;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.Collision;
@@ -17,15 +15,23 @@ import model.entity.Entity;
 import model.entity.Level;
 import model.physics.PhysicsEngine;
 
-public class PhysicsTest {
+public class PhysicsTest extends Application {
 
-	@Test
-	public void momentum0() {
+	public static void main(String[] args) {
+		launch(args);
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		testMomentum();
+	}
+
+	public void testMomentum() {
 		IEntity e1 = new Entity("one");
 		Position pos1 = new Position(0, 0);
-		Velocity v1 = new Velocity(1, 0);
+		Velocity v1 = new Velocity(0, 1);
 		Mass m1 = new Mass(2);
-		ImagePath disp1 = new ImagePath("resources/testing/RhonduSmithwick.JPG");
+		ImagePath disp1 = new ImagePath();
 		disp1.setImageWidth(4);
 		disp1.setImageHeight(4);
 		Collision col1 = new Collision("one");
@@ -34,7 +40,7 @@ public class PhysicsTest {
 
 		IEntity e2 = new Entity("two");
 		Position pos2 = new Position(0, 20);
-		Velocity v2 = new Velocity(-2, 0);
+		Velocity v2 = new Velocity(0, -2);
 		Mass m2 = new Mass(3);
 		ImagePath disp2 = new ImagePath();
 		disp2.setImageWidth(4);
@@ -46,19 +52,14 @@ public class PhysicsTest {
 		ILevel universe = new Level();
 		universe.addEntities(e1, e2);
 		IPhysicsEngine p = new PhysicsEngine();
-		for (int i = 0; i < 10; i++) {
+		for (int i = 0; i < 20; i++) {
 			p.update(universe, 1);
+			System.out.println(pos1 + " -- "+pos2);
 		}
 
-		double v1x = v1.getVX();
-		double v1y = v2.getVY();
-		assertEquals(Math.abs(v1x + 2.6) < 0.001, true);
-		assertEquals(Math.abs(v1y) < 0.001, true);
+		System.out.println(v1);
+		System.out.println(v2);
 
-		double v2x = v1.getVX();
-		double v2y = v2.getVY();
-		assertEquals(Math.abs(v2x + 0.4) < 0.001, true);
-		assertEquals(Math.abs(v2y) < 0.001, true);
+		System.exit(0);
 	}
-
 }

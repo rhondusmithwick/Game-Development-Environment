@@ -1,9 +1,5 @@
 package model.physics;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-
 import api.IEntity;
 import api.ILevel;
 import api.IPhysicsEngine;
@@ -11,12 +7,12 @@ import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
-import model.component.physics.Collision;
-import model.component.physics.Friction;
-import model.component.physics.Gravity;
-import model.component.physics.Mass;
-import model.component.physics.RestitutionCoefficient;
+import model.component.physics.*;
 import model.component.visual.ImagePath;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Implementation of the physics engine
@@ -160,6 +156,8 @@ public class PhysicsEngine implements IPhysicsEngine {
 		velocity1.setVXY(v1.getXComponent(), v1.getYComponent());
 		velocity2.setVXY(v2.getXComponent(), v2.getYComponent());
 		System.out.println(velocity1 + " -- " + velocity2);
+
+		// TODO: move entity out of collision bounds depending on relative position/side
 
 		// if (collisionIsHorizontal(firstEntity)) {
 		// setVelocityComponent(mass1, mass2, velocity1, velocity2, restitution,
