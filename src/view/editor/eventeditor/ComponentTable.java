@@ -21,7 +21,13 @@ public class ComponentTable extends Table
 		getTable().
         getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> 
         	{
-        		manager.componentWasClicked((IComponent)observableValue.getValue().getData());
+        		try
+        		{
+        			manager.componentWasClicked((IComponent)observableValue.getValue().getData());
+        		} catch (Exception e)
+        		{
+        			// TODO BAAAAAAD
+        		}
         	}
         	);
    	}
