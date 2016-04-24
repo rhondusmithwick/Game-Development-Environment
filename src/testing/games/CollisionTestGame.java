@@ -106,8 +106,8 @@ public class CollisionTestGame {
     public void initEngine() {
         addCharacter("Anolyn", "blastoise.xml", IMAGE_PATH_BLASTOISE, 50.0, 200.0);
         addCharacter("Cani", "charizard.xml", IMAGE_PATH_CHARIZARD, 200.0, 200.0);
-        propertyEventSetup("Anolyn", healthScriptPath, Position.class, "Fall");
-        propertyEventSetup("Cani", transformScriptPath, Collision.class, "Collision ID");
+        propertyEventSetup("Anolyn", healthScriptPath, Position.class, "Y");
+        propertyEventSetup("Cani", transformScriptPath, Collision.class, "CollidingIDs");
         keyEventSetup("D", moveRightScriptPath);
         keyEventSetup("A", moveLeftScriptPath);
         keyEventSetup("W", jumpScriptPath);
@@ -120,15 +120,15 @@ public class CollisionTestGame {
         //if (var == 0) {
         IEntity character = new Entity(name);
         character.forceAddComponent(new Health((double) 100), true);
-        character.addComponent(new Collision("")); // instantiated by string instead of collection
         Position pos = new Position(posX, posY);
         character.forceAddComponent(pos, true);
         character.forceAddComponent(new ImagePath(imagePath), true);
         character.forceAddComponent(new Velocity(0, 0), true);
+        character.addComponent(new Collision("")); // instantiated by string instead of collection
         universe.addEntity(character);
         character.addComponent(new ImagePath(imagePath));
         //character.addComponent(new Gravity(5000));
-        character.serialize(XMLName);
+        //character.serialize(XMLName);
         //}
 //        else {
 //            character = new XMLReader<IEntity>().readSingleFromFile("character.xml");
@@ -156,7 +156,7 @@ public class CollisionTestGame {
     public void step(double dt) {
         physics.update(universe, dt);
         // inputSystem.processInputs();
-        eventSystem.updateInputs();
+        eventSystem.updateInputs(dt);
         // moveEntity(character, 1);
     }
 

@@ -7,7 +7,7 @@ import model.component.character.Health
 import model.component.movement.Position
 import model.component.visual.ImagePath
 
-charEntity = universe.getEntitiesWithName("Blastoise").get(0);
+charEntity = universe.getEntitiesWithName("Anolyn").get(0);
 position = charEntity.getComponent(Position.class);
 health = charEntity.getComponent(Health.class);
 image = charEntity.getComponent(ImagePath.class);
