@@ -24,14 +24,14 @@ class GroovyDemoTest {
 		IEntity character = new Entity("Rhondu")
 		character.addComponent(new Health((double) 100))
 		character.addComponent(new Score((double) 100))
-		Position pos = new Position(200.0, 0.0)
+		Position pos = new Position(50.0, 0.0)
 		character.addComponent(pos)
 		ImagePath path = new ImagePath();
 		ImageView img = path.getImageView();
 		img.setScaleX(0.10)
 		img.setScaleY(0.10)
-		character.addComponents(path, new Position(0, 0), new Velocity(20.0, -20.0), new Gravity(400),
-				new Collision("rhondu"), new RestitutionCoefficient(1.0), new Mass(5));
+		character.addComponents(path, new Velocity(20.0, 0.0), new Gravity(200),
+				new Collision(Arrays.asList("rhondu")), new RestitutionCoefficient(1.0), new Mass(5))
 		return character
 	}
 
@@ -39,10 +39,10 @@ class GroovyDemoTest {
 		IEntity platform = new Entity("Platform");
 		ImagePath path = new ImagePath();
 		ImageView img = path.getImageView();
-		//		img.setScaleX(0.10)
-		//		img.setScaleY(0.10)
-		platform.addComponents(path, new Position(100, 300), new Velocity(0.0, 0.0), new Gravity(0),
-				new Collision("platform"), new RestitutionCoefficient(1.0), new Mass(100));
+//				img.setScaleX(0.10)
+//				img.setScaleY(0.10)
+		platform.addComponents(path, new Position(100, 300), new Gravity(0),
+				new Collision(Arrays.asList("platform")), new RestitutionCoefficient(1.0), new Mass(100));
 		return platform;
 	}
 
