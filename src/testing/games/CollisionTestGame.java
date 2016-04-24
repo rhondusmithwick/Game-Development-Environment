@@ -6,8 +6,11 @@ package testing.games;
 
 import api.IEntity;
 import api.ILevel;
+import api.IPhysicsEngine;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+
 import datamanagement.XMLReader;
 import events.Action;
 import events.EventSystem;
@@ -24,6 +27,7 @@ import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.Collision;
 import model.component.physics.Gravity;
+import model.component.physics.Mass;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
 import model.entity.Level;
@@ -32,11 +36,12 @@ import model.physics.PhysicsEngine;
 import java.io.File;
 import java.io.IOException;
 
-
 import api.IEntity;
 import api.ILevel;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+
 import datamanagement.XMLReader;
 import events.Action;
 import events.EventSystem;
@@ -68,7 +73,7 @@ public class CollisionTestGame {
 
     //private final EventSystem eventSystem = new EventSystem(universe);
     private IEventSystem eventSystem = universe.getEventSystem();
-    private final PhysicsEngine physics = new PhysicsEngine();
+    private IPhysicsEngine physics = universe.getPhysicsEngine();
     //private IEntity character;
     //private IEntity platform;
     private final String IMAGE_PATH_BLASTOISE = "resources/images/blastoise.png";
@@ -104,18 +109,19 @@ public class CollisionTestGame {
     }
 
     public void initEngine() {
-        addCharacter("Anolyn", "blastoise.xml", IMAGE_PATH_BLASTOISE, 50.0, 200.0);
-        addCharacter("Cani", "charizard.xml", IMAGE_PATH_CHARIZARD, 200.0, 200.0);
+        addCharacter("Anolyn", "blastoise.xml", IMAGE_PATH_BLASTOISE, 50.0, 200.0, "1");
+        addCharacter("Cani", "charizard.xml", IMAGE_PATH_CHARIZARD, 200.0, 200.0, "2");
         propertyEventSetup("Anolyn", healthScriptPath, Position.class, "Y");
-        propertyEventSetup("Cani", transformScriptPath, Collision.class, "CollidingIDs");
+        propertyEventSetup("Anolyn", healthScriptPath, Collision.class, "CollidingIDs");
+        propertyEventSetup("Anolyn", transformScriptPath, Health.class, "Health");
         keyEventSetup("D", moveRightScriptPath);
         keyEventSetup("A", moveLeftScriptPath);
         keyEventSetup("W", jumpScriptPath);
-        keyEventSetup("J", moveRightScriptPath2);
-        keyEventSetup("L", moveLeftScriptPath2);
+        keyEventSetup("J", moveLeftScriptPath2);
+        keyEventSetup("L", moveRightScriptPath2);
     }
 
-    private void addCharacter(String name, String XMLName, String imagePath, Double posX, Double posY) {
+    private void addCharacter(String name, String XMLName, String imagePath, Double posX, Double posY, String id) {
         //int var = 0;
         //if (var == 0) {
         IEntity character = new Entity(name);
@@ -124,7 +130,8 @@ public class CollisionTestGame {
         character.forceAddComponent(pos, true);
         character.forceAddComponent(new ImagePath(imagePath), true);
         character.forceAddComponent(new Velocity(0, 0), true);
-        character.addComponent(new Collision("")); // instantiated by string instead of collection
+        character.forceAddComponent(new Mass(100), true);
+        character.addComponent(new Collision(id)); // instantiated by string instead of collection
         universe.addEntity(character);
         character.addComponent(new ImagePath(imagePath));
         //character.addComponent(new Gravity(5000));
