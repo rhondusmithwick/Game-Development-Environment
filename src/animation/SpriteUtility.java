@@ -39,6 +39,7 @@ class SpriteUtility {
     private final GUI gui = new GUI(changeColorProperty);
     private final Model model = new Model();
     private String spriteSheetPath;
+    private Animation previewAnimation;
 
     public void init(Stage stage) {
         stage.setScene(gui.getScene());
@@ -122,9 +123,12 @@ class SpriteUtility {
     }
 
     public void initAnimationPreview() {
+        if (previewAnimation != null) {
+            previewAnimation.stop();
+        }
         gui.getButtonBox().getChildren().remove(model.getPreviewImageView());
-        Animation animation = model.getPreviewAnimation(Duration.millis(gui.getDurationSlider().getValue()));
-        animation.play();
+        previewAnimation = model.getPreviewAnimation(Duration.millis(gui.getDurationSlider().getValue()));
+        previewAnimation.play();
         gui.getButtonBox().getChildren().add(model.getPreviewImageView());
     }
 
