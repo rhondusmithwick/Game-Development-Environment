@@ -53,18 +53,18 @@ public class View implements IView {
 	private ViewUtilities viewUtils;
 
 	public View(ISystemManager model, Pane scene) {
-		this(model, new Group(), 200, 200, scene);
+		this(model, new Group(), 1000, 1000, scene);
 	}
 
 	public View(ISystemManager model, Group root, double width, double height, Pane scene) {
 		this.model = model;
 		this.initConsole();
 		this.initButtons();
-		this.pane = this.createBorderPane();
 		this.viewUtils = new ViewUtilities(root, model.getEntitySystem());
 		this.subScene = this.createSubScene(root, width, height, scene);
+		this.pane = this.createBorderPane(root, this.subScene);
 		viewUtils.allowDragging();
-		// viewUtils.allowDeletion();
+		viewUtils.allowDeletion();
 
 		this.startTimeline();
 	}
@@ -85,9 +85,9 @@ public class View implements IView {
 		animation.play();
 	}
 
-	private SubScene createSubScene(Group gameRoot, double width, double height, Pane scene) {
-		this.root = gameRoot;
-		SubScene subScene = new SubScene(gameRoot, width, height);
+	private SubScene createSubScene(Group root, double width, double height, Pane scene) {
+		this.root = root;
+		SubScene subScene = new SubScene(root, width, height);
 		// TODO: not printing key presses, why?!
 		// scene.setOnMouseMoved(e -> System.out.println(e.getX()));
 		// scene.setOnKeyTyped(e -> System.out.println(e.getCode()));
@@ -148,20 +148,22 @@ public class View implements IView {
 			if (e.hasComponents(ImagePath.class, Position.class)) {
 				viewUtils.makeSelectable(e);
 				root.getChildren().add(this.getUpdatedImageView(e));
-				root.getChildren().addAll(this.getCollisionShapes(e));
+				// root.getChildren().addAll(this.getCollisionShapes(e));
 			}
 		}
 	}
 
-	private BorderPane createBorderPane() {
+	private BorderPane createBorderPane(Group root, SubScene subScene) {
 		BorderPane pane = new BorderPane();
 		ScrollPane center = new ScrollPane();
 		pane.setPadding(new Insets(gapSize, gapSize, gapSize, gapSize));
 		pane.setCenter(center);
-		center.setContent(root);
+		// center.setContent(root);
+		center.setContent(subScene);
+		System.out.println(subScene.getRoot());
 		root.setManaged(false); // IMPORTANT
 
-		center.setPannable(true);
+		// center.setPannable(true);
 		center.setVbarPolicy(ScrollBarPolicy.NEVER);
 		center.setHbarPolicy(ScrollBarPolicy.NEVER);
 
