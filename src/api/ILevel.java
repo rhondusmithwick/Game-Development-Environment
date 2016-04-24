@@ -12,6 +12,7 @@ import java.util.stream.Collectors;
 import com.google.common.collect.Collections2;
 
 import datamanagement.XMLReader;
+import groovy.lang.GroovyShell;
 
 /**
  * The interface for an Level, which holds all the entities.
@@ -59,7 +60,7 @@ public interface ILevel extends ISerializable {
 	 */
 	void setMetadata(Map<String, String> metadata);
 
-	void init();
+	String init(GroovyShell shell, ISystemManager game);
 
 	void update(double dt);
 
