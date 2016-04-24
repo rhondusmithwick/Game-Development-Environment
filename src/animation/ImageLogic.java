@@ -2,17 +2,13 @@ package animation;
 
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.FileChooser;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
- * Created by rhondusmithwick on 4/23/16.
+ * This class holds the images and the logic on them.
  *
  * @author Rhondu Smithwick, Melissa Zhang
  */
@@ -22,11 +18,20 @@ public class ImageLogic {
     private Image spriteImage;
     private String spriteSheetPath;
 
+    /**
+     * Change the color to transparent of all places with the color at (x, y).
+     *
+     * @param x the starting x-coordinate
+     * @param y the starting y-coordinate
+     */
     public void changeColor(double x, double y) {
         Image image = new ColorChanger(spriteImage, x, y, Color.TRANSPARENT).changeImage();
         setSpriteImage(image);
     }
 
+    /**
+     * Add a new image using a file choser.
+     */
     public void initNewImage() {
         Image newImage = initFileChooser();
         setSpriteImage(newImage);

@@ -81,7 +81,8 @@ class SpriteUtility {
     private void saveAnimation() {
         rectangleLogic.populateRectanglePropertyLists();
         Double duration = gui.getDurationSlider().getValue();
-        Map<String, String> moveAnimationMap = rectangleLogic.getAnimationMap(duration);
+        Map<String, String> moveAnimationMap = rectangleLogic.getAnimationMap();
+        moveAnimationMap.put("duration", String.format("%.2f", duration));
         String name = gui.getAnimationName().getText();
         saveAnimation(name, moveAnimationMap);
     }

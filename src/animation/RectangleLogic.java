@@ -20,7 +20,7 @@ import static animation.StringConstants.NO_SELECT_EFFECT;
 import static animation.StringConstants.SELECT_EFFECT;
 
 /**
- * Created by rhondusmithwick on 4/24/16.
+ * This class holds the rectangles drawn and the logic on them.
  *
  * @author Rhondu Smithwick
  */
@@ -33,10 +33,18 @@ public class RectangleLogic {
     private final RectangleDrawer rectDrawer;
     private Rectangle selectedRectangle;
 
+    /**
+     * Sole constructor.
+     *
+     * @param rectDrawer a rectangle drawer
+     */
     public RectangleLogic(RectangleDrawer rectDrawer) {
         this.rectDrawer = rectDrawer;
     }
 
+    /**
+     * Reconstruct the lists of each rectangle.
+     */
     public void populateRectanglePropertyLists() {
         xList.clear();
         yList.clear();
@@ -50,9 +58,13 @@ public class RectangleLogic {
         }
     }
 
-    public Map<String, String> getAnimationMap(double duration) {
+    /**
+     * Get the animation map describing the rectangles.
+     *
+     * @return a map describing the rectangles
+     */
+    public Map<String, String> getAnimationMap() {
         Map<String, String> moveAnimationMap = new HashMap<>();
-        moveAnimationMap.put("duration", String.format("%.2f", duration));
         moveAnimationMap.put("xList", xList.toString());
         moveAnimationMap.put("yList", yList.toString());
         moveAnimationMap.put("width", widthList.toString());
@@ -60,6 +72,12 @@ public class RectangleLogic {
         return moveAnimationMap;
     }
 
+    /**
+     * Remove a rectangle.
+     *
+     * @param rectangle to be removed
+     * @return true if a rectangle was removed
+     */
     public boolean removeRectangle(Rectangle rectangle) {
         Iterator<Rectangle> iter = rectangleList.iterator();
         while (iter.hasNext()) {
@@ -76,6 +94,11 @@ public class RectangleLogic {
     }
 
 
+    /**
+     * Handle arrow key input
+     *
+     * @param event the key event
+     */
     public void handleKeyInput(KeyEvent event) {
         switch (event.getCode()) {
             case RIGHT:
@@ -94,6 +117,11 @@ public class RectangleLogic {
         }
     }
 
+    /**
+     * Make a rectangle selected.
+     *
+     * @param r the rectangle to make selected
+     */
     public void makeSelected(Rectangle r) {
         addSelectEffect(r);
         selectedRectangle = r;
@@ -104,6 +132,12 @@ public class RectangleLogic {
         rectangleList.stream().filter(notSelected).forEach(this::removeSelectEffect);
     }
 
+    /**
+     * Clone a rectangle.
+     *
+     * @param rect the rectangle to be cloned
+     * @return the cloned rectangle
+     */
     public Rectangle cloneRect(Rectangle rect) {
         Rectangle r = new Rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
         r.setFill(Color.TRANSPARENT);
@@ -113,6 +147,13 @@ public class RectangleLogic {
         return r;
     }
 
+    /**
+     * Get an animation using this classes lists.
+     *
+     * @param imageView the imageView to do an animation on
+     * @param duration  the duration
+     * @return an animation described by the data in this class
+     */
     public Animation getAnimation(ImageView imageView, Duration duration) {
         return new ComplexAnimation(imageView, duration,
                 rectangleList.size(), xList, yList, widthList, heightList);

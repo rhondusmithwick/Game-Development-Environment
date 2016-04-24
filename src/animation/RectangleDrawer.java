@@ -8,7 +8,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 
 /**
- * Created by rhondusmithwick on 4/24/16.
+ * A class for drawing rectangles.
  *
  * @author Rhondu Smithwick
  */
@@ -19,6 +19,9 @@ public class RectangleDrawer {
     private final DoubleProperty rectY = new SimpleDoubleProperty(this, "rectY", 0.0);
     private Rectangle rectangle = new Rectangle();
 
+    /**
+     * Reset this Rectangle Drawer.
+     */
     public void reset() {
         rectangle = new Rectangle();
         rectinitX.set(0.0);
@@ -31,6 +34,17 @@ public class RectangleDrawer {
         rectangle.setStroke(Color.RED);
     }
 
+    /**
+     * Handle the mouse being pressed.
+     * <p>
+     * If primary or secondary, will move the rectangle.
+     * </p>
+     * <p>
+     * If primary, will also move the bounds of the rectangle.
+     * </p>
+     *
+     * @param event the mosue event
+     */
     public void handleMousePressed(MouseEvent event) {
         boolean primary = event.getButton() == MouseButton.PRIMARY;
         boolean secondary = event.getButton() == MouseButton.SECONDARY;
@@ -44,6 +58,14 @@ public class RectangleDrawer {
         }
     }
 
+    /**
+     * Handle a the mouse being dragged.
+     * <p>
+     * Will move the rectangle.
+     * </p>
+     *
+     * @param event the mosue event.
+     */
     public void handleMouseDragged(MouseEvent event) {
         rectX.set(event.getX());
         rectY.set(event.getY());
