@@ -80,7 +80,7 @@ public class ACGame {
             character.forceAddComponent(new Velocity(0, 0), true);
             universe.addEntity(character);
             character.addComponent(new ImagePath(IMAGE_PATH));
-            character.addComponent(new Gravity(5000));
+            //character.addComponent(new Gravity(5000));
             character.serialize("character.xml");
             platform = new Entity("platform");
 
@@ -91,10 +91,10 @@ public class ACGame {
             eventSystem.registerEvent(new KeyTrigger("A"), new Action(moveLeftScriptPath));
             eventSystem.registerEvent(new KeyTrigger("W"), new Action(jumpScriptPath));
             eventSystem.saveEventsToFile("eventtest.xml");
-            EventFileWriter w = new EventFileWriter();
-            w.addEvent(KeyTrigger.class.toString().split(" ")[1], "A", moveLeftScriptPath);
-            w.addEvent(KeyTrigger.class.toString().split(" ")[1], "D", moveRightScriptPath);
-            w.writeEventsToFile("eventTest2.xml");
+//            EventFileWriter w = new EventFileWriter();
+//            w.addEvent(KeyTrigger.class.toString().split(" ")[1], "A", moveLeftScriptPath);
+//            w.addEvent(KeyTrigger.class.toString().split(" ")[1], "D", moveRightScriptPath);
+//            w.writeEventsToFile("eventTest2.xml");
         } else {
             character = new XMLReader<IEntity>().readSingleFromFile("character.xml");
             universe.addEntity(character);

@@ -1,4 +1,4 @@
-<?xml version="1.0" ?><object-stream><utility.Pair><__1 class="events.KeyTrigger"><changed>false</changed><obs></obs><key>A</key></__1><__2 class="com.google.common.collect.AbstractMapBasedMultimap$RandomAccessWrappedList"><key class="events.KeyTrigger" reference="../../__1"></key><delegate class="list"><events.Action serialization="custom"><events.Action><default><parameters></parameters><script>package groovyScripts
+<?xml version="1.0" ?><object-stream><com.google.common.collect.ArrayListMultimap serialization="custom"><unserializable-parents></unserializable-parents><com.google.common.collect.ArrayListMultimap><default></default><int>4</int><events.KeyTrigger><changed>false</changed><obs></obs><key>A</key></events.KeyTrigger><int>1</int><events.Action><script>package groovyScripts
 
 /**
  * Created by carolyn on 4/13/16.
@@ -9,18 +9,7 @@ import model.component.movement.Velocity;
 import model.component.character.Health;
 
 velocity = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Velocity.class);
-velocity.setVXY(velocity.getVX()-10, velocity.getVY());</script></default></events.Action></events.Action></delegate><outer-class class="com.google.common.collect.ArrayListMultimap" defined-in="com.google.common.collect.AbstractMapBasedMultimap$WrappedCollection" serialization="custom"><unserializable-parents></unserializable-parents><com.google.common.collect.ArrayListMultimap><default></default><int>4</int><events.KeyTrigger reference="../../../../__1"></events.KeyTrigger><int>1</int><events.Action reference="../../../delegate/events.Action"></events.Action><events.KeyTrigger><changed>false</changed><obs></obs><key>D</key></events.KeyTrigger><int>1</int><events.Action serialization="custom"><events.Action><default><parameters></parameters><script>package groovyScripts
-
-/**
- * Created by carolyn on 4/13/16.
- * @author Carolyn Yao, Anirudh Jonnavithula
- */
-
-import model.component.movement.Velocity;
-import model.component.character.Health;
-
-velocity = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Velocity.class);
-velocity.setVXY(velocity.getVX()+10, velocity.getVY());</script></default></events.Action></events.Action><events.KeyTrigger><changed>false</changed><obs></obs><key>W</key></events.KeyTrigger><int>1</int><events.Action serialization="custom"><events.Action><default><parameters></parameters><script>package groovyScripts
+velocity.setVXY(velocity.getVX()-10, velocity.getVY());</script><parameters class="javax.script.SimpleBindings"><map></map></parameters></events.Action><events.KeyTrigger><changed>false</changed><obs></obs><key>W</key></events.KeyTrigger><int>1</int><events.Action><script>package groovyScripts
 
 /**
  * Created by ajonnav on 4/16/16.
@@ -32,7 +21,18 @@ import model.component.character.Health;
 import model.physics.PhysicsEngine;
 
 velocity = universe.getEntityWithID(id).get(0)getComponent(Velocity.class);
-velocity.setVXY(velocity.getVX(), velocity.getVY()-10);</script></default></events.Action></events.Action><events.PropertyTrigger><changed>false</changed><obs></obs><entityID>b90f0212-d37e-4e8a-b33f-fe764acce4b0</entityID><componentClass>model.component.movement.Position</componentClass><propertyName>Y</propertyName></events.PropertyTrigger><int>1</int><events.Action serialization="custom"><events.Action><default><parameters></parameters><script>package groovyScripts
+velocity.setVXY(velocity.getVX(), velocity.getVY()-10);</script><parameters class="javax.script.SimpleBindings"><map></map></parameters></events.Action><events.KeyTrigger><changed>false</changed><obs></obs><key>D</key></events.KeyTrigger><int>1</int><events.Action><script>package groovyScripts
+
+/**
+ * Created by carolyn on 4/13/16.
+ * @author Carolyn Yao, Anirudh Jonnavithula
+ */
+
+import model.component.movement.Velocity;
+import model.component.character.Health;
+
+velocity = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Velocity.class);
+velocity.setVXY(velocity.getVX()+10, velocity.getVY());</script><parameters class="javax.script.SimpleBindings"><map></map></parameters></events.Action><events.PropertyTrigger><changed>false</changed><obs></obs><entityID>58f6dfb8-fe9c-4147-8286-bcdf4eab1d44</entityID><componentClass>model.component.movement.Position</componentClass><propertyName>Y</propertyName></events.PropertyTrigger><int>1</int><events.Action><script>package groovyScripts
 
 /**
  * Created by carolyn on 4/12/16.
@@ -47,159 +47,5 @@ health = universe.getEntitiesWithName("Anolyn").get(0).getComponent(Health.class
 System.out.println(position.getX());
 if (position.getX() &gt; 500) {
 	health.setHealth(0);
-	System.out.println("HEY " + health.getHealth());
 }
-//position.setX(position.getX() + moved);</script></default></events.Action></events.Action></com.google.common.collect.ArrayListMultimap></outer-class><outer-class class="com.google.common.collect.ArrayListMultimap" defined-in="com.google.common.collect.AbstractMapBasedMultimap$WrappedList" reference="../outer-class"></outer-class><outer-class class="com.google.common.collect.ArrayListMultimap" reference="../outer-class"></outer-class></__2></utility.Pair><utility.Pair><__1 class="events.KeyTrigger"><changed>false</changed><obs></obs><key>D</key></__1><__2 class="com.google.common.collect.AbstractMapBasedMultimap$RandomAccessWrappedList"><key class="events.KeyTrigger" reference="../../__1"></key><delegate class="list"><events.Action serialization="custom"><events.Action><default><parameters></parameters><script>package groovyScripts
-
-/**
- * Created by carolyn on 4/13/16.
- * @author Carolyn Yao, Anirudh Jonnavithula
- */
-
-import model.component.movement.Velocity;
-import model.component.character.Health;
-
-velocity = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Velocity.class);
-velocity.setVXY(velocity.getVX()+10, velocity.getVY());</script></default></events.Action></events.Action></delegate><outer-class class="com.google.common.collect.ArrayListMultimap" defined-in="com.google.common.collect.AbstractMapBasedMultimap$WrappedCollection" serialization="custom"><unserializable-parents></unserializable-parents><com.google.common.collect.ArrayListMultimap><default></default><int>4</int><events.KeyTrigger><changed>false</changed><obs></obs><key>A</key></events.KeyTrigger><int>1</int><events.Action serialization="custom"><events.Action><default><parameters></parameters><script>package groovyScripts
-
-/**
- * Created by carolyn on 4/13/16.
- * @author Carolyn Yao, Anirudh Jonnavithula
- */
-
-import model.component.movement.Velocity;
-import model.component.character.Health;
-
-velocity = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Velocity.class);
-velocity.setVXY(velocity.getVX()-10, velocity.getVY());</script></default></events.Action></events.Action><events.KeyTrigger reference="../../../../__1"></events.KeyTrigger><int>1</int><events.Action reference="../../../delegate/events.Action"></events.Action><events.KeyTrigger><changed>false</changed><obs></obs><key>W</key></events.KeyTrigger><int>1</int><events.Action serialization="custom"><events.Action><default><parameters></parameters><script>package groovyScripts
-
-/**
- * Created by ajonnav on 4/16/16.
- * @author Anirudh Jonnavithula
- */
-
-import model.component.movement.Velocity;
-import model.component.character.Health;
-import model.physics.PhysicsEngine;
-
-velocity = universe.getEntityWithID(id).get(0)getComponent(Velocity.class);
-velocity.setVXY(velocity.getVX(), velocity.getVY()-10);</script></default></events.Action></events.Action><events.PropertyTrigger><changed>false</changed><obs></obs><entityID>b90f0212-d37e-4e8a-b33f-fe764acce4b0</entityID><componentClass>model.component.movement.Position</componentClass><propertyName>Y</propertyName></events.PropertyTrigger><int>1</int><events.Action serialization="custom"><events.Action><default><parameters></parameters><script>package groovyScripts
-
-/**
- * Created by carolyn on 4/12/16.
- * @author Carolyn Yao
- */
-
-import model.component.movement.Position;
-import model.component.character.Health;
-
-position = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Position.class);
-health = universe.getEntitiesWithName("Anolyn").get(0).getComponent(Health.class);
-System.out.println(position.getX());
-if (position.getX() &gt; 500) {
-	health.setHealth(0);
-	System.out.println("HEY " + health.getHealth());
-}
-//position.setX(position.getX() + moved);</script></default></events.Action></events.Action></com.google.common.collect.ArrayListMultimap></outer-class><outer-class class="com.google.common.collect.ArrayListMultimap" defined-in="com.google.common.collect.AbstractMapBasedMultimap$WrappedList" reference="../outer-class"></outer-class><outer-class class="com.google.common.collect.ArrayListMultimap" reference="../outer-class"></outer-class></__2></utility.Pair><utility.Pair><__1 class="events.KeyTrigger"><changed>false</changed><obs></obs><key>W</key></__1><__2 class="com.google.common.collect.AbstractMapBasedMultimap$RandomAccessWrappedList"><key class="events.KeyTrigger" reference="../../__1"></key><delegate class="list"><events.Action serialization="custom"><events.Action><default><parameters></parameters><script>package groovyScripts
-
-/**
- * Created by ajonnav on 4/16/16.
- * @author Anirudh Jonnavithula
- */
-
-import model.component.movement.Velocity;
-import model.component.character.Health;
-import model.physics.PhysicsEngine;
-
-velocity = universe.getEntityWithID(id).get(0)getComponent(Velocity.class);
-velocity.setVXY(velocity.getVX(), velocity.getVY()-10);</script></default></events.Action></events.Action></delegate><outer-class class="com.google.common.collect.ArrayListMultimap" defined-in="com.google.common.collect.AbstractMapBasedMultimap$WrappedCollection" serialization="custom"><unserializable-parents></unserializable-parents><com.google.common.collect.ArrayListMultimap><default></default><int>4</int><events.KeyTrigger><changed>false</changed><obs></obs><key>A</key></events.KeyTrigger><int>1</int><events.Action serialization="custom"><events.Action><default><parameters></parameters><script>package groovyScripts
-
-/**
- * Created by carolyn on 4/13/16.
- * @author Carolyn Yao, Anirudh Jonnavithula
- */
-
-import model.component.movement.Velocity;
-import model.component.character.Health;
-
-velocity = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Velocity.class);
-velocity.setVXY(velocity.getVX()-10, velocity.getVY());</script></default></events.Action></events.Action><events.KeyTrigger><changed>false</changed><obs></obs><key>D</key></events.KeyTrigger><int>1</int><events.Action serialization="custom"><events.Action><default><parameters></parameters><script>package groovyScripts
-
-/**
- * Created by carolyn on 4/13/16.
- * @author Carolyn Yao, Anirudh Jonnavithula
- */
-
-import model.component.movement.Velocity;
-import model.component.character.Health;
-
-velocity = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Velocity.class);
-velocity.setVXY(velocity.getVX()+10, velocity.getVY());</script></default></events.Action></events.Action><events.KeyTrigger reference="../../../../__1"></events.KeyTrigger><int>1</int><events.Action reference="../../../delegate/events.Action"></events.Action><events.PropertyTrigger><changed>false</changed><obs></obs><entityID>b90f0212-d37e-4e8a-b33f-fe764acce4b0</entityID><componentClass>model.component.movement.Position</componentClass><propertyName>Y</propertyName></events.PropertyTrigger><int>1</int><events.Action serialization="custom"><events.Action><default><parameters></parameters><script>package groovyScripts
-
-/**
- * Created by carolyn on 4/12/16.
- * @author Carolyn Yao
- */
-
-import model.component.movement.Position;
-import model.component.character.Health;
-
-position = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Position.class);
-health = universe.getEntitiesWithName("Anolyn").get(0).getComponent(Health.class);
-System.out.println(position.getX());
-if (position.getX() &gt; 500) {
-	health.setHealth(0);
-	System.out.println("HEY " + health.getHealth());
-}
-//position.setX(position.getX() + moved);</script></default></events.Action></events.Action></com.google.common.collect.ArrayListMultimap></outer-class><outer-class class="com.google.common.collect.ArrayListMultimap" defined-in="com.google.common.collect.AbstractMapBasedMultimap$WrappedList" reference="../outer-class"></outer-class><outer-class class="com.google.common.collect.ArrayListMultimap" reference="../outer-class"></outer-class></__2></utility.Pair><utility.Pair><__1 class="events.PropertyTrigger"><changed>false</changed><obs></obs><entityID>b90f0212-d37e-4e8a-b33f-fe764acce4b0</entityID><componentClass>model.component.movement.Position</componentClass><propertyName>Y</propertyName></__1><__2 class="com.google.common.collect.AbstractMapBasedMultimap$RandomAccessWrappedList"><key class="events.PropertyTrigger" reference="../../__1"></key><delegate class="list"><events.Action serialization="custom"><events.Action><default><parameters></parameters><script>package groovyScripts
-
-/**
- * Created by carolyn on 4/12/16.
- * @author Carolyn Yao
- */
-
-import model.component.movement.Position;
-import model.component.character.Health;
-
-position = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Position.class);
-health = universe.getEntitiesWithName("Anolyn").get(0).getComponent(Health.class);
-System.out.println(position.getX());
-if (position.getX() &gt; 500) {
-	health.setHealth(0);
-	System.out.println("HEY " + health.getHealth());
-}
-//position.setX(position.getX() + moved);</script></default></events.Action></events.Action></delegate><outer-class class="com.google.common.collect.ArrayListMultimap" defined-in="com.google.common.collect.AbstractMapBasedMultimap$WrappedCollection" serialization="custom"><unserializable-parents></unserializable-parents><com.google.common.collect.ArrayListMultimap><default></default><int>4</int><events.KeyTrigger><changed>false</changed><obs></obs><key>A</key></events.KeyTrigger><int>1</int><events.Action serialization="custom"><events.Action><default><parameters></parameters><script>package groovyScripts
-
-/**
- * Created by carolyn on 4/13/16.
- * @author Carolyn Yao, Anirudh Jonnavithula
- */
-
-import model.component.movement.Velocity;
-import model.component.character.Health;
-
-velocity = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Velocity.class);
-velocity.setVXY(velocity.getVX()-10, velocity.getVY());</script></default></events.Action></events.Action><events.KeyTrigger><changed>false</changed><obs></obs><key>D</key></events.KeyTrigger><int>1</int><events.Action serialization="custom"><events.Action><default><parameters></parameters><script>package groovyScripts
-
-/**
- * Created by carolyn on 4/13/16.
- * @author Carolyn Yao, Anirudh Jonnavithula
- */
-
-import model.component.movement.Velocity;
-import model.component.character.Health;
-
-velocity = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Velocity.class);
-velocity.setVXY(velocity.getVX()+10, velocity.getVY());</script></default></events.Action></events.Action><events.KeyTrigger><changed>false</changed><obs></obs><key>W</key></events.KeyTrigger><int>1</int><events.Action serialization="custom"><events.Action><default><parameters></parameters><script>package groovyScripts
-
-/**
- * Created by ajonnav on 4/16/16.
- * @author Anirudh Jonnavithula
- */
-
-import model.component.movement.Velocity;
-import model.component.character.Health;
-import model.physics.PhysicsEngine;
-
-velocity = universe.getEntityWithID(id).get(0)getComponent(Velocity.class);
-velocity.setVXY(velocity.getVX(), velocity.getVY()-10);</script></default></events.Action></events.Action><events.PropertyTrigger reference="../../../../__1"></events.PropertyTrigger><int>1</int><events.Action reference="../../../delegate/events.Action"></events.Action></com.google.common.collect.ArrayListMultimap></outer-class><outer-class class="com.google.common.collect.ArrayListMultimap" defined-in="com.google.common.collect.AbstractMapBasedMultimap$WrappedList" reference="../outer-class"></outer-class><outer-class class="com.google.common.collect.ArrayListMultimap" reference="../outer-class"></outer-class></__2></utility.Pair></object-stream>
+//position.setX(position.getX() + moved);</script><parameters class="javax.script.SimpleBindings"><map></map></parameters></events.Action></com.google.common.collect.ArrayListMultimap></com.google.common.collect.ArrayListMultimap></object-stream>
