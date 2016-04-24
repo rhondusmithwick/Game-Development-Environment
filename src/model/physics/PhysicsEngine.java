@@ -138,32 +138,27 @@ public class PhysicsEngine implements IPhysicsEngine {
 		double mass2 = secondEntity.getComponent(Mass.class).getMass();
 		Velocity velocity2 = getVelocityComponent(secondEntity);
 
-		if (isHorizontalCollision(firstEntity, secondEntity)) {
+		if (collisionIsHorizontal(firstEntity)) {
 			setVelocityComponent(mass1, mass2, velocity1, velocity2, restitution, (Velocity v) -> v.getVX(),
 					(Velocity v, Double val) -> v.setVX(val));			
 		}
-		if (isVerticalCollision(firstEntity,secondEntity)) {
+		if (collisionIsVertical(firstEntity)) {
 			setVelocityComponent(mass1, mass2, velocity1, velocity2, restitution, (Velocity v) -> v.getVY(),
 					(Velocity v, Double val) -> v.setVY(val));			
 		}
 	}
 	
-	private boolean isVerticalCollision(IEntity firstEntity, IEntity secondEntity) {
-		if (firstEntity.getComponent(Collision.class).getCollidingIDs().endsWith(Collision.TOP) ||
-				secondEntity.getComponent(Collision.class).getCollidingIDs().endsWith(Collision.TOP)) {
-			System.out.println("VERTICAL");
-			return true;
-		}
-			return false;
+	
+	private boolean collisionIsFromSide(IEntity entity, String side) {
+		return entity.getComponent(Collision.class).getCollidingIDs().endsWith(side);
 	}
 	
-	private boolean isHorizontalCollision(IEntity firstEntity, IEntity secondEntity) {
-		if (firstEntity.getComponent(Collision.class).getCollidingIDs().endsWith(Collision.LEFT) ||
-				secondEntity.getComponent(Collision.class).getCollidingIDs().endsWith(Collision.LEFT)) {
-			System.out.println("HORIZONTAL");
-			return true;
-		}
-			return false;
+	private boolean collisionIsHorizontal(IEntity entity) {
+		return collisionIsFromSide(entity, Collision.LEFT) || collisionIsFromSide(entity, Collision.RIGHT);
+	}
+	
+	private boolean collisionIsVertical(IEntity entity) {
+		return collisionIsFromSide(entity, Collision.TOP) || collisionIsFromSide(entity, Collision.BOTTOM);
 	}
 	
 	/**
@@ -245,9 +240,6 @@ public class PhysicsEngine implements IPhysicsEngine {
 	}
 	
 	private void applyFriction(ILevel universe, double secondsPassed) {
-		//coefficient of friction is 0.62
-		//only applied for things that slide
-		//not for player characters, but for objects getting pushed around
 		List<IEntity> frictionProneEntities = new ArrayList<IEntity>(
 				universe.getEntitiesWithComponents(Friction.class, Gravity.class, Velocity.class));
 		for (IEntity entity : frictionProneEntities) {
@@ -260,40 +252,26 @@ public class PhysicsEngine implements IPhysicsEngine {
 	}
 	
 	private void getSideOfCollision(IEntity firstEntity, IEntity secondEntity) {
-		Position firstPos = firstEntity.getComponent(Position.class);
-		Position secondPos = secondEntity.getComponent(Position.class);
-		
-		double firstX = firstEntity.getComponent(Position.class).getX()+firstEntity.getComponent(ImagePath.class).getImageWidth()/2;
-		double firstY = firstEntity.getComponent(Position.class).getY()+firstEntity.getComponent(ImagePath.class).getImageHeight()/2;
-		double secondX = secondEntity.getComponent(Position.class).getX()+secondEntity.getComponent(ImagePath.class).getImageWidth()/2;
-		double secondY = secondEntity.getComponent(Position.class).getY()+secondEntity.getComponent(ImagePath.class).getImageHeight()/2;
-		
-		Collision firstColl = firstEntity.getComponent(Collision.class);
-		Collision secondColl = secondEntity.getComponent(Collision.class);
-		
-		Vector entityOneToTwo = (new Vector(firstX - secondX,
-											firstY - secondY)).normalizePosition();
-		Vector referenceVector = new Vector(0, 1);
-		double angle = Math.acos(entityOneToTwo.getDotProduct(referenceVector));
-		System.out.println(angle);
-		if (angle >= 315 || angle < 45) {
-			firstColl.addCollisionSide(Collision.BOTTOM);
-			secondColl.addCollisionSide(Collision.TOP);	
+		addCollisionSide(firstEntity.getComponent(Collision.class),
+				secondEntity.getComponent(Collision.class));
+	}
+	
+	private void addCollisionSide(Collision first, Collision second) {
+		if (first.getMask().getMaxX() > second.getMask().getMinX()) {
+			first.addCollisionSide(Collision.RIGHT);
+			second.addCollisionSide(Collision.LEFT);
 		}
-		else if (angle < 315 && angle >= 225) {
-			//LEFT COLLISION
-			firstColl.addCollisionSide(Collision.RIGHT);
-			secondColl.addCollisionSide(Collision.LEFT);	
+		else if (first.getMask().getMinX() < second.getMask().getMaxX()) {
+			first.addCollisionSide(Collision.LEFT);
+			second.addCollisionSide(Collision.RIGHT);
+		}	
+		if (first.getMask().getMaxY() > second.getMask().getMinY()) {
+			first.addCollisionSide(Collision.TOP);
+			second.addCollisionSide(Collision.BOTTOM);
 		}
-		else if (angle < 225 && angle >= 135) {
-			//BOT COLLISION
-			firstColl.addCollisionSide(Collision.TOP);
-			secondColl.addCollisionSide(Collision.BOTTOM);		
-		}
-		else { //angle < 135 && angle >=45
-			//RIGHT COLLISION
-			firstColl.addCollisionSide(Collision.LEFT);
-			secondColl.addCollisionSide(Collision.RIGHT);		
+		else if (first.getMask().getMinY() < second.getMask().getMaxY()) {
+			first.addCollisionSide(Collision.BOTTOM);
+			second.addCollisionSide(Collision.TOP);			
 		}
 	}
 	
