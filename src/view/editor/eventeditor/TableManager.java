@@ -67,8 +67,9 @@ public class TableManager
 	
 	public void levelWasPicked(List<ILevel> levels)
 	{
-		
 		selectedEntities.clear();
+		componentTable.refreshTable();
+		propertyTable.refreshTable();
 		
 		for ( ILevel level: levels )
 		{

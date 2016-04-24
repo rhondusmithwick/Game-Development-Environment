@@ -12,23 +12,29 @@ import model.entity.Entity;
 public class EntityTable extends Table
 {
 	private ArrayList<String> entityNames;
-	
+
 	public EntityTable(ObservableList<IEntity> entities, TableManager manager, String language)
 	{
 		super(manager, ResourceBundle.getBundle(language).getString("pickEntity"));	// TODO resource file
-		
+
 		// Add change listener
 		getTable().
-        getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> 
-        	{
-        		manager.entityWasClicked((Entity)observableValue.getValue().getData());
-        	}
-        	);
+		getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> 
+		{
+			try
+			{
+				manager.entityWasClicked((Entity)observableValue.getValue().getData());
+			} catch (Exception E)
+			{
+				// TODO bad bad bad
+			}
+		}
+				);
 		entityNames = new ArrayList<String>();
-		
+
 		fillEntries(entities);
-   	}
-	
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void fillEntries(Object dataHolder) 
@@ -44,7 +50,7 @@ public class EntityTable extends Table
 			}
 		}
 	}
-	
+
 	public void levelWasPicked(ObservableList<ISerializable> newEntities)
 	{
 		refreshTable();
