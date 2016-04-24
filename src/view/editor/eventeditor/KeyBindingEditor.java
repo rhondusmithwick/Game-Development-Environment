@@ -132,7 +132,9 @@ public class KeyBindingEditor extends EventEditorTab
 		groovyFile = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("groovy", "*.groovy"), myResources.getString("selectGroovy"));
 		if ( groovyFile != null )
 		{
-			actionSet(groovyFile.getName(), new Action(groovyFile.toString()));
+			String[] splits = groovyFile.getPath().split("voogasalad_MakeGamesGreatAgain/");			
+			
+			actionSet(groovyFile.getName(), new Action(splits[splits.length - 1]));
 		}
 	}
 	
