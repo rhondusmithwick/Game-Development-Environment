@@ -99,12 +99,12 @@ public class View implements IView {
 	private ImageView getUpdatedImageView(IEntity e) {
 		ImagePath display = e.getComponent(ImagePath.class);
 		ImageView imageView = display.getImageView();
-		// int z = display.getZLevel();
-		// if (z == -1) {
-		// imageView.toBack();
-		// } else if (z == 1) {
-		// imageView.toFront();
-		// }
+		int z = display.getZLevel();
+		if (z == -1) {
+			imageView.toBack();
+		} else if (z == 1) {
+			imageView.toFront();
+		}
 
 		Position pos = e.getComponent(Position.class);
 		imageView.setTranslateX(pos.getX());
