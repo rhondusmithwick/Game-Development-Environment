@@ -1,10 +1,7 @@
 package view.editor;
 
 import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -31,7 +28,6 @@ import javafx.scene.paint.Color;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import model.core.SystemManager;
-import model.entity.Level;
 //import view.DragAndResize;
 import view.Utilities;
 import view.View;
@@ -133,7 +129,8 @@ public class EditorEnvironment extends Editor {
 
 	private void setRightPane() {
 		rightPane.getChildren().add(setSaveButton());
-		rightPane.getChildren().add(new ScrollPane(environmentEntityButtons));
+		// rightPane.getChildren().add(new
+		// ScrollPane(environmentEntityButtons));
 	}
 
 	private Button setSaveButton() {
@@ -141,9 +138,6 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void setGameScene() {
-		// gameScene = new SubScene(gameRoot,
-		// (GUISize.TWO_THIRDS_OF_SCREEN.getSize()),
-		// GUISize.HEIGHT_MINUS_TAB.getSize());
 		gameScene = this.view.getSubScene();
 		gameScene.setFill(Color.WHITE);
 		for (IEntity entity : myEntitySystem.getAllEntities()) {
@@ -176,7 +170,7 @@ public class EditorEnvironment extends Editor {
 			public void handle(MouseEvent event) {
 				MouseButton button = event.getButton();
 				if (button == MouseButton.PRIMARY) {
-					entityLeftClicked(entity, entityInButton);
+					// entityLeftClicked(entity, entityInButton);
 				} else if (button == MouseButton.SECONDARY) {
 					entityRightClicked(entity, entityInButton, event);
 				}
@@ -199,28 +193,8 @@ public class EditorEnvironment extends Editor {
 		entityButton.setContextMenu(Utilities.createContextMenu(menuMap));
 	}
 
-	private void sendToBack(IEntity entity) {
-		myEntitySystem = reorder(entity, myEntitySystem);
-		environmentEntityButtons.getChildren().clear();
-		gameRoot.getChildren().clear();
-		for (IEntity addEntity : myEntitySystem.getAllEntities()) {
-			addToScene(addEntity);
-		}
-	}
+	private void sendToBack(IEntity e) {
 
-	private ILevel reorder(IEntity entity, ILevel entitySystem) {
-		entitySystem.removeEntity(entity.getID());
-		Collection<IEntity> entitiesLeft = entitySystem.getAllEntities();
-		List<IEntity> allEntitiesIn = new ArrayList<IEntity>();
-		allEntitiesIn.addAll(entitiesLeft);
-		entitySystem = new Level();
-		entitySystem.addEntity(entity);
-		entitySystem.addEntities(allEntitiesIn);
-		return entitySystem;
-	}
-
-	private void entityLeftClicked(IEntity entity, Button entityInButton) {
-		// highlight(entity, false);
 	}
 
 	private void updateDisplay(ObservableList<ISerializable> masterList) {
