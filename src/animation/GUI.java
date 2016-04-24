@@ -29,6 +29,7 @@ import static animation.DoubleConstants.DURATION_MAX;
 import static animation.DoubleConstants.DURATION_MIN;
 import static animation.StringConstants.ANIMATION_NAME_PROMPT;
 import static animation.StringConstants.STYLE_SHEET;
+
 /**
  * The GUI class to hold GUI objects.
  *

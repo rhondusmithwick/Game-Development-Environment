@@ -17,6 +17,7 @@ import javafx.util.Duration;
 import view.Dragger;
 
 import java.io.File;
+import java.util.Map;
 
 import static animation.SaveHandler.saveAnimations;
 import static animation.SaveHandler.saveImage;
@@ -38,6 +39,7 @@ class SpriteUtility {
     private final SimpleObjectProperty<Boolean> changeColorProperty = new SimpleObjectProperty<>(this, "ChangeColor", false);
     private final GUI gui = new GUI(changeColorProperty);
     private final Model model = new Model();
+    private final RectangleLogic logic = new RectangleLogic(model.getRectangleDrawer());
     private String spriteSheetPath;
     private Animation previewAnimation;
 
@@ -47,7 +49,7 @@ class SpriteUtility {
     }
 
     private void initializeGui() {
-        model.setSelectedRectangle(null);
+        logic.setSelectedRectangle(null);
         reinitializeGui();
         initButtons();
     }
@@ -66,16 +68,24 @@ class SpriteUtility {
         gui.addButton(makeButton(NEW_ANIMATION.get(), e -> reInitialize()), gui.getButtonBox());
         gui.addButton(makeButton(NEW_SPRITE.get(), e -> reinitializeGui()), gui.getButtonBox());
         gui.addButton(makeButton(PREVIEW_ANIMATION.get(), e -> animationPreview()), gui.getButtonBox());
-        gui.addButton(makeButton(SAVE_ANIMATION.get(), e -> model.saveAnimation(gui.getAnimationName().getText(), gui.getDurationSlider().getValue())), gui.getButtonBox());
+        gui.addButton(makeButton(SAVE_ANIMATION.get(), e -> saveAnimation()), gui.getButtonBox());
         gui.addButton(makeButton(ADD_FRAME.get(), e -> addFrame()), gui.getButtonBox());
-        gui.addButton(makeButton(DELETE_FRAME.get(), e -> deleteFrame(model.getSelectedRectangle())), gui.getButtonBox());
+        gui.addButton(makeButton(DELETE_FRAME.get(), e -> deleteFrame(logic.getSelectedRectangle())), gui.getButtonBox());
         gui.addButton(gui.getActivateTransparencyButton(), gui.getButtonBox());
         gui.addButton(makeButton("Save Image", e -> saveImage(model.getSpriteImage())), gui.getButtonBox());
     }
 
+    private void saveAnimation() {
+        logic.populateRectanglePropertyLists();
+        Double duration = gui.getDurationSlider().getValue();
+        Map<String, String> moveAnimationMap = logic.getAnimationMap(duration);
+        String name = gui.getAnimationName().getText();
+        model.saveAnimation(name, moveAnimationMap);
+    }
+
     private void deleteFrame(Rectangle frameToDelete) {
         if (frameToDelete != null) {
-            boolean removed = model.removeRectangle(frameToDelete);
+            boolean removed = logic.removeRectangle(frameToDelete);
             if (removed) {
                 gui.getSpriteGroup().getChildren().remove(frameToDelete);
                 initAnimationProperties();
@@ -86,13 +96,13 @@ class SpriteUtility {
     private void initAnimationProperties() {
         gui.getButtonBox().getChildren().remove(model.getPreviewImageView());
         gui.initAnimationNameAndDurationFields(this);
-        model.getRectangleList().stream().forEach(gui::displayRectangleListProperties);
+        logic.getRectangleList().stream().forEach(gui::displayRectangleListProperties);
     }
 
 
     private void reInitialize() {
-        gui.getSpriteGroup().getChildren().removeAll(model.getRectangleList());
-        model.getRectangleList().clear();
+        gui.getSpriteGroup().getChildren().removeAll(logic.getRectangleList());
+        logic.getRectangleList().clear();
         initAnimationProperties();
     }
 
@@ -117,7 +127,7 @@ class SpriteUtility {
     }
 
     private void animationPreview() {
-        model.populateRectanglePropertyLists();
+        logic.populateRectanglePropertyLists();
         initAnimationPreview();
     }
 
@@ -126,14 +136,23 @@ class SpriteUtility {
             previewAnimation.stop();
         }
         gui.getButtonBox().getChildren().remove(model.getPreviewImageView());
-        previewAnimation = model.getPreviewAnimation(Duration.millis(gui.getDurationSlider().getValue()));
+        previewAnimation = getPreviewAnimation();
         previewAnimation.play();
         gui.getButtonBox().getChildren().add(model.getPreviewImageView());
     }
 
+    public Animation getPreviewAnimation() {
+        ImageView previewImageView = model.getPreviewImageView();
+        previewImageView.setImage(model.getSpriteImage());
+        Duration duration = Duration.millis(gui.getDurationSlider().getValue());
+        Animation animation = logic.getAnimation(previewImageView, duration);
+        animation.setCycleCount(Animation.INDEFINITE);
+        return animation;
+    }
+
     private void addFrame() {
-        Rectangle clone = model.cloneRect(model.getRectDrawer());
-        model.getRectangleList().add(clone);
+        Rectangle clone = logic.cloneRect(model.getRectDrawer());
+        logic.getRectangleList().add(clone);
         gui.addRectangleToDisplay(clone);
     }
 
@@ -142,7 +161,7 @@ class SpriteUtility {
         model.resetRectangleDrawer();
         gui.getSpriteScroll().requestFocus(); //ugh someone fix this
         gui.getSpriteScroll().setOnKeyPressed(this::keyPress); //this line keeps fucking up
-        model.makeSelected(model.getRectDrawer());
+        logic.makeSelected(model.getRectDrawer());
         gui.getSpriteGroup().getChildren().add(model.getRectDrawer());
     }
 
@@ -153,7 +172,7 @@ class SpriteUtility {
                 addFrame();
                 break;
             default:
-                model.handleKeyInput(event);
+                logic.handleKeyInput(event);
         }
         event.consume();
     }
@@ -187,7 +206,6 @@ class SpriteUtility {
         }
     }
 
-
     private void handleMouseClicked(MouseEvent event) {
         if (changeColorProperty.get()) {
             model.changeColor(event.getX(), event.getY());
@@ -195,6 +213,6 @@ class SpriteUtility {
     }
 
     public boolean hasFrames() {
-        return !model.getRectangleList().isEmpty();
+        return !logic.getRectangleList().isEmpty();
     }
 }

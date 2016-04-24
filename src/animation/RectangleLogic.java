@@ -59,6 +59,7 @@ public class RectangleLogic {
         moveAnimationMap.put("height", heightList.toString());
         return moveAnimationMap;
     }
+
     public boolean removeRectangle(Rectangle rectangle) {
         Iterator<Rectangle> iter = rectangleList.iterator();
         while (iter.hasNext()) {
@@ -131,12 +132,12 @@ public class RectangleLogic {
         rectangle.setStroke(Color.SKYBLUE);
     }
 
-    public void setSelectedRectangle(Rectangle selectedRectangle) {
-        this.selectedRectangle = selectedRectangle;
-    }
-
     public Rectangle getSelectedRectangle() {
         return selectedRectangle;
+    }
+
+    public void setSelectedRectangle(Rectangle selectedRectangle) {
+        this.selectedRectangle = selectedRectangle;
     }
 
     public List<Rectangle> getRectangleList() {
