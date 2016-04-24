@@ -12,7 +12,7 @@ import model.component.visual.ImagePath
 charEntity = universe.getEntitiesWithName("Anolyn").get(0);
 collision = charEntity.getComponent(Collision.class);
 System.out.println("Colliding ID: " + collision.getCollidingIDs());
-if (!collision.getCollidingIDs.equals("")) {
+if (!collision.getCollidingIDs().equals("")) {
     System.out.println("colliding with something! hi from groovy");
 
     health = universe.getEntitiesWithName("Anolyn").get(0).getComponent(Health.class);
