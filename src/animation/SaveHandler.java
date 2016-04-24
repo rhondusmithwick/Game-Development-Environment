@@ -29,10 +29,7 @@ class SaveHandler {
         Properties properties = new Properties();
         properties.put("FilePath", spriteSheetPath);
         properties.putAll(createProperties(maps));
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save Animation To File");
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("PROPERTIES Dateien (*.properties)", "*.properties");
-        fileChooser.getExtensionFilters().add(extFilter);
+        FileChooser fileChooser = createFileChooser("Save Animation to File", new FileChooser.ExtensionFilter("PROPERTIES Dateien (*.properties)", "*.properties"));
         File file = fileChooser.showSaveDialog(new Stage());
         try {
             properties.store(new FileWriter(file), "MELISSA IS MAKING ME USE THIS WEIRD ASS MAP");
@@ -55,8 +52,7 @@ class SaveHandler {
     }
 
     public static void saveImage(Image image) {
-        FileChooser fileChooser = new FileChooser();
-        fileChooser.setTitle("Save Image");
+        FileChooser fileChooser = createFileChooser("Save Image", new FileChooser.ExtensionFilter("Image Files", "png"));
         File file = fileChooser.showSaveDialog(new Stage());
         if (file != null) {
             try {
@@ -69,4 +65,10 @@ class SaveHandler {
         }
     }
 
+    private static FileChooser createFileChooser(String title, FileChooser.ExtensionFilter filter) {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle(title);
+        fileChooser.getExtensionFilters().add(filter);
+        return fileChooser;
+    }
 }

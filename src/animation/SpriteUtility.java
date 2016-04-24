@@ -50,7 +50,6 @@ class SpriteUtility {
         model.setSelectedRectangle(null);
         reinitializeGui();
         initButtons();
-        gui.init();
     }
 
     private void reinitializeGui() {
@@ -138,9 +137,6 @@ class SpriteUtility {
         gui.addRectangleToDisplay(clone);
     }
 
-    /*
-   * Initializes initial rectangle drawer
-   */
     private void initRectangleDrawer() {
         gui.getSpriteGroup().getChildren().remove(model.getRectDrawer());
         model.resetRectangleDrawer();
@@ -196,5 +192,9 @@ class SpriteUtility {
         if (changeColorProperty.get()) {
             model.changeColor(event.getX(), event.getY());
         }
+    }
+
+    public boolean hasFrames() {
+        return !model.getRectangleList().isEmpty();
     }
 }

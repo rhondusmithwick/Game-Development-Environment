@@ -139,7 +139,7 @@ public class Model {
     public Rectangle cloneRect(Rectangle rect) {
         Rectangle r = new Rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
         r.setFill(Color.TRANSPARENT);
-        r.setStroke(Color.RED);
+        r.setStroke(Color.SKYBLUE);
         Dragger.makeDraggable(r);
         makeSelectable(r);
         return r;
@@ -154,7 +154,7 @@ public class Model {
         rectDrawer.widthProperty().bind(rectX.subtract(rectinitX));
         rectDrawer.heightProperty().bind(rectY.subtract(rectinitY));
         rectDrawer.setFill(Color.TRANSPARENT);
-        rectDrawer.setStroke(Color.BLACK);
+        rectDrawer.setStroke(Color.RED);
     }
 
     public void handleMousePressed(MouseEvent event) {
@@ -180,10 +180,12 @@ public class Model {
 
     private void addSelectEffect(Rectangle img) {
         img.setStyle(SELECT_EFFECT.get());
+        img.setStroke(Color.RED);
     }
 
     private void removeSelectEffect(Rectangle imageView) {
         imageView.setStyle(NO_SELECT_EFFECT.get());
+        imageView.setStroke(Color.SKYBLUE);
     }
 
     public Map<String, Map<String, String>> getAnimationList() {

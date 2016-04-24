@@ -30,11 +30,14 @@ import static animation.DoubleConstants.DURATION_MIN;
 import static animation.StringConstants.ANIMATION_NAME_PROMPT;
 
 /**
- * Created by rhondusmithwick on 4/23/16.
+ * The GUI class to hold GUI objects.
  *
  * @author Rhondu Smithwick, Melissa Zhang
  */
 class GUI {
+
+    private final String STYLESHEET = "cssFiles/darktheme.css";
+
     private final SimpleObjectProperty<Boolean> changeColorProperty = new SimpleObjectProperty<>(this, "ChangeColor", false);
     private final BorderPane mainPane = new BorderPane();
     private final VBox animationPropertiesBox = new VBox();
@@ -45,14 +48,16 @@ class GUI {
     private final Canvas canvas = new Canvas();
     private final TextField animationName = new TextField();
     private final Button activateTransparencyButton = UtilityUtilities.makeButton("Activate Transparency", e -> makeTransparent());
-
     private Slider durationSlider;
 
+    /**
+     * Sole constructor.
+     *
+     * @param changeColorProperty the property of whether to change color
+     */
     public GUI(SimpleObjectProperty<Boolean> changeColorProperty) {
+        scene.getStylesheets().add(STYLESHEET);
         this.changeColorProperty.bindBidirectional(changeColorProperty);
-    }
-
-    public void init() {
         mainPane.setCenter(spriteScroll);
         mainPane.setRight(new ScrollPane(buttonBox));
         mainPane.setLeft(new ScrollPane(animationPropertiesBox));
@@ -62,10 +67,12 @@ class GUI {
         animationPropertiesBox.getChildren().clear();
         getAnimationName().setText(ANIMATION_NAME_PROMPT.get());
         Label durationTextLabel = new Label("Duration");
-        Label durationValueLabel = new Label("0.0");
+        Label durationValueLabel = new Label(String.valueOf(DURATION_DEFAULT.get()));
         durationSlider = UtilityUtilities.makeSlider((ov, old_val, new_val) -> {
             durationValueLabel.setText(String.format("%.2f", new_val.floatValue()));
-            spriteUtility.initAnimationPreview();
+            if (spriteUtility.hasFrames()) {
+                spriteUtility.initAnimationPreview();
+            }
         }, DURATION_MIN.get(), DURATION_MAX.get(), DURATION_DEFAULT.get());
         animationPropertiesBox.getChildren().addAll(getAnimationName(), durationTextLabel, durationSlider,
                 durationValueLabel);
