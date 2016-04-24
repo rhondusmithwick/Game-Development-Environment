@@ -23,8 +23,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -44,13 +42,9 @@ public class EditorEnvironment extends Editor {
 
 	// TODO: resources
 	private static final int SINGLE = 1;
-	private static final int DEPTH = 70;
 	private BorderPane environmentPane = new BorderPane();
 	private ILevel myEntitySystem;
 	private Group gameRoot = new Group();
-	// private SubScene gameScene = new SubScene(gameRoot,
-	// (GUISize.TWO_THIRDS_OF_SCREEN.getSize()),
-	// GUISize.HEIGHT_MINUS_TAB.getSize());
 	private ResourceBundle myResources;
 	private ObservableList<ISerializable> masterEntityList;
 	private ObservableList<ISerializable> allEnvironmentsList;
@@ -75,7 +69,10 @@ public class EditorEnvironment extends Editor {
 		this.myEntitySystem = (ILevel) toEdit; // TODO: casting check
 
 		game = new SystemManager(this.myEntitySystem);
-		view = new View(game, gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize());
+		view = new View(game, gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(),
+				this.environmentPane); // TODO: remove this last arg once we
+										// figure out why keypresses aren't
+										// working
 
 		allEnvironmentsList = addToList;
 		addLayoutComponents();
@@ -121,9 +118,7 @@ public class EditorEnvironment extends Editor {
 
 	private void addToSystemAndScene(IEntity entity) {
 		this.myEntitySystem.addEntities(entity);
-		// TODO: rm
-		// myEntitySystem.addEntity(makeResizable(entity));
-		// addToScene(entity);
+		addToScene(entity);
 	}
 
 	private void loadDefaults() {
@@ -161,30 +156,18 @@ public class EditorEnvironment extends Editor {
 			if (!entity.hasComponent(Position.class) || !entity.hasComponent(ImagePath.class)) {
 				addComponents(entity);
 			}
+			// TODO: rm
 			// Rectangle rectangle = new Rectangle(200,200);
 			// rectangle.setFill(Color.BLUE);
 			// makeDraggable(rectangle);
-			// TODO: rm
-			// makeResizable(entity);
 			environmentEntityButtons.getChildren().add(createEntityButton(entity));
 			// TODO: rm
-			// gameRoot.getChildren().add(createEntityImageView(entity));
 			// gameRoot.getChildren().add(rectangle);
 		} catch (Exception e) {
 			Utilities.showAlert(myResources.getString("error"), null, myResources.getString("unableToAdd"),
 					AlertType.ERROR);
 		}
 	}
-
-	// TODO: rm
-	// private ImageView createEntityImageView(IEntity entity) {
-	// Position pos = entity.getComponent(Position.class);
-	// ImageView entityView =
-	// entity.getComponent(ImagePath.class).getImageView();
-	// entityView.setTranslateX(pos.getX());
-	// entityView.setTranslateY(pos.getY());
-	// return entityView;
-	// }
 
 	private Button createEntityButton(IEntity entity) {
 		Button entityInButton = new Button(entity.getName());
@@ -202,13 +185,6 @@ public class EditorEnvironment extends Editor {
 		return entityInButton;
 	}
 
-	// TODO: rm
-	// private IEntity makeResizable(IEntity entity) {
-	// Position pos = entity.getComponent(Position.class);
-	// DragAndResize.makeResizable(entity.getComponent(ImagePath.class), pos);
-	// return entity;
-	// }
-
 	// TODO: LOOK HERE FOR MAKING A SHAPE DRAGGABLE
 	// private Shape makeDraggable(Rectangle rectangle) {
 	// DragAndResize.makeResizable(rectangle);
@@ -216,7 +192,7 @@ public class EditorEnvironment extends Editor {
 	// }
 
 	private void entityRightClicked(IEntity entity, Button entityButton, MouseEvent event) {
-		highlight(entity, true);
+		// highlight(entity, true);
 		Map<String, EventHandler<ActionEvent>> menuMap = new HashMap<String, EventHandler<ActionEvent>>();
 		menuMap.put(myResources.getString("remove"), e -> removeFromDisplay(entity, entityButton));
 		menuMap.put(myResources.getString("sendBack"), e -> sendToBack(entity));
@@ -244,22 +220,7 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void entityLeftClicked(IEntity entity, Button entityInButton) {
-		highlight(entity, false);
-	}
-
-	private void highlight(IEntity entity, boolean alwaysHighlight) {
-		ImageView view = entity.getComponent(ImagePath.class).getImageView();
-		if (view.getEffect() != null && !alwaysHighlight) {
-			view.setEffect(null);
-		} else {
-			DropShadow borderGlow = new DropShadow();
-			borderGlow.setOffsetY(0f);
-			borderGlow.setOffsetX(0f);
-			borderGlow.setColor(Color.YELLOW);
-			borderGlow.setWidth(DEPTH);
-			borderGlow.setHeight(DEPTH);
-			view.setEffect(borderGlow);
-		}
+		// highlight(entity, false);
 	}
 
 	private void updateDisplay(ObservableList<ISerializable> masterList) {
