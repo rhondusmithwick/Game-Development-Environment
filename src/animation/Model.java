@@ -30,78 +30,33 @@ public class Model {
     private final ImageView spriteImageView = new ImageView();
     private final ImageView previewImageView = new ImageView();
     private final Map<String, Map<String, String>> animationMap = new HashMap<>();
-    private final List<Rectangle> rectangleList = new ArrayList<>();
-    private final List<Double> widthList = new ArrayList<>();
-    private final List<Double> heightList = new ArrayList<>();
-    private final List<Double> yList = new ArrayList<>();
-    private final List<Double> xList = new ArrayList<>();
     private final RectangleDrawer rectDrawer = new RectangleDrawer();
+    private final RectangleLogic logic = new RectangleLogic(rectDrawer);
     private Image spriteImage;
-    private Rectangle selectedRectangle;
 
     public void populateRectanglePropertyLists() {
-        xList.clear();
-        yList.clear();
-        widthList.clear();
-        heightList.clear();
-        for (Rectangle rect : rectangleList) {
-            xList.add(rect.getX());
-            yList.add(rect.getY());
-            widthList.add(rect.getWidth());
-            heightList.add(rect.getHeight());
-        }
+        logic.populateRectanglePropertyLists();
     }
 
     public Animation getPreviewAnimation(Duration duration) {
         previewImageView.setImage(spriteImage);
-        Animation animation = new ComplexAnimation(previewImageView, duration,
-                rectangleList.size(), xList, yList, widthList, heightList);
+        Animation animation = logic.getAnimation(previewImageView, duration);
         animation.setCycleCount(Animation.INDEFINITE);
         return animation;
     }
 
     public void saveAnimation(String name, Double duration) {
         populateRectanglePropertyLists();
-        Map<String, String> moveAnimationMap = new HashMap<>();
-        moveAnimationMap.put("duration", String.format("%.2f", duration));
-        moveAnimationMap.put("xList", xList.toString());
-        moveAnimationMap.put("yList", yList.toString());
-        moveAnimationMap.put("width", widthList.toString());
-        moveAnimationMap.put("height", heightList.toString());
+        Map<String, String> moveAnimationMap = logic.getAnimationMap(duration);
         animationMap.put(name, moveAnimationMap);
     }
 
     public boolean removeRectangle(Rectangle rectangle) {
-        Iterator<Rectangle> iter = rectangleList.iterator();
-        while (iter.hasNext()) {
-            Rectangle next = iter.next();
-            if (next == rectangle) {
-                if (selectedRectangle == rectangle) {
-                    selectedRectangle = null;
-                }
-                iter.remove();
-                return true;
-            }
-        }
-        return false;
+        return logic.removeRectangle(rectangle);
     }
 
     public void handleKeyInput(KeyEvent event) {
-        switch (event.getCode()) {
-            case RIGHT:
-                selectedRectangle.setX(selectedRectangle.getX() + KEY_INPUT_SPEED.get());
-                break;
-            case LEFT:
-                selectedRectangle.setX(selectedRectangle.getX() - KEY_INPUT_SPEED.get());
-                break;
-            case UP:
-                selectedRectangle.setY(selectedRectangle.getY() - KEY_INPUT_SPEED.get());
-                break;
-            case DOWN:
-                selectedRectangle.setY(selectedRectangle.getY() + KEY_INPUT_SPEED.get());
-                break;
-            default:
-        }
+        logic.handleKeyInput(event);
     }
 
     public void changeColor(double x, double y) {
@@ -110,22 +65,11 @@ public class Model {
     }
 
     public void makeSelected(Rectangle r) {
-        addSelectEffect(r);
-        selectedRectangle = r;
-        if (rectDrawer.getRectangle() != selectedRectangle) {
-            removeSelectEffect(rectDrawer.getRectangle());
-        }
-        Predicate<Rectangle> notSelected = (rect) -> (rect != selectedRectangle);
-        rectangleList.stream().filter(notSelected).forEach(this::removeSelectEffect);
+        logic.makeSelected(r);
     }
 
     public Rectangle cloneRect(Rectangle rect) {
-        Rectangle r = new Rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-        r.setFill(Color.TRANSPARENT);
-        r.setStroke(Color.SKYBLUE);
-        Dragger.makeDraggable(r);
-        makeSelectable(r);
-        return r;
+        return logic.cloneRect(rect);
     }
 
     public void resetRectangleDrawer() {
@@ -140,26 +84,12 @@ public class Model {
         rectDrawer.handleMouseDragged(event);
     }
 
-    private void makeSelectable(Rectangle r) {
-        r.setOnMouseClicked(e -> makeSelected(r));
-    }
-
-    private void addSelectEffect(Rectangle rectangle) {
-        rectangle.setStyle(SELECT_EFFECT.get());
-        rectangle.setStroke(Color.RED);
-    }
-
-    private void removeSelectEffect(Rectangle rectangle) {
-        rectangle.setStyle(NO_SELECT_EFFECT.get());
-        rectangle.setStroke(Color.SKYBLUE);
-    }
-
     public Map<String, Map<String, String>> getAnimationMap() {
         return animationMap;
     }
 
     public List<Rectangle> getRectangleList() {
-        return rectangleList;
+        return logic.getRectangleList();
     }
 
     public ImageView getSpriteImageView() {
@@ -171,11 +101,11 @@ public class Model {
     }
 
     public Rectangle getSelectedRectangle() {
-        return selectedRectangle;
+        return logic.getSelectedRectangle();
     }
 
     public void setSelectedRectangle(Rectangle selectedRectangle) {
-        this.selectedRectangle = selectedRectangle;
+        logic.setSelectedRectangle(selectedRectangle);
     }
 
     public Rectangle getRectDrawer() {
