@@ -28,7 +28,7 @@ class GroovyDemoTest {
 		ImageView img = path.getImageView();
 		img.setScaleX(0.10)
 		img.setScaleY(0.10)
-		character.addComponents(path, new Velocity(200.0, 0.0), new Gravity(),
+		character.addComponents(path, new Velocity(20.0, 0.0), new Gravity(),
 				new Collision("team0"), new RestitutionCoefficient(1.0), new Mass(5))
 		return character
 	}

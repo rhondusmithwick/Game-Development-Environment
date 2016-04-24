@@ -13,6 +13,8 @@ import model.component.visual.ImagePath;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.function.BiConsumer;
+import java.util.function.Function;
 
 /**
  * Implementation of the physics engine
@@ -144,47 +146,47 @@ public class PhysicsEngine implements IPhysicsEngine {
 		Velocity velocity2 = getVelocityComponent(secondEntity);
 
 		// Reference: https://en.wikipedia.org/wiki/Coefficient_of_restitution
-		Vector u1 = new Vector(velocity1.getVX(), velocity1.getVY());
-		Vector u2 = new Vector(velocity2.getVX(), velocity2.getVY());
-		Vector numCommonTerm = u1.scalarMultiply(m1).add(u2.scalarMultiply(m2));
-		Vector num1Term = u2.add(u1.negate()).scalarMultiply(m2 * restitution);
-		Vector num2Term = u1.add(u2.negate()).scalarMultiply(m1 * restitution);
-		double denom = m1 + m2;
-		Vector v1 = numCommonTerm.add(num1Term).scalarMultiply(1.0 / denom);
-		Vector v2 = numCommonTerm.add(num2Term).scalarMultiply(1.0 / denom);
-
-		velocity1.setVXY(v1.getXComponent(), v1.getYComponent());
-		velocity2.setVXY(v2.getXComponent(), v2.getYComponent());
-		System.out.println(velocity1 + " -- " + velocity2);
+//		Vector u1 = new Vector(velocity1.getVX(), velocity1.getVY());
+//		Vector u2 = new Vector(velocity2.getVX(), velocity2.getVY());
+//		Vector numCommonTerm = u1.scalarMultiply(m1).add(u2.scalarMultiply(m2));
+//		Vector num1Term = u2.add(u1.negate()).scalarMultiply(m2 * restitution);
+//		Vector num2Term = u1.add(u2.negate()).scalarMultiply(m1 * restitution);
+//		double denom = m1 + m2;
+//		Vector v1 = numCommonTerm.add(num1Term).scalarMultiply(1.0 / denom);
+//		Vector v2 = numCommonTerm.add(num2Term).scalarMultiply(1.0 / denom);
+//
+//		velocity1.setVXY(v1.getXComponent(), v1.getYComponent());
+//		velocity2.setVXY(v2.getXComponent(), v2.getYComponent());
+//		System.out.println(velocity1 + " -- " + velocity2);
 
 		// TODO: move entity out of collision bounds depending on relative position/side
 
-		// if (collisionIsHorizontal(firstEntity)) {
-		// setVelocityComponent(mass1, mass2, velocity1, velocity2, restitution,
-		// (Velocity v) -> v.getVX(),
-		// (Velocity v, Double val) -> v.setVX(val));
-		// }
-		// if (collisionIsVertical(firstEntity)) {
-		// setVelocityComponent(mass1, mass2, velocity1, velocity2, restitution,
-		// (Velocity v) -> v.getVY(),
-		// (Velocity v, Double val) -> v.setVY(val));
-		// }
+		 if (collisionIsHorizontal(firstEntity)) {
+		 setVelocityComponent(m1, m2, velocity1, velocity2, restitution,
+		 (Velocity v) -> v.getVX(),
+		 (Velocity v, Double val) -> v.setVX(val));
+		 }
+		 if (collisionIsVertical(firstEntity)) {
+		 setVelocityComponent(m1, m2, velocity1, velocity2, restitution,
+		 (Velocity v) -> v.getVY(),
+		 (Velocity v, Double val) -> v.setVY(val));
+		 }
 	}
 
-	// private boolean collisionIsFromSide(IEntity entity, String side) {
-	// return
-	// entity.getComponent(Collision.class).getCollidingIDs().endsWith(side);
-	// }
-	//
-	// private boolean collisionIsHorizontal(IEntity entity) {
-	// return collisionIsFromSide(entity, Collision.LEFT) ||
-	// collisionIsFromSide(entity, Collision.RIGHT);
-	// }
-	//
-	// private boolean collisionIsVertical(IEntity entity) {
-	// return collisionIsFromSide(entity, Collision.TOP) ||
-	// collisionIsFromSide(entity, Collision.BOTTOM);
-	// }
+	 private boolean collisionIsFromSide(IEntity entity, String side) {
+	 return
+	 entity.getComponent(Collision.class).getCollidingIDs().endsWith(side);
+	 }
+
+	 private boolean collisionIsHorizontal(IEntity entity) {
+	 return collisionIsFromSide(entity, Collision.LEFT) ||
+	 collisionIsFromSide(entity, Collision.RIGHT);
+	 }
+
+	 private boolean collisionIsVertical(IEntity entity) {
+	 return collisionIsFromSide(entity, Collision.TOP) ||
+	 collisionIsFromSide(entity, Collision.BOTTOM);
+	 }
 
 	/**
 	 * 
@@ -230,30 +232,30 @@ public class PhysicsEngine implements IPhysicsEngine {
 		}
 	}
 
-	// private void setVelocityComponent(double mass1, double mass2, Velocity
-	// velocity1, Velocity velocity2,
-	// double restitution, Function<Velocity, Double> getCoordinate,
-	// BiConsumer<Velocity, Double> setVelocity) {
-	// double initialVelocity1 = getCoordinate.apply(velocity1);
-	// double initialVelocity2 = getCoordinate.apply(velocity2);
-	//
-	// double velocityBeforeRestitution = getVelocityBeforeRestitution(mass1,
-	// mass2, initialVelocity1,
-	// initialVelocity2);
-	// double finalVelocity1 = velocityBeforeRestitution
-	// + ((mass2 * restitution * (initialVelocity2 - initialVelocity1)) / (mass1
-	// + mass2));
-	// double finalVelocity2 = velocityBeforeRestitution
-	// + ((mass1 * restitution * (initialVelocity1 - initialVelocity2)) / (mass1
-	// + mass2));
-	// setVelocity.accept(velocity1, finalVelocity1);
-	// setVelocity.accept(velocity2, finalVelocity2);
-	// }
+	 private void setVelocityComponent(double mass1, double mass2, Velocity
+	 velocity1, Velocity velocity2,
+	 double restitution, Function<Velocity, Double> getCoordinate,
+	 BiConsumer<Velocity, Double> setVelocity) {
+	 double initialVelocity1 = getCoordinate.apply(velocity1);
+	 double initialVelocity2 = getCoordinate.apply(velocity2);
 
-	// private double getVelocityBeforeRestitution(double mass1, double mass2,
-	// double velocity1, double velocity2) {
-	// return ((mass1 * velocity1) + (mass2 * velocity2)) / (mass1 + mass2);
-	// }
+	 double velocityBeforeRestitution = getVelocityBeforeRestitution(mass1,
+	 mass2, initialVelocity1,
+	 initialVelocity2);
+	 double finalVelocity1 = velocityBeforeRestitution
+	 + ((mass2 * restitution * (initialVelocity2 - initialVelocity1)) / (mass1
+	 + mass2));
+	 double finalVelocity2 = velocityBeforeRestitution
+	 + ((mass1 * restitution * (initialVelocity1 - initialVelocity2)) / (mass1
+	 + mass2));
+	 setVelocity.accept(velocity1, finalVelocity1);
+	 setVelocity.accept(velocity2, finalVelocity2);
+	 }
+
+	 private double getVelocityBeforeRestitution(double mass1, double mass2,
+	 double velocity1, double velocity2) {
+	 return ((mass1 * velocity1) + (mass2 * velocity2)) / (mass1 + mass2);
+	 }
 
 	private void addEntityIDs(IEntity firstEntity, IEntity secondEntity) {
 		firstEntity.getComponent(Collision.class).addCollidingID(secondEntity.getID());
