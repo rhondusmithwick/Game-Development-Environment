@@ -3,7 +3,6 @@ package model.component.character;
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 import utility.SingleProperty;
-
 import java.util.List;
 
 
