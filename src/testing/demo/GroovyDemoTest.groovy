@@ -30,8 +30,8 @@ class GroovyDemoTest {
 		ImageView img = path.getImageView();
 		img.setScaleX(0.10)
 		img.setScaleY(0.10)
-		character.addComponents(path, new Velocity(20.0, 0.0), new Gravity(2000),
-				new Collision("rhondu"), new RestitutionCoefficient(10.0), new Mass(5))
+		character.addComponents(path, new Velocity(20.0, 0.0), new Gravity(0),
+				new Collision("team0"), new RestitutionCoefficient(1.0), new Mass(5))
 		return character
 	}
 

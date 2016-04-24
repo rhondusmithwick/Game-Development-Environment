@@ -49,7 +49,7 @@ public class ImagePath implements IComponent {
 	 *            starting value
 	 */
 	public ImagePath(String imagePath) { // TODO: place default in resource file
-		this(null, imagePath, 0.0, 0.0, new Rectangle2D(0, 0, 0, 0), false, 0, 0, 0);
+		this("John Doe", imagePath, 0.0, 0.0, new Rectangle2D(0, 0, 0, 0), false, 0, 0, 0);
 	}
 
 	// TODO: IMPORTANT NOTE: I forgot to account for columns!

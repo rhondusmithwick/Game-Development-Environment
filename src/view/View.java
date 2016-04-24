@@ -39,7 +39,7 @@ public class View implements IView {
 	// TODO: resource file
 	private final double MILLISECOND_DELAY = 10;
 	private final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
-	private final double gapSize = 10;
+	private final double gapSize = 1;
 
 	private Group root = new Group();
 	private final ConsoleTextArea console = new ConsoleTextArea();
@@ -53,7 +53,7 @@ public class View implements IView {
 	private ViewUtilities viewUtils;
 
 	public View(ISystemManager model, Pane scene) {
-		this(model, new Group(), 1000, 1000, scene);
+		this(model, new Group(), 2000, 2000, scene);
 	}
 
 	public View(ISystemManager model, Group root, double width, double height, Pane scene) {
@@ -127,12 +127,14 @@ public class View implements IView {
 		Collection<Shape> shapes = new ArrayList<Shape>();
 		for (Bounds b : bounds) {
 			if (b == null) {
-				System.out.println(e.getName());
+				System.out.println("null collide mask: " + e.getName());
 				continue;
 			}
 			Shape r = new Rectangle(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
-			double val = Math.random();
-			r.setFill(new Color(val, val, val, val));
+			// double val = 0.5;// Math.random();
+			// r.setFill(new Color(val, val, val, val));
+			r.setStroke(Color.RED);
+			r.setStrokeWidth(2);
 			shapes.add(r);
 		}
 		return shapes;
@@ -147,8 +149,8 @@ public class View implements IView {
 		for (IEntity e : model.getEntitySystem().getAllEntities()) {
 			if (e.hasComponents(ImagePath.class, Position.class)) {
 				viewUtils.makeSelectable(e);
+				root.getChildren().addAll(this.getCollisionShapes(e));
 				root.getChildren().add(this.getUpdatedImageView(e));
-				// root.getChildren().addAll(this.getCollisionShapes(e));
 			}
 		}
 	}

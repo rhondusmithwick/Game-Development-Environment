@@ -1,10 +1,10 @@
 package model.component.physics;
 
+import java.util.List;
+
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
-import utility.SingleProperty;
-
-import java.util.List;
+import utility.TwoProperty;
 
 /**
  * The gravity component.
@@ -13,43 +13,61 @@ import java.util.List;
  */
 public class Gravity implements IComponent {
 
-    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Gravity", 9.81);
+	private final TwoProperty<Double, Double> gravityProperty = new TwoProperty<>("gx", 0.0, "gy", 981.0);
 
-    /**
-     * Empty constructor. Defaults to 9.81.
-     */
-    public Gravity() {
-    	setGravity(100);
-    }
+	/**
+	 * Empty constructor. Defaults to 9.81.
+	 */
+	public Gravity() {
+		this(981);
+	}
 
-    /**
-     * Construct with an initial value.
-     *
-     * @param gravity the initial value
-     */
-    public Gravity(double gravity) {
-        setGravity(gravity);
-    }
+	/**
+	 * Construct with an initial value.
+	 *
+	 * @param gravity
+	 *            the initial value
+	 */
+	public Gravity(double gravity) {
+		this(0.0, gravity);
+	}
 
-    /**
-     * Get the gravity property.
-     *
-     * @return the gravity property
-     */
-    public SimpleObjectProperty<Double> gravityProperty() {
-        return singleProperty.property1();
-    }
+	public Gravity(double gx, double gy) {
+		this.setGravityX(gx);
+		this.setGravityY(gy);
+	}
 
-    public double getGravity() {
-        return gravityProperty().get();
-    }
+	/**
+	 * Get the gravity property.
+	 *
+	 * @return the gravity property
+	 */
+	public SimpleObjectProperty<Double> gravityXProperty() {
+		return gravityProperty.property1();
+	}
 
-    public void setGravity(double gravity) {
-        gravityProperty().set(gravity);
-    }
+	public SimpleObjectProperty<Double> gravityYProperty() {
+		return gravityProperty.property2();
+	}
 
-    @Override
-    public List<SimpleObjectProperty<?>> getProperties() {
-        return singleProperty.getProperties();
-    }
+	public double getGravityX() {
+		return gravityXProperty().get();
+	}
+
+	public void setGravityX(double gx) {
+		gravityXProperty().set(gx);
+	}
+
+	public double getGravityY() {
+		return gravityYProperty().get();
+	}
+
+	public void setGravityY(double gy) {
+		gravityYProperty().set(gy);
+	}
+
+	@Override
+	public List<SimpleObjectProperty<?>> getProperties() {
+		return gravityProperty.getProperties();
+	}
 }

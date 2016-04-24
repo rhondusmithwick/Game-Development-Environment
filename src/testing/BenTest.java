@@ -28,7 +28,6 @@ import model.entity.Level;
 import model.physics.PhysicsEngine;
 
 public class BenTest extends Application {
-	private static final String IMAGE_PATH = "resources/testing/RhonduSmithwick.JPG";
 	private static ImageView testSprite; // BAD PRACTICE: USE final WHENEVER
 											// POSSIBLE, DON'T BE LIKE ME!
 	private static IPhysicsEngine physics; // TODO: remove these things
@@ -51,7 +50,7 @@ public class BenTest extends Application {
 		character.forceAddComponent(new Score(100), true);
 		Position pos = new Position(250.0, 250.0);
 		character.forceAddComponent(pos, true);
-		character.forceAddComponent(new ImagePath(IMAGE_PATH), true);
+		character.forceAddComponent(new ImagePath(), true);
 		character.forceAddComponent(new Velocity(20.0, 50.0), true);
 		character.removeComponents(Velocity.class, Score.class);
 		list.add(character);
