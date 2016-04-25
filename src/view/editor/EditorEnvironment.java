@@ -74,7 +74,7 @@ public class EditorEnvironment extends Editor {
 
 		game = new SystemManager(this.myEntitySystem);
 		view = new View(game, gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(),
-				this.environmentPane); // TODO: remove this last arg once we
+				scrollPane); // TODO: remove this last arg once we
 										// figure out why keypresses aren't
 										// working
 
