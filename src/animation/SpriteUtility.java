@@ -21,13 +21,6 @@ import java.util.ResourceBundle;
 
 import static animation.SaveHandler.saveAnimations;
 import static animation.SaveHandler.saveImage;
-import static animation.StringConstants.ADD_FRAME;
-import static animation.StringConstants.DELETE_FRAME;
-import static animation.StringConstants.NEW_ANIMATION;
-import static animation.StringConstants.NEW_SPRITE;
-import static animation.StringConstants.PREVIEW_ANIMATION;
-import static animation.StringConstants.SAVE_ANIMATION;
-import static animation.StringConstants.SAVE_ANIMATIONS_TO_FILE;
 import static animation.UtilityUtilities.makeButton;
 
 /**
