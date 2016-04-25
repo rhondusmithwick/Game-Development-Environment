@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
+import java.util.Map;
 
 import api.ILevel;
 import utility.Pair;
@@ -21,10 +22,10 @@ public final class ActionFactory {
 	
 	private ActionFactory(){}
 	
-	public static Pair<Trigger, Action> createEvent(List<String> triggerDescription, String scriptPath, ILevel level) {
+	public static Pair<Trigger, Action> createEvent(Map<String, String> triggerMapDescription, String scriptPath, ILevel level) {
 		Trigger trigger=null;
 		try {
-			trigger = ((Trigger) Class.forName(triggerDescription.get(0)).getConstructor(List.class).newInstance(eventDescription));
+			trigger = ((Trigger) Class.forName(triggerMapDescription.get("trigger_type")).getConstructor(Map.class).newInstance(triggerMapDescription));
 		} catch (InstantiationException e) {
 			e.printStackTrace();
 		} catch (IllegalAccessException e) {

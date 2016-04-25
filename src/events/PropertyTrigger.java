@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 
 import java.util.List;
+import java.util.Map;
 
 
 /***
@@ -32,6 +33,15 @@ public class PropertyTrigger extends Trigger {
         } catch(ClassNotFoundException e) {
         }
         propertyName = propertyDescription.get(2);
+    }
+
+    public PropertyTrigger(Map<String, String> triggerMapDescription) {
+        entityID = triggerMapDescription.get("entityID");
+        try {
+            componentClass = (Class<? extends IComponent>) Class.forName(triggerMapDescription.get("component"));
+        } catch(ClassNotFoundException e) {
+        }
+        propertyName = triggerMapDescription.get("propertyName");
     }
     
     @Override

@@ -6,6 +6,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 import java.util.List;
+import java.util.Map;
 
 /***
  * @author cyao42, ani
@@ -21,8 +22,8 @@ public class KeyTrigger extends Trigger {
         this.key = key;
     }
 
-    public KeyTrigger(List<String> eventDescription) {
-        key = eventDescription.get(0);
+    public KeyTrigger(Map<String, String> triggerMapDescription) {
+        key = triggerMapDescription.get("key");
     }
 
     @Override
