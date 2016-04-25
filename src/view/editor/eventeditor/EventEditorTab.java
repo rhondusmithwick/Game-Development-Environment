@@ -34,13 +34,14 @@ public abstract class EventEditorTab extends Editor
 
 		createdEventText = new Text(myResources.getString("eventMade"));
 		createdEventText.setOpacity(0);
-		
-		timer = new Timer();
+
 	}
 
 	public void flashCreatedEventText()
 	{
 		createdEventText.setOpacity(1);
+		
+		timer = new Timer();
 		timer.scheduleAtFixedRate(new TimerTask() {
 			
 			@Override
