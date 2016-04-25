@@ -5,7 +5,6 @@ import api.ILevel;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import model.component.movement.Position;
@@ -55,14 +54,15 @@ public class ViewUtilities {
 	}
 
 	private void highlight(IEntity e) {
-		DropShadow borderGlow = new DropShadow();
-		borderGlow.setOffsetY(0f);
-		borderGlow.setOffsetX(0f);
-		borderGlow.setColor(HIGHLIGHT_COLOR);
-		borderGlow.setWidth(DEPTH);
-		borderGlow.setHeight(DEPTH);
-		this.getImageView(e).setEffect(borderGlow);
-		this.selectedSprites.add(e);
+//		DropShadow borderGlow = new DropShadow();
+//		borderGlow.setOffsetY(0f);
+//		borderGlow.setOffsetX(0f);
+//		borderGlow.setColor(HIGHLIGHT_COLOR);
+//		borderGlow.setWidth(DEPTH);
+//		borderGlow.setHeight(DEPTH);
+//		this.getImageView(e).setEffect(borderGlow);
+//		this.selectedSprites.add(e);
+		getImageView(e).setStyle("-fx-effect: dropshadow(three-pass-box, rbga(0,0,50,0.8), 10, 0, 0, 0)"); // TODO: StringConstants SELECT_EFFECT
 	}
 
 	private boolean isInBottomResizeRegion(Node node, double y) {
