@@ -1,7 +1,11 @@
 package animation;
 
 import javafx.animation.Animation;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Cursor;
@@ -46,6 +50,7 @@ class SpriteUtility {
     private final Map<String, Map<String, String>> animationMap = new HashMap<>();
     private final ResourceBundle utilityResources = ResourceBundle.getBundle("animation.utilityAlerts");
     private Animation previewAnimation;
+    private final BooleanProperty savedAnimationProperty = new SimpleBooleanProperty(false);
 
     public void init(Stage stage) {
         stage.setScene(gui.getScene());
@@ -61,13 +66,27 @@ class SpriteUtility {
 	private void reinitializeGui() {
         gui.getSpriteGroup().getChildren().clear();
         animationMap.clear();
+        initSavedAnimationLabel();
         initNewImage();
         initCanvas();
         initRectangleDrawer();
         reInitialize();
     }
 
-    private void initButtons() {
+    private void initSavedAnimationLabel() {
+    	savedAnimationProperty.addListener(new ChangeListener() {
+			@Override
+			public void changed(ObservableValue arg0, Object oldValue, Object newValue) {
+				if ((boolean) newValue){
+				gui.getSavedAnimationLabel().setText(gui.getAnimationName().getText()+"Saved");
+				}else{
+					gui.getSavedAnimationLabel().setText(gui.getAnimationName().getText()+"Not Saved");
+				}
+			}
+    	});
+	}
+
+	private void initButtons() {
         gui.addButton(makeButton(utilityResources.getString("SaveToFile"), e -> saveAnimations(imageLogic.getSpriteSheetPath(), animationMap)), gui.getButtonBox());
         gui.addButton(makeButton(utilityResources.getString("NewAnimation"), e -> newAnimation()), gui.getButtonBox());
         gui.addButton(makeButton(utilityResources.getString("NewSprite"), e -> newSprite()), gui.getButtonBox());
@@ -85,9 +104,14 @@ class SpriteUtility {
 	}
 
     private void newAnimation() {
-    	if(UtilityUtilities.showAlert(utilityResources.getString("NewAlertTitle"), utilityResources.getString("NewAlertHeader"),utilityResources.getString("NewAlertMessage"), AlertType.CONFIRMATION)){
-		reInitialize();
+    	if(!savedAnimationProperty.get()){
+    		if(!UtilityUtilities.showAlert(utilityResources.getString("NewAlertTitle"), utilityResources.getString("NewAlertHeader"),utilityResources.getString("NewAlertMessage"), AlertType.CONFIRMATION)){
+    			System.out.println("hi");
+    			return;
+    		}
     	}
+		savedAnimationProperty.set(false);
+		reInitialize();
 	}
 
 	public void saveAnimation(String name, Map<String, String> animationMap) {
@@ -103,9 +127,9 @@ class SpriteUtility {
         if (name.contains(" ")){ 
         	UtilityUtilities.showError(utilityResources.getString("SaveErrorTitle"), utilityResources.getString("SaveErrorMessage"));
         }else{
-        	if(UtilityUtilities.showAlert(utilityResources.getString("SaveAlertTitle"), utilityResources.getString("SaveAlertHeader"), utilityResources.getString("SaveAlertMessage"), AlertType.CONFIRMATION));{
-        		saveAnimation(name, moveAnimationMap);
-        	}
+        	savedAnimationProperty.set(true);
+        	saveAnimation(name, moveAnimationMap);
+        	
         	}
     }
 
@@ -117,6 +141,8 @@ class SpriteUtility {
                 gui.getSpriteGroup().getChildren().removeAll(rectangleLogic.getLabelList());
                 repopulateButtons();
                 repopulateLabels();
+        		savedAnimationProperty.set(false);
+
                // initAnimationProperties();
             }
         }
@@ -128,8 +154,10 @@ class SpriteUtility {
 	}
 
 	private void repopulateLabels() {
+		gui.getSpriteGroup().getChildren().removeAll(rectangleLogic.getLabelList());
 		rectangleLogic.getLabelList().clear();
 		rectangleLogic.getButtonList().clear();
+
 		for (Rectangle rect : rectangleLogic.getRectangleList()){
 			Label label = makeLabel(rect,rectangleLogic.getRectangleList().indexOf(rect)+1);
 			rectangleLogic.getLabelList().add(label);
@@ -151,6 +179,7 @@ class SpriteUtility {
         gui.getSpriteGroup().getChildren().removeAll(rectangleLogic.getRectangleList());
         rectangleLogic.getRectangleList().clear();
         initAnimationProperties();
+        repopulateLabels();
     }
 
     private void initNewImage() {
@@ -203,16 +232,18 @@ class SpriteUtility {
         rectangleLogic.getLabelList().add(label);
         Button button = UtilityUtilities.makeButton("Frame #" + label.getText(),e -> popUpProperties(Integer.parseInt(label.getText())));
         rectangleLogic.getButtonList().add(button);
+		savedAnimationProperty.set(false);
 
         gui.addRectangleToDisplay(clone,label, button);
     }
 
     @SuppressWarnings("rawtypes")
 	private Object popUpProperties(int id) {
-		Dialog dialog = UtilityUtilities.popUp("Frame Properties","Edit Frame Properties.");
+		Dialog dialog = UtilityUtilities.popUp(utilityResources.getString("EditFrameTitle"),utilityResources.getString("EditFrameMessage")+ "Frame " + id);
 		VBox box = gui.displayRectangleListProperties(rectangleLogic.getRectangleList().get(id-1));
 		dialog.getDialogPane().setContent(box);
 		dialog.showAndWait();
+		savedAnimationProperty.set(false);
 		return null;
 	}
 
@@ -228,8 +259,8 @@ class SpriteUtility {
     private void initRectangleDrawer() {
         gui.getSpriteGroup().getChildren().remove(rectDrawer.getRectangle());
         rectDrawer.reset();
-        gui.getSpriteScroll().requestFocus(); //ugh someone fix this
-        gui.getSpriteScroll().setOnKeyPressed(this::keyPress); //this line keeps fucking up
+        gui.getSpriteScroll().requestFocus(); 
+        gui.getSpriteScroll().setOnKeyPressed(this::keyPress); 
         rectangleLogic.makeSelected(rectDrawer.getRectangle());
         gui.getSpriteGroup().getChildren().add(rectDrawer.getRectangle());
     }

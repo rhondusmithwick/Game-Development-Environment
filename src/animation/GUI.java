@@ -51,6 +51,7 @@ class GUI {
     private final TextField animationName = new TextField();
     private final Button activateTransparencyButton = UtilityUtilities.makeButton("Activate Transparency", e -> makeTransparent());
     private Slider durationSlider;
+	private Label savedAnimationLabel = new Label("Not Saved");
 
     /**
      * Sole constructor.
@@ -78,7 +79,8 @@ class GUI {
                 spriteUtility.initAnimationPreview();
             }
         }, DURATION_MIN.get(), DURATION_MAX.get(), DURATION_DEFAULT.get());
-        animationPropertiesBox.getChildren().addAll(getAnimationName(), durationTextLabel, durationSlider,
+
+        animationPropertiesBox.getChildren().addAll(savedAnimationLabel, getAnimationName(), durationTextLabel, durationSlider,
                 durationValueLabel);
     }
 
@@ -86,6 +88,9 @@ class GUI {
         spriteGroup.getChildren().add(clone);
         spriteGroup.getChildren().add(label);  
         frameButtonBox.getChildren().add(button);
+    }
+    public Label getSavedAnimationLabel(){
+    	return savedAnimationLabel;
     }
 
     public VBox displayRectangleListProperties(Rectangle clone) {

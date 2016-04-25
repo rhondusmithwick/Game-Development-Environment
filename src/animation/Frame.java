@@ -13,10 +13,10 @@ public class Frame extends Rectangle{
 	public Frame (int id, double x, double y, double width, double height){
 		super(x, y, width, height);
 		myID = id;
-		makeLable();
+		makeLabel();
 	}
 	
-	private void makeLable(){
+	private void makeLabel(){
 		myLabel = new Label(String.valueOf(myID));
 		myLabel.setFont(new Font("Arial", 30));
 		myLabel.setTextFill(Color.RED);
@@ -24,7 +24,7 @@ public class Frame extends Rectangle{
 		myLabel.layoutYProperty().bind(this.yProperty());
 	}
 	
-	public Label getLable(){
+	public Label getLabel(){
 		return myLabel;
 	}
 	
