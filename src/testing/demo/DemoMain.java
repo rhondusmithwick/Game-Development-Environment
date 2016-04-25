@@ -4,7 +4,6 @@ package testing.demo;
 import javafx.application.Application;
 import javafx.scene.Group;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.component.audio.SoundEffect;
@@ -29,15 +28,15 @@ public class DemoMain extends Application {
 		myStage.setWidth(GUISize.MAIN_SIZE.getSize());
 		myStage.setHeight(GUISize.MAIN_SIZE.getSize());
 
-		View view = new View(new SystemManager());
+		View view = new View(new SystemManager(), new Pane());
 		Pane pane = view.getPane();
 		Group root = new Group();
 		Scene scene = new Scene(pane, 500, 500);
 		music = new ThemeMusic("resources/music/finalCountdown.mp3");
 		// music.play();
-		Button button = new Button("Mute");
-		button.setOnAction(e -> shoot());
-		root.getChildren().add(button);
+		// Button button = new Button("Mute");
+		// button.setOnAction(e -> shoot());
+		// root.getChildren().add(button);
 		stage.setScene(scene);
 		stage.show();
 	}

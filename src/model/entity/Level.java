@@ -1,26 +1,13 @@
 package model.entity;
 
-import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
-
+import api.*;
 import com.google.common.collect.Maps;
-import com.thoughtworks.xstream.annotations.XStreamAlias;
-
-import api.IComponent;
-import api.IEntity;
-import api.IEventSystem;
-import api.IGameScript;
-import api.ILevel;
-import api.IPhysicsEngine;
-import api.ISystemManager;
 import events.EventSystem;
 import groovy.lang.GroovyShell;
 import model.physics.PhysicsEngine;
-import view.enums.DefaultStrings;
+
+import java.util.Collection;
+import java.util.Map;
 
 /**
  * Implementation of a Level. This implementation is focused on the IDs. It
@@ -30,78 +17,30 @@ import view.enums.DefaultStrings;
  */
 public class Level implements ILevel {
 
-	/**
-	 * The entities in this system.
-	 */
-	@XStreamAlias("entities")
-	private final Map<String, IEntity> entities = Maps.newLinkedHashMap();
-	private String name;
+	private IEntitySystem universe = new EntitySystem();
 	private Map<String, String> metadata = Maps.newLinkedHashMap();
 	private IEventSystem eventSystem = new EventSystem(this);
 	private IPhysicsEngine physics = new PhysicsEngine();
 	private String eventSystemPath;
-	private ResourceBundle scriptLocs = ResourceBundle.getBundle(DefaultStrings.SCRIPTS_LOC.getDefault());
-	private List<IGameScript> gameScripts = new ArrayList<IGameScript>();
+//	private transient ResourceBundle scriptLocs = ResourceBundle.getBundle(DefaultStrings.SCRIPTS_LOC.getDefault());
+//	private List<IGameScript> gameScripts = new ArrayList<>();
 
 	public Level() {
 		this("");
 	}
 
 	public Level(String name) {
-		this.name = name;
-	}
-
-	@Override
-	public IEntity createEntity() {
-		IEntity entity = new Entity();
-		addEntity(entity);
-		return entity;
-	}
-
-	@Override
-	public IEntity addEntity(IEntity entity) {
-		return entities.put(entity.getID(), entity);
-	}
-
-	@Override
-	public IEntity getEntity(String i) {
-		return entities.get(i);
-	}
-
-	@Override
-	public Collection<IEntity> getAllEntities() {
-		return entities.values();
-	}
-
-	@Override
-	public boolean containsID(String id) {
-		return entities.containsKey(id);
-	}
-
-	@Override
-	public boolean removeEntity(String id) {
-		if (containsID(id)) {
-			IEntity entity = entities.remove(id);
-			entity.getAllComponents().stream().forEach(IComponent::removeBindings);
-			return true;
-		}
-		return false;
-	}
-
-	@Override
-	public String getName() {
-		return this.name;
+		universe.setName(name);
 	}
 
 	@Override
 	public void setName(String name) {
-		this.name = name;
-
+		universe.setName(name);
 	}
 
 	@Override
-	public boolean isEmpty() {
-		return this.getAllEntities().isEmpty();
+	public String getName() {
+		return universe.getName();
 	}
 
 	@Override
@@ -122,34 +61,34 @@ public class Level implements ILevel {
 	@Override
 	public String init(GroovyShell shell, ISystemManager game) {
 		String returnMessage = "";
-		String key = "script";
-		if (this.metadata.containsKey(key)) {
-			String value = this.metadata.get(key);
-			String[] scripts = value.split(",");
-			for (String script : scripts) {
-				try {
-					IGameScript gameScript = (IGameScript) Class.forName(scriptLocs.getString(script)).getConstructor()
-							.newInstance();
-					gameScript.init(shell, game);
-					gameScripts.add(gameScript);
-				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-						| InvocationTargetException | NoSuchMethodException | SecurityException
-						| ClassNotFoundException e) {
-					returnMessage += (e.getMessage() + "\n");
-				}
-			}
-		} else {
-			returnMessage = "No scripts";
-		}
+//		String key = "script";
+//		if (this.metadata.containsKey(key)) {
+//			String value = this.metadata.get(key);
+//			String[] scripts = value.split(",");
+//			for (String script : scripts) {
+//				try {
+//					IGameScript gameScript = (IGameScript) Class.forName(scriptLocs.getString(script)).getConstructor()
+//							.newInstance();
+//					gameScript.init(shell, game);
+//					gameScripts.add(gameScript);
+//				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+//						| InvocationTargetException | NoSuchMethodException | SecurityException
+//						| ClassNotFoundException e) {
+//					returnMessage += (e.getMessage() + "\n");
+//				}
+//			}
+//		} else {
+//			returnMessage = "No scripts";
+//		}
 		return returnMessage;
 	}
 
 	@Override
 	public void update(double dt) {
-		// physics.update(this, dt);
-		for (IGameScript gameScript : gameScripts) {
-			gameScript.update(dt);
-		}
+////		physics.update(this, dt);
+//		for (IGameScript gameScript : gameScripts) {
+//			gameScript.update(dt);
+//		}
 	}
 
 	@Override
@@ -169,6 +108,41 @@ public class Level implements ILevel {
 	@Override
 	public void setEventSystemPath(String eventSystemPath) {
 		this.eventSystemPath = eventSystemPath;
+	}
+
+	@Override
+	public IEntity createEntity() {
+		return universe.createEntity();
+	}
+
+	@Override
+	public IEntity addEntity(IEntity entity) {
+		return universe.addEntity(entity);
+	}
+
+	@Override
+	public IEntity getEntity(String id) {
+		return universe.getEntity(id);
+	}
+
+	@Override
+	public Collection<IEntity> getAllEntities() {
+		return universe.getAllEntities();
+	}
+
+	@Override
+	public boolean containsID(String id) {
+		return universe.containsID(id);
+	}
+
+	@Override
+	public boolean removeEntity(String id) {
+		return universe.removeEntity(id);
+	}
+
+	@Override
+	public boolean isEmpty() {
+		return universe.isEmpty();
 	}
 
 }

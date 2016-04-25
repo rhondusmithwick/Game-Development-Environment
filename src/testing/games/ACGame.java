@@ -29,6 +29,8 @@ import model.physics.PhysicsEngine;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class ACGame {
 
@@ -84,15 +86,17 @@ public class ACGame {
             character.forceAddComponent(new Velocity(0, 0), true);
             universe.addEntity(character);
             character.addComponent(new ImagePath(IMAGE_PATH));
-            character.addComponent(new Gravity(5000));
+            //character.addComponent(new Gravity(5000));
             character.serialize("character.xml");
+            Map<String, Object> map = new HashMap<>();
+            map.put("character", character);
             eventSystem.registerEvent(
                     new TimeTrigger(3.0),
                     new Action(addGravityScriptPath));
             eventSystem.registerEvent(
                     new PropertyTrigger(character.getID(), Position.class, "X"),
                     new Action(healthScriptPath));
-            eventSystem.registerEvent(new KeyTrigger("D"), new Action(moveRightScriptPath));
+            eventSystem.registerEvent(new KeyTrigger("D"), new Action(moveRightScriptPath, map));
             eventSystem.registerEvent(new KeyTrigger("A"), new Action(moveLeftScriptPath));
             eventSystem.registerEvent(new KeyTrigger("W"), new Action(jumpScriptPath));
         } else {
