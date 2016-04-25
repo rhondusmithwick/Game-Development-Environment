@@ -24,6 +24,7 @@ import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.Collision;
 import model.component.physics.Gravity;
+import model.component.physics.Mass;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
 import model.entity.Level;
@@ -107,12 +108,13 @@ public class CollisionTestGame {
         addCharacter("Anolyn", "blastoise.xml", IMAGE_PATH_BLASTOISE, 50.0, 200.0);
         addCharacter("Cani", "charizard.xml", IMAGE_PATH_CHARIZARD, 200.0, 200.0);
         propertyEventSetup("Anolyn", healthScriptPath, Position.class, "Y");
-        propertyEventSetup("Cani", transformScriptPath, Collision.class, "CollidingIDs");
+        propertyEventSetup("Anolyn", healthScriptPath, Collision.class, "CollidingIDs");
+        propertyEventSetup("Anolyn", transformScriptPath, Health.class, "Health");
         keyEventSetup("D", moveRightScriptPath);
         keyEventSetup("A", moveLeftScriptPath);
         keyEventSetup("W", jumpScriptPath);
-        keyEventSetup("J", moveRightScriptPath2);
-        keyEventSetup("L", moveLeftScriptPath2);
+        keyEventSetup("J", moveLeftScriptPath2);
+        keyEventSetup("L", moveRightScriptPath2);
     }
 
     private void addCharacter(String name, String XMLName, String imagePath, Double posX, Double posY) {
@@ -124,6 +126,7 @@ public class CollisionTestGame {
         character.forceAddComponent(pos, true);
         character.forceAddComponent(new ImagePath(imagePath), true);
         character.forceAddComponent(new Velocity(0, 0), true);
+        character.forceAddComponent(new Mass(100), true);
         character.addComponent(new Collision("")); // instantiated by string instead of collection
         universe.addEntity(character);
         character.addComponent(new ImagePath(imagePath));
