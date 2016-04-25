@@ -1,20 +1,20 @@
 package animation;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class StringParser {
+public final class StringParser {
 
-	public List<Double> convertStringToDoubleList(String string) {
-		List<String> stringList = Arrays.asList(string.split("\\s*,\\s*"));
-		List<Double> doubleList = new ArrayList<Double>();
-		for(String str: stringList){
-			System.out.println(str);
-			doubleList.add(Double.parseDouble(str));
-			
-		}
-		return doubleList;
-	}
+
+    public StringParser() {
+    }
+
+    public static List<Double> convertStringToDoubleList(String string) {
+        String noBrackets = string.replace("[", "");
+        noBrackets = noBrackets.replace("]", "");
+        List<String> stringList = Arrays.asList(noBrackets.split("\\s*,\\s*"));
+        return stringList.stream().map(Double::parseDouble).collect(Collectors.toList());
+    }
 
 }

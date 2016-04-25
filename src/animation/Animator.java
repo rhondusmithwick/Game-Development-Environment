@@ -18,16 +18,6 @@ public class Animator {
         ImagePath imagePath = entity.getComponent(ImagePath.class);
         ResourceBundle myResources = ResourceBundle.getBundle(imagePath.getSpriteProperties());
         ImageView imageView = imagePath.getImageView();
-        //imageView.setViewport(new Rectangle2D(Double.parseDouble(myResources.getString(move+"OffsetX")), Double.parseDouble(myResources.getString(move+"OffsetY")), imagePath.getImageWidth(), imagePath.getImageHeight()));
-
-//        final Animation animation = new SpriteAnimation(
-//                imageView,
-//                Duration.millis(Double.parseDouble(myResources.getString(move + "Duration"))),
-//                Integer.parseInt(myResources.getString(move + "Count")), Integer.parseInt(myResources.getString(move + "Columns")),
-//                Double.parseDouble(myResources.getString(move + "OffsetX")), Double.parseDouble(myResources.getString(move + "OffsetY")),
-//                Double.parseDouble(myResources.getString(move + "Width")), Double.parseDouble(myResources.getString(move + "Height"))
-//        );
-        
         StringParser stringParser = new StringParser();
         Animation animation = new ComplexAnimation(imageView, Duration.millis(Double.parseDouble(myResources.getString(move + "duration"))), Integer.parseInt(myResources.getString(move + "count")), stringParser.convertStringToDoubleList(myResources.getString(move + "xList")), stringParser.convertStringToDoubleList(myResources.getString(move + "yList")), stringParser.convertStringToDoubleList(myResources.getString(move + "width")), stringParser.convertStringToDoubleList(myResources.getString(move + "height")));
         animation.setCycleCount(Animation.INDEFINITE);
