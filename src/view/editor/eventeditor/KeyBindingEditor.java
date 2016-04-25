@@ -44,6 +44,9 @@ public class KeyBindingEditor extends EventEditorTab
 	private Button createEventButton;
 	private String language;
 	
+	// TODO test
+	private Button getEventsString;
+	
 	private Text actionText;
 	
 	public KeyBindingEditor(String language, ObservableList<ILevel> levelList)
@@ -106,7 +109,20 @@ public class KeyBindingEditor extends EventEditorTab
 		
 		createEventButton.setOnAction(e -> createEvent());
 		
-		pane.getChildren().addAll(createEventButton, getCreatedLevelText());
+		// TODO test
+		getEventsString = Utilities.makeButton("TEST", e -> printEvents());
+		
+		pane.getChildren().addAll(createEventButton, getCreatedLevelText(), getEventsString);
+	}
+	
+	// TODO test
+	private void printEvents()
+	{
+		for ( ILevel level: getChosenLevels() )
+		{
+			System.out.println(level.getName());
+			System.out.println(level.getEventSystem().returnEventsAsString());
+		}
 	}
 	
 	private void createEvent()
