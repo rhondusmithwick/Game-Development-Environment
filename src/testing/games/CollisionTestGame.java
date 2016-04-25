@@ -6,8 +6,11 @@ package testing.games;
 
 import api.IEntity;
 import api.ILevel;
+import api.IPhysicsEngine;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+
 import datamanagement.XMLReader;
 import events.Action;
 import events.EventSystem;
@@ -33,11 +36,12 @@ import model.physics.PhysicsEngine;
 import java.io.File;
 import java.io.IOException;
 
-
 import api.IEntity;
 import api.ILevel;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+
 import datamanagement.XMLReader;
 import events.Action;
 import events.EventSystem;
@@ -69,7 +73,7 @@ public class CollisionTestGame {
 
     //private final EventSystem eventSystem = new EventSystem(universe);
     private IEventSystem eventSystem = universe.getEventSystem();
-    private final PhysicsEngine physics = new PhysicsEngine();
+    private IPhysicsEngine physics = universe.getPhysicsEngine();
     //private IEntity character;
     //private IEntity platform;
     private final String IMAGE_PATH_BLASTOISE = "resources/images/blastoise.png";
@@ -105,8 +109,8 @@ public class CollisionTestGame {
     }
 
     public void initEngine() {
-        addCharacter("Anolyn", "blastoise.xml", IMAGE_PATH_BLASTOISE, 50.0, 200.0);
-        addCharacter("Cani", "charizard.xml", IMAGE_PATH_CHARIZARD, 200.0, 200.0);
+        addCharacter("Anolyn", "blastoise.xml", IMAGE_PATH_BLASTOISE, 50.0, 200.0, "1");
+        addCharacter("Cani", "charizard.xml", IMAGE_PATH_CHARIZARD, 200.0, 200.0, "2");
         propertyEventSetup("Anolyn", healthScriptPath, Position.class, "Y");
         propertyEventSetup("Anolyn", healthScriptPath, Collision.class, "CollidingIDs");
         propertyEventSetup("Anolyn", transformScriptPath, Health.class, "Health");
@@ -117,7 +121,7 @@ public class CollisionTestGame {
         keyEventSetup("L", moveRightScriptPath2);
     }
 
-    private void addCharacter(String name, String XMLName, String imagePath, Double posX, Double posY) {
+    private void addCharacter(String name, String XMLName, String imagePath, Double posX, Double posY, String id) {
         //int var = 0;
         //if (var == 0) {
         IEntity character = new Entity(name);

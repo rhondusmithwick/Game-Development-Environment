@@ -12,16 +12,19 @@ import utility.SingleProperty;
  * @author Roxanne and Tom
  *
  */
-public class Collision implements IComponent {	
+public class Collision implements IComponent {
 	public static final String TOP = "top";
 	public static final String BOTTOM = "bottom";
 	public static final String LEFT = "left";
 	public static final String RIGHT = "right";
-	
+
 	private Bounds mask;
 	private SingleProperty<String> maskIDProperty = new SingleProperty<>("MaskID", "");
 	private SingleProperty<String> collidingIDsProperty = new SingleProperty<>("CollidingIDs", "");
 
+	public Collision() {
+		this("");
+	}
 
 	public Collision(Bounds mask, String ID) {
 		this.mask = mask;
@@ -65,11 +68,11 @@ public class Collision implements IComponent {
 	}
 
 	public void addCollidingID(String collidingIDs) {
-		this.collidingIDsProperty().set(this.getCollidingIDs()+"~"+collidingIDs);
+		this.collidingIDsProperty().set(this.getCollidingIDs() + "~" + collidingIDs);
 	}
-	
+
 	public void addCollisionSide(String side) {
-		this.collidingIDsProperty().set(this.getCollidingIDs()+"_"+side);
+		this.collidingIDsProperty().set(this.getCollidingIDs() + "_" + side);
 	}
 
 	public void clearCollidingIDs() {
