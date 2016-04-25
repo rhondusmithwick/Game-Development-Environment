@@ -2,7 +2,6 @@ package view.editor.eventeditor;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.ResourceBundle;
 
 import api.ILevel;
@@ -75,14 +74,20 @@ public class LevelPicker
 	private void levelCheck()
 	{
 		selectedLevels.clear();
+		boolean allAreSelected = true;
 		for ( CheckBox checkbox: checkBoxMap.keySet() )
 		{
 			if ( checkbox.isSelected() )
 			{
 				selectedLevels.add(checkBoxMap.get(checkbox));
 			}
+			else
+			{
+				allAreSelected = false;
+			}
 		}
 		
+		allBox.setSelected(allAreSelected);
 		eventAuthoring.choseLevels(selectedLevels);
 	}
 	
