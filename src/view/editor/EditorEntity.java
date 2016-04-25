@@ -116,7 +116,7 @@ public class EditorEntity extends Editor{
 	}
 
 	private void addComponent() {
-		String selected = myResources.getString(componentBox.getSelectionModel().getSelectedItem());
+		String selected = myResources.getString(componentBox.getValue());
 		componentBox.getSelectionModel().clearSelection();
 		componentBox.getItems().remove(selected);
 
