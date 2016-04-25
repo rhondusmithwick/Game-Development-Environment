@@ -18,9 +18,9 @@ import api.IEntitySystem;
  * @author Anirudh Jonnavithula, Carolyn Yao
  */
 
-public final class ActionFactory {
+public final class EventFactory {
 	
-	private ActionFactory(){}
+	private EventFactory(){}
 	
 	public static Pair<Trigger, Action> createEvent(Map<String, String> triggerMapDescription, String scriptPath, ILevel level) {
 		Trigger trigger=null;
