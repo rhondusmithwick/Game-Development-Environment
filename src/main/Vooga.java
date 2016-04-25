@@ -131,46 +131,9 @@ public class Vooga extends StartUpMenu {
 		List<String> games = new ArrayList<>(Utilities.getAllFromDirectory(DefaultStrings.CREATE_LOC.getDefault()));
 		gameChooser = new ComboBox<>();
 		gameChooser.setPromptText(myResources.getString("chooseGame"));
-		setUpHBox();
 		gameChooser.getItems().addAll(games);
 		gameChooser.setButtonCell(gameChooser.getCellFactory().call(null));
 
 		super.addNodesToVBox(Arrays.asList(gameChooser));
 	}
-
-	public void setUpHBox(){
-		gameChooser.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
-			@Override
-			public ListCell<String> call(ListView<String> p) {
-				return new ListCell<String>() {
-					@Override
-					protected void updateItem(String item, boolean empty) {
-						if(item==null){
-							return;
-						}
-						List<String> details = new XMLReader<List<String>>().readSingleFromFile(DefaultStrings.CREATE_LOC.getDefault() + item + DefaultStrings.METADATA_LOC.getDefault());
-						String name = details.get(Indexes.GAME_NAME.getIndex()) + ": " + details.get(Indexes.GAME_DESC.getIndex());
-						super.updateItem(name, empty);
-						setText(name);
-						ImageView imageView = null;
-						try {
-							File file = new File(details.get(Indexes.GAME_ICON.getIndex()));
-							imageView = new ImageView( new Image(file.toURI().toString()) );
-						} catch(Exception e) {
-							e.printStackTrace();
-							return;
-						}
-
-						imageView.setFitHeight(30);
-						imageView.setPreserveRatio(true);
-						setGraphic(imageView);
-
-					}
-				};
-			}
-		});
-	}
-
-
-
 }
