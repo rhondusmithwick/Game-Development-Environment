@@ -6,6 +6,7 @@ import java.util.ResourceBundle;
 import api.IComponent;
 import api.IEntity;
 import model.entity.Entity;
+import model.entity.PropertiesTemplateLoader;
 import view.Utilities;
 import view.editor.ComponentFactory;
 import view.enums.DefaultStrings;
@@ -15,10 +16,9 @@ public class EntityFactory {
 	private final ComponentFactory componentFactory = new ComponentFactory();
 	
 	public IEntity createEntity(String language, String template){
-		
+
 		IEntity entity = createEntity();
-		entity.loadSpecsFromPropertiesFile(DefaultStrings.TEMPLATE_BUNDLE_LOC.getDefault() + template);
-		Map<Class<? extends IComponent>, Integer> numComponents = entity.getSpecs();
+		Map<Class<? extends IComponent>, Integer> numComponents = new PropertiesTemplateLoader().loadSpecs(DefaultStrings.TEMPLATE_BUNDLE_LOC.getDefault() + template);
 		numComponents.keySet().stream().forEach(e->addComponent(e, entity, numComponents, language));
 		return entity;
 	}
@@ -34,7 +34,7 @@ public class EntityFactory {
 		int numToAdd = numComponents.get(componentName);
 		for(int i=0; i<numToAdd; i++){
 			try {
-					entity.addComponent(componentFactory.getComponent(componentName, entity));
+					entity.forceAddComponent(componentFactory.getComponent(componentName, entity), true);
 
 			
 				

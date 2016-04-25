@@ -72,7 +72,7 @@ public class EntityDisplay extends ObjectDisplay{
 		templates.setTitle(myResources.getString("entType"));
 		templates.showAndWait();
 		String choice = templates.getSelectedItem();
-		IEntity newEntity =null;
+		IEntity newEntity = null;
 		if(choice.equals(myResources.getString("None"))){
 			newEntity = entFact.createEntity();
 		}else{
