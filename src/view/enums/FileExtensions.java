@@ -1,4 +1,4 @@
-package enums;
+package view.enums;
 
 import javafx.stage.FileChooser.ExtensionFilter;
 

@@ -13,9 +13,10 @@ import utility.TwoProperty;
  */
 public class Velocity implements IComponent {
 
-	private final TwoProperty<Double, Double> twoProperty = new TwoProperty<>("X Velocity", 0.0, "Y Velocity", 0.0);
+	private final TwoProperty<Double, Double> twoProperty = new TwoProperty<>("XVelocity", 0.0, "YVelocity", 0.0);
 
 	public Velocity() {
+		this(0.0, 0.0);
 	}
 
 	public Velocity(double vx, double vy) {

@@ -1,9 +1,9 @@
 
 package main;
 
-import enums.GUISize;
 import javafx.application.Application;
 import javafx.stage.Stage;
+import view.enums.GUISize;
 
 public class Main extends Application{
 

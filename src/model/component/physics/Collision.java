@@ -1,10 +1,11 @@
 package model.component.physics;
 
-import java.util.Collection;
-import java.util.HashSet;
+import java.util.List;
 
 import api.IComponent;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Bounds;
+import utility.SingleProperty;
 
 /**
  * 
@@ -12,19 +13,26 @@ import javafx.geometry.Bounds;
  *
  */
 public class Collision implements IComponent {
-	private Bounds mask;
-	private Collection<String> IDs;
-	private Collection<String> collidingIDs;
+	public static final String TOP = "top";
+	public static final String BOTTOM = "bottom";
+	public static final String LEFT = "left";
+	public static final String RIGHT = "right";
 
-	public Collision(Bounds mask, Collection<String> IDs) {
-		this.mask = mask;
-		this.IDs = IDs;
-		this.collidingIDs = new HashSet<String>();
+	private Bounds mask;
+	private SingleProperty<String> maskIDProperty = new SingleProperty<>("MaskID", "");
+	private SingleProperty<String> collidingIDsProperty = new SingleProperty<>("CollidingIDs", "");
+
+	public Collision() {
+		this("");
 	}
 
-	public Collision(Collection<String> IDs) {
-		this.IDs = IDs;
-		this.collidingIDs = new HashSet<String>();
+	public Collision(Bounds mask, String ID) {
+		this.mask = mask;
+		this.setMaskID(ID);
+	}
+
+	public Collision(String ID) {
+		this(null, ID); // TODO: needs to be null?
 	}
 
 	public Bounds getMask() {
@@ -35,36 +43,46 @@ public class Collision implements IComponent {
 		this.mask = mask;
 	}
 
-	public Collection<String> getIDs() {
-		return this.IDs;
+	public SimpleObjectProperty<String> maskIDProperty() {
+		return maskIDProperty.property1();
 	}
 
-	public void addIDs(Collection<String> newIDs) {
-		this.IDs.addAll(newIDs);
+	public String getMaskID() {
+		return maskIDProperty().get();
 	}
 
-	public void removeIDs(Collection<String> IDs) {
-		this.IDs.removeAll(IDs);
+	public void setMaskID(String ID) {
+		this.maskIDProperty().set(ID);
 	}
 
-	public void clearIDs() {
-		this.IDs.clear();
+	public SimpleObjectProperty<String> collidingIDsProperty() {
+		return collidingIDsProperty.property1();
 	}
 
-	public Collection<String> getCollidingIDs() {
-		return this.collidingIDs;
+	public String getCollidingIDs() {
+		return this.collidingIDsProperty().get();
 	}
 
-	public void addCollidingIDs(Collection<String> newIDs) {
-		this.collidingIDs.addAll(newIDs);
+	public void setCollidingIDs(String collidingIDs) {
+		this.collidingIDsProperty().set(collidingIDs);
 	}
 
-	public void addCollidingID(String newID) {
-		this.collidingIDs.add(newID);
+	public void addCollidingID(String collidingIDs) {
+		this.collidingIDsProperty().set(this.getCollidingIDs() + "~" + collidingIDs);
+	}
+
+	public void addCollisionSide(String side) {
+		this.collidingIDsProperty().set(this.getCollidingIDs() + "_" + side);
 	}
 
 	public void clearCollidingIDs() {
-		this.collidingIDs.clear();
+		this.collidingIDsProperty().set("CollidingIDs");
+	}
+
+	@Override
+	public List<SimpleObjectProperty<?>> getProperties() {
+		// TODO: add maskID property
+		return collidingIDsProperty.getProperties();
 	}
 
 }

@@ -5,13 +5,14 @@ import java.util.ResourceBundle;
 
 import api.IComponent;
 import api.IEntity;
-import enums.DefaultStrings;
 import model.entity.Entity;
 import view.Utilities;
+import view.editor.ComponentFactory;
+import view.enums.DefaultStrings;
 
 public class EntityFactory {
 	
-	
+	private final ComponentFactory componentFactory = new ComponentFactory();
 	public IEntity createEntity(String template, String language){
 		
 		IEntity entity = new Entity();
@@ -26,10 +27,12 @@ public class EntityFactory {
 		int numToAdd = numComponents.get(componentName);
 		for(int i=0; i<numToAdd; i++){
 			try {
-					entity.addComponent(componentName.getConstructor().newInstance());
+					entity.addComponent(componentFactory.getComponent(componentName, entity));
+
 			
 				
 			} catch (Exception e) {
+				
 				ResourceBundle resources = ResourceBundle.getBundle(language);
 				Utilities.showError(resources.getString("error"), resources.getString("createComp"));
 			}

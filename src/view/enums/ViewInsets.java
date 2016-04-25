@@ -1,4 +1,4 @@
-package enums;
+package view.enums;
 
 import javafx.geometry.Insets;
 
@@ -9,7 +9,9 @@ import javafx.geometry.Insets;
  */
 
 public enum ViewInsets {
-    GAME_EDIT(new Insets(20, 20, 20, 20));
+    GAME_EDIT(new Insets(20, 20, 20, 20)),
+    EVENT_EDIT(new Insets(10, 10, 10, 10));
+	
 
     private final Insets inset;
 

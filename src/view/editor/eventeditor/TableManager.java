@@ -1,11 +1,13 @@
 package view.editor.eventeditor;
 
-import java.util.ResourceBundle;
+import java.util.List;
 
 import api.IComponent;
+import api.IEntity;
+import api.ILevel;
 import api.ISerializable;
-import events.Trigger;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.HBox;
 import model.entity.Entity;
@@ -19,50 +21,67 @@ public class TableManager
 	
 	private Entity entity;
 	private IComponent component;
-	private int propertyIndex;
 	private String language;
-	private EditorEvent editor;
+	private PropertyEventEditor editor;
 	
-	public TableManager(ObservableList<ISerializable> entityList, String language, EditorEvent editor)
+	private ObservableList<ISerializable> selectedEntities;
+	
+	public TableManager(ObservableList<IEntity> entityList, String language, PropertyEventEditor editor )
 	{
 		container = new HBox();
 		this.language = language;
 		entityTable = new EntityTable(entityList, this, language);
 		componentTable = new ComponentTable(this, language);
 		propertyTable = new PropertyTable(this, language);
+		selectedEntities = FXCollections.observableArrayList();
+		
 		this.editor = editor;
+		 
 		
 		
-		setDefaultTriggerString(null);
+		editor.resetTrigger();
 		fillLayout();
 	}
 	
 	public void entityWasClicked(Entity entity)
 	{
-		setDefaultTriggerString(null);
+		editor.resetTrigger();
+		componentTable.refreshTable();
+		propertyTable.refreshTable();
 		componentTable.fillEntries(entity);
 		this.entity = entity;
 	}
 	
 	public void componentWasClicked(IComponent component)
 	{
-		setDefaultTriggerString(null);
+		editor.resetTrigger();
+		propertyTable.refreshTable();
 		propertyTable.fillEntries(component);
 		this.component = component;
 	}
 	
-	public void propertyWasClicked(SimpleObjectProperty property)
+	public void propertyWasClicked(SimpleObjectProperty<?> property)
 	{
-		propertyIndex = component.getProperties().indexOf(property);
-		System.out.println(propertyIndex);
+		editor.triggerSet(entity.getName(), component, property);
+	}
+	
+	public void levelWasPicked(List<ILevel> levels)
+	{
+		selectedEntities.clear();
+		componentTable.refreshTable();
+		propertyTable.refreshTable();
 		
-		String[] splitClassName = component.getClass().toString().split("\\.");
-
-		editor.triggerSet(entity.getName() + " - " + 
-				splitClassName[splitClassName.length - 1] + " - " + 
-				property.getName(),
-				null);
-				//new Trigger(entity.getID(), component, propertyIndex, null) );	// TODO: universe...!?
+		for ( ILevel level: levels )
+		{
+			selectedEntities.addAll(level.getAllEntities());
+		}
+		
+		entityTable.levelWasPicked(selectedEntities);
+	}
+	
+	public void allBoxChanged(String event)
+	{
+		System.out.println(event);
 	}
 	
 	private void fillLayout()
@@ -73,11 +92,6 @@ public class TableManager
 	public HBox getContainer()
 	{
 		return container;
-	}
-	
-	private void setDefaultTriggerString(Trigger trigger)
-	{
-		editor.triggerSet(ResourceBundle.getBundle(language).getString("notYetDefined"), trigger);
 	}
 	
 }

@@ -7,7 +7,6 @@ import javafx.beans.property.Property;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
 
 public class GuiObjectButton extends GuiObject{
 	Button button;
@@ -24,11 +23,6 @@ public class GuiObjectButton extends GuiObject{
 	
 	public void addHandler(EventHandler<ActionEvent> event){
 		button.setOnAction(event);
-	}
-
-	@Override
-	public Control getControl() {
-		return button;
 	}
 
 	@Override

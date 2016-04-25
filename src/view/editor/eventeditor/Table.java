@@ -2,12 +2,12 @@ package view.editor.eventeditor;
 
 import java.util.ResourceBundle;
 
-import enums.GUISize;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import view.enums.GUISize;
 
 public abstract class Table 
 {
@@ -22,7 +22,7 @@ public abstract class Table
 		table = new TableView<Entry>();
 		table.setEditable(true);
 		table.setPrefWidth(GUISize.EVENT_EDITOR_TABLE_WIDTH.getSize());
-		
+
 		column = new TableColumn<Entry, String>(name);
 		column.setCellValueFactory( new PropertyValueFactory<Entry,String>("name") );
 		column.minWidthProperty().bind(table.prefWidthProperty());
@@ -48,5 +48,11 @@ public abstract class Table
 	public ObservableList<Entry> getEntries()
 	{
 		return entries;
+	}
+	
+	public void refreshTable()
+	{
+		entries.clear();
+		table.refresh();
 	}
 }

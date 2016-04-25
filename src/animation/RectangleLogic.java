@@ -10,11 +10,14 @@ import javafx.util.Duration;
 import animation.Dragger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 import static animation.DoubleConstants.KEY_INPUT_SPEED;
 import static animation.StringConstants.NO_SELECT_EFFECT;
@@ -28,10 +31,6 @@ import static animation.StringConstants.SELECT_EFFECT;
 public class RectangleLogic {
     private final List<Rectangle> rectangleList = new ArrayList<>();
     private final List<Label> labelList = new ArrayList<>();
-    private final List<Double> widthList = new ArrayList<>();
-    private final List<Double> heightList = new ArrayList<>();
-    private final List<Double> yList = new ArrayList<>();
-    private final List<Double> xList = new ArrayList<>();
     private final RectangleDrawer rectDrawer;
     private Rectangle selectedRectangle;
 
@@ -45,33 +44,35 @@ public class RectangleLogic {
     }
 
     /**
-     * Reconstruct the lists of each rectangle.
-     */
-    public void populateRectanglePropertyLists() {
-        xList.clear();
-        yList.clear();
-        widthList.clear();
-        heightList.clear();
-        for (Rectangle rect : rectangleList) {
-            xList.add(rect.getX());
-            yList.add(rect.getY());
-            widthList.add(rect.getWidth());
-            heightList.add(rect.getHeight());
-        }
-    }
-
-    /**
      * Get the animation map describing the rectangles.
      *
      * @return a map describing the rectangles
      */
     public Map<String, String> getAnimationMap() {
         Map<String, String> moveAnimationMap = new HashMap<>();
-        moveAnimationMap.put("xList", xList.toString());
-        moveAnimationMap.put("yList", yList.toString());
-        moveAnimationMap.put("width", widthList.toString());
-        moveAnimationMap.put("height", heightList.toString());
+        Map<String, List<Double>> propertyMap = getPropertyMap();
+        List<String> neededProperties = Arrays.asList("xList", "yList", "widthList", "heightList");
+        for (String property: neededProperties) {
+            moveAnimationMap.put(property, propertyMap.get(property).toString());
+        }
         return moveAnimationMap;
+    }
+
+    private Map<String, List<Double>> getPropertyMap() {
+        Map<String, List<Double>> propertyMap = new HashMap<>();
+        List<Double> xList = getPropertyList(Rectangle::getX);
+        propertyMap.put("xList", xList);
+        List<Double> yList = getPropertyList(Rectangle::getY);
+        propertyMap.put("yList", yList);
+        List<Double> widthList = getPropertyList(Rectangle::getWidth);
+        propertyMap.put("widthList", widthList);
+        List<Double> heightList = getPropertyList(Rectangle::getHeight);
+        propertyMap.put("heightList", heightList);
+        return propertyMap;
+    }
+
+    private List<Double> getPropertyList(Function<Rectangle, Double>func) {
+        return rectangleList.stream().map(func).collect(Collectors.toList());
     }
 
     /**
@@ -95,12 +96,14 @@ public class RectangleLogic {
         return false;
     }
 
-	/**
+
+    /**
      * Handle arrow key input
      *
      * @param event the key event
      */
     public void handleKeyInput(KeyEvent event) {
+        if (selectedRectangle == null) return;
         switch (event.getCode()) {
             case RIGHT:
                 selectedRectangle.setX(selectedRectangle.getX() + KEY_INPUT_SPEED.get());
@@ -156,8 +159,11 @@ public class RectangleLogic {
      * @return an animation described by the data in this class
      */
     public Animation getAnimation(ImageView imageView, Duration duration) {
+        Map<String, List<Double>> propertyMap = getPropertyMap();
         return new ComplexAnimation(imageView, duration,
-                rectangleList.size(), xList, yList, widthList, heightList);
+                rectangleList.size(), propertyMap.get("xList"),
+                propertyMap.get("yList"), propertyMap.get("widthList"),
+                propertyMap.get("heightList"));
     }
 
     private void makeSelectable(Rectangle r) {
@@ -186,7 +192,7 @@ public class RectangleLogic {
         return rectangleList;
     }
     
-    public List<Label> getLabelList() {
+    public List<Label> getLabelList(){
     		return labelList;
     }
 }

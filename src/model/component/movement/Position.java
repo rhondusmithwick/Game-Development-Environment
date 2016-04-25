@@ -48,7 +48,6 @@ public class Position implements IComponent {
 
     public void setX(double x) {
         xProperty().set(x);
-        //System.out.println("Set X Position to: " + x);
     }
 
     /**
@@ -65,7 +64,6 @@ public class Position implements IComponent {
 
     public void setY(double y) {
         yProperty().set(y);
-        //System.out.println("Set Y Position to: " + y);
     }
 
 
@@ -81,11 +79,6 @@ public class Position implements IComponent {
     @Override
     public String toString() {
         return String.format("Position: [X: %s, Y: %s]", getX(), getY());
-    }
-
-    @Override
-    public boolean unique() {
-        return true;
     }
 
     @Override

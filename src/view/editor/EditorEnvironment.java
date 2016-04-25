@@ -7,10 +7,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
+
 import api.IEntity;
 import api.ILevel;
 import api.ISerializable;
-import enums.GUISize;
+import api.ISystemManager;
+import api.IView;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,37 +23,41 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
+import model.core.SystemManager;
 import model.entity.Level;
-import view.DefaultsMaker;
-import view.DragAndResize;
+//import view.DragAndResize;
 import view.Utilities;
+import view.View;
+import view.enums.DefaultEntities;
+import view.enums.GUISize;
 
 public class EditorEnvironment extends Editor {
 
-	private BorderPane environmentPane;
+	// TODO: resources
+	private static final int SINGLE = 1;
+	private BorderPane environmentPane = new BorderPane();
 	private ILevel myEntitySystem;
-	private SubScene gameScene;
-	private Group gameRoot;
+	private Group gameRoot = new Group();
 	private ResourceBundle myResources;
 	private ObservableList<ISerializable> masterEntityList;
 	private ObservableList<ISerializable> allEnvironmentsList;
-	private VBox leftPane;
-	private VBox rightPane;
-	private VBox masterEntityButtons;
-	private VBox environmentEntityButtons;
-	private TextField nameField;
-	private ScrollPane scrollPane;
+	private VBox leftPane = new VBox();
+	private VBox rightPane = new VBox();
+	private VBox masterEntityButtons = new VBox();
+	private VBox environmentEntityButtons = new VBox();
+	private TextField nameField = new TextField();
+	private ScrollPane scrollPane = new ScrollPane(environmentPane);
+
+	private ISystemManager game;
+	private IView view;
+	private SubScene gameScene;
 
 	public EditorEnvironment(String language, ISerializable toEdit, ObservableList<ISerializable> masterList,
 			ObservableList<ISerializable> addToList) {
@@ -60,46 +66,30 @@ public class EditorEnvironment extends Editor {
 			this.updateDisplay(masterList);
 		});
 		masterEntityList = masterList;
-		myEntitySystem = (ILevel) toEdit;
+		this.myEntitySystem = (ILevel) toEdit; // TODO: casting check
+
+		game = new SystemManager(this.myEntitySystem);
+		view = new View(game, gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(),
+				this.environmentPane); // TODO: remove this last arg once we
+										// figure out why keypresses aren't
+										// working
+
 		allEnvironmentsList = addToList;
 		addLayoutComponents();
-
-		/*
-		 * // TODO: don't hard code double MILLISECOND_DELAY = 10; double
-		 * SECOND_DELAY = MILLISECOND_DELAY/1000; KeyFrame frame = new
-		 * KeyFrame(Duration.millis(MILLISECOND_DELAY), e ->
-		 * this.step(SECOND_DELAY)); Timeline animation = new Timeline();
-		 * animation.setCycleCount(Timeline.INDEFINITE);
-		 * animation.getKeyFrames().add(frame); animation.play();
-		 */
 	}
 
-	/*
-	 * private void step(double dt) { IPhysicsEngine p = new
-	 * PhysicsEngine(null); p.update(getEntitySystem(), dt); for(IEntity e:
-	 * getEntitySystem().getEntitiesWithComponent(Position.class)) { ImagePath
-	 * imagePath = e.getComponent(ImagePath.class); ImageView imageView =
-	 * imagePath.getImageView(); Position pos = e.getComponent(Position.class);
-	 * imageView.setTranslateX(pos.getX()); imageView.setTranslateY(pos.getY());
-	 * } }
-	 */
-
 	private void addLayoutComponents() {
-		environmentPane = new BorderPane();
-		scrollPane = new ScrollPane(environmentPane);
 		setLeftPane();
 		setRightPane();
 		setGameScene();
 	}
 
 	private void setLeftPane() {
-		leftPane = new VBox();
 		leftPane.getChildren().add(setNameDisplay());
 		leftPane.getChildren().add(setEntityOptionsDisplay());
 	}
 
 	private TextField setNameDisplay() {
-		nameField = new TextField();
 		if (myEntitySystem.getName().equals("")) {
 			nameField.setText(myResources.getString("environmentName"));
 		} else {
@@ -109,7 +99,6 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private ScrollPane setEntityOptionsDisplay() {
-		masterEntityButtons = new VBox();
 		if (masterEntityList.isEmpty()) {
 			loadDefaults();
 		}
@@ -128,40 +117,31 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void addToSystemAndScene(IEntity entity) {
-		myEntitySystem.addEntity(makeResizable(entity));
+		this.myEntitySystem.addEntities(entity);
 		addToScene(entity);
 	}
 
-	@Override
-	public void loadDefaults() {
+	private void loadDefaults() {
 		if (Utilities.showAlert(myResources.getString("addDefaults"), myResources.getString("addDefaultsQuestion"),
 				myResources.getString("defaultsMessage"), AlertType.CONFIRMATION)) {
-			masterEntityList.add(DefaultsMaker.loadBackgroundDefault());
+			masterEntityList.add(DefaultEntities.BACKGROUND.getDefault());
 			// entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay));
-			masterEntityList.add(DefaultsMaker.loadCharacter1Default());
-			masterEntityList.add(DefaultsMaker.loadCharacter2Default());
+			masterEntityList.add(DefaultEntities.CHAR_1.getDefault());
+			masterEntityList.add(DefaultEntities.CHAR_2.getDefault());
 		}
 	}
 
 	private void setRightPane() {
-		rightPane = new VBox();
 		rightPane.getChildren().add(setSaveButton());
-		rightPane.getChildren().add(setEntitiesInEnvironmentDisplay());
+		rightPane.getChildren().add(new ScrollPane(environmentEntityButtons));
 	}
 
 	private Button setSaveButton() {
 		return Utilities.makeButton(myResources.getString("saveEnvironment"), e -> saveEnvironment());
 	}
 
-	private ScrollPane setEntitiesInEnvironmentDisplay() {
-		environmentEntityButtons = new VBox();
-		return (new ScrollPane(environmentEntityButtons));
-	}
-
 	private void setGameScene() {
-		gameRoot = new Group();
-		gameScene = new SubScene(gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()),
-				GUISize.HEIGHT_MINUS_TAB.getSize());
+		gameScene = this.view.getSubScene();
 		gameScene.setFill(Color.WHITE);
 		for (IEntity entity : myEntitySystem.getAllEntities()) {
 			addToScene(entity);
@@ -173,25 +153,17 @@ public class EditorEnvironment extends Editor {
 			if (!entity.hasComponent(Position.class) || !entity.hasComponent(ImagePath.class)) {
 				addComponents(entity);
 			}
-			//Rectangle rectangle = new Rectangle(200,200);
-			//rectangle.setFill(Color.BLUE);
-			//makeDraggable(rectangle);
-			makeResizable(entity);
+			// TODO: rm
+			// Rectangle rectangle = new Rectangle(200,200);
+			// rectangle.setFill(Color.BLUE);
+			// makeDraggable(rectangle);
 			environmentEntityButtons.getChildren().add(createEntityButton(entity));
-			gameRoot.getChildren().add(createEntityImageView(entity));
-			//gameRoot.getChildren().add(rectangle);
+			// TODO: rm
+			// gameRoot.getChildren().add(rectangle);
 		} catch (Exception e) {
 			Utilities.showAlert(myResources.getString("error"), null, myResources.getString("unableToAdd"),
 					AlertType.ERROR);
 		}
-	}
-
-	private ImageView createEntityImageView(IEntity entity) {
-		Position pos = entity.getComponent(Position.class);
-		ImageView entityView = entity.getComponent(ImagePath.class).getImageView();
-		entityView.setTranslateX(pos.getX());
-		entityView.setTranslateY(pos.getY());
-		return entityView;
 	}
 
 	private Button createEntityButton(IEntity entity) {
@@ -201,7 +173,8 @@ public class EditorEnvironment extends Editor {
 			public void handle(MouseEvent event) {
 				MouseButton button = event.getButton();
 				if (button == MouseButton.PRIMARY) {
-					entityLeftClicked(entity, entityInButton);
+					// entityLeftClicked(entity, entityInButton);
+					game.getEntitySystem().removeEntity(entity.getID());
 				} else if (button == MouseButton.SECONDARY) {
 					entityRightClicked(entity, entityInButton, event);
 				}
@@ -210,23 +183,18 @@ public class EditorEnvironment extends Editor {
 		return entityInButton;
 	}
 
-	private IEntity makeResizable(IEntity entity) {
-		Position pos = entity.getComponent(Position.class);
-		DragAndResize.makeResizable(entity.getComponent(ImagePath.class), pos);
-		return entity;
-	}
-	
-	//LOOK HERE FOR MAKING A SHAPE DRAGGABLE
-	private Shape makeDraggable(Rectangle rectangle) {
-		DragAndResize.makeResizable(rectangle);
-		return rectangle;
-	}
-	
+	// TODO: LOOK HERE FOR MAKING A SHAPE DRAGGABLE
+	// private Shape makeDraggable(Rectangle rectangle) {
+	// DragAndResize.makeResizable(rectangle);
+	// return rectangle;
+	// }
+
 	private void entityRightClicked(IEntity entity, Button entityButton, MouseEvent event) {
-		highlight(entity, true);
+		// highlight(entity, true);
 		Map<String, EventHandler<ActionEvent>> menuMap = new HashMap<String, EventHandler<ActionEvent>>();
 		menuMap.put(myResources.getString("remove"), e -> removeFromDisplay(entity, entityButton));
 		menuMap.put(myResources.getString("sendBack"), e -> sendToBack(entity));
+		menuMap.put(myResources.getString("sendFront"), e -> sendToFront(entity));
 		entityButton.setContextMenu(Utilities.createContextMenu(menuMap));
 	}
 
@@ -250,24 +218,12 @@ public class EditorEnvironment extends Editor {
 		return entitySystem;
 	}
 
-	private void entityLeftClicked(IEntity entity, Button entityInButton) {
-		highlight(entity, false);
-	}
+	// private void sendToBack(IEntity e) {
+	// e.getComponent(ImagePath.class).setZLevel(-1);
+	// }
 
-	private void highlight(IEntity entity, boolean alwaysHighlight) {
-		ImageView view = entity.getComponent(ImagePath.class).getImageView();
-		if (view.getEffect() != null && !alwaysHighlight) {
-			view.setEffect(null);
-		} else {
-			int depth = 70;
-			DropShadow borderGlow = new DropShadow();
-			borderGlow.setOffsetY(0f);
-			borderGlow.setOffsetX(0f);
-			borderGlow.setColor(Color.YELLOW);
-			borderGlow.setWidth(depth);
-			borderGlow.setHeight(depth);
-			view.setEffect(borderGlow);
-		}
+	private void sendToFront(IEntity e) {
+		e.getComponent(ImagePath.class).setZLevel(1);
 	}
 
 	private void updateDisplay(ObservableList<ISerializable> masterList) {
@@ -316,7 +272,7 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void addPositionComponent(IEntity entity) {
-		entity.setSpec(Position.class, 1);
+		entity.setSpec(Position.class, SINGLE);
 		Position pos = new Position();
 		entity.addComponent(pos);
 	}
@@ -324,7 +280,7 @@ public class EditorEnvironment extends Editor {
 	private void addImagePathComponent(IEntity entity) {
 		File file = Utilities.promptAndGetFile(Utilities.getImageFilters(),
 				myResources.getString("pickImagePathImage"));
-		entity.setSpec(ImagePath.class, 1);
+		entity.setSpec(ImagePath.class, SINGLE);
 		entity.addComponent(new ImagePath(file.getPath()));
 	}
 
@@ -341,11 +297,6 @@ public class EditorEnvironment extends Editor {
 	@Override
 	public ScrollPane getPane() {
 		return scrollPane;
-	}
-
-	@Override
-	public void addSerializable(ISerializable serialize) {
-		myEntitySystem.addEntity((IEntity) serialize);
 	}
 
 	public boolean displayContains(IEntity checkEntity) {
