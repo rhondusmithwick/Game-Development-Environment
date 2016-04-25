@@ -30,7 +30,7 @@ public enum GUISize {
 	ONE(1), 
 	HALF_COLUMNS(3/2),
 	PREVIEW_SIZE(100), 
-	GUI_IM_DISP(10);
+	GUI_IM_DISP(10), POP_UP_PADDING(50);
 
 
     private final int size;
