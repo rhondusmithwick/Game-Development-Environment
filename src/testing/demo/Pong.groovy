@@ -1,30 +1,22 @@
 package testing.demo
 
 import api.*
-import events.Action
-import javafx.scene.image.ImageView
-import javafx.scene.input.KeyEvent
-import model.component.character.Health
 import model.component.character.Score
 import model.component.movement.Position
-import model.component.movement.Velocity
-import model.component.physics.Collision
-import model.component.physics.Gravity
-import model.component.physics.Mass
-import model.component.physics.RestitutionCoefficient
-import model.component.visual.ImagePath
-import model.entity.Entity
 import model.physics.PhysicsEngine
-
 /**
  * 
  * @author Tom
  *
  */
 public class Pong implements IGameScript {
+    public static final String PATH = "src/testing/demo/";
+    private final String movePaddleScript = PATH + "MovePaddle.groovy";
+    private final int winningScore = 3;
+
 	private ISystemManager game;
 	private ILevel universe;
-	private IPhysicsEngine physics = new PhysicsEngine();
+	private final IPhysicsEngine physics = new PhysicsEngine();
     private IEventSystem events;
 
 	public void init(GroovyShell shell, ISystemManager game) {
@@ -36,70 +28,58 @@ public class Pong implements IGameScript {
 		//		this.engine.put("game", this.model);
 		//		this.engine.put("universe", this.model.getEntitySystem());
 		//		this.engine.put("demo", new GroovyDemoTest());
-		shell.setVariable("game", this.game);
-		shell.setVariable("universe", universe);
 		shell.setVariable("demo", new GroovyDemoTest());
 
+        initKeyInputs();
+        initSprites();
 	}
 
-    private void initKeyInputs() {
-        events.registerEvent(new KeyEvent("W"), new Action("testing/demo/"));
+    private void initSprites() {
+        // Ball
+        IEntity ball = SpriteLoader.createBall("Ball", new Position(50.0, -150.0));
+        //Paddles
+        IEntity leftPaddle = SpriteLoader.createPaddle("LeftPaddle", new Position(100, 160));
+        IEntity rightPaddle = SpriteLoader.createPaddle("RightPaddle", new Position(540, 160));
+        // Walls
+        IEntity leftWall = SpriteLoader.createPlatform("LeftWall", new Position(-578, 7));
+        IEntity rightWall = SpriteLoader.createPlatform("RightWall", new Position(686, 7));
+        IEntity ceiling = SpriteLoader.createPlatform("Ceiling", new Position(7, -500));
+        IEntity floor = SpriteLoader.createPlatform("Floor", new Position(7, 500));
+
+        universe.addEntities(ball, leftPaddle, rightPaddle, leftWall, rightWall, ceiling, floor);
     }
 
+    private void initKeyInputs() {
+        Map<String, Object> wKey = new HashMap<>();
+        wKey.put("key", "W");
+        Map<String, Object> sKey = new HashMap<>();
+        wKey.put("key", "S");
+        Map<String, Object> mKey = new HashMap<>();
+        wKey.put("key", "M");
+//        events.registerEvent(new KeyTrigger("W"), new Action(movePaddleScript, wKey));
+//        events.registerEvent(new KeyTrigger("S"), new Action(movePaddleScript, sKey));
+//        events.registerEvent(new KeyTrigger("M"), new Action(movePaddleScript, mKey));
+        println("Input keys cannot be registered without de-serialization error.");
+    }
+
+//    private initGlobalVariables() {
+//        IEntity data = new Entity("data");
+//        data.addComponent()
+//    }
+
 	public void update(double dt) {
-		this.physics.update(universe, dt);
+		physics.update(universe, dt);
+        events.updateInputs(dt);
+        updateScores();
 	}
 
-	private class GroovyDemoTest {
-		IEntity getRhondu() {
-			IEntity character = new Entity("Rhondu")
-			character.addComponent(new Health((double) 100))
-			character.addComponent(new Score((double) 100))
-			Position pos = new Position(50.0, -150.0)
-			character.addComponent(pos)
-			ImagePath path = new ImagePath();
-			ImageView img = path.getImageView();
-			img.setScaleX(0.05);
-			img.setScaleY(0.05);
-			character.addComponents(path, new Velocity(20.0, 0.0), new Gravity(),
-					new Collision("ball"), new RestitutionCoefficient(1.0), new Mass(5));
-			return character;
-		}
-
-		IEntity getPlatform() {
-			IEntity platform = new Entity("Platform");
-			ImagePath path = new ImagePath();
-			ImageView img = path.getImageView();
-			platform.addComponents(path, new Position(100, 300),
-					new Collision("platform"), new RestitutionCoefficient(1.2), new Mass(100));
-			return platform;
-		}
-
-        IEntity getLeftWall() {
-            IEntity platform = new Entity("RightWall");
-            ImagePath path = new ImagePath();
-            ImageView img = path.getImageView();
-
-            platform.addComponents(path, new Position(-78, 7),
-                    new Collision("platform"), new RestitutionCoefficient(1.2), new Mass(100));
-            return platform;
+    private void updateScores() {
+        for(IEntity e:universe.getEntitiesWithComponents(Score.class)) {
+            Score score = e.getComponent(Score.class);
+            if(score.getScore()==winningScore) {
+                System.out.println(e.getName()+" has won.");
+            }
         }
-
-        IEntity getRightWall() {
-            IEntity platform = new Entity("RightWall");
-            ImagePath path = new ImagePath();
-            ImageView img = path.getImageView();
-
-            platform.addComponents(path, new Position(686, 7),
-                    new Collision("platform"), new RestitutionCoefficient(1.2), new Mass(100));
-            return platform;
-        }
-
-        @Deprecated
-		void run(ISystemManager game) {
-			ILevel universe = game.getEntitySystem();
-			universe.addEntities(this.getRhondu(), this.getPlatform());
-		}
-	}
+    }
 
 }

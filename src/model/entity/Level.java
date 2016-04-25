@@ -26,7 +26,7 @@ public class Level implements ILevel {
 	private IPhysicsEngine physics = new PhysicsEngine();
 	private String eventSystemPath;
 //	private transient ResourceBundle scriptLocs = ResourceBundle.getBundle(DefaultStrings.SCRIPTS_LOC.getDefault());
-	private List<IGameScript> gameScripts = new ArrayList<>();
+	private transient List<IGameScript> gameScripts;
 
 	public Level() {
 		this("");
@@ -63,8 +63,9 @@ public class Level implements ILevel {
 
 	@Override
 	public String init(GroovyShell shell, ISystemManager game) {
+		gameScripts = new ArrayList<>();
 		String returnMessage = "";
-		String key = "script";
+		String key = "Script"; // TODO: don't hard-code
 		if (this.metadata.containsKey(key)) {
 			String value = this.metadata.get(key);
 			String[] scripts = value.split(",");
@@ -88,7 +89,7 @@ public class Level implements ILevel {
 
 	@Override
 	public void update(double dt) {
-//		physics.update(this, dt);
+		physics.update(this, dt); // TODO: remove
 		for (IGameScript gameScript : gameScripts) {
 			gameScript.update(dt);
 		}

@@ -2,7 +2,6 @@
 package testing.demo;
 
 import javafx.application.Application;
-import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -30,7 +29,7 @@ public class DemoMain extends Application {
 
 		View view = new View(new SystemManager(), new Pane());
 		Pane pane = view.getPane();
-		Group root = new Group();
+//		Group root = new Group();
 		Scene scene = new Scene(pane, 500, 500);
 		music = new ThemeMusic("resources/music/finalCountdown.mp3");
 		// music.play();
