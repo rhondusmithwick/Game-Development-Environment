@@ -161,7 +161,7 @@ class SpriteUtility {
 		for (Rectangle rect : rectangleLogic.getRectangleList()){
 			Label label = makeLabel(rect,rectangleLogic.getRectangleList().indexOf(rect)+1);
 			rectangleLogic.getLabelList().add(label);
-			Button button = UtilityUtilities.makeButton(label.getText(),e -> popUpProperties(Integer.parseInt(label.getText())));
+			Button button = UtilityUtilities.makeButton("Frame #" + label.getText(),e -> popUpProperties(Integer.parseInt(label.getText())));
 			rectangleLogic.getButtonList().add(button);
 		}
 		gui.updateButtonDisplay(rectangleLogic.getButtonList());
