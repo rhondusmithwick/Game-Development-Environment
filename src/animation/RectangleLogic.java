@@ -101,6 +101,7 @@ public class RectangleLogic {
      * @param event the key event
      */
     public void handleKeyInput(KeyEvent event) {
+        if (selectedRectangle == null) return;
         switch (event.getCode()) {
             case RIGHT:
                 selectedRectangle.setX(selectedRectangle.getX() + KEY_INPUT_SPEED.get());
