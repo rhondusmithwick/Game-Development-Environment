@@ -96,6 +96,12 @@ public class Level implements ILevel {
 		return this.eventSystem;
 	}
 
+
+	@Override
+	public IEntitySystem getEntitySystem() {
+		return this.universe;
+	}
+
 	@Override
 	public IPhysicsEngine getPhysicsEngine() {
 		return this.physics;

@@ -33,12 +33,13 @@ public class Action implements ISerializable {
         this.parameters.putAll(parameters);
     }
 
-    public void activate(ScriptEngine engine, ILevel universe) {
-        parameters.put("universe", universe);
+    public void activate(ScriptEngine engine, ILevel level) {
+        parameters.put("universe", level.getEntitySystem());
         try {
             engine.eval(getScript(), parameters);
         } catch (ScriptException e) {
-            e.printStackTrace();
+            //e.printStackTrace();
+            System.out.println("Groovy engine could not run script.");
         }
     }
 
@@ -46,7 +47,7 @@ public class Action implements ISerializable {
         return script;
     }
 
-    public Map<String, Object> getParameters() {
+    protected Bindings getParameters() {
         return parameters;
     }
 
@@ -67,4 +68,5 @@ public class Action implements ISerializable {
         }
         return script;
     }
+
 }
