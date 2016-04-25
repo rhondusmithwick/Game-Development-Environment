@@ -79,7 +79,6 @@ class SpriteUtility {
     }
 
     private void saveAnimation() {
-        rectangleLogic.populateRectanglePropertyLists();
         Double duration = gui.getDurationSlider().getValue();
         Map<String, String> moveAnimationMap = rectangleLogic.getAnimationMap();
         moveAnimationMap.put("duration", String.format("%.2f", duration));
@@ -131,7 +130,6 @@ class SpriteUtility {
     }
 
     private void animationPreview() {
-        rectangleLogic.populateRectanglePropertyLists();
         initAnimationPreview();
     }
 
