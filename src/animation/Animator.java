@@ -29,7 +29,7 @@ public class Animator {
 //        );
         
         StringParser stringParser = new StringParser();
-        Animation animation = new ComplexAnimation(imageView, Duration.millis(Double.parseDouble(myResources.getString(move + "Duration"))), Integer.parseInt(myResources.getString(move + "Count")), stringParser.convertStringToDoubleList(myResources.getString(move + "X")), stringParser.convertStringToDoubleList(myResources.getString(move + "Y")), stringParser.convertStringToDoubleList(myResources.getString(move + "Width")), stringParser.convertStringToDoubleList(myResources.getString(move + "Height")));
+        Animation animation = new ComplexAnimation(imageView, Duration.millis(Double.parseDouble(myResources.getString(move + "duration"))), Integer.parseInt(myResources.getString(move + "count")), stringParser.convertStringToDoubleList(myResources.getString(move + "xList")), stringParser.convertStringToDoubleList(myResources.getString(move + "yList")), stringParser.convertStringToDoubleList(myResources.getString(move + "width")), stringParser.convertStringToDoubleList(myResources.getString(move + "height")));
         animation.setCycleCount(Animation.INDEFINITE);
         return animation;
     }

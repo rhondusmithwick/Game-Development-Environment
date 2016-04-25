@@ -10,6 +10,7 @@ public class StringParser {
 		List<String> stringList = Arrays.asList(string.split("\\s*,\\s*"));
 		List<Double> doubleList = new ArrayList<Double>();
 		for(String str: stringList){
+			System.out.println(str);
 			doubleList.add(Double.parseDouble(str));
 			
 		}
