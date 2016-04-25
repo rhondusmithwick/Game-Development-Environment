@@ -1,4 +1,4 @@
-package testing.demo
+package testing.demo;
 
 import api.IEntity
 import api.ILevel
@@ -14,38 +14,37 @@ import model.component.physics.Mass
 import model.component.physics.RestitutionCoefficient
 import model.component.visual.ImagePath
 import model.entity.Entity
-/**
- * Created by Tom on 4/13/2016.
- */
-class GroovyDemoTest {
-	IEntity getRhondu() {
-		IEntity character = new Entity("Rhondu")
-		character.addComponent(new Health((double) 100))
-		character.addComponent(new Score((double) 100))
-		Position pos = new Position(50.0, -150.0)
-		character.addComponent(pos)
-		ImagePath path = new ImagePath();
-		ImageView img = path.getImageView();
-		img.setScaleX(0.10)
-		img.setScaleY(0.10)
-		character.addComponents(path, new Velocity(20.0, 0.0), new Gravity(),
-				new Collision("team0"), new RestitutionCoefficient(1.0), new Mass(5))
-		return character
-	}
 
-	IEntity getPlatform() {
-		IEntity platform = new Entity("Platform");
-		ImagePath path = new ImagePath();
-		ImageView img = path.getImageView();
-		//				img.setScaleX(0.10)
-		//				img.setScaleY(0.10)
-		platform.addComponents(path, new Position(100, 300),
-				new Collision("platform"), new RestitutionCoefficient(1.1), new Mass(100));
-		return platform;
-	}
+@Deprecated
+public class GroovyDemoTest {
+    IEntity getRhondu() {
+        IEntity character = new Entity("Rhondu")
+        character.addComponent(new Health((double) 100))
+        character.addComponent(new Score((double) 100))
+        Position pos = new Position(50.0, -150.0)
+        character.addComponent(pos)
+        ImagePath path = new ImagePath();
+        ImageView img = path.getImageView();
+        img.setScaleX(0.05);
+        img.setScaleY(0.05);
+        character.addComponents(path, new Velocity(20.0, 0.0), new Gravity(),
+                new Collision("ball"), new RestitutionCoefficient(1.0), new Mass(5));
+        return character;
+    }
 
-	void run(ISystemManager game) {
-		ILevel universe = game.getEntitySystem()
-		universe.addEntities(this.getRhondu(), this.getPlatform());
-	}
+    IEntity getPlatform() {
+        IEntity platform = new Entity("Platform");
+        ImagePath path = new ImagePath();
+        ImageView img = path.getImageView();
+        platform.addComponents(path, new Position(100, 300),
+                new Collision("platform"), new RestitutionCoefficient(1.2), new Mass(100));
+        return platform;
+    }
+
+    @Deprecated
+    void run(ISystemManager game) {
+        ILevel universe = game.getEntitySystem();
+        universe.clear();
+        universe.addEntities(this.getRhondu(), this.getPlatform());
+    }
 }

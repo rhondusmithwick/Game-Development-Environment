@@ -134,8 +134,9 @@ public class View implements IView {
 				continue;
 			}
 			Shape r = new Rectangle(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
-			 double val = 1.0;// Math.random();
-			 r.setFill(new Color(val, val, val, val));
+//			 double val = 1.0;// Math.random();
+//			 r.setFill(new Color(val, val, val, val));
+			r.setFill(Color.TRANSPARENT);
 			r.setStroke(Color.RED);
 			r.setStrokeWidth(2);
 			shapes.add(r);

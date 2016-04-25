@@ -1,11 +1,5 @@
 package update;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.ResourceBundle;
-
 import api.ISystemManager;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -20,6 +14,12 @@ import view.Utilities;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
+
+import java.io.File;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 public class GameLoopManager {
 	
@@ -84,9 +84,8 @@ public class GameLoopManager {
 		String key = comboBox.getValue();
 		String value = textField.getText();
 		textField.clear();
-		systemManager.getEntitySystem().addMetadata(key, value);
+		systemManager.getEntitySystem().addMetadata("Script", value); // TODO: key doesn't work (key==null)
 	}
-	
 	
 	private VBox createVBox() {
 		return new VBox(GUISize.LOOP_MANAGER_PADDING.getSize());
