@@ -13,11 +13,15 @@ import com.google.common.io.Files;
 
 import api.IEntitySystem;
 
+/***
+ * @author Anirudh Jonnavithula, Carolyn Yao
+ */
+
 public final class ActionFactory {
 	
 	private ActionFactory(){}
 	
-	public static Pair<Trigger, Action> createEvent(List<String> eventDescription, String scriptPath, ILevel level) {
+	public static Pair<Trigger, Action> createEvent(List<String> triggerDescription, String scriptPath, ILevel level) {
 		Trigger trigger=null;
 		try {
 			trigger = ((Trigger) Class.forName(triggerDescription.get(0)).getConstructor(List.class).newInstance(eventDescription));
