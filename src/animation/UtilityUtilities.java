@@ -1,10 +1,6 @@
 package animation;
 
 import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.security.CodeSource;
-import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,8 +21,6 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Alert.AlertType;
@@ -85,19 +79,6 @@ public class UtilityUtilities {
 		alert.setTitle(title);
 		alert.setContentText(message);
 		alert.show();
-	}
-
-	public static TableView<String> makeSingleColumnTable(String title, double width) {
-		TableView<String> table = new TableView<String>();
-		table.setPrefWidth(width);
-		TableColumn column = new TableColumn(title);
-		column.minWidthProperty().bind(table.prefWidthProperty());
-		column.maxWidthProperty().bind(table.prefWidthProperty());
-		table.getColumns().add(column);
-
-		table.setEditable(true);
-
-		return table;
 	}
 
 	/**

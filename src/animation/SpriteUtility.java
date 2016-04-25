@@ -12,7 +12,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import view.Dragger;
+import animation.Dragger;
 
 import java.util.HashMap;
 import java.util.Map;
