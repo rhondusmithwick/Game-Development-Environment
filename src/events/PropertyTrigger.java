@@ -6,6 +6,8 @@ import api.ILevel;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 
+import java.util.List;
+
 
 /***
  * @author Anirudh Jonnavithula, Carolyn Yao Implements a ChangeListener that
@@ -21,6 +23,15 @@ public class PropertyTrigger extends Trigger {
         this.entityID = entityID;
         this.componentClass = componentClass;
         this.propertyName = propertyName;
+    }
+
+    public PropertyTrigger(List<String> propertyDescription) {
+        entityID = propertyDescription.get(0);
+        try {
+            componentClass = (Class<? extends IComponent>) Class.forName(propertyDescription.get(1));
+        } catch(ClassNotFoundException e) {
+        }
+        propertyName = propertyDescription.get(2);
     }
     
     @Override

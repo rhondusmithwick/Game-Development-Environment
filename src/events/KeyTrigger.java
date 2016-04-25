@@ -5,6 +5,8 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
+import java.util.List;
+
 /***
  * @author cyao42, ani
  *         Authors: Carolyn Yao, Anirudh Jonnavithula
@@ -17,6 +19,10 @@ public class KeyTrigger extends Trigger {
 
     public KeyTrigger(String key) {
         this.key = key;
+    }
+
+    public KeyTrigger(List<String> eventDescription) {
+        key = eventDescription.get(0);
     }
 
     @Override
