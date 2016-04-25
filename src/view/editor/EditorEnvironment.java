@@ -80,7 +80,7 @@ public class EditorEnvironment extends Editor {
 
 		allEnvironmentsList = addToList;
 		addLayoutComponents();
-		manager = new GameLoopManager(language);
+		manager = new GameLoopManager(language, game);
 	}
 
 	private void addLayoutComponents() {
@@ -151,7 +151,7 @@ public class EditorEnvironment extends Editor {
 	}
 	
 	private void createLoopManager() {
-		
+		manager.show();
 		
 	}
 
