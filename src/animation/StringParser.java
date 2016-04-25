@@ -7,7 +7,7 @@ import java.util.stream.Collectors;
 public final class StringParser {
 
 
-    public StringParser() {
+    private StringParser() {
     }
 
     public static List<Double> convertStringToDoubleList(String string) {
