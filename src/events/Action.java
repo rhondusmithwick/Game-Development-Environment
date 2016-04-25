@@ -38,7 +38,7 @@ public class Action implements ISerializable {
         try {
             engine.eval(getScript(), parameters);
         } catch (ScriptException e) {
-            e.printStackTrace();
+            e.printStackTrace(); // TODO: handle
         }
     }
 

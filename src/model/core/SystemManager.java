@@ -27,7 +27,7 @@ public class SystemManager implements ISystemManager {
 
 	public SystemManager(ILevel level) {
 		this.universe = level;
-		this.universe.addMetadata("script", "Pong"); // TODO: remove
+		this.universe.addMetadata("script", "testing.demo.Pong"); // TODO: remove after GameManager implemented
 		this.universe.init(shell, this);
 	}
 
