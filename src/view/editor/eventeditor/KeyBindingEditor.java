@@ -27,7 +27,7 @@ import view.editor.Editor;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
 
-// TODO put more things into the eventeditor abstract, and refactor this into better code plz
+// TODO put Action setting and file picker on abstract
 public class KeyBindingEditor extends EventEditorTab 
 {
 	private boolean keyListenerIsActive;
@@ -39,33 +39,30 @@ public class KeyBindingEditor extends EventEditorTab
 	private Button listenToKey;
 	private Button chooseFileButton;
 	private Text keyInputText;
-	private final ResourceBundle myResources;
-	private Action currentAction;
+	private ResourceBundle myResources;
+	private Action action;
 	private Button createEventButton;
-	private LevelPicker levelPicker;
-	private ObservableList<ILevel> levelList;
-	private ArrayList<ILevel> selectedLevelList;
+	private String language;
 	
-	private Text createdEventText;
-	private Timer timer;
-	
+	private Text actionText;
 	
 	public KeyBindingEditor(String language, ObservableList<ILevel> levelList)
 	{
-		levelPicker = new LevelPicker(language, levelList, this);
-		this.levelList = levelList;
+		super(language, levelList);
+		this.language = language;
 		scrollPane = new ScrollPane();
 		myResources = ResourceBundle.getBundle(language);
 		keyListenerIsActive = false;
 		pane = new HBox(GUISize.EVENT_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
 		pane.setAlignment(Pos.TOP_LEFT);
-		inputBox = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
+		inputBox = new VBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
 		
+		action = null;
 		currentKey = null;
+		actionText = new Text(ResourceBundle.getBundle(language).getString("notYetDefined"));
 		pane.setOnKeyPressed(e -> keyWasPressed(e.getCode()));
-		selectedLevelList = new ArrayList<ILevel>(levelList);
-		timer = new Timer();
+		
 		populateLayout();
 	}
 	
@@ -87,7 +84,7 @@ public class KeyBindingEditor extends EventEditorTab
 		
 		inputBox.getChildren().addAll(listenToKey, keyInputText);
 		
-		pane.getChildren().add(levelPicker.getPane());	// Make levelPicker
+		pane.getChildren().add(getLevelPickerPane());	// Make levelPicker
 		pane.getChildren().add(inputBox);
 	}
 	
@@ -97,7 +94,7 @@ public class KeyBindingEditor extends EventEditorTab
 		// Adding now the Groovy Table
 		chooseFileButton = Utilities.makeButton(myResources.getString("chooseGroovy"), e -> getFile());
 		
-		container.getChildren().addAll(chooseFileButton);
+		container.getChildren().addAll(chooseFileButton, actionText);
 		
 		pane.getChildren().add(container);
 	}
@@ -105,38 +102,27 @@ public class KeyBindingEditor extends EventEditorTab
 	
 	private void makeEventButton()
 	{
-		createEventButton = new Button("Create EVENT");	// TODO resource
-		createdEventText = new Text("Event Created!");	// TODO resource
+		createEventButton = Utilities.makeButton(myResources.getString("makeEvent"), e -> createEvent());
 		
 		createEventButton.setOnAction(e -> createEvent());
-		createdEventText.setOpacity(0);
 		
-		pane.getChildren().add(createEventButton);
-		pane.getChildren().add(createdEventText);
+		pane.getChildren().addAll(createEventButton, getCreatedLevelText());
 	}
 	
 	private void createEvent()
 	{
-		// I think the Entity table now only shows entities through names
-		// So the trigger has to be created here.
+		if (getChosenLevels().isEmpty())
+			return;
 		
-		// Cycle through all levels that were chosen, get their Event System
-		// Make Triggers, and map them with action, on each of the Event Systems
-		
-		for ( ILevel level: selectedLevelList )
+		for ( ILevel level: getChosenLevels() )
 		{
 			level.getEventSystem().registerEvent(
-					new KeyTrigger(currentKey.getName()), currentAction);
+					new KeyTrigger(currentKey.getName()), action);
 		}
 		
-		createdEventText.setOpacity(1);
-		timer.scheduleAtFixedRate(new TimerTask() {
-			
-			@Override
-			public void run() {
-				disappearText();
-			}
-		}, 50, 50);		// TODO magic values
+		flashCreatedEventText();
+		
+		myResources = ResourceBundle.getBundle(language);
 	}
 
 	private void getFile()
@@ -146,16 +132,9 @@ public class KeyBindingEditor extends EventEditorTab
 		groovyFile = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("groovy", "*.groovy"), myResources.getString("selectGroovy"));
 		if ( groovyFile != null )
 		{
-			currentAction = new Action(groovyFile.getAbsolutePath());
-		}
-	}
-	
-	private void disappearText()
-	{
-		createdEventText.setOpacity(createdEventText.getOpacity() - 0.02);
-		if ( createdEventText.getOpacity() <= 0 )
-		{
-			timer.cancel();
+			String[] splits = groovyFile.getPath().split("voogasalad_MakeGamesGreatAgain/");			
+			
+			actionSet(groovyFile.getName(), new Action(splits[splits.length - 1]));
 		}
 	}
 	
@@ -170,6 +149,13 @@ public class KeyBindingEditor extends EventEditorTab
 	{
 		return scrollPane;
 	}
+	
+	private void actionSet(String actionString, Action action)
+	{
+		this.action = action;
+		actionText.setText(myResources.getString("action") + actionString);
+	}
+	
 
 	@Override
 	public void populateLayout() 
@@ -186,9 +172,8 @@ public class KeyBindingEditor extends EventEditorTab
 	public void updateEditor() {}
 
 	@Override
-	public void choseLevels(List<ILevel> levels) 
+	public void actionOnChosenLevels(List<ILevel> levels) 
 	{
-		// TODO Auto-generated method stub
 		
 	}
 

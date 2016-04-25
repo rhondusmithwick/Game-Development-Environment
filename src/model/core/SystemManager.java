@@ -1,7 +1,5 @@
 package model.core;
 
-import java.util.List;
-
 import api.IEntity;
 import api.IEventSystem;
 import api.ILevel;
@@ -18,13 +16,17 @@ import model.entity.Level;
  */
 public class SystemManager implements ISystemManager {
 
-	private List<String> details;
 	private GroovyShell shell = new GroovyShell(); // CANNOT BE SCRIPT ENGINE
 	private ILevel universe = new Level();
 	private ILevel sharedUniverse = new Level();
 	private boolean isRunning = true;
 
 	public SystemManager() {
+		this(new Level());
+	}
+
+	public SystemManager(ILevel level) {
+		this.universe = level;
 		this.universe.addMetadata("script", "Pong"); // TODO: remove
 		this.universe.init(shell, this);
 	}
@@ -38,6 +40,7 @@ public class SystemManager implements ISystemManager {
 	public void step(double dt) {
 		if (this.isRunning) {
 			universe.update(dt);
+			// System.out.println(universe.getAllEntities());
 		}
 	}
 

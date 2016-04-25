@@ -9,9 +9,7 @@ import javafx.beans.value.ObservableValue;
 
 /***
  * @author Anirudh Jonnavithula, Carolyn Yao Implements a ChangeListener that
- *         listens to change in a SimpleObjectProperty for now, signals
- *         EventSystem potential subclasses: PropertyTrigger, KeyTrigger,
- *         CollisionTrigger?, OtherEventTrigger
+ *         listens to change in a SimpleObjectProperty.
  */
 
 public class PropertyTrigger extends Trigger {
@@ -24,7 +22,7 @@ public class PropertyTrigger extends Trigger {
         this.componentClass = componentClass;
         this.propertyName = propertyName;
     }
-
+    
     @Override
     public void changed(ObservableValue arg0, Object arg1, Object arg2) {
         setChanged();
@@ -32,13 +30,24 @@ public class PropertyTrigger extends Trigger {
     }
 
     @Override
+    @Deprecated
     public void clearListener(ILevel universe, InputSystem inputSystem) {
         getProperty(universe).removeListener(this);
-
+    }
+    
+    @Override
+    public void clearListener(ILevel universe) {
+        getProperty(universe).removeListener(this);
     }
 
     @Override
+    @Deprecated
     public void addHandler(ILevel universe, InputSystem inputSystem) {
+        getProperty(universe).addListener(this);
+    }
+
+    @Override
+    public void addHandler(ILevel universe) {
         getProperty(universe).addListener(this);
     }
 

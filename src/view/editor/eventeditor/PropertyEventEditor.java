@@ -12,6 +12,7 @@ import api.IEntity;
 import api.ILevel;
 import events.Action;
 import events.PropertyTrigger;
+import groovy.ui.SystemOutputInterceptor;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -30,7 +31,6 @@ public class PropertyEventEditor extends EventEditorTab
 	private final ScrollPane scrollPane;
 	private final VBox pane;
 	private final ResourceBundle myResources;
-	private final LevelPicker levelPicker;
 	
 	private Text triggerText;
 	private Text actionText;
@@ -43,23 +43,18 @@ public class PropertyEventEditor extends EventEditorTab
 	
 	private Action action;
 	
-	
 	private String chosenEntityName;
 	private IComponent chosenComponent;
 	private SimpleObjectProperty<?> property;
 	
 	private boolean triggerOK, actionOK;
-	private ArrayList<ILevel> selectedLevelList;
 	
 	private final String language;
 	
-	private Text createdEventText;
-	private Timer timer;
-	
 	public PropertyEventEditor(String language, ObservableList<IEntity> masterList, ObservableList<ILevel> levelList)
 	{
-		// this.levelList = levelList;
-		levelPicker = new LevelPicker(language, levelList, this);
+		super(language, levelList);
+		
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
 		pane.setAlignment(Pos.TOP_LEFT);
@@ -72,7 +67,7 @@ public class PropertyEventEditor extends EventEditorTab
 		
 		triggerText = new Text();
 		actionText = new Text();
-		createdEventText = new Text(myResources.getString("eventMade"));
+		
 		chooseFileButton = new Button();
 		makeEventButton = new Button();
 		
@@ -85,8 +80,6 @@ public class PropertyEventEditor extends EventEditorTab
 		choseLevels(new ArrayList<ILevel>(levelList));
 		
 		scrollPane = new ScrollPane(pane);
-		
-		timer = new Timer();
 	}
 
 	private VBox makeGroovySide()
@@ -106,24 +99,17 @@ public class PropertyEventEditor extends EventEditorTab
 		groovyFile = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("groovy", "*.groovy"), myResources.getString("selectGroovy"));
 		if ( groovyFile != null )
 		{
-			actionSet(groovyFile.getName(), new Action(groovyFile.toString()));
+			String[] splits = groovyFile.getPath().split("voogasalad_MakeGamesGreatAgain/");			
+			
+			actionSet(groovyFile.getName(), new Action(splits[splits.length - 1]));
 		}
 	}
 
-	private void disappearText()
-	{
-		createdEventText.setOpacity(createdEventText.getOpacity() - 0.02);
-		if ( createdEventText.getOpacity() <= 0 )
-		{
-			timer.cancel();
-		}
-	}
-	
 	private void makeTables()
 	{
 		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
 
-		container.getChildren().add(levelPicker.getPane());
+		container.getChildren().add(getLevelPickerPane());
 		container.getChildren().add(tableManager.getContainer());	
 		
 		pane.getChildren().add(container);
@@ -135,18 +121,17 @@ public class PropertyEventEditor extends EventEditorTab
 		
 		resetTrigger();
 		resetAction();
-		createdEventText.setOpacity(0);
 		
-		makeEventButton = Utilities.makeButton(myResources.getString("makeEvent"), e -> makeEvent());
+		makeEventButton = Utilities.makeButton(myResources.getString("makeEvent"), e -> createEvent());
 		makeEventButton.setDisable(true);
 		
 		container.getChildren().addAll(triggerText, actionText, makeEventButton);
 		container.getChildren().add(makeGroovySide());
-		container.getChildren().add(createdEventText);
+		container.getChildren().add(getCreatedLevelText());
 		pane.getChildren().add(container);
 	}
 	
-	private void makeEvent()
+	private void createEvent()
 	{
 		// I think the Entity table now only shows entities through names
 		// So the trigger has to be created here.
@@ -154,7 +139,10 @@ public class PropertyEventEditor extends EventEditorTab
 		// Cycle through all levels that were chosen, get their Event System
 		// Make Triggers, and map them with action, on each of the Event Systems
 		
-		for ( ILevel level: selectedLevelList )
+		if (getChosenLevels().isEmpty())
+			return;
+		
+		for ( ILevel level: getChosenLevels() )
 		{
 			for (IEntity entity: level.getAllEntities())
 			{
@@ -167,14 +155,7 @@ public class PropertyEventEditor extends EventEditorTab
 			}
 		}
 		
-		createdEventText.setOpacity(1);
-		timer.scheduleAtFixedRate(new TimerTask() {
-			
-			@Override
-			public void run() {
-				disappearText();
-			}
-		}, 50, 50);		// TODO magic values
+		flashCreatedEventText();
 		
 		triggerOK = false;
 		actionOK = false;
@@ -230,10 +211,9 @@ public class PropertyEventEditor extends EventEditorTab
 	public void updateEditor() {}
 
 	@Override
-	public void choseLevels(List<ILevel> levels) 
+	public void actionOnChosenLevels(List<ILevel> levels) 
 	{
 		tableManager.levelWasPicked(levels);
-		this.selectedLevelList = (ArrayList<ILevel>) levels;
 	}
 	
 }
