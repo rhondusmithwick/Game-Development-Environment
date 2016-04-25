@@ -2,15 +2,20 @@ package animation;
 
 import javafx.animation.Animation;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ListChangeListener;
+import javafx.collections.ObservableList;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.Dialog;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
@@ -19,6 +24,7 @@ import javafx.util.Duration;
 import animation.Dragger;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -52,7 +58,7 @@ class SpriteUtility {
         initButtons();
     }
 
-    private void reinitializeGui() {
+	private void reinitializeGui() {
         gui.getSpriteGroup().getChildren().clear();
         animationMap.clear();
         initNewImage();
@@ -109,25 +115,35 @@ class SpriteUtility {
             if (removed) {
                 gui.getSpriteGroup().getChildren().remove(frameToDelete);
                 gui.getSpriteGroup().getChildren().removeAll(rectangleLogic.getLabelList());
+                repopulateButtons();
                 repopulateLabels();
-                initAnimationProperties();
+               // initAnimationProperties();
             }
         }
     }
     
-    private void repopulateLabels() {
+    private void repopulateButtons() {
+		rectangleLogic.getButtonList().clear();
+		
+	}
+
+	private void repopulateLabels() {
 		rectangleLogic.getLabelList().clear();
+		rectangleLogic.getButtonList().clear();
 		for (Rectangle rect : rectangleLogic.getRectangleList()){
 			Label label = makeLabel(rect,rectangleLogic.getRectangleList().indexOf(rect)+1);
 			rectangleLogic.getLabelList().add(label);
+			Button button = UtilityUtilities.makeButton(label.getText(),e -> popUpProperties(Integer.parseInt(label.getText())));
+			rectangleLogic.getButtonList().add(button);
 		}
+		gui.updateButtonDisplay(rectangleLogic.getButtonList());
 		gui.getSpriteGroup().getChildren().addAll(rectangleLogic.getLabelList());
 	}
 
     private void initAnimationProperties() {
         gui.getButtonBox().getChildren().remove(imageLogic.getPreviewImageView());
         gui.initAnimationNameAndDurationFields(this);
-        rectangleLogic.getRectangleList().stream().forEach(gui::displayRectangleListProperties);
+        //rectangleLogic.getRectangleList().stream().forEach(gui::displayRectangleListProperties);
     }
 
 
@@ -185,10 +201,22 @@ class SpriteUtility {
         rectangleLogic.getRectangleList().add(clone);
         Label label = makeLabel(clone, rectangleLogic.getRectangleList().size());
         rectangleLogic.getLabelList().add(label);
-        gui.addRectangleToDisplay(clone,label); 
+        Button button = UtilityUtilities.makeButton("Frame #" + label.getText(),e -> popUpProperties(Integer.parseInt(label.getText())));
+        rectangleLogic.getButtonList().add(button);
+
+        gui.addRectangleToDisplay(clone,label, button);
     }
 
-    private Label makeLabel(Rectangle clone, int frameID){
+    @SuppressWarnings("rawtypes")
+	private Object popUpProperties(int id) {
+		Dialog dialog = UtilityUtilities.popUp("Frame Properties","Edit Frame Properties.");
+		VBox box = gui.displayRectangleListProperties(rectangleLogic.getRectangleList().get(id-1));
+		dialog.getDialogPane().setContent(box);
+		dialog.showAndWait();
+		return null;
+	}
+
+	private Label makeLabel(Rectangle clone, int frameID){
     		Label label = new Label(String.valueOf(frameID));
     		label.setFont(new Font("Arial", 30));
     		label.setTextFill(Color.RED);

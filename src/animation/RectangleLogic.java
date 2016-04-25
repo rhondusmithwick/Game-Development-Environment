@@ -1,6 +1,9 @@
 package animation;
 
 import javafx.animation.Animation;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
@@ -31,6 +34,7 @@ import static animation.StringConstants.SELECT_EFFECT;
 public class RectangleLogic {
     private final List<Rectangle> rectangleList = new ArrayList<>();
     private final List<Label> labelList = new ArrayList<>();
+    private final ObservableList<Button> buttonList = FXCollections.observableArrayList();
     private final RectangleDrawer rectDrawer;
     private Rectangle selectedRectangle;
 
@@ -42,8 +46,8 @@ public class RectangleLogic {
     public RectangleLogic(RectangleDrawer rectDrawer) {
         this.rectDrawer = rectDrawer;
     }
-
-    /**
+    
+	/**
      * Get the animation map describing the rectangles.
      *
      * @return a map describing the rectangles
@@ -195,4 +199,9 @@ public class RectangleLogic {
     public List<Label> getLabelList(){
     		return labelList;
     }
+
+	public ObservableList<Button> getButtonList() {
+		return buttonList;
+	}
+
 }

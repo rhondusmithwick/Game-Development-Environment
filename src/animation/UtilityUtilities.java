@@ -19,6 +19,7 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
+import javafx.scene.control.Dialog;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
@@ -28,6 +29,7 @@ import javafx.scene.control.TitledPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
+import javafx.util.Pair;
 import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
@@ -350,5 +352,14 @@ public class UtilityUtilities {
 	        slider.valueProperty().addListener(changer);
 	        return slider;
 	    }
+	    
+		@SuppressWarnings("rawtypes")
+		public static Dialog popUp(String title, String header){
+			Dialog<Pair<String, String>> dialog = new Dialog<>();
+			dialog.setTitle(title);
+			dialog.setHeaderText(header);
+			dialog.getDialogPane().getButtonTypes().add(ButtonType.OK);
+			return dialog;
+			}
 
 }

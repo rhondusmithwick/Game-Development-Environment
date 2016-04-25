@@ -3,6 +3,7 @@ package animation;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
@@ -16,9 +17,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.Font;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 
@@ -43,6 +42,8 @@ class GUI {
     private final BorderPane mainPane = new BorderPane();
     private final VBox animationPropertiesBox = new VBox();
     private final VBox buttonBox = new VBox();
+    private final VBox frameButtonBox = new VBox();
+    private final VBox leftBox = new VBox();
     private final Group spriteGroup = new Group();
     private final ScrollPane spriteScroll = new ScrollPane(spriteGroup);
     private final Scene scene = new Scene(mainPane, DoubleConstants.WIDTH.get(), DoubleConstants.HEIGHT.get());
@@ -59,9 +60,11 @@ class GUI {
     public GUI(SimpleObjectProperty<Boolean> changeColorProperty) {
         scene.getStylesheets().add(STYLE_SHEET.get());
         this.changeColorProperty.bindBidirectional(changeColorProperty);
+        leftBox.getChildren().add(animationPropertiesBox);
+        leftBox.getChildren().add(new ScrollPane(frameButtonBox));
         mainPane.setCenter(spriteScroll);
         mainPane.setRight(new ScrollPane(buttonBox));
-        mainPane.setLeft(new ScrollPane(animationPropertiesBox));
+        mainPane.setLeft(leftBox);
     }
 
     public void initAnimationNameAndDurationFields(SpriteUtility spriteUtility) {
@@ -79,19 +82,20 @@ class GUI {
                 durationValueLabel);
     }
 
-    public void addRectangleToDisplay(Rectangle clone, Label label) {
+    public void addRectangleToDisplay(Rectangle clone, Label label, Button button) {
         spriteGroup.getChildren().add(clone);
         spriteGroup.getChildren().add(label);  
-        displayRectangleListProperties(clone);
+        frameButtonBox.getChildren().add(button);
     }
 
-    public void displayRectangleListProperties(Rectangle clone) {
+    public VBox displayRectangleListProperties(Rectangle clone) {
         List<String> propertyList = Arrays.asList("x", "y", "width", "height");
+        VBox box = new VBox();
         for (String propertyName : propertyList) {
             Label label = new Label(propertyName);
             TextField field = new TextField();
             field.setMinWidth(50);
-            animationPropertiesBox.getChildren().addAll(label, field);
+            box.getChildren().addAll(label, field);
             try {
                 Method method = clone.getClass().getMethod(propertyName + "Property");
                 DoubleProperty rectProperty = (DoubleProperty) method.invoke(clone);
@@ -101,6 +105,7 @@ class GUI {
                 e.printStackTrace();
             }
         }
+		return box;
     }
 
     public void initNewImage(ImageView imageView) {
@@ -158,6 +163,12 @@ class GUI {
     public Button getActivateTransparencyButton() {
         return activateTransparencyButton;
     }
+
+	public void updateButtonDisplay(List<Button> buttonList) {
+		frameButtonBox.getChildren().clear();
+		frameButtonBox.getChildren().addAll(buttonList);
+	}
+	
 }
 
 

@@ -15,7 +15,7 @@ import javafx.stage.Stage;
 import java.io.File;
 import java.util.*;
 
-import animation.AnimationUtilities;
+import animation.UtilityUtilities;
 
 public class DragList {
 	
