@@ -13,13 +13,20 @@ import view.enums.DefaultStrings;
 public class EntityFactory {
 	
 	private final ComponentFactory componentFactory = new ComponentFactory();
-	public IEntity createEntity(String template, String language){
+	
+	public IEntity createEntity(String language, String template){
 		
-		IEntity entity = new Entity();
+		IEntity entity = createEntity();
 		entity.loadSpecsFromPropertiesFile(DefaultStrings.TEMPLATE_BUNDLE_LOC.getDefault() + template);
 		Map<Class<? extends IComponent>, Integer> numComponents = entity.getSpecs();
 		numComponents.keySet().stream().forEach(e->addComponent(e, entity, numComponents, language));
 		return entity;
+	}
+	
+
+	public IEntity createEntity(){
+		return new Entity();
+		
 	}
 
 
