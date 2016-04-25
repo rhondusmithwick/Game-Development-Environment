@@ -87,6 +87,7 @@ public class Utilities {
 		alert.show();
 	}
 
+	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static TableView<String> makeSingleColumnTable(String title, double width) {
 		TableView<String> table = new TableView<String>();
 		table.setPrefWidth(width);
@@ -197,6 +198,28 @@ public class Utilities {
 	}
 
 	/**
+
+	 * Directs file chooser box to the appropriate directory to use files from
+	 * this project
+	 * 
+	 * @return File directory: local directory being returned
+	 */
+
+	@SuppressWarnings("unused")
+	private static File getLocalDir() {
+		ProtectionDomain pd = Utilities.class.getProtectionDomain();
+		CodeSource cs = pd.getCodeSource();
+		URL localDir = cs.getLocation();
+		File directory;
+		try {
+			directory = new File(localDir.toURI());
+		} catch (URISyntaxException e) {
+			directory = new File(localDir.getPath());
+		}
+		return directory;
+	}
+
+	/**
 	 * Shows a text input dialog where user can enter in text of their choosing.
 	 * User response is returned, i.e. the entered text
 	 * 
@@ -295,7 +318,12 @@ public class Utilities {
 		File[] fileList = directory.listFiles();
 		for (File file : fileList) {
 			String name = file.getName();
-			files.add(name.substring(0, name.lastIndexOf('.')));
+			if(name.contains(".")){
+				files.add(name.substring(0, name.lastIndexOf('.')));
+			}
+			else{
+				files.add(name);
+			}
 		}
 		return files;
 	}

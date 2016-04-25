@@ -1,11 +1,5 @@
 package model.component.visual;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.util.Arrays;
-import java.util.List;
-
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Rectangle2D;
@@ -13,6 +7,12 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utility.SingleProperty;
 import utility.TwoProperty;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * Component to hold an imagePath.
@@ -34,9 +34,8 @@ public class ImagePath implements IComponent {
 	private double timeSinceLastFrame, elapsedTime;
 	private final double frameDuration, totalDuration;
 	private String spriteName;
-	private static final String PROPERTIES_DIR = "spriteProperties."; // TODO:
-																		// resource
-																		// file
+	// TODO: resource file
+	private static final String PROPERTIES_DIR = "spriteProperties.";
 	private int zLevel = 0;
 
 	public ImagePath() {
@@ -50,7 +49,7 @@ public class ImagePath implements IComponent {
 	 *            starting value
 	 */
 	public ImagePath(String imagePath) { // TODO: place default in resource file
-		this(null, imagePath, 0.0, 0.0, new Rectangle2D(0, 0, 0, 0), false, 0, 0, 0);
+		this("John Doe", imagePath, 0.0, 0.0, new Rectangle2D(0, 0, 0, 0), false, 0, 0, 0);
 	}
 
 	// TODO: IMPORTANT NOTE: I forgot to account for columns!
@@ -63,26 +62,15 @@ public class ImagePath implements IComponent {
 	 *            width of image
 	 * @param imageHeight
 	 *            height of image
-	 * @param spritesheetPath
+	 * @param imagePath
 	 *            String path to spritesheet
-	 * @param width
-	 *            width of viewport
-	 * @param height
-	 *            height of viewport
-	 * @param offsetX
-	 *            offset in x-direction
-	 * @param offsetX
-	 *            offset in y-direction
 	 */
 	public ImagePath(String spriteName, String imagePath, double imageWidth, double imageHeight, Rectangle2D viewport,
 			boolean isAnimated, double frameDurationMillis, double totalDurationMillis, int maxFrameIndex) {
 		this.imagePathProperty = new SingleProperty<>("ImagePath", imagePath);
 		this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", imageHeight);
 		this.spriteName = spriteName;
-		File resource = new File(imagePath);
-		Image image = new Image(resource.toURI().toString());
-		this.imageView = new ImageView(image);
-		this.imageView.setPreserveRatio(true);
+		this.imageView = this.createImageView(imagePath);
 		this.viewport = viewport;
 		this.frameIndex = 0;
 		this.isAnimated = isAnimated;
@@ -90,6 +78,16 @@ public class ImagePath implements IComponent {
 		this.frameDuration = frameDurationMillis;
 		this.totalDuration = totalDurationMillis;
 		this.maxFrameIndex = maxFrameIndex;
+	}
+
+	private ImageView createImageView(String imagePath) {
+		File resource = new File(imagePath);
+		Image image = new Image(resource.toURI().toString());
+		ImageView imageView = new ImageView(image);
+		imageView.setPreserveRatio(true);
+		imageView.setFitWidth(this.getImageWidth());
+		imageView.setFitHeight(this.getImageHeight());
+		return imageView;
 	}
 
 	/**
@@ -210,7 +208,8 @@ public class ImagePath implements IComponent {
 	/**
 	 * Sets the z-layer order.
 	 *
-	 * @param z the z-layer order (1=>send to back, 1=>send to front)
+	 * @param z
+	 *            the z-layer order (1=>send to back, 1=>send to front)
 	 */
 	public void setZLevel(int z) {
 		this.zLevel = z;
@@ -227,13 +226,7 @@ public class ImagePath implements IComponent {
 
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
 		in.defaultReadObject();
-		// reconstruct imageView
-		File resource = new File(this.imagePathProperty().get());
-		Image image = new Image(resource.toURI().toString());
-		this.imageView = new ImageView(image);
-		imageView.setFitHeight(imageHeightProperty().get());
-		imageView.setFitWidth(imageWidthProperty().get());
-		imageView.setPreserveRatio(true);
+		this.imageView = this.createImageView(getImagePath());
 	}
 
 	public String getSpriteProperties() {

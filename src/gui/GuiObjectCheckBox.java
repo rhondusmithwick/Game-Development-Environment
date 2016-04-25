@@ -6,7 +6,6 @@ import javafx.beans.property.Property;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.CheckBox;
-import javafx.scene.control.Control;
 
 public class GuiObjectCheckBox extends GuiObject{
 	private CheckBox checkBox;
@@ -30,11 +29,6 @@ public class GuiObjectCheckBox extends GuiObject{
 
 	private void addHandler(EventHandler<ActionEvent> event) {
 		checkBox.setOnAction(event);
-	}
-
-	@Override
-	public Control getControl() {
-		return checkBox;
 	}
 
 

@@ -3,7 +3,6 @@ package model.component.character;
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 import utility.SingleProperty;
-
 import java.util.List;
 
 
@@ -51,11 +50,6 @@ public class Attack implements IComponent {
     @Override
     public String toString() {
         return String.format("Attack: %s", getAttack());
-    }
-
-    @Override
-    public boolean unique() {
-        return true;
     }
 
     @Override

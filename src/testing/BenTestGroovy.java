@@ -1,9 +1,6 @@
 package testing;
 
-import java.util.Collection;
-
 import api.IEntity;
-import api.ILevel;
 import api.ILevel;
 import api.IPhysicsEngine;
 import javafx.animation.Animation;
@@ -20,6 +17,8 @@ import model.component.movement.Position;
 import model.component.visual.ImagePath;
 import model.entity.Level;
 import model.physics.PhysicsEngine;
+
+import java.util.Collection;
 
 public class BenTestGroovy extends Application {
 	// private final ScriptEngine engine = new

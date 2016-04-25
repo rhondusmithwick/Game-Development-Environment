@@ -4,7 +4,6 @@ import java.awt.Desktop;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-
 import api.ISerializable;
 import javafx.beans.property.ListProperty;
 import javafx.beans.property.Property;
@@ -12,7 +11,6 @@ import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
-import javafx.scene.control.Control;
 
 public class GuiObjectURLOpener extends GuiObject{
 		private Button button;
@@ -26,6 +24,7 @@ public class GuiObjectURLOpener extends GuiObject{
 			
 		}
 
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		private void addHandler() {
 			button.setOnAction(new EventHandler() {
 
@@ -60,12 +59,6 @@ public class GuiObjectURLOpener extends GuiObject{
 
 		@Override
 		public Object getCurrentValue() {
-			// TODO Auto-generated method stub
-			return null;
-		}
-
-		@Override
-		public Control getControl() {
 			// TODO Auto-generated method stub
 			return null;
 		}

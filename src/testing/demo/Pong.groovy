@@ -1,7 +1,10 @@
 package testing.demo;
 
 import api.ILevel
+import model.physics.PhysicsEngine
+import api.IGameScript
 import api.ILevel
+import api.IPhysicsEngine
 import api.ISystemManager
 
 /**
@@ -9,28 +12,25 @@ import api.ISystemManager
  * @author Tom
  *
  */
-public class Pong {
+public class Pong implements IGameScript {
+	private ISystemManager game;
+	private ILevel universe;
+	private IPhysicsEngine physics = new PhysicsEngine();
 
-	//	private Group root;
+	public void init(GroovyShell shell, ISystemManager game) {
+		this.game = game;
+		this.universe = game.getEntitySystem();
 
-	public Pong(GroovyShell shell, ISystemManager model) {
 		// TODO: figure out why these don't work
 		//		this.engine.put("game", this.model);
 		//		this.engine.put("universe", this.model.getEntitySystem());
 		//		this.engine.put("demo", new GroovyDemoTest());
-		shell.setVariable("game", model);
-		ILevel universe = model.getEntitySystem();
+		shell.setVariable("game", this.game);
 		shell.setVariable("universe", universe);
-		GroovyDemoTest test = new GroovyDemoTest();
-		shell.setVariable("demo", test);
-	}
-
-	public void init() {
-
+		shell.setVariable("demo", new GroovyDemoTest());
 	}
 
 	public void update(double dt) {
-		// TODO: call under level hierarchy
-		//		Collection<IEntity> entities = universe.getEntitiesWithComponents(Position.class, ImagePath.class);
+		this.physics.update(universe, dt);
 	}
 }

@@ -3,7 +3,6 @@ package view.editor.gameeditor;
 import api.IEditor;
 import api.IEntity;
 import api.ISerializable;
-import enums.GUISize;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
@@ -11,6 +10,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import view.Authoring;
 import view.editor.EditorFactory;
+import view.enums.GUISize;
 
 public abstract class ObjectDisplay {
 	
@@ -50,7 +50,6 @@ public abstract class ObjectDisplay {
 	
 	@SuppressWarnings("unchecked")
 	public void createEditor(Class<?> editName, ISerializable toEdit, ObservableList<ISerializable> otherList) {
-		System.out.print(toEdit);
 		IEditor editor = editFact.createEditor(editName, language, toEdit, (ObservableList<ISerializable>) ((ObservableList<?>) masterEntityList), otherList);
 		editor.populateLayout();
 		authEnv.createTab(editor.getPane(), editName.getSimpleName(), true);
