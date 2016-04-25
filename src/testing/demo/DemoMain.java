@@ -27,7 +27,7 @@ public class DemoMain extends Application {
 		myStage.setWidth(GUISize.MAIN_SIZE.getSize());
 		myStage.setHeight(GUISize.MAIN_SIZE.getSize());
 
-		View view = new View(new SystemManager(), new Pane());
+		View view = new View(new SystemManager(), null); // TODO: don't pass in ScrollPane
 		Pane pane = view.getPane();
 //		Group root = new Group();
 		Scene scene = new Scene(pane, 500, 500);
