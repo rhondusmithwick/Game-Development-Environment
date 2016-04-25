@@ -9,13 +9,11 @@ import datamanagement.XMLReader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Callback;
@@ -34,7 +32,7 @@ public class Vooga extends StartUpMenu {
 	private ResourceBundle myResources;
 	private ComboBox<String> languages;
 	private ScrollPane root;
-	private ComboBox<HBox> gameChooser;
+	private ComboBox<String> gameChooser;
 	private Authoring authEnv;
 
 	public Vooga(Stage stage) {
@@ -81,11 +79,7 @@ public class Vooga extends StartUpMenu {
 	}
 
 	private String getFile() {
-		HBox choosen = gameChooser.getSelectionModel().getSelectedItem();
-		if(choosen == null){
-			return null;
-		}
-		return ((Label) choosen.getChildren().get(1)).getText();
+		return gameChooser.getSelectionModel().getSelectedItem();
 	}
 
 
@@ -135,29 +129,47 @@ public class Vooga extends StartUpMenu {
 
 	private void gameChooseDialog(){
 		List<String> games = new ArrayList<>(Utilities.getAllFromDirectory(DefaultStrings.CREATE_LOC.getDefault()));
-		List<HBox> gameDisp = new ArrayList<>();
-		games.forEach(e->createHBox(gameDisp, e));
-		gameChooser = new ComboBox<HBox>();
+		gameChooser = new ComboBox<>();
 		gameChooser.setPromptText(myResources.getString("chooseGame"));
-		gameChooser.getItems().addAll(gameDisp);
+		setUpHBox();
+		gameChooser.getItems().addAll(games);
+		gameChooser.setButtonCell(gameChooser.getCellFactory().call(null));
+
 		super.addNodesToVBox(Arrays.asList(gameChooser));
 	}
 
+	public void setUpHBox(){
+		gameChooser.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
+			@Override
+			public ListCell<String> call(ListView<String> p) {
+				return new ListCell<String>() {
+					@Override
+					protected void updateItem(String item, boolean empty) {
+						if(item==null){
+							return;
+						}
+						List<String> details = new XMLReader<List<String>>().readSingleFromFile(DefaultStrings.CREATE_LOC.getDefault() + item + DefaultStrings.METADATA_LOC.getDefault());
+						String name = details.get(Indexes.GAME_NAME.getIndex()) + ": " + details.get(Indexes.GAME_DESC.getIndex());
+						super.updateItem(name, empty);
+						setText(name);
+						ImageView imageView = null;
+						try {
+							File file = new File(details.get(Indexes.GAME_ICON.getIndex()));
+							imageView = new ImageView( new Image(file.toURI().toString()) );
+						} catch(Exception e) {
+							e.printStackTrace();
+							return;
+						}
 
-	private void createHBox(List<HBox> gameDisp, String gameName) {
-		HBox disp = new HBox();
-		List<String> list = new XMLReader<List<String>>().readSingleFromFile(DefaultStrings.CREATE_LOC.getDefault() + gameName + DefaultStrings.METADATA_LOC.getDefault());
-		Label title = new Label(list.get(Indexes.GAME_NAME.getIndex()));
-		Label desc = new Label(list.get(Indexes.GAME_DESC.getIndex()));
-		File file = new File(list.get(Indexes.GAME_ICON.getIndex()));
-		ImageView image = new ImageView( new Image(file.toURI().toString()) );
-		disp.getChildren().addAll(image, title, desc);
-		gameDisp.add(disp);
+						imageView.setFitHeight(30);
+						imageView.setPreserveRatio(true);
+						setGraphic(imageView);
 
-
+					}
+				};
+			}
+		});
 	}
-
-
 
 
 
