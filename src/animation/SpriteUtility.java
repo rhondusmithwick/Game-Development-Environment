@@ -4,6 +4,7 @@ import javafx.animation.Animation;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
@@ -16,6 +17,7 @@ import view.Dragger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 import static animation.SaveHandler.saveAnimations;
 import static animation.SaveHandler.saveImage;
@@ -40,6 +42,7 @@ class SpriteUtility {
     private final RectangleLogic rectangleLogic = new RectangleLogic(rectDrawer);
     private final ImageLogic imageLogic = new ImageLogic();
     private final Map<String, Map<String, String>> animationMap = new HashMap<>();
+    private final ResourceBundle utilityResources = ResourceBundle.getBundle("animation.utilityAlerts");
     private Animation previewAnimation;
 
     public void init(Stage stage) {
@@ -63,18 +66,29 @@ class SpriteUtility {
     }
 
     private void initButtons() {
-        gui.addButton(makeButton(SAVE_ANIMATIONS_TO_FILE.get(), e -> saveAnimations(imageLogic.getSpriteSheetPath(), animationMap)), gui.getButtonBox());
-        gui.addButton(makeButton(NEW_ANIMATION.get(), e -> reInitialize()), gui.getButtonBox());
-        gui.addButton(makeButton(NEW_SPRITE.get(), e -> reinitializeGui()), gui.getButtonBox());
-        gui.addButton(makeButton(PREVIEW_ANIMATION.get(), e -> animationPreview()), gui.getButtonBox());
-        gui.addButton(makeButton(SAVE_ANIMATION.get(), e -> saveAnimation()), gui.getButtonBox());
-        gui.addButton(makeButton(ADD_FRAME.get(), e -> addFrame()), gui.getButtonBox());
-        gui.addButton(makeButton(DELETE_FRAME.get(), e -> deleteFrame(rectangleLogic.getSelectedRectangle())), gui.getButtonBox());
+        gui.addButton(makeButton(utilityResources.getString("SaveToFile"), e -> saveAnimations(imageLogic.getSpriteSheetPath(), animationMap)), gui.getButtonBox());
+        gui.addButton(makeButton(utilityResources.getString("NewAnimation"), e -> newAnimation()), gui.getButtonBox());
+        gui.addButton(makeButton(utilityResources.getString("NewSprite"), e -> newSprite()), gui.getButtonBox());
+        gui.addButton(makeButton(utilityResources.getString("PreviewAnimation"), e -> animationPreview()), gui.getButtonBox());
+        gui.addButton(makeButton(utilityResources.getString("SaveAnimation"), e -> saveAnimation()), gui.getButtonBox());
+        gui.addButton(makeButton(utilityResources.getString("AddFrame"), e -> addFrame()), gui.getButtonBox());
+        gui.addButton(makeButton(utilityResources.getString("DeleteFrame"), e -> deleteFrame(rectangleLogic.getSelectedRectangle())), gui.getButtonBox());
         gui.addButton(gui.getActivateTransparencyButton(), gui.getButtonBox());
-        gui.addButton(makeButton("Save Image", e -> saveImage(imageLogic.getSpriteImage())), gui.getButtonBox());
+        gui.addButton(makeButton(utilityResources.getString("SaveImage"), e -> saveImage(imageLogic.getSpriteImage())), gui.getButtonBox());
     }
 
-    public void saveAnimation(String name, Map<String, String> animationMap) {
+	private void newSprite() {
+		if(UtilityUtilities.showAlert(utilityResources.getString("NewSpriteTitle"), utilityResources.getString("NewSpriteHeader"), utilityResources.getString("NewSpriteMessage"), AlertType.CONFIRMATION))
+		reinitializeGui();
+	}
+
+    private void newAnimation() {
+    	if(UtilityUtilities.showAlert(utilityResources.getString("NewAlertTitle"), utilityResources.getString("NewAlertHeader"),utilityResources.getString("NewAlertMessage"), AlertType.CONFIRMATION)){
+		reInitialize();
+    	}
+	}
+
+	public void saveAnimation(String name, Map<String, String> animationMap) {
         this.animationMap.put(name, animationMap);
     }
 
@@ -84,7 +98,13 @@ class SpriteUtility {
         Map<String, String> moveAnimationMap = rectangleLogic.getAnimationMap();
         moveAnimationMap.put("duration", String.format("%.2f", duration));
         String name = gui.getAnimationName().getText();
-        saveAnimation(name, moveAnimationMap);
+        if (name.contains(" ")){ 
+        	UtilityUtilities.showError(utilityResources.getString("SaveErrorTitle"), utilityResources.getString("SaveErrorMessage"));
+        }else{
+        	if(UtilityUtilities.showAlert(utilityResources.getString("SaveAlertTitle"), utilityResources.getString("SaveAlertHeader"), utilityResources.getString("SaveAlertMessage"), AlertType.CONFIRMATION));{
+        		saveAnimation(name, moveAnimationMap);
+        	}
+        	}
     }
 
     private void deleteFrame(Rectangle frameToDelete) {
