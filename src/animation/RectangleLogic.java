@@ -9,6 +9,7 @@ import javafx.util.Duration;
 import view.Dragger;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -47,15 +48,25 @@ public class RectangleLogic {
      */
     public Map<String, String> getAnimationMap() {
         Map<String, String> moveAnimationMap = new HashMap<>();
-        List<Double> xList = getPropertyList(Rectangle::getX);
-        moveAnimationMap.put("xList", xList.toString());
-        List<Double> yList = getPropertyList(Rectangle::getY);
-        moveAnimationMap.put("yList", yList.toString());
-        List<Double> widthList = getPropertyList(Rectangle::getWidth);
-        moveAnimationMap.put("width", widthList.toString());
-        List<Double> heightList = getPropertyList(Rectangle::getHeight);
-        moveAnimationMap.put("height", heightList.toString());
+        Map<String, List<Double>> propertyMap = getPropertyMap();
+        List<String> neededProperties = Arrays.asList("xList", "yList", "widthList", "heightList");
+        for (String property: neededProperties) {
+            moveAnimationMap.put(property, propertyMap.get(property).toString());
+        }
         return moveAnimationMap;
+    }
+
+    private Map<String, List<Double>> getPropertyMap() {
+        Map<String, List<Double>> propertyMap = new HashMap<>();
+        List<Double> xList = getPropertyList(Rectangle::getX);
+        propertyMap.put("xList", xList);
+        List<Double> yList = getPropertyList(Rectangle::getY);
+        propertyMap.put("yList", yList);
+        List<Double> widthList = getPropertyList(Rectangle::getWidth);
+        propertyMap.put("widthList", widthList);
+        List<Double> heightList = getPropertyList(Rectangle::getHeight);
+        propertyMap.put("heightList", heightList);
+        return propertyMap;
     }
 
     private List<Double> getPropertyList(Function<Rectangle, Double>func) {
@@ -145,10 +156,11 @@ public class RectangleLogic {
      * @return an animation described by the data in this class
      */
     public Animation getAnimation(ImageView imageView, Duration duration) {
+        Map<String, List<Double>> propertyMap = getPropertyMap();
         return new ComplexAnimation(imageView, duration,
-                rectangleList.size(), getPropertyList(Rectangle::getX),
-                getPropertyList(Rectangle::getY), getPropertyList(Rectangle::getWidth),
-                getPropertyList(Rectangle::getHeight));
+                rectangleList.size(), propertyMap.get("xList"),
+                propertyMap.get("yList"), propertyMap.get("widthList"),
+                propertyMap.get("heightList"));
     }
 
     private void makeSelectable(Rectangle r) {
