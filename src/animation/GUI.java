@@ -16,7 +16,9 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.util.StringConverter;
 import javafx.util.converter.NumberStringConverter;
 
@@ -77,8 +79,9 @@ class GUI {
                 durationValueLabel);
     }
 
-    public void addRectangleToDisplay(Rectangle clone) {
+    public void addRectangleToDisplay(Rectangle clone, Label label) {
         spriteGroup.getChildren().add(clone);
+        spriteGroup.getChildren().add(label);  
         displayRectangleListProperties(clone);
     }
 

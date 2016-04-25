@@ -43,7 +43,7 @@ public class RectangleDrawer {
      * If primary, will also move the bounds of the rectangle.
      * </p>
      *
-     * @param event the mosue event
+     * @param event the mouse event
      */
     public void handleMousePressed(MouseEvent event) {
         boolean primary = event.getButton() == MouseButton.PRIMARY;
@@ -64,7 +64,7 @@ public class RectangleDrawer {
      * Will move the rectangle.
      * </p>
      *
-     * @param event the mosue event.
+     * @param event the mouse event.
      */
     public void handleMouseDragged(MouseEvent event) {
         rectX.set(event.getX());

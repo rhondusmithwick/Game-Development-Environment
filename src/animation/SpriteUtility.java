@@ -4,12 +4,15 @@ import javafx.animation.Animation;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
+import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import animation.Dragger;
@@ -91,10 +94,21 @@ class SpriteUtility {
             boolean removed = rectangleLogic.removeRectangle(frameToDelete);
             if (removed) {
                 gui.getSpriteGroup().getChildren().remove(frameToDelete);
+                gui.getSpriteGroup().getChildren().removeAll(rectangleLogic.getLabelList());
+                repopulateLabels();
                 initAnimationProperties();
             }
         }
     }
+    
+    private void repopulateLabels() {
+		rectangleLogic.getLabelList().clear();
+		for (Rectangle rect : rectangleLogic.getRectangleList()){
+			Label label = makeLabel(rect,rectangleLogic.getRectangleList().indexOf(rect)+1);
+			rectangleLogic.getLabelList().add(label);
+		}
+		gui.getSpriteGroup().getChildren().addAll(rectangleLogic.getLabelList());
+	}
 
     private void initAnimationProperties() {
         gui.getButtonBox().getChildren().remove(imageLogic.getPreviewImageView());
@@ -155,9 +169,20 @@ class SpriteUtility {
     private void addFrame() {
         Rectangle clone = rectangleLogic.cloneRect(rectDrawer.getRectangle());
         rectangleLogic.getRectangleList().add(clone);
-        gui.addRectangleToDisplay(clone);
+        Label label = makeLabel(clone, rectangleLogic.getRectangleList().size());
+        rectangleLogic.getLabelList().add(label);
+        gui.addRectangleToDisplay(clone,label); 
     }
 
+    private Label makeLabel(Rectangle clone, int frameID){
+    		Label label = new Label(String.valueOf(frameID));
+    		label.setFont(new Font("Arial", 30));
+    		label.setTextFill(Color.RED);
+    		label.layoutXProperty().bind(clone.xProperty());
+    		label.layoutYProperty().bind(clone.yProperty());
+    		return label;
+    }
+    
     private void initRectangleDrawer() {
         gui.getSpriteGroup().getChildren().remove(rectDrawer.getRectangle());
         rectDrawer.reset();
