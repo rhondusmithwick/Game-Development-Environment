@@ -137,7 +137,6 @@ public class SpriteUtility {
         Double duration = gui.getDurationSlider().getValue();
         Map<String, String> moveAnimationMap = rectangleLogic.getAnimationMap();
         moveAnimationMap.put("duration", String.format("%.2f", duration));
-        moveAnimationMap.put("count", rectangleLogic.getAnimationMap().size() + "");
         String name = gui.getAnimationName().getText();
         if (name.contains(" ")) {
             showError(utilityResources.getString("SaveErrorTitle"), utilityResources.getString("SaveErrorMessage"));

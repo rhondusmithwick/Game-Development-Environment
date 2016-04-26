@@ -7,8 +7,10 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
 import java.util.List;
+import java.util.ResourceBundle;
 
 import static animation.utility.StringParser.convertStringToDoubleList;
+import static java.util.ResourceBundle.getBundle;
 
 /**
  * {@inheritDoc}
@@ -20,6 +22,7 @@ import static animation.utility.StringParser.convertStringToDoubleList;
  * @author Melissa Zhang, Rhondu Smithwick
  */
 public class CustomAnimation extends Transition {
+
     private final ImageView imageView;
     private final int numFrames;
     private final List<Double> xList;
@@ -55,33 +58,7 @@ public class CustomAnimation extends Transition {
         setInterpolator(Interpolator.LINEAR);
     }
 
-    /**
-     * Create an animation from strings.
-     * <p>
-     * ALL LISTS IN FORM [x, y, z, ., ., .,]
-     * </p>
-     *
-     * @param imageView        the imageView
-     * @param durationString   string representing the duration
-     * @param numFramesString  string representing the number of frames
-     * @param xListString      string representing the different x-values
-     * @param yListString      string representing the different y-values
-     * @param widthListString  string representing the different widths
-     * @param heightListString string representing the different heights
-     * @return the Complex Animation
-     */
-    public static CustomAnimation reateAnimationFromStrings(ImageView imageView,
-                                                            String durationString, String numFramesString,
-                                                            String xListString, String yListString,
-                                                            String widthListString, String heightListString) {
-        Duration duration = Duration.millis(Double.parseDouble(durationString));
-        int numFrames = Integer.parseInt(numFramesString);
-        List<Double> xList = convertStringToDoubleList(xListString);
-        List<Double> yList = convertStringToDoubleList(yListString);
-        List<Double> widthList = convertStringToDoubleList(widthListString);
-        List<Double> heightList = convertStringToDoubleList(heightListString);
-        return new CustomAnimation(imageView, duration, numFrames, xList, yList, widthList, heightList);
-    }
+
 
     /**
      * {@inheritDoc}
@@ -98,5 +75,6 @@ public class CustomAnimation extends Transition {
             lastIndex = index;
         }
     }
+
 
 }
