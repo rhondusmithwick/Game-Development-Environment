@@ -9,17 +9,17 @@ import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.stream.Collector;
 
 import static animation.utility.StringParser.convertStringToDoubleList;
 import static java.util.ResourceBundle.getBundle;
 import static java.util.function.Function.identity;
-import static javafx.scene.input.KeyCode.R;
+import static java.util.stream.Collectors.toMap;
 
 /**
  * Factory for animations.
  *
- * @author Rhondu Smithwick
+ * @author Rhondu Smithwick, Melissa Zhang
  */
 public class AnimationFactory {
 
@@ -45,7 +45,8 @@ public class AnimationFactory {
         List<String> keys = Arrays.asList("duration", "numFrames", "xList", "yList", "widthList", "heightList");
         ResourceBundle bundle = getBundle(bundlePath);
         Function<String, String> getValueFromBundle = (s -> bundle.getString(move + s));
-        return keys.stream().collect(Collectors.toMap(identity(), getValueFromBundle));
+        Collector<String, ?, Map<String, String>> collector = toMap(identity(), getValueFromBundle);
+        return keys.stream().collect(collector);
     }
 
     /**
@@ -64,9 +65,9 @@ public class AnimationFactory {
      * @return the Complex Animation
      */
     public static Animation createAnimationFromStrings(ImageView imageView,
-                                                String durationString, String numFramesString,
-                                                String xListString, String yListString,
-                                                String widthListString, String heightListString) {
+                                                       String durationString, String numFramesString,
+                                                       String xListString, String yListString,
+                                                       String widthListString, String heightListString) {
         Duration duration = Duration.millis(Double.parseDouble(durationString));
         int numFrames = Integer.parseInt(numFramesString);
         List<Double> xList = convertStringToDoubleList(xListString);
