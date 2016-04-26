@@ -22,6 +22,7 @@ Be Sure to save your images if you modify them!
 Please see testing.SandBoxFX for an example of using the animation
 
 To use the sprite utility in your project:
+
 1. Use the Sprite Utility to create a properties file.
 2. In your project, have an imageView as normal.
 3. Create an animation using the Animation Factory class and the bundle. You need to know the name of the move you would like to use. EX:
