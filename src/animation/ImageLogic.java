@@ -1,5 +1,6 @@
 package animation;
 
+import animation.colorchange.BFSColorChanger;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -25,7 +26,7 @@ public class ImageLogic {
      * @param y the starting y-coordinate
      */
     public void changeColor(double x, double y) {
-        Image image = new ColorChanger(spriteImage, x, y, Color.TRANSPARENT).changeImage();
+        Image image = new BFSColorChanger(spriteImage, x, y, Color.TRANSPARENT).changeImage();
         setSpriteImage(image);
     }
 

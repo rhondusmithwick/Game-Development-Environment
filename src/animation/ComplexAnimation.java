@@ -10,37 +10,37 @@ import java.util.List;
 
 public class ComplexAnimation extends Transition {
     private final ImageView imageView;
-    private final int count;
-    private final List<Double> offsetX;
-    private final List<Double> offsetY;
-    private final List<Double> width;
-    private final List<Double> height;
+    private final int numFrames;
+    private final List<Double> xList;
+    private final List<Double> yList;
+    private final List<Double> widthList;
+    private final List<Double> heightIndex;
 
     private int lastIndex;
 
     public ComplexAnimation(
             ImageView imageView,
             Duration duration,
-            int count,
-            List<Double> offsetX, List<Double> offsetY,
-            List<Double> width, List<Double> height) {
+            int numFrames,
+            List<Double> xList, List<Double> yList,
+            List<Double> widthList, List<Double> heightIndex) {
         this.imageView = imageView;
-        this.count = count;
-        this.offsetX = offsetX;
-        this.offsetY = offsetY;
-        this.width = width;
-        this.height = height;
+        this.numFrames = numFrames;
+        this.xList = xList;
+        this.yList = yList;
+        this.widthList = widthList;
+        this.heightIndex = heightIndex;
         setCycleDuration(duration);
         setInterpolator(Interpolator.LINEAR);
     }
 
     @Override
     protected void interpolate(double k) {
-        final int index = Math.min((int) Math.floor(k * count), count - 1);
+        final int index = Math.min((int) Math.floor(k * numFrames), numFrames - 1);
         if (index != lastIndex) {
-            final double x = offsetX.get(index);
-            final double y = offsetY.get(index);
-            imageView.setViewport(new Rectangle2D(x, y, width.get(index), height.get(index)));
+            final double x = xList.get(index);
+            final double y = yList.get(index);
+            imageView.setViewport(new Rectangle2D(x, y, widthList.get(index), heightIndex.get(index)));
             lastIndex = index;
         }
 
