@@ -38,7 +38,7 @@ public class SaveHandler {
         FileChooser fileChooser = createFileChooser("Save Animation to File", new FileChooser.ExtensionFilter("PROPERTIES Dateien (*.properties)", "*.properties"));
         File file = fileChooser.showSaveDialog(new Stage());
         try {
-            properties.store(new FileWriter(file), "MELISSA IS MAKING ME USE THIS WEIRD ASS MAP");
+            properties.store(new FileWriter(file), "Generated Properties File From Sprite Utility");
         } catch (IOException e) {
             e.printStackTrace();
         }
