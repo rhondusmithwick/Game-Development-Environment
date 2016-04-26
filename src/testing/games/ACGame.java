@@ -99,6 +99,7 @@ public class ACGame {
             eventSystem.registerEvent(new KeyTrigger("D"), new Action(moveRightScriptPath, map));
             eventSystem.registerEvent(new KeyTrigger("A"), new Action(moveLeftScriptPath));
             eventSystem.registerEvent(new KeyTrigger("W"), new Action(jumpScriptPath));
+            universe.serialize("anitest.xml");
         } else {
             character = new XMLReader<IEntity>().readSingleFromFile("character.xml");
             universe.addEntity(character);

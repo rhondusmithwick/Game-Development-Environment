@@ -12,6 +12,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.layout.HBox;
 import model.entity.Entity;
 
+// TODO maybe create abstract of this
 public class TableManager 
 {
 	private HBox container;
@@ -36,8 +37,6 @@ public class TableManager
 		selectedEntities = FXCollections.observableArrayList();
 		
 		this.editor = editor;
-		 
-		
 		
 		editor.resetTrigger();
 		fillLayout();

@@ -1,5 +1,7 @@
 package model.component.character;
 
-public class UserControl {
+import api.IComponent;
+
+public class UserControl implements IComponent{
 
 }

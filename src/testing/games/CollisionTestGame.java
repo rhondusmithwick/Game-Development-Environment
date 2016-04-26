@@ -131,7 +131,7 @@ public class CollisionTestGame {
         character.forceAddComponent(new ImagePath(imagePath), true);
         character.forceAddComponent(new Velocity(0, 0), true);
         character.forceAddComponent(new Mass(100), true);
-        character.addComponent(new Collision(id)); // instantiated by string instead of collection
+        character.addComponent(new Collision("")); // instantiated by string instead of collection
         universe.addEntity(character);
         character.addComponent(new ImagePath(imagePath));
         //character.addComponent(new Gravity(5000));
