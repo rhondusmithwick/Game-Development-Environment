@@ -181,12 +181,10 @@ public class RectangleLogic {
 
     private void addSelectEffect(Rectangle rectangle) {
         rectangle.setStyle(SELECT_EFFECT.get());
-        rectangle.setStroke(Color.RED);
     }
 
     private void removeSelectEffect(Rectangle rectangle) {
         rectangle.setStyle(NO_SELECT_EFFECT.get());
-        rectangle.setStroke(Color.SKYBLUE);
     }
 
     public Rectangle getSelectedRectangle() {
