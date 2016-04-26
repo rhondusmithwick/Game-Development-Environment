@@ -1,6 +1,7 @@
-package animation;
+package animation.model;
 
 import animation.colorchange.BFSColorChanger;
+import animation.utility.GUIUtilities;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
@@ -11,7 +12,7 @@ import java.io.File;
 /**
  * This class holds the images and the logic on them.
  *
- * @author Rhondu Smithwick, Melissa Zhang
+ * @author Rhondu Smithwick
  */
 public class ImageLogic {
     private final ImageView spriteImageView = new ImageView();
@@ -39,7 +40,7 @@ public class ImageLogic {
     }
 
     private Image initFileChooser() {
-        File spriteSheet = UtilityUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("All Images", "*.*"),
+        File spriteSheet = GUIUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("All Images", "*.*"),
                 "Choose a spritesheet");
         spriteSheetPath = spriteSheet.toURI().toString();
         return new Image(spriteSheetPath);

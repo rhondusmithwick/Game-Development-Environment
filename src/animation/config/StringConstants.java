@@ -1,4 +1,4 @@
-package animation;
+package animation.config;
 
 /**
  * Created by rhondusmithwick on 4/23/16.
@@ -6,7 +6,7 @@ package animation;
  * @author Rhondu Smithwick
  */
 public enum StringConstants {
-    STYLE_SHEET("cssFiles/darktheme.css"),
+    STYLE_SHEET("animation/config/darktheme.css"),
     SAVE_ANIMATIONS_TO_FILE("Save Animations to File"),
     NEW_ANIMATION("New Animation"),
     NEW_SPRITE("New Sprite"),

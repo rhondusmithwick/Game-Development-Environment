@@ -1,6 +1,7 @@
-package animation;
+package animation.main;
 
 
+import animation.animation.Animator;
 import api.IEntity;
 import javafx.animation.Animation;
 import javafx.application.Application;

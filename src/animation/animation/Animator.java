@@ -1,4 +1,4 @@
-package animation;
+package animation.animation;
 
 import api.IEntity;
 import javafx.animation.Animation;
@@ -9,7 +9,7 @@ import model.component.visual.ImagePath;
 import java.util.List;
 import java.util.ResourceBundle;
 
-import static animation.StringParser.convertStringToDoubleList;
+import static animation.utility.StringParser.convertStringToDoubleList;
 
 public class Animator {
     public Animator() {
@@ -27,7 +27,7 @@ public class Animator {
         List<Double> yList = convertStringToDoubleList(myResources.getString(move + "yList"));
         List<Double> widthList = convertStringToDoubleList(myResources.getString(move + "width"));
         List<Double> heightList = convertStringToDoubleList(myResources.getString(move + "height"));
-        Animation animation = new ComplexAnimation(imageView, duration, count, xList, yList, widthList, heightList);
+        Animation animation = new CustomAnimation(imageView, duration, count, xList, yList, widthList, heightList);
         animation.setCycleCount(Animation.INDEFINITE);
         return animation;
     }

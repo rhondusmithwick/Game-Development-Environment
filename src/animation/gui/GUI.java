@@ -1,9 +1,11 @@
-package animation;
+package animation.gui;
 
+import animation.config.DoubleConstants;
+import animation.main.SpriteUtility;
+import animation.utility.GUIUtilities;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
@@ -25,19 +27,19 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
 
-import static animation.DoubleConstants.DURATION_DEFAULT;
-import static animation.DoubleConstants.DURATION_MAX;
-import static animation.DoubleConstants.DURATION_MIN;
-import static animation.StringConstants.ANIMATION_NAME_PROMPT;
-import static animation.StringConstants.STYLE_SHEET;
+import static animation.config.DoubleConstants.DURATION_DEFAULT;
+import static animation.config.DoubleConstants.DURATION_MAX;
+import static animation.config.DoubleConstants.DURATION_MIN;
+import static animation.config.StringConstants.ANIMATION_NAME_PROMPT;
+import static animation.config.StringConstants.STYLE_SHEET;
+import static animation.utility.GUIUtilities.makeSlider;
 
 /**
  * The GUI class to hold GUI objects.
  *
- * @author Rhondu Smithwick, Melissa Zhang
+ * @author Melissa Zhang, Rhondu Smithwick, Bruna Liborio
  */
-class GUI {
-
+public class GUI {
     private final SimpleObjectProperty<Boolean> changeColorProperty = new SimpleObjectProperty<>(this, "ChangeColor", false);
     private final BorderPane mainPane = new BorderPane();
     private final VBox animationPropertiesBox = new VBox();
@@ -49,9 +51,9 @@ class GUI {
     private final Scene scene = new Scene(mainPane, DoubleConstants.WIDTH.get(), DoubleConstants.HEIGHT.get());
     private final Canvas canvas = new Canvas();
     private final TextField animationName = new TextField();
-    private final Button activateTransparencyButton = UtilityUtilities.makeButton("Activate Transparency", e -> makeTransparent());
+    private final Button activateTransparencyButton = GUIUtilities.makeButton("Activate Transparency", e -> makeTransparent());
     private Slider durationSlider;
-	private Label savedAnimationLabel = new Label("Not Saved");
+    private Label savedAnimationLabel = new Label("Not Saved");
 
     /**
      * Sole constructor.
@@ -73,24 +75,24 @@ class GUI {
         getAnimationName().setText(ANIMATION_NAME_PROMPT.get());
         Label durationTextLabel = new Label("Duration");
         Label durationValueLabel = new Label(String.valueOf(DURATION_DEFAULT.get()));
-        durationSlider = UtilityUtilities.makeSlider((ov, old_val, new_val) -> {
+        durationSlider = makeSlider((ov, old_val, new_val) -> {
             durationValueLabel.setText(String.format("%.2f", new_val.floatValue()));
             if (spriteUtility.hasFrames()) {
                 spriteUtility.initAnimationPreview();
             }
         }, DURATION_MIN.get(), DURATION_MAX.get(), DURATION_DEFAULT.get());
-
         animationPropertiesBox.getChildren().addAll(savedAnimationLabel, getAnimationName(), durationTextLabel, durationSlider,
                 durationValueLabel);
     }
 
     public void addRectangleToDisplay(Rectangle clone, Label label, Button button) {
         spriteGroup.getChildren().add(clone);
-        spriteGroup.getChildren().add(label);  
+        spriteGroup.getChildren().add(label);
         frameButtonBox.getChildren().add(button);
     }
-    public Label getSavedAnimationLabel(){
-    	return savedAnimationLabel;
+
+    public Label getSavedAnimationLabel() {
+        return savedAnimationLabel;
     }
 
     public VBox displayRectangleListProperties(Rectangle clone) {
@@ -110,7 +112,7 @@ class GUI {
                 e.printStackTrace();
             }
         }
-		return box;
+        return box;
     }
 
     public void initNewImage(ImageView imageView) {
@@ -169,11 +171,10 @@ class GUI {
         return activateTransparencyButton;
     }
 
-	public void updateButtonDisplay(List<Button> buttonList) {
-		frameButtonBox.getChildren().clear();
-		frameButtonBox.getChildren().addAll(buttonList);
-	}
-	
+    public void updateButtonDisplay(List<Button> buttonList) {
+        frameButtonBox.getChildren().clear();
+        frameButtonBox.getChildren().addAll(buttonList);
+    }
 }
 
 

@@ -1,5 +1,7 @@
-package animation;
+package animation.model;
 
+import animation.animation.CustomAnimation;
+import animation.gui.Dragger;
 import javafx.animation.Animation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,7 +12,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
-import animation.Dragger;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -22,14 +23,14 @@ import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-import static animation.DoubleConstants.KEY_INPUT_SPEED;
-import static animation.StringConstants.NO_SELECT_EFFECT;
-import static animation.StringConstants.SELECT_EFFECT;
+import static animation.config.DoubleConstants.KEY_INPUT_SPEED;
+import static animation.config.StringConstants.NO_SELECT_EFFECT;
+import static animation.config.StringConstants.SELECT_EFFECT;
 
 /**
  * This class holds the rectangles drawn and the logic on them.
  *
- * @author Rhondu Smithwick
+ * @author Rhondu Smithwick, Melissa Zhang
  */
 public class RectangleLogic {
     private final List<Rectangle> rectangleList = new ArrayList<>();
@@ -107,7 +108,9 @@ public class RectangleLogic {
      * @param event the key event
      */
     public void handleKeyInput(KeyEvent event) {
-        if (selectedRectangle == null) return;
+        if (selectedRectangle == null) {
+            return;
+        }
         switch (event.getCode()) {
             case RIGHT:
                 selectedRectangle.setX(selectedRectangle.getX() + KEY_INPUT_SPEED.get());
@@ -164,11 +167,12 @@ public class RectangleLogic {
      */
     public Animation getAnimation(ImageView imageView, Duration duration) {
         Map<String, List<Double>> propertyMap = getPropertyMap();
-        return new ComplexAnimation(imageView, duration,
+        return new CustomAnimation(imageView, duration,
                 rectangleList.size(), propertyMap.get("xList"),
                 propertyMap.get("yList"), propertyMap.get("widthList"),
                 propertyMap.get("heightList"));
     }
+
 
     private void makeSelectable(Rectangle r) {
         r.setOnMouseClicked(e -> makeSelected(r));

@@ -1,4 +1,4 @@
-package animation;
+package animation.colorchange;
 
 import java.util.ArrayList;
 import java.util.List;

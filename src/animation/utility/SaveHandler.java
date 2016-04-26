@@ -1,4 +1,4 @@
-package animation;
+package animation.utility;
 
 import javafx.scene.image.Image;
 import javafx.stage.FileChooser;
@@ -16,15 +16,21 @@ import java.util.Properties;
 import static javafx.embed.swing.SwingFXUtils.fromFXImage;
 
 /**
- * Created by rhondusmithwick on 4/20/16.
+ * Static class for saving.
  *
  * @author Rhondu Smithwick
  */
-class SaveHandler {
+public class SaveHandler {
 
     private SaveHandler() {
     }
 
+    /**
+     * Save the animations for  a sprite.
+     *
+     * @param spriteSheetPath the spriteSheetPath
+     * @param maps            all the maps for that animation
+     */
     public static void saveAnimations(String spriteSheetPath, Map<String, Map<String, String>> maps) {
         Properties properties = new Properties();
         properties.put("FilePath", spriteSheetPath);
@@ -38,7 +44,6 @@ class SaveHandler {
         }
     }
 
-
     private static Properties createProperties(Map<String, Map<String, String>> maps) {
         Properties properties = new Properties();
         for (String animationName : maps.keySet()) {
@@ -51,6 +56,11 @@ class SaveHandler {
         return properties;
     }
 
+    /**
+     * Save an image.
+     *
+     * @param image the iamge
+     */
     public static void saveImage(Image image) {
         FileChooser fileChooser = createFileChooser("Save Image", new FileChooser.ExtensionFilter("Image Files", "png"));
         File file = fileChooser.showSaveDialog(new Stage());

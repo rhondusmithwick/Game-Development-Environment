@@ -1,4 +1,4 @@
-package animation;
+package animation.model;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -10,7 +10,7 @@ import javafx.scene.shape.Rectangle;
 /**
  * A class for drawing rectangles.
  *
- * @author Rhondu Smithwick
+ * @author Melissa Zhang, Rhondu Smithwick
  */
 public class RectangleDrawer {
     private final DoubleProperty rectinitX = new SimpleDoubleProperty(this, "rectinitX", 0.0);

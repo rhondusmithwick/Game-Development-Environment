@@ -1,7 +1,7 @@
-package animation;
+package animation.config;
 
 /**
- * Created by rhondusmithwick on 4/23/16.
+ * Enum for our double constants.
  *
  * @author Rhondu Smithwick
  */

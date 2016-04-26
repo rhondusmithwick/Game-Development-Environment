@@ -1,4 +1,4 @@
-package animation;
+package animation.gui;
 
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleDoubleProperty;

@@ -1,4 +1,4 @@
-package animation;
+package animation.main;
 
 /**
  * Created by rhondusmithwick on 4/21/16.

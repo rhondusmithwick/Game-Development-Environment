@@ -1,4 +1,4 @@
-package animation;
+package animation.model;
 
 import javafx.scene.control.Label;
 import javafx.scene.paint.Color;

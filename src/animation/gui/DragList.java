@@ -1,4 +1,4 @@
-package animation;
+package animation.gui;
 
 import javafx.collections.*;
 import javafx.geometry.*;
