@@ -1,6 +1,6 @@
 package animation.model;
 
-import animation.animation.CustomAnimation;
+import animation.Animator;
 import javafx.animation.Animation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -166,9 +166,11 @@ public class RectangleLogic {
      * @param duration  the duration
      * @return an animation described by the data in this class
      */
-    public Animation getAnimation(ImageView imageView, Duration duration) {
+    public Animation addAnimation(ImageView imageView, Duration duration) {
         Map<String, List<Double>> propertyMap = getPropertyMap();
-        return new CustomAnimation(imageView, duration,
+
+        Animator animator = new Animator();
+        return animator.createAnimation(imageView, duration,
                 rectangleList.size(), propertyMap.get("xList"),
                 propertyMap.get("yList"), propertyMap.get("widthList"),
                 propertyMap.get("heightList"));
@@ -181,12 +183,10 @@ public class RectangleLogic {
 
     private void addSelectEffect(Rectangle rectangle) {
         rectangle.setStyle(SELECT_EFFECT.get());
-        rectangle.setStroke(Color.RED);
     }
 
     private void removeSelectEffect(Rectangle rectangle) {
         rectangle.setStyle(NO_SELECT_EFFECT.get());
-        rectangle.setStroke(Color.SKYBLUE);
     }
 
     public Rectangle getSelectedRectangle() {
