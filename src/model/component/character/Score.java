@@ -50,6 +50,14 @@ public class Score implements IComponent {
         scoreProperty().set(score);
     }
 
+    public void increment() {
+        setScore(getScore()+1);
+    }
+
+    public void reset() {
+        setScore(0);
+    }
+
     @Override
     public List<SimpleObjectProperty<?>> getProperties() {
         return singleProperty.getProperties();
