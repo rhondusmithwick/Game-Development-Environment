@@ -23,6 +23,6 @@ Most sprite sheets contain a background. We have accounted for this by including
 > - Use the 'Delete Frame' button to delete a frame
 > - Use the 'Activate Transparency' button to remove the background of the sprite sheet
 > - Use the 'Save Image' button to save the image you are currently working on (particularly if the background was removed)
-> - Click the 'Frame #' buttons on the right to view and edit frame properties
+> - Click the 'Frame #' buttons on the left to view and edit frame properties
 
 > Written with [StackEdit](https://stackedit.io/).
