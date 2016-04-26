@@ -16,7 +16,7 @@ public class Display implements IComponent {
 	private boolean isAnimated;
 
 	public Display() {
-		// TODO: change defaults
+		// TODO: changeImage defaults
 		this("resources/testing/RhonduSmithwick.JPG");
 	}
 

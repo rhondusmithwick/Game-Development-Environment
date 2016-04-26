@@ -10,8 +10,8 @@ import javafx.geometry.Insets;
 
 public enum ViewInsets {
     GAME_EDIT(new Insets(20, 20, 20, 20)),
-    EVENT_EDIT(new Insets(10, 10, 10, 10));
-	
+    EVENT_EDIT(new Insets(10, 10, 10, 10)),
+    LOOP_EDIT(new Insets(20, 20, 20, 20));
 
     private final Insets inset;
 

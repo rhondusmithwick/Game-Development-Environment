@@ -33,6 +33,12 @@ public class PhysicsEngine implements IPhysicsEngine {
 		frictionActive = true;
 	}
 
+	public PhysicsEngine(boolean gravityActive, boolean collisionDetectionActive, boolean frictionActive) {
+		this.gravityActive = gravityActive;
+		this.collisionDetectionActive = collisionDetectionActive;
+		this.frictionActive = frictionActive;
+	}
+
 	@SuppressWarnings("unchecked")
 	@Override
 	public void update(ILevel universe, double dt) {

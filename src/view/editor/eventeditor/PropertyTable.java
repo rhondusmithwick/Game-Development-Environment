@@ -11,7 +11,7 @@ public class PropertyTable extends Table
 	{
 		super(manager, ResourceBundle.getBundle(language).getString("pickProperty"));
 
-		// Add change listener
+		// Add changeImage listener
 		getTable().
         getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> 
         	{

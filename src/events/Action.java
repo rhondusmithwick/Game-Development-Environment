@@ -21,11 +21,13 @@ import java.util.Map;
  */
 public class Action implements ISerializable {
     private final String script;
+    private final String scriptPath;
     private final Bindings parameters;
 
     public Action(String scriptPath) {
         script = getScriptFromPath(scriptPath);
         parameters = new SimpleBindings();
+        this.scriptPath = scriptPath;
     }
 
     public Action(String scriptPath, Map<String, Object> parameters) {
@@ -38,8 +40,8 @@ public class Action implements ISerializable {
         try {
             engine.eval(getScript(), parameters);
         } catch (ScriptException e) {
-            //e.printStackTrace();
-            System.out.println("Groovy engine could not run script.");
+            e.printStackTrace();
+            System.out.println("Error with script:" + scriptPath);
         }
     }
 
@@ -68,5 +70,8 @@ public class Action implements ISerializable {
         }
         return script;
     }
-
+    
+    public String toString() {
+    	return this.scriptPath;
+    }
 }

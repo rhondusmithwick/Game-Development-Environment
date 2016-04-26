@@ -20,3 +20,7 @@ if (!collision.getCollidingIDs().equals("")) {
 //    String IMAGE_PATH = "resources/images/jasmine.png";
 //    charEntity.getComponent(ImagePath.class).setImagePath(IMAGE_PATH);
 }
+else {
+	health = universe.getEntitiesWithName("Anolyn").get(0).getComponent(Health.class);
+	health.setHealth(100);
+}
