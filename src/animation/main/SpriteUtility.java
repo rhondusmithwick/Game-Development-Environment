@@ -51,7 +51,7 @@ public class SpriteUtility {
     private final RectangleLogic rectangleLogic = new RectangleLogic(rectDrawer);
     private final ImageLogic imageLogic = new ImageLogic();
     private final Map<String, Map<String, String>> animationMap = new HashMap<>();
-    private final ResourceBundle utilityResources = ResourceBundle.getBundle("animation.utilityAlerts");
+    private final ResourceBundle utilityResources = ResourceBundle.getBundle("animation/config/utilityAlerts");
     private Animation previewAnimation;
 
     /**
