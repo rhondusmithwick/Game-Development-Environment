@@ -62,7 +62,7 @@ public class ImageLogic {
         return spriteImage;
     }
 
-    public void setSpriteImage(Image spriteImage) {
+    private void setSpriteImage(Image spriteImage) {
         this.spriteImage = spriteImage;
         spriteImageView.setImage(spriteImage);
     }

@@ -98,7 +98,7 @@ public class GUIUtilities {
      */
 
     public static File promptAndGetFile(ExtensionFilter extension, String prompt) {
-        List<ExtensionFilter> filters = new ArrayList<ExtensionFilter>();
+        List<ExtensionFilter> filters = new ArrayList<>();
         filters.add(extension);
         return promptAndGetFile(filters, prompt);
     }

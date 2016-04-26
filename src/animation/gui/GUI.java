@@ -45,7 +45,6 @@ public class GUI {
     private final VBox animationPropertiesBox = new VBox();
     private final VBox buttonBox = new VBox();
     private final VBox frameButtonBox = new VBox();
-    private final VBox leftBox = new VBox();
     private final Group spriteGroup = new Group();
     private final ScrollPane spriteScroll = new ScrollPane(spriteGroup);
     private final Scene scene = new Scene(mainPane, DoubleConstants.WIDTH.get(), DoubleConstants.HEIGHT.get());
@@ -63,6 +62,7 @@ public class GUI {
     public GUI(SimpleObjectProperty<Boolean> changeColorProperty) {
         scene.getStylesheets().add(STYLE_SHEET.get());
         this.changeColorProperty.bindBidirectional(changeColorProperty);
+        VBox leftBox = new VBox();
         leftBox.getChildren().add(animationPropertiesBox);
         leftBox.getChildren().add(new ScrollPane(frameButtonBox));
         mainPane.setCenter(spriteScroll);

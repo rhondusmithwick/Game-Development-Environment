@@ -32,11 +32,11 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
-import static animation.utility.SaveHandler.saveAnimations;
-import static animation.utility.SaveHandler.saveImage;
 import static animation.utility.GUIUtilities.makeButton;
 import static animation.utility.GUIUtilities.showAlert;
 import static animation.utility.GUIUtilities.showError;
+import static animation.utility.SaveHandler.saveAnimations;
+import static animation.utility.SaveHandler.saveImage;
 
 /**
  * The class for the Animation Utility.
@@ -70,7 +70,7 @@ public class SpriteUtility {
      * @param name         the name of the animation
      * @param animationMap the animation Map
      */
-    public void saveAnimation(String name, Map<String, String> animationMap) {
+    private void saveAnimation(String name, Map<String, String> animationMap) {
         this.animationMap.put(name, animationMap);
     }
 
@@ -234,7 +234,7 @@ public class SpriteUtility {
      *
      * @return the preview animation
      */
-    public Animation getPreviewAnimation() {
+    private Animation getPreviewAnimation() {
         ImageView previewImageView = imageLogic.getPreviewImageView();
         previewImageView.setImage(imageLogic.getSpriteImage());
         Duration duration = Duration.millis(gui.getDurationSlider().getValue());

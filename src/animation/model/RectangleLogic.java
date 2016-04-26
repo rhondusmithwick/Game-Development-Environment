@@ -47,8 +47,8 @@ public class RectangleLogic {
     public RectangleLogic(RectangleDrawer rectDrawer) {
         this.rectDrawer = rectDrawer;
     }
-    
-	/**
+
+    /**
      * Get the animation map describing the rectangles.
      *
      * @return a map describing the rectangles
@@ -57,7 +57,7 @@ public class RectangleLogic {
         Map<String, String> moveAnimationMap = new HashMap<>();
         Map<String, List<Double>> propertyMap = getPropertyMap();
         List<String> neededProperties = Arrays.asList("xList", "yList", "widthList", "heightList");
-        for (String property: neededProperties) {
+        for (String property : neededProperties) {
             moveAnimationMap.put(property, propertyMap.get(property).toString());
         }
         return moveAnimationMap;
@@ -76,7 +76,7 @@ public class RectangleLogic {
         return propertyMap;
     }
 
-    private List<Double> getPropertyList(Function<Rectangle, Double>func) {
+    private List<Double> getPropertyList(Function<Rectangle, Double> func) {
         return rectangleList.stream().map(func).collect(Collectors.toList());
     }
 
@@ -199,13 +199,13 @@ public class RectangleLogic {
     public List<Rectangle> getRectangleList() {
         return rectangleList;
     }
-    
-    public List<Label> getLabelList(){
-    		return labelList;
+
+    public List<Label> getLabelList() {
+        return labelList;
     }
 
-	public ObservableList<Button> getButtonList() {
-		return buttonList;
-	}
+    public ObservableList<Button> getButtonList() {
+        return buttonList;
+    }
 
 }

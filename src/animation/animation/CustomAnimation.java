@@ -55,23 +55,6 @@ public class CustomAnimation extends Transition {
         setInterpolator(Interpolator.LINEAR);
     }
 
-
-    /**
-     * {@inheritDoc}
-     *
-     * @param frac defines current position in animation
-     */
-    @Override
-    protected void interpolate(double frac) {
-        final int index = Math.min((int) Math.floor(frac * numFrames), numFrames - 1);
-        if (index != lastIndex) {
-            final double x = xList.get(index);
-            final double y = yList.get(index);
-            imageView.setViewport(new Rectangle2D(x, y, widthList.get(index), heightIndex.get(index)));
-            lastIndex = index;
-        }
-    }
-
     /**
      * Create an animation from strings.
      * <p>
@@ -98,6 +81,22 @@ public class CustomAnimation extends Transition {
         List<Double> widthList = convertStringToDoubleList(widthListString);
         List<Double> heightList = convertStringToDoubleList(heightListString);
         return new CustomAnimation(imageView, duration, numFrames, xList, yList, widthList, heightList);
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @param frac defines current position in animation
+     */
+    @Override
+    protected void interpolate(double frac) {
+        final int index = Math.min((int) Math.floor(frac * numFrames), numFrames - 1);
+        if (index != lastIndex) {
+            final double x = xList.get(index);
+            final double y = yList.get(index);
+            imageView.setViewport(new Rectangle2D(x, y, widthList.get(index), heightIndex.get(index)));
+            lastIndex = index;
+        }
     }
 
 }
