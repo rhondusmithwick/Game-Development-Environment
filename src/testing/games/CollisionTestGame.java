@@ -2,6 +2,9 @@ package testing.games;
 
 /**
  * Created by cyao42 on 4/22/2016.
+ *
+ * Author: Carolyn Yao
+ * refactored version of game for testing collision events.
  */
 
 import api.IEntity;

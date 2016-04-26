@@ -20,26 +20,18 @@ import api.IEntitySystem;
 
 public final class EventFactory {
 	
-	private EventFactory(){}
-	
-	public static Pair<Trigger, Action> createEvent(Map<String, String> triggerMapDescription, String scriptPath, ILevel level) {
+	public static Pair<Trigger, Action> createEvent(Map<String, String> triggerMapDescription, String scriptPath) {
 		Trigger trigger=null;
 		try {
 			trigger = ((Trigger) Class.forName(triggerMapDescription.get("trigger_type")).getConstructor(Map.class).newInstance(triggerMapDescription));
-		} catch (InstantiationException e) {
-			e.printStackTrace();
+		} //TODO: add error messages
+		catch (InstantiationException e) {
 		} catch (IllegalAccessException e) {
-			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
 		} catch (InvocationTargetException e) {
-			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
 		} catch (SecurityException e) {
-			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			e.printStackTrace();
 		}
 		Action action = new Action(scriptPath);
 		return new Pair<Trigger, Action>(trigger, action);

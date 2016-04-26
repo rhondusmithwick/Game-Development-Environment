@@ -35,7 +35,7 @@ public interface IEventSystem extends Observer, ISerializable {
 
 	String returnEventsAsString();
 	
-	void setUniverse(ILevel universe);
+	void setLevel(ILevel level);
 
 	void updateInputs(double dt);
 

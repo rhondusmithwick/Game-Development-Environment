@@ -35,15 +35,15 @@ public class PropertyTrigger extends Trigger {
 //        propertyName = propertyDescription.get(2);
 //    }
 
-    public PropertyTrigger(Map<String, String> triggerMapDescription) {
-        entityID = triggerMapDescription.get("entityID");
-        componentClass = null;
-        try {
-            componentClass = (Class<? extends IComponent>) Class.forName(triggerMapDescription.get("component"));
-        } catch(ClassNotFoundException e) {
-        }
-        propertyName = triggerMapDescription.get("propertyName");
-    }
+//    public PropertyTrigger(Map<String, String> triggerMapDescription) {
+//        entityID = triggerMapDescription.get("entityID");
+//        try {
+//            componentClass = (Class<? extends IComponent>) Class.forName(triggerMapDescription.get("component"));
+//        } catch(ClassNotFoundException e) {
+//            componentClass = null;
+//        }
+//        propertyName = triggerMapDescription.get("propertyName");
+//    }
     
     @Override
     public void changed(ObservableValue arg0, Object arg1, Object arg2) {
