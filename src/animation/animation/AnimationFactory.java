@@ -1,15 +1,20 @@
 package animation.animation;
 
 import javafx.animation.Animation;
-import javafx.animation.Transition;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 import static animation.utility.StringParser.convertStringToDoubleList;
 import static java.util.ResourceBundle.getBundle;
+import static java.util.function.Function.identity;
+import static javafx.scene.input.KeyCode.R;
 
 /**
  * Factory for animations.
@@ -30,14 +35,17 @@ public class AnimationFactory {
      * @return the animation
      */
     public static Animation createAnimationFromBundle(ImageView imageView, String bundlePath, String move) {
+        Map<String, String> stringMap = getStringMap(bundlePath, move);
+        return createAnimationFromStrings(imageView, stringMap.get("duration"), stringMap.get("numFrames"),
+                stringMap.get("xList"), stringMap.get("yList"),
+                stringMap.get("widthList"), stringMap.get("heightList"));
+    }
+
+    private static Map<String, String> getStringMap(String bundlePath, String move) {
+        List<String> keys = Arrays.asList("duration", "numFrames", "xList", "yList", "widthList", "heightList");
         ResourceBundle bundle = getBundle(bundlePath);
-        String duration = bundle.getString(move + "duration");
-        String numFrames = bundle.getString(move + "numFrames");
-        String xList = bundle.getString(move + "xList");
-        String yList = bundle.getString(move + "yList");
-        String widthList = bundle.getString(move + "widthList");
-        String heightList = bundle.getString(move + "heightList");
-        return createAnimationFromStrings(imageView, duration, numFrames, xList, yList, widthList, heightList);
+        Function<String, String> getValueFromBundle = (s -> bundle.getString(move + s));
+        return keys.stream().collect(Collectors.toMap(identity(), getValueFromBundle));
     }
 
     /**

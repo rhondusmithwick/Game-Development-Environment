@@ -1,7 +1,6 @@
 package animation.model;
 
 import animation.animation.CustomAnimation;
-import animation.gui.Dragger;
 import javafx.animation.Animation;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -26,6 +25,7 @@ import java.util.stream.Collectors;
 import static animation.config.DoubleConstants.KEY_INPUT_SPEED;
 import static animation.config.StringConstants.NO_SELECT_EFFECT;
 import static animation.config.StringConstants.SELECT_EFFECT;
+import static animation.gui.Dragger.makeDraggable;
 
 /**
  * This class holds the rectangles drawn and the logic on them.
@@ -55,8 +55,9 @@ public class RectangleLogic {
      */
     public Map<String, String> getAnimationMap() {
         Map<String, String> moveAnimationMap = new HashMap<>();
+        moveAnimationMap.put("numFrames", String.valueOf(rectangleList.size()));
         Map<String, List<Double>> propertyMap = getPropertyMap();
-        List<String> neededProperties = Arrays.asList("xList", "yList", "widthList", "heightList");
+        List<String> neededProperties = Arrays.asList("numFrames", "xList", "yList", "widthList", "heightList");
         for (String property : neededProperties) {
             moveAnimationMap.put(property, propertyMap.get(property).toString());
         }
@@ -131,11 +132,11 @@ public class RectangleLogic {
     /**
      * Make a rectangle selected.
      *
-     * @param r the rectangle to make selected
+     * @param rectangleToMakeSelected the rectangle to make selected
      */
-    public void makeSelected(Rectangle r) {
-        addSelectEffect(r);
-        selectedRectangle = r;
+    public void makeSelected(Rectangle rectangleToMakeSelected) {
+        addSelectEffect(rectangleToMakeSelected);
+        selectedRectangle = rectangleToMakeSelected;
         if (rectDrawer.getRectangle() != selectedRectangle) {
             removeSelectEffect(rectDrawer.getRectangle());
         }
@@ -146,16 +147,16 @@ public class RectangleLogic {
     /**
      * Clone a rectangle.
      *
-     * @param rect the rectangle to be cloned
+     * @param rectangleToClone the rectangle to be cloned
      * @return the cloned rectangle
      */
-    public Rectangle cloneRect(Rectangle rect) {
-        Rectangle r = new Rectangle(rect.getX(), rect.getY(), rect.getWidth(), rect.getHeight());
-        r.setFill(Color.TRANSPARENT);
-        r.setStroke(Color.SKYBLUE);
-        Dragger.makeDraggable(r);
-        makeSelectable(r);
-        return r;
+    public Rectangle cloneRect(Rectangle rectangleToClone) {
+        Rectangle clone = new Rectangle(rectangleToClone.getX(), rectangleToClone.getY(), rectangleToClone.getWidth(), rectangleToClone.getHeight());
+        clone.setFill(Color.TRANSPARENT);
+        clone.setStroke(Color.SKYBLUE);
+        makeDraggable(clone);
+        makeSelectable(clone);
+        return clone;
     }
 
     /**
