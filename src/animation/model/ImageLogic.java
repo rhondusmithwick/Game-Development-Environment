@@ -55,7 +55,6 @@ public class ImageLogic {
     }
 
     public ImageView getPreviewImageView() {
-    	previewImageView.setImage(getSpriteImage());
         return previewImageView;
     }
 

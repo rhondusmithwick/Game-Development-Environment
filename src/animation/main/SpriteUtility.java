@@ -10,7 +10,6 @@ import javafx.animation.Animation;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
-
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Alert.AlertType;
@@ -102,7 +101,6 @@ public class SpriteUtility {
     }
 
     private void initButtons() {
-
         gui.addButton(makeButton(utilityResources.getString("SaveToFile"), e -> saveAnimations(imageLogic.getSpriteSheetPath(), animationMap)), gui.getButtonBox());
         gui.addButton(makeButton(utilityResources.getString("NewAnimation"), e -> newAnimation()), gui.getButtonBox());
         gui.addButton(makeButton(utilityResources.getString("NewSprite"), e -> newSprite()), gui.getButtonBox());
@@ -124,15 +122,15 @@ public class SpriteUtility {
     }
 
     private void newAnimation() {
-
-    	if(!savedAnimationProperty.get()){
-    		if(!GUIUtilities.showAlert(utilityResources.getString("NewAlertTitle"), utilityResources.getString("NewAlertHeader"),utilityResources.getString("NewAlertMessage"), AlertType.CONFIRMATION)){
-    			return;
-    		}
-    	}
-		savedAnimationProperty.set(false);
-		reInitialize();
-	}
+        if (!savedAnimationProperty.get()) {
+            if (!showAlert(utilityResources.getString("NewAlertTitle"), utilityResources.getString("NewAlertHeader"), utilityResources.getString("NewAlertMessage"), AlertType.CONFIRMATION)) {
+                System.out.println("hi");
+                return;
+            }
+        }
+        savedAnimationProperty.set(false);
+        reInitialize();
+    }
 
 
     private void saveAnimation() {
@@ -159,33 +157,34 @@ public class SpriteUtility {
                 repopulateLabels();
                 savedAnimationProperty.set(false);
 
+                // initAnimationProperties();
             }
         }
     }
 
     private void repopulateButtons() {
-		rectangleLogic.getButtonList().clear();
-		
-	}
+        rectangleLogic.getButtonList().clear();
+        // TODO: ??
+    }
 
-	private void repopulateLabels() {
-		gui.getSpriteGroup().getChildren().removeAll(rectangleLogic.getLabelList());
-		rectangleLogic.getLabelList().clear();
-		rectangleLogic.getButtonList().clear();
-
-		for (Rectangle rect : rectangleLogic.getRectangleList()){
-			Label label = makeLabel(rect,rectangleLogic.getRectangleList().indexOf(rect)+1);
-			rectangleLogic.getLabelList().add(label);
-			Button button = GUIUtilities.makeButton(utilityResources.getString("FrameButton") + label.getText(),e -> popUpProperties(Integer.parseInt(label.getText())));
-			rectangleLogic.getButtonList().add(button);
-		}
-		gui.updateButtonDisplay(rectangleLogic.getButtonList());
-		gui.getSpriteGroup().getChildren().addAll(rectangleLogic.getLabelList());
-	}
+    private void repopulateLabels() {
+        gui.getSpriteGroup().getChildren().removeAll(rectangleLogic.getLabelList());
+        rectangleLogic.getLabelList().clear();
+        rectangleLogic.getButtonList().clear();
+        for (Rectangle rect : rectangleLogic.getRectangleList()) {
+            Label label = makeLabel(rect, rectangleLogic.getRectangleList().indexOf(rect) + 1);
+            rectangleLogic.getLabelList().add(label);
+            Button button = makeButton("Frame #" + label.getText(), e -> popUpProperties(Integer.parseInt(label.getText())));
+            rectangleLogic.getButtonList().add(button);
+        }
+        gui.updateButtonDisplay(rectangleLogic.getButtonList());
+        gui.getSpriteGroup().getChildren().addAll(rectangleLogic.getLabelList());
+    }
 
     private void initAnimationProperties() {
         gui.getButtonBox().getChildren().remove(imageLogic.getPreviewImageView());
         gui.initAnimationNameAndDurationFields(this);
+        //rectangleLogic.getRectangleList().stream().forEach(gui::displayRectangleListProperties);
     }
 
 
@@ -209,20 +208,21 @@ public class SpriteUtility {
         gui.getSpriteGroup().getChildren().add(gui.getCanvas());
     }
 
-
-    private void initCanvasHandlers(Canvas canvas) {
-        canvas.setOnMouseDragged(rectDrawer::handleMouseDragged);
-        canvas.setOnMousePressed(this::handleMousePressed);
-        canvas.setOnMouseReleased(this::mouseReleased);
-        canvas.setOnMouseClicked(this::handleMouseClicked);
+    private void initCanvasHandlers(Canvas canvas2) {
+        canvas2.setOnMouseDragged(rectDrawer::handleMouseDragged);
+        canvas2.setOnMousePressed(this::handleMousePressed);
+        canvas2.setOnMouseReleased(this::mouseReleased);
+        canvas2.setOnMouseClicked(this::handleMouseClicked);
     }
 
+    /**
+     * Create the preview animation.
+     */
     public void initAnimationPreview() {
-    	gui.getButtonBox().getChildren().remove(imageLogic.getPreviewImageView());
-
         if (previewAnimation != null) {
             previewAnimation.stop();
         }
+        gui.getButtonBox().getChildren().remove(imageLogic.getPreviewImageView());
         previewAnimation = getPreviewAnimation();
         previewAnimation.play();
         gui.getButtonBox().getChildren().add(imageLogic.getPreviewImageView());
@@ -235,8 +235,10 @@ public class SpriteUtility {
      */
     private Animation getPreviewAnimation() {
         ImageView previewImageView = imageLogic.getPreviewImageView();
+        previewImageView.setImage(imageLogic.getSpriteImage());
         Duration duration = Duration.millis(gui.getDurationSlider().getValue());
-        Animation animation = rectangleLogic.addAnimation(previewImageView, duration);
+        Animation animation = rectangleLogic.getAnimation(previewImageView, duration);
+        animation.setCycleCount(Animation.INDEFINITE);
         return animation;
     }
 
@@ -268,7 +270,6 @@ public class SpriteUtility {
         label.layoutXProperty().bind(clone.xProperty());
         label.layoutYProperty().bind(clone.yProperty());
         return label;
-
     }
 
     private void initRectangleDrawer() {
