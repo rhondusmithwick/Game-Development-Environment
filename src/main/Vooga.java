@@ -8,21 +8,20 @@ import java.util.ResourceBundle;
 import datamanagement.XMLReader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ComboBox;
-import javafx.scene.control.ListCell;
-import javafx.scene.control.ListView;
+import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import view.Authoring;
 import view.Utilities;
 import view.beginningmenus.StartUpMenu;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
-import view.enums.Indexes;
 import view.gameplaying.GamePlayer;
 
 public class Vooga extends StartUpMenu {
@@ -32,7 +31,7 @@ public class Vooga extends StartUpMenu {
 	private ResourceBundle myResources;
 	private ComboBox<String> languages;
 	private ScrollPane root;
-	private ComboBox<String> gameChooser;
+	private ChoiceDialog<HBox> gameChooser;
 	private Authoring authEnv;
 
 	public Vooga(Stage stage) {
@@ -47,7 +46,6 @@ public class Vooga extends StartUpMenu {
 		root = super.createDisplay();
 		titleText();
 		setLanguage();
-		gameChooseDialog();
 		createButtons();
 		return root;
 	}
@@ -64,22 +62,44 @@ public class Vooga extends StartUpMenu {
 
 	private void createButtons() {
 		Button makeGame = Utilities.makeButton(myResources.getString("makeGame"), e->createEditor());
+		Button editGame = Utilities.makeButton(myResources.getString("editGame"), e->loadCreated());
 		Button playGame = Utilities.makeButton(myResources.getString("playGame"), e->createPlayer());
-		super.addNodesToVBox(Arrays.asList(makeGame,playGame));
+		super.addNodesToVBox(Arrays.asList(makeGame,editGame, playGame));
 	}
 
+
+
+	private String chooseGame() {
+		List<String> games = new ArrayList<>(Utilities.getAllFromDirectory(DefaultStrings.CREATE_LOC.getDefault()));
+		List<HBox> hboxes = new ArrayList<>();
+		games.stream().forEach(game->makeHBox(game, hboxes));
+		gameChooser = new ChoiceDialog<HBox>(null,hboxes);
+		myStage.hide();
+		gameChooser.showAndWait();
+		String chosen = ( (Label) gameChooser.getSelectedItem().getChildren().get(0)).getText();
+		return chosen;
+	}
+
+
+	private void makeHBox(String game, List<HBox> hboxes) {
+		List<String> details = new XMLReader<List<String>>().readSingleFromFile(DefaultStrings.CREATE_LOC.getDefault()+ game + DefaultStrings.METADATA_LOC.getDefault());
+		Label title = new Label(details.get(0));
+		Label desc = new Label(details.get(1));
+		HBox temp = new HBox();
+		temp.getChildren().addAll(title,desc);
+		hboxes.add(temp);
+		
+	}
 
 
 	private void createPlayer() {
-		String path = getFile();
+		String path = chooseGame();
 		if (path!= null){
 			GamePlayer gamePlayer = new GamePlayer(myStage, getLanguage());
 			gamePlayer.init(path);
+		}else{
+			myStage.show();
 		}
-	}
-
-	private String getFile() {
-		return gameChooser.getSelectionModel().getSelectedItem();
 	}
 
 
@@ -99,15 +119,22 @@ public class Vooga extends StartUpMenu {
 	}
 
 	private void createEditor() {
-		String choosen =  getFile();
 		setUpAuthoring();
-		if(choosen == null){
-			authEnv = new Authoring(getLanguage());
-		}else{
-			authEnv = new Authoring(getLanguage(), choosen);
-		}
+		authEnv = new Authoring(getLanguage());
 		showAuthoring();
 
+	}
+	
+	private void loadCreated() {
+		setUpAuthoring();
+		String path = chooseGame();
+		if (path!= null){
+			authEnv = new Authoring(getLanguage(), path);
+			showAuthoring();
+		}else{
+			createEditor();
+		}
+		
 	}
 
 
@@ -123,54 +150,5 @@ public class Vooga extends StartUpMenu {
 		myStage.setScene(myScene);
 		myStage.show();
 	}
-
-
-
-
-	private void gameChooseDialog(){
-		List<String> games = new ArrayList<>(Utilities.getAllFromDirectory(DefaultStrings.CREATE_LOC.getDefault()));
-		gameChooser = new ComboBox<>();
-		gameChooser.setPromptText(myResources.getString("chooseGame"));
-		setUpHBox();
-		gameChooser.getItems().addAll(games);
-		gameChooser.setButtonCell(gameChooser.getCellFactory().call(null));
-
-		super.addNodesToVBox(Arrays.asList(gameChooser));
-	}
-
-	public void setUpHBox(){
-		gameChooser.setCellFactory(new Callback<ListView<String>, ListCell<String>>() {
-			@Override
-			public ListCell<String> call(ListView<String> p) {
-				return new ListCell<String>() {
-					@Override
-					protected void updateItem(String item, boolean empty) {
-						if(item==null){
-							return;
-						}
-						List<String> details = new XMLReader<List<String>>().readSingleFromFile(DefaultStrings.CREATE_LOC.getDefault() + item + DefaultStrings.METADATA_LOC.getDefault());
-						String name = details.get(Indexes.GAME_NAME.getIndex()) + ": " + details.get(Indexes.GAME_DESC.getIndex());
-						super.updateItem(name, empty);
-						setText(name);
-						ImageView imageView = null;
-						try {
-							File file = new File(details.get(Indexes.GAME_ICON.getIndex()));
-							imageView = new ImageView( new Image(file.toURI().toString()) );
-						} catch(Exception e) {
-							e.printStackTrace();
-							return;
-						}
-
-						imageView.setFitHeight(30);
-						imageView.setPreserveRatio(true);
-						setGraphic(imageView);
-
-					}
-				};
-			}
-		});
-	}
-
-
 
 }
