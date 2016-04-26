@@ -26,17 +26,18 @@ public class PropertyTrigger extends Trigger {
         this.propertyName = propertyName;
     }
 
-    public PropertyTrigger(List<String> propertyDescription) {
-        entityID = propertyDescription.get(0);
-        try {
-            componentClass = (Class<? extends IComponent>) Class.forName(propertyDescription.get(1));
-        } catch(ClassNotFoundException e) {
-        }
-        propertyName = propertyDescription.get(2);
-    }
+//    public PropertyTrigger(List<String> propertyDescription) {
+//        entityID = propertyDescription.get(0);
+//        try {
+//            componentClass = (Class<? extends IComponent>) Class.forName(propertyDescription.get(1));
+//        } catch(ClassNotFoundException e) {
+//        }
+//        propertyName = propertyDescription.get(2);
+//    }
 
     public PropertyTrigger(Map<String, String> triggerMapDescription) {
         entityID = triggerMapDescription.get("entityID");
+        componentClass = null;
         try {
             componentClass = (Class<? extends IComponent>) Class.forName(triggerMapDescription.get("component"));
         } catch(ClassNotFoundException e) {
