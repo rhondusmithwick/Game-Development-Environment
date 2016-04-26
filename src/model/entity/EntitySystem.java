@@ -1,8 +1,10 @@
+
 package model.entity;
 
 import api.IComponent;
 import api.IEntity;
 import api.IEntitySystem;
+
 import com.google.common.collect.Maps;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
