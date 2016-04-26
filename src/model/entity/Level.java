@@ -1,13 +1,19 @@
 package model.entity;
 
 import api.*;
+
 import com.google.common.collect.Maps;
+
 import events.EventSystem;
 import groovy.lang.GroovyShell;
 import model.physics.PhysicsEngine;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Collection;
 import java.util.Map;
+
+import javax.script.ScriptEngineManager;
 
 /**
  * Implementation of a Level. This implementation is focused on the IDs. It
@@ -144,5 +150,10 @@ public class Level implements ILevel {
 	public boolean isEmpty() {
 		return universe.isEmpty();
 	}
+	
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        eventSystem.setUniverse(this);
+    }
 
 }
