@@ -12,7 +12,11 @@ import javafx.stage.Stage;
 import model.component.visual.ImagePath;
 import model.entity.Entity;
 
-
+/**
+ * This class is for testing animations
+ * @author Melissa Zhang
+ *
+ */
 public class SandboxFX extends Application {
 
 

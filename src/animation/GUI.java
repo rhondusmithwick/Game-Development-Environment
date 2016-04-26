@@ -3,7 +3,6 @@ package animation;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
@@ -24,11 +23,11 @@ import javafx.util.converter.NumberStringConverter;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import static animation.DoubleConstants.DURATION_DEFAULT;
 import static animation.DoubleConstants.DURATION_MAX;
 import static animation.DoubleConstants.DURATION_MIN;
-import static animation.StringConstants.ANIMATION_NAME_PROMPT;
 import static animation.StringConstants.STYLE_SHEET;
 
 /**
@@ -52,6 +51,8 @@ class GUI {
     private final Button activateTransparencyButton = UtilityUtilities.makeButton("Activate Transparency", e -> makeTransparent());
     private Slider durationSlider;
 	private Label savedAnimationLabel = new Label("Not Saved");
+    private final ResourceBundle utilityResources = ResourceBundle.getBundle("animation.utilityAlerts");
+
 
     /**
      * Sole constructor.
@@ -70,7 +71,7 @@ class GUI {
 
     public void initAnimationNameAndDurationFields(SpriteUtility spriteUtility) {
         animationPropertiesBox.getChildren().clear();
-        getAnimationName().setText(ANIMATION_NAME_PROMPT.get());
+        getAnimationName().setText(utilityResources.getString("AnimationNameDefault"));
         Label durationTextLabel = new Label("Duration");
         Label durationValueLabel = new Label(String.valueOf(DURATION_DEFAULT.get()));
         durationSlider = UtilityUtilities.makeSlider((ov, old_val, new_val) -> {

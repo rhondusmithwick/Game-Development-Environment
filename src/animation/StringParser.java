@@ -3,7 +3,11 @@ package animation;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-
+/**
+ * This class is for parsing strings
+ * @author Melissa Zhang, Rhondu Smithwick
+ *
+ */
 public final class StringParser {
 
 

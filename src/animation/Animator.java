@@ -10,7 +10,11 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import static animation.StringParser.convertStringToDoubleList;
-
+/**
+ * This class animates imageviews
+ * @author Melissa Zhang
+ *
+ */
 public class Animator {
     public Animator() {
 
@@ -27,9 +31,17 @@ public class Animator {
         List<Double> yList = convertStringToDoubleList(myResources.getString(move + "yList"));
         List<Double> widthList = convertStringToDoubleList(myResources.getString(move + "width"));
         List<Double> heightList = convertStringToDoubleList(myResources.getString(move + "height"));
-        Animation animation = new ComplexAnimation(imageView, duration, count, xList, yList, widthList, heightList);
-        animation.setCycleCount(Animation.INDEFINITE);
+        Animation animation = createAnimation(imageView, duration, count,
+				xList, yList, widthList, heightList);
         return animation;
     }
+
+	public Animation createAnimation(ImageView imageView, Duration duration,
+			int count, List<Double> xList, List<Double> yList,
+			List<Double> widthList, List<Double> heightList) {
+		Animation animation = new ComplexAnimation(imageView, duration, count, xList, yList, widthList, heightList);
+        animation.setCycleCount(Animation.INDEFINITE);
+		return animation;
+	}
 
 }

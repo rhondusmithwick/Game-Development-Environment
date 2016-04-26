@@ -5,7 +5,11 @@ import javafx.animation.Transition;
 import javafx.geometry.Rectangle2D;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
-
+/**
+ * This class is for simple animations that only take in one x,y, width, and height parameter
+ * @author Melissa Zhang
+ *
+ */
 public class SpriteAnimation extends Transition {
 
     private final ImageView imageView;

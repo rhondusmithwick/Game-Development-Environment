@@ -7,7 +7,11 @@ import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
 import java.util.List;
-
+/**
+ * This class is an Animation
+ * @author Melissa Zhang
+ *
+ */
 public class ComplexAnimation extends Transition {
     private final ImageView imageView;
     private final int count;

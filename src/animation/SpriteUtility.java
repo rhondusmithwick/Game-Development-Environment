@@ -6,8 +6,6 @@ import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.scene.Cursor;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.control.Label;
@@ -28,7 +26,6 @@ import javafx.util.Duration;
 import animation.Dragger;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.ResourceBundle;
 
@@ -56,7 +53,7 @@ class SpriteUtility {
         stage.setScene(gui.getScene());
         initializeGui();
     }
-
+  
     private void initializeGui() {
         rectangleLogic.setSelectedRectangle(null);
         reinitializeGui();
@@ -74,9 +71,9 @@ class SpriteUtility {
     }
 
     private void initSavedAnimationLabel() {
-    	savedAnimationProperty.addListener(new ChangeListener() {
+    	savedAnimationProperty.addListener(new ChangeListener<Object>() {
 			@Override
-			public void changed(ObservableValue arg0, Object oldValue, Object newValue) {
+			public void changed(ObservableValue<?> arg0, Object oldValue, Object newValue) {
 				if ((boolean) newValue){
 				gui.getSavedAnimationLabel().setText(gui.getAnimationName().getText()+"Saved");
 				}else{
@@ -90,7 +87,7 @@ class SpriteUtility {
         gui.addButton(makeButton(utilityResources.getString("SaveToFile"), e -> saveAnimations(imageLogic.getSpriteSheetPath(), animationMap)), gui.getButtonBox());
         gui.addButton(makeButton(utilityResources.getString("NewAnimation"), e -> newAnimation()), gui.getButtonBox());
         gui.addButton(makeButton(utilityResources.getString("NewSprite"), e -> newSprite()), gui.getButtonBox());
-        gui.addButton(makeButton(utilityResources.getString("PreviewAnimation"), e -> animationPreview()), gui.getButtonBox());
+        gui.addButton(makeButton(utilityResources.getString("PreviewAnimation"), e -> initAnimationPreview()), gui.getButtonBox());
         gui.addButton(makeButton(utilityResources.getString("SaveAnimation"), e -> saveAnimation()), gui.getButtonBox());
         gui.addButton(makeButton(utilityResources.getString("AddFrame"), e -> addFrame()), gui.getButtonBox());
         gui.addButton(makeButton(utilityResources.getString("DeleteFrame"), e -> deleteFrame(rectangleLogic.getSelectedRectangle())), gui.getButtonBox());
@@ -106,7 +103,6 @@ class SpriteUtility {
     private void newAnimation() {
     	if(!savedAnimationProperty.get()){
     		if(!UtilityUtilities.showAlert(utilityResources.getString("NewAlertTitle"), utilityResources.getString("NewAlertHeader"),utilityResources.getString("NewAlertMessage"), AlertType.CONFIRMATION)){
-    			System.out.println("hi");
     			return;
     		}
     	}
@@ -143,7 +139,6 @@ class SpriteUtility {
                 repopulateLabels();
         		savedAnimationProperty.set(false);
 
-               // initAnimationProperties();
             }
         }
     }
@@ -161,7 +156,7 @@ class SpriteUtility {
 		for (Rectangle rect : rectangleLogic.getRectangleList()){
 			Label label = makeLabel(rect,rectangleLogic.getRectangleList().indexOf(rect)+1);
 			rectangleLogic.getLabelList().add(label);
-			Button button = UtilityUtilities.makeButton("Frame #" + label.getText(),e -> popUpProperties(Integer.parseInt(label.getText())));
+			Button button = UtilityUtilities.makeButton(utilityResources.getString("FrameButton") + label.getText(),e -> popUpProperties(Integer.parseInt(label.getText())));
 			rectangleLogic.getButtonList().add(button);
 		}
 		gui.updateButtonDisplay(rectangleLogic.getButtonList());
@@ -171,7 +166,6 @@ class SpriteUtility {
     private void initAnimationProperties() {
         gui.getButtonBox().getChildren().remove(imageLogic.getPreviewImageView());
         gui.initAnimationNameAndDurationFields(this);
-        //rectangleLogic.getRectangleList().stream().forEach(gui::displayRectangleListProperties);
     }
 
 
@@ -195,22 +189,19 @@ class SpriteUtility {
         gui.getSpriteGroup().getChildren().add(gui.getCanvas());
     }
 
-    private void initCanvasHandlers(Canvas canvas2) {
-        canvas2.setOnMouseDragged(rectDrawer::handleMouseDragged);
-        canvas2.setOnMousePressed(this::handleMousePressed);
-        canvas2.setOnMouseReleased(this::mouseReleased);
-        canvas2.setOnMouseClicked(this::handleMouseClicked);
-    }
-
-    private void animationPreview() {
-        initAnimationPreview();
+    private void initCanvasHandlers(Canvas canvas) {
+        canvas.setOnMouseDragged(rectDrawer::handleMouseDragged);
+        canvas.setOnMousePressed(this::handleMousePressed);
+        canvas.setOnMouseReleased(this::mouseReleased);
+        canvas.setOnMouseClicked(this::handleMouseClicked);
     }
 
     public void initAnimationPreview() {
+    	gui.getButtonBox().getChildren().remove(imageLogic.getPreviewImageView());
+
         if (previewAnimation != null) {
             previewAnimation.stop();
         }
-        gui.getButtonBox().getChildren().remove(imageLogic.getPreviewImageView());
         previewAnimation = getPreviewAnimation();
         previewAnimation.play();
         gui.getButtonBox().getChildren().add(imageLogic.getPreviewImageView());
@@ -218,10 +209,8 @@ class SpriteUtility {
 
     public Animation getPreviewAnimation() {
         ImageView previewImageView = imageLogic.getPreviewImageView();
-        previewImageView.setImage(imageLogic.getSpriteImage());
         Duration duration = Duration.millis(gui.getDurationSlider().getValue());
-        Animation animation = rectangleLogic.getAnimation(previewImageView, duration);
-        animation.setCycleCount(Animation.INDEFINITE);
+        Animation animation = rectangleLogic.addAnimation(previewImageView, duration);
         return animation;
     }
 
@@ -239,7 +228,7 @@ class SpriteUtility {
 
     @SuppressWarnings("rawtypes")
 	private Object popUpProperties(int id) {
-		Dialog dialog = UtilityUtilities.popUp(utilityResources.getString("EditFrameTitle"),utilityResources.getString("EditFrameMessage")+ "Frame " + id);
+		Dialog dialog = UtilityUtilities.popUp(utilityResources.getString("EditFrameTitle"),utilityResources.getString("EditFrameMessage")+ "Frame # " + id);
 		VBox box = gui.displayRectangleListProperties(rectangleLogic.getRectangleList().get(id-1));
 		dialog.getDialogPane().setContent(box);
 		dialog.showAndWait();
