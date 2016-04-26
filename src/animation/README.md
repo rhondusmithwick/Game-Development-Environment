@@ -2,7 +2,7 @@
 This utility is meant to help you incorporate animation into your project.
 
 ### Documentation
-Please see our [Documentation(https://developers.facebook.com/). Especially take note of the animation package, which you will need to use in your project.
+Please see our [Documentation](google.com). Especially take note of the animation package, which you will need to use in your project.
 
 ### How To Run the Application
 1. Run the application with the Main class in the main package. Upon running the Main class a selection screen should appear that allows you to browse all the files on your computer. Use this screen to select the sprite sheet you would like to use for animation. A sprite sheet is a large image that contains multiple images of the sprite in multiple positions that when flashed through quickly look like movement.
