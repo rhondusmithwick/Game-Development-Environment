@@ -16,3 +16,8 @@ if (health.getHealth() <= 0 ) {
     charEntity.getComponent(ImagePath.class).setImagePath(IMAGE_PATH);
     charEntity.addComponent(new ImagePath(IMAGE_PATH));
 }
+else {
+	String IMAGE_PATH = "resources/images/blastoise.png";
+	charEntity.getComponent(ImagePath.class).setImagePath(IMAGE_PATH);
+	charEntity.addComponent(new ImagePath(IMAGE_PATH));
+}

@@ -1,11 +1,14 @@
 package model.entity;
 
 import api.*;
+
 import com.google.common.collect.Maps;
+
 import events.EventSystem;
 import groovy.lang.GroovyShell;
 import model.physics.PhysicsEngine;
-
+import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -148,5 +151,10 @@ public class Level implements ILevel {
 	public boolean isEmpty() {
 		return universe.isEmpty();
 	}
+	
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        eventSystem.setUniverse(this);
+    }
 
 }
