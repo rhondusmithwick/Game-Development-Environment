@@ -76,7 +76,7 @@ public class Collision implements IComponent {
 	}
 
 	public void clearCollidingIDs() {
-		this.collidingIDsProperty().set("CollidingIDs");
+		this.collidingIDsProperty().set("");
 	}
 
 	@Override
