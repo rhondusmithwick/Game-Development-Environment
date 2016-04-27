@@ -1,7 +1,6 @@
 package view.editor.gameeditor;
 
 import java.util.Map;
-import java.util.ResourceBundle;
 import api.IComponent;
 import api.IEntity;
 import model.entity.Entity;
@@ -10,7 +9,6 @@ import view.editor.entityeditor.ComponentFactory;
 import view.enums.DefaultStrings;
 
 public class EntityFactory {
-	private final ResourceBundle myLocs =ResourceBundle.getBundle(DefaultStrings.COMPONENT_LOC.getDefault());
 	private final ComponentFactory componentFactory = new ComponentFactory();
 
 	public IEntity createEntity(String language, String template){
@@ -35,7 +33,7 @@ public class EntityFactory {
 			if(componentName.getName().endsWith(".Collision")){
 				entity.forceAddComponent(componentFactory.getComponent(componentName.getName(), entity), true);
 			}else{
-				entity.forceAddComponent(componentFactory.getComponent(myLocs.getString(componentName.getName())), true);
+				entity.forceAddComponent(componentFactory.getComponent(componentName.getName()), true);
 			}
 
 

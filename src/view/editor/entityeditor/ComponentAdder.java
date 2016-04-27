@@ -34,7 +34,7 @@ public class ComponentAdder extends ComponentModifier{
 			if(componentName.endsWith(".Collision")){
 				entity.forceAddComponent(componentFactory.getComponent(componentName, entity), true);
 			}else{
-				entity.forceAddComponent(componentFactory.getComponent(myLocs.getString(componentName)),true);
+				entity.forceAddComponent(componentFactory.getComponent(componentName),true);
 			}
 		}
 
