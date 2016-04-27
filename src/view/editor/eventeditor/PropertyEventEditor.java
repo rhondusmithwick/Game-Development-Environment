@@ -37,7 +37,7 @@ public class PropertyEventEditor extends EventEditorTab
 	
 	private Button chooseFileButton;
 	private Button makeEventButton;
-	private TableManager tableManager;
+	private PropertyTableManager tableManager;
 	
 	EditorEvent masterEditor;
 	
@@ -51,7 +51,7 @@ public class PropertyEventEditor extends EventEditorTab
 	
 	private final String language;
 	
-	public PropertyEventEditor(String language, ObservableList<IEntity> masterList, ObservableList<ILevel> levelList)
+	public PropertyEventEditor(String language, ObservableList<ILevel> levelList)
 	{
 		super(language, levelList);
 		
@@ -71,7 +71,7 @@ public class PropertyEventEditor extends EventEditorTab
 		chooseFileButton = new Button();
 		makeEventButton = new Button();
 		
-		tableManager = new TableManager(masterList, language, this);
+		tableManager = new PropertyTableManager(language, this);
 		
 		action = null;
 		
