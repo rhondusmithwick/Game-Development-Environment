@@ -54,7 +54,7 @@ public class AniPong {
         myScene = new Scene(root, width, height, Color.WHITE);
         myScene.setOnKeyPressed(e -> universe.getEventSystem().takeInput(e));
         myScene.setOnMousePressed(e -> {
-        	universe.getEventSystem().takeMousePress(e);
+//        	universe.getEventSystem().takeMousePress(e);
         });
         return myScene;
 		

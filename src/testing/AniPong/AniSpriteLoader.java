@@ -24,7 +24,7 @@ public class AniSpriteLoader {
         img.setScaleX(0.05);
         img.setScaleY(0.05);
         e.addComponents(pos, disp, new Velocity(100.0, 0.0),
-                new Collision("ball"), new RestitutionCoefficient(1.0), new Mass(25));
+                new Collision("ball"), new RestitutionCoefficient(1.0), new Mass(5));
         return e;
     }
 

@@ -10,6 +10,7 @@ import model.component.movement.Velocity;
 import model.component.physics.*;
 import model.component.visual.Sprite;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -51,7 +52,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 			imageView.setTranslateX(pos.getX());
 			imageView.setTranslateY(pos.getY());
 		});
-
+		
 		if (gravityActive) {
 			applyGravity(universe, dt);
 		}
@@ -69,7 +70,11 @@ public class PhysicsEngine implements IPhysicsEngine {
 			double dx = dt * velocity.getVX();
 			double dy = dt * velocity.getVY();
 			pos.add(dx, dy);
+			ImageView imageView = p.getComponent(Sprite.class).getImageView();
+			imageView.setTranslateX(pos.getX());
+			imageView.setTranslateY(pos.getY());
 		});
+		resetCollisionMasks(universe.getEntitiesWithComponent(Collision.class));
 		moveCollidingEntities(universe);
 	}
 	
@@ -79,32 +84,34 @@ public class PhysicsEngine implements IPhysicsEngine {
 			Map<IEntity, String> collidingEntitiesToSides = collidingEntitiesAndSides(e, universe);
 			for(IEntity collidingEntity : collidingEntitiesToSides.keySet()) {
 				if (getMass(e) < getMass(collidingEntity) && getMass(e) > 0) {
-					moveEntityToSide(e, collidingEntity, collidingEntitiesToSides.get(e));
+					moveEntityToSide(e, collidingEntity, collidingEntitiesToSides.get(collidingEntity));
 				}
 			}
 		});
 	}
 	
 	private void moveEntityToSide(IEntity entityToMove, IEntity entityToStay, String side) {
-		if (side == Collision.BOTTOM) { // move down
-			double overlap = entityToMove.getComponent(Collision.class).getMask().getMinY()
-					- entityToMove.getComponent(Collision.class).getMask().getMaxY();
-			entityToMove.getComponent(Position.class).add(0, overlap);
+		Bounds moving = entityToMove.getComponent(Collision.class).getMask();
+		Bounds staying = entityToStay.getComponent(Collision.class).getMask();
+		if (side.equals(Collision.BOTTOM)) { // move down
+			System.out.println("bottom overlap");
+			double overlap = moving.getMinY() - staying.getMaxY();
+			entityToMove.getComponent(Position.class).add(0, overlap+0.1);
 		}
-		else if (side == Collision.TOP) {
-			double overlap = entityToMove.getComponent(Collision.class).getMask().getMaxY()
-					- entityToMove.getComponent(Collision.class).getMask().getMinY();
-			entityToMove.getComponent(Position.class).add(0, -overlap);			
+		else if (side.equals(Collision.TOP)) {
+			System.out.println("top overlap");
+			double overlap = moving.getMaxY() - staying.getMinY();
+			entityToMove.getComponent(Position.class).add(0, -overlap-0.1);			
 		}
-		else if (side == Collision.LEFT) {
-			double overlap = entityToMove.getComponent(Collision.class).getMask().getMaxX()
-					- entityToMove.getComponent(Collision.class).getMask().getMinX();
-			entityToMove.getComponent(Position.class).add(-overlap, 0);			
+		else if (side.equals(Collision.LEFT)) {
+			double overlap = moving.getMaxX() - staying.getMinX();
+			System.out.println("left overlap "+overlap);
+			entityToMove.getComponent(Position.class).add(-overlap-0.1, 0);			
 		}
-		else if (side == Collision.RIGHT) {
-			double overlap = entityToMove.getComponent(Collision.class).getMask().getMinX()
-					- entityToMove.getComponent(Collision.class).getMask().getMaxX();
-			entityToMove.getComponent(Position.class).add(overlap, 0);					
+		else if (side.equals(Collision.RIGHT)) {
+			double overlap = moving.getMinX() - staying.getMaxX();
+			System.out.println("right overlap! "+overlap);
+			entityToMove.getComponent(Position.class).add(overlap+0.1, 0);					
 		}
 	}
 	
@@ -126,7 +133,10 @@ public class PhysicsEngine implements IPhysicsEngine {
 			for (int j=1; j<entitiesWithSides.length; j++) {
 				String[] entityAndSide = entitiesWithSides[j].split("_");
 				IEntity entityCollidingWith = universe.getEntity(entityAndSide[0]);
-				collidingEntitiesToSides.put(entityCollidingWith, entityAndSide[1]);
+				if (entityCollidingWith.getComponent(Collision.class).getMaskID() != entity.getComponent(Collision.class).getMaskID()) {
+					collidingEntitiesToSides.put(entityCollidingWith, entityAndSide[1]);
+					System.out.println(collidingEntitiesToSides);
+				}
 			}
 		}
 		return collidingEntitiesToSides;
@@ -183,7 +193,6 @@ public class PhysicsEngine implements IPhysicsEngine {
 		for (Bounds firstHitBox : firstHitBoxes) {
 			for (Bounds secondHitBox : secondHitBoxes) {
 				if (firstHitBox.intersects(secondHitBox)) {
-					System.out.println("COLLISION OCCURRED");
 					addEntityIDs(firstEntity, secondEntity);
 					addCollisionSide(firstEntity, secondEntity);
 					changeVelocityAfterCollision(firstEntity, secondEntity);
@@ -199,6 +208,13 @@ public class PhysicsEngine implements IPhysicsEngine {
 			entity.getComponent(Collision.class)
 					.setMask(entity.getComponent(Sprite.class).getImageView().getBoundsInParent());
 		}
+	}
+	
+	private void resetCollisionMasks(Collection<IEntity> collidableEntities) {
+		for (IEntity entity : collidableEntities) {
+			entity.getComponent(Collision.class)
+					.setMask(entity.getComponent(Sprite.class).getImageView().getBoundsInParent());
+		}		
 	}
 
 	public void changeVelocityAfterCollision(IEntity firstEntity, IEntity secondEntity) {
