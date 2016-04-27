@@ -14,7 +14,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.component.movement.Position;
-import model.component.visual.ImagePath;
+import model.component.visual.Sprite;
 import model.entity.Level;
 import model.physics.PhysicsEngine;
 
@@ -41,8 +41,8 @@ public class BenTestGroovy extends Application {
 		IEntity rhonduEntity = BenTestCharacter.run(IMAGE_PATH);
 		IEntity rhonduEntity2 = BenTestSecondCharacter.run(IMAGE_PATH2);
 		
-		rhonduEntity.getComponent(ImagePath.class).getImageView().setFitHeight(100);
-		rhonduEntity2.getComponent(ImagePath.class).getImageView().setFitHeight(100);
+		rhonduEntity.getComponent(Sprite.class).getImageView().setFitHeight(100);
+		rhonduEntity2.getComponent(Sprite.class).getImageView().setFitHeight(100);
 		
 		ILevel system = new Level();
 		system.addEntities(rhonduEntity, rhonduEntity2);
@@ -66,7 +66,7 @@ public class BenTestGroovy extends Application {
 		Collection<IEntity> list = s.getAllEntities();
 		for (IEntity entity : list) {
 			Position pos = entity.getComponent(Position.class);
-			ImageView imageView = entity.getComponent(ImagePath.class).getImageView();
+			ImageView imageView = entity.getComponent(Sprite.class).getImageView();
 			imageView.setFitHeight(100);
 			refreshDraw(imageView, pos.getX(), pos.getY());
 		}

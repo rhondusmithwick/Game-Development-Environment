@@ -2,7 +2,6 @@ package model.component.visual;
 
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utility.SingleProperty;
@@ -17,9 +16,9 @@ import java.util.List;
 /**
  * Component to hold an imagePath.
  *
- * @author Rhondu Smithwick
+ * @author Rhondu Smithwick, Melissa Zhang, Bruna Liborio
  */
-public class ImagePath implements IComponent {
+public class Sprite implements IComponent {
 
 	/**
 	 * The singleProperty.
@@ -27,18 +26,9 @@ public class ImagePath implements IComponent {
 	private final SingleProperty<String> imagePathProperty;
 	private final TwoProperty<Double, Double> imageSizeProperty;
 	private transient ImageView imageView;
-	private Rectangle2D viewport;
-	private int frameIndex;
-	private final int maxFrameIndex;
-	private boolean isAnimated;
-	private double timeSinceLastFrame, elapsedTime;
-	private final double frameDuration, totalDuration;
-	private String spriteName;
-	// TODO: resource file
-	private static final String PROPERTIES_DIR = "spriteProperties.";
 	private int zLevel = 0;
 
-	public ImagePath() {
+	public Sprite() {
 		this("resources/testing/RhonduSmithwick.JPG");
 	}
 
@@ -48,11 +38,10 @@ public class ImagePath implements IComponent {
 	 * @param imagePath
 	 *            starting value
 	 */
-	public ImagePath(String imagePath) { // TODO: place default in resource file
-		this("John Doe", imagePath, 0.0, 0.0, new Rectangle2D(0, 0, 0, 0), false, 0, 0, 0);
+	public Sprite(String imagePath) { // TODO: place default in resource file
+		this(imagePath, 0.0, 0.0);
 	}
 
-	// TODO: IMPORTANT NOTE: I forgot to account for columns!
 	/**
 	 * Construct with starting values.
 	 *
@@ -65,19 +54,12 @@ public class ImagePath implements IComponent {
 	 * @param imagePath
 	 *            String path to spritesheet
 	 */
-	public ImagePath(String spriteName, String imagePath, double imageWidth, double imageHeight, Rectangle2D viewport,
-			boolean isAnimated, double frameDurationMillis, double totalDurationMillis, int maxFrameIndex) {
+	public Sprite(String imagePath, double imageWidth, double imageHeight){
 		this.imagePathProperty = new SingleProperty<>("ImagePath", imagePath);
 		this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", imageHeight);
-		this.spriteName = spriteName;
 		this.imageView = this.createImageView(imagePath);
-		this.viewport = viewport;
-		this.frameIndex = 0;
-		this.isAnimated = isAnimated;
-		this.reset();
-		this.frameDuration = frameDurationMillis;
-		this.totalDuration = totalDurationMillis;
-		this.maxFrameIndex = maxFrameIndex;
+
+
 	}
 
 	private ImageView createImageView(String imagePath) {
@@ -142,68 +124,11 @@ public class ImagePath implements IComponent {
 		return Arrays.asList(imagePathProperty(), imageWidthProperty(), imageHeightProperty());
 	}
 
-	private void updateViewport() {
-		double width = this.viewport.getWidth();
-		double height = this.viewport.getHeight();
-		double offsetX = this.frameIndex * width; // TODO: changeImage to offsetX +
-													// ...
-		double offsetY = 0.0; // TODO: changeImage to offsetX + ...
-		this.viewport = new Rectangle2D(offsetX, offsetY, width, height);
-	}
 
-	public Rectangle2D getViewport() { // TODO: remove, for debugging purposes
-		return this.viewport;
-	}
-
-	public ImageView getImageView() { // TODO: make imageView an instance
-										// variable
-		imageView.setViewport(this.viewport); // TODO: for some reason, setting
-												// viewport internally fails
+	public ImageView getImageView() { 
 		return imageView;
 	}
 
-	public void setFrameIndex(int frameIndex) {
-		this.frameIndex = frameIndex % this.maxFrameIndex;
-		this.updateViewport(); // TODO: possibly relocate this, hacky
-	}
-
-	public void updateTime(double dt) {
-		this.elapsedTime += dt;
-		this.timeSinceLastFrame += dt;
-	}
-
-	public double getElapsedTime() {
-		return this.elapsedTime;
-	}
-
-	public double getTimeSinceLastFrame() {
-		return this.timeSinceLastFrame;
-	}
-
-	public double getFrameDuration() {
-		return this.frameDuration;
-	}
-
-	public void resetTimeSinceLastFrame() {
-		this.timeSinceLastFrame = 0.0;
-	}
-
-	public void reset() {
-		this.timeSinceLastFrame = 0.0;
-		this.elapsedTime = 0.0;
-	}
-
-	public double getDuration() {
-		return this.totalDuration;
-	}
-
-	public int getFrameIndex() {
-		return this.frameIndex;
-	}
-
-	public void incrementFrameIndex() {
-		this.setFrameIndex(this.getFrameIndex() + 1);
-	}
 
 	/**
 	 * Sets the z-layer order.
@@ -229,8 +154,5 @@ public class ImagePath implements IComponent {
 		this.imageView = this.createImageView(getImagePath());
 	}
 
-	public String getSpriteProperties() {
-		return PROPERTIES_DIR + this.spriteName;
-	}
 
 }

@@ -3,7 +3,7 @@ package testing;
 import javafx.application.Application;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
-import model.component.visual.ImagePath;
+import model.component.visual.Sprite;
 
 
 /**
@@ -22,8 +22,8 @@ public class ImagePathWriteTest extends Application {
     }
 
     public void test() {
-        ImagePath path = new ImagePath();
-        ImagePath path2 = path.clone(ImagePath.class);
+        Sprite path = new Sprite();
+        Sprite path2 = path.clone(Sprite.class);
         System.out.println(path2.getImageView());
     }
 }
