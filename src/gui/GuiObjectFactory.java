@@ -1,8 +1,8 @@
 package gui;
 
-import java.lang.reflect.Constructor;
 import java.util.ResourceBundle;
-import javafx.beans.property.SimpleObjectProperty;
+import view.enums.DefaultStrings;
+import voogasalad.util.reflection.Reflection;
 
 
 /**
@@ -14,26 +14,12 @@ import javafx.beans.property.SimpleObjectProperty;
 
 
 public class GuiObjectFactory {
-	private static final String GUI_RESOURCES = "guiObject/guiComponents";
-	private static final String GUI_FACTORY = "guiObject/GuiObjectFactory";
-	private String myLanguage;
-	private ResourceBundle myBundle = ResourceBundle.getBundle(GUI_FACTORY);
+	private ResourceBundle myBundle = ResourceBundle.getBundle(DefaultStrings.GUI_FACTORY.getDefault());
 
-	public GuiObjectFactory(String language){
-		myLanguage=  language;
-	}
-	public GuiObject createNewGuiObject(String type, SimpleObjectProperty<?> property, Object object){ 
-		if(myBundle.containsKey(type)) {
-			String obj = myBundle.getString(type);			
-			try {
-				Class<?> newClass = Class.forName(obj);
-				Constructor<?> constructor = newClass.getConstructor(String.class, String.class, String.class, SimpleObjectProperty.class, Object.class);
-				 return (GuiObject) constructor.newInstance(type, GUI_RESOURCES, myLanguage, property, object);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-			
-			
+	public GuiObject createNewGuiObject( Object... args){ 
+		if(myBundle.containsKey((String) args[0])) {
+		
+			return (GuiObject) Reflection.createInstance(myBundle.getString((String) args[0]), args);
 		}
 		return null;
 	}

@@ -1,7 +1,6 @@
 package view.editor.gameeditor;
 
 import api.IEditor;
-import api.IEntity;
 import api.ISerializable;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -15,16 +14,12 @@ import view.enums.GUISize;
 public abstract class ObjectDisplay {
 	
 	private final EditorFactory editFact = new EditorFactory();
-	private String language;
 	private Authoring authEnv;
-	private ObservableList<IEntity> masterEntityList;
 	private VBox container;
 	
 	
-	public ObjectDisplay(String language, Authoring authEnv, ObservableList<IEntity> masterEntityList){
-		this.language = language;
+	public ObjectDisplay(Authoring authEnv){
 		this.authEnv=authEnv;
-		this.masterEntityList=masterEntityList;
 	}
 	
 	
@@ -48,11 +43,10 @@ public abstract class ObjectDisplay {
 	}
 	
 	
-	@SuppressWarnings("unchecked")
-	public void createEditor(Class<?> editName, ISerializable toEdit, ObservableList<ISerializable> otherList) {
-		IEditor editor = editFact.createEditor(editName, language, toEdit, (ObservableList<ISerializable>) ((ObservableList<?>) masterEntityList), otherList);
+	public void createEditor(String name, Object... args) {
+		IEditor editor = editFact.createEditor(name,  args);
 		editor.populateLayout();
-		authEnv.createTab(editor.getPane(), editName.getSimpleName(), true);
+		authEnv.createTab(editor.getPane(), name.substring(name.lastIndexOf('.')+1), true);
 	}
 	
 	protected void updateDisplay(){

@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import api.IEntity;
 import api.ISerializable;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceDialog;
@@ -27,7 +26,7 @@ public class EntityDisplay extends ObjectDisplay{
 	private String language;
 	
 	public EntityDisplay(String language,ObservableList<IEntity> masterEntList, Authoring authEnv){
-		super(language, authEnv,masterEntList);
+		super(authEnv);
 		this.language=language;
 		this.masterEntList = masterEntList;
 		this.myResources = ResourceBundle.getBundle(language);
@@ -50,7 +49,7 @@ public class EntityDisplay extends ObjectDisplay{
 	}
 
 	private void addEntityToScroll(ISerializable entity, VBox container) {
-		container.getChildren().add(Utilities.makeButton(((Entity) entity).getName(), f->createEditor(EditorEntity.class, entity, FXCollections.observableArrayList())));
+		container.getChildren().add(Utilities.makeButton(((Entity) entity).getName(), f->createEditor(EditorEntity.class.getName(), language,entity, masterEntList)));
 
 	}
 	
@@ -78,7 +77,7 @@ public class EntityDisplay extends ObjectDisplay{
 		}else{
 			newEntity = entFact.createEntity(language, myResources.getString(choice));
 		}
-		createEditor(EditorEntity.class, newEntity, FXCollections.observableArrayList());
+		createEditor(EditorEntity.class.getName(), language, newEntity, masterEntList);
 	}
 	
 	
