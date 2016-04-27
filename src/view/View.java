@@ -24,8 +24,8 @@ import javafx.util.Duration;
 import model.component.movement.Orientation;
 import model.component.movement.Position;
 import model.component.physics.Collision;
-import model.component.visual.ImagePath;
 import model.core.SystemManager;
+import model.component.visual.Sprite;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -126,7 +126,7 @@ public class View implements IView {
 	}
 
 	private ImageView getUpdatedImageView(IEntity e) {
-		ImagePath display = e.getComponent(ImagePath.class);
+		Sprite display = e.getComponent(Sprite.class);
 		ImageView imageView = display.getImageView();
 		int z = display.getZLevel();
 		if (z == -1) {
@@ -177,7 +177,7 @@ public class View implements IView {
 		// render
 		root.getChildren().clear();
 		for (IEntity e : model.getEntitySystem().getAllEntities()) {
-			if (e.hasComponents(ImagePath.class, Position.class)) {
+			if (e.hasComponents(Sprite.class, Position.class)) {
 				viewUtils.makeSelectable(e);
 				root.getChildren().addAll(this.getCollisionShapes(e));
 				root.getChildren().add(this.getUpdatedImageView(e));

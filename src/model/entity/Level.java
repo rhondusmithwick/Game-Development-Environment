@@ -69,6 +69,7 @@ public class Level implements ILevel {
 		gameScripts = new ArrayList<>();
 		String returnMessage = "";
 		String key = "Script"; // TODO: don't hard-code
+		System.out.println(this.metadata.keySet());
 		if (this.metadata.containsKey(key)) {
 			String value = this.metadata.get(key);
 			String[] scripts = value.split(",");

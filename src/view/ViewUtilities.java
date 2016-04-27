@@ -8,7 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import model.component.movement.Position;
-import model.component.visual.ImagePath;
+import model.component.visual.Sprite;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -35,7 +35,7 @@ public class ViewUtilities {
 	}
 
 	private ImageView getImageView(IEntity e) {
-		return e.getComponent(ImagePath.class).getImageView();
+		return e.getComponent(Sprite.class).getImageView();
 	}
 
 	public void allowDeletion() {
@@ -103,7 +103,7 @@ public class ViewUtilities {
 	}
 
 	public void makeSelectable(IEntity e) {
-		ImagePath path = e.getComponent(ImagePath.class);
+		Sprite path = e.getComponent(Sprite.class);
 		ImageView imageView = path.getImageView();
 
 		imageView.setOnMouseEntered(event -> this.changeCursorForResizing(imageView, event.getY()));
@@ -136,7 +136,7 @@ public class ViewUtilities {
 	}
 
 	private void mouseDragged(IEntity e, double x, double y) {
-		ImagePath path = e.getComponent(ImagePath.class);
+		Sprite path = e.getComponent(Sprite.class);
 		Position position = e.getComponent(Position.class);
 		if (dragging) {
 			double translateX = x - initialMouseX;

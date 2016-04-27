@@ -17,7 +17,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import model.component.movement.Position;
-import model.component.visual.ImagePath;
+import model.component.visual.Sprite;
 import model.core.SystemManager;
 import model.entity.Level;
 import update.GameLoopManager;
@@ -154,7 +154,7 @@ public class EditorEnvironment extends Editor {
 
 	private void addToScene(IEntity entity) {
 		try {
-			if (!entity.hasComponent(Position.class) || !entity.hasComponent(ImagePath.class)) {
+			if (!entity.hasComponent(Position.class) || !entity.hasComponent(Sprite.class)) {
 				addComponents(entity);
 			}
 			// TODO: rm
@@ -227,7 +227,7 @@ public class EditorEnvironment extends Editor {
 	// }
 
 	private void sendToFront(IEntity e) {
-		e.getComponent(ImagePath.class).setZLevel(1);
+		e.getComponent(Sprite.class).setZLevel(1);
 	}
 
 	private void updateDisplay(ObservableList<ISerializable> masterList) {
@@ -284,12 +284,12 @@ public class EditorEnvironment extends Editor {
 	private void addImagePathComponent(IEntity entity) {
 		File file = Utilities.promptAndGetFile(Utilities.getImageFilters(),
 				myResources.getString("pickImagePathImage"));
-		entity.setSpec(ImagePath.class, SINGLE);
-		entity.addComponent(new ImagePath(file.getPath()));
+		entity.setSpec(Sprite.class, SINGLE);
+		entity.addComponent(new Sprite(file.getPath()));
 	}
 
 	private void removeFromDisplay(IEntity entity, Button entityButton) {
-		gameRoot.getChildren().remove(entity.getComponent(ImagePath.class).getImageView());
+		gameRoot.getChildren().remove(entity.getComponent(Sprite.class).getImageView());
 		myEntitySystem.removeEntity(entity.getID());
 		environmentEntityButtons.getChildren().remove(entityButton);
 	}

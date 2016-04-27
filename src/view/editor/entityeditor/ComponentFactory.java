@@ -1,4 +1,4 @@
-package view.editor;
+package view.editor.entityeditor;
 
 import api.IComponent;
 import api.IEntity;

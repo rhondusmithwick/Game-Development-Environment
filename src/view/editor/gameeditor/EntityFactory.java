@@ -8,7 +8,7 @@ import api.IEntity;
 import model.entity.Entity;
 import model.entity.PropertiesTemplateLoader;
 import view.Utilities;
-import view.editor.ComponentFactory;
+import view.editor.entityeditor.ComponentFactory;
 import view.enums.DefaultStrings;
 
 public class EntityFactory {
