@@ -38,6 +38,9 @@ public class Sprite implements IComponent {
      */
     public Sprite(String imagePath) { // TODO: place default in resource file
         setImagePath(imagePath);
+        Image image = getImage(imagePath);
+        setImageWidth(image.getWidth());
+        setImageHeight(image.getHeight());
     }
 
     /**

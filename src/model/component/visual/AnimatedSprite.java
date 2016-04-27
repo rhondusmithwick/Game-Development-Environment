@@ -1,5 +1,6 @@
 package model.component.visual;
 
+import javafx.animation.Animation;
 import javafx.beans.property.SimpleObjectProperty;
 import utility.SingleProperty;
 import voogasalad.util.spriteanimation.animation.AnimationContainer;
@@ -7,6 +8,7 @@ import voogasalad.util.spriteanimation.animation.AnimationContainer;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.List;
+import java.util.Set;
 
 /**
  * This component contains the animated sprite
@@ -27,7 +29,8 @@ public class AnimatedSprite extends Sprite {
      * @param imagePath starting value
      */
     public AnimatedSprite(String imagePath, String bundlePath) { // TODO: place default in resource file
-        this(imagePath, 0.0, 0.0, bundlePath);
+        super(imagePath);
+        setBundlePath(bundlePath);
     }
 
     /**
@@ -41,7 +44,6 @@ public class AnimatedSprite extends Sprite {
     public AnimatedSprite(String imagePath, double imageWidth, double imageHeight, String bundlePath) {
         super(imagePath, imageWidth, imageHeight);
         setBundlePath(bundlePath);
-        reInitializeContainer();
     }
 
     public SimpleObjectProperty<String> bundlePathProperty() {
@@ -58,21 +60,11 @@ public class AnimatedSprite extends Sprite {
     }
 
     @Override
-    public void setImageWidth(double imageWidth) {
-        super.setImageWidth(imageWidth);
-        reInitializeContainer();
-    }
-
-    @Override
     public void setImagePath(String imagePath) {
         super.setImagePath(imagePath);
-        reInitializeContainer();
-    }
-
-    @Override
-    public void setImageHeight(double imageHeight) {
-        super.setImageHeight(imageHeight);
-        reInitializeContainer();
+        if (container != null) {
+            reInitializeContainer();
+        }
     }
 
     public AnimationContainer getContainer() {
@@ -95,5 +87,15 @@ public class AnimatedSprite extends Sprite {
         return superProps;
     }
 
+    public Set<String> getAnimationNames() {
+        return getContainer().getAnimationNames();
+    }
 
+    public boolean hasAnimation(String animationName) {
+        return getContainer().hasAnimation(animationName);
+    }
+
+    public Animation getAnimation(String animationName) {
+        return getContainer().getAnimation(animationName);
+    }
 }
