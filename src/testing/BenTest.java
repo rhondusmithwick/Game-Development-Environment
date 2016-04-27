@@ -18,7 +18,7 @@ import model.component.character.Health;
 import model.component.character.Score;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
-import model.component.visual.ImagePath;
+import model.component.visual.Sprite;
 import model.entity.Entity;
 import model.entity.Level;
 import model.physics.PhysicsEngine;
@@ -50,7 +50,7 @@ public class BenTest extends Application {
 		character.forceAddComponent(new Score(100), true);
 		Position pos = new Position(250.0, 250.0);
 		character.forceAddComponent(pos, true);
-		character.forceAddComponent(new ImagePath(), true);
+		character.forceAddComponent(new Sprite(), true);
 		character.forceAddComponent(new Velocity(20.0, 50.0), true);
 		character.removeComponents(Score.class);
 		list.add(character);
@@ -61,7 +61,7 @@ public class BenTest extends Application {
 		physics = new PhysicsEngine();
 
 		// TODO: seriously, don't lazy-initialize
-		testSprite = createImage(character.getComponent(ImagePath.class), character.getComponent(Position.class));
+		testSprite = createImage(character.getComponent(Sprite.class), character.getComponent(Position.class));
 
 		int MILLISECOND_DELAY = 10;
 		double SECOND_DELAY = 0.01;
@@ -98,7 +98,7 @@ public class BenTest extends Application {
 		}
 	}
 
-	private ImageView createImage(ImagePath path, Position pos) {
+	private ImageView createImage(Sprite path, Position pos) {
 		File resource = new File(path.getImagePath());
 		Image image = new Image(resource.toURI().toString());
 		ImageView imageView = new ImageView(image);
