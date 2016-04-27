@@ -6,6 +6,7 @@ import api.ILevel;
 import api.ISystemManager;
 import datamanagement.XMLReader;
 import groovy.lang.GroovyShell;
+import javafx.scene.Node;
 import model.entity.Entity;
 import model.entity.Level;
 import testing.demo.GroovyDemoTest;
@@ -21,17 +22,33 @@ public class SystemManager implements ISystemManager {
 	private ILevel universe = new Level();
 	private ILevel sharedUniverse = new Level();
 	private boolean isRunning = true;
+	private Node root;
 
-	public SystemManager() {
-		this(new Level());
+	public SystemManager(Node root) {
+		this(root, new Level());
 	}
 
+	public SystemManager(Node root, ILevel level) {
+		this.root = root;
+		this.universe = level;
+		initLevel();
+	}
+
+	@Deprecated
+	public SystemManager() {
+	}
+
+	@Deprecated
 	public SystemManager(ILevel level) {
 		this.universe = level;
-//		this.universe.addMetadata("Script", "testing.demo.Pong"); // TODO: remove after GameManager implemented
+		initLevel();
+	}
+
+	private void initLevel() {
 		universe.init(shell, this);
+		root.setOnKeyPressed(e -> universe.getEventSystem().takeInput(e)); // TODO: take in all inputs
 		shell.setVariable("game", this);
-		shell.setVariable("universe", level);
+		shell.setVariable("universe", universe);
 		shell.setVariable("demo", new GroovyDemoTest()); // TODO: remove
 	}
 
@@ -91,7 +108,7 @@ public class SystemManager implements ISystemManager {
 	@Override
 	public void loadLevel(String filename) {
 		this.universe = new XMLReader<ILevel>().readSingleFromFile(filename);
-		universe.init(shell, this);
+		initLevel();
 	}
 
 	@Override
