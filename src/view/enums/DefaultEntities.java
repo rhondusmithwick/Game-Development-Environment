@@ -10,22 +10,22 @@ import model.component.character.Health;
 import model.component.character.Score;
 import model.component.movement.Position;
 import model.component.physics.Mass;
-import model.component.visual.ImagePath;
+import model.component.visual.Sprite;
 import model.entity.Entity;
 
 public enum DefaultEntities {
 	
 	CHAR_1("Character 1",  "templates/player", 
-			Arrays.asList(new Position(), new Defense(25), new Health(100), new Mass(100), new Score(), new ImagePath("resources/images/white.png")) ),
+			Arrays.asList(new Position(), new Defense(25), new Health(100), new Mass(100), new Score(), new Sprite("resources/images/white.png")) ),
 	
 	CHAR_2("Character 2", "templates/player", 
-			Arrays.asList(new Position(), new Defense(25), new Health(100), new Mass(100), new Score(), new ImagePath("resources/images/blastoise.png"))),
+			Arrays.asList(new Position(), new Defense(25), new Health(100), new Mass(100), new Score(), new Sprite("resources/images/blastoise.png"))),
 	
 	BACKGROUND("Default Waterfall Background", "templates/Background", 
-			Arrays.asList(new Position(), new ImagePath("resources/images/movingwaterfall.gif"))),
+			Arrays.asList(new Position(), new Sprite("resources/images/movingwaterfall.gif"))),
 	
 	PLATFORM("Default Mario Platform", "templates/PlatformSprite", 
-			Arrays.asList(new Position(), new ImagePath("resources/images/marioplatform.jpeg")));
+			Arrays.asList(new Position(), new Sprite("resources/images/marioplatform.jpeg")));
 	
 	
 	
