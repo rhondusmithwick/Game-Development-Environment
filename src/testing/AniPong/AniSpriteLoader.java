@@ -31,7 +31,7 @@ public class AniSpriteLoader {
     public static IEntity createPaddle(String name, Position pos) {
         IEntity e = new Entity(name);
         e.addComponents(pos, new ImagePath(AniPong.PATH+"sprites/red_paddle.png"),
-                new Collision("paddle"), new RestitutionCoefficient(1.2), new Mass(20),
+                new Collision("paddle"), new RestitutionCoefficient(1.0), new Mass(100000),
                 new Score(0), new Velocity(0.0, 0.0));
         return e;
     }
@@ -39,7 +39,7 @@ public class AniSpriteLoader {
     public static IEntity createPlatform(String name, Position pos) {
         IEntity e = new Entity(name);
         e.addComponents(pos, new ImagePath(),
-                new Collision("platform"), new RestitutionCoefficient(1.2), new Mass(1000));
+                new Collision("platform"), new RestitutionCoefficient(1.0), new Mass(1000));
         return e;
     }
 

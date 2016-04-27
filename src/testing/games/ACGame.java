@@ -11,6 +11,7 @@ import datamanagement.XMLReader;
 import events.Action;
 import events.EventSystem;
 import events.KeyTrigger;
+import events.MouseTrigger;
 import events.PropertyTrigger;
 import events.TimeTrigger;
 import javafx.scene.Group;
@@ -66,6 +67,9 @@ public class ACGame {
         // Create a place to see the shapes
         myScene = new Scene(root, width, height, Color.WHITE);
         myScene.setOnKeyPressed(e -> universe.getEventSystem().takeInput(e));
+        myScene.setOnMousePressed(e -> {
+        	universe.getEventSystem().takeMousePress(e);
+        });
         initEngine();
         return myScene;
     }
@@ -99,6 +103,7 @@ public class ACGame {
             eventSystem.registerEvent(new KeyTrigger("D"), new Action(moveRightScriptPath, map));
             eventSystem.registerEvent(new KeyTrigger("A"), new Action(moveLeftScriptPath));
             eventSystem.registerEvent(new KeyTrigger("W"), new Action(jumpScriptPath));
+            eventSystem.registerEvent(new MouseTrigger(character.getID()), new Action(moveLeftScriptPath));
             universe.serialize("anitest.xml");
         } else {
             character = new XMLReader<IEntity>().readSingleFromFile("character.xml");

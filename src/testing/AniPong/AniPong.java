@@ -9,6 +9,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import events.Action;
 import events.KeyTrigger;
+import events.MouseTrigger;
 import model.component.character.Score;
 import model.component.character.UserControl;
 import model.component.movement.Position;
@@ -52,16 +53,20 @@ public class AniPong {
         // Create a place to see the shapes
         myScene = new Scene(root, width, height, Color.WHITE);
         myScene.setOnKeyPressed(e -> universe.getEventSystem().takeInput(e));
+        myScene.setOnMousePressed(e -> {
+        	universe.getEventSystem().takeMousePress(e);
+        });
         return myScene;
 		
 	}
 
     private void initSprites() {
         // Ball
-        IEntity ball = AniSpriteLoader.createBall("Ball", new Position(50.0, 150.0));
+        IEntity ball = AniSpriteLoader.createBall("Ball", new Position(200.0, 150.0));
         //Paddles
         IEntity leftPaddle = AniSpriteLoader.createPaddle("LeftPaddle", new Position(100, 160));
         IEntity rightPaddle = AniSpriteLoader.createPaddle("RightPaddle", new Position(540, 160));
+//        events.registerEvent(new MouseTrigger(leftPaddle.getID()), new Action(movePaddleUpScript));
         rightPaddle.addComponent(new UserControl());
         // Walls
         IEntity leftWall = AniSpriteLoader.createPlatform("LeftWall", new Position(-578, 7));
