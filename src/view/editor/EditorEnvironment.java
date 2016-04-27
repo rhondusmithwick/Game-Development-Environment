@@ -18,6 +18,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
+import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
@@ -26,12 +27,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.stage.Stage;
 import model.component.movement.Position;
-import model.component.visual.ImagePath;
+import model.component.visual.Sprite;
 import model.core.SystemManager;
 import model.entity.Level;
+import update.GameLoopManager;
 //import view.DragAndResize;
 import view.Utilities;
 import view.View;
@@ -54,10 +58,10 @@ public class EditorEnvironment extends Editor {
 	private VBox environmentEntityButtons = new VBox();
 	private TextField nameField = new TextField();
 	private ScrollPane scrollPane = new ScrollPane(environmentPane);
-
 	private ISystemManager game;
 	private IView view;
 	private SubScene gameScene;
+	private GameLoopManager manager;
 
 	public EditorEnvironment(String language, ISerializable toEdit, ObservableList<ISerializable> masterList,
 			ObservableList<ISerializable> addToList) {
@@ -70,12 +74,13 @@ public class EditorEnvironment extends Editor {
 
 		game = new SystemManager(this.myEntitySystem);
 		view = new View(game, gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(),
-				this.environmentPane); // TODO: remove this last arg once we
+				scrollPane); // TODO: remove this last arg once we
 										// figure out why keypresses aren't
 										// working
 
 		allEnvironmentsList = addToList;
 		addLayoutComponents();
+		manager = new GameLoopManager(language, game);
 	}
 
 	private void addLayoutComponents() {
@@ -134,10 +139,20 @@ public class EditorEnvironment extends Editor {
 	private void setRightPane() {
 		rightPane.getChildren().add(setSaveButton());
 		rightPane.getChildren().add(new ScrollPane(environmentEntityButtons));
+		rightPane.getChildren().add(setLoopButton());
 	}
 
 	private Button setSaveButton() {
 		return Utilities.makeButton(myResources.getString("saveEnvironment"), e -> saveEnvironment());
+	}
+	
+	private Button setLoopButton() {
+		return Utilities.makeButton(myResources.getString("loopManager"), e -> createLoopManager());
+	}
+	
+	private void createLoopManager() {
+		manager.show();
+		
 	}
 
 	private void setGameScene() {
@@ -150,7 +165,7 @@ public class EditorEnvironment extends Editor {
 
 	private void addToScene(IEntity entity) {
 		try {
-			if (!entity.hasComponent(Position.class) || !entity.hasComponent(ImagePath.class)) {
+			if (!entity.hasComponent(Position.class) || !entity.hasComponent(Sprite.class)) {
 				addComponents(entity);
 			}
 			// TODO: rm
@@ -223,7 +238,7 @@ public class EditorEnvironment extends Editor {
 	// }
 
 	private void sendToFront(IEntity e) {
-		e.getComponent(ImagePath.class).setZLevel(1);
+		e.getComponent(Sprite.class).setZLevel(1);
 	}
 
 	private void updateDisplay(ObservableList<ISerializable> masterList) {
@@ -280,12 +295,12 @@ public class EditorEnvironment extends Editor {
 	private void addImagePathComponent(IEntity entity) {
 		File file = Utilities.promptAndGetFile(Utilities.getImageFilters(),
 				myResources.getString("pickImagePathImage"));
-		entity.setSpec(ImagePath.class, SINGLE);
-		entity.addComponent(new ImagePath(file.getPath()));
+		entity.setSpec(Sprite.class, SINGLE);
+		entity.addComponent(new Sprite(file.getPath()));
 	}
 
 	private void removeFromDisplay(IEntity entity, Button entityButton) {
-		gameRoot.getChildren().remove(entity.getComponent(ImagePath.class).getImageView());
+		gameRoot.getChildren().remove(entity.getComponent(Sprite.class).getImageView());
 		myEntitySystem.removeEntity(entity.getID());
 		environmentEntityButtons.getChildren().remove(entityButton);
 	}

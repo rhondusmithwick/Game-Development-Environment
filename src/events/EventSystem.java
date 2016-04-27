@@ -89,7 +89,9 @@ public class EventSystem implements Observer, IEventSystem {
 
     @Override
     public void setUniverse(ILevel universe) {
-        this.unbindEvents();
+    	if(!actionMap.isEmpty() && this.universe!=null) {
+    		this.unbindEvents();
+    	}
         this.universe = universe;
         this.bindEvents();
     }
@@ -122,6 +124,13 @@ public class EventSystem implements Observer, IEventSystem {
     public String returnEventsAsString() {
         return new XMLWriter<ListMultimap<Trigger, Action>>().writeToString(actionMap);
     }
+    
+    /*public List<String> getEventsAsStringList() {
+    	return actionMap.keySet().stream().forEach(e-> {
+    		String s=e.toString()+";";
+    		actionMap.get(e).stream().forEach(e->s+=e.toString);
+    	});
+    }*/
 
     private void stopObservingTriggers(ListMultimap<Trigger, Action> map) {
         for (Trigger trigger : map.keySet()) {
@@ -156,6 +165,7 @@ public class EventSystem implements Observer, IEventSystem {
     private void writeObject(ObjectOutputStream out) throws IOException {
         this.unbindEvents();
         out.defaultWriteObject();
+        this.bindEvents();
     }
     
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {

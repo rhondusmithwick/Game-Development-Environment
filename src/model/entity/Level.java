@@ -1,12 +1,18 @@
 package model.entity;
 
 import api.*;
+
 import com.google.common.collect.Maps;
+
 import events.EventSystem;
 import groovy.lang.GroovyShell;
 import model.physics.PhysicsEngine;
-
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -23,7 +29,7 @@ public class Level implements ILevel {
 	private IPhysicsEngine physics = new PhysicsEngine();
 	private String eventSystemPath;
 //	private transient ResourceBundle scriptLocs = ResourceBundle.getBundle(DefaultStrings.SCRIPTS_LOC.getDefault());
-//	private List<IGameScript> gameScripts = new ArrayList<>();
+	private transient List<IGameScript> gameScripts;
 
 	public Level() {
 		this("");
@@ -60,35 +66,36 @@ public class Level implements ILevel {
 
 	@Override
 	public String init(GroovyShell shell, ISystemManager game) {
+		gameScripts = new ArrayList<>();
 		String returnMessage = "";
-//		String key = "script";
-//		if (this.metadata.containsKey(key)) {
-//			String value = this.metadata.get(key);
-//			String[] scripts = value.split(",");
-//			for (String script : scripts) {
-//				try {
-//					IGameScript gameScript = (IGameScript) Class.forName(scriptLocs.getString(script)).getConstructor()
-//							.newInstance();
-//					gameScript.init(shell, game);
-//					gameScripts.add(gameScript);
-//				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
-//						| InvocationTargetException | NoSuchMethodException | SecurityException
-//						| ClassNotFoundException e) {
-//					returnMessage += (e.getMessage() + "\n");
-//				}
-//			}
-//		} else {
-//			returnMessage = "No scripts";
-//		}
+		String key = "Script"; // TODO: don't hard-code
+		if (this.metadata.containsKey(key)) {
+			String value = this.metadata.get(key);
+			String[] scripts = value.split(",");
+			for (String script : scripts) {
+				try {
+					IGameScript gameScript = (IGameScript) Class.forName(script).getConstructor()
+							.newInstance(); // TODO: scriptLocs.getString(script)
+					gameScript.init(shell, game);
+					gameScripts.add(gameScript);
+				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+						| InvocationTargetException | NoSuchMethodException | SecurityException
+						| ClassNotFoundException e) {
+					returnMessage += (e.getMessage() + "\n");
+				}
+			}
+		} else {
+			returnMessage = "No scripts";
+		}
 		return returnMessage;
 	}
 
 	@Override
 	public void update(double dt) {
-////		physics.update(this, dt);
-//		for (IGameScript gameScript : gameScripts) {
-//			gameScript.update(dt);
-//		}
+		physics.update(this, dt); // TODO: remove
+		for (IGameScript gameScript : gameScripts) {
+			gameScript.update(dt);
+		}
 	}
 
 	@Override
@@ -144,5 +151,10 @@ public class Level implements ILevel {
 	public boolean isEmpty() {
 		return universe.isEmpty();
 	}
+	
+	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        eventSystem.setUniverse(this);
+    }
 
 }

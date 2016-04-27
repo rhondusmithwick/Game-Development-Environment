@@ -8,7 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import model.component.movement.Position;
-import model.component.visual.ImagePath;
+import model.component.visual.Sprite;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -19,6 +19,8 @@ public class ViewUtilities {
 	private static final double MARGIN = 8;
 	private static final int DEPTH = 70;
 	private static final Color HIGHLIGHT_COLOR = Color.YELLOW;
+	private static final String SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,0,50,0.8), 10, 0, 0, 0)",
+			NO_SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0, 0, 0)";
 	private Group root;
 	private ILevel universe;
 	private boolean resizing = false, dragging = false;
@@ -33,7 +35,7 @@ public class ViewUtilities {
 	}
 
 	private ImageView getImageView(IEntity e) {
-		return e.getComponent(ImagePath.class).getImageView();
+		return e.getComponent(Sprite.class).getImageView();
 	}
 
 	public void allowDeletion() {
@@ -49,7 +51,8 @@ public class ViewUtilities {
 	}
 
 	private void dehighlight(IEntity e) {
-		this.getImageView(e).setEffect(null);
+//		this.getImageView(e).setEffect(null);
+		getImageView(e).setStyle(NO_SELECT_EFFECT);
 		selectedSprites.clear(); // de-select
 	}
 
@@ -62,7 +65,7 @@ public class ViewUtilities {
 //		borderGlow.setHeight(DEPTH);
 //		this.getImageView(e).setEffect(borderGlow);
 //		this.selectedSprites.add(e);
-		getImageView(e).setStyle("-fx-effect: dropshadow(three-pass-box, rbga(0,0,50,0.8), 10, 0, 0, 0)"); // TODO: StringConstants SELECT_EFFECT
+		getImageView(e).setStyle(SELECT_EFFECT); // TODO: StringConstants SELECT_EFFECT
 	}
 
 	private boolean isInBottomResizeRegion(Node node, double y) {
@@ -100,7 +103,7 @@ public class ViewUtilities {
 	}
 
 	public void makeSelectable(IEntity e) {
-		ImagePath path = e.getComponent(ImagePath.class);
+		Sprite path = e.getComponent(Sprite.class);
 		ImageView imageView = path.getImageView();
 
 		imageView.setOnMouseEntered(event -> this.changeCursorForResizing(imageView, event.getY()));
@@ -114,7 +117,7 @@ public class ViewUtilities {
 			this.releaseSprite();
 			long duration = System.currentTimeMillis()-timeMouseClicked;
 			if(duration<clickThresholdMillis) {// click event handling
-				if (imageView.getEffect() == null) { // not selected
+				if (imageView.getStyle().equals(NO_SELECT_EFFECT)) { // not selected
 					this.highlight(e);
 				} else {
 					this.dehighlight(e);
@@ -133,7 +136,7 @@ public class ViewUtilities {
 	}
 
 	private void mouseDragged(IEntity e, double x, double y) {
-		ImagePath path = e.getComponent(ImagePath.class);
+		Sprite path = e.getComponent(Sprite.class);
 		Position position = e.getComponent(Position.class);
 		if (dragging) {
 			double translateX = x - initialMouseX;

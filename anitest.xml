@@ -1,0 +1,73 @@
+<?xml version="1.0" ?><object-stream><model.entity.Level serialization="custom"><model.entity.Level><default><eventSystem class="events.EventSystem" serialization="custom"><events.EventSystem><default><actionMap class="com.google.common.collect.ArrayListMultimap" serialization="custom"><unserializable-parents></unserializable-parents><com.google.common.collect.ArrayListMultimap><default></default><int>5</int><events.TimeTrigger><changed>false</changed><obs></obs><time>3.0</time></events.TimeTrigger><int>1</int><events.Action><script>package groovyScripts
+
+/**
+ * Created by ajonnav on 4/22/16.
+ * @author Anirudh Jonnavithula
+ */
+
+import model.component.movement.Velocity;
+import model.component.physics.Gravity;
+
+universe.getEntitiesWithName("Anolyn").get(0).getComponent(Velocity.class).setVXY(10,10);</script><scriptPath>resources/groovyScripts/ACAddGravity.groovy</scriptPath><parameters class="javax.script.SimpleBindings"><map></map></parameters></events.Action><events.KeyTrigger><changed>false</changed><obs></obs><key>A</key></events.KeyTrigger><int>1</int><events.Action><script>package groovyScripts
+
+import model.component.movement.Position
+
+/**
+ * Created by carolyn on 4/13/16.
+ * @author Carolyn Yao, Anirudh Jonnavithula
+ */
+
+import model.component.movement.Velocity;
+import model.component.character.Health
+import model.component.physics.Collision;
+
+
+velocity = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Velocity.class);
+position = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Position.class);
+position.setX(position.getX()-30);
+//velocity.setVXY(velocity.getVX()-10, velocity.getVY());
+System.out.println("colliding: " + universe.getEntitiesWithName("Anolyn").get(0).getComponent(Collision.class).getCollidingIDs());</script><scriptPath>resources/groovyScripts/keyInputMoveLeft.groovy</scriptPath><parameters class="javax.script.SimpleBindings"><map></map></parameters></events.Action><events.PropertyTrigger><changed>false</changed><obs></obs><entityID>82e92de4-3561-4e46-8608-3fc253e699ef</entityID><componentClass>model.component.movement.Position</componentClass><propertyName>X</propertyName></events.PropertyTrigger><int>1</int><events.Action><script>package groovyScripts
+
+/**
+ * Created by carolyn on 4/12/16.
+ * @author Carolyn Yao
+ */
+
+import model.component.movement.Position;
+import model.component.character.Health;
+
+position = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Position.class);
+health = universe.getEntitiesWithName("Anolyn").get(0).getComponent(Health.class);
+//System.out.println(position.getX());
+if (position.getX() &gt; 500) {
+	health.setHealth(0);
+}
+//position.setX(position.getX() + moved);</script><scriptPath>resources/groovyScripts/ACGameTestScript.groovy</scriptPath><parameters class="javax.script.SimpleBindings"><map></map></parameters></events.Action><events.KeyTrigger><changed>false</changed><obs></obs><key>D</key></events.KeyTrigger><int>1</int><events.Action><script>package groovyScripts
+
+import model.component.movement.Position
+
+/**
+ * Created by carolyn on 4/13/16.
+ * @author Carolyn Yao, Anirudh Jonnavithula
+ */
+
+import model.component.movement.Velocity;
+import model.component.character.Health;
+
+velocity = universe.getEntitiesWithName("Anolyn").get(0).getComponent(Velocity.class);
+position = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Position.class);
+position.setX(position.getX()+30);
+//velocity.setVXY(velocity.getVX()+10, velocity.getVY());
+</script><scriptPath>resources/groovyScripts/keyInputMoveRight.groovy</scriptPath><parameters class="javax.script.SimpleBindings"><map><entry><string>character</string><model.entity.Entity ID="82e92de4-3561-4e46-8608-3fc253e699ef" name="Anolyn"><components class="com.sun.javafx.collections.ObservableMapWrapper"><backingMap><entry><java-class>model.component.visual.ImagePath</java-class><list><model.component.visual.ImagePath serialization="custom"><model.component.visual.ImagePath><default><elapsedTime>0.0</elapsedTime><frameDuration>0.0</frameDuration><frameIndex>0</frameIndex><isAnimated>false</isAnimated><maxFrameIndex>0</maxFrameIndex><timeSinceLastFrame>0.0</timeSinceLastFrame><totalDuration>0.0</totalDuration><zLevel>0</zLevel><imagePathProperty><property1><value class="string">resources/images/blastoise.png</value><valid>true</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>ImagePath</name></property1></imagePathProperty><imageSizeProperty><property1><value class="double">0.0</value><valid>true</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>ImageWidth</name></property1><property2><value class="double">0.0</value><valid>true</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>ImageHeight</name></property2></imageSizeProperty><spriteName>John Doe</spriteName><viewport><minX>0.0</minX><minY>0.0</minY><width>0.0</width><height>0.0</height><maxX>0.0</maxX><maxY>0.0</maxY><hash>0</hash></viewport></default></model.component.visual.ImagePath></model.component.visual.ImagePath><model.component.visual.ImagePath serialization="custom"><model.component.visual.ImagePath><default><elapsedTime>0.0</elapsedTime><frameDuration>0.0</frameDuration><frameIndex>0</frameIndex><isAnimated>false</isAnimated><maxFrameIndex>0</maxFrameIndex><timeSinceLastFrame>0.0</timeSinceLastFrame><totalDuration>0.0</totalDuration><zLevel>0</zLevel><imagePathProperty><property1><value class="string">resources/images/blastoise.png</value><valid>true</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>ImagePath</name></property1></imagePathProperty><imageSizeProperty><property1><value class="double">0.0</value><valid>true</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>ImageWidth</name></property1><property2><value class="double">0.0</value><valid>true</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>ImageHeight</name></property2></imageSizeProperty><spriteName>John Doe</spriteName><viewport><minX>0.0</minX><minY>0.0</minY><width>0.0</width><height>0.0</height><maxX>0.0</maxX><maxY>0.0</maxY><hash>0</hash></viewport></default></model.component.visual.ImagePath></model.component.visual.ImagePath></list></entry><entry><java-class>model.component.movement.Position</java-class><list><model.component.movement.Position><twoProperty><property1><value class="double">100.0</value><valid>true</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>X</name></property1><property2><value class="double">100.0</value><valid>false</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>Y</name></property2></twoProperty></model.component.movement.Position></list></entry><entry><java-class>model.component.character.Health</java-class><list><model.component.character.Health><singleProperty><property1><value class="double">100.0</value><valid>false</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>Health</name></property1></singleProperty></model.component.character.Health></list></entry><entry><java-class>model.component.movement.Velocity</java-class><list><model.component.movement.Velocity><twoProperty><property1><value class="double">0.0</value><valid>false</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>XVelocity</name></property1><property2><value class="double">0.0</value><valid>false</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>YVelocity</name></property2></twoProperty></model.component.movement.Velocity></list></entry><entry><java-class>model.component.character.Score</java-class><list><model.component.character.Score><singleProperty><property1><value class="double">100.0</value><valid>false</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>Score</name></property1></singleProperty></model.component.character.Score></list></entry></backingMap></components><Specs class="linked-hash-map"></Specs><groupIDs></groupIDs></model.entity.Entity></entry></map></parameters></events.Action><events.KeyTrigger><changed>false</changed><obs></obs><key>W</key></events.KeyTrigger><int>1</int><events.Action><script>package groovyScripts
+
+/**
+ * Created by ajonnav on 4/16/16.
+ * @author Anirudh Jonnavithula
+ */
+
+import model.component.movement.Velocity;
+import model.component.character.Health;
+import model.physics.PhysicsEngine;
+
+velocity = universe.getEntityWithID(id).get(0)getComponent(Velocity.class);
+velocity.setVXY(velocity.getVX(), velocity.getVY()-10);</script><scriptPath>resources/groovyScripts/keyInputJump.groovy</scriptPath><parameters class="javax.script.SimpleBindings"><map></map></parameters></events.Action></com.google.common.collect.ArrayListMultimap></actionMap><inputSystem><firstQueue class="linked-list"></firstQueue><secondQueue class="linked-list"></secondQueue><fillQ class="linked-list" reference="../firstQueue"></fillQ><processQ class="linked-list" reference="../secondQueue"></processQ><currentChar><valid>true</valid><name></name></currentChar></inputSystem><timer><value>0.0</value><valid>true</valid><bean class="events.EventSystem" reference="../../../.."></bean><name>timer</name></timer></default></events.EventSystem></eventSystem><metadata class="linked-hash-map"></metadata><physics class="model.physics.PhysicsEngine"><gravityActive>true</gravityActive><collisionDetectionActive>true</collisionDetectionActive><frictionActive>true</frictionActive></physics><universe class="model.entity.EntitySystem"><entities class="linked-hash-map"><entry><string>82e92de4-3561-4e46-8608-3fc253e699ef</string><model.entity.Entity reference="../../../../eventSystem/events.EventSystem/default/actionMap/com.google.common.collect.ArrayListMultimap/events.Action[4]/parameters/map/entry/model.entity.Entity"></model.entity.Entity></entry></entities><name></name></universe></default></model.entity.Level></model.entity.Level></object-stream>

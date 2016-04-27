@@ -9,7 +9,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import model.component.movement.Position;
-import model.component.visual.ImagePath;
+import model.component.visual.Sprite;
 
 public class DragAndResize {
 
@@ -30,9 +30,9 @@ public class DragAndResize {
 	private Rectangle shape;
 	private Position position;
 	private final ImageView image;
-	private final ImagePath component;
+	private final Sprite component;
 
-	private DragAndResize(ImagePath component, Position aPos) {
+	private DragAndResize(Sprite component, Position aPos) {
 		this.component = component;
 		this.image = component.getImageView();
 		this.node = component.getImageView();
@@ -43,7 +43,7 @@ public class DragAndResize {
 	}
 
 	public DragAndResize(Rectangle shape) {
-		this.component = new ImagePath();
+		this.component = new Sprite();
 		this.node = shape;
 		this.image = new ImageView();
 		this.position = new Position();
@@ -69,7 +69,7 @@ public class DragAndResize {
 		shape.setHeight(height);
 	}
 
-	public static void makeResizable(ImagePath component, Position aPos) {
+	public static void makeResizable(Sprite component, Position aPos) {
 		final DragAndResize resizer = new DragAndResize(component, aPos);
 		ImageView anImage = component.getImageView();
 		set(anImage, resizer);

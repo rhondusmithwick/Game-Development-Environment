@@ -22,7 +22,7 @@ import model.component.character.Score;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.Gravity;
-import model.component.visual.ImagePath;
+import model.component.visual.Sprite;
 import model.entity.Entity;
 import model.entity.Level;
 import model.physics.PhysicsEngine;
@@ -82,10 +82,10 @@ public class ACGame {
             character.forceAddComponent(new Score((double) 100), true);
             Position pos = new Position(100.0, 100.0);
             character.forceAddComponent(pos, true);
-            character.forceAddComponent(new ImagePath(IMAGE_PATH), true);
+            character.forceAddComponent(new Sprite(IMAGE_PATH), true);
             character.forceAddComponent(new Velocity(0, 0), true);
             universe.addEntity(character);
-            character.addComponent(new ImagePath(IMAGE_PATH));
+            character.addComponent(new Sprite(IMAGE_PATH));
             //character.addComponent(new Gravity(5000));
             character.serialize("character.xml");
             Map<String, Object> map = new HashMap<>();
@@ -99,6 +99,7 @@ public class ACGame {
             eventSystem.registerEvent(new KeyTrigger("D"), new Action(moveRightScriptPath, map));
             eventSystem.registerEvent(new KeyTrigger("A"), new Action(moveLeftScriptPath));
             eventSystem.registerEvent(new KeyTrigger("W"), new Action(jumpScriptPath));
+            universe.serialize("anitest.xml");
         } else {
             character = new XMLReader<IEntity>().readSingleFromFile("character.xml");
             universe.addEntity(character);
@@ -115,7 +116,7 @@ public class ACGame {
     }
 
     public ImageView drawCharacter(IEntity character) {
-        ImagePath imgPath = character.getComponent(ImagePath.class);
+        Sprite imgPath = character.getComponent(Sprite.class);
         ImageView charSprite = imgPath.getImageView();
         charSprite.setFitHeight(100);
         charSprite.setPreserveRatio(true);

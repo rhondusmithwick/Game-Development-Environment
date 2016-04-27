@@ -8,6 +8,7 @@ import datamanagement.XMLReader;
 import groovy.lang.GroovyShell;
 import model.entity.Entity;
 import model.entity.Level;
+import testing.demo.GroovyDemoTest;
 
 /**
  * Created by rhondusmithwick on 3/31/16.
@@ -27,8 +28,11 @@ public class SystemManager implements ISystemManager {
 
 	public SystemManager(ILevel level) {
 		this.universe = level;
-		this.universe.addMetadata("script", "Pong"); // TODO: remove
-		this.universe.init(shell, this);
+//		this.universe.addMetadata("Script", "testing.demo.Pong"); // TODO: remove after GameManager implemented
+		universe.init(shell, this);
+		shell.setVariable("game", this);
+		shell.setVariable("universe", level);
+		shell.setVariable("demo", new GroovyDemoTest()); // TODO: remove
 	}
 
 	@Override
@@ -52,7 +56,7 @@ public class SystemManager implements ISystemManager {
 	@Deprecated
 	@Override
 	public IEventSystem getEventSystem() {
-		System.out.println("Events deprecated in SystemManager");
+		System.out.println("Events deprecated in SystemManager.");
 		System.exit(1);
 		return null;
 	}
@@ -87,6 +91,7 @@ public class SystemManager implements ISystemManager {
 	@Override
 	public void loadLevel(String filename) {
 		this.universe = new XMLReader<ILevel>().readSingleFromFile(filename);
+		universe.init(shell, this);
 	}
 
 	@Override

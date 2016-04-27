@@ -15,12 +15,11 @@ import model.entity.Entity;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
-import javafx.scene.control.ComboBox;
+import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import api.IComponent;
 import api.IEntity;
@@ -38,15 +37,14 @@ public class EditorEntity extends Editor{
 	private IEntity myEntity;
 	private String myLanguage;
 	private ObservableList<ISerializable> entityList;
-	private Button saveButton, addButton;
+	private Button saveButton, addButton, removeButton;
 	private ResourceBundle myResources, myLocs;
 	private TextField name;
 	private ScrollPane scrollPane;
 	private int row = 0;
 	private int column = 0;
-	private ComboBox<String> componentBox;
+	private ChoiceDialog<String> componentBox, removeBox;
 	private List<String> myComponents;
-	private HBox dropdownMenu;
 	private VBox container;
 	private GuiObjectFactory guiFactory;
 	private final ComponentFactory componentFactory = new ComponentFactory();
@@ -54,17 +52,12 @@ public class EditorEntity extends Editor{
 	public EditorEntity(String language, ISerializable toEdit, ObservableList<ISerializable> addToList, ObservableList<ISerializable> emptyList) {
 		editorPane = new GridPane();
 		scrollPane = new ScrollPane(editorPane);
-		myComponents = new ArrayList<String>();
-		container = new VBox();
-		container.getStyleClass().add("vbox");
 		myLanguage = language;
-		dropdownMenu = new HBox();
-		dropdownMenu.getStyleClass().add("hbox");
 		myResources = ResourceBundle.getBundle(language);
 		myEntity = (Entity) toEdit;
 		entityList = addToList;
 		editorPane.getStyleClass().add("grid-pane");
-		getComponents();
+		
 	}
 
 	private void getComponents() {
@@ -82,6 +75,10 @@ public class EditorEntity extends Editor{
 
 	@Override
 	public void populateLayout() {
+		container = new VBox();
+		container.getStyleClass().add("vbox");
+		myComponents = new ArrayList<String>();
+		getComponents();
 		name = Utilities.makeTextArea(myResources.getString("enterName"));
 		name.setText(myEntity.getName());
 		editorPane.add(name, column++, row);
@@ -91,10 +88,8 @@ public class EditorEntity extends Editor{
 		}
 		saveButton = Utilities.makeButton(myResources.getString("saveEntity"), e -> save());
 		addButton = Utilities.makeButton(myResources.getString("addComponent"), e -> addComponent());
-		//editorPane.add(saveButton, GUISize.HALF_COLUMNS.getSize(), row + GUISize.ONE.getSize());
-		componentBox = Utilities.makeComboBox(myResources.getString("chooseComponent"), myComponents, null);
-		dropdownMenu.getChildren().addAll(Arrays.asList(componentBox, addButton));
-		container.getChildren().addAll(Arrays.asList(saveButton, dropdownMenu));
+		removeButton = Utilities.makeButton(myResources.getString("removeComp"), e->removeComponent());
+		container.getChildren().addAll(Arrays.asList(addButton, removeButton, saveButton));
 		editorPane.add(container, GUISize.HALF_COLUMNS.getSize() + GUISize.ONE.getSize(), row + GUISize.ONE.getSize());
 	}
 
@@ -116,23 +111,49 @@ public class EditorEntity extends Editor{
 	}
 
 	private void addComponent() {
-		String selected = myResources.getString(componentBox.getSelectionModel().getSelectedItem());
-		componentBox.getSelectionModel().clearSelection();
-		componentBox.getItems().remove(selected);
+		componentBox = new ChoiceDialog<>(myResources.getString("chooseComponent"), myComponents);
+		componentBox.showAndWait();
+		String chosen = componentBox.getSelectedItem();
+		if(chosen.equals(myResources.getString("chooseComponent"))||chosen==null){
+			return;
+		}
+		String componentName = myResources.getString(chosen);
 
-		if(selected != null) {
-			try {
-				IComponent component = componentFactory.getComponent(Class.forName(myLocs.getString(selected)), myEntity);
-				myEntity.forceAddComponent(component, true);
-				addObject(component);
-			} catch (Exception e) {
-				e.printStackTrace();
-				Utilities.showError(myResources.getString("error"), myResources.getString("addCompError"));
-			}
+		try {
+			IComponent component = componentFactory.getComponent(Class.forName(myLocs.getString(componentName)), myEntity);
+			myEntity.forceAddComponent(component, true);
+			addObject(component);
+		} catch (Exception e) {
+			e.printStackTrace();
+			Utilities.showError(myResources.getString("error"), myResources.getString("addCompError"));
 		}
 		adjustMenu();
 	}
 	
+	@SuppressWarnings("unchecked")
+	private void removeComponent() {
+		List<IComponent> components = (List<IComponent>) myEntity.getAllComponents();
+		List<String> componentNames = new ArrayList<>();
+		components.forEach(component->componentNames.add(myResources.getString(component.getClass().getSimpleName())));
+		removeBox = new ChoiceDialog<String>(myResources.getString("chooseRem"), componentNames);
+		removeBox.showAndWait();
+		String chosen = removeBox.getSelectedItem();
+		if(chosen.equals(myResources.getString("chooseRem"))||chosen==null){
+			return;
+		}
+		String componentName = myResources.getString(chosen);
+		try {
+			myEntity.removeComponent((Class<? extends IComponent>) Class.forName(myLocs.getString(componentName)));
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		editorPane.getChildren().clear();
+		populateLayout();
+		
+	}
+
+
 
 	private void adjustMenu() {
 		if(row == GridPane.getRowIndex(container)) {

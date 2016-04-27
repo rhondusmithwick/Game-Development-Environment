@@ -14,6 +14,7 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -23,7 +24,7 @@ import javafx.util.Duration;
 import model.component.movement.Orientation;
 import model.component.movement.Position;
 import model.component.physics.Collision;
-import model.component.visual.ImagePath;
+import model.component.visual.Sprite;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -52,20 +53,21 @@ public class View implements IView {
 	private SubScene subScene;
 	private ViewUtilities viewUtils;
 
-	public View(ISystemManager model, Pane scene) {
+	public View(ISystemManager model, ScrollPane scene) {
 		this(model, new Group(), 2000, 2000, scene);
 	}
 
-	public View(ISystemManager model, Group root, double width, double height, Pane scene) {
+	public View(ISystemManager model, Group root, double width, double height, ScrollPane scene) {
 		this.model = model;
 		this.initConsole();
 		this.initButtons();
 		this.viewUtils = new ViewUtilities(root, model.getEntitySystem());
-		this.subScene = this.createSubScene(root, width, height, scene);
+		this.subScene = this.createSubScene(root, width, height, scene);	
+		
 		this.pane = this.createBorderPane(root, this.subScene);
 		viewUtils.allowDragging();
 		viewUtils.allowDeletion();
-
+		
 		this.startTimeline();
 	}
 
@@ -85,19 +87,20 @@ public class View implements IView {
 		timeline.play();
 	}
 
-	private SubScene createSubScene(Group root, double width, double height, Pane scene) {
+	private SubScene createSubScene(Group root, double width, double height, ScrollPane scene) {
 		this.root = root;
 		SubScene subScene = new SubScene(root, width, height);
 		// TODO: not printing key presses, why?! Remove last arg after bugfix.
-		// scene.setOnMouseMoved(e -> System.out.println(e.getX()));
+		// subScene.setOnMouseClicked(e -> System.out.println(e.getX()));
 		// scene.setOnKeyTyped(e -> System.out.println(e.getCode()));
 		// scene.setOnKeyReleased(e -> System.out.println(e.getCode()));
 		// scene.setOnKeyPressed(e -> System.out.println(e.getCode()));
+		
 		return subScene;
 	}
 
 	private ImageView getUpdatedImageView(IEntity e) {
-		ImagePath display = e.getComponent(ImagePath.class);
+		Sprite display = e.getComponent(Sprite.class);
 		ImageView imageView = display.getImageView();
 		int z = display.getZLevel();
 		if (z == -1) {
@@ -131,8 +134,9 @@ public class View implements IView {
 				continue;
 			}
 			Shape r = new Rectangle(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
-			 double val = 1.0;// Math.random();
-			 r.setFill(new Color(val, val, val, val));
+//			 double val = 1.0;// Math.random();
+//			 r.setFill(new Color(val, val, val, val));
+			r.setFill(Color.TRANSPARENT);
 			r.setStroke(Color.RED);
 			r.setStrokeWidth(2);
 			shapes.add(r);
@@ -147,7 +151,7 @@ public class View implements IView {
 		// render
 		root.getChildren().clear();
 		for (IEntity e : model.getEntitySystem().getAllEntities()) {
-			if (e.hasComponents(ImagePath.class, Position.class)) {
+			if (e.hasComponents(Sprite.class, Position.class)) {
 				viewUtils.makeSelectable(e);
 				root.getChildren().addAll(this.getCollisionShapes(e));
 				root.getChildren().add(this.getUpdatedImageView(e));
@@ -179,6 +183,7 @@ public class View implements IView {
 
 	private void initConsole() {
 		console.appendText("\n");
+		
 		console.setOnKeyPressed(e -> {
 			KeyCode keyCode = e.getCode();
 			if (keyCode == KeyCode.ENTER) {
@@ -186,6 +191,7 @@ public class View implements IView {
 				e.consume();
 			}
 		});
+		
 	}
 
 	private void initButtons() {
