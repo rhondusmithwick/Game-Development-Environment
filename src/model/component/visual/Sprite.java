@@ -10,6 +10,7 @@ import utility.TwoProperty;
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -20,137 +21,141 @@ import java.util.List;
  */
 public class Sprite implements IComponent {
 
-	/**
-	 * The singleProperty.
-	 */
-	private final SingleProperty<String> imagePathProperty;
-	private final TwoProperty<Double, Double> imageSizeProperty;
-	private transient ImageView imageView;
-	private int zLevel = 0;
+    private static final String DEFAULT_IMAGE_PATH = "resources/testing/RhonduSmithwick.JPG";
 
-	public Sprite() {
-		this("resources/testing/RhonduSmithwick.JPG");
-	}
+    private final SingleProperty<String> imagePathProperty = new SingleProperty<>("ImagePath", DEFAULT_IMAGE_PATH);
+    private final TwoProperty<Double, Double> imageSizeProperty = new TwoProperty<>("ImageWidth", 0.0, "ImageHeight", 0.0);
+    private final SingleProperty<Integer> zLevelProperty = new SingleProperty<>("zLevel", 0);
+    private transient ImageView imageView;
 
-	/**
-	 * Construct with no animation.
-	 *
-	 * @param imagePath
-	 *            starting value
-	 */
-	public Sprite(String imagePath) { // TODO: place default in resource file
-		this(imagePath, 0.0, 0.0);
-	}
+    public Sprite() {
+    }
 
-	/**
-	 * Construct with starting values.
-	 *
-	 * @param imagePath
-	 *            String path to image
-	 * @param imageWidth
-	 *            width of image
-	 * @param imageHeight
-	 *            height of image
-	 * @param imagePath
-	 *            String path to spritesheet
-	 */
-	public Sprite(String imagePath, double imageWidth, double imageHeight){
-		this.imagePathProperty = new SingleProperty<>("ImagePath", imagePath);
-		this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", imageHeight);
-		this.imageView = this.createImageView(imagePath);
-	}
+    /**
+     * Construct with no animation.
+     *
+     * @param imagePath starting value
+     */
+    public Sprite(String imagePath) { // TODO: place default in resource file
+        setImagePath(imagePath);
+    }
 
-	private ImageView createImageView(String imagePath) {
-		File resource = new File(imagePath);
-		Image image = new Image(resource.toURI().toString());
-		ImageView imageView = new ImageView(image);
-		imageView.setPreserveRatio(true);
-		imageView.setFitWidth(this.getImageWidth());
-		imageView.setFitHeight(this.getImageHeight());
-		return imageView;
-	}
+    /**
+     * Construct with starting values.
+     *
+     * @param imagePath   String path to image
+     * @param imageWidth  width of image
+     * @param imageHeight height of image
+     * @param imagePath   String path to spritesheet
+     */
+    public Sprite(String imagePath, double imageWidth, double imageHeight) {
+        this(imagePath);
+        setImageWidth(imageWidth);
+        setImageHeight(imageHeight);
+    }
 
-	/**
-	 * Get the imagePath property.
-	 *
-	 * @return impagePath string property
-	 */
-	public SimpleObjectProperty<String> imagePathProperty() {
-		return imagePathProperty.property1();
-	}
+    public Sprite(String imagePath, double imageWidth, double imageHeight, int zLevel) {
+        this(imagePath, imageWidth, imageHeight);
+        setZLevel(zLevel);
+    }
 
-	public String getImagePath() {
-		return imagePathProperty().get();
-	}
+    /**
+     * Get the imagePath property.
+     *
+     * @return impagePath string property
+     */
+    public SimpleObjectProperty<String> imagePathProperty() {
+        return imagePathProperty.property1();
+    }
 
-	public void setImagePath(String imagePath) {
-		this.imagePathProperty().set(imagePath);
-		File resource = new File(imagePath);
-		Image image = new Image(resource.toURI().toString());
-		this.imageView.setImage(image);
+    public String getImagePath() {
+        return imagePathProperty().get();
+    }
 
-	}
+    public void setImagePath(String imagePath) {
+        imagePathProperty().set(imagePath);
+        this.imageView = this.createImageView(getImagePath());
+    }
 
-	public SimpleObjectProperty<Double> imageWidthProperty() {
-		return imageSizeProperty.property1();
-	}
+    public SimpleObjectProperty<Double> imageWidthProperty() {
+        return imageSizeProperty.property1();
+    }
 
-	public SimpleObjectProperty<Double> imageHeightProperty() {
-		return imageSizeProperty.property2();
-	}
+    public double getImageWidth() {
+        return this.imageWidthProperty().get();
+    }
 
-	public double getImageWidth() {
-		return this.imageWidthProperty().get();
-	}
+    public void setImageWidth(double imageWidth) {
+        this.imageWidthProperty().set(imageWidth);
+    }
 
-	public void setImageWidth(double imageWidth) {
-		this.imageWidthProperty().set(imageWidth);
-		imageView.setFitWidth(imageWidthProperty().get());
-	}
+    public SimpleObjectProperty<Double> imageHeightProperty() {
+        return imageSizeProperty.property2();
+    }
 
-	public double getImageHeight() {
-		return this.imageHeightProperty().get();
-	}
+    public double getImageHeight() {
+        return this.imageHeightProperty().get();
+    }
 
-	public void setImageHeight(double imageHeight) {
-		this.imageHeightProperty().set(imageHeight);
-		imageView.setFitHeight(imageHeightProperty().get());
-	}
+    public void setImageHeight(double imageHeight) {
+        this.imageHeightProperty().set(imageHeight);
+    }
 
-	@Override
-	public List<SimpleObjectProperty<?>> getProperties() {
-		return Arrays.asList(imagePathProperty(), imageWidthProperty(), imageHeightProperty());
-	}
+    public SimpleObjectProperty<Integer> zLevelProperty() {
+        return this.zLevelProperty.property1();
+    }
 
+    /**
+     * Sets the z-layer order.
+     *
+     * @param z the z-layer order (1=>send to back, 1=>send to front)
+     */
+    public void setZLevel(int z) {
+        zLevelProperty().set(z);
+    }
 
-	public ImageView getImageView() { 
-		return imageView;
-	}
+    /**
+     * Gets the z-layer order.
+     *
+     * @return the z-layer order (1=>send to back, 1=>send to front)
+     */
+    public int getZLevel() {
+        return zLevelProperty().get();
+    }
 
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        imageHeightProperty().unbind();
+        imageWidthProperty().unbind();
+        out.defaultWriteObject();
+    }
 
-	/**
-	 * Sets the z-layer order.
-	 *
-	 * @param z
-	 *            the z-layer order (1=>send to back, 1=>send to front)
-	 */
-	public void setZLevel(int z) {
-		this.zLevel = z;
-	}
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        this.imageView = this.createImageView(getImagePath());
+    }
 
-	/**
-	 * Gets the z-layer order.
-	 *
-	 * @return the z-layer order (1=>send to back, 1=>send to front)
-	 */
-	public int getZLevel() {
-		return this.zLevel;
-	}
+    private ImageView createImageView(String imagePath) {
+        Image image = getImage(imagePath);
+        ImageView imageView = new ImageView(image);
+        imageView.setPreserveRatio(true);
+        imageView.fitWidthProperty().bind(imageWidthProperty());
+        imageView.fitHeightProperty().bind(imageHeightProperty());
+        return imageView;
+    }
 
-	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-		in.defaultReadObject();
-		this.imageView = this.createImageView(getImagePath());
-	}
+    private Image getImage(String imagePath) {
+        File resource = new File(imagePath);
+        return new Image(resource.toURI().toString());
+    }
+
+    @Override
+    public List<SimpleObjectProperty<?>> getProperties() {
+        return Arrays.asList(imagePathProperty(), imageWidthProperty(), imageHeightProperty(), zLevelProperty());
+    }
+
+    public ImageView getImageView() {
+        return imageView;
+    }
 
 
 }
