@@ -40,5 +40,7 @@ public class CarolynEventFactoryTesting {
         TimeTrigger tt = (TimeTrigger) eventFactory.createEvent(timeTrigMap(triggerDesc), groovyScript)._1();
         triggerDesc.keySet().clear();
         KeyTrigger kt = (KeyTrigger) eventFactory.createEvent(keyTrigMap(triggerDesc), groovyScript)._1();
+
     }
+
 }

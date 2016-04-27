@@ -11,38 +11,20 @@ import utility.Pair;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-
 import api.IEntitySystem;
-import voogasalad.u
+import voogasalad.util.reflection.Reflection;
 
 /***
  * @author Anirudh Jonnavithula, Carolyn Yao
  */
 
 public final class EventFactory {
-	
-	public static Pair<Trigger, Action> createEvent(Map<String, String> triggerMapDescription, String scriptPath) {
+	private final Reflection reflectionUtil = new Reflection();
+
+	public Pair<Trigger, Action> createEvent(Map<String, String> triggerMapDescription, String scriptPath) {
 		Trigger trigger = null;
         String className = triggerMapDescription.get("trigger_type");
-		try {
-			trigger = (Trigger) Class.forName(className).getConstructor(Map.class).newInstance(triggerMapDescription);
-        }
-		catch (InstantiationException e) {
-		} catch (IllegalAccessException e) {
-            System.out.println("illegal access found");
-		} catch (IllegalArgumentException e) {
-            System.out.println("illegal argument found");
-		} catch (InvocationTargetException e) {
-            System.out.println("invocation target not found");
-		} catch (NoSuchMethodException e) {
-            System.out.println("no such method found");
-		} catch (SecurityException e) {
-            System.out.println("security exception");
-		}
-        catch (ClassNotFoundException e) {
-            System.out.println(className);
-            System.out.println("class not found");
-		}
+		trigger = (Trigger) reflectionUtil.createInstance(className, triggerMapDescription);
 		Action action = new Action(scriptPath);
 		return new Pair<Trigger, Action>(trigger, action);
 	}
