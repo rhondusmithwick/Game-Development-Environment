@@ -17,8 +17,9 @@ import java.util.Map;
 
 public class PropertyTrigger extends Trigger {
     private final String entityID;
-    private final Class<? extends IComponent> componentClass;
+    private Class<? extends IComponent> componentClass;
     private final String propertyName;
+    private final String characterComponentPath = "model.component.character.";
 
     public PropertyTrigger(String entityID, Class<? extends IComponent> componentClass, String propertyName) {
         this.entityID = entityID;
@@ -26,24 +27,16 @@ public class PropertyTrigger extends Trigger {
         this.propertyName = propertyName;
     }
 
-//    public PropertyTrigger(List<String> propertyDescription) {
-//        entityID = propertyDescription.get(0);
-//        try {
-//            componentClass = (Class<? extends IComponent>) Class.forName(propertyDescription.get(1));
-//        } catch(ClassNotFoundException e) {
-//        }
-//        propertyName = propertyDescription.get(2);
-//    }
-
-//    public PropertyTrigger(Map<String, String> triggerMapDescription) {
-//        entityID = triggerMapDescription.get("entityID");
-//        try {
-//            componentClass = (Class<? extends IComponent>) Class.forName(triggerMapDescription.get("component"));
-//        } catch(ClassNotFoundException e) {
-//            componentClass = null;
-//        }
-//        propertyName = triggerMapDescription.get("propertyName");
-//    }
+    public PropertyTrigger(Map<String, String> triggerMapDescription) {
+        entityID = triggerMapDescription.get("entityID");
+        try {
+            componentClass = (Class<? extends IComponent>) Class.forName(characterComponentPath+triggerMapDescription.get("component"));
+        } catch(ClassNotFoundException e) {
+            System.out.println("component " + triggerMapDescription.get("component"));
+            componentClass = null;
+        }
+        propertyName = triggerMapDescription.get("propertyName");
+    }
     
     @Override
     public void changed(ObservableValue arg0, Object arg1, Object arg2) {

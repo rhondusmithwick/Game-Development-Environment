@@ -21,17 +21,29 @@ import api.IEntitySystem;
 public final class EventFactory {
 	
 	public static Pair<Trigger, Action> createEvent(Map<String, String> triggerMapDescription, String scriptPath) {
-		Trigger trigger=null;
+		Trigger trigger = null;
+        String className = triggerMapDescription.get("trigger_type");
 		try {
-			trigger = ((Trigger) Class.forName(triggerMapDescription.get("trigger_type")).getConstructor(Map.class).newInstance(triggerMapDescription));
-		} //TODO: add error messages
+			trigger = (Trigger) Class.forName(className).getConstructor(Map.class).newInstance(triggerMapDescription);
+            //System.out.println("asdasdaerewr");
+            //System.out.println("class: " + Class.forName(className));
+            //trigger = (Trigger) TimeTrigger.class.getConstructor(Map.class).newInstance(triggerMapDescription);
+        }
 		catch (InstantiationException e) {
 		} catch (IllegalAccessException e) {
+            System.out.println("illegal access found");
 		} catch (IllegalArgumentException e) {
+            System.out.println("illegal argument found");
 		} catch (InvocationTargetException e) {
+            System.out.println("invocation target not found");
 		} catch (NoSuchMethodException e) {
+            System.out.println("no such method found");
 		} catch (SecurityException e) {
-		} catch (ClassNotFoundException e) {
+            System.out.println("security exception");
+		}
+        catch (ClassNotFoundException e) {
+            System.out.println(className);
+            System.out.println("class not found");
 		}
 		Action action = new Action(scriptPath);
 		return new Pair<Trigger, Action>(trigger, action);

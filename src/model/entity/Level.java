@@ -160,7 +160,7 @@ public class Level implements ILevel {
 	
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        eventSystem.setUniverse(this);
+        eventSystem.setLevel(this);
     }
 
 }
