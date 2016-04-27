@@ -15,7 +15,7 @@ import javafx.scene.layout.VBox;
 import model.entity.Entity;
 import view.Authoring;
 import view.Utilities;
-import view.editor.EditorEntity;
+import view.editor.entityeditor.EditorEntity;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
 
