@@ -26,7 +26,7 @@ public class Sprite implements IComponent {
     private final SingleProperty<String> imagePathProperty = new SingleProperty<>("ImagePath", DEFAULT_IMAGE_PATH);
     private final TwoProperty<Double, Double> imageSizeProperty = new TwoProperty<>("ImageWidth", 0.0, "ImageHeight", 0.0);
     private final SingleProperty<Integer> zLevelProperty = new SingleProperty<>("zLevel", 0);
-    private transient ImageView imageView;
+    private transient ImageView imageView = this.createImageView(DEFAULT_IMAGE_PATH);
 
     public Sprite() {
     }

@@ -2,7 +2,6 @@ package testing;
 
 import api.IEntity;
 import api.ILevel;
-import api.ILevel;
 import api.ISerializable;
 import model.entity.Level;
 import view.editor.Editor;
@@ -40,7 +39,7 @@ public class EditorTesting extends Application {
         EditorFactory factory = new EditorFactory();
         ObservableList<ISerializable> entityList = FXCollections.observableArrayList();
         //Editor editorEntity = factory.createEditor(EditorEnvironment.class, new Level(), LANGUAGE, new Button());
-        Editor editorEntity = new EditorEntity(null, entity, entityList, null);
+        Editor editorEntity = new EditorEntity(null, entity, entityList);
         Scene scene = new Scene(editorEntity.getPane());
 
 		myStage.setScene(scene);
