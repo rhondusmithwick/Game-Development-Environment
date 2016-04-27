@@ -16,7 +16,7 @@ import java.util.Set;
  * @author Melissa Zhang
  */
 public class AnimatedSprite extends Sprite {
-    private static final String DEFAULT_BUNDLE = "resources/spriteProperties,abobo";
+    private static final String DEFAULT_BUNDLE = "resources/spriteProperties/abobo";
     private final SingleProperty<String> singleProperty = new SingleProperty<>("BundlePath", DEFAULT_BUNDLE);
     private transient AnimationContainer container;
 
