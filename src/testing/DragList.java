@@ -11,10 +11,8 @@ import javafx.scene.input.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.util.*;
-
 import animation.utility.GUIUtilities;
 
 public class DragList {
