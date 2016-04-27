@@ -25,9 +25,6 @@ public final class EventFactory {
         String className = triggerMapDescription.get("trigger_type");
 		try {
 			trigger = (Trigger) Class.forName(className).getConstructor(Map.class).newInstance(triggerMapDescription);
-            //System.out.println("asdasdaerewr");
-            //System.out.println("class: " + Class.forName(className));
-            //trigger = (Trigger) TimeTrigger.class.getConstructor(Map.class).newInstance(triggerMapDescription);
         }
 		catch (InstantiationException e) {
 		} catch (IllegalAccessException e) {
