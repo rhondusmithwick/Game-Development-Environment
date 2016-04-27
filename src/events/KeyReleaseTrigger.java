@@ -1,4 +1,4 @@
-package events;
+/*package events;
 
 import javafx.beans.value.ObservableValue;
 import javafx.scene.input.KeyCode;
@@ -17,4 +17,4 @@ public class KeyReleaseTrigger extends KeyTrigger {
             notifyObservers();
         }
     }
-}
+}*/
