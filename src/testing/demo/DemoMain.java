@@ -7,7 +7,6 @@ import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import model.component.audio.SoundEffect;
 import model.component.audio.ThemeMusic;
-import model.core.SystemManager;
 import view.View;
 import view.enums.GUISize;
 
@@ -27,17 +26,19 @@ public class DemoMain extends Application {
 		myStage.setWidth(GUISize.MAIN_SIZE.getSize());
 		myStage.setHeight(GUISize.MAIN_SIZE.getSize());
 
-		View view = new View(new SystemManager(), null); // TODO: don't pass in ScrollPane
+		View view = new View(); // TODO: don't pass in ScrollPane
 		Pane pane = view.getPane();
-//		Group root = new Group();
 		Scene scene = new Scene(pane, 500, 500);
-		music = new ThemeMusic("resources/music/finalCountdown.mp3");
+		stage.setScene(scene);
+		stage.show();
+
+		view.setScene(scene); // TODO: refactor out, required for input system
+
+//		music = new ThemeMusic("resources/music/finalCountdown.mp3");
 		// music.play();
 		// Button button = new Button("Mute");
 		// button.setOnAction(e -> shoot());
 		// root.getChildren().add(button);
-		stage.setScene(scene);
-		stage.show();
 	}
 
 	/**

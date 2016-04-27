@@ -9,7 +9,6 @@ import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.*;
 import model.component.visual.Sprite;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

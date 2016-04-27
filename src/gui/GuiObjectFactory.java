@@ -18,7 +18,6 @@ public class GuiObjectFactory {
 
 	public GuiObject createNewGuiObject( Object... args){ 
 		if(myBundle.containsKey((String) args[0])) {
-		
 			return (GuiObject) Reflection.createInstance(myBundle.getString((String) args[0]), args);
 		}
 		return null;

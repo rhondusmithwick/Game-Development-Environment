@@ -39,6 +39,7 @@ public class ComponentAdder extends ComponentModifier{
 			entity.forceAddComponent(component, true);
 		} catch (Exception e) {
 			Utilities.showError(myResources.getString("error"), myResources.getString("addCompError"));
+			e.printStackTrace();
 		}
 	}
 

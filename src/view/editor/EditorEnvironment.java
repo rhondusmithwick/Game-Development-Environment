@@ -1,5 +1,6 @@
 package view.editor;
 
+<<<<<<< HEAD
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -11,6 +12,9 @@ import api.IEntity;
 import api.ILevel;
 import api.ISystemManager;
 import api.IView;
+=======
+import api.*;
+>>>>>>> master
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -31,11 +35,15 @@ import model.component.visual.Sprite;
 import model.core.SystemManager;
 import model.entity.Level;
 import update.GameLoopManager;
-//import view.DragAndResize;
 import view.Utilities;
 import view.View;
 import view.enums.DefaultEntities;
 import view.enums.GUISize;
+
+import java.io.File;
+import java.util.*;
+
+//import view.DragAndResize;
 
 public class EditorEnvironment extends Editor {
 
@@ -67,7 +75,7 @@ public class EditorEnvironment extends Editor {
 		masterEntityList = masterList;
 		this.myEntitySystem = toEdit; // TODO: casting check
 
-		game = new SystemManager(this.myEntitySystem);
+		game = new SystemManager(gameRoot, this.myEntitySystem);
 		view = new View(game, gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(),
 				scrollPane); // TODO: remove this last arg once we
 										// figure out why keypresses aren't
