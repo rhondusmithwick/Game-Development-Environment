@@ -30,7 +30,7 @@ public class SpriteLoader {
         IEntity e = new Entity(name);
         e.addComponents(pos, new ImagePath(Pong.PATH+"sprites/red_paddle.png"),
                 new Collision("paddle"), new RestitutionCoefficient(1.2), new Mass(20),
-                new Score(0));
+                new Score(0), new Velocity(0,0));
         return e;
     }
 
