@@ -56,4 +56,8 @@ public interface IEventSystem extends Observer, ISerializable {
 
 	void listenToTimer(ChangeListener listener);
 
+<<<<<<< HEAD
+=======
+	String getEventsAsString();
+>>>>>>> 24eda28e83aea64eb86f246e17d170aa6b08d8c5
 }

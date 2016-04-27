@@ -24,7 +24,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import model.component.movement.Position;
-import model.component.visual.ImagePath;
+import model.component.visual.Sprite;
 import model.entity.Level;
 import model.physics.PhysicsEngine;
 import testing.BenTestCharacter;
@@ -54,7 +54,7 @@ public class BasicRMIClient extends Application{
 			Level universe = (Level) Naming.lookup("rmi://localhost/entitysystem_server");
 			universe.addEntities(list);
 			physics = new PhysicsEngine();
-			testSprite = createImage(character.getComponent(ImagePath.class), character.getComponent(Position.class));
+			testSprite = createImage(character.getComponent(Sprite.class), character.getComponent(Position.class));
 
 			int MILLISECOND_DELAY = 10;
 			double SECOND_DELAY = 0.01;
@@ -80,7 +80,7 @@ public class BasicRMIClient extends Application{
 		}
 	}
 
-	private ImageView createImage(ImagePath path, Position pos) {
+	private ImageView createImage(Sprite path, Position pos) {
 		URI resource = new File(path.getImagePath()).toURI();
 		Image image = new Image(resource.toString());
 		ImageView imageView = new ImageView(image);

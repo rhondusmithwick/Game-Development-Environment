@@ -8,8 +8,7 @@ import javafx.scene.image.ImageView;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.*;
-import model.component.visual.ImagePath;
-
+import model.component.visual.Sprite;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -45,10 +44,10 @@ public class PhysicsEngine implements IPhysicsEngine {
 	@SuppressWarnings("unchecked")
 	@Override
 	public void update(ILevel universe, double dt) {
-		Collection<IEntity> entities = universe.getEntitiesWithComponents(Position.class, ImagePath.class);
+		Collection<IEntity> entities = universe.getEntitiesWithComponents(Position.class, Sprite.class);
 		entities.stream().forEach(p -> {
 			Position pos = p.getComponent(Position.class);
-			ImageView imageView = p.getComponent(ImagePath.class).getImageView();
+			ImageView imageView = p.getComponent(Sprite.class).getImageView();
 			imageView.setTranslateX(pos.getX());
 			imageView.setTranslateY(pos.getY());
 		});
@@ -166,7 +165,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 	@Override
 	public void applyCollisions(ILevel universe, boolean movingInXDirection) {
 		List<IEntity> collidableEntities = new ArrayList<IEntity>(
-				universe.getEntitiesWithComponents(Collision.class, ImagePath.class));// ,
+				universe.getEntitiesWithComponents(Collision.class, Sprite.class));// ,
 																						// Mass.class));
 		clearCollisionComponents(collidableEntities);
 
@@ -198,7 +197,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 		for (IEntity entity : collidableEntities) {
 			entity.getComponent(Collision.class).clearCollidingIDs();
 			entity.getComponent(Collision.class)
-					.setMask(entity.getComponent(ImagePath.class).getImageView().getBoundsInParent());
+					.setMask(entity.getComponent(Sprite.class).getImageView().getBoundsInParent());
 		}
 	}
 

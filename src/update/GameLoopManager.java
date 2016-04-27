@@ -83,8 +83,10 @@ public class GameLoopManager {
 	private void saveMetadata() {
 		String key = comboBox.getValue();
 		String value = textField.getText();
+//		System.out.println(key);
+//		System.out.println(value);
 		textField.clear();
-		systemManager.getEntitySystem().addMetadata("Script", value); // TODO: key doesn't work (key==null)
+		systemManager.getEntitySystem().addMetadata(key, value); // TODO: key doesn't work (key==null)
 	}
 	
 	private VBox createVBox() {

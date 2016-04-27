@@ -13,7 +13,7 @@ import events.MouseTrigger;
 import model.component.character.Score;
 import model.component.character.UserControl;
 import model.component.movement.Position;
-import model.component.visual.ImagePath;
+import model.component.visual.Sprite;
 import model.core.SystemManager;
 import api.IEntity;
 import api.IEventSystem;
@@ -69,9 +69,9 @@ public class AniPong {
 //        events.registerEvent(new MouseTrigger(leftPaddle.getID()), new Action(movePaddleUpScript));
         rightPaddle.addComponent(new UserControl());
         // Walls
-        IEntity leftWall = AniSpriteLoader.createPlatform("LeftWall", new Position(-578, 7));
+        IEntity leftWall = AniSpriteLoader.createPlatform("LeftWall", new Position(578, 7));
         IEntity rightWall = AniSpriteLoader.createPlatform("RightWall", new Position(686, 7));
-        IEntity ceiling = AniSpriteLoader.createPlatform("Ceiling", new Position(7, -500));
+        IEntity ceiling = AniSpriteLoader.createPlatform("Ceiling", new Position(7, 500));
         IEntity floor = AniSpriteLoader.createPlatform("Floor", new Position(7, 500));
 
         universe.addEntities(ball, leftPaddle, rightPaddle, leftWall, rightWall, ceiling, floor);
@@ -87,6 +87,7 @@ public class AniPong {
         events.registerEvent(new KeyTrigger("W"), new Action(movePaddleUpScript, wKey));
         events.registerEvent(new KeyTrigger("S"), new Action(movePaddleDownScript, sKey));
         events.registerEvent(new KeyTrigger("M"), new Action(stopPaddleScript, mKey));
+        events.getEventsAsString();
         //System.out.println("Input keys cannot be registered without de-serialization error.");
     }
 
@@ -113,7 +114,7 @@ public class AniPong {
     }
     
     public ImageView drawCharacter(IEntity character) {
-        ImagePath imgPath = character.getComponent(ImagePath.class);
+        Sprite imgPath = character.getComponent(Sprite.class);
         ImageView charSprite = imgPath.getImageView();
         charSprite.setFitHeight(100);
         charSprite.setPreserveRatio(true);
