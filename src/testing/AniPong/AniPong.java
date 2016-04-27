@@ -12,7 +12,7 @@ import events.KeyTrigger;
 import model.component.character.Score;
 import model.component.character.UserControl;
 import model.component.movement.Position;
-import model.component.visual.ImagePath;
+import model.component.visual.Sprite;
 import model.core.SystemManager;
 import api.IEntity;
 import api.IEventSystem;
@@ -108,7 +108,7 @@ public class AniPong {
     }
     
     public ImageView drawCharacter(IEntity character) {
-        ImagePath imgPath = character.getComponent(ImagePath.class);
+        Sprite imgPath = character.getComponent(Sprite.class);
         ImageView charSprite = imgPath.getImageView();
         charSprite.setFitHeight(100);
         charSprite.setPreserveRatio(true);

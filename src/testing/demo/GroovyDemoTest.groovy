@@ -12,7 +12,7 @@ import model.component.physics.Collision
 import model.component.physics.Gravity
 import model.component.physics.Mass
 import model.component.physics.RestitutionCoefficient
-import model.component.visual.ImagePath
+import model.component.visual.Sprite
 import model.entity.Entity
 
 @Deprecated
@@ -23,7 +23,7 @@ public class GroovyDemoTest {
         character.addComponent(new Score((double) 100))
         Position pos = new Position(50.0, -150.0)
         character.addComponent(pos)
-        ImagePath path = new ImagePath();
+        Sprite path = new Sprite();
         ImageView img = path.getImageView();
         img.setScaleX(0.05);
         img.setScaleY(0.05);
@@ -34,7 +34,7 @@ public class GroovyDemoTest {
 
     IEntity getPlatform() {
         IEntity platform = new Entity("Platform");
-        ImagePath path = new ImagePath();
+        Sprite path = new Sprite();
         ImageView img = path.getImageView();
         platform.addComponents(path, new Position(100, 300),
                 new Collision("platform"), new RestitutionCoefficient(1.2), new Mass(100));

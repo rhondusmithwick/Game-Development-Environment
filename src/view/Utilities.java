@@ -35,7 +35,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import model.component.movement.Position;
-import model.component.visual.ImagePath;
+import model.component.visual.Sprite;
 import model.entity.Entity;
 
 public class Utilities {
@@ -353,9 +353,9 @@ public class Utilities {
 			Position newPos = new Position();
 			newEntity.forceAddComponent(newPos, true);
 		}
-		if (newEntity.hasComponent(ImagePath.class)) {
-			newEntity.removeComponent(ImagePath.class);
-			ImagePath newPath = new ImagePath(oldEntity.getComponent(ImagePath.class).getImagePath());
+		if (newEntity.hasComponent(Sprite.class)) {
+			newEntity.removeComponent(Sprite.class);
+			Sprite newPath = new Sprite(oldEntity.getComponent(Sprite.class).getImagePath());
 			newEntity.forceAddComponent(newPath, true);
 		}
 	}
