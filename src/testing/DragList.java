@@ -11,20 +11,18 @@ import javafx.scene.input.*;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.util.*;
 
-
 public class DragList {
-	
+
 		ObservableList<Button> buttons;
-		
+
 	public DragList(ObservableList<Button> theButtons){
 		buttons = theButtons;
 		setActions();
 	}
-	
+
 	public static void makeIntoDragList(ObservableList<Button> theButtons){
 		final DragList dragList = new DragList(theButtons);
 	}
@@ -49,13 +47,13 @@ public class DragList {
 			int thisIndex = buttons.indexOf(button);
 
 			Button movedButton = null;
-			
+
 			for (Button dragButton : buttons){
 				if (dragButton.getText().equals(db.getString())){
 					movedButton = dragButton;
 				}
 			}
-			
+
 			buttons.remove(movedButton);
 			buttons.add(thisIndex, movedButton);
 			success = true;

@@ -3,8 +3,10 @@ package events;
 import api.IEntitySystem;
 import api.IEventSystem;
 import api.ILevel;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
 import javafx.beans.property.SimpleDoubleProperty;
@@ -14,10 +16,12 @@ import utility.Pair;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Observable;
@@ -133,12 +137,10 @@ public class EventSystem implements Observer, IEventSystem {
         return new XMLWriter<ListMultimap<Trigger, Action>>().writeToString(actionMap);
     }
     
-    /*public List<String> getEventsAsStringList() {
-    	return actionMap.keySet().stream().forEach(e-> {
-    		String s=e.toString()+";";
-    		actionMap.get(e).stream().forEach(e->s+=e.toString);
-    	});
-    }*/
+    public String getEventsAsString() {
+    	String s = actionMap.toString();
+    	return actionMap.toString();
+    }
 
     private void stopObservingTriggers(ListMultimap<Trigger, Action> map) {
         for (Trigger trigger : map.keySet()) {

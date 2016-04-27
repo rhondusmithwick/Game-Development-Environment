@@ -31,7 +31,7 @@ import model.component.movement.Velocity;
 import model.component.physics.Collision;
 import model.component.physics.Gravity;
 import model.component.physics.Mass;
-import model.component.visual.ImagePath;
+import model.component.visual.Sprite;
 import model.entity.Entity;
 import model.entity.Level;
 import model.physics.PhysicsEngine;
@@ -59,7 +59,7 @@ import model.component.character.Score;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.Gravity;
-import model.component.visual.ImagePath;
+import model.component.visual.Sprite;
 import model.entity.Entity;
 import model.entity.Level;
 import model.physics.PhysicsEngine;
@@ -131,12 +131,12 @@ public class CollisionTestGame {
         character.forceAddComponent(new Health((double) 100), true);
         Position pos = new Position(posX, posY);
         character.forceAddComponent(pos, true);
-        character.forceAddComponent(new ImagePath(imagePath), true);
+        character.forceAddComponent(new Sprite(imagePath), true);
         character.forceAddComponent(new Velocity(0, 0), true);
         character.forceAddComponent(new Mass(100), true);
         character.addComponent(new Collision("")); // instantiated by string instead of collection
         universe.addEntity(character);
-        character.addComponent(new ImagePath(imagePath));
+        character.addComponent(new Sprite(imagePath));
         //character.addComponent(new Gravity(5000));
         //character.serialize(XMLName);
         //}
@@ -171,7 +171,7 @@ public class CollisionTestGame {
     }
 
     public void drawCharacter(IEntity character) {
-        ImagePath imgPath = character.getComponent(ImagePath.class);
+        Sprite imgPath = character.getComponent(Sprite.class);
         ImageView charSprite = imgPath.getImageView();
         charSprite.setFitHeight(100);
         charSprite.setPreserveRatio(true);
