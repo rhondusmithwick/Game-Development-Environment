@@ -1,20 +1,14 @@
 package view.editor.entityeditor;
 
 import api.IComponent;
-import api.IEntity;
+import voogasalad.util.reflection.Reflection;
 
 
 public class ComponentFactory {
 
 
-	public IComponent getComponent(Class<?> clazz, IEntity entity) throws Exception{
-		
-			if(clazz.getName().endsWith(".Collision")){
-				return (IComponent) clazz.getConstructor(String.class).newInstance(entity.getID());
-			}
-			else{
-				return (IComponent) clazz.getConstructor().newInstance();
-			}
+	public IComponent getComponent(String name, Object... args) {
+			return (IComponent) Reflection.createInstance(name, args);
 
 
 	}

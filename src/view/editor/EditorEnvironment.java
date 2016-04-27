@@ -1,6 +1,5 @@
 package view.editor;
 
-<<<<<<< HEAD
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -12,9 +11,6 @@ import api.IEntity;
 import api.ILevel;
 import api.ISystemManager;
 import api.IView;
-=======
-import api.*;
->>>>>>> master
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -39,9 +35,6 @@ import view.Utilities;
 import view.View;
 import view.enums.DefaultEntities;
 import view.enums.GUISize;
-
-import java.io.File;
-import java.util.*;
 
 //import view.DragAndResize;
 
