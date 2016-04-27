@@ -17,13 +17,17 @@ import view.enums.DefaultStrings;
 
 public class EnvironmentDisplay extends ObjectDisplay{
 	private ObservableList<ILevel> masterEnvList;
+	private ObservableList<IEntity> masterEntList;
 	private ResourceBundle myResources;
+	private String language;
 	
 	public EnvironmentDisplay(String language, ObservableList<ILevel> masterEnvList, ObservableList<IEntity> masterEntList, Authoring authEnv){
 		
-		super(language, authEnv, masterEntList);
+		super(authEnv);
+		this.masterEntList=masterEntList;
 		this.masterEnvList = masterEnvList;
 		this.myResources = ResourceBundle.getBundle(language);
+		this.language=language;
 		
 
 	}
@@ -41,17 +45,15 @@ public class EnvironmentDisplay extends ObjectDisplay{
 		masterEnvList.stream().forEach(e-> addEnvironmentToScroll(e, container));
 	}
 
-	@SuppressWarnings("unchecked")
 	private void addEnvironmentToScroll(ILevel eSystem, VBox container) {
-		container.getChildren().add(Utilities.makeButton(eSystem.getName(), f->createEditor(EditorEnvironment.class, eSystem, (ObservableList<ISerializable>) ((ObservableList<?>) masterEnvList ))));
+		container.getChildren().add(Utilities.makeButton(eSystem.getName(), f->createEditor(EditorEnvironment.class.getName(), language, eSystem, masterEntList, masterEnvList )));
 	}
 	
 
-	@SuppressWarnings("unchecked")
 	@Override
 	public Node makeNewObject(){
 		return Utilities.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
-			e->createEditor(EditorEnvironment.class, new Level(), (ObservableList<ISerializable>) ((ObservableList<?>) masterEnvList )));
+			e->createEditor(EditorEnvironment.class.getName(), language,  new Level(), masterEntList,  masterEnvList ));
 	}
 
 
