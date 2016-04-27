@@ -23,7 +23,6 @@ public class Collision implements IComponent {
 	private SingleProperty<String> collidingIDsProperty = new SingleProperty<>("CollidingIDs", "");
 
 	public Collision() {
-		this("");
 	}
 
 	public Collision(Bounds mask, String ID) {

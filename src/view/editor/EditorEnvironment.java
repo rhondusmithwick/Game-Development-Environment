@@ -1,6 +1,16 @@
 package view.editor;
 
-import api.*;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.ResourceBundle;
+import api.IEntity;
+import api.ILevel;
+import api.ISystemManager;
+import api.IView;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,9 +36,6 @@ import view.View;
 import view.enums.DefaultEntities;
 import view.enums.GUISize;
 
-import java.io.File;
-import java.util.*;
-
 //import view.DragAndResize;
 
 public class EditorEnvironment extends Editor {
@@ -39,8 +46,8 @@ public class EditorEnvironment extends Editor {
 	private ILevel myEntitySystem;
 	private Group gameRoot = new Group();
 	private ResourceBundle myResources;
-	private ObservableList<ISerializable> masterEntityList;
-	private ObservableList<ISerializable> allEnvironmentsList;
+	private ObservableList<IEntity> masterEntityList;
+	private ObservableList<ILevel> allEnvironmentsList;
 	private VBox leftPane = new VBox();
 	private VBox rightPane = new VBox();
 	private VBox masterEntityButtons = new VBox();
@@ -52,14 +59,14 @@ public class EditorEnvironment extends Editor {
 	private SubScene gameScene;
 	private GameLoopManager manager;
 
-	public EditorEnvironment(String language, ISerializable toEdit, ObservableList<ISerializable> masterList,
-			ObservableList<ISerializable> addToList) {
+	public EditorEnvironment(String language, ILevel toEdit, ObservableList<IEntity> masterList,
+			ObservableList<ILevel> addToList) {
 		myResources = ResourceBundle.getBundle(language);
-		masterList.addListener((ListChangeListener<? super ISerializable>) c -> {
+		masterList.addListener((ListChangeListener<IEntity>) c -> {
 			this.updateDisplay(masterList);
 		});
 		masterEntityList = masterList;
-		this.myEntitySystem = (ILevel) toEdit; // TODO: casting check
+		this.myEntitySystem = toEdit; // TODO: casting check
 
 		game = new SystemManager(gameRoot, this.myEntitySystem);
 		view = new View(game, gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(),
@@ -100,11 +107,11 @@ public class EditorEnvironment extends Editor {
 		return (new ScrollPane(masterEntityButtons));
 	}
 
-	private void populateVbox(VBox vbox, ObservableList<ISerializable> entityPopulation) {
+	private void populateVbox(VBox vbox, ObservableList<IEntity> masterEntityList2) {
 		vbox.getChildren().clear();
-		for (ISerializable entity : entityPopulation) {
-			Button addEntityButton = Utilities.makeButton(((IEntity) entity).getName(),
-					e -> addToSystemAndScene(Utilities.copyEntity((IEntity) entity)));
+		for (IEntity entity : masterEntityList2) {
+			Button addEntityButton = Utilities.makeButton(( entity).getName(),
+					e -> addToSystemAndScene(Utilities.copyEntity( entity)));
 			(addEntityButton).setMaxWidth(Double.MAX_VALUE);
 			vbox.getChildren().add(addEntityButton);
 		}
@@ -230,7 +237,7 @@ public class EditorEnvironment extends Editor {
 		e.getComponent(Sprite.class).setZLevel(1);
 	}
 
-	private void updateDisplay(ObservableList<ISerializable> masterList) {
+	private void updateDisplay(ObservableList<IEntity> masterList) {
 		masterEntityList = masterList;
 		populateVbox(masterEntityButtons, masterEntityList);
 	}
