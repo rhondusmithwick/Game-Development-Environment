@@ -30,11 +30,7 @@ public class EntityFactory {
 		int numToAdd = numComponents.get(componentName);
 		for(int i=0; i<numToAdd; i++){
 
-			if(componentName.getName().endsWith(".Collision")){
-				entity.forceAddComponent(componentFactory.getComponent(componentName.getName(), entity), true);
-			}else{
-				entity.forceAddComponent(componentFactory.getComponent(componentName.getName()), true);
-			}
+			componentFactory.addComponentToEntity(componentName.getName(), entity);
 
 
 

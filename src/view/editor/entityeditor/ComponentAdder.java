@@ -30,12 +30,7 @@ public class ComponentAdder extends ComponentModifier{
 		}
 		String componentName = super.makeAndShowChooser("chooseComponent", myComponents);
 		if(componentName != null){
-			componentName = myLocs.getString(componentName);
-			if(componentName.endsWith(".Collision")){
-				entity.forceAddComponent(componentFactory.getComponent(componentName, entity), true);
-			}else{
-				entity.forceAddComponent(componentFactory.getComponent(componentName),true);
-			}
+			componentFactory.addComponentToEntity(myLocs.getString(componentName), entity);
 		}
 
 	}
