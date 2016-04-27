@@ -1,7 +1,10 @@
 package testing.demo
 
 import api.*
+import events.Action
+import events.KeyTrigger
 import model.component.character.Score
+import model.component.character.UserControl
 import model.component.movement.Position
 import model.physics.PhysicsEngine
 /**
@@ -39,6 +42,7 @@ public class Pong implements IGameScript {
         IEntity ball = SpriteLoader.createBall("Ball", new Position(50.0, -150.0));
         //Paddles
         IEntity leftPaddle = SpriteLoader.createPaddle("LeftPaddle", new Position(100, 160));
+        leftPaddle.addComponent(new UserControl());
         IEntity rightPaddle = SpriteLoader.createPaddle("RightPaddle", new Position(540, 160));
         // Walls
         IEntity leftWall = SpriteLoader.createPlatform("LeftWall", new Position(-578, 7));
@@ -53,13 +57,17 @@ public class Pong implements IGameScript {
         Map<String, Object> wKey = new HashMap<>();
         wKey.put("key", "W");
         Map<String, Object> sKey = new HashMap<>();
-        wKey.put("key", "S");
+        sKey.put("key", "S");
         Map<String, Object> mKey = new HashMap<>();
-        wKey.put("key", "M");
-//        events.registerEvent(new KeyTrigger("W"), new Action(movePaddleScript, wKey));
-//        events.registerEvent(new KeyTrigger("S"), new Action(movePaddleScript, sKey));
-//        events.registerEvent(new KeyTrigger("M"), new Action(movePaddleScript, mKey));
-        println("Input keys cannot be registered without de-serialization error.");
+        mKey.put("key", "M");
+        events.registerEvent(new KeyTrigger("W"), new Action(movePaddleScript, wKey));
+        events.registerEvent(new KeyTrigger("S"), new Action(movePaddleScript, sKey));
+        events.registerEvent(new KeyTrigger("M"), new Action(movePaddleScript, mKey));
+//        String tempScriptPath = "src/testing/AniPong/";
+//        events.registerEvent(new KeyTrigger("W"), new Action(tempScriptPath+"movePaddleUp.groovy"));
+//        events.registerEvent(new KeyTrigger("S"), new Action(tempScriptPath+"movePaddleDown.groovy"));
+//        events.registerEvent(new KeyTrigger("M"), new Action(tempScriptPath+"stopPaddle.groovy"));
+//        println("Inputs triggers activated.");
     }
 
 //    private initGlobalVariables() {

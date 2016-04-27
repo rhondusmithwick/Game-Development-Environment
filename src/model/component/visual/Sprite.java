@@ -58,8 +58,6 @@ public class Sprite implements IComponent {
 		this.imagePathProperty = new SingleProperty<>("ImagePath", imagePath);
 		this.imageSizeProperty = new TwoProperty<>("ImageWidth", imageWidth, "ImageHeight", imageHeight);
 		this.imageView = this.createImageView(imagePath);
-
-
 	}
 
 	private ImageView createImageView(String imagePath) {
