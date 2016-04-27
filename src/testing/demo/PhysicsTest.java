@@ -10,7 +10,7 @@ import model.component.movement.Velocity;
 import model.component.physics.Collision;
 import model.component.physics.Mass;
 import model.component.physics.RestitutionCoefficient;
-import model.component.visual.ImagePath;
+import model.component.visual.Sprite;
 import model.entity.Entity;
 import model.entity.Level;
 import model.physics.PhysicsEngine;
@@ -31,7 +31,7 @@ public class PhysicsTest extends Application {
 		Position pos1 = new Position(0, 0);
 		Velocity v1 = new Velocity(0, 1);
 		Mass m1 = new Mass(2);
-		ImagePath disp1 = new ImagePath();
+		Sprite disp1 = new Sprite();
 		disp1.setImageWidth(4);
 		disp1.setImageHeight(4);
 		Collision col1 = new Collision("one");
@@ -42,7 +42,7 @@ public class PhysicsTest extends Application {
 		Position pos2 = new Position(0, 20);
 		Velocity v2 = new Velocity(0, -2);
 		Mass m2 = new Mass(3);
-		ImagePath disp2 = new ImagePath();
+		Sprite disp2 = new Sprite();
 		disp2.setImageWidth(4);
 		disp2.setImageHeight(4);
 		Collision col2 = new Collision("two");

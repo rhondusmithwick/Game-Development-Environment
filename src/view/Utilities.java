@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
+
+import javafx.beans.value.ChangeListener;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
@@ -22,6 +24,7 @@ import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TextField;
@@ -32,7 +35,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.FileChooser.ExtensionFilter;
 import model.component.movement.Position;
-import model.component.visual.ImagePath;
+import model.component.visual.Sprite;
 import model.entity.Entity;
 
 public class Utilities {
@@ -195,6 +198,7 @@ public class Utilities {
 	}
 
 	/**
+
 	 * Directs file chooser box to the appropriate directory to use files from
 	 * this project
 	 * 
@@ -281,11 +285,11 @@ public class Utilities {
 	 *            expanded. If it isn't, it will.
 	 * @return TitledPane pane, already initialized.
 	 */
+	
 	public static TitledPane makeTitledPane(String title, Node content, boolean collapsable) {
 		TitledPane pane = new TitledPane(title, content);
 		pane.setCollapsible(collapsable);
 		pane.setExpanded(!collapsable);
-
 		return pane;
 	}
 
@@ -338,7 +342,6 @@ public class Utilities {
 		newEntity.setSpecs(entity.getSpecs());
 		for (IComponent component : entity.getAllComponents()) {
 			newEntity.addComponent(component.clone(component.getClass()));
-			// newEntity.forceAddComponent(component, true);
 			componentInitialization(newEntity, entity);
 		}
 		return newEntity;
@@ -350,9 +353,9 @@ public class Utilities {
 			Position newPos = new Position();
 			newEntity.forceAddComponent(newPos, true);
 		}
-		if (newEntity.hasComponent(ImagePath.class)) {
-			newEntity.removeComponent(ImagePath.class);
-			ImagePath newPath = new ImagePath(oldEntity.getComponent(ImagePath.class).getImagePath());
+		if (newEntity.hasComponent(Sprite.class)) {
+			newEntity.removeComponent(Sprite.class);
+			Sprite newPath = new Sprite(oldEntity.getComponent(Sprite.class).getImagePath());
 			newEntity.forceAddComponent(newPath, true);
 		}
 	}
@@ -376,5 +379,23 @@ public class Utilities {
 		context.getItems().addAll(menuItems);
 		return context;
 	}
+	
+	   /**
+	    * Creates a new slider, setting all necessary intervals and locations. 
+	    *
+	    * @param ChangeListener<Number>				the changeImage the slider is listening to and event/method it calls when the changeImage occurs
+	    * @param start 							the start of the slider range
+	    *  @param end 							the end of the slider range
+	    *   @param incr 							the increment of the slider range
+	    * @return slider 							the new slider
+	    * 
+	    */
+	    public static Slider makeSlider(ChangeListener<Number> listener, double start, double end, double currVal){
+	    	Slider slider = new Slider(start, end, currVal);
+	     	slider.setShowTickMarks(true);
+	        ChangeListener<Number> changer = listener;
+	        slider.valueProperty().addListener(changer);
+	        return slider;
+	    }
 
 }

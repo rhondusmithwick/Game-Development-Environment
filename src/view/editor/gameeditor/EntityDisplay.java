@@ -15,7 +15,7 @@ import javafx.scene.layout.VBox;
 import model.entity.Entity;
 import view.Authoring;
 import view.Utilities;
-import view.editor.EditorEntity;
+import view.editor.entityeditor.EditorEntity;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
 
@@ -68,7 +68,7 @@ public class EntityDisplay extends ObjectDisplay{
 	private void entityWithTemplate(){
 		List<String> titles = new ArrayList<>();
 		Utilities.getAllFromDirectory(DefaultStrings.TEMPLATE_DIREC_LOC.getDefault()).forEach(e-> titles.add(myResources.getString(e)));
-		ChoiceDialog<String> templates = new ChoiceDialog<>("None", titles);
+		ChoiceDialog<String> templates = new ChoiceDialog<>(myResources.getString("None"), titles);
 		templates.setTitle(myResources.getString("entType"));
 		templates.showAndWait();
 		String choice = templates.getSelectedItem();

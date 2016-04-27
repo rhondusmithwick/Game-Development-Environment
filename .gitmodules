@@ -1,0 +1,3 @@
+[submodule "voogasalad_util"]
+	path = voogasalad_util
+	url = https://github.com/duke-compsci308-spring2016/voogasalad_util
