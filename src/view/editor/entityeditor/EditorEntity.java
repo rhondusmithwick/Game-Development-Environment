@@ -39,10 +39,10 @@ public class EditorEntity extends Editor{
 	private ScrollPane scrollPane;
 	private List<String> myComponents;
 	private VBox container;
-	private GuiObjectFactory guiFactory;
+	private final GuiObjectFactory guiFactory = new GuiObjectFactory();
 
 
-	public EditorEntity(String language, ISerializable toEdit, ObservableList<ISerializable> addToList, ObservableList<ISerializable> emptyList) {
+	public EditorEntity(String language, ISerializable toEdit, ObservableList<ISerializable> addToList) {
 		scrollPane = new ScrollPane();
 		myLanguage = language;
 		myResources = ResourceBundle.getBundle(language);
@@ -96,12 +96,11 @@ public class EditorEntity extends Editor{
 	}
 	
 	private void addObject(IComponent component) {
-		guiFactory = new GuiObjectFactory(myLanguage);
 		component.getProperties().stream().forEach(e -> addVisualObject(e));
 	}
 
 	private void addVisualObject(SimpleObjectProperty<?> property) {
-		GuiObject object = guiFactory.createNewGuiObject(property.getName(), property, property.getValue());
+		GuiObject object = guiFactory.createNewGuiObject(property.getName(), DefaultStrings.GUI_RESOURCES.getDefault(),myLanguage, property, property.getValue());
 		if (object != null){
 			container.getChildren().add((Node) object.getGuiNode());
 		}
