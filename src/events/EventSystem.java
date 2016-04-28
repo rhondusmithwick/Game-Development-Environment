@@ -11,6 +11,7 @@ import datamanagement.XMLWriter;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
@@ -39,6 +40,7 @@ import java.util.Observer;
 
 public class EventSystem implements Observer, IEventSystem {
     private final InputSystem inputSystem = new InputSystem();
+//    private final MouseSystem mouseSystem = new MouseSystem();
     private transient ILevel universe;
     private ListMultimap<Trigger, Action> actionMap = ArrayListMultimap.create();
     private final SimpleDoubleProperty timer = new SimpleDoubleProperty(this, "timer", 0.0);
@@ -57,14 +59,29 @@ public class EventSystem implements Observer, IEventSystem {
     @Override
     public void updateInputs(double dt) {
         this.inputSystem.processInputs();
+//        this.mouseSystem.processInputs();
         timer.set(timer.get()+dt);
         //System.out.println(timer.get());
     }
 
     @Override
     public void takeInput(KeyEvent k) {
+    	System.out.println("WHOO");
         this.inputSystem.takeInput(k);
     }
+    
+//    public void takeMousePress(MouseEvent m) {
+//    	System.out.println("AYYYOOOOOO");
+//    	this.mouseSystem.takeInput(m);
+//    }
+//    
+//    public void listenToMousePress(ChangeListener listener) {
+//    	mouseSystem.listenToMousePress(listener);
+//    }
+//    
+//    public void unListenToMousePress(ChangeListener listener) {
+//    	mouseSystem.unListenToMousePress(listener);
+//    }
     
     @Override
     public void listenToKeyPress(ChangeListener listener) {

@@ -25,6 +25,7 @@ utility
 view
 view.beginningmenus
 view.editor
+view.editor.entityeditor
 view.editor.eventeditor
 view.editor.gameeditor
 view.enums
