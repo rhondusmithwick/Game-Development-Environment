@@ -1,17 +1,14 @@
 package events;
 
-import api.ILevel;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventType;
 import javafx.scene.input.InputEvent;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 /***
- * @author ani
- *         Authors: Anirudh Jonnavithula
+ * @author ani, roxanne
+ *         Authors: Anirudh Jonnavithula, Roxanne Baker
  *         Listeners that notify the event system if a specific key is pressed. 
  *         Created 04/27/16
  */
@@ -34,6 +31,10 @@ public class MouseTrigger extends InputTrigger {
 			}
 		}
 		return false;
+    }
+    
+    public String toString() {
+    	return getButton().toString()+":"+getEventType().toString();
     }
     
     protected MouseButton getButton() {

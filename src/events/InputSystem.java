@@ -32,6 +32,7 @@ public class InputSystem {
             if (k != null) {
                 currentInput.set(k);
             }
+            
         }
     }
 

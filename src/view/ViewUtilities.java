@@ -8,6 +8,7 @@ import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import model.component.movement.Position;
+import model.component.visual.AnimatedSprite;
 import model.component.visual.Sprite;
 
 import java.util.HashSet;
@@ -35,6 +36,9 @@ public class ViewUtilities {
 	}
 
 	private ImageView getImageView(IEntity e) {
+		if (e.hasComponent(AnimatedSprite.class)) {
+			return e.getComponent(AnimatedSprite.class).getImageView();
+		}
 		return e.getComponent(Sprite.class).getImageView();
 	}
 

@@ -11,11 +11,16 @@ import datamanagement.XMLReader;
 import events.Action;
 import events.EventSystem;
 import events.KeyTrigger;
+import events.MouseTrigger;
 import events.PropertyTrigger;
 import events.TimeTrigger;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.control.ButtonBar.ButtonData;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import model.component.character.Health;
 import model.component.character.Score;
@@ -31,6 +36,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
+import javafx.scene.input.MouseEvent;
 
 public class ACGame {
 
@@ -65,7 +72,7 @@ public class ACGame {
         root = new Group();
         // Create a place to see the shapes
         myScene = new Scene(root, width, height, Color.WHITE);
-        myScene.setOnKeyPressed(e -> universe.getEventSystem().takeInput(e));
+        universe.setOnInput(myScene);
         initEngine();
         return myScene;
     }
@@ -96,9 +103,10 @@ public class ACGame {
             eventSystem.registerEvent(
                     new PropertyTrigger(character.getID(), Position.class, "X"),
                     new Action(healthScriptPath));
-            eventSystem.registerEvent(new KeyTrigger("D"), new Action(moveRightScriptPath, map));
-            eventSystem.registerEvent(new KeyTrigger("A"), new Action(moveLeftScriptPath));
-            eventSystem.registerEvent(new KeyTrigger("W"), new Action(jumpScriptPath));
+            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("D"), KeyEvent.KEY_PRESSED), new Action(moveRightScriptPath, map));
+            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("A"), KeyEvent.KEY_PRESSED), new Action(moveLeftScriptPath));
+            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_PRESSED), new Action(jumpScriptPath));
+            eventSystem.registerEvent(new MouseTrigger(MouseButton.PRIMARY, MouseEvent.MOUSE_CLICKED), new Action(moveLeftScriptPath));
             universe.serialize("anitest.xml");
         } else {
             character = new XMLReader<IEntity>().readSingleFromFile("character.xml");

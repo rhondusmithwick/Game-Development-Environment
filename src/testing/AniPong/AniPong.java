@@ -63,10 +63,11 @@ public class AniPong {
 
     private void initSprites() {
         // Ball
-        IEntity ball = AniSpriteLoader.createBall("Ball", new Position(50.0, 150.0));
+        IEntity ball = AniSpriteLoader.createBall("Ball", new Position(200.0, 150.0));
         //Paddles
         IEntity leftPaddle = AniSpriteLoader.createPaddle("LeftPaddle", new Position(100, 160));
         IEntity rightPaddle = AniSpriteLoader.createPaddle("RightPaddle", new Position(540, 160));
+//        events.registerEvent(new MouseTrigger(leftPaddle.getID()), new Action(movePaddleUpScript));
         rightPaddle.addComponent(new UserControl());
         // Walls
         IEntity leftWall = AniSpriteLoader.createPlatform("LeftWall", new Position(578, 7));
@@ -90,6 +91,7 @@ public class AniPong {
         //events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("S"), KeyEvent.KEY_RELEASED), new Action(stopPaddleScript, mKey));
         events.registerEvent(new MouseTrigger(MouseButton.PRIMARY, MouseEvent.MOUSE_CLICKED), new Action(stopPaddleScript));
         //System.out.println("Input keys cannot be registered without de-serialization error.");
+        String s = events.getEventsAsString();
     }
 
 //    private initGlobalVariables() {
@@ -117,7 +119,8 @@ public class AniPong {
     public ImageView drawCharacter(IEntity character) {
         Sprite imgPath = character.getComponent(Sprite.class);
         ImageView charSprite = imgPath.getImageView();
-        charSprite.setFitHeight(100);
+        charSprite.setPreserveRatio(true);
+        imgPath.setImageHeight(100);
         charSprite.setPreserveRatio(true);
         root.getChildren().add(charSprite);
         return charSprite;

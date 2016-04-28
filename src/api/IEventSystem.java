@@ -7,6 +7,7 @@ import javafx.beans.value.ChangeListener;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import events.Action;
 import events.Trigger;
 import javafx.scene.input.KeyEvent;
@@ -46,6 +47,12 @@ public interface IEventSystem extends Observer, ISerializable {
 	void updateInputs(double dt);
 
 	void takeInput(KeyEvent k);
+	
+//	void takeMousePress(MouseEvent m);
+//	
+//	void unListenToMousePress(ChangeListener listener);
+//
+//	void listenToMousePress(ChangeListener listener);
 
 	void unListenToInput(ChangeListener listener);
 
@@ -54,7 +61,7 @@ public interface IEventSystem extends Observer, ISerializable {
 	void unListenToTimer(ChangeListener listener);
 
 	void listenToTimer(ChangeListener listener);
-
+	
 	String getEventsAsString();
 
 	void setOnInput(Scene scene);

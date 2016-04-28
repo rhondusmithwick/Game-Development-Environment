@@ -97,7 +97,7 @@ public class Level implements ILevel {
 
 	@Override
 	public void update(double dt) {
-		physics.update(this, dt); // TODO: remove
+//		physics.update(this, dt); // TODO: remove
 		for (IGameScript gameScript : gameScripts) {
 			gameScript.update(dt);
 		}
