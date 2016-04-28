@@ -68,7 +68,7 @@ public class ACGame {
         myScene = new Scene(root, width, height, Color.WHITE);
         myScene.setOnKeyPressed(e -> universe.getEventSystem().takeInput(e));
         myScene.setOnMousePressed(e -> {
-        	universe.getEventSystem().takeMousePress(e);
+//        	universe.getEventSystem().takeMousePress(e);
         });
         initEngine();
         return myScene;
