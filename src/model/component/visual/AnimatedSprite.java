@@ -7,6 +7,7 @@ import voogasalad.util.spriteanimation.animation.AnimationContainer;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
@@ -82,9 +83,8 @@ public class AnimatedSprite extends Sprite {
 
     @Override
     public List<SimpleObjectProperty<?>> getProperties() {
-        List<SimpleObjectProperty<?>> superProps = super.getProperties();
-        superProps.add(bundlePathProperty());
-        return superProps;
+        return Arrays.asList(bundlePathProperty(), imagePathProperty(), imageWidthProperty(), imageHeightProperty(), zLevelProperty());
+
     }
 
     public Set<String> getAnimationNames() {
