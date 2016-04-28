@@ -100,6 +100,7 @@ public class EditorEntity extends Editor{
 	}
 
 	private void addVisualObject(SimpleObjectProperty<?> property) {
+		//System.out.println(property.getName());
 		GuiObject object = guiFactory.createNewGuiObject(property.getName(), DefaultStrings.GUI_RESOURCES.getDefault(),myLanguage, property, property.getValue());
 		if (object != null){
 			container.getChildren().add((Node) object.getGuiNode());
