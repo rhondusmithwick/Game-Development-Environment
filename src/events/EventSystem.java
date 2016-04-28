@@ -10,6 +10,8 @@ import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 
 import javax.script.ScriptEngine;
@@ -19,7 +21,6 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -43,6 +44,7 @@ public class EventSystem implements Observer, IEventSystem {
     private ListMultimap<Trigger, Action> actionMap = ArrayListMultimap.create();
     private final SimpleDoubleProperty timer = new SimpleDoubleProperty(this, "timer", 0.0);
     private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
+    
     public EventSystem(ILevel universe) {
         setUniverse(universe);
     }
@@ -67,13 +69,13 @@ public class EventSystem implements Observer, IEventSystem {
     }
     
     @Override
-    public void listenToKeyPress(ChangeListener listener) {
-        inputSystem.listenToKeyPress(listener);
+    public void listenToInput(ChangeListener listener) {
+        inputSystem.listenToInput(listener);
     }
 
     @Override
-    public void unListenToKeyPress(ChangeListener listener) {
-        inputSystem.unListenToKeyPress(listener);
+    public void unListenToInput(ChangeListener listener) {
+        inputSystem.unListenToInput(listener);
     }
     
     @Override
@@ -130,9 +132,17 @@ public class EventSystem implements Observer, IEventSystem {
         return new XMLWriter<ListMultimap<Trigger, Action>>().writeToString(actionMap);
     }
     
+    @Override
     public String getEventsAsString() {
     	String s = actionMap.toString();
     	return actionMap.toString();
+    }
+    
+    @Override
+    public void setOnInput(Scene scene) {
+    	scene.setOnKeyPressed(e->inputSystem.takeInput(e));
+    	scene.setOnKeyReleased(e->inputSystem.takeInput(e));
+    	scene.setOnMouseClicked(e->inputSystem.takeInput(e));
     }
 
     private void stopObservingTriggers(ListMultimap<Trigger, Action> map) {

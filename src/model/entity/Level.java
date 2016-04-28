@@ -7,6 +7,7 @@ import com.google.common.collect.Maps;
 import events.EventSystem;
 import groovy.lang.GroovyShell;
 import model.physics.PhysicsEngine;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -14,6 +15,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+
+import javafx.scene.Node;
+import javafx.scene.Scene;
 
 /**
  * Implementation of a Level. This implementation is focused on the IDs. It
@@ -151,6 +155,11 @@ public class Level implements ILevel {
 	@Override
 	public boolean isEmpty() {
 		return universe.isEmpty();
+	}
+	
+	@Override
+	public void setOnInput(Scene scene) {
+		getEventSystem().setOnInput(scene);
 	}
 	
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {

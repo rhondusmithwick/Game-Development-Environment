@@ -6,9 +6,14 @@ import java.util.Map;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import events.Action;
 import events.KeyTrigger;
+import events.MouseTrigger;
 import model.component.character.Score;
 import model.component.character.UserControl;
 import model.component.movement.Position;
@@ -51,7 +56,7 @@ public class AniPong {
         root = new Group();
         // Create a place to see the shapes
         myScene = new Scene(root, width, height, Color.WHITE);
-        myScene.setOnKeyPressed(e -> universe.getEventSystem().takeInput(e));
+        universe.setOnInput(myScene);
         return myScene;
 		
 	}
@@ -79,10 +84,11 @@ public class AniPong {
         wKey.put("key", "S");
         Map<String, Object> mKey = new HashMap<>();
         wKey.put("key", "M");
-        events.registerEvent(new KeyTrigger("W"), new Action(movePaddleUpScript, wKey));
-        events.registerEvent(new KeyTrigger("S"), new Action(movePaddleDownScript, sKey));
-        events.registerEvent(new KeyTrigger("M"), new Action(stopPaddleScript, mKey));
-        events.getEventsAsString();
+        events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_PRESSED), new Action(movePaddleUpScript, wKey));
+        events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("S"), KeyEvent.KEY_PRESSED), new Action(movePaddleDownScript, sKey));
+        //events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_RELEASED), new Action(stopPaddleScript, mKey));
+        //events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("S"), KeyEvent.KEY_RELEASED), new Action(stopPaddleScript, mKey));
+        events.registerEvent(new MouseTrigger(MouseButton.PRIMARY, MouseEvent.MOUSE_CLICKED), new Action(stopPaddleScript));
         //System.out.println("Input keys cannot be registered without de-serialization error.");
     }
 

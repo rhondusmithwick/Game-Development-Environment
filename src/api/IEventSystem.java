@@ -3,8 +3,9 @@ package api;
 import java.io.File;
 import java.util.Observer;
 
-
 import javafx.beans.value.ChangeListener;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import events.Action;
 import events.Trigger;
@@ -24,7 +25,12 @@ import javafx.scene.input.KeyEvent;
 public interface IEventSystem extends Observer, ISerializable {
 
 	// void init(IEntitySystem universe);
-
+	
+	/**
+	 * Registers a trigger-action pair in the event system
+	 * @param trigger - The trigger
+	 * @param action - The corresponding action
+	 */
 	void registerEvent(Trigger trigger, Action action);
 
 	void readEventFromFile(String filepath);
@@ -41,13 +47,15 @@ public interface IEventSystem extends Observer, ISerializable {
 
 	void takeInput(KeyEvent k);
 
-	void unListenToKeyPress(ChangeListener listener);
+	void unListenToInput(ChangeListener listener);
 
-	void listenToKeyPress(ChangeListener listener);
+	void listenToInput(ChangeListener listener);
 
 	void unListenToTimer(ChangeListener listener);
 
 	void listenToTimer(ChangeListener listener);
 
 	String getEventsAsString();
+
+	void setOnInput(Scene scene);
 }
