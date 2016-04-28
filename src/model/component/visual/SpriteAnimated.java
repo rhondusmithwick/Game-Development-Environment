@@ -6,6 +6,8 @@ import java.util.ResourceBundle;
  * @author Melissa Zhang
  *
  */
+
+
 public class SpriteAnimated extends Sprite{
 	private ResourceBundle animationBundle;
 	public SpriteAnimated(String bundle){

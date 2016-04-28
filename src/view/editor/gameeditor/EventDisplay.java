@@ -16,8 +16,7 @@ import javafx.scene.layout.VBox;
 import model.entity.Entity;
 import view.Authoring;
 import view.Utilities;
-import view.editor.EditorEntity;
-import view.editor.EditorFactory;
+import view.editor.entityeditor.EditorEntity;
 import view.editor.eventeditor.EditorEvent;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
@@ -30,7 +29,6 @@ public class EventDisplay extends ObjectDisplay
 	private String language;
 	private ResourceBundle myResources;
 	private ObservableList<IEntity> masterEntityList;
-	private final EditorFactory editFact = new EditorFactory();
 	private ObservableList<ISerializable> masterEnvironmentList;
 	private ObservableList<ILevel> levelList;
 
@@ -38,7 +36,7 @@ public class EventDisplay extends ObjectDisplay
 			ObservableList<IEntity> masterEntityList, ObservableList<ILevel> levelList, 
 			Authoring authoringEnvironment)
 	{
-		super(language, authoringEnvironment,masterEntityList);
+		super(authoringEnvironment);
 		this.levelList = levelList;
 		this.language=language;
 		this.masterEntityList = masterEntityList;

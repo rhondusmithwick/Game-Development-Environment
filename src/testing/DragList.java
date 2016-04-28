@@ -1,21 +1,13 @@
 package testing;
 
-import javafx.application.Application;
-import javafx.collections.*;
-import javafx.geometry.*;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
+import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
+import javafx.scene.control.Button;
 import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.scene.input.*;
-import javafx.scene.layout.VBox;
-import javafx.scene.shape.Rectangle;
-import javafx.stage.Stage;
 
 import java.io.File;
-import java.util.*;
-
-import animation.utility.GUIUtilities;
+//import animation.utility.GUIUtilities;
 
 public class DragList {
 

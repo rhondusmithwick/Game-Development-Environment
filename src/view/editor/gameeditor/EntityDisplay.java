@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import api.IEntity;
 import api.ISerializable;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
 import javafx.scene.control.ChoiceDialog;
@@ -15,7 +14,7 @@ import javafx.scene.layout.VBox;
 import model.entity.Entity;
 import view.Authoring;
 import view.Utilities;
-import view.editor.EditorEntity;
+import view.editor.entityeditor.EditorEntity;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
 
@@ -27,7 +26,7 @@ public class EntityDisplay extends ObjectDisplay{
 	private String language;
 	
 	public EntityDisplay(String language,ObservableList<IEntity> masterEntList, Authoring authEnv){
-		super(language, authEnv,masterEntList);
+		super(authEnv);
 		this.language=language;
 		this.masterEntList = masterEntList;
 		this.myResources = ResourceBundle.getBundle(language);
@@ -50,7 +49,7 @@ public class EntityDisplay extends ObjectDisplay{
 	}
 
 	private void addEntityToScroll(ISerializable entity, VBox container) {
-		container.getChildren().add(Utilities.makeButton(((Entity) entity).getName(), f->createEditor(EditorEntity.class, entity, FXCollections.observableArrayList())));
+		container.getChildren().add(Utilities.makeButton(((Entity) entity).getName(), f->createEditor(EditorEntity.class.getName(), language,entity, masterEntList)));
 
 	}
 	
@@ -68,7 +67,7 @@ public class EntityDisplay extends ObjectDisplay{
 	private void entityWithTemplate(){
 		List<String> titles = new ArrayList<>();
 		Utilities.getAllFromDirectory(DefaultStrings.TEMPLATE_DIREC_LOC.getDefault()).forEach(e-> titles.add(myResources.getString(e)));
-		ChoiceDialog<String> templates = new ChoiceDialog<>("None", titles);
+		ChoiceDialog<String> templates = new ChoiceDialog<>(myResources.getString("None"), titles);
 		templates.setTitle(myResources.getString("entType"));
 		templates.showAndWait();
 		String choice = templates.getSelectedItem();
@@ -78,7 +77,7 @@ public class EntityDisplay extends ObjectDisplay{
 		}else{
 			newEntity = entFact.createEntity(language, myResources.getString(choice));
 		}
-		createEditor(EditorEntity.class, newEntity, FXCollections.observableArrayList());
+		createEditor(EditorEntity.class.getName(), language, newEntity, masterEntList);
 	}
 	
 	

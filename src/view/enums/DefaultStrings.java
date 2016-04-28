@@ -26,7 +26,9 @@ public enum DefaultStrings {
 	ENTITIES_LOC("/entities.xml"),
 	LEVELS_LOC("/levels/"),
 	TEMP_LIST("_templatelist"),
-	DEF_NAME("DefaultName");
+	DEF_NAME("DefaultName"), 
+	GUI_RESOURCES("guiObject/guiComponents"),
+	GUI_FACTORY("guiObject/GuiObjectFactory");
 	
 
 
