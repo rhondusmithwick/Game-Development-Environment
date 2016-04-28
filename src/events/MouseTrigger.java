@@ -34,7 +34,7 @@ public class MouseTrigger extends Trigger {
     
     @Override
     public void clearListener(ILevel universe) {
-        universe.getEventSystem().unListenToMousePress(this);
+//        universe.getEventSystem().unListenToMousePress(this);
     }
 
     @Override
@@ -45,7 +45,7 @@ public class MouseTrigger extends Trigger {
 
     @Override
     public void addHandler(ILevel universe) {
-        universe.getEventSystem().listenToMousePress(this);
+//        universe.getEventSystem().listenToMousePress(this);
     }
 
 //    private SimpleObjectProperty<?> getProperty(ILevel universe) {
