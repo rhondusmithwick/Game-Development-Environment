@@ -1,15 +1,13 @@
 package model.component.events;
 
-import java.util.List;
-
+import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 import utility.SingleProperty;
-import api.IComponent;
 
-public class EventPath implements IComponent{
-	/**
-     * Single Proprety.
-     */
+import java.util.List;
+
+public class EventPath implements IComponent {
+
     private final SingleProperty<String> singleProperty = new SingleProperty<>("EventPath", "");
 
     /**
@@ -41,7 +39,7 @@ public class EventPath implements IComponent{
     }
 
     public void setEventPath(String eventPath) {
-    	eventPathProperty().set(eventPath);
+        eventPathProperty().set(eventPath);
     }
 
     @Override
