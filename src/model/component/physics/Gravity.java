@@ -13,13 +13,12 @@ import java.util.List;
  */
 public class Gravity implements IComponent {
 
-	private final TwoProperty<Double, Double> gravityProperty = new TwoProperty<>("gx", 0.0, "gy", 0.0);
+	private final TwoProperty<Double, Double> gravityProperty = new TwoProperty<>("gx", 0.0, "gy", 20.0);
 
 	/**
 	 * Empty constructor. Defaults to 20 down.
 	 */
 	public Gravity() {
-		this(20.0);
 	}
 
 	/**

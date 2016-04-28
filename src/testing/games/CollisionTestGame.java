@@ -116,9 +116,9 @@ public class CollisionTestGame {
 //        propertyEventSetup("Anolyn", healthScriptPath, Position.class, "Y");
 //        propertyEventSetup("Anolyn", healthScriptPath, Collision.class, "CollidingIDs");
 //        propertyEventSetup("Anolyn", transformScriptPath, Health.class, "Health");
-        registerEventSetup(healthScriptPath, "Anolyn", Position.class, "Y");
-        registerEventSetup(healthScriptPath, "Anolyn", Collision.class, "CollidingIDs");
-        registerEventSetup(transformScriptPath, "Anolyn", Health.class, "Health");
+        registerEventSetup("PropertyTrigger", "Anolyn", healthScriptPath, Position.class, "Y");
+        registerEventSetup("PropertyTrigger", "Anolyn", healthScriptPath, Collision.class, "CollidingIDs");
+        registerEventSetup("PropertyTrigger", "Anolyn", transformScriptPath, Health.class, "Health");
         registerEventSetup("KeyTrigger", moveRightScriptPath, "D");
         registerEventSetup("KeyTrigger", moveLeftScriptPath, "A");
         registerEventSetup("KeyTrigger", jumpScriptPath, "W");

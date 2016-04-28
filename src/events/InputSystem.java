@@ -31,6 +31,7 @@ public class InputSystem {
             if (k != null) {
                 currentChar.set(k);
             }
+            
         }
     }
 
