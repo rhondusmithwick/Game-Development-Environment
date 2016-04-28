@@ -2,32 +2,31 @@ package events;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
-import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 
 import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * Created by rhondusmithwick on 4/10/16.
- *
- * @author Rhondu Smithwick, Anirudh Jonnavithula, Carolyn Yao
+ * @author Roxanne Baker
  */
-public class InputSystem {
-    private final Queue<KeyEvent> firstQueue = new LinkedList<>();
-    private final Queue<KeyEvent> secondQueue = new LinkedList<>();
-    private Queue<KeyEvent> fillQ = firstQueue;
-    private Queue<KeyEvent> processQ = secondQueue;
+@Deprecated
+public class MouseSystem {
+    private final Queue<MouseEvent> firstQueue = new LinkedList<>();
+    private final Queue<MouseEvent> secondQueue = new LinkedList<>();
+    private Queue<MouseEvent> fillQ = firstQueue;
+    private Queue<MouseEvent> processQ = secondQueue;
 
-    private SimpleObjectProperty<KeyEvent> currentChar = new SimpleObjectProperty<>();
+    private SimpleObjectProperty<MouseEvent> currentChar = new SimpleObjectProperty<>();
 
-    public void takeInput(KeyEvent k) {
+    public void takeInput(MouseEvent k) {
 		fillQ.add(k);
     }
 
     public void processInputs() {
         toggleQueues();
         while (!processQ.isEmpty()) {
-            KeyEvent k = processQ.poll();
+            MouseEvent k = processQ.poll();
             if (k != null) {
                 currentChar.set(k);
             }
@@ -35,11 +34,11 @@ public class InputSystem {
         }
     }
 
-    public void listenToKeyPress(ChangeListener listener) {
+    public void listenToMousePress(ChangeListener listener) {
         currentChar.addListener(listener);
     }
 
-    public void unListenToKeyPress(ChangeListener listener) {
+    public void unListenToMousePress(ChangeListener listener) {
         currentChar.removeListener(listener);
     }
 
@@ -53,7 +52,7 @@ public class InputSystem {
         }
     }
 
-    public KeyEvent getCurrentCharKeyEvent() {
+    public MouseEvent getCurrentCharKeyEvent() {
         return currentChar.get();
     }
 

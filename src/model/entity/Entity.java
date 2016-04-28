@@ -19,6 +19,7 @@ import api.IComponent;
 import api.IEntity;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
+import javafx.scene.Node;
 
 /**
  * Implementation of an IEntity.
