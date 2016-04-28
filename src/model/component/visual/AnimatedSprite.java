@@ -1,13 +1,16 @@
 package model.component.visual;
 
+import api.ISerializable;
 import javafx.animation.Animation;
 import javafx.beans.property.SimpleObjectProperty;
 import utility.SingleProperty;
 import voogasalad.util.spriteanimation.animation.AnimationContainer;
+import voogasalad.util.spriteanimation.animation.CustomAnimation;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Set;
 
@@ -17,9 +20,9 @@ import java.util.Set;
  * @author Melissa Zhang
  */
 public class AnimatedSprite extends Sprite {
-    private static final String DEFAULT_BUNDLE = "resources/spriteProperties/abobo";
+    private static final String DEFAULT_BUNDLE = "resources/spriteProperties/ryuBlue";
     private final SingleProperty<String> singleProperty = new SingleProperty<>("BundlePath", DEFAULT_BUNDLE);
-    private transient AnimationContainer container;
+    private CustomAnimationContainer container = new CustomAnimationContainer(DEFAULT_BUNDLE);
 
     public AnimatedSprite() {
     }
@@ -63,9 +66,6 @@ public class AnimatedSprite extends Sprite {
     @Override
     public void setImagePath(String imagePath) {
         super.setImagePath(imagePath);
-        if (container != null) {
-            reInitializeContainer();
-        }
     }
 
     public AnimationContainer getContainer() {
@@ -73,12 +73,7 @@ public class AnimatedSprite extends Sprite {
     }
 
     private void reInitializeContainer() {
-        this.container = new AnimationContainer(getImageView(), getBundlePath());
-    }
-
-    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
-        in.defaultReadObject();
-        reInitializeContainer();
+        this.container = new CustomAnimationContainer(getBundlePath());
     }
 
     @Override
@@ -87,7 +82,7 @@ public class AnimatedSprite extends Sprite {
 
     }
 
-    public Set<String> getAnimationNames() {
+    public Collection<String> getAnimationNames() {
         return getContainer().getAnimationNames();
     }
 
@@ -96,6 +91,12 @@ public class AnimatedSprite extends Sprite {
     }
 
     public Animation getAnimation(String animationName) {
-        return getContainer().getAnimation(animationName);
+        return getContainer().createAnimation(getImageView(), animationName);
+    }
+
+    public static class CustomAnimationContainer extends AnimationContainer implements ISerializable {
+        public CustomAnimationContainer(String bundlePath) {
+            super(bundlePath);
+        }
     }
 }
