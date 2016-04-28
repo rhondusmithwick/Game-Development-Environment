@@ -63,6 +63,7 @@ public class Authoring {
 			tabContent.prefHeightProperty().bind(display.heightProperty().subtract(GUISize.TOP_TAB.getSize()));
 			tabContent.prefWidthProperty().bind(display.widthProperty());
 			display.getTabs().add(tab);
+			display.getSelectionModel().select(tab);
 		}
 	}
 
