@@ -2,19 +2,25 @@ package events;
 
 import api.IEventSystem;
 import api.ILevel;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
+
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
@@ -34,6 +40,7 @@ import java.util.Observer;
 
 public class EventSystem implements Observer, IEventSystem {
     private final InputSystem inputSystem = new InputSystem();
+//    private final MouseSystem mouseSystem = new MouseSystem();
     private transient ILevel universe;
     private ListMultimap<Trigger, Action> actionMap = ArrayListMultimap.create();
     private final SimpleDoubleProperty timer = new SimpleDoubleProperty(this, "timer", 0.0);
@@ -52,14 +59,29 @@ public class EventSystem implements Observer, IEventSystem {
     @Override
     public void updateInputs(double dt) {
         this.inputSystem.processInputs();
+//        this.mouseSystem.processInputs();
         timer.set(timer.get()+dt);
         //System.out.println(timer.get());
     }
 
     @Override
     public void takeInput(KeyEvent k) {
+    	System.out.println("WHOO");
         this.inputSystem.takeInput(k);
     }
+    
+//    public void takeMousePress(MouseEvent m) {
+//    	System.out.println("AYYYOOOOOO");
+//    	this.mouseSystem.takeInput(m);
+//    }
+//    
+//    public void listenToMousePress(ChangeListener listener) {
+//    	mouseSystem.listenToMousePress(listener);
+//    }
+//    
+//    public void unListenToMousePress(ChangeListener listener) {
+//    	mouseSystem.unListenToMousePress(listener);
+//    }
     
     @Override
     public void listenToKeyPress(ChangeListener listener) {
@@ -125,12 +147,10 @@ public class EventSystem implements Observer, IEventSystem {
         return new XMLWriter<ListMultimap<Trigger, Action>>().writeToString(actionMap);
     }
     
-    /*public List<String> getEventsAsStringList() {
-    	return actionMap.keySet().stream().forEach(e-> {
-    		String s=e.toString()+";";
-    		actionMap.get(e).stream().forEach(e->s+=e.toString);
-    	});
-    }*/
+    public String getEventsAsString() {
+    	String s = actionMap.toString();
+    	return actionMap.toString();
+    }
 
     private void stopObservingTriggers(ListMultimap<Trigger, Action> map) {
         for (Trigger trigger : map.keySet()) {

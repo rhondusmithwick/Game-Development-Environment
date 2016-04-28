@@ -16,7 +16,6 @@ public class RestitutionCoefficient implements IComponent {
 	private final SingleProperty<Double> singleProperty = new SingleProperty<>("CoefficientofRestitution", 0.0);
 
 	public RestitutionCoefficient() {
-		this(0.0);
 	}
 
 	public RestitutionCoefficient(double restitutionCoefficient) {

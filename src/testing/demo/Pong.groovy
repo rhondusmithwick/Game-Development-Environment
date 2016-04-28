@@ -1,8 +1,12 @@
 package testing.demo
 
 import api.*
+import events.Action
+import events.KeyTrigger
 import model.component.character.Score
+import model.component.character.UserControl
 import model.component.movement.Position
+import model.component.physics.Collision
 import model.physics.PhysicsEngine
 /**
  * 
@@ -39,6 +43,7 @@ public class Pong implements IGameScript {
         IEntity ball = SpriteLoader.createBall("Ball", new Position(50.0, -150.0));
         //Paddles
         IEntity leftPaddle = SpriteLoader.createPaddle("LeftPaddle", new Position(100, 160));
+        leftPaddle.addComponent(new UserControl());
         IEntity rightPaddle = SpriteLoader.createPaddle("RightPaddle", new Position(540, 160));
         // Walls
         IEntity leftWall = SpriteLoader.createPlatform("LeftWall", new Position(-578, 7));
@@ -53,13 +58,17 @@ public class Pong implements IGameScript {
         Map<String, Object> wKey = new HashMap<>();
         wKey.put("key", "W");
         Map<String, Object> sKey = new HashMap<>();
-        wKey.put("key", "S");
+        sKey.put("key", "S");
         Map<String, Object> mKey = new HashMap<>();
-        wKey.put("key", "M");
-//        events.registerEvent(new KeyTrigger("W"), new Action(movePaddleScript, wKey));
-//        events.registerEvent(new KeyTrigger("S"), new Action(movePaddleScript, sKey));
-//        events.registerEvent(new KeyTrigger("M"), new Action(movePaddleScript, mKey));
-        println("Input keys cannot be registered without de-serialization error.");
+        mKey.put("key", "M");
+        events.registerEvent(new KeyTrigger("W"), new Action(movePaddleScript, wKey));
+        events.registerEvent(new KeyTrigger("S"), new Action(movePaddleScript, sKey));
+        events.registerEvent(new KeyTrigger("M"), new Action(movePaddleScript, mKey));
+//        String tempScriptPath = "src/testing/AniPong/";
+//        events.registerEvent(new KeyTrigger("W"), new Action(tempScriptPath+"movePaddleUp.groovy"));
+//        events.registerEvent(new KeyTrigger("S"), new Action(tempScriptPath+"movePaddleDown.groovy"));
+//        events.registerEvent(new KeyTrigger("M"), new Action(tempScriptPath+"stopPaddle.groovy"));
+//        println("Inputs triggers activated.");
     }
 
 //    private initGlobalVariables() {
@@ -70,15 +79,38 @@ public class Pong implements IGameScript {
 	public void update(double dt) {
 		physics.update(universe, dt);
         events.updateInputs(dt);
-        updateScores();
+        updateGameLogic();
 	}
 
-    private void updateScores() {
+    private void updateGameLogic() {
+        // Check for game over
         for(IEntity e:universe.getEntitiesWithComponents(Score.class)) {
             Score score = e.getComponent(Score.class);
             if(score.getScore()==winningScore) {
                 System.out.println(e.getName()+" has won.");
             }
+        }
+
+        // Update scores
+        IEntity ball = universe.getEntitiesWithName("Ball").get(0);
+        String ballID = ball.getID();
+
+        IEntity leftWall = universe.getEntitiesWithName("LeftWall").get(0);
+        String leftColStr = leftWall.getComponent(Collision.class).getCollidingIDs();
+        if(leftColStr.contains(ballID)) {
+            IEntity rightPaddle = universe.getEntitiesWithName("RightPaddle").get(0);
+            Score s = rightPaddle.getComponent(Score.class);
+            s.increment();
+            System.out.println("Right: "+s.getScore());
+        }
+
+        IEntity rightWall = universe.getEntitiesWithName("RightWall").get(0);
+        String rightColStr = rightWall.getComponent(Collision.class).getCollidingIDs();
+        if(rightColStr.contains(ballID)) {
+            IEntity leftPaddle = universe.getEntitiesWithName("LeftPaddle").get(0);
+            Score s = leftPaddle.getComponent(Score.class);
+            s.increment();
+            System.out.println("Left: "+s.getScore());
         }
     }
 

@@ -19,7 +19,6 @@ public class Friction implements IComponent {
      * Empty constructor. Defaults to 9.81.
      */
     public Friction() {
-    	setFriction(0.6);
     }
 
     /**

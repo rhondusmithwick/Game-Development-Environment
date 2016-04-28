@@ -69,6 +69,7 @@ public class Level implements ILevel {
 		gameScripts = new ArrayList<>();
 		String returnMessage = "";
 		String key = "Script"; // TODO: don't hard-code
+		System.out.println(this.metadata.keySet());
 		if (this.metadata.containsKey(key)) {
 			String value = this.metadata.get(key);
 			String[] scripts = value.split(",");
@@ -92,7 +93,7 @@ public class Level implements ILevel {
 
 	@Override
 	public void update(double dt) {
-		physics.update(this, dt); // TODO: remove
+//		physics.update(this, dt); // TODO: remove
 		for (IGameScript gameScript : gameScripts) {
 			gameScript.update(dt);
 		}
