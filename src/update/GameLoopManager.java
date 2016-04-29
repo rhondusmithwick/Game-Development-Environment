@@ -30,24 +30,24 @@ public class GameLoopManager {
 	private VBox pane = new VBox(padding);
 	private ScrollPane scrollPane = new ScrollPane(pane);
 	private ComboBox<String> comboBox;
-	private Scene scene;
+	private Scene scene = new Scene(scrollPane, GUISize.LOOP_MANAGER_WIDTH.getSize(), GUISize.LOOP_MANAGER_HEIGHT.getSize());
 	private TextField keyField, valueField;
 	private ISystemManager systemManager;
 	private ObservableList<String> valueList = FXCollections.observableArrayList();
 	private ListView<String> listView = new ListView<String>(valueList);
-	
+
 	public GameLoopManager(String language, ISystemManager game) {
 		myResources = ResourceBundle.getBundle(language);
-		scene = new Scene(scrollPane, GUISize.LOOP_MANAGER_WIDTH.getSize(), GUISize.LOOP_MANAGER_HEIGHT.getSize());
 		File file = new File(DefaultStrings.CSS_LOCATION.getDefault() + DefaultStrings.MAIN_CSS.getDefault());
 		scene.getStylesheets().add(file.toURI().toString());
 		stage.setScene(scene);
 		stage.setTitle(myResources.getString("loopManager"));
 		pane.setPadding(ViewInsets.LOOP_EDIT.getInset());
+		systemManager = game;
 		keyField = Utilities.makeTextArea(myResources.getString("addKey"));
 		valueField = Utilities.makeTextArea(myResources.getString("valueText"));
-		systemManager = game;
 		listView.setCellFactory(e -> new DragDropCell<String>());
+		listView.setEditable(true);
 		populateStage();
 	}
 
@@ -62,7 +62,7 @@ public class GameLoopManager {
 		pane.setAlignment(Pos.CENTER);
 		pane.getChildren().addAll(container, saveButton);
 	}
-	
+
 	private VBox populateLeft() {
 		VBox vBox = new VBox(padding);
 		comboBox = Utilities.makeComboBox(myResources.getString("selectKey"), Arrays.asList(myResources.getString("keyDefault")), null);
@@ -70,59 +70,51 @@ public class GameLoopManager {
 		vBox.getChildren().addAll(createContainer(keyField, button), comboBox);
 		return vBox;
 	}
-	
+
 	private VBox populateRight() {
 		VBox vBox = new VBox(padding);
 		Button button = Utilities.makeButton(myResources.getString("addValue"), e -> addValue());
-//		ObservableList<String> names = FXCollections.observableArrayList("Hi");
-//		valueList.setItems(names);
 		vBox.getChildren().addAll(createContainer(valueField, button), listView);
 		return vBox;
 	}
-	
+
 	public void show() {
 		stage.show();
 	}
-	
-//	private Map<String, String> getMetadata() {
-//		Map<String, String> map = new HashMap<String, String>();
-//		map.put(comboBox.getValue(), textField.getText());
-//		return map;
-//	}
-	
+
 	private void saveMetadata() {
-//		String key = comboBox.getValue();
-//		String value = valueField.getText();
-////		System.out.println(key);
-////		System.out.println(value);
-//		valueField.clear();
-//		if(key != null) {
-//			systemManager.getEntitySystem().addMetadata(key, value);
-//		}
-		System.out.println(valueList);
+		String key = comboBox.getValue();
+		if(key != null) {
+			String commaList = "";
+			for(String str: valueList) {
+				commaList += str + ",";
+			}
+			commaList = commaList.substring(0, commaList.length()-1);
+			System.out.println(commaList);
+			//systemManager.getEntitySystem().addMetadata(key, commaList);
+			comboBox.getSelectionModel().clearSelection();
+		}
 	}
-	
-//	private VBox createVBox() {
-//		return new VBox(GUISize.LOOP_MANAGER_PADDING.getSize());
-//	}
-	
+
 	private HBox createContainer(Node a, Node b) {
 		HBox container = new HBox(padding);
 		container.getChildren().addAll(a, b);
 		return container;
 	}
-	
+
 	private void addKey() {
 		String key = keyField.getText();
-		comboBox.getItems().add(key);
-		keyField.clear();
-		//comboBox.getSelectionModel().clearSelection();
+		if(!key.isEmpty()) {
+			comboBox.getItems().add(key);
+			keyField.clear();
+		}
 	}
-	
+
 	private void addValue() {
 		String value = valueField.getText();
-		valueList.add(value);
-		//System.out.println();
-		valueField.clear();
+		if(!value.isEmpty()) {
+			valueList.add(value);
+			valueField.clear();
+		}
 	}
 }
