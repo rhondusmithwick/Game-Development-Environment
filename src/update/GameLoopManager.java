@@ -74,6 +74,7 @@ public class GameLoopManager {
 		Button button = Utilities.makeButton(myResources.getString("addValue"), e -> addKey());
 		ObservableList<String> names = FXCollections.observableArrayList("Hi");
 		valueList.setItems(names);
+		vBox.getChildren().addAll(createContainer(valueField, button), valueList);
 		return vBox;
 	}
 	
