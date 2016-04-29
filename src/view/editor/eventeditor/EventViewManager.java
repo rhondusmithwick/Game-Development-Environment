@@ -27,7 +27,7 @@ public class EventViewManager extends TableManager
 	{
 		levels = new ArrayList<ILevel>();
 		levelTable = new SimpleStringTable(this, "Levels");	// TODO resource
-		keyTable = new SimpleStringTable(this, "Key");	// TODO resource
+		keyTable = new SimpleStringTable(this, "Trigger");	// TODO resource
 		actionTable = new SimpleStringTable(this, "Action");	// TODO resource
 		
 		levelStrings = new ArrayList<String>();

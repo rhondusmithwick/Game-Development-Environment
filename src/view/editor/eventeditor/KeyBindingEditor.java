@@ -1,18 +1,18 @@
 package view.editor.eventeditor;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import api.IEntity;
 import api.ILevel;
 import events.Action;
 import events.KeyTrigger;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-<<<<<<< HEAD
 import javafx.scene.Group;
 import javafx.scene.Node;
-=======
->>>>>>> master
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
@@ -96,45 +96,6 @@ public class KeyBindingEditor extends EventEditorTab
 		keyListenerIsActive = false;
 	}
 	
-<<<<<<< HEAD
-=======
-	private void makeInputBox()
-	{
-		listenToKey = ButtonFactory.makeButton(myResources.getString("pressKey"), e -> listenButtonPress());
-		
-		keyInputText = new Text(myResources.getString("noKeyPressed"));	
-		
-		inputBox.getChildren().addAll(listenToKey, keyInputText);
-		
-		pane.getChildren().add(getLevelPickerPane());	// Make levelPicker
-		pane.getChildren().add(inputBox);
-	}
-	
-	private void makeGroovyBox()
-	{
-		VBox container = new VBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
-		// Adding now the Groovy Table
-		chooseFileButton = ButtonFactory.makeButton(myResources.getString("chooseGroovy"), e -> getFile());
-		
-		container.getChildren().addAll(chooseFileButton, actionText);
-		
-		pane.getChildren().add(container);
-	}
-	
-	
-	private void makeEventButton()
-	{
-		createEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
-		
-		createEventButton.setOnAction(e -> createEvent());
-		
-		// TODO test
-		getEventsString = ButtonFactory.makeButton("TEST", e -> printEvents());
-		
-		pane.getChildren().addAll(createEventButton, getCreatedLevelText(), getEventsString);
-	}
-	
->>>>>>> master
 	// TODO test
 	private void printEvents()
 	{
@@ -196,13 +157,13 @@ public class KeyBindingEditor extends EventEditorTab
 		HBox container = new HBox(GUISize.EVENT_EDITOR_PADDING.getSize());
 		VBox innerContainer = new VBox(GUISize.EVENT_EDITOR_SUBPADDING.getSize());	// TODO magic value
 		
-		listenToKey = Utilities.makeButton(myResources.getString("pressKey"), e -> listenButtonPress());
+		listenToKey = ButtonFactory.makeButton(myResources.getString("pressKey"), e -> listenButtonPress());
 		
 		keyInputText = new Text(myResources.getString("noKeyPressed"));	
 		
-		chooseFileButton = Utilities.makeButton(myResources.getString("chooseGroovy"), e -> getFile());
+		chooseFileButton = ButtonFactory.makeButton(myResources.getString("chooseGroovy"), e -> getFile());
 		
-		createEventButton = Utilities.makeButton(myResources.getString("makeEvent"), e -> createEvent());
+		createEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
 		
 		createEventButton.setOnAction(e -> createEvent());
 		

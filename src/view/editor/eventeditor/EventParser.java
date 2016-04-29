@@ -49,9 +49,13 @@ public class EventParser
 		for (String event: events)
 		{
 			triggerSplit = event.split(";");
+			/*
 			trigger = triggerSplit[1].trim() + ":" +
 					triggerSplit[2].trim() + ":" +
 					triggerSplit[3].trim().split("=")[0];
+					*/
+			
+			trigger = triggerSplit[3].trim().split("=")[0];
 		
 			parseResults.put(trigger, getFilename(triggerSplit[3].split("=")[1]));
 		}
