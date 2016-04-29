@@ -48,7 +48,7 @@ public class Authoring {
 				gEdit = new GameEditor(this, language, fileName);
 			}
 			
-			createTab(gEdit.getPane(), "gDeets", false);
+			createTab(gEdit.getPane(), "gameDetails", false);
 			myScene = new Scene(display,GUISize.AUTHORING_WIDTH.getSize(), GUISize.AUTHORING_HEIGHT.getSize());
 			myScene.getStylesheets().add(new File(DefaultStrings.CSS_LOCATION.getDefault() + DefaultStrings.MAIN_CSS.getDefault()).toURI().toString());
 			display.prefHeightProperty().bind(height);

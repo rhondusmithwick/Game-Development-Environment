@@ -13,7 +13,7 @@ import utility.SingleProperty;
  */
 public class RestitutionCoefficient implements IComponent {
 
-	private final SingleProperty<Double> singleProperty = new SingleProperty<>("RestitutionCoefficient", 0.0);
+	private final SingleProperty<Double> singleProperty = new SingleProperty<>("CoefficientofRestitution", 0.0);
 
 	public RestitutionCoefficient() {
 	}

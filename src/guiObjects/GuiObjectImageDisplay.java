@@ -1,29 +1,31 @@
-package gui;
+package guiObjects;
 
 import java.io.File;
 import java.util.ResourceBundle;
-
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.VBox;
-import view.Utilities;
+import javafx.scene.layout.HBox;
+import view.enums.DefaultStrings;
 import view.enums.GUISize;
+import view.utilities.ButtonFactory;
+import view.utilities.FileUtilities;
 
 public class GuiObjectImageDisplay extends GuiObject {
 	
 	private ImageView preview;
 	private Button setImage;
-	private ResourceBundle myResources;
+	private ResourceBundle myPropertiesNames, myResources;
 	private SimpleObjectProperty<String> property;
 	
 	
 	@SuppressWarnings("unchecked")
 	public GuiObjectImageDisplay(String name, String resourceBundle, String language, SimpleObjectProperty<?> property, Object object) {
 		super(name, resourceBundle);
-		myResources= ResourceBundle.getBundle(language);
-		setImage = Utilities.makeButton(myResources.getString(name), e->changeImage());
+		myPropertiesNames= ResourceBundle.getBundle(language+DefaultStrings.PROPERTIES.getDefault());
+		this.myResources= ResourceBundle.getBundle(language);
+		setImage = ButtonFactory.makeButton(myPropertiesNames.getString(name), e->changeImage());
 		this.property=(SimpleObjectProperty<String>) property;
 		this.preview=new ImageView();
 		setImage(new File(this.property.getValue()));
@@ -35,7 +37,7 @@ public class GuiObjectImageDisplay extends GuiObject {
 	}
 
 	private File getImage() {
-		return Utilities.promptAndGetFile(Utilities.getImageFilters(), myResources.getString("ChooseFile"));
+		return FileUtilities.promptAndGetFile(FileUtilities.getImageFilters(), myResources.getString("ChooseFile"));
 		
 	}
 
@@ -58,7 +60,7 @@ public class GuiObjectImageDisplay extends GuiObject {
 
 	@Override
 	public Object getGuiNode() {
-		VBox container = new VBox(GUISize.GUI_IM_DISP.getSize());
+		HBox container = new HBox(GUISize.GUI_IM_DISP.getSize());
 		container.getChildren().addAll(preview, setImage);
 		return container;
 	}

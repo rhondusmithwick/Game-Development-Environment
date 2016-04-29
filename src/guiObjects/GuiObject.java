@@ -1,4 +1,4 @@
-package gui;
+package guiObjects;
 
 import java.util.ResourceBundle;
 
