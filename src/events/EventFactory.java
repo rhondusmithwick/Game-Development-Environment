@@ -15,9 +15,10 @@ import voogasalad.util.reflection.Reflection;
 
 public final class EventFactory {
 
+    private final String triggerDirectoryPath = "events.";
+
 	public Pair<Trigger, Action> createEvent(String triggerName, String scriptPath, Object... args) {
-		Trigger trigger = createTrigger(triggerName, args);
-//		trigger = (Trigger) Reflection.createInstance(className, triggerMapDescription);
+		Trigger trigger = createTrigger(triggerDirectoryPath+triggerName, args);
 		Action action = new Action(scriptPath);
 		return new Pair<Trigger, Action>(trigger, action);
 	}

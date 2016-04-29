@@ -9,11 +9,17 @@ import java.util.TimerTask;
 import com.sun.java.accessibility.util.GUIInitializedListener;
 
 import api.ILevel;
+import events.EventFactory;
 import javafx.collections.ObservableList;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.text.Text;
 import view.editor.Editor;
 import view.enums.GUISize;
+
+/**
+ * Author: Alan, Carolyn
+ * Integration portion of the frontend for events system. 
+ */
 
 public abstract class EventEditorTab extends Editor
 {
@@ -23,6 +29,8 @@ public abstract class EventEditorTab extends Editor
 	private Text createdEventText;
 	private Timer timer;
 	private ResourceBundle myResources;
+	private final EventFactory eventFactory = new EventFactory();
+    private final String groovyPath = "resources/groovyScripts/";
 	
 	public EventEditorTab(String language, ObservableList<ILevel> levelList)
 	{
@@ -71,7 +79,7 @@ public abstract class EventEditorTab extends Editor
 		this.chosenLevels = (ArrayList<ILevel>) levels;
 	}
 	
-	public Text getCreatedLevelText()
+	public Text getCreatedEventText()
 	{
 		return createdEventText;
 	}
@@ -80,6 +88,23 @@ public abstract class EventEditorTab extends Editor
 	{
 		return chosenLevels;
 	}
-	
+
+	public void addEventToLevels(List<ILevel> levels, String triggerClassName, String scriptPath, Object... args) {
+		if (getChosenLevels().isEmpty()) {
+			return;
+		}
+		levels.stream().forEach(level -> {
+			level.getEventSystem().registerEvent(
+					eventFactory.createEvent(triggerClassName, groovyPath+scriptPath, args)
+			);
+		});
+	}
+
+	public void addEventToLevel(ILevel level, String triggerClassName, String scriptPath, Object... args) {
+		level.getEventSystem().registerEvent(
+				eventFactory.createEvent(triggerClassName, groovyPath+scriptPath, args)
+		);
+	}
+
 	public abstract void actionOnChosenLevels(List<ILevel> levels);
 }

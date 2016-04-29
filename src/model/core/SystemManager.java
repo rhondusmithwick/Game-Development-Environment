@@ -12,7 +12,7 @@ import groovy.lang.GroovyShell;
 import javafx.scene.Node;
 import model.entity.Entity;
 import model.entity.Level;
-import testing.demo.GroovyDemoTest;
+//import testing.demo.GroovyDemoTest;
 
 /**
  * Created by rhondusmithwick on 3/31/16.
@@ -54,7 +54,7 @@ public class SystemManager implements ISystemManager {
 		root.setOnKeyPressed(e -> universe.getEventSystem().takeInput(e)); // TODO: take in all inputs
 		shell.setVariable("game", this);
 		shell.setVariable("universe", universe);
-		shell.setVariable("demo", new GroovyDemoTest()); // TODO: remove
+		//shell.setVariable("demo", new GroovyDemoTest()); // TODO: remove
 	}
 
 	@Override

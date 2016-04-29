@@ -5,9 +5,11 @@ import api.ISystemManager;
 import api.IView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
@@ -24,12 +26,13 @@ import javafx.util.Duration;
 import model.component.movement.Orientation;
 import model.component.movement.Position;
 import model.component.physics.Collision;
-import model.core.SystemManager;
 import model.component.visual.Sprite;
+import model.core.SystemManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 
@@ -116,6 +119,7 @@ public class View implements IView {
 	private SubScene createSubScene(Group root, double width, double height) {
 		this.root = root;
 		SubScene subScene = new SubScene(root, width, height);
+		subScene.setFill(Color.WHITE);
 		// TODO: not printing key presses, why?!
 		// subScene.setOnMouseClicked(e -> System.out.println(e.getX()));
 		// scene.setOnKeyTyped(e -> System.out.println(e.getCode()));
@@ -124,18 +128,47 @@ public class View implements IView {
 		
 		return subScene;
 	}
+	
+	public void toggleHighlight(IEntity entity){
+		viewUtils.toggleHighlight(entity);
+	}
+	
+	public void highlight(IEntity entity){
+		viewUtils.highlight(entity);
+	}
 
-	private ImageView getUpdatedImageView(IEntity e) {
+	private void modulateZLevel(IEntity e, ObservableList<Node> imageViews) {
 		Sprite display = e.getComponent(Sprite.class);
 		ImageView imageView = display.getImageView();
-		int z = display.getZLevel();
-		if (z == -1) {
-			imageView.toBack();
-		} else if (z == 1) {
-			imageView.toFront();
-		}
+		imageViews.remove(imageView); // important
 
+		int z = display.getZLevel();
+		int index = imageViews.indexOf(imageView);
+		switch(z) {
+			case -2:
+				imageViews.add(0, imageView);
+				break;
+			case -1:
+				if(index-1>=0) {
+					root.getChildren().add(index - 1, imageView);
+				}
+				break;
+			case 1:
+				if(index+1<imageViews.size()) {
+					root.getChildren().add(index + 1, imageView);
+					break;
+				}
+			case 2:
+				imageViews.add(imageView); // to end of list
+				break;
+		}
+	}
+
+	private ImageView getUpdatedImageView(IEntity e) {
 		Position pos = e.getComponent(Position.class);
+		Sprite display = e.getComponent(Sprite.class);
+		ImageView imageView = display.getImageView();
+
 		imageView.setTranslateX(pos.getX());
 		imageView.setTranslateY(pos.getY());
 
@@ -175,12 +208,25 @@ public class View implements IView {
 		model.step(dt);
 
 		// render
-		root.getChildren().clear();
-		for (IEntity e : model.getEntitySystem().getAllEntities()) {
-			if (e.hasComponents(Sprite.class, Position.class)) {
-				viewUtils.makeSelectable(e);
-				root.getChildren().addAll(this.getCollisionShapes(e));
-				root.getChildren().add(this.getUpdatedImageView(e));
+//		root.getChildren().clear();
+		ObservableList<Node> imageViews = root.getChildren();
+		List<Node> tempList = new ArrayList<>();
+		Set<IEntity> renderableEntities = model.getEntitySystem().getEntitiesWithComponents(Sprite.class, Position.class);
+		for (IEntity e : renderableEntities) {
+			viewUtils.makeSelectable(e);
+			tempList.addAll(this.getCollisionShapes(e));
+			ImageView imageView = this.getUpdatedImageView(e);
+			tempList.add(imageView);
+			modulateZLevel(e, imageViews);
+			if(!imageViews.contains(imageView)) { // populate root with new sprites
+				imageViews.add(imageView);
+			}
+		}
+		for(int i=0; i<imageViews.size(); i++) { // remove old sprites
+			Node imageView = imageViews.get(i);
+			if(!tempList.contains(imageView)) {
+				imageViews.remove(imageView);
+				i--;
 			}
 		}
 	}

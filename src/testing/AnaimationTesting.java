@@ -7,9 +7,6 @@ package testing;/**
 import api.IEntity;
 import javafx.animation.Animation;
 import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import model.component.visual.AnimatedSprite;
 import model.entity.Entity;

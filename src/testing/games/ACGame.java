@@ -92,7 +92,7 @@ public class ACGame {
             level.getEntitySystem().addEntity(character);
             //character.addComponent(new Sprite(IMAGE_PATH));
             //character.addComponent(new Gravity(5000));
-            character.serialize("character.xml");
+//            character.serialize("character.xml");
             root.getChildren().add(character.getComponent(AnimatedSprite.class).getImageView());
             Map<String, Object> map = new HashMap<>();
             map.put("character", character);
@@ -119,18 +119,18 @@ public class ACGame {
     	level.getPhysicsEngine().update(level, dt);
         // inputSystem.processInputs();
         eventSystem.updateInputs(dt);
-       // root.getChildren().clear();
+        root.getChildren().clear();
         
     	level.getAllEntities().stream().forEach(e->drawCharacter(e));
         //moveEntity(character, 1);
     }
 
     public void drawCharacter(IEntity character) {
+    	//root.getChildren().add(character.getComponent(AnimatedSprite.class).getImageView());
+    	ImageView img= character.getComponent(AnimatedSprite.class).getImageView();
+    	img.setLayoutX(character.getComponent(Position.class).getX());
+    	img.setLayoutY(character.getComponent(Position.class).getY());
     	if(character.getAnimation().getStatus() == Animation.Status.STOPPED || character.getAnimation().getStatus() ==null) {
-    		ImageView img= character.getComponent(AnimatedSprite.class).getImageView();
-        	img.setTranslateX(character.getComponent(Position.class).getX());
-        	img.setTranslateY(character.getComponent(Position.class).getY());
-            
     		character.getAnimation().play();
     	}
     	
