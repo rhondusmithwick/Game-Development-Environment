@@ -25,7 +25,6 @@ import model.component.movement.Orientation;
 import model.component.movement.Position;
 import model.component.physics.Collision;
 import model.component.visual.Sprite;
-import model.core.SystemManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,8 +48,8 @@ public class View implements IView {
 	private final Button loadButton = new Button("Load");
 	// private final ScriptEngine engine = new
 	// ScriptEngineManager().getEngineByName("Groovy");
-	private Group root = new Group();
-	private ISystemManager model = new SystemManager(root);
+	private Group root;// = new Group();
+	private ISystemManager model;// = new SystemManager(root);
 	private BorderPane pane;
 	private SubScene subScene;
 	private ViewUtilities viewUtils;
@@ -62,6 +61,7 @@ public class View implements IView {
 
 	@Deprecated
 	public View(ISystemManager model, Group root, double width, double height, ScrollPane scene) {
+		this.root = root;
 		this.model = model;
 		this.initConsole();
 		this.initButtons();
@@ -137,45 +137,6 @@ public class View implements IView {
 		viewUtils.highlight(entity);
 	}
 
-//	private void modulateZLevel(IEntity e, List<Node> imageViews) {
-//		Sprite display = e.getComponent(Sprite.class);
-//		ImageView imageView = display.getImageView();
-//
-//		int z = display.getZLevel();
-//		int index = imageViews.indexOf(imageView);
-//		imageViews.remove(imageView); // important
-//		switch(z) {
-//			case -2:
-//				imageViews.add(0, imageView);
-//				System.out.println("-2");
-//				break;
-//			case -1:
-//				if(index-1>=0) {
-//					imageViews.add(index - 1, imageView);
-//					System.out.println("-1");
-//				} else {
-//					imageViews.add(0, imageView);
-//				}
-//				break;
-//			case 0: // do nothing
-//				imageViews.add(index, imageView);
-//				break;
-//			case 1:
-//				if(index+1<imageViews.size()) {
-//					imageViews.add(index + 1, imageView);
-//					System.out.println("1");
-//					break;
-//				} else {
-//					imageViews.add(imageView);
-//				}
-//			case 2:
-//				imageViews.add(imageView); // to end of list
-//				System.out.println("2");
-//				break;
-//		}
-//		display.setZLevel(0); // reset
-//	}
-
 	private ImageView getUpdatedImageView(IEntity e) {
 		Position pos = e.getComponent(Position.class);
 		Sprite display = e.getComponent(Sprite.class);
@@ -221,37 +182,13 @@ public class View implements IView {
 		model.step(dt);
 
 		// render
-//		List<Node> imageViews = root.getChildren();
 		root.getChildren().clear();
 		Set<IEntity> spriteEntities = model.getEntitySystem().getEntitiesWithComponents(Sprite.class, Position.class);
-//		List<Node> updatedImageViews = new ArrayList<>();
 		for (IEntity e : spriteEntities) {
 			viewUtils.makeSelectable(e);
 			root.getChildren().addAll(getCollisionShapes(e));
-//			updatedImageViews.add(getUpdatedImageView(e));
 			root.getChildren().add(getUpdatedImageView(e));
 		}
-
-//		List<Node> nodes = root.getChildren();
-//		for(Node node:nodes) {
-//			System.out.print(model.getEntitySystem().getEntity(node.getId()).getName()+", ");
-//		}
-//		System.out.println();
-
-//		for(int i=0; i<imageViews.size(); i++) { // remove old sprites
-//			Node imageView = imageViews.get(i);
-//			if(!updatedImageViews.contains(imageView)) {
-//				imageViews.remove(imageView);
-//				i--;
-//			}
-//		}
-//		for(IEntity e : spriteEntities) { // add new sprites
-//			ImageView imageView = e.getComponent(Sprite.class).getImageView();
-//			if(!imageViews.contains(imageView)) { // populate root with new sprites
-//				imageViews.add(imageView);
-//			}
-////			modulateZLevel(e, imageViews);
-//		}
 	}
 
 	private BorderPane createBorderPane(Group root, SubScene subScene) {

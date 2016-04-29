@@ -60,7 +60,7 @@ public class EditorEnvironment extends Editor {
 		myEntitySystem = toEdit; 
 
 		Group gameRoot = new Group();
-		game = new SystemManager(gameRoot, myEntitySystem);
+		game = new SystemManager(myEntitySystem);
 		view = new View(game, gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(),
 				scrollPane); 
 

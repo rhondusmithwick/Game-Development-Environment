@@ -6,7 +6,7 @@ import api.ILevel;
 import api.ISystemManager;
 import datamanagement.XMLReader;
 import groovy.lang.GroovyShell;
-import javafx.scene.Node;
+import javafx.scene.Scene;
 import model.entity.Entity;
 import model.entity.Level;
 //import testing.demo.GroovyDemoTest;
@@ -22,14 +22,14 @@ public class SystemManager implements ISystemManager {
 	private ILevel universe = new Level();
 	private ILevel sharedUniverse = new Level();
 	private boolean isRunning = true;
-	private Node root;
+	private Scene scene;
 
-	public SystemManager(Node root) {
-		this(root, new Level());
+	public SystemManager(Scene scene) {
+		this(scene, new Level());
 	}
 
-	public SystemManager(Node root, ILevel level) {
-		this.root = root;
+	public SystemManager(Scene scene, ILevel level) {
+		this.scene = scene;
 		this.universe = level;
 		initLevel();
 	}
@@ -46,7 +46,7 @@ public class SystemManager implements ISystemManager {
 
 	private void initLevel() {
 		universe.init(shell, this);
-		root.setOnKeyPressed(e -> universe.getEventSystem().takeInput(e)); // TODO: take in all inputs
+		scene.setOnKeyPressed(e -> universe.getEventSystem().takeInput(e)); // TODO: take in all inputs
 		shell.setVariable("game", this);
 		shell.setVariable("universe", universe);
 		//shell.setVariable("demo", new GroovyDemoTest()); // TODO: remove
