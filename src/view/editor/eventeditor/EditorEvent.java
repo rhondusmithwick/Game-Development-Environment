@@ -1,6 +1,11 @@
 package view.editor.eventeditor;
 
+import events.Action;
+import events.EventFactory;
+import events.Trigger;
 import javafx.scene.layout.Pane;
+
+import java.util.List;
 import java.util.ResourceBundle;
 import view.editor.Editor;
 import api.IEntity;
@@ -59,16 +64,15 @@ public class EditorEvent extends Editor
 		populateEditorTab(keyBindingEditor);
 	}
 
-	private void populateEditorTab(Editor editor)
-	{
-		Tab newTab = new Tab();
-		
-		newTab.setContent(editor.getPane());
-		newTab.setClosable(false);
-		tabPane.getTabs().add(newTab);
-		newTab.setText(myResources.getString(editor.getClass().toString().split(" ")[1]));
-	}
-	
+	private void populateEditorTab(Editor editor) {
+        Tab newTab = new Tab();
+
+        newTab.setContent(editor.getPane());
+        newTab.setClosable(false);
+        tabPane.getTabs().add(newTab);
+        newTab.setText(myResources.getString(editor.getClass().toString().split(" ")[1]));
+    }
+
 	public void populateLayout() {}
 
 	@Override
