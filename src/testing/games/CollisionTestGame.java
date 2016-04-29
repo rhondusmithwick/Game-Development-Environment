@@ -113,17 +113,14 @@ public class CollisionTestGame {
     public void initEngine() {
         addCharacter("Anolyn", "blastoise.xml", IMAGE_PATH_BLASTOISE, 50.0, 200.0, "1");
         addCharacter("Cani", "charizard.xml", IMAGE_PATH_CHARIZARD, 200.0, 200.0, "2");
-//        propertyEventSetup("Anolyn", healthScriptPath, Position.class, "Y");
-//        propertyEventSetup("Anolyn", healthScriptPath, Collision.class, "CollidingIDs");
-//        propertyEventSetup("Anolyn", transformScriptPath, Health.class, "Health");
-        registerEventSetup("PropertyTrigger", "Anolyn", healthScriptPath, Position.class, "Y");
-        registerEventSetup("PropertyTrigger", "Anolyn", healthScriptPath, Collision.class, "CollidingIDs");
-        registerEventSetup("PropertyTrigger", "Anolyn", transformScriptPath, Health.class, "Health");
-        registerEventSetup("KeyTrigger", moveRightScriptPath, "D");
-        registerEventSetup("KeyTrigger", moveLeftScriptPath, "A");
-        registerEventSetup("KeyTrigger", jumpScriptPath, "W");
-        registerEventSetup("KeyTrigger", moveLeftScriptPath2, "J");
-        registerEventSetup("KeyTrigger", moveRightScriptPath2, "L");
+        registerEventSetup("events.PropertyTrigger", healthScriptPath, "Anolyn", Position.class, "YPosition");
+        registerEventSetup("events.PropertyTrigger", healthScriptPath, "Anolyn", Collision.class, "CollidingIDs");
+        registerEventSetup("events.PropertyTrigger", transformScriptPath, "Anolyn", Health.class, "Health");
+        registerEventSetup("events.KeyTrigger", moveRightScriptPath, "D");
+        registerEventSetup("events.KeyTrigger", moveLeftScriptPath, "A");
+        registerEventSetup("events.KeyTrigger", jumpScriptPath, "W");
+        registerEventSetup("events.KeyTrigger", moveLeftScriptPath2, "J");
+        registerEventSetup("events.KeyTrigger", moveRightScriptPath2, "L");
     }
 
     private void addCharacter(String name, String XMLName, String imagePath, Double posX, Double posY, String id) {
@@ -147,18 +144,7 @@ public class CollisionTestGame {
 //            universe.addEntity(character);
 //            eventSystem.readEventFromFile("eventtest.xml");
 //        }
-        drawCharacter(character);
-    }
-
-    public void propertyEventSetup(String charName, String scriptName, Class component, String propertyName) {
-        eventSystem.registerEvent(
-                new PropertyTrigger(universe.getEntitiesWithName(charName).get(0).getID(), component, propertyName),
-                new Action(scriptName));
-        //eventSystem.saveEventsToFile("eventtest.xml");
-        //EventFileWriter w = new EventFileWriter();
-        //w.addEvent(KeyTrigger.class.toString().split(" ")[1], "A", moveLeftScriptPath);
-        //w.addEvent(KeyTrigger.class.toString().split(" ")[1], "D", moveRightScriptPath);
-        //w.writeEventsToFile("eventTest2.xml");
+        //drawCharacter(character);
     }
 
     public void registerEventSetup(String className, String scriptName, Object... args) {
@@ -166,21 +152,15 @@ public class CollisionTestGame {
         eventSystem.registerEvent(event._1(), event._2());
     }
 
-    public void keyEventSetup(String key, String scriptName) {
-    //    eventSystem.registerEvent(new KeyTrigger(key), new Action(scriptName));
-    }
-
     public void step(double dt) {
         physics.update(universe, dt);
-        // inputSystem.processInputs();
         eventSystem.updateInputs(dt);
-        // moveEntity(character, 1);
     }
 
     public void drawCharacter(IEntity character) {
         Sprite imgPath = character.getComponent(Sprite.class);
         ImageView charSprite = imgPath.getImageView();
-        charSprite.setFitHeight(100);
+        charSprite.setFitHeight(100.0);
         charSprite.setPreserveRatio(true);
         root.getChildren().add(charSprite);
     }
