@@ -16,7 +16,7 @@ public class FilePathRelativizer {
     private FilePathRelativizer () {
     }
 
-    public static String relativize (String otherDirectory, ResourceBundle myResources) {
+    public static String relativize (String otherDirectory) {
         String baseDirectory = System.getProperty("user.dir");
         Path base = Paths.get(baseDirectory);
         Path other = Paths.get(otherDirectory);
@@ -27,7 +27,7 @@ public class FilePathRelativizer {
             if (inner) {
                 return otherDirectory;
             }
-            Alerts.showError(myResources.getString("error"), myResources.getString("cannotRelativize"));
+           // Alerts.showError(myResources.getString("error"), myResources.getString("cannotRelativize"));
             return otherDirectory;
         }
     }
