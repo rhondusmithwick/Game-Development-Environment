@@ -21,7 +21,7 @@ public class ViewUtilities {
 	private static final int DEPTH = 70;
 	private static final Color HIGHLIGHT_COLOR = Color.YELLOW;
 	private static final String SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,0,50,0.8), 10, 0, 0, 0)",
-			NO_SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0, 0, 0)";
+			NO_SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,1,0,0), 0, 0, 0, 0)";
 	private Group root;
 	private ILevel universe;
 	private boolean resizing = false, dragging = false;
@@ -118,16 +118,19 @@ public class ViewUtilities {
 		});
 		// TODO: make sure this is not hacky
 		root.setOnMouseReleased(event -> {
-			this.releaseSprite();
 			long duration = System.currentTimeMillis()-timeMouseClicked;
 			if(duration<clickThresholdMillis) {// click event handling
-				if (imageView.getStyle().equals(NO_SELECT_EFFECT)) { // not selected
-					this.highlight(e);
-				} else {
-					this.dehighlight(e);
+				if(heldDownSprite!=null) {
+					ImageView spriteImageView = getImageView(heldDownSprite);
+					if (spriteImageView.getStyle().equals(NO_SELECT_EFFECT)) { // not selected
+						this.highlight(e);
+					} else {
+						this.dehighlight(e);
+					}
 				}
 			}
 //			System.out.println("released - "+duration);
+			this.releaseSprite();
 		});
 	}
 
