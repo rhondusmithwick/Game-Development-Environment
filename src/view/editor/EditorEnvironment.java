@@ -1,12 +1,5 @@
 package view.editor;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
 import api.IEntity;
 import api.ILevel;
 import api.ISystemManager;
@@ -31,10 +24,18 @@ import model.component.visual.Sprite;
 import model.core.SystemManager;
 import model.entity.Level;
 import update.GameLoopManager;
-import view.Utilities;
 import view.View;
 import view.enums.DefaultEntities;
 import view.enums.GUISize;
+import view.utilities.Alerts;
+import view.utilities.ButtonFactory;
+import view.utilities.ContextMenuFactory;
+import view.utilities.EntityCopier;
+import view.utilities.FileUtilities;
+import view.utilities.UserInputBoxFactory;
+
+import java.io.File;
+import java.util.*;
 
 //import view.DragAndResize;
 
@@ -110,8 +111,8 @@ public class EditorEnvironment extends Editor {
 	private void populateVbox(VBox vbox, ObservableList<IEntity> masterEntityList2) {
 		vbox.getChildren().clear();
 		for (IEntity entity : masterEntityList2) {
-			Button addEntityButton = Utilities.makeButton(( entity).getName(),
-					e -> addToSystemAndScene(Utilities.copyEntity( entity)));
+			Button addEntityButton = ButtonFactory.makeButton(( entity).getName(),
+					e -> addToSystemAndScene(EntityCopier.copyEntity( entity)));
 			(addEntityButton).setMaxWidth(Double.MAX_VALUE);
 			vbox.getChildren().add(addEntityButton);
 		}
@@ -123,7 +124,7 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void loadDefaults() {
-		if (Utilities.showAlert(myResources.getString("addDefaults"), myResources.getString("addDefaultsQuestion"),
+		if (Alerts.showAlert(myResources.getString("addDefaults"), myResources.getString("addDefaultsQuestion"),
 				myResources.getString("defaultsMessage"), AlertType.CONFIRMATION)) {
 			masterEntityList.add(DefaultEntities.BACKGROUND.getDefault());
 			// entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay));
@@ -139,11 +140,11 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private Button setSaveButton() {
-		return Utilities.makeButton(myResources.getString("saveEnvironment"), e -> saveEnvironment());
+		return ButtonFactory.makeButton(myResources.getString("saveEnvironment"), e -> saveEnvironment());
 	}
 	
 	private Button setLoopButton() {
-		return Utilities.makeButton(myResources.getString("loopManager"), e -> createLoopManager());
+		return ButtonFactory.makeButton(myResources.getString("loopManager"), e -> createLoopManager());
 	}
 	
 	private void createLoopManager() {
@@ -172,7 +173,7 @@ public class EditorEnvironment extends Editor {
 			// TODO: rm
 			// gameRoot.getChildren().add(rectangle);
 		} catch (Exception e) {
-			Utilities.showAlert(myResources.getString("error"), null, myResources.getString("unableToAdd"),
+			Alerts.showAlert(myResources.getString("error"), null, myResources.getString("unableToAddEntity"),
 					AlertType.ERROR);
 		}
 	}
@@ -206,17 +207,17 @@ public class EditorEnvironment extends Editor {
 		menuMap.put(myResources.getString("remove"), e -> removeFromDisplay(entity, entityButton));
 		menuMap.put(myResources.getString("sendBack"), e -> sendToBack(entity));
 		menuMap.put(myResources.getString("sendFront"), e -> sendToFront(entity));
-		entityButton.setContextMenu(Utilities.createContextMenu(menuMap));
+		entityButton.setContextMenu(ContextMenuFactory.createContextMenu(menuMap));
 	}
 
-	private void sendToBack(IEntity entity) {
-		myEntitySystem = reorder(entity, myEntitySystem);
-		environmentEntityButtons.getChildren().clear();
-		gameRoot.getChildren().clear();
-		for (IEntity addEntity : myEntitySystem.getAllEntities()) {
-			addToScene(addEntity);
-		}
-	}
+//	private void sendToBack(IEntity entity) {
+//		myEntitySystem = reorder(entity, myEntitySystem);
+//		environmentEntityButtons.getChildren().clear();
+//		gameRoot.getChildren().clear();
+//		for (IEntity addEntity : myEntitySystem.getAllEntities()) {
+//			addToScene(addEntity);
+//		}
+//	}
 
 	private ILevel reorder(IEntity entity, ILevel entitySystem) {
 		entitySystem.removeEntity(entity.getID());
@@ -229,12 +230,12 @@ public class EditorEnvironment extends Editor {
 		return entitySystem;
 	}
 
-	// private void sendToBack(IEntity e) {
-	// e.getComponent(ImagePath.class).setZLevel(-1);
-	// }
+	 private void sendToBack(IEntity e) {
+	 	e.getComponent(Sprite.class).setZLevel(-2);
+	 }
 
 	private void sendToFront(IEntity e) {
-		e.getComponent(Sprite.class).setZLevel(1);
+		e.getComponent(Sprite.class).setZLevel(2);
 	}
 
 	private void updateDisplay(ObservableList<IEntity> masterList) {
@@ -266,7 +267,7 @@ public class EditorEnvironment extends Editor {
 	private String getName() {
 		String returnName = null;
 		if (nameField.getText().equals(myResources.getString("environmentName"))) {
-			returnName = Utilities.userInputBox(myResources.getString("noName"),
+			returnName = UserInputBoxFactory.userInputBox(myResources.getString("noName"),
 					myResources.getString("noNameMessage"));
 		} else {
 			returnName = nameField.getText();
@@ -275,7 +276,7 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void addComponents(IEntity entity) {
-		if (Utilities.showAlert(myResources.getString("confirm"), myResources.getString("componentsRequired"),
+		if (Alerts.showAlert(myResources.getString("confirm"), myResources.getString("componentsRequired"),
 				myResources.getString("addComponentQuestion"), AlertType.CONFIRMATION)) {
 			addPositionComponent(entity);
 			addImagePathComponent(entity);
@@ -289,7 +290,7 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void addImagePathComponent(IEntity entity) {
-		File file = Utilities.promptAndGetFile(Utilities.getImageFilters(),
+		File file = FileUtilities.promptAndGetFile(FileUtilities.getImageFilters(),
 				myResources.getString("pickImagePathImage"));
 		entity.setSpec(Sprite.class, SINGLE);
 		entity.addComponent(new Sprite(file.getPath()));

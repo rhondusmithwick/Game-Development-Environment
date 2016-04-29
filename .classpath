@@ -12,6 +12,11 @@
 	<classpathentry kind="lib" path="lib/guava-gwt-19.0.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
 	<classpathentry exported="true" kind="con" path="GROOVY_DSL_SUPPORT"/>
+	<classpathentry kind="lib" path="voogasalad_util/lib/scribejava-apis-2.4.0.jar"/>
+	<classpathentry kind="lib" path="voogasalad_util/lib/scribejava-core-2.5.2.jar"/>
+	<classpathentry kind="lib" path="voogasalad_util/lib/slf4j-api-1.7.21.jar"/>
+	<classpathentry kind="lib" path="voogasalad_util/lib/slf4j-simple-1.7.21.jar"/>
+	<classpathentry kind="lib" path="voogasalad_util/lib/async-http-client-1.9.38.jar"/>
 	<classpathentry exported="true" kind="con" path="GROOVY_SUPPORT"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

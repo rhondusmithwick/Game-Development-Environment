@@ -16,4 +16,4 @@ velocity = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Velocity.cl
 position = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Position.class);
 position.setX(position.getX()-30);
 //velocity.setVXY(velocity.getVX()-10, velocity.getVY());
-System.out.println("colliding: " + universe.getEntitiesWithName("Anolyn").get(0).getComponent(Collision.class).getCollidingIDs());
+//System.out.println("colliding: " + universe.getEntitiesWithName("Anolyn").get(0).getComponent(Collision.class).getCollidingIDs());
