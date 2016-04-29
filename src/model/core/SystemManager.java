@@ -7,8 +7,6 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import model.entity.Entity;
 import model.entity.Level;
-
-import java.util.List;
 //import testing.demo.GroovyDemoTest;
 
 /**
@@ -61,11 +59,11 @@ public class SystemManager implements ISystemManager {
 	public void step(double dt) {
 		if (this.isRunning) {
 			universe.update(dt);
-			List<IEntity> entities = universe.getAllEntities();
-			for(IEntity e : entities) {
-				System.out.print(e.getName()+", ");
-			}
-			System.out.println();
+//			List<IEntity> entities = universe.getAllEntities();
+//			for(IEntity e : entities) {
+//				System.out.print(e.getName()+", ");
+//			}
+//			System.out.println();
 		}
 	}
 
