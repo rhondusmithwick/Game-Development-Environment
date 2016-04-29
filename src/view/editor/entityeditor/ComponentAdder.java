@@ -30,6 +30,7 @@ public class ComponentAdder extends ComponentModifier{
 		}
 		String componentName = super.makeAndShowChooser("chooseComponent", myComponents);
 		if(componentName != null){
+			//System.out.println(componentName);
 			componentFactory.addComponentToEntity(myLocs.getString(componentName), entity);
 		}
 

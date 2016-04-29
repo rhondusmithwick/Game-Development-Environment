@@ -1,0 +1,17 @@
+<voogasalad.util.facebookutil.user.User>
+  <myEmail>
+    <myName>other</myName>
+    <myDomain>other.com</myDomain>
+  </myEmail>
+  <myScoreBoard>
+    <myBoard>
+      <entry>
+        <string>game1</string>
+        <int>1000</int>
+      </entry>
+    </myBoard>
+  </myScoreBoard>
+  <myProfiles>
+    <myProfiles/>
+  </myProfiles>
+</voogasalad.util.facebookutil.user.User>

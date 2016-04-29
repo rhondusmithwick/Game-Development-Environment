@@ -38,7 +38,7 @@ public class MouseTrigger extends InputTrigger {
     }
     
     protected MouseButton getButton() {
-    	return button;
+    	return button;    
     }
     
     private void setButton(MouseButton button) {

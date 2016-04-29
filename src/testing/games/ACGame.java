@@ -73,7 +73,6 @@ public class ACGame {
         // Create a place to see the shapes
         myScene = new Scene(root, width, height, Color.WHITE);
         universe.setOnInput(myScene);
-        initEngine();
         return myScene;
     }
 
