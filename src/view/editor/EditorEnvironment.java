@@ -132,6 +132,8 @@ public class EditorEnvironment extends Editor {
 		rightPane.getChildren().add(setSaveButton());
 		rightPane.getChildren().add(new ScrollPane(environmentEntityButtonsBox));
 		rightPane.getChildren().add(setLoopButton());
+		rightPane.getChildren().add(setPlayButton());
+		rightPane.getChildren().add(setPauseButton());
 	}
 
 	private Button setSaveButton() {
@@ -141,6 +143,16 @@ public class EditorEnvironment extends Editor {
 	private Button setLoopButton() {
 		return ButtonFactory.makeButton(myResources.getString("loopManager"), e -> createLoopManager());
 	}
+
+	private Button setPlayButton() {
+		return ButtonFactory.makeButton("Play", e -> game.play());
+	}
+	private Button setPauseButton(){
+		return ButtonFactory.makeButton("Pause", e -> game.pauseLoop());
+	}
+//	private Button setRestartButton() {
+//		return ButtonFactory.makeButton("Restart", e -> );
+//	}
 	
 	private void createLoopManager() {
 		manager.show();
