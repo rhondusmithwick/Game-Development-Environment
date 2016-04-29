@@ -113,14 +113,15 @@ public class CollisionTestGame {
     public void initEngine() {
         addCharacter("Anolyn", "blastoise.xml", IMAGE_PATH_BLASTOISE, 50.0, 200.0, "1");
         addCharacter("Cani", "charizard.xml", IMAGE_PATH_CHARIZARD, 200.0, 200.0, "2");
-        registerEventSetup("events.PropertyTrigger", healthScriptPath, "Anolyn", Position.class, "YPosition");
-        registerEventSetup("events.PropertyTrigger", healthScriptPath, "Anolyn", Collision.class, "CollidingIDs");
-        registerEventSetup("events.PropertyTrigger", transformScriptPath, "Anolyn", Health.class, "Health");
-        registerEventSetup("events.KeyTrigger", moveRightScriptPath, "D");
-        registerEventSetup("events.KeyTrigger", moveLeftScriptPath, "A");
-        registerEventSetup("events.KeyTrigger", jumpScriptPath, "W");
-        registerEventSetup("events.KeyTrigger", moveLeftScriptPath2, "J");
-        registerEventSetup("events.KeyTrigger", moveRightScriptPath2, "L");
+        registerEventSetup("PropertyTrigger", healthScriptPath, "Anolyn", Position.class, "YPosition");
+        registerEventSetup("PropertyTrigger", healthScriptPath, "Anolyn", Collision.class, "CollidingIDs");
+        registerEventSetup("PropertyTrigger", transformScriptPath, "Anolyn", Health.class, "Health");
+        registerEventSetup("KeyTrigger", moveRightScriptPath, "D");
+        registerEventSetup("KeyTrigger", moveLeftScriptPath, "A");
+        registerEventSetup("KeyTrigger", jumpScriptPath, "W");
+        registerEventSetup("KeyTrigger", moveLeftScriptPath2, "J");
+        registerEventSetup("KeyTrigger", moveRightScriptPath2, "L");
+
     }
 
     private void addCharacter(String name, String XMLName, String imagePath, Double posX, Double posY, String id) {

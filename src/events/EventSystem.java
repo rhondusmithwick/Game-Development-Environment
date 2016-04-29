@@ -55,16 +55,17 @@ public class EventSystem implements Observer, IEventSystem {
         setLevel(level);
     }
 
+    public void registerEvent(Pair<Trigger, Action> eventPair) {
+        Trigger trigger = eventPair._1();
+        Action action = eventPair._2();
+        registerEvent(trigger, action);
+    }
+
     public void registerEvent(Trigger trigger, Action action) {
     	actionMap.put(trigger, action);
         trigger.addObserver(this);
         trigger.addHandler(level);
     }
-
-//    public void createEvent(Map<String, String> triggerDescription, String scriptPath) {
-//        Pair<Trigger, Action> eventPair = eventFactory.createEvent(triggerDescription, scriptPath);
-//        registerEvent(eventPair._1(), eventPair._2());
-//    }
 
     @Override
     public void updateInputs(double dt) {

@@ -7,7 +7,7 @@ import javafx.beans.property.SimpleObjectProperty;
 
 public class PropertyTable extends Table
 {
-	public PropertyTable(TableManager manager, String language)
+	public PropertyTable(PropertyTableManager manager, String language)
 	{
 		super(manager, ResourceBundle.getBundle(language).getString("pickProperty"));
 
