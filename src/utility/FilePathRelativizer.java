@@ -5,8 +5,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
-import view.utilities.Alerts;
-
 /**
  * Created by rhondusmithwick on 4/29/16.
  *
