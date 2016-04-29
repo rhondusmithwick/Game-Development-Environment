@@ -6,6 +6,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import model.component.movement.Position;
 import model.component.visual.AnimatedSprite;
@@ -46,11 +47,14 @@ public class ViewUtilities {
 		// root.setOnKeyPressed(event -> {
 		// if (event.getCode() == KeyCode.DELETE) {
 		// TODO: why doesn't keypress work?!
-		root.setOnContextMenuRequested(event -> {
-			for (IEntity e : this.selectedSprites) {
-				this.universe.removeEntity(e.getID());
+		root.setOnMouseClicked(event -> {
+			System.out.println("clicked");
+			if(event.getButton().equals(MouseButton.SECONDARY)) {
+				System.out.println("right");
+				for (IEntity e : this.selectedSprites) {
+					this.universe.removeEntity(e.getID());
+				}
 			}
-			// }
 		});
 	}
 

@@ -71,6 +71,7 @@ public class View implements IView {
 		this.subScene = this.createSubScene(root, width, height);
 		
 		this.pane = this.createBorderPane(root, this.subScene);
+		// TODO: make these into switches
 		viewUtils.allowSelection();
 		viewUtils.allowDragging();
 		viewUtils.allowDeletion();
