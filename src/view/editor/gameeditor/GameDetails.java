@@ -78,6 +78,7 @@ public class GameDetails {
 		Stage s = new Stage();
 		FileChooser fChoose = new FileChooser();
 		fChoose.setTitle(myResources.getString("cIcon"));
+		fChoose.setInitialDirectory(new File(DefaultStrings.GUI_IMAGES.getDefault()));
 		fChoose.getExtensionFilters().addAll(FileExtensions.GIF.getFilter(), FileExtensions.JPG.getFilter(), FileExtensions.PNG.getFilter());
 		File file = fChoose.showOpenDialog(s);
 		if(file!=null){
