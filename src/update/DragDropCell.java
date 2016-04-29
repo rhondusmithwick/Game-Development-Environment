@@ -14,16 +14,20 @@ import javafx.scene.input.TransferMode;
 
 public class DragDropCell<T> extends ListCell<T> {
 	
-	private ObservableList<T> list;
-	private DataFormat dataFormat;
+	//private ObservableList<T> list;
+	private DataFormat dataFormat = new DataFormat();
 
 	public DragDropCell() {
-		
-		list = getListView().getItems();
-		dataFormat = new DataFormat("custom");
+		//System.out.println("hi");
+		//list = getListView().getItems();
+		//DataFormat dataFormat = new DataFormat("sdsd");
 		//int newIndex = 0;
 
 		setOnDragDetected(e -> {
+			if(getItem() == null) {
+				return;
+			}
+			
 			Dragboard dragBoard = startDragAndDrop(TransferMode.MOVE);
 			ClipboardContent content = new ClipboardContent();
 			content.put(dataFormat, getItem().toString());
@@ -52,6 +56,7 @@ public class DragDropCell<T> extends ListCell<T> {
 		setOnDragDropped(e -> {
 			Object dropObject = e.getDragboard().getContent(dataFormat);
 			T test = (T) dropObject;
+			ObservableList<T> list = getListView().getItems();
 			
 			int oldIndex = list.indexOf(dropObject);
 			int newIndex = getIndex();

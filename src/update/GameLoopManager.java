@@ -33,7 +33,8 @@ public class GameLoopManager {
 	private Scene scene;
 	private TextField keyField, valueField;
 	private ISystemManager systemManager;
-	private ListView<String> valueList = new ListView<String>();
+	private ObservableList<String> valueList = FXCollections.observableArrayList("HI", "Hey");
+	private ListView<String> listView = new ListView<String>(valueList);
 	
 	public GameLoopManager(String language, ISystemManager game) {
 		myResources = ResourceBundle.getBundle(language);
@@ -46,6 +47,7 @@ public class GameLoopManager {
 		keyField = Utilities.makeTextArea(myResources.getString("addKey"));
 		valueField = Utilities.makeTextArea(myResources.getString("valueText"));
 		systemManager = game;
+		listView.setCellFactory(e -> new DragDropCell<String>());
 		populateStage();
 	}
 
@@ -71,10 +73,10 @@ public class GameLoopManager {
 	
 	private VBox populateRight() {
 		VBox vBox = new VBox(padding);
-		Button button = Utilities.makeButton(myResources.getString("addValue"), e -> addKey());
-		ObservableList<String> names = FXCollections.observableArrayList("Hi");
-		valueList.setItems(names);
-		vBox.getChildren().addAll(createContainer(valueField, button), valueList);
+		Button button = Utilities.makeButton(myResources.getString("addValue"), e -> addValue());
+//		ObservableList<String> names = FXCollections.observableArrayList("Hi");
+//		valueList.setItems(names);
+		vBox.getChildren().addAll(createContainer(valueField, button), listView);
 		return vBox;
 	}
 	
@@ -89,14 +91,15 @@ public class GameLoopManager {
 //	}
 	
 	private void saveMetadata() {
-		String key = comboBox.getValue();
-		String value = valueField.getText();
-//		System.out.println(key);
-//		System.out.println(value);
-		valueField.clear();
-		if(key != null) {
-			systemManager.getEntitySystem().addMetadata(key, value);
-		}
+//		String key = comboBox.getValue();
+//		String value = valueField.getText();
+////		System.out.println(key);
+////		System.out.println(value);
+//		valueField.clear();
+//		if(key != null) {
+//			systemManager.getEntitySystem().addMetadata(key, value);
+//		}
+		System.out.println(valueList);
 	}
 	
 //	private VBox createVBox() {
@@ -113,6 +116,13 @@ public class GameLoopManager {
 		String key = keyField.getText();
 		comboBox.getItems().add(key);
 		keyField.clear();
-		comboBox.getSelectionModel().clearSelection();
+		//comboBox.getSelectionModel().clearSelection();
+	}
+	
+	private void addValue() {
+		String value = valueField.getText();
+		valueList.add(value);
+		//System.out.println();
+		valueField.clear();
 	}
 }
