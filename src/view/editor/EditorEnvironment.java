@@ -168,7 +168,7 @@ public class EditorEnvironment extends Editor {
 			// TODO: rm
 			// gameRoot.getChildren().add(rectangle);
 		} catch (Exception e) {
-			Utilities.showAlert(myResources.getString("error"), null, myResources.getString("unableToAdd"),
+			Utilities.showAlert(myResources.getString("error"), null, myResources.getString("unableToAddEntity"),
 					AlertType.ERROR);
 		}
 	}

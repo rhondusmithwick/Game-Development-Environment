@@ -37,6 +37,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import model.component.movement.Position;
 import model.component.visual.Sprite;
 import model.entity.Entity;
+import view.enums.DefaultStrings;
 
 public class Utilities {
 
@@ -191,7 +192,7 @@ public class Utilities {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(prompt);
 		fileChooser.getExtensionFilters().addAll(filters);
-		File dir = new File("resources/");
+		File dir = new File(DefaultStrings.RESOURCES.getDefault());
 		fileChooser.setInitialDirectory(dir);
 		File file = fileChooser.showOpenDialog(new Stage());
 		return file;

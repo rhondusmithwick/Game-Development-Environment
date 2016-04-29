@@ -12,7 +12,8 @@ public enum FileExtensions {
     JPG("JPG", "*.jpg"),
     GIF("GIF", "*.gif"),
     PNG("PNG", "*.png"),
-    XML("XML", "*.xml");
+    XML("XML", "*.xml"),
+    MP3("MP3", "*.mp3");
 
 
     private final ExtensionFilter filter;

@@ -35,9 +35,9 @@ public class GameDetails {
 	}
 
 	private void createDetails() {
-		nameBox = createTextEntry("gName");
+		nameBox = createTextEntry("gameName");
 		name = (TextField) nameBox.getChildren().get(1);
-		descriptionBox = createTextEntry("gDesc");
+		descriptionBox = createTextEntry("gameDescription");
 		desc = (TextField) descriptionBox.getChildren().get(1);
 		showIcon();
 		
@@ -56,10 +56,10 @@ public class GameDetails {
 	private HBox showIcon() {
 		iconBox = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
 		iconBox.setAlignment(Pos.CENTER_LEFT);
-		Label iconTitle = new Label(myResources.getString("gIcon"));
+		Label iconTitle = new Label(myResources.getString("gameIcon"));
 		icon = new ImageView();
 		setIconPicture(new File(DefaultStrings.DEFAULT_ICON.getDefault()));
-		iconBox.getChildren().addAll(iconTitle, icon, Utilities.makeButton(myResources.getString("cIcon"), e->updateIcon()));
+		iconBox.getChildren().addAll(iconTitle, icon, Utilities.makeButton(myResources.getString("chooseIcon"), e->updateIcon()));
 		return iconBox;
 	}
 
@@ -77,7 +77,7 @@ public class GameDetails {
 	private void updateIcon() {
 		Stage s = new Stage();
 		FileChooser fChoose = new FileChooser();
-		fChoose.setTitle(myResources.getString("cIcon"));
+		fChoose.setTitle(myResources.getString("chooseIcon"));
 		fChoose.getExtensionFilters().addAll(FileExtensions.GIF.getFilter(), FileExtensions.JPG.getFilter(), FileExtensions.PNG.getFilter());
 		File file = fChoose.showOpenDialog(s);
 		if(file!=null){
