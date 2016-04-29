@@ -10,10 +10,12 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import view.Utilities;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
+import view.utilities.ButtonFactory;
+import view.utilities.ComboFactory;
+import view.utilities.TextFieldFactory;
 
 import java.io.File;
 import java.util.Arrays;
@@ -40,7 +42,7 @@ public class GameLoopManager {
 		stage.setScene(scene);
 		stage.setTitle(myResources.getString("loopManager"));
 		pane.setPadding(ViewInsets.LOOP_EDIT.getInset());
-		textField = Utilities.makeTextArea(myResources.getString("valueText"));
+		textField = TextFieldFactory.makeTextArea(myResources.getString("valueText"));
 		systemManager = game;
 		populateStage();
 	}
@@ -58,14 +60,14 @@ public class GameLoopManager {
 	private VBox populateLeft() {
 		VBox vBox = createVBox();
 		
-		comboBox = Utilities.makeComboBox(myResources.getString("selectKey"), Arrays.asList(myResources.getString("keyDefault")), null);
+		comboBox = ComboFactory.makeComboBox(myResources.getString("selectKey"), Arrays.asList(myResources.getString("keyDefault")), null);
 		vBox.getChildren().add(comboBox);
 		return vBox;
 	}
 	
 	private VBox populateRight() {
 		VBox vBox = createVBox();
-		Button button = Utilities.makeButton(myResources.getString("saveMeta"), e -> saveMetadata());
+		Button button = ButtonFactory.makeButton(myResources.getString("saveMeta"), e -> saveMetadata());
 		vBox.getChildren().addAll(textField, button);
 		return vBox;
 	}

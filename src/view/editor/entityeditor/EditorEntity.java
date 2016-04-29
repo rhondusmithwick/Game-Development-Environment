@@ -5,11 +5,10 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.ResourceBundle;
-import view.Utilities;
 import view.editor.Editor;
 import view.enums.DefaultStrings;
-import gui.GuiObject;
-import gui.GuiObjectFactory;
+import view.utilities.ButtonFactory;
+import view.utilities.TextFieldFactory;
 import model.entity.Entity;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
@@ -21,6 +20,8 @@ import javafx.scene.layout.VBox;
 import api.IComponent;
 import api.IEntity;
 import api.ISerializable;
+import guiObjects.GuiObject;
+import guiObjects.GuiObjectFactory;
 /**
  * 
  * @author Melissa Zhang
@@ -34,7 +35,7 @@ public class EditorEntity extends Editor{
 	private String myLanguage;
 	private ObservableList<ISerializable> entityList;
 	private Button saveButton, addButton, removeButton;
-	private ResourceBundle myResources, myLocs;
+	private ResourceBundle myResources, myLocs, myComponentNames;
 	private TextField name;
 	private ScrollPane scrollPane;
 	private List<String> myComponents;
@@ -46,6 +47,7 @@ public class EditorEntity extends Editor{
 		scrollPane = new ScrollPane();
 		myLanguage = language;
 		myResources = ResourceBundle.getBundle(language);
+		myComponentNames = ResourceBundle.getBundle(language + DefaultStrings.COMPONENTS.getDefault());
 		myEntity = (Entity) toEdit;
 		entityList = addToList;
 		
@@ -55,7 +57,7 @@ public class EditorEntity extends Editor{
 		myLocs = ResourceBundle.getBundle(DefaultStrings.COMPONENT_LOC.getDefault());
 		Enumeration<String> iter = myLocs.getKeys();
 		while(iter.hasMoreElements()) {
-			myComponents.add(myResources.getString(iter.nextElement()));
+			myComponents.add(myComponentNames.getString(iter.nextElement()));
 		}
 	}
 
@@ -76,14 +78,14 @@ public class EditorEntity extends Editor{
 	}
 
 	private void addButtons() {
-		saveButton = Utilities.makeButton(myResources.getString("saveEntity"), e -> save());
-		addButton = Utilities.makeButton(myResources.getString("addComponent"), e -> addComponent());
-		removeButton = Utilities.makeButton(myResources.getString("removeComp"), e->removeComponent());
+		saveButton = ButtonFactory.makeButton(myResources.getString("saveEntity"), e -> save());
+		addButton = ButtonFactory.makeButton(myResources.getString("addComponent"), e -> addComponent());
+		removeButton = ButtonFactory.makeButton(myResources.getString("removeComponent"), e->removeComponent());
 		container.getChildren().addAll(addButton, removeButton, saveButton);
 	}
 
 	private void addName() {
-		name = Utilities.makeTextArea(myResources.getString("enterName"));
+		name = TextFieldFactory.makeTextArea(myResources.getString("enterName"));
 		name.setText(myEntity.getName());
 		container.getChildren().add(name);
 	}
@@ -100,7 +102,6 @@ public class EditorEntity extends Editor{
 	}
 
 	private void addVisualObject(SimpleObjectProperty<?> property) {
-		//System.out.println(property.getName());
 		GuiObject object = guiFactory.createNewGuiObject(property.getName(), DefaultStrings.GUI_RESOURCES.getDefault(),myLanguage, property, property.getValue());
 		if (object != null){
 			container.getChildren().add((Node) object.getGuiNode());

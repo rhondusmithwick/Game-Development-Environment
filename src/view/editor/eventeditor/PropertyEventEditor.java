@@ -4,15 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import api.IComponent;
 import api.IEntity;
 import api.ILevel;
 import events.Action;
 import events.PropertyTrigger;
-import groovy.ui.SystemOutputInterceptor;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -22,9 +18,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import view.Utilities;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
+import view.utilities.ButtonFactory;
+import view.utilities.FileUtilities;
 
 public class PropertyEventEditor extends EventEditorTab
 {
@@ -87,7 +84,7 @@ public class PropertyEventEditor extends EventEditorTab
 	{
 		VBox container = new VBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
 		// Adding now the Groovy Table
-		chooseFileButton = Utilities.makeButton(myResources.getString("chooseGroovy"), e -> getFile());
+		chooseFileButton =ButtonFactory.makeButton(myResources.getString("chooseGroovy"), e -> getFile());
 		
 		container.getChildren().addAll(chooseFileButton);
 		return container;
@@ -97,7 +94,7 @@ public class PropertyEventEditor extends EventEditorTab
 	{
 		File groovyFile = null;
 		
-		groovyFile = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("groovy", "*.groovy"), myResources.getString("selectGroovy"));
+		groovyFile = FileUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("groovy", "*.groovy"), myResources.getString("selectGroovy"));
 		if ( groovyFile != null )
 		{
 			String[] splits = groovyFile.getPath().split("voogasalad_MakeGamesGreatAgain/");			
@@ -122,7 +119,7 @@ public class PropertyEventEditor extends EventEditorTab
 		resetTrigger();
 		resetAction();
 		
-		makeEventButton = Utilities.makeButton(myResources.getString("makeEvent"), e -> createEvent());
+		makeEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
 		makeEventButton.setDisable(true);
 		
 		container.getChildren().addAll(triggerText, actionText, makeEventButton);

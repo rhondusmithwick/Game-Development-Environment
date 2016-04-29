@@ -67,10 +67,16 @@ public interface ILevel extends ISerializable {
 
 	void update(double dt);
 
+
 	/**
 	 * @return event system
 	 */
 	IEventSystem getEventSystem();
+
+	/**
+	 * @return entity system
+	 */
+	IEntitySystem getEntitySystem();
 
 	/**
 	 * @return physics engine
