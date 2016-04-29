@@ -28,13 +28,13 @@ public class MouseTrigger extends Trigger {
 
     @Override
     @Deprecated
-    public void clearListener(ILevel universe, InputSystem inputSystem) {
-       // getProperty(universe).removeListener(this);
+    public void clearListener(ILevel level, InputSystem inputSystem) {
+       // getProperty(level).removeListener(this);
     }
     
     @Override
-    public void clearListener(ILevel universe) {
-        universe.getEventSystem().unListenToMousePress(this);
+    public void clearListener(ILevel level) {
+        level.getEventSystem().unListenToMousePress(this);
     }
 
     @Override
@@ -44,12 +44,12 @@ public class MouseTrigger extends Trigger {
     }
 
     @Override
-    public void addHandler(ILevel universe) {
-        universe.getEventSystem().listenToMousePress(this);
+    public void addHandler(ILevel level) {
+        level.getEventSystem().listenToMousePress(this);
     }
 
-//    private SimpleObjectProperty<?> getProperty(ILevel universe) {
-//        IEntity entity = universe.getEntity(entityID);
+//    private SimpleObjectProperty<?> getProperty(ILevel level) {
+//        IEntity entity = level.getEntitySystem().getEntity(entityID);
 //        IComponent component = entity.getComponent(componentClass);
 //        return component.getProperty(propertyName);
 //    }
