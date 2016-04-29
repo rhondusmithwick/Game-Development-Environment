@@ -51,8 +51,6 @@ public class EditorEnvironment extends Editor {
 	private ISystemManager game;
 	private IView view;
 	private GameLoopManager manager;
-
-	// sjdlsJELREKRHOISHFSDFHKAJS
 	
 	public EditorEnvironment(String language, ILevel toEdit, ObservableList<IEntity> masterList,
 			ObservableList<ILevel> addToList) {
