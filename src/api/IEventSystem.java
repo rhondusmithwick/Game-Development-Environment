@@ -22,7 +22,7 @@ import utility.Pair;
  * https://wiki.jmonkeyengine.org/doku.php/jme3:scripting:groovy_event [Trigger:
  * Event(s)+Condition(s)->Result(s)]
  * 
- * @author Tom Wu, ANirudh Jonnavithula
+ * @author Tom Wu, ANirudh Jonnavithula, Carolyn Yao
  */
 public interface IEventSystem extends Observer, ISerializable {
 

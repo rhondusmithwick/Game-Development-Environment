@@ -1,20 +1,13 @@
 package view.editor.eventeditor;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
 
-import api.IEntity;
 import api.ILevel;
 import events.Action;
-import events.KeyTrigger;
-import events.PropertyTrigger;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
@@ -23,7 +16,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import view.Utilities;
-import view.editor.Editor;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
 
@@ -47,7 +39,7 @@ public class KeyBindingEditor extends EventEditorTab
 	// TODO test
 	private Button getEventsString;
 	
-	private Text actionText;
+	private Text actionScriptText;
 	
 	public KeyBindingEditor(String language, ObservableList<ILevel> levelList)
 	{
@@ -63,7 +55,7 @@ public class KeyBindingEditor extends EventEditorTab
 		
 		action = null;
 		currentKey = null;
-		actionText = new Text(ResourceBundle.getBundle(language).getString("notYetDefined"));
+		actionScriptText = new Text(ResourceBundle.getBundle(language).getString("notYetDefined"));
 		pane.setOnKeyPressed(e -> keyWasPressed(e.getCode()));
 		
 		populateLayout();
@@ -97,7 +89,7 @@ public class KeyBindingEditor extends EventEditorTab
 		// Adding now the Groovy Table
 		chooseFileButton = Utilities.makeButton(myResources.getString("chooseGroovy"), e -> getFile());
 		
-		container.getChildren().addAll(chooseFileButton, actionText);
+		container.getChildren().addAll(chooseFileButton, actionScriptText);
 		
 		pane.getChildren().add(container);
 	}
@@ -129,12 +121,13 @@ public class KeyBindingEditor extends EventEditorTab
 	{
 		if (getChosenLevels().isEmpty())
 			return;
-		
-		for ( ILevel level: getChosenLevels() )
-		{
-			level.getEventSystem().registerEvent(
-					new KeyTrigger(currentKey.getName()), action);
-		}
+
+		addEventToLevels(getChosenLevels(), "events.KeyTrigger", actionScriptText.getText(), currentKey.getName());
+//		for ( ILevel level: getChosenLevels() )
+//		{
+//			level.getEventSystem().registerEvent(
+//					new KeyTrigger(currentKey.getName()), action);
+//		}
 		
 		flashCreatedEventText();
 		
@@ -150,7 +143,7 @@ public class KeyBindingEditor extends EventEditorTab
 		{
 			String[] splits = groovyFile.getPath().split("voogasalad_MakeGamesGreatAgain/");			
 			
-			actionSet(groovyFile.getName(), new Action(splits[splits.length - 1]));
+			actionSet(groovyFile.getName());
 		}
 	}
 	
@@ -166,10 +159,9 @@ public class KeyBindingEditor extends EventEditorTab
 		return scrollPane;
 	}
 	
-	private void actionSet(String actionString, Action action)
+	private void actionSet(String actionString)
 	{
-		this.action = action;
-		actionText.setText(myResources.getString("action") + actionString);
+		actionScriptText.setText(myResources.getString("action") + actionString);
 	}
 	
 

@@ -130,7 +130,7 @@ public class PropertyEventEditor extends EventEditorTab
 		container.getChildren().add(getCreatedLevelText());
 		pane.getChildren().add(container);
 	}
-	
+
 	private void createEvent()
 	{
 		// I think the Entity table now only shows entities through names
@@ -148,12 +148,23 @@ public class PropertyEventEditor extends EventEditorTab
 			{
 				if ( entity.getName().equals(chosenEntityName) )
 				{
-					level.getEventSystem().registerEvent(
-							new PropertyTrigger(entity.getID(), chosenComponent.getClass(), property.getName()), 
-							action);
+							addEventToLevel(level, "events.PropertyTrigger", entity.getID(),
+									chosenComponent.getClass(), property.get());
 				}
 			}
 		}
+
+		// Carolyn's refactoring
+//		if (getChosenLevels().isEmpty()) return;
+//		getChosenLevels().stream().forEach(level ->
+//				level.getAllEntities().parallelStream().
+//						filter(entity-> entity.getName().equals(chosenEntityName)).
+//						forEach(entity-> {
+//							addEventToLevel(level, "events.PropertyTrigger", entity.getID(),
+//									chosenComponent.getClass(), property.get());
+//						})
+//		);
+
 		
 		flashCreatedEventText();
 		
