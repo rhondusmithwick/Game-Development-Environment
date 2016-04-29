@@ -22,7 +22,7 @@ public abstract class Table
 		table = new TableView<Entry>();
 		table.setEditable(true);
 		table.setPrefWidth(GUISize.EVENT_EDITOR_TABLE_WIDTH.getSize());
-
+		table.setMaxHeight(250);	// TODO magic value
 		column = new TableColumn<Entry, String>(name);
 		column.setCellValueFactory( new PropertyValueFactory<Entry,String>("name") );
 		column.minWidthProperty().bind(table.prefWidthProperty());

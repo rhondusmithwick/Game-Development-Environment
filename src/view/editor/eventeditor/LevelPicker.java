@@ -63,6 +63,7 @@ public class LevelPicker
 	
 	private void allBoxCheck(boolean isSelected)
 	{
+		System.out.println("hm.");
 		for ( CheckBox checkbox: checkBoxMap.keySet() )
 		{
 			checkbox.setSelected(isSelected);
@@ -75,10 +76,12 @@ public class LevelPicker
 	{
 		selectedLevels.clear();
 		boolean allAreSelected = true;
+		System.out.println("   === IN LEVELPICKER");
 		for ( CheckBox checkbox: checkBoxMap.keySet() )
 		{
 			if ( checkbox.isSelected() )
 			{
+				System.out.println("   " + checkBoxMap.get(checkbox).getName());
 				selectedLevels.add(checkBoxMap.get(checkbox));
 			}
 			else
@@ -86,6 +89,7 @@ public class LevelPicker
 				allAreSelected = false;
 			}
 		}
+		System.out.println("   ==== ENDED\n");
 		
 		allBox.setSelected(allAreSelected);
 		eventAuthoring.choseLevels(selectedLevels);
