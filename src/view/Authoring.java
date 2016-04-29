@@ -65,5 +65,8 @@ public class Authoring {
 			display.getTabs().add(tab);
 			display.getSelectionModel().select(tab);
 		}
+		
+
+		
 	}
 
