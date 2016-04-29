@@ -15,7 +15,7 @@ public class EntityTable extends Table
 
 	public EntityTable(ObservableList<IEntity> entities, TableManager manager, String language)
 	{
-		super(manager, ResourceBundle.getBundle(language).getString("pickEntity"));	// TODO resource file
+		super(manager, ResourceBundle.getBundle(language).getString("pickEntity"));
 
 
 		// Add change listener
@@ -52,11 +52,11 @@ public class EntityTable extends Table
 		}
 	}
 
-	public void levelWasPicked(ObservableList<ISerializable> newEntities)
+	public void levelWasPicked(ObservableList<IEntity> selectedEntities)
 	{
 		refreshTable();
 		entityNames.clear();
-		if ( !newEntities.isEmpty() )
-			fillEntries(newEntities);
+		if ( !selectedEntities.isEmpty() )
+			fillEntries(selectedEntities);
 	}
 }

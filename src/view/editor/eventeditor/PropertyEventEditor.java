@@ -28,27 +28,25 @@ public class PropertyEventEditor extends EventEditorTab
 	private final ScrollPane scrollPane;
 	private final VBox pane;
 	private final ResourceBundle myResources;
-	
+	private EventViewManager eventViewManager;
 	private Text triggerText;
 	private Text actionText;
-	
+	private String actionScriptPath;
 	private Button chooseFileButton;
 	private Button makeEventButton;
-	private TableManager tableManager;
+	private PropertyTableManager tableManager;
 	
 	EditorEvent masterEditor;
 	
-	private Action action;
-	
 	private String chosenEntityName;
 	private IComponent chosenComponent;
-	private SimpleObjectProperty<?> property;
+	private SimpleObjectProperty<?> chosenProperty;
 	
 	private boolean triggerOK, actionOK;
 	
 	private final String language;
 	
-	public PropertyEventEditor(String language, ObservableList<IEntity> masterList, ObservableList<ILevel> levelList)
+	public PropertyEventEditor(String language, ObservableList<ILevel> levelList)
 	{
 		super(language, levelList);
 		
@@ -56,6 +54,7 @@ public class PropertyEventEditor extends EventEditorTab
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
 		pane.setAlignment(Pos.TOP_LEFT);
 		this.language = language;
+		eventViewManager = new EventViewManager();
 		
 		myResources = ResourceBundle.getBundle(language);
 		
@@ -68,14 +67,12 @@ public class PropertyEventEditor extends EventEditorTab
 		chooseFileButton = new Button();
 		makeEventButton = new Button();
 		
-		tableManager = new TableManager(masterList, language, this);
-		
-		action = null;
+		tableManager = new PropertyTableManager(language, this);
 		
 		populateLayout();
 		
 		choseLevels(new ArrayList<ILevel>(levelList));
-		
+		eventViewManager.levelWasPicked(new ArrayList<ILevel>(levelList));
 		scrollPane = new ScrollPane(pane);
 	}
 
@@ -98,7 +95,7 @@ public class PropertyEventEditor extends EventEditorTab
 		{
 			String[] splits = groovyFile.getPath().split("voogasalad_MakeGamesGreatAgain/");			
 			
-			actionSet(groovyFile.getName(), new Action(splits[splits.length - 1]));
+			actionSet(groovyFile.getName());
 		}
 	}
 
@@ -115,7 +112,6 @@ public class PropertyEventEditor extends EventEditorTab
 	private void makeBottomPart()
 	{
 		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
-		
 		resetTrigger();
 		resetAction();
 		
@@ -124,10 +120,11 @@ public class PropertyEventEditor extends EventEditorTab
 		
 		container.getChildren().addAll(triggerText, actionText, makeEventButton);
 		container.getChildren().add(makeGroovySide());
-		container.getChildren().add(getCreatedLevelText());
+		container.getChildren().add(getCreatedEventText());
 		pane.getChildren().add(container);
+		pane.getChildren().add(eventViewManager.getPane());
 	}
-	
+
 	private void createEvent()
 	{
 		// I think the Entity table now only shows entities through names
@@ -145,15 +142,26 @@ public class PropertyEventEditor extends EventEditorTab
 			{
 				if ( entity.getName().equals(chosenEntityName) )
 				{
-					level.getEventSystem().registerEvent(
-							new PropertyTrigger(entity.getID(), chosenComponent.getClass(), property.getName()), 
-							action);
+					addEventToLevel(level, "PropertyTrigger", actionScriptPath, entity.getID(),
+									chosenComponent.getClass(), chosenProperty);
 				}
 			}
 		}
+
+		// Carolyn's refactoring
+//		if (getChosenLevels().isEmpty()) return;
+//		getChosenLevels().stream().forEach(level ->
+//				level.getAllEntities().parallelStream().
+//						filter(entity-> entity.getName().equals(chosenEntityName)).
+//						forEach(entity-> {
+//							addEventToLevel(level, "events.PropertyTrigger", entity.getID(),
+//									chosenComponent.getClass(), property.get());
+//						})
+//		);
+
 		
 		flashCreatedEventText();
-		
+		eventViewManager.updateTable();
 		triggerOK = false;
 		actionOK = false;
 	}
@@ -173,6 +181,10 @@ public class PropertyEventEditor extends EventEditorTab
 				splitClassName[splitClassName.length - 1] + " - " + 
 				property.getName());	
 		
+		chosenEntityName = entityName;
+		chosenComponent = component;
+		chosenProperty = property;
+		
 		triggerOK = true;
 		makeEventButton.setDisable( !triggerOK || !actionOK );
 	}
@@ -189,12 +201,11 @@ public class PropertyEventEditor extends EventEditorTab
 		actionOK = false;
 	}
 	
-	private void actionSet(String actionString, Action action)
+	private void actionSet(String actionScriptPath)
 	{
-		this.action = action;
-		actionText.setText(myResources.getString("action") + actionString);
+		this.actionScriptPath = actionScriptPath;
+		actionText.setText(myResources.getString("action") + actionScriptPath);
 		actionOK = true;
-		
 		makeEventButton.setDisable( !triggerOK || !actionOK );
 	}
 	
@@ -211,6 +222,7 @@ public class PropertyEventEditor extends EventEditorTab
 	public void actionOnChosenLevels(List<ILevel> levels) 
 	{
 		tableManager.levelWasPicked(levels);
+		eventViewManager.levelWasPicked(levels);
 	}
 	
 }

@@ -1,6 +1,11 @@
 package view.editor.eventeditor;
 
+import events.Action;
+import events.EventFactory;
+import events.Trigger;
 import javafx.scene.layout.Pane;
+
+import java.util.List;
 import java.util.ResourceBundle;
 import view.editor.Editor;
 import api.IEntity;
@@ -36,7 +41,7 @@ public class EditorEvent extends Editor
 	
 	public EditorEvent(String language, ObservableList<IEntity> masterList, ObservableList<ILevel> levelList)
 	{	
-		propertyEventEditor = new PropertyEventEditor(language, masterList, levelList);
+		propertyEventEditor = new PropertyEventEditor(language, levelList);
 		keyBindingEditor = new KeyBindingEditor(language, levelList);
 
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
@@ -59,16 +64,15 @@ public class EditorEvent extends Editor
 		populateEditorTab(keyBindingEditor);
 	}
 
-	private void populateEditorTab(Editor editor)
-	{
-		Tab newTab = new Tab();
-		
-		newTab.setContent(editor.getPane());
-		newTab.setClosable(false);
-		tabPane.getTabs().add(newTab);
-		newTab.setText(myResources.getString(editor.getClass().toString().split(" ")[1]));
-	}
-	
+	private void populateEditorTab(Editor editor) {
+        Tab newTab = new Tab();
+
+        newTab.setContent(editor.getPane());
+        newTab.setClosable(false);
+        tabPane.getTabs().add(newTab);
+        newTab.setText(myResources.getString(editor.getClass().toString().split(" ")[1]));
+    }
+
 	public void populateLayout() {}
 
 	@Override
