@@ -14,12 +14,14 @@ import events.KeyTrigger;
 import events.PropertyTrigger;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
+import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import view.Utilities;
@@ -34,6 +36,7 @@ public class KeyBindingEditor extends EventEditorTab
 	private ScrollPane scrollPane;
 	private ScrollPane chosenEntityBox;
 	private Text chosenEntityText;
+	private Text chosenEntityTitle;
 	
 	private VBox pane;
 	
@@ -60,6 +63,9 @@ public class KeyBindingEditor extends EventEditorTab
 	{
 		super(language, levelList);
 		this.language = language;
+		
+		chosenEntityTitle = new Text("== PICKED ENTITIES ==\n");	// TODO resource
+		chosenEntityTitle.setFont(new Font(20));	// TODO enum...?
 		
 		chosenEntities = new ArrayList<IEntity>();
 		scrollPane = new ScrollPane();
@@ -161,7 +167,7 @@ public class KeyBindingEditor extends EventEditorTab
 		
 		chosenEntityText = new Text();
 		
-		chosenEntityBox = new ScrollPane(chosenEntityText);
+		chosenEntityBox = new ScrollPane(new VBox(chosenEntityTitle, chosenEntityText));
 		
 		fillChosenEntityBox();
 		container.getChildren().addAll(getLevelPickerPane(), tableManager.getContainer(), chosenEntityBox, inputBox );
