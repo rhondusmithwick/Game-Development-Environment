@@ -21,6 +21,7 @@ public class AnimatedSprite extends Sprite {
     private static final String DEFAULT_BUNDLE = "spriteProperties/ryuBlue";
     private final SingleProperty<String> singleProperty = new SingleProperty<>("BundlePath", DEFAULT_BUNDLE);
     private CustomAnimationContainer container = new CustomAnimationContainer(DEFAULT_BUNDLE);
+    private String animationString;
 
     public AnimatedSprite() {
     	this(DEFAULT_IMAGE, DEFAULT_BUNDLE);

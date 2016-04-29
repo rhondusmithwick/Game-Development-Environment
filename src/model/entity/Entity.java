@@ -35,10 +35,7 @@ import javafx.scene.Node;
  *
  * @author Rhondu Smithwick
  */
-public class Entity implements IEntity, ChangeListener {
-
-	private Animation currentAnimation;
-	private SimpleStringProperty animationString = new SimpleStringProperty(this, "animationStatus", "");
+public class Entity implements IEntity {
 	
 	@XStreamAsAttribute()
 	private final String ID;
@@ -61,7 +58,6 @@ public class Entity implements IEntity, ChangeListener {
 
 	public Entity(String name) {
 		ID = UUID.randomUUID().toString();
-		animationString.addListener(this);
 		setName(name);
 	}
 
@@ -154,31 +150,4 @@ public class Entity implements IEntity, ChangeListener {
 	public String toString() {
 		return String.format("ID: %s, Components: %s", ID, componentMap.toString());
 	}
-	
-	public void setAnimationString(String animation) {
-		animationString.set(animation);
-	}
-	
-	public String getAnimationString() {
-		return animationString.get();
-	}
-	
-	public void setAnimation(Animation animation) {
-		this.currentAnimation = animation;
-	}
-	
-	public Animation getAnimation() {
-		return currentAnimation;
-	}
-
-	@Override
-	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
-		if(currentAnimation!=null) {
-			currentAnimation.stop();
-		}
-        currentAnimation = this.getComponent(AnimatedSprite.class).getAnimation((String)arg2);
-	}
-	
-	
-
 }

@@ -42,7 +42,7 @@ public class ACGame {
     private IEventSystem eventSystem = level.getEventSystem();
     private final PhysicsEngine physics = new PhysicsEngine();
     private IEntity character;
-    private final String SPRITE_PATH = "spriteSheets/ryu";
+    private final String SPRITE_PATH = "resources/spriteSheets/ryuBlue.gif";
     private final String SPRITE_PROPERTIES = "spriteProperties/aniryu";
     private final String IMAGE_PATH = "resources/spriteSheets/aniryu.gif";
     private final String healthScriptPath = "resources/groovyScripts/ACGameTestScript.groovy";
@@ -50,6 +50,7 @@ public class ACGame {
     private final String moveLeftScriptPath = "resources/groovyScripts/keyInputMoveLeft.groovy";
     private final String jumpScriptPath = "resources/groovyScripts/keyInputJump.groovy";
     private final String addGravityScriptPath = "resources/groovyScripts/ACAddGravity.groovy";
+    private final String kickRightScriptPath = "resources/groovyScripts/RyuKickRight.groovy";
     private ImageView charSpr;
     private Scene myScene;
 
@@ -85,7 +86,6 @@ public class ACGame {
             character.forceAddComponent(new Score((double) 100), true);
             Position pos = new Position(100.0, 100.0);
             character.forceAddComponent(new AnimatedSprite(SPRITE_PATH, SPRITE_PROPERTIES), true);
-            character.setAnimationString("RightKick");
             character.forceAddComponent(pos, true);
             character.forceAddComponent(new Sprite(IMAGE_PATH), true);
             character.forceAddComponent(new Velocity(0, 0), true);
@@ -93,9 +93,14 @@ public class ACGame {
             //character.addComponent(new Sprite(IMAGE_PATH));
             //character.addComponent(new Gravity(5000));
 //            character.serialize("character.xml");
+            character.getComponent(AnimatedSprite.class).setImageHeight(100);
+            character.getComponent(AnimatedSprite.class).getImageView().setX(pos.getX());
+            character.getComponent(AnimatedSprite.class).getImageView().setY(pos.getY());
             root.getChildren().add(character.getComponent(AnimatedSprite.class).getImageView());
+            character.getComponent(AnimatedSprite.class).getAnimation("RightKick").play();
             Map<String, Object> map = new HashMap<>();
-            map.put("character", character);
+            map.put("characterName", character.getName());
+            map.put("animationName", "RightPunch");
 //            eventSystem.registerEvent(
 //                    new TimeTrigger(3.0),
 //                    new Action(addGravityScriptPath));
@@ -103,6 +108,7 @@ public class ACGame {
                     new PropertyTrigger(character.getID(), Position.class, "XPosition"),
                     new Action(healthScriptPath));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("D"), KeyEvent.KEY_PRESSED), new Action(moveRightScriptPath, map));
+            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("D"), KeyEvent.KEY_PRESSED), new Action(kickRightScriptPath, map));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("A"), KeyEvent.KEY_PRESSED), new Action(moveLeftScriptPath));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_PRESSED), new Action(jumpScriptPath));
             eventSystem.registerEvent(new MouseTrigger(MouseButton.PRIMARY, MouseEvent.MOUSE_CLICKED), new Action(moveLeftScriptPath));
@@ -119,21 +125,20 @@ public class ACGame {
     	level.getPhysicsEngine().update(level, dt);
         // inputSystem.processInputs();
         eventSystem.updateInputs(dt);
-        root.getChildren().clear();
+      //  root.getChildren().clear();
         
-    	level.getAllEntities().stream().forEach(e->drawCharacter(e));
+    	//level.getAllEntities().stream().forEach(e->drawCharacter(e));
         //moveEntity(character, 1);
     }
 
-    public void drawCharacter(IEntity character) {
-    	//root.getChildren().add(character.getComponent(AnimatedSprite.class).getImageView());
-    	ImageView img= character.getComponent(AnimatedSprite.class).getImageView();
-    	img.setLayoutX(character.getComponent(Position.class).getX());
-    	img.setLayoutY(character.getComponent(Position.class).getY());
-    	if(character.getAnimation().getStatus() == Animation.Status.STOPPED || character.getAnimation().getStatus() ==null) {
-    		character.getAnimation().play();
-    	}
-    	
+    public ImageView drawCharacter(IEntity character) {
+    	root.getChildren().add(character.getComponent(AnimatedSprite.class).getImageView());
+    	Sprite imgPath = character.getComponent(Sprite.class);
+        ImageView charSprite = imgPath.getImageView();
+        charSprite.setPreserveRatio(true);
+        charSprite.setPreserveRatio(true);
+        root.getChildren().add(charSprite);
+        return charSprite;
     }
 
     private Action getAction(String scriptPath) {
