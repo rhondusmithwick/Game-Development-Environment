@@ -78,6 +78,8 @@ public class Sprite implements IComponent {
     public void setImagePath(String imagePath) {
         imagePathProperty().set(imagePath);
         this.imageView = this.createImageView(getImagePath());
+        imageView.setFitWidth(getImageWidth());
+        imageView.setFitHeight(getImageHeight());
     }
 
     public SimpleObjectProperty<Double> imageWidthProperty() {
@@ -127,8 +129,6 @@ public class Sprite implements IComponent {
     }
 
     private void writeObject(ObjectOutputStream out) throws IOException {
-        imageHeightProperty().unbind();
-        imageWidthProperty().unbind();
         out.defaultWriteObject();
     }
 
@@ -141,8 +141,6 @@ public class Sprite implements IComponent {
         Image image = getImage(imagePath);
         ImageView imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
-        imageView.fitWidthProperty().bind(imageWidthProperty());
-        imageView.fitHeightProperty().bind(imageHeightProperty());
         return imageView;
     }
 
