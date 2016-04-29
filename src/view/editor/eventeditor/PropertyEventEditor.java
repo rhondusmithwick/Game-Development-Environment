@@ -31,14 +31,12 @@ public class PropertyEventEditor extends EventEditorTab
 	private EventViewManager eventViewManager;
 	private Text triggerText;
 	private Text actionText;
-	
+	private String actionScriptPath;
 	private Button chooseFileButton;
 	private Button makeEventButton;
 	private PropertyTableManager tableManager;
 	
 	EditorEvent masterEditor;
-	
-	private Action action;
 	
 	private String chosenEntityName;
 	private IComponent chosenComponent;
@@ -71,8 +69,6 @@ public class PropertyEventEditor extends EventEditorTab
 		
 		tableManager = new PropertyTableManager(language, this);
 		
-		action = null;
-		
 		populateLayout();
 		
 		choseLevels(new ArrayList<ILevel>(levelList));
@@ -99,7 +95,7 @@ public class PropertyEventEditor extends EventEditorTab
 		{
 			String[] splits = groovyFile.getPath().split("voogasalad_MakeGamesGreatAgain/");			
 			
-			actionSet(groovyFile.getName(), new Action(splits[splits.length - 1]));
+			actionSet(groovyFile.getName());
 		}
 	}
 
@@ -146,8 +142,8 @@ public class PropertyEventEditor extends EventEditorTab
 			{
 				if ( entity.getName().equals(chosenEntityName) )
 				{
-							addEventToLevel(level, "events.PropertyTrigger", actionText.getText(), entity.getID(),
-									chosenComponent.getClass(), chosenProperty.get());
+					addEventToLevel(level, "PropertyTrigger", actionScriptPath, entity.getID(),
+									chosenComponent.getClass(), chosenProperty);
 				}
 			}
 		}
@@ -205,12 +201,11 @@ public class PropertyEventEditor extends EventEditorTab
 		actionOK = false;
 	}
 	
-	private void actionSet(String actionString, Action action)
+	private void actionSet(String actionScriptPath)
 	{
-		this.action = action;
-		actionText.setText(myResources.getString("action") + actionString);
+		this.actionScriptPath = actionScriptPath;
+		actionText.setText(myResources.getString("action") + actionScriptPath);
 		actionOK = true;
-		
 		makeEventButton.setDisable( !triggerOK || !actionOK );
 	}
 	

@@ -25,6 +25,7 @@ public abstract class EventEditorTab extends Editor
 	private Timer timer;
 	private ResourceBundle myResources;
 	private final EventFactory eventFactory = new EventFactory();
+    private final String groovyPath = "resources/groovyScripts/";
 	
 	public EventEditorTab(String language, ObservableList<ILevel> levelList)
 	{
@@ -89,14 +90,14 @@ public abstract class EventEditorTab extends Editor
 		}
 		levels.stream().forEach(level -> {
 			level.getEventSystem().registerEvent(
-					eventFactory.createEvent(triggerClassName, scriptPath, args)
+					eventFactory.createEvent(triggerClassName, groovyPath+scriptPath, args)
 			);
 		});
 	}
 
 	public void addEventToLevel(ILevel level, String triggerClassName, String scriptPath, Object... args) {
 		level.getEventSystem().registerEvent(
-				eventFactory.createEvent(triggerClassName, scriptPath, args)
+				eventFactory.createEvent(triggerClassName, groovyPath+scriptPath, args)
 		);
 	}
 

@@ -8,11 +8,8 @@ import java.util.ResourceBundle;
 import api.IEntity;
 import api.ILevel;
 import events.Action;
-import events.KeyTrigger;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
@@ -45,14 +42,14 @@ public class KeyBindingEditor extends EventEditorTab
 	private Action action;
 	private Button createEventButton;
 	private String language;
-	
+	private String actionScriptPath;
 	private KeyBindingTableManager tableManager;
 	private EventViewManager eventViewManager;
 	
 	// TODO test
 	private Button getEventsString;
 
-	private Text actionScriptText;
+	private Text actionText;
 	private ArrayList<IEntity> chosenEntities;
 	
 	public KeyBindingEditor(String language, ObservableList<ILevel> levelList)
@@ -77,7 +74,7 @@ public class KeyBindingEditor extends EventEditorTab
 		
 		action = null;
 		currentKey = null;
-		actionScriptText = new Text(ResourceBundle.getBundle(language).getString("notYetDefined"));
+		actionText = new Text(ResourceBundle.getBundle(language).getString("notYetDefined"));
 		pane.setOnKeyPressed(e -> keyWasPressed(e.getCode()));
 		
 		choseLevels(new ArrayList<ILevel>(levelList));
@@ -110,14 +107,7 @@ public class KeyBindingEditor extends EventEditorTab
 	{
 		if (getChosenLevels().isEmpty())
 			return;
-
-		addEventToLevels(getChosenLevels(), "events.KeyTrigger", actionScriptText.getText(), currentKey.getName());
-//		for ( ILevel level: getChosenLevels() )
-//		{
-//			level.getEventSystem().registerEvent(
-//					new KeyTrigger(currentKey.getName()), action);
-//		}
-		
+		addEventToLevels(getChosenLevels(), "KeyTrigger", actionScriptPath, currentKey.getName());
 		flashCreatedEventText();
 		eventViewManager.updateTable();
 	}
@@ -147,9 +137,10 @@ public class KeyBindingEditor extends EventEditorTab
 		return scrollPane;
 	}
 	
-	private void actionSet(String actionString)
+	private void actionSet(String actionScriptPath)
 	{
-		actionScriptText.setText(myResources.getString("action") + actionString);
+		this.actionScriptPath = actionScriptPath;
+		actionText.setText(myResources.getString("action") + actionScriptPath);
 	}
 	
 	public void makeUpperSide()
@@ -167,7 +158,7 @@ public class KeyBindingEditor extends EventEditorTab
 		
 		createEventButton.setOnAction(e -> createEvent());
 		
-		innerContainer.getChildren().addAll(listenToKey, keyInputText, chooseFileButton, actionScriptText, createEventButton, getCreatedEventText());
+		innerContainer.getChildren().addAll(listenToKey, keyInputText, chooseFileButton, actionText, createEventButton, getCreatedEventText());
 		
 		chosenEntityText = new Text();
 		
