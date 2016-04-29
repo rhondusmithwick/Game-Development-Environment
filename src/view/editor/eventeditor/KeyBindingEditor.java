@@ -1,20 +1,13 @@
 package view.editor.eventeditor;
 
 import java.io.File;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
-
-import api.IEntity;
 import api.ILevel;
 import events.Action;
 import events.KeyTrigger;
-import events.PropertyTrigger;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
@@ -22,10 +15,10 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
-import view.Utilities;
-import view.editor.Editor;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
+import view.utilities.ButtonFactory;
+import view.utilities.FileUtilities;
 
 // TODO put Action setting and file picker on abstract
 public class KeyBindingEditor extends EventEditorTab 
@@ -81,7 +74,7 @@ public class KeyBindingEditor extends EventEditorTab
 	
 	private void makeInputBox()
 	{
-		listenToKey = Utilities.makeButton(myResources.getString("pressKey"), e -> listenButtonPress());
+		listenToKey = ButtonFactory.makeButton(myResources.getString("pressKey"), e -> listenButtonPress());
 		
 		keyInputText = new Text(myResources.getString("noKeyPressed"));	
 		
@@ -95,7 +88,7 @@ public class KeyBindingEditor extends EventEditorTab
 	{
 		VBox container = new VBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
 		// Adding now the Groovy Table
-		chooseFileButton = Utilities.makeButton(myResources.getString("chooseGroovy"), e -> getFile());
+		chooseFileButton = ButtonFactory.makeButton(myResources.getString("chooseGroovy"), e -> getFile());
 		
 		container.getChildren().addAll(chooseFileButton, actionText);
 		
@@ -105,12 +98,12 @@ public class KeyBindingEditor extends EventEditorTab
 	
 	private void makeEventButton()
 	{
-		createEventButton = Utilities.makeButton(myResources.getString("makeEvent"), e -> createEvent());
+		createEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
 		
 		createEventButton.setOnAction(e -> createEvent());
 		
 		// TODO test
-		getEventsString = Utilities.makeButton("TEST", e -> printEvents());
+		getEventsString = ButtonFactory.makeButton("TEST", e -> printEvents());
 		
 		pane.getChildren().addAll(createEventButton, getCreatedLevelText(), getEventsString);
 	}
@@ -145,7 +138,7 @@ public class KeyBindingEditor extends EventEditorTab
 	{
 		File groovyFile = null;
 		
-		groovyFile = Utilities.promptAndGetFile(new FileChooser.ExtensionFilter("groovy", "*.groovy"), myResources.getString("selectGroovy"));
+		groovyFile = FileUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("groovy", "*.groovy"), myResources.getString("selectGroovy"));
 		if ( groovyFile != null )
 		{
 			String[] splits = groovyFile.getPath().split("voogasalad_MakeGamesGreatAgain/");			

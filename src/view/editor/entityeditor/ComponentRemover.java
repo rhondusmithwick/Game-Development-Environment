@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import api.IComponent;
 import api.IEntity;
-import view.Utilities;
 import view.enums.DefaultStrings;
 import view.utilities.Alerts;
 
