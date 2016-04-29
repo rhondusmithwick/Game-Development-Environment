@@ -21,7 +21,7 @@ public class Main extends Application{
 		@Override
 		public void start (Stage stage) {
 			try {
-				String relative = FilePathRelativizer.getInstance().relativize(RELATIVIZER_TESTER);
+				String relative = FilePathRelativizer.relativize(RELATIVIZER_TESTER);
 				System.out.println(relative);
 			} catch (URISyntaxException e) {
 				e.printStackTrace();

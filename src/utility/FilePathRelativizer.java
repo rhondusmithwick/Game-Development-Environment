@@ -10,27 +10,15 @@ import java.nio.file.Paths;
  * @author Rhondu Smithwick
  */
 public class FilePathRelativizer {
-    private static FilePathRelativizer instance;
-    private String baseDirectory;
-
     private FilePathRelativizer () {
+
     }
 
-    public static FilePathRelativizer getInstance () {
-        if (instance == null) {
-            instance = new FilePathRelativizer();
-            instance.setBaseDirectory(System.getProperty("user.dir"));
-        }
-        return instance;
-    }
-
-    private void setBaseDirectory (String baseDirectory) {
-        this.baseDirectory = baseDirectory;
-    }
-
-    public String relativize (String otherDirectory) throws URISyntaxException {
+    public static String relativize (String otherDirectory) throws URISyntaxException {
+        String baseDirectory = System.getProperty("user.dir");
         Path base = Paths.get(baseDirectory);
         Path other = Paths.get(otherDirectory);
         return base.relativize(other).toString();
     }
+
 }
