@@ -29,18 +29,18 @@ public class PropertyTrigger extends Trigger {
         this.propertyName = propertyName;
     }
 
-    public PropertyTrigger(Map<String, String> triggerMapDescription) {
-        entityID = triggerMapDescription.get("entityID");
-        String componentClassName = characterComponentPath+triggerMapDescription.get("component");
-        componentClass = (Class<? extends IComponent>) Reflection.createInstance(componentClassName, new ArrayList<String>());
-//        try {
-//            componentClass = (Class<? extends IComponent>) Class.forName(characterComponentPath+triggerMapDescription.get("component"));
-//        } catch(ClassNotFoundException e) {
-//            System.out.println("component " + triggerMapDescription.get("component"));
-//            componentClass = null;
-//        }
-        propertyName = triggerMapDescription.get("propertyName");
-    }
+//    public PropertyTrigger(Map<String, String> triggerMapDescription) {
+//        entityID = triggerMapDescription.get("entityID");
+//        String componentClassName = characterComponentPath+triggerMapDescription.get("component");
+//        componentClass = (Class<? extends IComponent>) Reflection.createInstance(componentClassName, new ArrayList<String>());
+////        try {
+////            componentClass = (Class<? extends IComponent>) Class.forName(characterComponentPath+triggerMapDescription.get("component"));
+////        } catch(ClassNotFoundException e) {
+////            System.out.println("component " + triggerMapDescription.get("component"));
+////            componentClass = null;
+////        }
+//        propertyName = triggerMapDescription.get("propertyName");
+//    }
     
     @Override
     public void changed(ObservableValue arg0, Object arg1, Object arg2) {
@@ -70,8 +70,8 @@ public class PropertyTrigger extends Trigger {
         getProperty(universe).addListener(this);
     }
 
-    private SimpleObjectProperty<?> getProperty(ILevel universe) {
-        IEntity entity = universe.getEntity(entityID);
+    private SimpleObjectProperty<?> getProperty(ILevel level) {
+        IEntity entity = level.getEntitySystem().getEntity(entityID);
         IComponent component = entity.getComponent(componentClass);
         return component.getProperty(propertyName);
     }
