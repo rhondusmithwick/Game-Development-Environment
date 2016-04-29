@@ -40,7 +40,6 @@ public class KeyBindingEditor extends EventEditorTab
 	
 	private VBox pane;
 	
-	private VBox inputBox;
 	private KeyCode currentKey;
 	private Button listenToKey;
 	private Button chooseFileButton;
@@ -50,8 +49,8 @@ public class KeyBindingEditor extends EventEditorTab
 	private Button createEventButton;
 	private String language;
 	
-	
 	private KeyBindingTableManager tableManager;
+	private EventViewManager eventViewManager;
 	
 	// TODO test
 	private Button getEventsString;
@@ -64,6 +63,8 @@ public class KeyBindingEditor extends EventEditorTab
 		super(language, levelList);
 		this.language = language;
 		
+		eventViewManager = new EventViewManager();
+		
 		chosenEntityTitle = new Text("== PICKED ENTITIES ==\n");	// TODO resource
 		chosenEntityTitle.setFont(new Font(20));	// TODO enum...?
 		
@@ -74,7 +75,6 @@ public class KeyBindingEditor extends EventEditorTab
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
 		pane.setAlignment(Pos.TOP_LEFT);
-		inputBox = new VBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
 
 		tableManager = new KeyBindingTableManager(language, this);
 		
@@ -84,6 +84,7 @@ public class KeyBindingEditor extends EventEditorTab
 		pane.setOnKeyPressed(e -> keyWasPressed(e.getCode()));
 		
 		choseLevels(new ArrayList<ILevel>(levelList));
+		eventViewManager.levelWasPicked(new ArrayList<ILevel>(levelList));
 		
 		populateLayout();
 	}
@@ -104,7 +105,7 @@ public class KeyBindingEditor extends EventEditorTab
 		for ( ILevel level: getChosenLevels() )
 		{
 			System.out.println(level.getName());
-			System.out.println(level.getEventSystem().returnEventsAsString());
+			System.out.println(level.getEventSystem().getEventsAsString());
 		}
 	}
 	
@@ -120,8 +121,7 @@ public class KeyBindingEditor extends EventEditorTab
 		}
 		
 		flashCreatedEventText();
-		
-		myResources = ResourceBundle.getBundle(language);
+		eventViewManager.updateTable();
 	}
 
 	private void getFile()
@@ -158,19 +158,26 @@ public class KeyBindingEditor extends EventEditorTab
 	public void makeUpperSide()
 	{
 		HBox container = new HBox(GUISize.EVENT_EDITOR_PADDING.getSize());
+		VBox innerContainer = new VBox(GUISize.EVENT_EDITOR_SUBPADDING.getSize());	// TODO magic value
 		
 		listenToKey = Utilities.makeButton(myResources.getString("pressKey"), e -> listenButtonPress());
 		
 		keyInputText = new Text(myResources.getString("noKeyPressed"));	
 		
-		inputBox.getChildren().addAll(listenToKey, keyInputText);
+		chooseFileButton = Utilities.makeButton(myResources.getString("chooseGroovy"), e -> getFile());
+		
+		createEventButton = Utilities.makeButton(myResources.getString("makeEvent"), e -> createEvent());
+		
+		createEventButton.setOnAction(e -> createEvent());
+		
+		innerContainer.getChildren().addAll(listenToKey, keyInputText, chooseFileButton, actionText, createEventButton, getCreatedEventText());
 		
 		chosenEntityText = new Text();
 		
 		chosenEntityBox = new ScrollPane(new VBox(chosenEntityTitle, chosenEntityText));
 		
 		fillChosenEntityBox();
-		container.getChildren().addAll(getLevelPickerPane(), tableManager.getContainer(), chosenEntityBox, inputBox );
+		container.getChildren().addAll(getLevelPickerPane(), tableManager.getContainer(), chosenEntityBox, innerContainer );
 		
 		pane.getChildren().add(container);
 	}
@@ -179,19 +186,13 @@ public class KeyBindingEditor extends EventEditorTab
 	public void makeBottomSide()
 	{
 		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
-		// Adding now the Groovy Table
-		chooseFileButton = Utilities.makeButton(myResources.getString("chooseGroovy"), e -> getFile());
 		
-		container.getChildren().addAll(chooseFileButton, actionText);
-		
-		createEventButton = Utilities.makeButton(myResources.getString("makeEvent"), e -> createEvent());
-		
-		createEventButton.setOnAction(e -> createEvent());
-		
+		container.getChildren().add(eventViewManager.getPane());
+		/*
 		// TODO test
 		getEventsString = Utilities.makeButton("TEST", e -> printEvents());
+		*/
 		
-		container.getChildren().addAll(createEventButton, getCreatedLevelText(), getEventsString);
 		pane.getChildren().add(container);
 	}
 	
@@ -238,7 +239,7 @@ public class KeyBindingEditor extends EventEditorTab
 	public void actionOnChosenLevels(List<ILevel> levels) 
 	{
 		tableManager.levelWasPicked(levels);
-		
+		eventViewManager.levelWasPicked(levels);
 	}
 
 }

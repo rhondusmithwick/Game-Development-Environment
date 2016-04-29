@@ -127,7 +127,7 @@ public class PropertyEventEditor extends EventEditorTab
 		
 		container.getChildren().addAll(triggerText, actionText, makeEventButton);
 		container.getChildren().add(makeGroovySide());
-		container.getChildren().add(getCreatedLevelText());
+		container.getChildren().add(getCreatedEventText());
 		pane.getChildren().add(container);
 	}
 	
