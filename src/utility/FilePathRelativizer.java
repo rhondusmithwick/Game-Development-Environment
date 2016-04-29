@@ -16,7 +16,11 @@ public class FilePathRelativizer {
         String baseDirectory = System.getProperty("user.dir");
         Path base = Paths.get(baseDirectory);
         Path other = Paths.get(otherDirectory);
-        return base.relativize(other).toString();
+        try {
+            return base.relativize(other).toString();
+        } catch (IllegalArgumentException e) {
+            return otherDirectory;
+        }
     }
 
 }

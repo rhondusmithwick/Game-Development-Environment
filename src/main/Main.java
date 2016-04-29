@@ -3,12 +3,10 @@ package main;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
-import utility.FilePathRelativizer;
 import view.enums.GUISize;
 
 public class Main extends Application {
 
-    private static final String RELATIVIZER_TESTER = "/Users/rhondusmithwick/Documents/Classes/CS308/voogasalad/resources/spriteSheets";
     private Stage myStage;
 
     /**
@@ -19,8 +17,6 @@ public class Main extends Application {
 
     @Override
     public void start (Stage stage) {
-        String relative = FilePathRelativizer.relativize(RELATIVIZER_TESTER);
-        System.out.println(relative);
         myStage = stage;
         myStage.setTitle("VOOGA");
         myStage.setWidth(GUISize.MAIN_SIZE.getSize());
