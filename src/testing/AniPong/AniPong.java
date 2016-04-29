@@ -70,9 +70,9 @@ public class AniPong {
 //        events.registerEvent(new MouseTrigger(leftPaddle.getID()), new Action(movePaddleUpScript));
         rightPaddle.addComponent(new UserControl());
         // Walls
-        IEntity leftWall = AniSpriteLoader.createPlatform("LeftWall", new Position(578, 7));
+        IEntity leftWall = AniSpriteLoader.createPlatform("LeftWall", new Position(-578, 7));
         IEntity rightWall = AniSpriteLoader.createPlatform("RightWall", new Position(686, 7));
-        IEntity ceiling = AniSpriteLoader.createPlatform("Ceiling", new Position(7, 500));
+        IEntity ceiling = AniSpriteLoader.createPlatform("Ceiling", new Position(7, -500));
         IEntity floor = AniSpriteLoader.createPlatform("Floor", new Position(7, 500));
 
         universe.addEntities(ball, leftPaddle, rightPaddle, leftWall, rightWall, ceiling, floor);
@@ -87,8 +87,13 @@ public class AniPong {
         wKey.put("key", "M");
         events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_PRESSED), new Action(movePaddleUpScript, wKey));
         events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("S"), KeyEvent.KEY_PRESSED), new Action(movePaddleDownScript, sKey));
-        //events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_RELEASED), new Action(stopPaddleScript, mKey));
-        //events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("S"), KeyEvent.KEY_RELEASED), new Action(stopPaddleScript, mKey));
+        events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_RELEASED), new Action(stopPaddleScript, mKey));
+        events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("S"), KeyEvent.KEY_RELEASED), new Action(stopPaddleScript, mKey));
+        
+        events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_PRESSED), new Action(movePaddleUpScript, wKey));
+        events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("S"), KeyEvent.KEY_PRESSED), new Action(movePaddleDownScript, sKey));
+        events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_RELEASED), new Action(stopPaddleScript, mKey));
+        events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("S"), KeyEvent.KEY_RELEASED), new Action(stopPaddleScript, mKey));
         events.registerEvent(new MouseTrigger(MouseButton.PRIMARY, MouseEvent.MOUSE_CLICKED), new Action(stopPaddleScript));
         //System.out.println("Input keys cannot be registered without de-serialization error.");
         String s = events.getEventsAsString();
@@ -120,7 +125,7 @@ public class AniPong {
         Sprite imgPath = character.getComponent(Sprite.class);
         ImageView charSprite = imgPath.getImageView();
         charSprite.setPreserveRatio(true);
-        imgPath.setImageHeight(100);
+        //imgPath.setImageHeight(100);
         charSprite.setPreserveRatio(true);
         root.getChildren().add(charSprite);
         return charSprite;

@@ -1,5 +1,8 @@
 package model.core;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import api.IEntity;
 import api.IEventSystem;
 import api.ILevel;
@@ -20,6 +23,7 @@ public class SystemManager implements ISystemManager {
 
 	private GroovyShell shell = new GroovyShell(); // CANNOT BE SCRIPT ENGINE
 	private ILevel universe = new Level();
+	private List<ILevel> levelList = new ArrayList<>();
 	private ILevel sharedUniverse = new Level();
 	private boolean isRunning = true;
 	private Node root;
@@ -31,6 +35,7 @@ public class SystemManager implements ISystemManager {
 	public SystemManager(Node root, ILevel level) {
 		this.root = root;
 		this.universe = level;
+		levelList.add(level);
 		initLevel();
 	}
 
