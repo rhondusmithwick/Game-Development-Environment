@@ -16,6 +16,11 @@ import javafx.scene.text.Text;
 import view.editor.Editor;
 import view.enums.GUISize;
 
+/**
+ * Author: Alan, Carolyn
+ * Integration portion of the frontend for events system. 
+ */
+
 public abstract class EventEditorTab extends Editor
 {
 	private ObservableList<ILevel> levelList;
