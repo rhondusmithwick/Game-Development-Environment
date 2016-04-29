@@ -108,7 +108,7 @@ public class ACGame {
                     new PropertyTrigger(character.getID(), Position.class, "XPosition"),
                     new Action(healthScriptPath));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("D"), KeyEvent.KEY_PRESSED), new Action(moveRightScriptPath, map));
-            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("D"), KeyEvent.KEY_PRESSED), new Action(kickRightScriptPath, map));
+            eventSystem.registerEvent(new KeyTrigger(KeyCode.SPACE, KeyEvent.KEY_PRESSED), new Action(kickRightScriptPath, map));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("A"), KeyEvent.KEY_PRESSED), new Action(moveLeftScriptPath));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_PRESSED), new Action(jumpScriptPath));
             eventSystem.registerEvent(new MouseTrigger(MouseButton.PRIMARY, MouseEvent.MOUSE_CLICKED), new Action(moveLeftScriptPath));
