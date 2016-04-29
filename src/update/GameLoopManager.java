@@ -2,11 +2,14 @@ package update;
 
 import api.ISystemManager;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
@@ -21,7 +24,6 @@ import java.util.Arrays;
 import java.util.ResourceBundle;
 
 public class GameLoopManager {
-
 	private int padding = GUISize.LOOP_MANAGER_PADDING.getSize();
 	private ResourceBundle myResources;
 	private Stage stage = new Stage();
@@ -31,6 +33,7 @@ public class GameLoopManager {
 	private Scene scene;
 	private TextField keyField, valueField;
 	private ISystemManager systemManager;
+	private ListView<String> valueList = new ListView<String>();
 	
 	public GameLoopManager(String language, ISystemManager game) {
 		myResources = ResourceBundle.getBundle(language);
@@ -68,7 +71,9 @@ public class GameLoopManager {
 	
 	private VBox populateRight() {
 		VBox vBox = new VBox(padding);
-		vBox.getChildren().addAll(valueField);
+		Button button = Utilities.makeButton(myResources.getString("addValue"), e -> addKey());
+		ObservableList<String> names = FXCollections.observableArrayList("Hi");
+		valueList.setItems(names);
 		return vBox;
 	}
 	
