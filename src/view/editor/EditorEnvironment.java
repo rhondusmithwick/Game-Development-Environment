@@ -9,7 +9,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Group;
-import javafx.scene.SubScene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -18,11 +17,9 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
 import model.component.movement.Position;
 import model.component.visual.Sprite;
 import model.core.SystemManager;
-import model.entity.Level;
 import update.GameLoopManager;
 import view.View;
 import view.enums.DefaultEntities;
@@ -39,11 +36,9 @@ import java.util.*;
 
 public class EditorEnvironment extends Editor {
 
-	// TODO: resources
 	private static final int SINGLE = 1;
 	private BorderPane environmentPane = new BorderPane();
 	private ILevel myEntitySystem;
-	//private Group gameRoot = new Group();
 	private ResourceBundle myResources;
 	private ObservableList<IEntity> masterEntityList;
 	private ObservableList<ILevel> allEnvironmentsList;
@@ -55,7 +50,6 @@ public class EditorEnvironment extends Editor {
 	private ScrollPane scrollPane = new ScrollPane(environmentPane);
 	private ISystemManager game;
 	private IView view;
-	//private SubScene gameScene;
 	private GameLoopManager manager;
 
 	public EditorEnvironment(String language, ILevel toEdit, ObservableList<IEntity> masterList,
@@ -66,14 +60,17 @@ public class EditorEnvironment extends Editor {
 		});
 		masterEntityList = masterList;
 		myEntitySystem = toEdit; 
-
+		allEnvironmentsList = addToList;
+		
+		setUpGame(language);
+		addLayoutComponents();
+	}
+	
+	private void setUpGame(String language){
 		Group gameRoot = new Group();
 		game = new SystemManager(gameRoot, myEntitySystem);
 		view = new View(game, gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(),
 				scrollPane); 
-
-		allEnvironmentsList = addToList;
-		addLayoutComponents();
 		manager = new GameLoopManager(language, game);
 	}
 
@@ -108,14 +105,14 @@ public class EditorEnvironment extends Editor {
 		vbox.getChildren().clear();
 		for (IEntity entity : collection) {
 			Button addEntityButton = ButtonFactory.makeButton(( entity).getName(),
-					e -> addToSystemAndScene(EntityCopier.copyEntity( entity)));
+					e -> addToSystem(EntityCopier.copyEntity( entity)));
 			(addEntityButton).setMaxWidth(Double.MAX_VALUE);
 			vbox.getChildren().add(addEntityButton);
 		}
 	}
 
-	private void addToSystemAndScene(IEntity entity) {
-		this.myEntitySystem.addEntities(entity);
+	private void addToSystem(IEntity entity) {
+		this.myEntitySystem.addEntity(entity);
 		addToScene(entity);
 	}
 
@@ -129,17 +126,9 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void setRightPane() {
-		rightPane.getChildren().add(setSaveButton());
+		rightPane.getChildren().add(ButtonFactory.makeButton(myResources.getString("saveEnvironment"), e -> saveEnvironment()));
 		rightPane.getChildren().add(new ScrollPane(environmentEntityButtonsBox));
-		rightPane.getChildren().add(setLoopButton());
-	}
-
-	private Button setSaveButton() {
-		return ButtonFactory.makeButton(myResources.getString("saveEnvironment"), e -> saveEnvironment());
-	}
-	
-	private Button setLoopButton() {
-		return ButtonFactory.makeButton(myResources.getString("loopManager"), e -> createLoopManager());
+		rightPane.getChildren().add(ButtonFactory.makeButton(myResources.getString("loopManager"), e -> createLoopManager()));
 	}
 	
 	private void createLoopManager() {
@@ -189,17 +178,8 @@ public class EditorEnvironment extends Editor {
 		entityButton.setContextMenu(ContextMenuFactory.createContextMenu(menuMap));
 	}
 
-//	private void sendToBack(IEntity entity) {
-//		myEntitySystem = reorder(entity, myEntitySystem);
-//		environmentEntityButtons.getChildren().clear();
-//		gameRoot.getChildren().clear();
-//		for (IEntity addEntity : myEntitySystem.getAllEntities()) {
-//			addToScene(addEntity);
-//		}
-//	}
-
-	 private void sendToBack(IEntity e) {
-	 	e.getComponent(Sprite.class).setZLevel(-2);
+	private void sendToBack(IEntity entity) {
+		
 	 }
 
 	private void sendToFront(IEntity e) {
