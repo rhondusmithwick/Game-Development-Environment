@@ -44,8 +44,8 @@ public class ACGame {
     public static final String TITLE = "Ani's and Carolyn's game";
     public static final int KEY_INPUT_SPEED = 5;
     private static Group root;
-    private final ILevel universe = new Level();
-    private IEventSystem eventSystem=universe.getEventSystem();
+    private final ILevel level = new Level();
+    private IEventSystem eventSystem = level.getEventSystem();
     private final PhysicsEngine physics = new PhysicsEngine();
     private IEntity character;
     private final String IMAGE_PATH = "resources/images/blastoise.png";
@@ -72,7 +72,7 @@ public class ACGame {
         root = new Group();
         // Create a place to see the shapes
         myScene = new Scene(root, width, height, Color.WHITE);
-        universe.setOnInput(myScene);
+        level.setOnInput(myScene);
         return myScene;
     }
 
@@ -90,7 +90,7 @@ public class ACGame {
             character.forceAddComponent(pos, true);
             character.forceAddComponent(new Sprite(IMAGE_PATH), true);
             character.forceAddComponent(new Velocity(0, 0), true);
-            universe.addEntity(character);
+            level.getEntitySystem().addEntity(character);
             character.addComponent(new Sprite(IMAGE_PATH));
             //character.addComponent(new Gravity(5000));
             character.serialize("character.xml");
@@ -106,17 +106,17 @@ public class ACGame {
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("A"), KeyEvent.KEY_PRESSED), new Action(moveLeftScriptPath));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_PRESSED), new Action(jumpScriptPath));
             eventSystem.registerEvent(new MouseTrigger(MouseButton.PRIMARY, MouseEvent.MOUSE_CLICKED), new Action(moveLeftScriptPath));
-            universe.serialize("anitest.xml");
+            level.serialize("anitest.xml");
         } else {
             character = new XMLReader<IEntity>().readSingleFromFile("character.xml");
-            universe.addEntity(character);
+            level.getEntitySystem().addEntity(character);
             eventSystem.readEventFromFile("eventtest.xml");
         }
         charSpr = drawCharacter(character);
     }
 
     public void step(double dt) {
-    	universe.getPhysicsEngine().update(universe, dt);
+    	level.getPhysicsEngine().update(level, dt);
         // inputSystem.processInputs();
         eventSystem.updateInputs(dt);
         //moveEntity(character, 1);
@@ -140,7 +140,7 @@ public class ACGame {
         }
         return new Action(script);
     }
-    
+
     private void moveEntity(IEntity character, int move) {
         Position pos = character.getComponent(Position.class);
         pos.setX(pos.getX() + move);
