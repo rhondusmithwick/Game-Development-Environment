@@ -6,6 +6,12 @@ import api.ILevel;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+
+import utility.SingleProperty;
+import voogasalad.util.reflection.Reflection;
 
 /***
  * @author Anirudh Jonnavithula, Carolyn Yao Implements a ChangeListener that
@@ -14,8 +20,15 @@ import javafx.beans.value.ObservableValue;
 
 public class PropertyTrigger extends Trigger {
     private final String entityID;
-    private final Class<? extends IComponent> componentClass;
-    private final String propertyName;
+    private Class<? extends IComponent> componentClass;
+    private SimpleObjectProperty<Double> property;
+    private String propertyName;
+
+    public PropertyTrigger(String entityID, Class<? extends IComponent> componentClass, SimpleObjectProperty<Double> property) {
+        this.entityID = entityID;
+        this.componentClass = componentClass;
+        this.property = property;
+    }
 
     public PropertyTrigger(String entityID, Class<? extends IComponent> componentClass, String propertyName) {
         this.entityID = entityID;
@@ -32,27 +45,25 @@ public class PropertyTrigger extends Trigger {
     @Override
     @Deprecated
     public void clearListener(ILevel universe, InputSystem inputSystem) {
-        getProperty(universe).removeListener(this);
+        property.removeListener(this);
     }
     
     @Override
-    public void clearListener(ILevel universe) {
-        getProperty(universe).removeListener(this);
-    }
+    public void clearListener(ILevel universe) { property.removeListener(this); }
 
     @Override
     @Deprecated
     public void addHandler(ILevel universe, InputSystem inputSystem) {
-        getProperty(universe).addListener(this);
+        property.addListener(this);
     }
 
     @Override
     public void addHandler(ILevel universe) {
-        getProperty(universe).addListener(this);
+        property.addListener(this);
     }
 
-    private SimpleObjectProperty<?> getProperty(ILevel universe) {
-        IEntity entity = universe.getEntity(entityID);
+    private SimpleObjectProperty<?> getProperty(ILevel level) {
+        IEntity entity = level.getEntitySystem().getEntity(entityID);
         IComponent component = entity.getComponent(componentClass);
         return component.getProperty(propertyName);
     }
@@ -60,7 +71,7 @@ public class PropertyTrigger extends Trigger {
     @Override
     public String toString() {
         return String.format("%s; %s; %s; %s", getClass().getSimpleName(), entityID, componentClass.getSimpleName(),
-                propertyName);
+                property.toString());
     }
 
 }

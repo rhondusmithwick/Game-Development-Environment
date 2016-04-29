@@ -16,11 +16,12 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import view.Authoring;
-import view.Utilities;
 import view.editor.Editor;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
+import view.utilities.Alerts;
+import view.utilities.ButtonFactory;
 
 public class GameEditor extends Editor  {
 
@@ -109,14 +110,14 @@ public class GameEditor extends Editor  {
 	private VBox leftPane() {
 		VBox temp = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
 		temp.getChildren().addAll(gameDetails.getElements());
-		temp.getChildren().addAll(Arrays.asList(entDisp.makeNewObject(), envDisp.makeNewObject(), eventDisplay.makeNewObject(), Utilities.makeButton(myResources.getString("saveGame"), e->saveGame())));
+		temp.getChildren().addAll(Arrays.asList(entDisp.makeNewObject(), envDisp.makeNewObject(), eventDisplay.makeNewObject(), ButtonFactory.makeButton(myResources.getString("saveGame"), e->saveGame())));
 
 		return temp;
 	}
 	
 	private void saveGame() {
 		new GameSaver().saveGame(masterEnvironmentList, masterEntityList, gameDetails.getGameDetails());
-		Utilities.showAlert("", "", myResources.getString("saved"), AlertType.INFORMATION);
+		Alerts.showAlert("", "", myResources.getString("saved"), AlertType.INFORMATION);
 	}
 
 

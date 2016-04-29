@@ -3,13 +3,15 @@ package api;
 import java.io.File;
 import java.util.Observer;
 
-
 import javafx.beans.value.ChangeListener;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import events.Action;
 import events.Trigger;
 import javafx.scene.input.KeyEvent;
+import utility.Pair;
 
 /**
  * Might be scrapped in the future! Reference:
@@ -20,13 +22,20 @@ import javafx.scene.input.KeyEvent;
  * https://wiki.jmonkeyengine.org/doku.php/jme3:scripting:groovy_event [Trigger:
  * Event(s)+Condition(s)->Result(s)]
  * 
- * @author Tom Wu, ANirudh Jonnavithula
+ * @author Tom Wu, ANirudh Jonnavithula, Carolyn Yao
  */
 public interface IEventSystem extends Observer, ISerializable {
 
 	// void init(IEntitySystem universe);
-
+	
+	/**
+	 * Registers a trigger-action pair in the event system
+	 * @param trigger - The trigger
+	 * @param action - The corresponding action
+	 */
 	void registerEvent(Trigger trigger, Action action);
+
+	void registerEvent(Pair<Trigger, Action> eventPair);
 
 	void readEventFromFile(String filepath);
 
@@ -36,7 +45,7 @@ public interface IEventSystem extends Observer, ISerializable {
 
 	String returnEventsAsString();
 	
-	void setUniverse(ILevel universe);
+	void setLevel(ILevel level);
 
 	void updateInputs(double dt);
 
@@ -48,13 +57,15 @@ public interface IEventSystem extends Observer, ISerializable {
 //
 //	void listenToMousePress(ChangeListener listener);
 
-	void unListenToKeyPress(ChangeListener listener);
+	void unListenToInput(ChangeListener listener);
 
-	void listenToKeyPress(ChangeListener listener);
+	void listenToInput(ChangeListener listener);
 
 	void unListenToTimer(ChangeListener listener);
 
 	void listenToTimer(ChangeListener listener);
 	
 	String getEventsAsString();
+
+	void setOnInput(Scene scene);
 }

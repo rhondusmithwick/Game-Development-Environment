@@ -1,5 +1,6 @@
 package events;
 
+import api.IEntitySystem;
 import api.IEventSystem;
 import api.ILevel;
 
@@ -10,7 +11,10 @@ import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
+import utility.Pair;
 import javafx.scene.input.MouseEvent;
 
 import javax.script.ScriptEngine;
@@ -20,8 +24,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 
@@ -40,20 +44,27 @@ import java.util.Observer;
 
 public class EventSystem implements Observer, IEventSystem {
     private final InputSystem inputSystem = new InputSystem();
+    private final EventFactory eventFactory = new EventFactory();
+    private transient ILevel level;
 //    private final MouseSystem mouseSystem = new MouseSystem();
-    private transient ILevel universe;
     private ListMultimap<Trigger, Action> actionMap = ArrayListMultimap.create();
     private final SimpleDoubleProperty timer = new SimpleDoubleProperty(this, "timer", 0.0);
     private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
-    public EventSystem(ILevel universe) {
-        setUniverse(universe);
+
+    public EventSystem(ILevel level) {
+        setLevel(level);
     }
 
-    @Override
+    public void registerEvent(Pair<Trigger, Action> eventPair) {
+        Trigger trigger = eventPair._1();
+        Action action = eventPair._2();
+        registerEvent(trigger, action);
+    }
+
     public void registerEvent(Trigger trigger, Action action) {
     	actionMap.put(trigger, action);
         trigger.addObserver(this);
-        trigger.addHandler(universe);
+        trigger.addHandler(level);
     }
 
     @Override
@@ -84,13 +95,13 @@ public class EventSystem implements Observer, IEventSystem {
 //    }
     
     @Override
-    public void listenToKeyPress(ChangeListener listener) {
-        inputSystem.listenToKeyPress(listener);
+    public void listenToInput(ChangeListener listener) {
+        inputSystem.listenToInput(listener);
     }
 
     @Override
-    public void unListenToKeyPress(ChangeListener listener) {
-        inputSystem.unListenToKeyPress(listener);
+    public void unListenToInput(ChangeListener listener) {
+        inputSystem.unListenToInput(listener);
     }
     
     @Override
@@ -106,15 +117,14 @@ public class EventSystem implements Observer, IEventSystem {
     @Override
     public void update(Observable o, Object arg) {
         List<Action> actions = actionMap.get((Trigger) o);
-        actions.stream().forEach(e -> e.activate(engine, universe));
+        actions.stream().forEach(e -> e.activate(engine, level));
     }
 
-    @Override
-    public void setUniverse(ILevel universe) {
-    	if(!actionMap.isEmpty() && this.universe!=null) {
+    public void setLevel(ILevel level) {
+    	if(!actionMap.isEmpty() && this.level.getEntitySystem()!=null) {
     		this.unbindEvents();
     	}
-        this.universe = universe;
+        this.level = level;
         this.bindEvents();
     }
 
@@ -147,9 +157,17 @@ public class EventSystem implements Observer, IEventSystem {
         return new XMLWriter<ListMultimap<Trigger, Action>>().writeToString(actionMap);
     }
     
+    @Override
     public String getEventsAsString() {
     	String s = actionMap.toString();
     	return actionMap.toString();
+    }
+    
+    @Override
+    public void setOnInput(Scene scene) {
+    	scene.setOnKeyPressed(e->inputSystem.takeInput(e));
+    	scene.setOnKeyReleased(e->inputSystem.takeInput(e));
+    	scene.setOnMouseClicked(e->inputSystem.takeInput(e));
     }
 
     private void stopObservingTriggers(ListMultimap<Trigger, Action> map) {
@@ -165,11 +183,11 @@ public class EventSystem implements Observer, IEventSystem {
     }
 
     private void addHandlers() {
-        actionMap.keySet().stream().forEach(trigger -> trigger.addHandler(universe));
+        actionMap.keySet().stream().forEach(trigger -> trigger.addHandler(level));
     }
 
     private void clearListeners() {
-        actionMap.keySet().stream().forEach(trigger -> trigger.clearListener(universe));
+        actionMap.keySet().stream().forEach(trigger -> trigger.clearListener(level));
     }
 
     private void unbindEvents() {

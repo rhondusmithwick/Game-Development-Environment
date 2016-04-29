@@ -10,11 +10,10 @@ public enum DefaultStrings {
 	DEFAULT_ICON("resources/guiImages/default_icon.png"),
 	ENTITY_EDITOR_NAME("EditorEntity"),
 	ENVIRONMENT_EDITOR_NAME("EditorEnvironment"),
-	LANG_LOC("propertyFiles/"), 
+	LANG_LOC("languages/"),
 	COMPONENT_LOC("propertyFiles/componentLocations"),
 	SCRIPTS_LOC("propertyFiles/scriptLocations"),
 	CREATE_LOC("resources/createdGames/"),
-	TEMPLATE_DIREC_LOC("resources/templates/"),
 	TEMPLATE_BUNDLE_LOC("templates/"),
 	POSITION_COMP_NAME(Position.class.getName()),
 	XML(".xml"), 
@@ -29,7 +28,12 @@ public enum DefaultStrings {
 	TEMP_LIST("_templatelist"),
 	DEF_NAME("DefaultName"), 
 	GUI_RESOURCES("guiObject/guiComponents"),
-	GUI_FACTORY("guiObject/GuiObjectFactory");
+	GUI_FACTORY("guiObject/GuiObjectFactory"),
+	TEMPLATE_LANG("-templates"),
+	TEMPLATE_DIREC_LOC("resources/templates"),
+	RESOURCES("resources/"),
+	COMPONENTS("-components"),
+	 PROPERTIES("-properties");
 	
 
 

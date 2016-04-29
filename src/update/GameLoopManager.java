@@ -15,10 +15,12 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
-import view.Utilities;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
+import view.utilities.ButtonFactory;
+import view.utilities.ComboFactory;
+import view.utilities.TextFieldFactory;
 import java.io.File;
 import java.util.Arrays;
 import java.util.ResourceBundle;
@@ -44,8 +46,8 @@ public class GameLoopManager {
 		stage.setTitle(myResources.getString("loopManager"));
 		pane.setPadding(ViewInsets.LOOP_EDIT.getInset());
 		systemManager = game;
-		keyField = Utilities.makeTextArea(myResources.getString("addKey"));
-		valueField = Utilities.makeTextArea(myResources.getString("valueText"));
+		keyField = TextFieldFactory.makeTextArea(myResources.getString("addKey"));
+		valueField = TextFieldFactory.makeTextArea(myResources.getString("valueText"));
 		listView.setCellFactory(e -> new DragDropCell<String>());
 		listView.setEditable(true);
 		populateStage();
@@ -58,22 +60,22 @@ public class GameLoopManager {
 		left.prefWidthProperty().bind(halfPane);
 		right.prefWidthProperty().bind(halfPane);
 		HBox container = createContainer(left, right);
-		Button saveButton = Utilities.makeButton(myResources.getString("saveMeta"), e -> saveMetadata());
+		Button saveButton = ButtonFactory.makeButton(myResources.getString("saveMeta"), e -> saveMetadata());
 		pane.setAlignment(Pos.CENTER);
 		pane.getChildren().addAll(container, saveButton);
 	}
 
 	private VBox populateLeft() {
 		VBox vBox = new VBox(padding);
-		comboBox = Utilities.makeComboBox(myResources.getString("selectKey"), Arrays.asList(myResources.getString("keyDefault")), null);
-		Button button = Utilities.makeButton(myResources.getString("addKey"), e -> addKey());
+		comboBox = ComboFactory.makeComboBox(myResources.getString("selectKey"), Arrays.asList(myResources.getString("keyDefault")), null);
+		Button button = ButtonFactory.makeButton(myResources.getString("addKey"), e -> addKey());
 		vBox.getChildren().addAll(createContainer(keyField, button), comboBox);
 		return vBox;
 	}
 
 	private VBox populateRight() {
 		VBox vBox = new VBox(padding);
-		Button button = Utilities.makeButton(myResources.getString("addValue"), e -> addValue());
+		Button button = ButtonFactory.makeButton(myResources.getString("addValue"), e -> addValue());
 		vBox.getChildren().addAll(createContainer(valueField, button), listView);
 		return vBox;
 	}

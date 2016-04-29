@@ -282,4 +282,5 @@ public interface IEntitySystem {
     default void removeAllBindingsFromComponents() {
         getAllComponents().stream().forEach(IComponent::removeBindings);
     }
+
 }
