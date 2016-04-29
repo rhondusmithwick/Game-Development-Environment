@@ -21,7 +21,7 @@ public class ViewUtilities {
 	private static final double MARGIN = 8;
 	private static final int DEPTH = 70;
 	private static final Color HIGHLIGHT_COLOR = Color.YELLOW;
-	private static final String SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(255,255,51,0.8), 10, 0, 0, 0)",
+	private static final String SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(22, 0, 255, 0.8), 10, 0, 0, 0)",
 			NO_SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0, 0, 0)";
 	private Group root;
 	private ILevel universe;
@@ -127,12 +127,7 @@ public class ViewUtilities {
 			long duration = System.currentTimeMillis()-timeMouseClicked;
 			if(duration<clickThresholdMillis) { // click event handling
 				if(heldDownSprite!=null) {
-					ImageView spriteImageView = heldDownSprite.getComponent(Sprite.class).getImageView();
-					if (spriteImageView.getStyle().equals(NO_SELECT_EFFECT)) { // not selected
-						this.highlight(heldDownSprite);
-					} else {
-						this.dehighlight(heldDownSprite);
-					}
+					toggleHighlight(heldDownSprite);
 				}
 			}
 //			System.out.println("released - "+duration);
@@ -162,9 +157,9 @@ public class ViewUtilities {
 	}
 
 	public void toggleHighlight(IEntity entity) {
-		Sprite path = entity.getComponent(Sprite.class);
-		ImageView imageView = path.getImageView();
-		if (!imageView.getStyle().equals(SELECT_EFFECT)) { 
+//		Sprite path = entity.getComponent(Sprite.class);
+//		ImageView imageView = path.getImageView();
+		if (!selectedSprites.contains(entity)) {
 			System.out.println("highlight");
 			this.highlight(entity);
 		} else {

@@ -5,7 +5,6 @@ import api.ISystemManager;
 import api.IView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
@@ -139,44 +138,44 @@ public class View implements IView {
 		viewUtils.highlight(entity);
 	}
 
-	private void modulateZLevel(IEntity e, ObservableList<Node> imageViews) {
-		Sprite display = e.getComponent(Sprite.class);
-		ImageView imageView = display.getImageView();
-
-		int z = display.getZLevel();
-		int index = imageViews.indexOf(imageView);
-		imageViews.remove(imageView); // important
-		switch(z) {
-			case -2:
-				imageViews.add(0, imageView);
-				System.out.println("-2");
-				break;
-			case -1:
-				if(index-1>=0) {
-					imageViews.add(index - 1, imageView);
-					System.out.println("-1");
-				} else {
-					imageViews.add(0, imageView);
-				}
-				break;
-			case 0: // do nothing
-				imageViews.add(index, imageView);
-				break;
-			case 1:
-				if(index+1<imageViews.size()) {
-					imageViews.add(index + 1, imageView);
-					System.out.println("1");
-					break;
-				} else {
-					imageViews.add(imageView);
-				}
-			case 2:
-				imageViews.add(imageView); // to end of list
-				System.out.println("2");
-				break;
-		}
-		display.setZLevel(0); // reset
-	}
+//	private void modulateZLevel(IEntity e, List<Node> imageViews) {
+//		Sprite display = e.getComponent(Sprite.class);
+//		ImageView imageView = display.getImageView();
+//
+//		int z = display.getZLevel();
+//		int index = imageViews.indexOf(imageView);
+//		imageViews.remove(imageView); // important
+//		switch(z) {
+//			case -2:
+//				imageViews.add(0, imageView);
+//				System.out.println("-2");
+//				break;
+//			case -1:
+//				if(index-1>=0) {
+//					imageViews.add(index - 1, imageView);
+//					System.out.println("-1");
+//				} else {
+//					imageViews.add(0, imageView);
+//				}
+//				break;
+//			case 0: // do nothing
+//				imageViews.add(index, imageView);
+//				break;
+//			case 1:
+//				if(index+1<imageViews.size()) {
+//					imageViews.add(index + 1, imageView);
+//					System.out.println("1");
+//					break;
+//				} else {
+//					imageViews.add(imageView);
+//				}
+//			case 2:
+//				imageViews.add(imageView); // to end of list
+//				System.out.println("2");
+//				break;
+//		}
+//		display.setZLevel(0); // reset
+//	}
 
 	private ImageView getUpdatedImageView(IEntity e) {
 		Position pos = e.getComponent(Position.class);
@@ -222,29 +221,31 @@ public class View implements IView {
 		model.step(dt);
 
 		// render
-//		root.getChildren().clear();
+		List<Node> imageViews = root.getChildren();
+		root.getChildren().clear();
 		Set<IEntity> spriteEntities = model.getEntitySystem().getEntitiesWithComponents(Sprite.class, Position.class);
-		List<ImageView> updatedImageViews = new ArrayList<>();
+//		List<Node> updatedImageViews = new ArrayList<>();
 		for (IEntity e : spriteEntities) {
 			viewUtils.makeSelectable(e);
-			updatedImageViews.add(e.getComponent(Sprite.class).getImageView());
+			imageViews.addAll(getCollisionShapes(e));
+//			updatedImageViews.add(getUpdatedImageView(e));
+			imageViews.add(getUpdatedImageView(e));
 		}
 
-		ObservableList<Node> imageViews = root.getChildren();
-		for(int i=0; i<imageViews.size(); i++) { // remove old sprites
-			Node imageView = imageViews.get(i);
-			if(!updatedImageViews.contains(imageView)) {
-				imageViews.remove(imageView);
-				i--;
-			}
-		}
-		for(IEntity e : spriteEntities) { // add new sprites
-			ImageView imageView = e.getComponent(Sprite.class).getImageView();
-			if(!imageViews.contains(imageView)) { // populate root with new sprites
-				imageViews.add(imageView);
-			}
-//			modulateZLevel(e, imageViews);
-		}
+//		for(int i=0; i<imageViews.size(); i++) { // remove old sprites
+//			Node imageView = imageViews.get(i);
+//			if(!updatedImageViews.contains(imageView)) {
+//				imageViews.remove(imageView);
+//				i--;
+//			}
+//		}
+//		for(IEntity e : spriteEntities) { // add new sprites
+//			ImageView imageView = e.getComponent(Sprite.class).getImageView();
+//			if(!imageViews.contains(imageView)) { // populate root with new sprites
+//				imageViews.add(imageView);
+//			}
+////			modulateZLevel(e, imageViews);
+//		}
 	}
 
 	private BorderPane createBorderPane(Group root, SubScene subScene) {
