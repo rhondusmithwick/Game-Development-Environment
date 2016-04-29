@@ -55,9 +55,9 @@ public class EventParser
 					triggerSplit[3].trim().split("=")[0];
 					*/
 			
-			trigger = triggerSplit[3].trim().split("=")[0];
-		
-			parseResults.put(trigger, getFilename(triggerSplit[3].split("=")[1]));
+//			trigger = triggerSplit[3].trim().split("=")[0];
+//
+//			parseResults.put(trigger, getFilename(triggerSplit[3].split("=")[1]));
 		}
 		
 		return parseResults;

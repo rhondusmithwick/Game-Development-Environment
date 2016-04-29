@@ -7,4 +7,8 @@ public interface IView {
 	Pane getPane();
 
 	SubScene getSubScene();
+	
+	void highlight(IEntity entity);
+
+	void toggleHighlight(IEntity entity);
 }

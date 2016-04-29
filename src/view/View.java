@@ -119,6 +119,7 @@ public class View implements IView {
 	private SubScene createSubScene(Group root, double width, double height) {
 		this.root = root;
 		SubScene subScene = new SubScene(root, width, height);
+		subScene.setFill(Color.WHITE);
 		// TODO: not printing key presses, why?!
 		// subScene.setOnMouseClicked(e -> System.out.println(e.getX()));
 		// scene.setOnKeyTyped(e -> System.out.println(e.getCode()));
@@ -126,6 +127,14 @@ public class View implements IView {
 		// scene.setOnKeyPressed(e -> System.out.println(e.getCode()));
 		
 		return subScene;
+	}
+	
+	public void toggleHighlight(IEntity entity){
+		viewUtils.toggleHighlight(entity);
+	}
+	
+	public void highlight(IEntity entity){
+		viewUtils.highlight(entity);
 	}
 
 	private void modulateZLevel(IEntity e, ObservableList<Node> imageViews) {
