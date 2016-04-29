@@ -15,11 +15,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import model.entity.Entity;
 import view.Authoring;
-import view.Utilities;
 import view.editor.entityeditor.EditorEntity;
 import view.editor.eventeditor.EditorEvent;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
+import view.utilities.ButtonFactory;
 
 public class EventDisplay extends ObjectDisplay
 {
@@ -52,7 +52,7 @@ public class EventDisplay extends ObjectDisplay
 
 	@Override
 	public Node makeNewObject() {
-		return Utilities.makeButton(myResources.getString(DefaultStrings.EVENT_EDITOR_NAME.getDefault()), 
+		return ButtonFactory.makeButton(myResources.getString(DefaultStrings.EVENT_EDITOR_NAME.getDefault()), 
 				e -> createEventEditor());//createEditor(EditorEvent.class, new Entity(), masterEnvironmentList));
 		}
 	

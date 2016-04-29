@@ -7,10 +7,11 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.AudioClip;
-import view.Utilities;
 import view.enums.DefaultStrings;
 import view.enums.FileExtensions;
 import view.enums.GUISize;
+import view.utilities.ButtonFactory;
+import view.utilities.FileUtilities;
 
 
 public class GuiObjectMusicChooser extends GuiObject{
@@ -24,8 +25,8 @@ public class GuiObjectMusicChooser extends GuiObject{
 		super(name, resourceBundle);
 		this.myPropertiesNames=ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
 		myResources= ResourceBundle.getBundle(language);
-		setMusic = Utilities.makeButton(myPropertiesNames.getString(name), e->changeMusic());
-		play = Utilities.makeButton(myResources.getString("play"), e->playMusic());
+		setMusic = ButtonFactory.makeButton(myPropertiesNames.getString(name), e->changeMusic());
+		play = ButtonFactory.makeButton(myResources.getString("play"), e->playMusic());
 		this.property=(SimpleObjectProperty<String>) property;
 		setPreview(new File(this.property.getValue()));
 	}
@@ -41,7 +42,7 @@ public class GuiObjectMusicChooser extends GuiObject{
 	}
 
 	private File getMusic() {
-		return Utilities.promptAndGetFile(FileExtensions.MP3.getFilter(), myResources.getString("ChooseFile"));
+		return FileUtilities.promptAndGetFile(FileExtensions.MP3.getFilter(), myResources.getString("ChooseFile"));
 		
 	}
 	

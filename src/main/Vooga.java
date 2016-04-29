@@ -18,11 +18,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import view.Authoring;
-import view.Utilities;
 import view.beginningmenus.StartUpMenu;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.gameplaying.GamePlayer;
+import view.utilities.ButtonFactory;
+import view.utilities.ComboFactory;
+import view.utilities.FileUtilities;
 
 public class Vooga extends StartUpMenu {
 
@@ -61,16 +63,16 @@ public class Vooga extends StartUpMenu {
 	}
 
 	private void createButtons() {
-		Button makeGame = Utilities.makeButton(myResources.getString("makeGame"), e->createEditor());
-		Button editGame = Utilities.makeButton(myResources.getString("editGame"), e->loadCreated());
-		Button playGame = Utilities.makeButton(myResources.getString("playGame"), e->createPlayer());
+		Button makeGame = ButtonFactory.makeButton(myResources.getString("makeGame"), e->createEditor());
+		Button editGame = ButtonFactory.makeButton(myResources.getString("editGame"), e->loadCreated());
+		Button playGame = ButtonFactory.makeButton(myResources.getString("playGame"), e->createPlayer());
 		super.addNodesToVBox(Arrays.asList(makeGame,editGame, playGame));
 	}
 
 
 
 	private String chooseGame() {
-		List<String> games = new ArrayList<>(Utilities.getAllFromDirectory(DefaultStrings.CREATE_LOC.getDefault()));
+		List<String> games = new ArrayList<>(FileUtilities.getAllFromDirectory(DefaultStrings.CREATE_LOC.getDefault()));
 		List<HBox> hboxes = new ArrayList<>();
 		games.stream().forEach(game->makeHBox(game, hboxes));
 		gameChooser = new ChoiceDialog<HBox>(null,hboxes);
@@ -104,7 +106,7 @@ public class Vooga extends StartUpMenu {
 
 
 	private void setLanguage() {
-		languages = Utilities.makeComboBox(myResources.getString("displayLanguage"), Arrays.asList("english", "arabic"), null);
+		languages = ComboFactory.makeComboBox(myResources.getString("displayLanguage"), Arrays.asList("english", "arabic"), null);
 		super.addNodesToVBox(Arrays.asList(languages));
 
 	}
