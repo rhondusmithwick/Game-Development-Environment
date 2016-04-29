@@ -1,14 +1,14 @@
 package model.core;
 
-import api.IEntity;
-import api.IEventSystem;
-import api.ILevel;
-import api.ISystemManager;
+import api.*;
 import datamanagement.XMLReader;
 import groovy.lang.GroovyShell;
-import javafx.scene.Node;
+import javafx.scene.Group;
+import javafx.scene.Scene;
 import model.entity.Entity;
 import model.entity.Level;
+
+import java.util.List;
 //import testing.demo.GroovyDemoTest;
 
 /**
@@ -22,14 +22,14 @@ public class SystemManager implements ISystemManager {
 	private ILevel universe = new Level();
 	private ILevel sharedUniverse = new Level();
 	private boolean isRunning = true;
-	private Node root;
+	private Scene scene = new Scene(new Group()); // TODO: remove
 
-	public SystemManager(Node root) {
-		this(root, new Level());
+	public SystemManager(Scene scene) {
+		this(scene, new Level());
 	}
 
-	public SystemManager(Node root, ILevel level) {
-		this.root = root;
+	public SystemManager(Scene scene, ILevel level) {
+		this.scene = scene;
 		this.universe = level;
 		initLevel();
 	}
@@ -46,7 +46,7 @@ public class SystemManager implements ISystemManager {
 
 	private void initLevel() {
 		universe.init(shell, this);
-		root.setOnKeyPressed(e -> universe.getEventSystem().takeInput(e)); // TODO: take in all inputs
+		scene.setOnKeyPressed(e -> universe.getEventSystem().takeInput(e)); // TODO: take in all inputs
 		shell.setVariable("game", this);
 		shell.setVariable("universe", universe);
 		//shell.setVariable("demo", new GroovyDemoTest()); // TODO: remove
@@ -61,13 +61,27 @@ public class SystemManager implements ISystemManager {
 	public void step(double dt) {
 		if (this.isRunning) {
 			universe.update(dt);
-			// System.out.println(universe.getAllEntities());
+			List<IEntity> entities = universe.getAllEntities();
+			for(IEntity e : entities) {
+				System.out.print(e.getName()+", ");
+			}
+			System.out.println();
 		}
 	}
 
 	@Override
-	public ILevel getEntitySystem() {
+	public IEntitySystem getEntitySystem() {
+		return universe.getEntitySystem();
+	}
+
+	@Override
+	public ILevel getLevel() {
 		return this.universe;
+	}
+
+	@Override
+	public ILevel getSharedLevel() {
+		return this.sharedUniverse;
 	}
 
 	@Deprecated
@@ -89,11 +103,6 @@ public class SystemManager implements ISystemManager {
 	// this.eventSystem = new EventSystem(universe);
 	// this.physics = new PhysicsEngine();
 	// }
-
-	@Override
-	public ILevel getSharedEntitySystem() {
-		return this.sharedUniverse;
-	}
 
 	@Override
 	public void saveLevel(String filename) {
