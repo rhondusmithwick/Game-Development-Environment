@@ -52,4 +52,13 @@ public class Alerts {
 		alert.setContentText(message);
 		alert.show();
 	}
+	
+	public static ButtonType confirmationBox(String title, String header, String message) {
+		Alert alert = new Alert(AlertType.CONFIRMATION);
+		alert.setTitle(title);
+		alert.setHeaderText(header);
+		alert.setContentText(message);
+
+		return null;
+	}
 }

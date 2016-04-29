@@ -13,10 +13,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import model.entity.Entity;
 import view.Authoring;
-import view.Utilities;
 import view.editor.entityeditor.EditorEntity;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
+import view.utilities.ButtonFactory;
+import view.utilities.FileUtilities;
 
 public class EntityDisplay extends ObjectDisplay{
 
@@ -50,14 +51,14 @@ public class EntityDisplay extends ObjectDisplay{
 	}
 
 	private void addEntityToScroll(ISerializable entity, VBox container) {
-		container.getChildren().add(Utilities.makeButton(((Entity) entity).getName(), f->createEditor(EditorEntity.class.getName(), language,entity, masterEntList)));
+		container.getChildren().add(ButtonFactory.makeButton(((Entity) entity).getName(), f->createEditor(EditorEntity.class.getName(), language,entity, masterEntList)));
 
 	}
 	
 	@Override
 	public Node makeNewObject(){
 		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
-		container.getChildren().add(Utilities.makeButton(myResources.getString(DefaultStrings.ENTITY_EDITOR_NAME.getDefault()), 
+		container.getChildren().add(ButtonFactory.makeButton(myResources.getString(DefaultStrings.ENTITY_EDITOR_NAME.getDefault()), 
 				e->entityWithTemplate()));
 		
 		return container;
@@ -67,7 +68,7 @@ public class EntityDisplay extends ObjectDisplay{
 
 	private void entityWithTemplate(){
 		List<String> titles = new ArrayList<>();
-		Utilities.getAllFromDirectory(DefaultStrings.TEMPLATE_DIREC_LOC.getDefault()).forEach(e-> titles.add(myTemplates.getString(e)));
+		FileUtilities.getAllFromDirectory(DefaultStrings.TEMPLATE_DIREC_LOC.getDefault()).forEach(e-> titles.add(myTemplates.getString(e)));
 		ChoiceDialog<String> templates = new ChoiceDialog<>(myResources.getString("None"), titles);
 		templates.setTitle(myResources.getString("entityType"));
 		templates.showAndWait();

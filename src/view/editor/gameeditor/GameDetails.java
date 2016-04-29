@@ -14,11 +14,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import view.Utilities;
 import view.enums.DefaultStrings;
 import view.enums.FileExtensions;
 import view.enums.GUISize;
 import view.enums.Indexes;
+import view.utilities.ButtonFactory;
+import view.utilities.TextFieldFactory;
 
 public class GameDetails {
 	
@@ -47,7 +48,7 @@ public class GameDetails {
 		HBox container = new HBox(GUISize.GAME_EDITOR_HBOX_PADDING.getSize());
 		Label title = new Label(myResources.getString(name));
 		title.setMinWidth(GUISize.LABEL_MIN_WIDTH.getSize());
-		TextField tArea = Utilities.makeTextArea(myResources.getString(name));
+		TextField tArea = TextFieldFactory.makeTextArea(myResources.getString(name));
 		container.getChildren().addAll(title, tArea);
 		return container;
 	}
@@ -59,7 +60,7 @@ public class GameDetails {
 		Label iconTitle = new Label(myResources.getString("gameIcon"));
 		icon = new ImageView();
 		setIconPicture(new File(DefaultStrings.DEFAULT_ICON.getDefault()));
-		iconBox.getChildren().addAll(iconTitle, icon, Utilities.makeButton(myResources.getString("chooseIcon"), e->updateIcon()));
+		iconBox.getChildren().addAll(iconTitle, icon, ButtonFactory.makeButton(myResources.getString("chooseIcon"), e->updateIcon()));
 		return iconBox;
 	}
 

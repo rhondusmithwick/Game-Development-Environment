@@ -5,9 +5,10 @@ import java.util.Collection;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.ResourceBundle;
-import view.Utilities;
 import view.editor.Editor;
 import view.enums.DefaultStrings;
+import view.utilities.ButtonFactory;
+import view.utilities.TextFieldFactory;
 import model.entity.Entity;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
@@ -77,14 +78,14 @@ public class EditorEntity extends Editor{
 	}
 
 	private void addButtons() {
-		saveButton = Utilities.makeButton(myResources.getString("saveEntity"), e -> save());
-		addButton = Utilities.makeButton(myResources.getString("addComponent"), e -> addComponent());
-		removeButton = Utilities.makeButton(myResources.getString("removeComponent"), e->removeComponent());
+		saveButton = ButtonFactory.makeButton(myResources.getString("saveEntity"), e -> save());
+		addButton = ButtonFactory.makeButton(myResources.getString("addComponent"), e -> addComponent());
+		removeButton = ButtonFactory.makeButton(myResources.getString("removeComponent"), e->removeComponent());
 		container.getChildren().addAll(addButton, removeButton, saveButton);
 	}
 
 	private void addName() {
-		name = Utilities.makeTextArea(myResources.getString("enterName"));
+		name = TextFieldFactory.makeTextArea(myResources.getString("enterName"));
 		name.setText(myEntity.getName());
 		container.getChildren().add(name);
 	}

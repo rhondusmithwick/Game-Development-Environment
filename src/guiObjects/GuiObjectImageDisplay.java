@@ -2,15 +2,15 @@ package guiObjects;
 
 import java.io.File;
 import java.util.ResourceBundle;
-
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import view.Utilities;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
+import view.utilities.ButtonFactory;
+import view.utilities.FileUtilities;
 
 public class GuiObjectImageDisplay extends GuiObject {
 	
@@ -25,7 +25,7 @@ public class GuiObjectImageDisplay extends GuiObject {
 		super(name, resourceBundle);
 		myPropertiesNames= ResourceBundle.getBundle(language+DefaultStrings.PROPERTIES.getDefault());
 		this.myResources= ResourceBundle.getBundle(language);
-		setImage = Utilities.makeButton(myPropertiesNames.getString(name), e->changeImage());
+		setImage = ButtonFactory.makeButton(myPropertiesNames.getString(name), e->changeImage());
 		this.property=(SimpleObjectProperty<String>) property;
 		this.preview=new ImageView();
 		setImage(new File(this.property.getValue()));
@@ -37,7 +37,7 @@ public class GuiObjectImageDisplay extends GuiObject {
 	}
 
 	private File getImage() {
-		return Utilities.promptAndGetFile(Utilities.getImageFilters(), myResources.getString("ChooseFile"));
+		return FileUtilities.promptAndGetFile(FileUtilities.getImageFilters(), myResources.getString("ChooseFile"));
 		
 	}
 

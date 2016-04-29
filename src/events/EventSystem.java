@@ -65,6 +65,7 @@ public class EventSystem implements Observer, IEventSystem {
     	actionMap.put(trigger, action);
         trigger.addObserver(this);
         trigger.addHandler(level);
+        System.out.println("event register success");
     }
 
 //    public void createEvent(Map<String, String> triggerDescription, String scriptPath) {
