@@ -3,17 +3,10 @@ package testing.games;
 import api.IEntity;
 import api.IEventSystem;
 import api.ILevel;
-
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
-
 import datamanagement.XMLReader;
-import events.Action;
-import events.EventSystem;
-import events.KeyTrigger;
-import events.MouseTrigger;
-import events.PropertyTrigger;
-import events.TimeTrigger;
+import events.*;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -22,7 +15,6 @@ import model.component.character.Health;
 import model.component.character.Score;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
-import model.component.physics.Gravity;
 import model.component.visual.Sprite;
 import model.entity.Entity;
 import model.entity.Level;
@@ -68,7 +60,7 @@ public class ACGame {
         myScene = new Scene(root, width, height, Color.WHITE);
         myScene.setOnKeyPressed(e -> universe.getEventSystem().takeInput(e));
         myScene.setOnMousePressed(e -> {
-        	universe.getEventSystem().takeMousePress(e);
+//        	universe.getEventSystem().takeMousePress(e);
         });
         initEngine();
         return myScene;
