@@ -7,6 +7,7 @@ import api.IComponent;
 import api.IEntity;
 import view.Utilities;
 import view.enums.DefaultStrings;
+import view.utilities.Alerts;
 
 public class ComponentRemover extends ComponentModifier {
 	private ResourceBundle myResources, myLocs, myComponentNames;
@@ -33,7 +34,7 @@ public class ComponentRemover extends ComponentModifier {
 		try {
 			entity.removeComponent((Class<? extends IComponent>) Class.forName(myLocs.getString(componentName)));
 		} catch (ClassNotFoundException e) {
-			Utilities.showError(myResources.getString("error"), myResources.getString("removeComponentError"));
+			Alerts.showError(myResources.getString("error"), myResources.getString("removeComponentError"));
 		}
 
 		
