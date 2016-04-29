@@ -1,8 +1,9 @@
 package testing.AniPong;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import api.*;
+import events.Action;
+import events.KeyTrigger;
+import events.MouseTrigger;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -11,19 +12,14 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import events.Action;
-import events.KeyTrigger;
-import events.MouseTrigger;
 import model.component.character.Score;
 import model.component.character.UserControl;
 import model.component.movement.Position;
 import model.component.visual.Sprite;
 import model.core.SystemManager;
-import api.IEntity;
-import api.IEventSystem;
-import api.ILevel;
-import api.IPhysicsEngine;
-import api.ISystemManager;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 
@@ -48,7 +44,7 @@ public class AniPong {
 		
 		// Create a scene graph to organize the scene
 		this.game = game;
-		this.universe = game.getEntitySystem();
+		this.universe = game.getLevel();
         this.events = universe.getEventSystem();
         this.physics = universe.getPhysicsEngine();
         initKeyInputs();

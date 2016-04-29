@@ -88,7 +88,7 @@ public class GameLoopManager {
 //		System.out.println(key);
 //		System.out.println(value);
 		textField.clear();
-		systemManager.getEntitySystem().addMetadata(key, value); // TODO: key doesn't work (key==null)
+		systemManager.getLevel().addMetadata(key, value); // TODO: key doesn't work (key==null)
 	}
 	
 	private VBox createVBox() {

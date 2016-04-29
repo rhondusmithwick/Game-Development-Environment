@@ -11,4 +11,8 @@ public interface IView {
 	void highlight(IEntity entity);
 
 	void toggleHighlight(IEntity entity);
+
+	IEntitySystem getEntitySystem();
+
+	ILevel getLevel();
 }

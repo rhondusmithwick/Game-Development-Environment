@@ -1,8 +1,6 @@
 package view;
 
-import api.IEntity;
-import api.ISystemManager;
-import api.IView;
+import api.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.geometry.Bounds;
@@ -25,11 +23,11 @@ import model.component.movement.Orientation;
 import model.component.movement.Position;
 import model.component.physics.Collision;
 import model.component.visual.Sprite;
+import model.core.SystemManager;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 
@@ -48,24 +46,32 @@ public class View implements IView {
 	private final Button loadButton = new Button("Load");
 	// private final ScriptEngine engine = new
 	// ScriptEngineManager().getEngineByName("Groovy");
-	private Group root;// = new Group();
-	private ISystemManager model;// = new SystemManager(root);
+	private Group root = new Group();
+	private ISystemManager model;
 	private BorderPane pane;
 	private SubScene subScene;
 	private ViewUtilities viewUtils;
 
+	// Needs scene
 	@Deprecated
-	public View(ISystemManager model, ScrollPane scene) {
-		this(model, new Group(), 2000, 2000, scene);
+	public View() {
+		// Default
+		model = new SystemManager();
 	}
 
+	// Needs scene
 	@Deprecated
-	public View(ISystemManager model, Group root, double width, double height, ScrollPane scene) {
-		this.root = root;
+	public View(ISystemManager model, ScrollPane scene) {
+		this(model, 2000, 2000, scene);
+	}
+
+	// Needs scene
+	@Deprecated
+	public View(ISystemManager model, double width, double height, ScrollPane scene) {
 		this.model = model;
 		this.initConsole();
 		this.initButtons();
-		this.viewUtils = new ViewUtilities(root, model.getEntitySystem());
+		this.viewUtils = new ViewUtilities(root, model.getLevel());
 		this.subScene = this.createSubScene(root, width, height);
 		
 		this.pane = this.createBorderPane(root, this.subScene);
@@ -77,27 +83,8 @@ public class View implements IView {
 		this.startTimeline();
 	}
 
-	@Deprecated
-	public View() {
-		this(2000, 2000);
-	}
-
-	@Deprecated
-	public View(double width, double height) { // TODO: Scene
-		this.initConsole();
-		this.initButtons();
-		this.viewUtils = new ViewUtilities(root, model.getEntitySystem());
-		this.subScene = this.createSubScene(root, width, height);
-
-		this.pane = this.createBorderPane(root, this.subScene);
-		viewUtils.allowDragging();
-		viewUtils.allowDeletion();
-
-		this.startTimeline();
-	}
-
 	public void setScene(Scene scene) {
-		scene.setOnKeyPressed(e -> model.getEntitySystem().getEventSystem().takeInput(e)); // TODO: add all inputs
+		scene.setOnKeyPressed(e -> model.getLevel().getEventSystem().takeInput(e)); // TODO: add all inputs
 	}
 
 	public Pane getPane() {
@@ -132,7 +119,17 @@ public class View implements IView {
 	public void toggleHighlight(IEntity entity){
 		viewUtils.toggleHighlight(entity);
 	}
-	
+
+	@Override
+	public IEntitySystem getEntitySystem() {
+		return model.getLevel().getEntitySystem();
+	}
+
+	@Override
+	public ILevel getLevel() {
+		return model.getLevel();
+	}
+
 	public void highlight(IEntity entity){
 		viewUtils.highlight(entity);
 	}
@@ -183,12 +180,21 @@ public class View implements IView {
 
 		// render
 		root.getChildren().clear();
-		Set<IEntity> spriteEntities = model.getEntitySystem().getEntitiesWithComponents(Sprite.class, Position.class);
+		List<IEntity> spriteEntities = model.getEntitySystem().getEntitiesWithComponents(Sprite.class, Position.class);
 		for (IEntity e : spriteEntities) {
 			viewUtils.makeSelectable(e);
-			root.getChildren().addAll(getCollisionShapes(e));
-			root.getChildren().add(getUpdatedImageView(e));
+//			root.getChildren().addAll(getCollisionShapes(e));
+			ImageView imageView = getUpdatedImageView(e);
+			if(!root.getChildren().contains(imageView)) {
+				root.getChildren().add(imageView);
+			}
 		}
+
+//		List<Node> nodes = root.getChildren();
+//		for(Node node:nodes) {
+//			System.out.print(node.getId() + "  ");
+//		}
+//		System.out.println();
 	}
 
 	private BorderPane createBorderPane(Group root, SubScene subScene) {
