@@ -22,6 +22,11 @@ public class KeyTrigger extends InputTrigger {
         setKeyCode(key);
     }
     
+    public KeyTrigger(String key) {
+    	super(KeyEvent.KEY_PRESSED);
+        setKeyCode(KeyCode.getKeyCode(key));
+    }
+    
     @Override
 	public boolean meetsCriteria(ObservableValue observable, Object oldValue,
 			Object newValue) {
