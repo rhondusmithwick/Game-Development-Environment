@@ -21,8 +21,8 @@ public enum DefaultEntities {
 	CHAR_2("Character 2", "templates/player", 
 			Arrays.asList(new Position(), new Defense(25), new Health(100), new Mass(100), new Score(), new Sprite("resources/images/blastoise.png"))),
 	
-	BACKGROUND("Default Waterfall Background", "templates/Background", 
-			Arrays.asList(new Position(), new Sprite("resources/images/movingwaterfall.gif"))),
+	BACKGROUND("Default Temple Background", "templates/Background", 
+			Arrays.asList(new Position(), new Sprite("resources/images/temple.jpg"))),
 	
 	PLATFORM("Default Mario Platform", "templates/PlatformSprite", 
 			Arrays.asList(new Position(), new Sprite("resources/images/marioplatform.jpeg")));

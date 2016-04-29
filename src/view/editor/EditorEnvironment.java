@@ -37,27 +37,25 @@ import view.utilities.UserInputBoxFactory;
 import java.io.File;
 import java.util.*;
 
-//import view.DragAndResize;
-
 public class EditorEnvironment extends Editor {
 
 	// TODO: resources
 	private static final int SINGLE = 1;
 	private BorderPane environmentPane = new BorderPane();
 	private ILevel myEntitySystem;
-	private Group gameRoot = new Group();
+	//private Group gameRoot = new Group();
 	private ResourceBundle myResources;
 	private ObservableList<IEntity> masterEntityList;
 	private ObservableList<ILevel> allEnvironmentsList;
 	private VBox leftPane = new VBox();
 	private VBox rightPane = new VBox();
-	private VBox masterEntityButtons = new VBox();
-	private VBox environmentEntityButtons = new VBox();
+	private VBox masterEntityButtonsBox = new VBox();
+	private VBox environmentEntityButtonsBox = new VBox();
 	private TextField nameField = new TextField();
 	private ScrollPane scrollPane = new ScrollPane(environmentPane);
 	private ISystemManager game;
 	private IView view;
-	private SubScene gameScene;
+	//private SubScene gameScene;
 	private GameLoopManager manager;
 
 	public EditorEnvironment(String language, ILevel toEdit, ObservableList<IEntity> masterList,
@@ -67,13 +65,12 @@ public class EditorEnvironment extends Editor {
 			this.updateDisplay(masterList);
 		});
 		masterEntityList = masterList;
-		this.myEntitySystem = toEdit; // TODO: casting check
+		myEntitySystem = toEdit; 
 
-		game = new SystemManager(gameRoot, this.myEntitySystem);
+		Group gameRoot = new Group();
+		game = new SystemManager(gameRoot, myEntitySystem);
 		view = new View(game, gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(),
-				scrollPane); // TODO: remove this last arg once we
-										// figure out why keypresses aren't
-										// working
+				scrollPane); 
 
 		allEnvironmentsList = addToList;
 		addLayoutComponents();
@@ -83,7 +80,6 @@ public class EditorEnvironment extends Editor {
 	private void addLayoutComponents() {
 		setLeftPane();
 		setRightPane();
-		setGameScene();
 	}
 
 	private void setLeftPane() {
@@ -104,13 +100,13 @@ public class EditorEnvironment extends Editor {
 		if (masterEntityList.isEmpty()) {
 			loadDefaults();
 		}
-		populateVbox(masterEntityButtons, masterEntityList);
-		return (new ScrollPane(masterEntityButtons));
+		populateVbox(masterEntityButtonsBox, masterEntityList);
+		return (new ScrollPane(masterEntityButtonsBox));
 	}
 
-	private void populateVbox(VBox vbox, ObservableList<IEntity> masterEntityList2) {
+	private void populateVbox(VBox vbox, Collection<IEntity> collection) {
 		vbox.getChildren().clear();
-		for (IEntity entity : masterEntityList2) {
+		for (IEntity entity : collection) {
 			Button addEntityButton = ButtonFactory.makeButton(( entity).getName(),
 					e -> addToSystemAndScene(EntityCopier.copyEntity( entity)));
 			(addEntityButton).setMaxWidth(Double.MAX_VALUE);
@@ -127,7 +123,6 @@ public class EditorEnvironment extends Editor {
 		if (Alerts.showAlert(myResources.getString("addDefaults"), myResources.getString("addDefaultsQuestion"),
 				myResources.getString("defaultsMessage"), AlertType.CONFIRMATION)) {
 			masterEntityList.add(DefaultEntities.BACKGROUND.getDefault());
-			// entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay));
 			masterEntityList.add(DefaultEntities.CHAR_1.getDefault());
 			masterEntityList.add(DefaultEntities.CHAR_2.getDefault());
 		}
@@ -135,7 +130,7 @@ public class EditorEnvironment extends Editor {
 
 	private void setRightPane() {
 		rightPane.getChildren().add(setSaveButton());
-		rightPane.getChildren().add(new ScrollPane(environmentEntityButtons));
+		rightPane.getChildren().add(new ScrollPane(environmentEntityButtonsBox));
 		rightPane.getChildren().add(setLoopButton());
 	}
 
@@ -152,26 +147,12 @@ public class EditorEnvironment extends Editor {
 		
 	}
 
-	private void setGameScene() {
-		gameScene = this.view.getSubScene();
-		gameScene.setFill(Color.WHITE);
-		for (IEntity entity : myEntitySystem.getAllEntities()) {
-			addToScene(entity);
-		}
-	}
-
 	private void addToScene(IEntity entity) {
 		try {
 			if (!entity.hasComponent(Position.class) || !entity.hasComponent(Sprite.class)) {
 				addComponents(entity);
 			}
-			// TODO: rm
-			// Rectangle rectangle = new Rectangle(200,200);
-			// rectangle.setFill(Color.BLUE);
-			// makeDraggable(rectangle);
-			environmentEntityButtons.getChildren().add(createEntityButton(entity));
-			// TODO: rm
-			// gameRoot.getChildren().add(rectangle);
+			environmentEntityButtonsBox.getChildren().add(createEntityButton(entity));
 		} catch (Exception e) {
 			Alerts.showAlert(myResources.getString("error"), null, myResources.getString("unableToAddEntity"),
 					AlertType.ERROR);
@@ -185,8 +166,7 @@ public class EditorEnvironment extends Editor {
 			public void handle(MouseEvent event) {
 				MouseButton button = event.getButton();
 				if (button == MouseButton.PRIMARY) {
-					// entityLeftClicked(entity, entityInButton);
-					game.getEntitySystem().removeEntity(entity.getID());
+					entityLeftClicked(entity);
 				} else if (button == MouseButton.SECONDARY) {
 					entityRightClicked(entity, entityInButton, event);
 				}
@@ -195,14 +175,13 @@ public class EditorEnvironment extends Editor {
 		return entityInButton;
 	}
 
-	// TODO: LOOK HERE FOR MAKING A SHAPE DRAGGABLE
-	// private Shape makeDraggable(Rectangle rectangle) {
-	// DragAndResize.makeResizable(rectangle);
-	// return rectangle;
-	// }
+	private void entityLeftClicked(IEntity entity) {
+		view.toggleHighlight(entity);
+	}
 
+	
 	private void entityRightClicked(IEntity entity, Button entityButton, MouseEvent event) {
-		// highlight(entity, true);
+		view.highlight(entity);
 		Map<String, EventHandler<ActionEvent>> menuMap = new HashMap<String, EventHandler<ActionEvent>>();
 		menuMap.put(myResources.getString("remove"), e -> removeFromDisplay(entity, entityButton));
 		menuMap.put(myResources.getString("sendBack"), e -> sendToBack(entity));
@@ -219,17 +198,6 @@ public class EditorEnvironment extends Editor {
 //		}
 //	}
 
-	private ILevel reorder(IEntity entity, ILevel entitySystem) {
-		entitySystem.removeEntity(entity.getID());
-		Collection<IEntity> entitiesLeft = entitySystem.getAllEntities();
-		List<IEntity> allEntitiesIn = new ArrayList<IEntity>();
-		allEntitiesIn.addAll(entitiesLeft);
-		entitySystem = new Level();
-		entitySystem.addEntity(entity);
-		entitySystem.addEntities(allEntitiesIn);
-		return entitySystem;
-	}
-
 	 private void sendToBack(IEntity e) {
 	 	e.getComponent(Sprite.class).setZLevel(-2);
 	 }
@@ -240,19 +208,27 @@ public class EditorEnvironment extends Editor {
 
 	private void updateDisplay(ObservableList<IEntity> masterList) {
 		masterEntityList = masterList;
-		populateVbox(masterEntityButtons, masterEntityList);
+		populateVbox(masterEntityButtonsBox, masterEntityList);
 	}
 
 	@Override
 	public void updateEditor() {
-		populateVbox(masterEntityButtons, masterEntityList);
+		populateVbox(masterEntityButtonsBox, masterEntityList);
 	}
 
 	@Override
 	public void populateLayout() {
 		environmentPane.setRight(rightPane);
 		environmentPane.setLeft(leftPane);
-		environmentPane.setCenter(gameScene);
+		environmentPane.setCenter(view.getPane());
+		view.getSubScene().setOnMouseClicked(e -> updateEnviornmentBox(environmentEntityButtonsBox,myEntitySystem));
+	}
+
+	private void updateEnviornmentBox(VBox vBox, ILevel entities) {
+		vBox.getChildren().clear();
+		for (IEntity entity : entities.getAllEntities()){
+			vBox.getChildren().add(createEntityButton(entity));
+		}
 	}
 
 	private void saveEnvironment() {
@@ -297,9 +273,8 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void removeFromDisplay(IEntity entity, Button entityButton) {
-		gameRoot.getChildren().remove(entity.getComponent(Sprite.class).getImageView());
 		myEntitySystem.removeEntity(entity.getID());
-		environmentEntityButtons.getChildren().remove(entityButton);
+		environmentEntityButtonsBox.getChildren().remove(entityButton);
 	}
 
 	public ILevel getEntitySystem() {
