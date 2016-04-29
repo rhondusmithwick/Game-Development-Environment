@@ -1,6 +1,5 @@
 package utility;
 
-import java.net.URISyntaxException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
@@ -11,10 +10,9 @@ import java.nio.file.Paths;
  */
 public class FilePathRelativizer {
     private FilePathRelativizer () {
-
     }
 
-    public static String relativize (String otherDirectory) throws URISyntaxException {
+    public static String relativize (String otherDirectory) {
         String baseDirectory = System.getProperty("user.dir");
         Path base = Paths.get(baseDirectory);
         Path other = Paths.get(otherDirectory);
