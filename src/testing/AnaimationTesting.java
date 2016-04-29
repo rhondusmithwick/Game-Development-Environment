@@ -7,9 +7,6 @@ package testing;/**
 import api.IEntity;
 import javafx.animation.Animation;
 import javafx.application.Application;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyCode;
 import javafx.stage.Stage;
 import model.component.visual.AnimatedSprite;
 import model.entity.Entity;
@@ -18,7 +15,7 @@ import voogasalad.util.spriteanimation.testing.SandBox;
 public class AnaimationTesting extends Application implements SandBox {
 
     private static final String SPRITE_PATH = "resources/spriteSheets/ryuBlue.gif";
-    private static final String SPRITE_PROPERTIES = "resources/spriteProperties/ryuBlue";
+    private static final String SPRITE_PROPERTIES = "spriteProperties/ryuBlue";
 
     public static void main(String[] args) {
         launch(args);

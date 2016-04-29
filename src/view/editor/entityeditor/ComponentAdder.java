@@ -9,7 +9,7 @@ import view.enums.DefaultStrings;
 
 public class ComponentAdder extends ComponentModifier{
 
-	private ResourceBundle myResources;
+	private ResourceBundle myComponentNames;
 	private final ResourceBundle myLocs =ResourceBundle.getBundle(DefaultStrings.COMPONENT_LOC.getDefault());
 	private IEntity entity;
 	private final ComponentFactory componentFactory = new ComponentFactory();
@@ -17,7 +17,7 @@ public class ComponentAdder extends ComponentModifier{
 
 	public ComponentAdder(String language, IEntity entity){
 		super(language);
-		myResources = ResourceBundle.getBundle(language);
+		this.myComponentNames = ResourceBundle.getBundle(language + DefaultStrings.COMPONENTS.getDefault());
 		myComponents = new ArrayList<>();
 		this.entity=entity;
 	}
@@ -26,7 +26,7 @@ public class ComponentAdder extends ComponentModifier{
 	public void modifyComponentList() {
 		Enumeration<String> iter = myLocs.getKeys();
 		while(iter.hasMoreElements()) {
-			myComponents.add(myResources.getString(iter.nextElement()));
+			myComponents.add(myComponentNames.getString(iter.nextElement()));
 		}
 		String componentName = super.makeAndShowChooser("chooseComponent", myComponents);
 		if(componentName != null){

@@ -2,6 +2,7 @@ package events;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyEvent;
 
 import java.util.LinkedList;
@@ -13,34 +14,34 @@ import java.util.Queue;
  * @author Rhondu Smithwick, Anirudh Jonnavithula, Carolyn Yao
  */
 public class InputSystem {
-    private final Queue<KeyEvent> firstQueue = new LinkedList<>();
-    private final Queue<KeyEvent> secondQueue = new LinkedList<>();
-    private Queue<KeyEvent> fillQ = firstQueue;
-    private Queue<KeyEvent> processQ = secondQueue;
+    private final Queue<InputEvent> firstQueue = new LinkedList<>();
+    private final Queue<InputEvent> secondQueue = new LinkedList<>();
+    private Queue<InputEvent> fillQ = firstQueue;
+    private Queue<InputEvent> processQ = secondQueue;
 
-    private SimpleObjectProperty<KeyEvent> currentChar = new SimpleObjectProperty<>();
+    private SimpleObjectProperty<InputEvent> currentInput = new SimpleObjectProperty<>();
 
-    public void takeInput(KeyEvent k) {
-		fillQ.add(k);
+    public void takeInput(InputEvent e) {
+		fillQ.add(e);
     }
 
     public void processInputs() {
         toggleQueues();
         while (!processQ.isEmpty()) {
-            KeyEvent k = processQ.poll();
+            InputEvent k = processQ.poll();
             if (k != null) {
-                currentChar.set(k);
+                currentInput.set(k);
             }
             
         }
     }
 
-    public void listenToKeyPress(ChangeListener listener) {
-        currentChar.addListener(listener);
+    public void listenToInput(ChangeListener listener) {
+        currentInput.addListener(listener);
     }
 
-    public void unListenToKeyPress(ChangeListener listener) {
-        currentChar.removeListener(listener);
+    public void unListenToInput(ChangeListener listener) {
+        currentInput.removeListener(listener);
     }
 
     private void toggleQueues() {
@@ -53,8 +54,8 @@ public class InputSystem {
         }
     }
 
-    public KeyEvent getCurrentCharKeyEvent() {
-        return currentChar.get();
+    public InputEvent getCurrentInputEvent() {
+        return currentInput.get();
     }
 
 }

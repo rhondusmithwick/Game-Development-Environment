@@ -3,12 +3,18 @@ package events;
 import javafx.beans.value.ObservableValue;
 import api.ILevel;
 
+import java.util.Map;
+
 public class TimeTrigger extends Trigger{
 
 	private double time;
 	
 	public TimeTrigger(double time) {
 		this.time = time;
+	}
+
+	public TimeTrigger(Map<String, String> triggerMapDescription) {
+		time = Double.parseDouble(triggerMapDescription.get("time"));
 	}
 	
 	@Override

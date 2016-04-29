@@ -21,8 +21,8 @@ public class ViewUtilities {
 	private static final double MARGIN = 8;
 	private static final int DEPTH = 70;
 	private static final Color HIGHLIGHT_COLOR = Color.YELLOW;
-	private static final String SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,0,50,0.8), 10, 0, 0, 0)",
-			NO_SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,1,0,0), 0, 0, 0, 0)";
+	private static final String SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(255,255,51,0.8), 10, 0, 0, 0)",
+			NO_SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0, 0, 0)";
 	private Group root;
 	private ILevel universe;
 	private boolean resizing = false, dragging = false;
@@ -61,10 +61,10 @@ public class ViewUtilities {
 	private void dehighlight(IEntity e) {
 //		this.getImageView(e).setEffect(null);
 		getImageView(e).setStyle(NO_SELECT_EFFECT);
-		selectedSprites.clear(); // de-select
+		selectedSprites.remove(e); 
 	}
 
-	private void highlight(IEntity e) {
+	public void highlight(IEntity e) {
 //		DropShadow borderGlow = new DropShadow();
 //		borderGlow.setOffsetY(0f);
 //		borderGlow.setOffsetX(0f);
@@ -72,7 +72,7 @@ public class ViewUtilities {
 //		borderGlow.setWidth(DEPTH);
 //		borderGlow.setHeight(DEPTH);
 //		this.getImageView(e).setEffect(borderGlow);
-//		this.selectedSprites.add(e);
+		selectedSprites.add(e);
 		getImageView(e).setStyle(SELECT_EFFECT); // TODO: StringConstants SELECT_EFFECT
 	}
 
@@ -158,6 +158,18 @@ public class ViewUtilities {
 			position.setY(translateY);
 		} else if (resizing) {
 			path.setImageHeight(y - position.getY());
+		}
+	}
+
+	public void toggleHighlight(IEntity entity) {
+		Sprite path = entity.getComponent(Sprite.class);
+		ImageView imageView = path.getImageView();
+		if (!imageView.getStyle().equals(SELECT_EFFECT)) { 
+			System.out.println("highlight");
+			this.highlight(entity);
+		} else {
+			System.out.println("dehighlight");
+			this.dehighlight(entity);
 		}
 	}
 

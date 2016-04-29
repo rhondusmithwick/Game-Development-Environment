@@ -121,6 +121,7 @@ public class View implements IView {
 	private SubScene createSubScene(Group root, double width, double height) {
 		this.root = root;
 		SubScene subScene = new SubScene(root, width, height);
+		subScene.setFill(Color.WHITE);
 		// TODO: not printing key presses, why?!
 		// subScene.setOnMouseClicked(e -> System.out.println(e.getX()));
 		// scene.setOnKeyTyped(e -> System.out.println(e.getCode()));
@@ -129,30 +130,49 @@ public class View implements IView {
 		
 		return subScene;
 	}
+	
+	public void toggleHighlight(IEntity entity){
+		viewUtils.toggleHighlight(entity);
+	}
+	
+	public void highlight(IEntity entity){
+		viewUtils.highlight(entity);
+	}
 
 	private void modulateZLevel(IEntity e, ObservableList<Node> imageViews) {
 		Sprite display = e.getComponent(Sprite.class);
 		ImageView imageView = display.getImageView();
-		imageViews.remove(imageView); // important
 
 		int z = display.getZLevel();
 		int index = imageViews.indexOf(imageView);
+		imageViews.remove(imageView); // important
 		switch(z) {
 			case -2:
 				imageViews.add(0, imageView);
+				System.out.println("-2");
 				break;
 			case -1:
 				if(index-1>=0) {
-					root.getChildren().add(index - 1, imageView);
+					imageViews.add(index - 1, imageView);
+					System.out.println("-1");
+				} else {
+					imageViews.add(0, imageView);
 				}
+				break;
+			case 0: // do nothing
+				imageViews.add(index, imageView);
 				break;
 			case 1:
 				if(index+1<imageViews.size()) {
-					root.getChildren().add(index + 1, imageView);
+					imageViews.add(index + 1, imageView);
+					System.out.println("1");
 					break;
+				} else {
+					imageViews.add(imageView);
 				}
 			case 2:
 				imageViews.add(imageView); // to end of list
+				System.out.println("2");
 				break;
 		}
 		display.setZLevel(0); // reset
@@ -203,25 +223,27 @@ public class View implements IView {
 
 		// render
 //		root.getChildren().clear();
-		ObservableList<Node> imageViews = root.getChildren();
-		List<Node> tempList = new ArrayList<>();
-		Set<IEntity> renderableEntities = model.getEntitySystem().getEntitiesWithComponents(Sprite.class, Position.class);
-		for (IEntity e : renderableEntities) {
+		Set<IEntity> spriteEntities = model.getEntitySystem().getEntitiesWithComponents(Sprite.class, Position.class);
+		List<ImageView> updatedImageViews = new ArrayList<>();
+		for (IEntity e : spriteEntities) {
 			viewUtils.makeSelectable(e);
-			tempList.addAll(this.getCollisionShapes(e));
-			ImageView imageView = this.getUpdatedImageView(e);
-			tempList.add(imageView);
-			modulateZLevel(e, imageViews);
-			if(!imageViews.contains(imageView)) { // populate root with new sprites
-				imageViews.add(imageView);
-			}
+			updatedImageViews.add(e.getComponent(Sprite.class).getImageView());
 		}
+
+		ObservableList<Node> imageViews = root.getChildren();
 		for(int i=0; i<imageViews.size(); i++) { // remove old sprites
 			Node imageView = imageViews.get(i);
-			if(!tempList.contains(imageView)) {
+			if(!updatedImageViews.contains(imageView)) {
 				imageViews.remove(imageView);
 				i--;
 			}
+		}
+		for(IEntity e : spriteEntities) { // add new sprites
+			ImageView imageView = e.getComponent(Sprite.class).getImageView();
+			if(!imageViews.contains(imageView)) { // populate root with new sprites
+				imageViews.add(imageView);
+			}
+//			modulateZLevel(e, imageViews);
 		}
 	}
 

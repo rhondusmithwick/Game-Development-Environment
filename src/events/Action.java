@@ -35,8 +35,8 @@ public class Action implements ISerializable {
         this.parameters.putAll(parameters);
     }
 
-    public void activate(ScriptEngine engine, ILevel universe) {
-        parameters.put("universe", universe);
+    public void activate(ScriptEngine engine, ILevel level) {
+        parameters.put("universe", level.getEntitySystem());
         try {
             engine.eval(getScript(), parameters);
         } catch (ScriptException e) {
@@ -49,7 +49,7 @@ public class Action implements ISerializable {
         return script;
     }
 
-    public Map<String, Object> getParameters() {
+    protected Bindings getParameters() {
         return parameters;
     }
 
