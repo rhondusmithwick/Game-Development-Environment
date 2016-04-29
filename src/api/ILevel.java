@@ -1,21 +1,13 @@
 package api;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Set;
-import java.util.function.Predicate;
-import java.util.stream.Collectors;
-
-import javafx.scene.Node;
-import javafx.scene.Scene;
-
 import com.google.common.collect.Collections2;
-
 import datamanagement.XMLReader;
 import groovy.lang.GroovyShell;
+import javafx.scene.Scene;
+
+import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
 
 /**
  * The interface for an Level, which holds all the entities.
@@ -128,7 +120,7 @@ public interface ILevel extends ISerializable {
 	 *
 	 * @return collection of entities
 	 */
-	Collection<IEntity> getAllEntities();
+	List<IEntity> getAllEntities();
 
 	/**
 	 * Get all the components in this entity system.
@@ -212,7 +204,7 @@ public interface ILevel extends ISerializable {
 	 *            to remove
 	 * @return true if removed
 	 */
-	boolean removeEntity(String id);
+	IEntity removeEntity(String id);
 
 	/**
 	 * Checks if any entities are in this system.
