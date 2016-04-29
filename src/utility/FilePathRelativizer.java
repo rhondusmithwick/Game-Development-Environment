@@ -5,8 +5,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
-import view.utilities.Alerts;
-
 /**
  * Created by rhondusmithwick on 4/29/16.
  *
@@ -20,7 +18,7 @@ public class FilePathRelativizer {
         return System.getProperty("user.dir");
 
     }
-    public static String relativize (String otherDirectory, ResourceBundle myResources) {
+    public static String relativize (String otherDirectory) {
         Path base = Paths.get(getBaseDirectory());
         Path other = Paths.get(otherDirectory);
         try {
