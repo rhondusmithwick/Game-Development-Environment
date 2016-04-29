@@ -6,6 +6,10 @@ import java.util.Map;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import events.Action;
 import events.KeyTrigger;
@@ -52,10 +56,7 @@ public class AniPong {
         root = new Group();
         // Create a place to see the shapes
         myScene = new Scene(root, width, height, Color.WHITE);
-        myScene.setOnKeyPressed(e -> universe.getEventSystem().takeInput(e));
-        myScene.setOnMousePressed(e -> {
-//        	universe.getEventSystem().takeMousePress(e);
-        });
+        universe.setOnInput(myScene);
         return myScene;
 		
 	}
@@ -84,11 +85,13 @@ public class AniPong {
         wKey.put("key", "S");
         Map<String, Object> mKey = new HashMap<>();
         wKey.put("key", "M");
-        events.registerEvent(new KeyTrigger("W"), new Action(movePaddleUpScript, wKey));
-        events.registerEvent(new KeyTrigger("S"), new Action(movePaddleDownScript, sKey));
-        events.registerEvent(new KeyTrigger("M"), new Action(stopPaddleScript, mKey));
-        events.getEventsAsString();
+        events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_PRESSED), new Action(movePaddleUpScript, wKey));
+        events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("S"), KeyEvent.KEY_PRESSED), new Action(movePaddleDownScript, sKey));
+        //events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_RELEASED), new Action(stopPaddleScript, mKey));
+        //events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("S"), KeyEvent.KEY_RELEASED), new Action(stopPaddleScript, mKey));
+        events.registerEvent(new MouseTrigger(MouseButton.PRIMARY, MouseEvent.MOUSE_CLICKED), new Action(stopPaddleScript));
         //System.out.println("Input keys cannot be registered without de-serialization error.");
+        String s = events.getEventsAsString();
     }
 
 //    private initGlobalVariables() {
@@ -116,7 +119,8 @@ public class AniPong {
     public ImageView drawCharacter(IEntity character) {
         Sprite imgPath = character.getComponent(Sprite.class);
         ImageView charSprite = imgPath.getImageView();
-        charSprite.setFitHeight(100);
+        charSprite.setPreserveRatio(true);
+        imgPath.setImageHeight(100);
         charSprite.setPreserveRatio(true);
         root.getChildren().add(charSprite);
         return charSprite;
