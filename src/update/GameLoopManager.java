@@ -33,7 +33,7 @@ public class GameLoopManager {
 	private Scene scene;
 	private TextField keyField, valueField;
 	private ISystemManager systemManager;
-	private ObservableList<String> valueList = FXCollections.observableArrayList("HI", "Hey");
+	private ObservableList<String> valueList = FXCollections.observableArrayList();
 	private ListView<String> listView = new ListView<String>(valueList);
 	
 	public GameLoopManager(String language, ISystemManager game) {
