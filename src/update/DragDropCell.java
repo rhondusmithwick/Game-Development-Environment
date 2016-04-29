@@ -18,7 +18,7 @@ public class DragDropCell<T> extends ListCell<T> {
 			}
 			Dragboard dragBoard = startDragAndDrop(TransferMode.MOVE);
 			ClipboardContent content = new ClipboardContent();
-			content.put(dataFormat, getItem().toString());
+			content.put(dataFormat, getItem());
 			dragBoard.setContent(content);
 		});
 
