@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import model.component.visual.AnimatedSprite;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -17,6 +19,11 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import api.IComponent;
 import api.IEntity;
+import javafx.animation.Animation;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.scene.Node;
@@ -28,8 +35,11 @@ import javafx.scene.Node;
  *
  * @author Rhondu Smithwick
  */
-public class Entity implements IEntity {
+public class Entity implements IEntity, ChangeListener {
 
+	private Animation currentAnimation;
+	private SimpleStringProperty animationString = new SimpleStringProperty(this, "animationStatus", "");
+	
 	@XStreamAsAttribute()
 	private final String ID;
 
@@ -51,6 +61,7 @@ public class Entity implements IEntity {
 
 	public Entity(String name) {
 		ID = UUID.randomUUID().toString();
+		animationString.addListener(this);
 		setName(name);
 	}
 
@@ -143,5 +154,31 @@ public class Entity implements IEntity {
 	public String toString() {
 		return String.format("ID: %s, Components: %s", ID, componentMap.toString());
 	}
+	
+	public void setAnimationString(String animation) {
+		animationString.set(animation);
+	}
+	
+	public String getAnimationString() {
+		return animationString.get();
+	}
+	
+	public void setAnimation(Animation animation) {
+		this.currentAnimation = animation;
+	}
+	
+	public Animation getAnimation() {
+		return currentAnimation;
+	}
+
+	@Override
+	public void changed(ObservableValue arg0, Object arg1, Object arg2) {
+		if(currentAnimation!=null) {
+			currentAnimation.stop();
+		}
+        currentAnimation = this.getComponent(AnimatedSprite.class).getAnimation((String)arg2);
+	}
+	
+	
 
 }

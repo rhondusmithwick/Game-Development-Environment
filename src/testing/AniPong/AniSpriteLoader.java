@@ -39,7 +39,7 @@ public class AniSpriteLoader {
     public static IEntity createPlatform(String name, Position pos) {
         IEntity e = new Entity(name);
         e.addComponents(pos, new Sprite("resources/testing/RhonduSmithwick.JPG", 638, 518),
-                new Collision("platform"), new RestitutionCoefficient(1.0), new Mass(10000));
+                new Collision("platform"), new RestitutionCoefficient(1.0), new Mass(1000000));
         return e;
     }
 

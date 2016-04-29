@@ -36,7 +36,8 @@ public class Action implements ISerializable {
     }
 
     public void activate(ScriptEngine engine, ILevel level) {
-        parameters.put("universe", level.getEntitySystem());
+        parameters.put("universe", level);
+        parameters.put("level", level);
         try {
             engine.eval(getScript(), parameters);
         } catch (ScriptException e) {

@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import javafx.animation.Animation;
+
 import com.google.common.base.Preconditions;
 
 import model.entity.PropertiesTemplateLoader;
@@ -339,4 +341,8 @@ public interface IEntity extends ISerializable {
 	default <T extends IComponent> void setSpec(Class<T> componentClass, int numToHave) {
 		getSpecs().put(componentClass, numToHave);
 	}
+
+	Animation getAnimation();
+	
+	void setAnimationString(String string);
 }
