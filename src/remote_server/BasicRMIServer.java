@@ -1,4 +1,4 @@
-package remote_server;
+/*package remote_server;
 
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
@@ -141,3 +141,4 @@ public class BasicRMIServer extends UnicastRemoteObject implements ILevel {
 	}
 
 }
+*/
