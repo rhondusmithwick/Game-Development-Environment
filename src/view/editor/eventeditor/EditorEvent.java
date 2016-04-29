@@ -1,5 +1,8 @@
 package view.editor.eventeditor;
 
+import events.Action;
+import events.EventFactory;
+import events.Trigger;
 import javafx.scene.layout.Pane;
 import java.util.ResourceBundle;
 import view.editor.Editor;
@@ -33,6 +36,7 @@ public class EditorEvent extends Editor
 	private final Tab propertyTab;
 	private final PropertyEventEditor propertyEventEditor;
 	private final KeyBindingEditor keyBindingEditor;
+	private EventFactory eventFactory = new EventFactory();
 	
 	public EditorEvent(String language, ObservableList<IEntity> masterList, ObservableList<ILevel> levelList)
 	{	
@@ -68,7 +72,12 @@ public class EditorEvent extends Editor
 		tabPane.getTabs().add(newTab);
 		newTab.setText(myResources.getString(editor.getClass().toString().split(" ")[1]));
 	}
-	
+
+	public void addEventToLevel(ILevel level, String triggerClassName, String scriptPath, Object... args) {
+		level.getEventSystem().registerEvent(
+                eventFactory.createEvent(triggerClassName, scriptPath, args)
+		);
+	}
 	public void populateLayout() {}
 
 	@Override

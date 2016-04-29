@@ -11,6 +11,7 @@ import javafx.scene.input.MouseEvent;
 import events.Action;
 import events.Trigger;
 import javafx.scene.input.KeyEvent;
+import utility.Pair;
 
 /**
  * Might be scrapped in the future! Reference:
@@ -33,6 +34,8 @@ public interface IEventSystem extends Observer, ISerializable {
 	 * @param action - The corresponding action
 	 */
 	void registerEvent(Trigger trigger, Action action);
+
+	void registerEvent(Pair<Trigger, Action> eventPair);
 
 	void readEventFromFile(String filepath);
 
