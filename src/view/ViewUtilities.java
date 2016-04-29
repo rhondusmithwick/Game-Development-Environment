@@ -26,7 +26,7 @@ public class ViewUtilities {
 	private ILevel universe;
 	private boolean resizing = false, dragging = false;
 	private IEntity heldDownSprite;
-	private Set<IEntity> selectedSprites = new HashSet<IEntity>();
+	private Set<IEntity> selectedSprites = new HashSet<>();
 	private double initialMouseX, initialMouseY;
 	private long timeMouseClicked, clickThresholdMillis = 400;
 
@@ -107,25 +107,27 @@ public class ViewUtilities {
 	}
 
 	public void makeSelectable(IEntity e) {
-		Sprite path = e.getComponent(Sprite.class);
-		ImageView imageView = path.getImageView();
+		Sprite sprite = e.getComponent(Sprite.class);
+		ImageView imageView = sprite.getImageView();
 
 		imageView.setOnMouseEntered(event -> this.changeCursorForResizing(imageView, event.getY()));
 		imageView.setOnMousePressed(event -> {
 			this.holdDownSprite(e, event.getX(), event.getY());
 			timeMouseClicked = System.currentTimeMillis(); // click event tracking
-//			System.out.println("pressed");
 		});
+	}
+
+	public void allowSelection() {
 		// TODO: make sure this is not hacky
 		root.setOnMouseReleased(event -> {
 			long duration = System.currentTimeMillis()-timeMouseClicked;
-			if(duration<clickThresholdMillis) {// click event handling
+			if(duration<clickThresholdMillis) { // click event handling
 				if(heldDownSprite!=null) {
-					ImageView spriteImageView = getImageView(heldDownSprite);
+					ImageView spriteImageView = heldDownSprite.getComponent(Sprite.class).getImageView();
 					if (spriteImageView.getStyle().equals(NO_SELECT_EFFECT)) { // not selected
-						this.highlight(e);
+						this.highlight(heldDownSprite);
 					} else {
-						this.dehighlight(e);
+						this.dehighlight(heldDownSprite);
 					}
 				}
 			}

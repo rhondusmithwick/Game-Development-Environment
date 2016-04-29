@@ -71,6 +71,7 @@ public class View implements IView {
 		this.subScene = this.createSubScene(root, width, height);
 		
 		this.pane = this.createBorderPane(root, this.subScene);
+		viewUtils.allowSelection();
 		viewUtils.allowDragging();
 		viewUtils.allowDeletion();
 		
@@ -153,6 +154,7 @@ public class View implements IView {
 				imageViews.add(imageView); // to end of list
 				break;
 		}
+		display.setZLevel(0); // reset
 	}
 
 	private ImageView getUpdatedImageView(IEntity e) {
