@@ -8,7 +8,6 @@ import javafx.animation.Timeline;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
@@ -181,6 +180,7 @@ public class View implements IView {
 		Position pos = e.getComponent(Position.class);
 		Sprite display = e.getComponent(Sprite.class);
 		ImageView imageView = display.getImageView();
+		imageView.setId(e.getID());
 
 		imageView.setTranslateX(pos.getX());
 		imageView.setTranslateY(pos.getY());
@@ -221,16 +221,22 @@ public class View implements IView {
 		model.step(dt);
 
 		// render
-		List<Node> imageViews = root.getChildren();
+//		List<Node> imageViews = root.getChildren();
 		root.getChildren().clear();
 		Set<IEntity> spriteEntities = model.getEntitySystem().getEntitiesWithComponents(Sprite.class, Position.class);
 //		List<Node> updatedImageViews = new ArrayList<>();
 		for (IEntity e : spriteEntities) {
 			viewUtils.makeSelectable(e);
-			imageViews.addAll(getCollisionShapes(e));
+			root.getChildren().addAll(getCollisionShapes(e));
 //			updatedImageViews.add(getUpdatedImageView(e));
-			imageViews.add(getUpdatedImageView(e));
+			root.getChildren().add(getUpdatedImageView(e));
 		}
+
+//		List<Node> nodes = root.getChildren();
+//		for(Node node:nodes) {
+//			System.out.print(model.getEntitySystem().getEntity(node.getId()).getName()+", ");
+//		}
+//		System.out.println();
 
 //		for(int i=0; i<imageViews.size(); i++) { // remove old sprites
 //			Node imageView = imageViews.get(i);

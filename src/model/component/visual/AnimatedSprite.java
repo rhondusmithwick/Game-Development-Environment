@@ -62,11 +62,6 @@ public class AnimatedSprite extends Sprite {
         reInitializeContainer();
     }
 
-    @Override
-    public void setImagePath(String imagePath) {
-        super.setImagePath(imagePath);
-    }
-
     public AnimationContainer getContainer() {
         return container;
     }
@@ -78,7 +73,6 @@ public class AnimatedSprite extends Sprite {
     @Override
     public List<SimpleObjectProperty<?>> getProperties() {
         return Arrays.asList(bundlePathProperty(), imagePathProperty(), imageWidthProperty(), imageHeightProperty(), zLevelProperty());
-
     }
 
     public Collection<String> getAnimationNames() {
