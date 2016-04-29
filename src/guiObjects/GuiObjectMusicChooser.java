@@ -7,6 +7,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.media.AudioClip;
+import utility.FilePathRelativizer;
 import view.enums.DefaultStrings;
 import view.enums.FileExtensions;
 import view.enums.GUISize;
@@ -56,7 +57,7 @@ public class GuiObjectMusicChooser extends GuiObject{
 		if(file==null){
 			return;
 		}
-		property.setValue(file.toURI().toString());
+		property.setValue(FilePathRelativizer.relativize(file.getPath(), myResources));
 		preview = new AudioClip(file.toURI().toString());
 	}
 
