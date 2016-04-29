@@ -175,34 +175,32 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void sendToFront(IEntity e) {
-//		ArrayList<IEntity> orderList = new ArrayList<>(view.getEntitySystem().getAllEntities());
-//		orderList.remove(e);
-//		orderList.add(e);
-//		for (IEntity entity : orderList) {
-//			view.getEntitySystem().removeEntity(entity.getID());
-//		}
-//		view.getEntitySystem().addEntities(orderList);
-//
-		for (IEntity entity : view.getEntitySystem().getAllEntities()) {
-			System.out.print(entity.getName() + ", ");
-		}
-		System.out.println();
-
 		if(view.getEntitySystem().removeEntity(e.getID())!=null) {
 			view.getEntitySystem().addEntity(e);
 		}
 	}
 
 	private void sendToBack(IEntity e) {
-//		e.getComponent(Sprite.class).setZLevel(2);
-
-		for (IEntity entity : view.getEntitySystem().getAllEntities()) {
-			System.out.print(entity.getName() + ", ");
-		}
-		System.out.println();
-
 		if(view.getEntitySystem().removeEntity(e.getID())!=null) {
-			view.getEntitySystem().addEntity(e);
+			view.getEntitySystem().getAllEntities().add(0, e);
+		}
+	}
+
+	private void sendForward(IEntity e) {
+		int index = view.getEntitySystem().getAllEntities().indexOf(e)+1;
+		if(view.getEntitySystem().removeEntity(e.getID())!=null) {
+			if(index<view.getEntitySystem().getAllEntities().size()) {
+				view.getEntitySystem().getAllEntities().add(index, e);
+			}
+		}
+	}
+
+	private void sendBackward(IEntity e) {
+		int index = view.getEntitySystem().getAllEntities().indexOf(e)-1;
+		if(view.getEntitySystem().removeEntity(e.getID())!=null) {
+			if(index>=0) {
+				view.getEntitySystem().getAllEntities().add(index, e);
+			}
 		}
 	}
 

@@ -68,6 +68,7 @@ public class EntitySystem implements IEntitySystem {
             for(IEntity e:entities) {
                 if(e.getID().equals(id)) {
                     e.getAllComponents().stream().forEach(IComponent::removeBindings);
+                    entities.remove(e);
                     return e;
                 }
             }

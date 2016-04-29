@@ -180,13 +180,15 @@ public class View implements IView {
 
 		// render
 		root.getChildren().clear();
-		List<IEntity> spriteEntities = model.getEntitySystem().getEntitiesWithComponents(Sprite.class, Position.class);
-		for (IEntity e : spriteEntities) {
-			viewUtils.makeSelectable(e);
-//			root.getChildren().addAll(getCollisionShapes(e));
-			ImageView imageView = getUpdatedImageView(e);
-			if(!root.getChildren().contains(imageView)) {
-				root.getChildren().add(imageView);
+		List<IEntity> entities = model.getEntitySystem().getAllEntities();//.getEntitiesWithComponents(Sprite.class, Position.class);
+		for (IEntity e : entities) {
+			if(e.hasComponents(Sprite.class, Position.class)) {
+				viewUtils.makeSelectable(e);
+//				root.getChildren().addAll(getCollisionShapes(e));
+				ImageView imageView = getUpdatedImageView(e);
+				if (!root.getChildren().contains(imageView)) {
+					root.getChildren().add(imageView);
+				}
 			}
 		}
 
