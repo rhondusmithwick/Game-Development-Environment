@@ -1,5 +1,6 @@
 package utility;
 
+import java.io.File;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
@@ -22,7 +23,8 @@ public class FilePathRelativizer {
         try {
             return base.relativize(other).toString();
         } catch (IllegalArgumentException e) {
-            if (other.startsWith(base)) {
+            boolean inner = new File(base.toString(), other.toString()).exists();
+            if (inner) {
                 return otherDirectory;
             }
             Alerts.showError(myResources.getString("error"), myResources.getString("cannotRelativize"));
