@@ -1,7 +1,6 @@
 package voogasalad.util.hud.source;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -40,6 +39,7 @@ public class HUDController implements Observer{
 		setModel(new HUDModel());
 		valueFinder.setController(this);
 		valueFinder.setDataSource(dataSource);
+		
 		List<String> fieldsToObserve = getFieldsToFollow(filename);
 		Map<Integer, String> rowToValueMap = new HashMap<>();
 		for (int i = 0; i<fieldsToObserve.size(); i++) {

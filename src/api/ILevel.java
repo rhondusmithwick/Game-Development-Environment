@@ -9,6 +9,9 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import javafx.scene.Node;
+import javafx.scene.Scene;
+
 import com.google.common.collect.Collections2;
 
 import datamanagement.XMLReader;
@@ -344,4 +347,6 @@ public interface ILevel extends ISerializable {
 	default void removeAllBindingsFromComponents() {
 		getAllComponents().stream().forEach(IComponent::removeBindings);
 	}
+	
+	void setOnInput(Scene scene);
 }

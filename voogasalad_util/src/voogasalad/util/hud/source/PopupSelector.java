@@ -31,32 +31,19 @@ public class PopupSelector {
 	
 	private static final double DEFAULT_WIDTH = 200;
 	private static final double DEFAULT_HEIGHT = 200;
-	private static final String DEFAULT_HELP_TEXT = "Enter your desired HUD fields in order below. \n"
-											+ "When finished, click 'save'. \n"
-											+ "You most likely will be saving to your 'hudfiles' directory.";
-	
-	private String helpText;
+	private static final String HELP_TEXT = "Enter your desired HUD fields in order below. \nWhen finished, click 'save'.";
 	
 	
-	public PopupSelector(double width, double height, IAuthoringHUDController controller, String helpText) {
+	public PopupSelector(double width, double height, IAuthoringHUDController controller) {
 		this.controller = controller;
 		this.root = new Group();
 		this.scene = new Scene(root);
 		this.stage = new Stage();
-		this.helpText = helpText;
 		stage.setScene(scene);
 		input = new TextArea();
 		input.setPrefSize(width, height);
 		init();
 		stage.show();
-	}
-	
-	public PopupSelector(double width, double height, IAuthoringHUDController controller) {
-		this(width,height,controller, DEFAULT_HELP_TEXT);
-	}
-	
-	public PopupSelector(IAuthoringHUDController controller, String helpText) {
-		this(DEFAULT_WIDTH, DEFAULT_HEIGHT, controller, helpText);
 	}
 	
 	public PopupSelector(IAuthoringHUDController controller) {
@@ -71,7 +58,7 @@ public class PopupSelector {
 	public void init() {
 		BorderPane top = new BorderPane();
 		Button save = new Button("Save");
-		top.setLeft(new Text(helpText));
+		top.setLeft(new Text(HELP_TEXT));
 		top.setRight(save);
 		BorderPane all = new BorderPane();
 		all.setTop(top);
@@ -87,47 +74,21 @@ public class PopupSelector {
 	 * @param user input of text area
 	 */
 	
-	private void saveInputs(String input) {
+	public void saveInputs(String input) {
 		File file = new FileChooser().showSaveDialog(stage);
 		if (file != null) {
 			try {
-				String writePath = convertPath(file.getPath(), true);
-				String readPath = convertPath(file.getPath(), false);
-				file = new File(writePath);
+				String path = file.getPath() + ".hud";
+				file = new File(path);
 				BufferedWriter writer = new BufferedWriter(new FileWriter(file));
 				writer.write(input);
 				writer.close();
-				controller.setHUDInfoFile(readPath);
+				controller.setHUDInfoFile(path);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 	}
-	
-	private String convertPath(String fullPath, boolean write) {
-		if (fullPath.endsWith(File.separator)) {
-			fullPath = fullPath.substring(0, fullPath.length() - 1);
-		}
-		String[] splitPath = fullPath.split(File.separator);
-		
-		StringBuilder sb = new StringBuilder();
-		
-		int start = 2;
-		if (write) {
-			sb.append(".." + File.separator);
-			start++;
-		}
-		
-		for (int i = start; i>0; i--) {
-			sb.append(splitPath[splitPath.length-i]);
-			if (i != 1) {
-				sb.append(File.separator);
-			}
-		}
-		return sb.toString();
-	}
-	
-	
 	
 	public Scene getScene() {
 		return scene;

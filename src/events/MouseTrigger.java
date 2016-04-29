@@ -1,62 +1,48 @@
 package events;
 
-import api.IComponent;
-import api.IEntity;
-import api.ILevel;
-import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.input.KeyCode;
+import javafx.event.EventType;
+import javafx.scene.input.InputEvent;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
-@Deprecated
-public class MouseTrigger extends Trigger {
-    private final String entityID;
+/***
+ * @author ani, roxanne
+ *         Authors: Anirudh Jonnavithula, Roxanne Baker
+ *         Listeners that notify the event system if a specific key is pressed. 
+ *         Created 04/27/16
+ */
 
-    public MouseTrigger(String entityID) {
-        this.entityID = entityID;
+public class MouseTrigger extends InputTrigger {
+
+	private MouseButton button;
+	
+    public MouseTrigger(MouseButton button, EventType eventType) {
+    	super(eventType);
+    	setButton(button);
     }
     
     @Override
-    public void changed(ObservableValue arg0, Object oldValue, Object newValue) {
-    	// TODO:  add recognition of what thing is being clicked
-        if (((MouseEvent) newValue).getEventType().equals(MouseEvent.MOUSE_PRESSED)) {
-        	System.out.println("WOLOLOLOLOLOLOLOLOOOOOOOOOOOOOOOOOOO");
-        	setChanged();
-            notifyObservers();        	
-        }
-    }
-
-    @Override
-    @Deprecated
-    public void clearListener(ILevel universe, InputSystem inputSystem) {
-       // getProperty(universe).removeListener(this);
+    public boolean meetsCriteria(ObservableValue observable, Object oldValue, Object newValue) {
+    	if(getEventType() == ((InputEvent)newValue).getEventType()) {
+			MouseEvent mouse = (MouseEvent)newValue;
+			if(mouse.getButton() == getButton()) {
+				return true;
+			}
+		}
+		return false;
     }
     
-    @Override
-    public void clearListener(ILevel universe) {
-//        universe.getEventSystem().unListenToMousePress(this);
-    }
-
-    @Override
-    @Deprecated
-    public void addHandler(ILevel universe, InputSystem inputSystem) {
-        //getProperty(universe).addListener(this);
-    }
-
-    @Override
-    public void addHandler(ILevel universe) {
-//        universe.getEventSystem().listenToMousePress(this);
-    }
-
-//    private SimpleObjectProperty<?> getProperty(ILevel universe) {
-//        IEntity entity = universe.getEntity(entityID);
-//        IComponent component = entity.getComponent(componentClass);
-//        return component.getProperty(propertyName);
-//    }
-
-    @Override
     public String toString() {
-        return String.format("%s; %s; %s; %s", getClass().getSimpleName(), entityID);
+    	return getButton().toString()+":"+getEventType().toString();
     }
-
+    
+    protected MouseButton getButton() {
+    	return button;    
+    }
+    
+    private void setButton(MouseButton button) {
+    	this.button = button;
+    }
+    
 }

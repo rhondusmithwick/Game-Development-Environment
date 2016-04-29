@@ -1,23 +1,14 @@
 # VoogaSalad TLGCS HUD Utility
 
-This HUD utility allows for many different projects to implement a real-time heads up display of user-chosen fields, such as points, health, ammo, etc. This package can be implemented in 4 main steps.
-
-
-## 0. Setting up Dependencies and folders
-
- 1.  If you haven't done so already, clone `voogasald_util`. Please clone this into the same workspace as your main voogasalad project. Afterwards, add it to your voogasalad build path. In Eclipse, this can be done by right clicking on project -> build path -> configure build path -> projects -> add.
-
- 2. Create a folder at the top level of your main voogasalad directory. For example, if your project is called `voogasalad_TLGCS`, you would make a folder under `voogasalad_TLGCS`. You may name it whatever you want (we recommend "hudfiles"), but your HUD info files must be saved to this directory in order for the HUD to work.
+This HUD utility allows for many different projects to implement a real-time heads up display of user-chosen fields, such as points, health, ammo, etc. This package can be implemented in three main steps.
 
 ## 1. Setting Up Authoring Environment
 
 Two simple changes need to be made:
 
-1. The authoring environment needs to have a button that will create a new `PopupWindow` when clicked. That `PopupWindow` is a text area where users can enter the fields they want to show, in order. *note* If you choose to do so, you may also customize the help text within the `PopupWindow`.
+1. The authoring environment needs to have a button that will create a new `PopupWindow` when clicked. That `PopupWindow` is a text area where users can enter the fields they want to show, in order.
 
 2. The authoring environment needs to have one class implement the `IAuthoringHUDController` interface. The implementing class will receive the file location (in string format) for the user HUD preferences. It is recommended that the implementing class be one of the classes that is serialized so that when the game engine is started, it can immediately have a reference to the preference file location. Refer to the `ExampleMain` class inside `examples`.
-
-
 
 ## 2. Setting Up Game Engine
 

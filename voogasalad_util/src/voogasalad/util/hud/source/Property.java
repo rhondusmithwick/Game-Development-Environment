@@ -52,7 +52,7 @@ public class Property extends Observable {
 	
 	public void setValue(Object newValue) throws IllegalArgumentException {
 		if (newValue.getClass().equals(type)) {
-			if (!newValue.equals(value)) {
+			if (newValue.equals(value)) {
 				ValueChange change = new ValueChange(value, newValue, name);
 				value = newValue;
 				setChanged();
