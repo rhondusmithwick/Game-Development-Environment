@@ -22,6 +22,9 @@ public class FilePathRelativizer {
         try {
             return base.relativize(other).toString();
         } catch (IllegalArgumentException e) {
+            if (other.startsWith(base)) {
+                return otherDirectory;
+            }
             Alerts.showError(myResources.getString("error"), myResources.getString("cannotRelativize"));
             return otherDirectory;
         }
