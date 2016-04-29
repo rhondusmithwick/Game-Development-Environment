@@ -13,7 +13,7 @@ import model.entity.Entity;
 
 public class ComponentTable extends Table
 {
-	public ComponentTable(TableManager manager, String language)
+	public ComponentTable(PropertyTableManager manager, String language)
 	{
 		super(manager, ResourceBundle.getBundle(language).getString("pickComponent"));	// TODO resource file
 

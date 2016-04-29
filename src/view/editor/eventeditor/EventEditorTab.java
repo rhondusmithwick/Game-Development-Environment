@@ -71,7 +71,7 @@ public abstract class EventEditorTab extends Editor
 		this.chosenLevels = (ArrayList<ILevel>) levels;
 	}
 	
-	public Text getCreatedLevelText()
+	public Text getCreatedEventText()
 	{
 		return createdEventText;
 	}
