@@ -1,12 +1,5 @@
 package view.editor;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.ResourceBundle;
 import api.IEntity;
 import api.ILevel;
 import api.ISystemManager;
@@ -35,6 +28,9 @@ import view.Utilities;
 import view.View;
 import view.enums.DefaultEntities;
 import view.enums.GUISize;
+
+import java.io.File;
+import java.util.*;
 
 //import view.DragAndResize;
 
@@ -209,14 +205,14 @@ public class EditorEnvironment extends Editor {
 		entityButton.setContextMenu(Utilities.createContextMenu(menuMap));
 	}
 
-	private void sendToBack(IEntity entity) {
-		myEntitySystem = reorder(entity, myEntitySystem);
-		environmentEntityButtons.getChildren().clear();
-		gameRoot.getChildren().clear();
-		for (IEntity addEntity : myEntitySystem.getAllEntities()) {
-			addToScene(addEntity);
-		}
-	}
+//	private void sendToBack(IEntity entity) {
+//		myEntitySystem = reorder(entity, myEntitySystem);
+//		environmentEntityButtons.getChildren().clear();
+//		gameRoot.getChildren().clear();
+//		for (IEntity addEntity : myEntitySystem.getAllEntities()) {
+//			addToScene(addEntity);
+//		}
+//	}
 
 	private ILevel reorder(IEntity entity, ILevel entitySystem) {
 		entitySystem.removeEntity(entity.getID());
@@ -229,12 +225,12 @@ public class EditorEnvironment extends Editor {
 		return entitySystem;
 	}
 
-	// private void sendToBack(IEntity e) {
-	// e.getComponent(ImagePath.class).setZLevel(-1);
-	// }
+	 private void sendToBack(IEntity e) {
+	 	e.getComponent(Sprite.class).setZLevel(-2);
+	 }
 
 	private void sendToFront(IEntity e) {
-		e.getComponent(Sprite.class).setZLevel(1);
+		e.getComponent(Sprite.class).setZLevel(2);
 	}
 
 	private void updateDisplay(ObservableList<IEntity> masterList) {
