@@ -38,7 +38,7 @@ public class EditorEnvironment extends Editor {
 
 	private static final int SINGLE = 1;
 	private BorderPane environmentPane = new BorderPane();
-	private ILevel myEntitySystem;
+	private ILevel myLevel;
 	private ResourceBundle myResources;
 	private ObservableList<IEntity> masterEntityList;
 	private ObservableList<ILevel> allEnvironmentsList;
@@ -59,7 +59,7 @@ public class EditorEnvironment extends Editor {
 			this.updateDisplay(masterList);
 		});
 		masterEntityList = masterList;
-		myEntitySystem = toEdit; 
+		myLevel = toEdit; 
 		allEnvironmentsList = addToList;
 		
 		setUpGame(language);
@@ -68,7 +68,7 @@ public class EditorEnvironment extends Editor {
 	
 	private void setUpGame(String language){
 		Group gameRoot = new Group();
-		game = new SystemManager(gameRoot, myEntitySystem);
+		game = new SystemManager(gameRoot, myLevel);
 		view = new View(game, gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(),
 				scrollPane); 
 		manager = new GameLoopManager(language, game);
@@ -85,10 +85,10 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private TextField setNameDisplay() {
-		if (myEntitySystem.getName().equals("")) {
+		if (myLevel.getName().equals("")) {
 			nameField.setText(myResources.getString("environmentName"));
 		} else {
-			nameField.setText(myEntitySystem.getName());
+			nameField.setText(myLevel.getName());
 		}
 		return nameField;
 	}
@@ -112,7 +112,7 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void addToSystem(IEntity entity) {
-		this.myEntitySystem.addEntity(entity);
+		this.myLevel.addEntity(entity);
 		addToScene(entity);
 	}
 
@@ -201,7 +201,7 @@ public class EditorEnvironment extends Editor {
 		environmentPane.setRight(rightPane);
 		environmentPane.setLeft(leftPane);
 		environmentPane.setCenter(view.getPane());
-		view.getSubScene().setOnMouseClicked(e -> updateEnviornmentBox(environmentEntityButtonsBox,myEntitySystem));
+		view.getSubScene().setOnMouseClicked(e -> updateEnviornmentBox(environmentEntityButtonsBox,myLevel));
 	}
 
 	private void updateEnviornmentBox(VBox vBox, ILevel entities) {
@@ -213,9 +213,9 @@ public class EditorEnvironment extends Editor {
 
 	private void saveEnvironment() {
 		String name = getName();
-		myEntitySystem.setName(name);
-		allEnvironmentsList.remove(myEntitySystem);
-		allEnvironmentsList.add(myEntitySystem);
+		myLevel.setName(name);
+		allEnvironmentsList.remove(myLevel);
+		allEnvironmentsList.add(myLevel);
 		environmentPane.getChildren().clear();
 		environmentPane.setCenter(saveMessage(myResources.getString("saveMessage")));
 	}
@@ -253,12 +253,12 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void removeFromDisplay(IEntity entity, Button entityButton) {
-		myEntitySystem.removeEntity(entity.getID());
+		myLevel.removeEntity(entity.getID());
 		environmentEntityButtonsBox.getChildren().remove(entityButton);
 	}
 
-	public ILevel getEntitySystem() {
-		return myEntitySystem;
+	public ILevel getLevel() {
+		return myLevel;
 	}
 
 	@Override
@@ -271,7 +271,7 @@ public class EditorEnvironment extends Editor {
 	}
 
 	public boolean environmentContains(IEntity checkEntity) {
-		return myEntitySystem.containsEntity(checkEntity);
+		return myLevel.containsEntity(checkEntity);
 	}
 
 }
