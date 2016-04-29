@@ -28,6 +28,7 @@ import view.Utilities;
 import view.View;
 import view.enums.DefaultEntities;
 import view.enums.GUISize;
+import view.utilities.Alerts;
 
 import java.io.File;
 import java.util.*;
@@ -119,7 +120,7 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void loadDefaults() {
-		if (Utilities.showAlert(myResources.getString("addDefaults"), myResources.getString("addDefaultsQuestion"),
+		if (Alerts.showAlert(myResources.getString("addDefaults"), myResources.getString("addDefaultsQuestion"),
 				myResources.getString("defaultsMessage"), AlertType.CONFIRMATION)) {
 			masterEntityList.add(DefaultEntities.BACKGROUND.getDefault());
 			// entitiesToDisplay.add(DefaultsMaker.loadPlatformDefault(entitiesToDisplay));
@@ -168,7 +169,7 @@ public class EditorEnvironment extends Editor {
 			// TODO: rm
 			// gameRoot.getChildren().add(rectangle);
 		} catch (Exception e) {
-			Utilities.showAlert(myResources.getString("error"), null, myResources.getString("unableToAdd"),
+			Alerts.showAlert(myResources.getString("error"), null, myResources.getString("unableToAddEntity"),
 					AlertType.ERROR);
 		}
 	}
@@ -271,7 +272,7 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void addComponents(IEntity entity) {
-		if (Utilities.showAlert(myResources.getString("confirm"), myResources.getString("componentsRequired"),
+		if (Alerts.showAlert(myResources.getString("confirm"), myResources.getString("componentsRequired"),
 				myResources.getString("addComponentQuestion"), AlertType.CONFIRMATION)) {
 			addPositionComponent(entity);
 			addImagePathComponent(entity);

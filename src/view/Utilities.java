@@ -37,6 +37,7 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import model.component.movement.Position;
 import model.component.visual.Sprite;
 import model.entity.Entity;
+import view.enums.DefaultStrings;
 
 public class Utilities {
 
@@ -46,46 +47,9 @@ public class Utilities {
 	 * can be accessed without this object being passed.
 	 */
 
-	/**
-	 * Show an alert with a certain message and a given type.
-	 * 
-	 * @param String
-	 *            title: title of alert, could be null
-	 * @param String
-	 *            header: header for the alert, could be null
-	 * @param String
-	 *            message: longer message further describing the alert, could be
-	 *            null (though all three above shouldn't be null at the same
-	 *            time or the alert is useless)
-	 * @param AlertType
-	 *            type: type of alert to display, i.e. ERROR, INFORMATION,
-	 *            CONFIRMATION
-	 * @return boolean result.get() == ButtonType.OK: returns true is the user
-	 *         clicked the OK button, returns false otherwise
-	 */
 
-	public static boolean showAlert(String title, String header, String message, AlertType type) {
-		Alert alert = new Alert(type);
-		alert.setTitle(title);
-		alert.setHeaderText(header);
-		alert.setContentText(message);
-		Optional<ButtonType> result = alert.showAndWait();
-		return (result.get() == ButtonType.OK);
-	}
 
-	/**
-	 * Show an error with a certain message.
-	 * 
-	 * @param error
-	 *            message
-	 */
 
-	public static void showError(String title, String message) {
-		Alert alert = new Alert(AlertType.ERROR);
-		alert.setTitle(title);
-		alert.setContentText(message);
-		alert.show();
-	}
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public static TableView<String> makeSingleColumnTable(String title, double width) {
@@ -191,7 +155,7 @@ public class Utilities {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(prompt);
 		fileChooser.getExtensionFilters().addAll(filters);
-		File dir = new File("resources/");
+		File dir = new File(DefaultStrings.RESOURCES.getDefault());
 		fileChooser.setInitialDirectory(dir);
 		File file = fileChooser.showOpenDialog(new Stage());
 		return file;

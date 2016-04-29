@@ -1,4 +1,4 @@
-package gui;
+package guiObjects;
 
 import java.util.ResourceBundle;
 
@@ -9,6 +9,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 import javafx.scene.layout.VBox;
+import view.enums.DefaultStrings;
 
 /**
  * 
@@ -20,14 +21,14 @@ public class GuiObjectSlider extends GuiObject{
 	private Slider slider;
 	private Label textLabel;
 	private Label numLabel;
-	private ResourceBundle myResources;
+	private ResourceBundle myPropertiesNames;
 
 
 	public GuiObjectSlider(String name, String resourceBundle,String language, SimpleObjectProperty<?> property, Object object) {
 		super(name, resourceBundle);
-		this.myResources = ResourceBundle.getBundle(language);
+		this.myPropertiesNames= ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
 		createSlider(name, property, object);
-		textLabel = new Label(myResources.getString(getObjectName()));
+		textLabel = new Label(myPropertiesNames.getString(getObjectName()));
 		numLabel = new Label(Double.toString(slider.getValue()));
 		numLabel.textProperty().bind(Bindings.convert(slider.valueProperty()));
 		bindProperty(property);

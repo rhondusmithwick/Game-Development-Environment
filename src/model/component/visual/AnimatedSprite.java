@@ -16,11 +16,14 @@ import java.util.List;
  * @author Melissa Zhang
  */
 public class AnimatedSprite extends Sprite {
+
+	private static final String DEFAULT_IMAGE = "resources/spriteSheets/ryuBlue.gif";
     private static final String DEFAULT_BUNDLE = "spriteProperties/ryuBlue";
     private final SingleProperty<String> singleProperty = new SingleProperty<>("BundlePath", DEFAULT_BUNDLE);
     private CustomAnimationContainer container = new CustomAnimationContainer(DEFAULT_BUNDLE);
 
     public AnimatedSprite() {
+    	this(DEFAULT_IMAGE, DEFAULT_BUNDLE);
     }
 
     /**

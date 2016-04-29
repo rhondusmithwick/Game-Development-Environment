@@ -1,16 +1,27 @@
 package model.component.audio;
 
 import java.io.File;
-
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.util.Arrays;
+import java.util.List;
 import api.IComponent;
+import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.media.AudioClip;
+import utility.SingleProperty;
 
 public class SoundEffect implements IComponent {
-	private final AudioClip audioClip;
+	private static final String DEFAULT = "resources/music/roxanne.mp3";
+	private final SingleProperty<String> effect = new SingleProperty<>("SoundEffect", DEFAULT);
+	private transient AudioClip audioClip;
 	
 	public SoundEffect(String path) {
-		audioClip = new AudioClip(new File(path).toURI().toString());
-		
+		setSound(path);
+	}
+	
+	public SoundEffect(){
+		setSound(DEFAULT);
 	}
 	
 	public void play() {
@@ -25,4 +36,29 @@ public class SoundEffect implements IComponent {
 		audioClip.setCycleCount(AudioClip.INDEFINITE);
 		play();
 	}
+	
+	public void setSound(String path){
+		effect.property1().set(path);
+		audioClip = new AudioClip(new File(path).toURI().toString());
+	}
+	
+	
+	public String getSound(){
+		return effect.property1().get();
+	}
+	
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        out.defaultWriteObject();
+    }
+
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        this.audioClip = new AudioClip(new File(effect.property1().get()).toURI().toString());
+    }
+    
+    @Override
+    public List<SimpleObjectProperty<?>> getProperties() {
+        return Arrays.asList(effect.property1());
+    }
+	
 }

@@ -1,4 +1,4 @@
-package view;
+package view.utilities;
 
 import javafx.beans.property.ReadOnlyDoubleProperty;
 import javafx.scene.Node;

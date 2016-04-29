@@ -21,6 +21,7 @@ import view.editor.Editor;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
+import view.utilities.Alerts;
 
 public class GameEditor extends Editor  {
 
@@ -116,7 +117,7 @@ public class GameEditor extends Editor  {
 	
 	private void saveGame() {
 		new GameSaver().saveGame(masterEnvironmentList, masterEntityList, gameDetails.getGameDetails());
-		Utilities.showAlert("", "", myResources.getString("saved"), AlertType.INFORMATION);
+		Alerts.showAlert("", "", myResources.getString("saved"), AlertType.INFORMATION);
 	}
 
 

@@ -104,7 +104,7 @@ public class Vooga extends StartUpMenu {
 
 
 	private void setLanguage() {
-		languages = Utilities.makeComboBox(myResources.getString("dispLang"), Arrays.asList("english", "arabic"), null);
+		languages = Utilities.makeComboBox(myResources.getString("displayLanguage"), Arrays.asList("english", "arabic"), null);
 		super.addNodesToVBox(Arrays.asList(languages));
 
 	}
