@@ -4,6 +4,7 @@ import api.ISerializable;
 import javafx.animation.Animation;
 import javafx.beans.property.SimpleObjectProperty;
 import utility.SingleProperty;
+import utility.TwoProperty;
 import voogasalad.util.spriteanimation.animation.AnimationContainer;
 
 import java.util.Arrays;
@@ -19,9 +20,11 @@ public class AnimatedSprite extends Sprite {
 
 	private static final String DEFAULT_IMAGE = "resources/spriteSheets/ryuBlue.gif";
     private static final String DEFAULT_BUNDLE = "spriteProperties/ryuBlue";
-    private final SingleProperty<String> singleProperty = new SingleProperty<>("BundlePath", DEFAULT_BUNDLE);
+    private final TwoProperty<String, String> twoProperty = new TwoProperty<>("BundlePath", DEFAULT_BUNDLE, "DefaultAnimation", "");
     private CustomAnimationContainer container = new CustomAnimationContainer(DEFAULT_BUNDLE);
-    private String animationString;
+    private String currentAnimationName="";
+    private SingleProperty<String> defaultAnimationName=new SingleProperty<>("DefaultAnimationName", "");;
+    private transient Animation currentAnimation;
 
     public AnimatedSprite() {
     	this(DEFAULT_IMAGE, DEFAULT_BUNDLE);
@@ -49,9 +52,14 @@ public class AnimatedSprite extends Sprite {
         super(imagePath, imageWidth, imageHeight);
         setBundlePath(bundlePath);
     }
+    
+    public AnimatedSprite(String imagePath, double imageWidth, double imageHeight, String bundlePath, String defaultAnimation) {
+        this(imagePath, imageWidth, imageHeight, bundlePath);
+        setDefaultAnimation(defaultAnimation);
+    }
 
     public SimpleObjectProperty<String> bundlePathProperty() {
-        return singleProperty.property1();
+        return twoProperty.property1();
     }
 
     public String getBundlePath() {
@@ -61,6 +69,18 @@ public class AnimatedSprite extends Sprite {
     public void setBundlePath(String bundlePath) {
         bundlePathProperty().set(bundlePath);
         reInitializeContainer();
+    }
+    
+    public SimpleObjectProperty<String> defaultAnimationProperty() {
+        return twoProperty.property2();
+    }
+
+    public String getDefaultAnimation() {
+        return defaultAnimationProperty().get();
+    }
+
+    public void setDefaultAnimation(String defaultAnimation) {
+    	defaultAnimationProperty().set(defaultAnimation);
     }
 
     @Override
@@ -90,13 +110,28 @@ public class AnimatedSprite extends Sprite {
         return getContainer().hasAnimation(animationName);
     }
 
-    public Animation getAnimation(String animationName) {
-        return getContainer().createAnimation(getImageView(), animationName);
+    public Animation createAnimation(String animationName) {
+        Animation animation = getContainer().createAnimation(getImageView(), animationName);
+        return animation;
     }
 
+    public Animation createAndPlayAnimation(String animationName) {
+    	if(!animationName.equals(currentAnimationName)) {
+    		if(currentAnimation!=null) {
+    			currentAnimation.stop();
+    		}
+    		currentAnimationName = animationName;
+    		currentAnimation = createAnimation(animationName);
+    		currentAnimation.setOnFinished(e->createAnimation(getDefaultAnimation()).play());
+        	currentAnimation.play();
+    	}
+    	return currentAnimation;
+    }
+    
     public static class CustomAnimationContainer extends AnimationContainer implements ISerializable {
         public CustomAnimationContainer(String bundlePath) {
             super(bundlePath);
         }
     }
+    
 }

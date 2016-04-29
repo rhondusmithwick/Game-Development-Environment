@@ -31,7 +31,6 @@ public class ACGameMain extends Application {
         // create your own game here
         myGame = new ACGame();
         s.setTitle(myGame.getTitle());
-
         Scene scene = myGame.init(SIZE, SIZE);
         s.setScene(scene);
         s.show();

@@ -27,7 +27,7 @@ public class AnaimationTesting extends Application implements SandBox {
         entity.forceAddComponent(new AnimatedSprite(SPRITE_PATH, SPRITE_PROPERTIES), true);
         AnimatedSprite animatedSprite = entity.getComponent(AnimatedSprite.class);
         System.out.println(animatedSprite.getAnimationNames());
-        Animation animation = entity.getComponent(AnimatedSprite.class).getAnimation("RightKick");
+        Animation animation = entity.getComponent(AnimatedSprite.class).createAnimation("RightKick");
         animation.play();
         init(primaryStage, animatedSprite.getImageView(), animation);
         primaryStage.show();

@@ -97,7 +97,9 @@ public class ACGame {
             character.getComponent(AnimatedSprite.class).getImageView().setX(pos.getX());
             character.getComponent(AnimatedSprite.class).getImageView().setY(pos.getY());
             root.getChildren().add(character.getComponent(AnimatedSprite.class).getImageView());
-            character.getComponent(AnimatedSprite.class).getAnimation("RightKick").play();
+            Animation animation = character.getComponent(AnimatedSprite.class).createAnimation("RightDefault");
+            animation.setCycleCount(1000);
+            animation.play();
             Map<String, Object> map = new HashMap<>();
             map.put("characterName", character.getName());
             map.put("animationName", "RightPunch");
