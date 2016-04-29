@@ -2,6 +2,8 @@ package events;
 
 import api.ILevel;
 import javafx.beans.value.ObservableValue;
+import javafx.event.EventType;
+import javafx.scene.input.InputEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
@@ -14,50 +16,42 @@ import java.util.Map;
  *         Listeners that notify the event system if a specific key is pressed. 
  */
 
-public class KeyTrigger extends Trigger {
+public class KeyTrigger extends InputTrigger {
 
-    private String key;
+    private KeyCode keyCode;
 
+    public KeyTrigger(KeyCode key, EventType eventType) {
+    	super(eventType);
+        setKeyCode(key);
+    }
+    
     public KeyTrigger(String key) {
-        this.key = key;
-    }
-
-    public KeyTrigger(Map<String, String> triggerMapDescription) {
-        key = triggerMapDescription.get("key");
-    }
-
-    @Override
-    public void changed(ObservableValue observable, Object oldValue, Object newValue) {
-        if (((KeyEvent) newValue).getCode() == KeyCode.getKeyCode(key)) {
-            setChanged();
-            notifyObservers();
-        }
-    }
-
-    @Override
-    @Deprecated
-    public void clearListener(ILevel universe, InputSystem inputSystem) {
-        inputSystem.unListenToKeyPress(this);
+    	super(KeyEvent.KEY_PRESSED);
+        setKeyCode(KeyCode.getKeyCode(key));
     }
     
     @Override
-    public void clearListener(ILevel universe) {
-        universe.getEventSystem().unListenToKeyPress(this);
-    }
-
-    @Override
-    @Deprecated
-    public void addHandler(ILevel universe, InputSystem inputSystem) {
-        inputSystem.listenToKeyPress(this);
-    }
+	public boolean meetsCriteria(ObservableValue observable, Object oldValue,
+			Object newValue) {
+		if(getEventType() == ((InputEvent)newValue).getEventType()) {
+			KeyEvent key = (KeyEvent)newValue;
+			if(key.getCode() == getKeyCode()) {
+				return true;
+			}
+		}
+		return false;
+	}
     
     @Override
-    public void addHandler(ILevel universe) {
-        universe.getEventSystem().listenToKeyPress(this);
-    }
-
-    /**/
     public String toString() {
-        return String.format("%s; %s", getClass().getSimpleName(), key);
+    	return getKeyCode().toString()+":"+getEventType().toString();
+    }
+    
+    protected KeyCode getKeyCode() {
+    	return keyCode;
+    }
+    
+    private void setKeyCode(KeyCode key) {
+    	this.keyCode = key;
     }
 }

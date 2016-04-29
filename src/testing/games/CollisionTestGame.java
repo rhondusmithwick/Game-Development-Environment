@@ -167,7 +167,7 @@ public class CollisionTestGame {
     }
 
     public void keyEventSetup(String key, String scriptName) {
-        eventSystem.registerEvent(new KeyTrigger(key), new Action(scriptName));
+    //    eventSystem.registerEvent(new KeyTrigger(key), new Action(scriptName));
     }
 
     public void step(double dt) {
