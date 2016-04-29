@@ -6,6 +6,10 @@ import api.ILevel;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
+import voogasalad.util.reflection.Reflection;
 
 /***
  * @author Anirudh Jonnavithula, Carolyn Yao Implements a ChangeListener that
@@ -14,13 +18,28 @@ import javafx.beans.value.ObservableValue;
 
 public class PropertyTrigger extends Trigger {
     private final String entityID;
-    private final Class<? extends IComponent> componentClass;
+    private Class<? extends IComponent> componentClass;
     private final String propertyName;
+    private final String characterComponentPath = "model.component.character.";
+    //private Reflection reflectionUtil = new Reflection();
 
     public PropertyTrigger(String entityID, Class<? extends IComponent> componentClass, String propertyName) {
         this.entityID = entityID;
         this.componentClass = componentClass;
         this.propertyName = propertyName;
+    }
+
+    public PropertyTrigger(Map<String, String> triggerMapDescription) {
+        entityID = triggerMapDescription.get("entityID");
+        String componentClassName = characterComponentPath+triggerMapDescription.get("component");
+        componentClass = (Class<? extends IComponent>) Reflection.createInstance(componentClassName, new ArrayList<String>());
+//        try {
+//            componentClass = (Class<? extends IComponent>) Class.forName(characterComponentPath+triggerMapDescription.get("component"));
+//        } catch(ClassNotFoundException e) {
+//            System.out.println("component " + triggerMapDescription.get("component"));
+//            componentClass = null;
+//        }
+        propertyName = triggerMapDescription.get("propertyName");
     }
     
     @Override

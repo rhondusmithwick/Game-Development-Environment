@@ -108,6 +108,12 @@ public class Level implements ILevel {
 		return this.eventSystem;
 	}
 
+
+	@Override
+	public IEntitySystem getEntitySystem() {
+		return this.universe;
+	}
+
 	@Override
 	public IPhysicsEngine getPhysicsEngine() {
 		return this.physics;
@@ -164,7 +170,7 @@ public class Level implements ILevel {
 	
 	private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
-        eventSystem.setUniverse(this);
+        eventSystem.setLevel(this);
     }
 
 }

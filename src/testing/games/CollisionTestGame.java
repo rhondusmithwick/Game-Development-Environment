@@ -2,6 +2,9 @@ package testing.games;
 
 /**
  * Created by cyao42 on 4/22/2016.
+ *
+ * Author: Carolyn Yao
+ * refactored version of game for testing collision events.
  */
 
 import api.IEntity;
@@ -12,11 +15,8 @@ import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 
 import datamanagement.XMLReader;
-import events.Action;
-import events.EventSystem;
+import events.*;
 import api.IEventSystem;
-import events.KeyTrigger;
-import events.PropertyTrigger;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -60,6 +60,7 @@ import model.component.visual.Sprite;
 import model.entity.Entity;
 import model.entity.Level;
 import model.physics.PhysicsEngine;
+import utility.Pair;
 
 import java.io.File;
 import java.io.IOException;
@@ -87,6 +88,7 @@ public class CollisionTestGame {
     private final String moveLeftScriptPath2 = "resources/groovyScripts/keyInputMoveLeft2.groovy";
     private final String jumpScriptPath = "resources/groovyScripts/keyInputJump.groovy";
     private Scene myScene;
+    EventFactory eventFactory = new EventFactory();
 
     /**
      * Returns name of the game.
@@ -111,14 +113,17 @@ public class CollisionTestGame {
     public void initEngine() {
         addCharacter("Anolyn", "blastoise.xml", IMAGE_PATH_BLASTOISE, 50.0, 200.0, "1");
         addCharacter("Cani", "charizard.xml", IMAGE_PATH_CHARIZARD, 200.0, 200.0, "2");
-        propertyEventSetup("Anolyn", healthScriptPath, Position.class, "Y");
-        propertyEventSetup("Anolyn", healthScriptPath, Collision.class, "CollidingIDs");
-        propertyEventSetup("Anolyn", transformScriptPath, Health.class, "Health");
-        keyEventSetup("D", moveRightScriptPath);
-        keyEventSetup("A", moveLeftScriptPath);
-        keyEventSetup("W", jumpScriptPath);
-        keyEventSetup("J", moveLeftScriptPath2);
-        keyEventSetup("L", moveRightScriptPath2);
+//        propertyEventSetup("Anolyn", healthScriptPath, Position.class, "Y");
+//        propertyEventSetup("Anolyn", healthScriptPath, Collision.class, "CollidingIDs");
+//        propertyEventSetup("Anolyn", transformScriptPath, Health.class, "Health");
+        registerEventSetup("PropertyTrigger", "Anolyn", healthScriptPath, Position.class, "Y");
+        registerEventSetup("PropertyTrigger", "Anolyn", healthScriptPath, Collision.class, "CollidingIDs");
+        registerEventSetup("PropertyTrigger", "Anolyn", transformScriptPath, Health.class, "Health");
+        registerEventSetup("KeyTrigger", moveRightScriptPath, "D");
+        registerEventSetup("KeyTrigger", moveLeftScriptPath, "A");
+        registerEventSetup("KeyTrigger", jumpScriptPath, "W");
+        registerEventSetup("KeyTrigger", moveLeftScriptPath2, "J");
+        registerEventSetup("KeyTrigger", moveRightScriptPath2, "L");
     }
 
     private void addCharacter(String name, String XMLName, String imagePath, Double posX, Double posY, String id) {
@@ -154,6 +159,11 @@ public class CollisionTestGame {
         //w.addEvent(KeyTrigger.class.toString().split(" ")[1], "A", moveLeftScriptPath);
         //w.addEvent(KeyTrigger.class.toString().split(" ")[1], "D", moveRightScriptPath);
         //w.writeEventsToFile("eventTest2.xml");
+    }
+
+    public void registerEventSetup(String className, String scriptName, Object... args) {
+        Pair<Trigger, Action> event = eventFactory.createEvent(className, scriptName, args);
+        eventSystem.registerEvent(event._1(), event._2());
     }
 
     public void keyEventSetup(String key, String scriptName) {
