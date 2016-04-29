@@ -68,7 +68,7 @@ public class EventViewManager extends TableManager
 		for (ILevel level: levels)
 		{
 			System.out.println(level.getName() + " events:");
-			events = parser.parseKeyEvent(level.getEventSystem().getEventsAsString());
+			events = parser.parse(level.getEventSystem().getEventsAsString());
 
 			if ( events == null )
 			{

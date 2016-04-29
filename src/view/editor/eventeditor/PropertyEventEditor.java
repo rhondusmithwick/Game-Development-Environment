@@ -31,7 +31,7 @@ public class PropertyEventEditor extends EventEditorTab
 	private final ScrollPane scrollPane;
 	private final VBox pane;
 	private final ResourceBundle myResources;
-	
+	private EventViewManager eventViewManager;
 	private Text triggerText;
 	private Text actionText;
 	
@@ -45,7 +45,7 @@ public class PropertyEventEditor extends EventEditorTab
 	
 	private String chosenEntityName;
 	private IComponent chosenComponent;
-	private SimpleObjectProperty<?> property;
+	private SimpleObjectProperty<?> chosenProperty;
 	
 	private boolean triggerOK, actionOK;
 	
@@ -59,6 +59,7 @@ public class PropertyEventEditor extends EventEditorTab
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
 		pane.setAlignment(Pos.TOP_LEFT);
 		this.language = language;
+		eventViewManager = new EventViewManager();
 		
 		myResources = ResourceBundle.getBundle(language);
 		
@@ -78,7 +79,7 @@ public class PropertyEventEditor extends EventEditorTab
 		populateLayout();
 		
 		choseLevels(new ArrayList<ILevel>(levelList));
-		
+		eventViewManager.levelWasPicked(new ArrayList<ILevel>(levelList));
 		scrollPane = new ScrollPane(pane);
 	}
 
@@ -118,7 +119,6 @@ public class PropertyEventEditor extends EventEditorTab
 	private void makeBottomPart()
 	{
 		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
-		
 		resetTrigger();
 		resetAction();
 		
@@ -129,6 +129,7 @@ public class PropertyEventEditor extends EventEditorTab
 		container.getChildren().add(makeGroovySide());
 		container.getChildren().add(getCreatedEventText());
 		pane.getChildren().add(container);
+		pane.getChildren().add(eventViewManager.getPane());
 	}
 	
 	private void createEvent()
@@ -149,14 +150,14 @@ public class PropertyEventEditor extends EventEditorTab
 				if ( entity.getName().equals(chosenEntityName) )
 				{
 					level.getEventSystem().registerEvent(
-							new PropertyTrigger(entity.getID(), chosenComponent.getClass(), property.getName()), 
+							new PropertyTrigger(entity.getID(), chosenComponent.getClass(), chosenProperty.getName()), 
 							action);
 				}
 			}
 		}
 		
 		flashCreatedEventText();
-		
+		eventViewManager.updateTable();
 		triggerOK = false;
 		actionOK = false;
 	}
@@ -175,6 +176,10 @@ public class PropertyEventEditor extends EventEditorTab
 				entityName + " - " + 
 				splitClassName[splitClassName.length - 1] + " - " + 
 				property.getName());	
+		
+		chosenEntityName = entityName;
+		chosenComponent = component;
+		chosenProperty = property;
 		
 		triggerOK = true;
 		makeEventButton.setDisable( !triggerOK || !actionOK );
@@ -214,6 +219,7 @@ public class PropertyEventEditor extends EventEditorTab
 	public void actionOnChosenLevels(List<ILevel> levels) 
 	{
 		tableManager.levelWasPicked(levels);
+		eventViewManager.levelWasPicked(levels);
 	}
 	
 }
