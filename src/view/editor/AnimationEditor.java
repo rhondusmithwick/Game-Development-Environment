@@ -80,7 +80,7 @@ public class AnimationEditor extends Editor{
 	}
 	private boolean checkIfError() {
 		if (spriteSheetField.getText().isEmpty()|| spritePropertiesField.getText().isEmpty()){
-			errorLabel.setText(myResources.getString("savedAnimatedSpriteError"));
+			errorLabel.setText(myResources.getString("saveAnimatedSpriteError"));
 			return true;
 			
 		}
