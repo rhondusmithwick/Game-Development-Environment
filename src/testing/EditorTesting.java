@@ -37,7 +37,7 @@ public class EditorTesting extends Application {
 		myStage = stage;
         IEntity entity = entitySystem.createEntityFromLoad(LOAD_FILE_NAME);
         EditorFactory factory = new EditorFactory();
-        ObservableList<ISerializable> entityList = FXCollections.observableArrayList();
+        ObservableList<IEntity> entityList = FXCollections.observableArrayList();
         //Editor editorEntity = factory.createEditor(EditorEnvironment.class, new Level(), LANGUAGE, new Button());
         Editor editorEntity = new EditorEntity(null, entity, entityList);
         Scene scene = new Scene(editorEntity.getPane());

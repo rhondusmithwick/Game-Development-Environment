@@ -34,7 +34,9 @@ public enum DefaultStrings {
 	TEMPLATE_DIREC_LOC("resources/templates"),
 	RESOURCES("resources/"),
 	COMPONENTS("-components"),
-	PROPERTIES("-properties");
+	 PROPERTIES("-properties"),
+	 ANIMATION_LOC("resources/spriteProperties/");
+
 	
 
 
