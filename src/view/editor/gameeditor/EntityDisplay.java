@@ -6,12 +6,15 @@ import java.util.ResourceBundle;
 import api.IEntity;
 import api.ISerializable;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import model.entity.Entity;
 import view.Authoring;
 import view.editor.entityeditor.EditorEntity;
 import view.enums.DefaultStrings;
@@ -36,7 +39,6 @@ public class EntityDisplay extends ObjectDisplay{
 
 	}
 	
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public ScrollPane init() {
@@ -50,9 +52,20 @@ public class EntityDisplay extends ObjectDisplay{
 		masterEntList.stream().forEach(e-> addEntityToScroll(e, container));
 	}
 
-	private void addEntityToScroll(ISerializable entity, VBox container) {
-		container.getChildren().add(ButtonFactory.makeButton(((Entity) entity).getName(), f->createEditor(EditorEntity.class.getName(), language,entity, masterEntList)));
-
+	private void addEntityToScroll(IEntity entity, VBox container) {
+		Button entityButton = ButtonFactory.makeButton(entity.getName(), null);
+		entityButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				MouseButton button = event.getButton();
+				if (button == MouseButton.PRIMARY) {
+					createEditor(EditorEntity.class.getName(), language, entity, masterEntList );
+				} else if (button == MouseButton.SECONDARY) {
+					masterEntList.remove(entity);
+				}
+			}
+		});
+		container.getChildren().add(entityButton);
 	}
 	
 	@Override
