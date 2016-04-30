@@ -14,6 +14,8 @@ public class EventParser
 	/*
 	 * {S:KEY_PRESSED=[resources/groovyScripts/ACAddGravity.groovy], A:KEY_PRESSED=[resources/providedScripts/SaveGame.groovy], S:KEY_PRESSED=[resources/groovyScripts/ACGamePositionHandler.groovy]}
 	 * {PropertyTrigger; 013d935c-468f-458b-9fe4-7e97768e7d29; Sprite; ImageHeight=[resources/providedScripts/SaveGame.groovy], PropertyTrigger; 013d935c-468f-458b-9fe4-7e97768e7d29; Health; Health=[resources/groovyScripts/ACGamePositionHandler.groovy]}
+	 * {PropertyTrigger; b61c3e45-9f66-43e1-89f4-097b89e8f120; Defense; ObjectProperty [bean: utility.SingleProperty@52b16026, name: Defense, value: 25.0]=[events.Action@3c2deb52], A=[events.Action@f1fe7ad]}
+
 	 * {A=[resources/groovyScripts/ACGamePositionHandler.groovy]}
 
 	 */
@@ -94,6 +96,8 @@ public class EventParser
 	 * @param string
 	 * @return HashMap<String, String>
 	 */
+	// {A=[events.Action@f1fe7ad]}
+
 	private HashMap<String, String> parseKeyEvent(String string)
 	{
 		HashMap<String, String> parseResults = new HashMap<String, String>();
