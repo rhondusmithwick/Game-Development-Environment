@@ -2,14 +2,13 @@ package view.editor.eventeditor;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.ResourceBundle;
 
 import model.component.visual.AnimatedSprite;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.ChoiceDialog;
 import view.editor.AnimationEditor;
 import view.utilities.Alerts;
+import view.utilities.ChoiceDialogFactory;
 import view.utilities.PopUp;
 import api.IEntity;
 
@@ -18,7 +17,6 @@ public class AnimationChooser{
 	private static final double HEIGHT = 400;
 	private IEntity myEntity;
 	private AnimatedSprite animatedSprite;
-	private ChoiceDialog<String> dialog = new ChoiceDialog<String>();
 	private static final String DEFAULT_LANGUAGE = "languages.english";
 	private ResourceBundle myResources = ResourceBundle.getBundle(DEFAULT_LANGUAGE);
 	
@@ -38,35 +36,20 @@ public class AnimationChooser{
 		if (checkIfAnimatedSprite()){
 			animatedSprite = getAnimatedSpriteComponent();
 			List<String> animationNames = new ArrayList<String>(animatedSprite.getAnimationNames());
-			updateDialogBox(animationNames);
-			Optional<String> result = dialog.showAndWait();
-			if (result.isPresent()) {
-				return result.get();
-			}
+			return ChoiceDialogFactory.choiceBox(animationNames, myResources.getString("animationChooserTitle"), myResources.getString("animationChooserHeader"), myResources.getString("animationChooserContent"));
+			
 		}else{
 			if (Alerts.showAlert(myResources.getString("noAnimatedSpriteTitle"), myResources.getString("noAnimatedSpriteHeader"),myResources.getString("noAnimatedSpriteMessage"), AlertType.CONFIRMATION)){
 				initAnimationEditor();
-
 
 
 			}
 		
 		}
 
-
-
-
 		return null;
 	}
 	
-	private void updateDialogBox(List<String>choices) {
-		dialog = new ChoiceDialog<>(choices.get(0), choices);
-		dialog.setTitle("Animation Chooser");
-		dialog.setHeaderText("Choose an animation");
-		dialog.setContentText("Choose");
-		
-	
-	}
 
 	private boolean checkIfAnimatedSprite() {
 		if (!myEntity.hasComponent(AnimatedSprite.class)){
