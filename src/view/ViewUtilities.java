@@ -36,6 +36,10 @@ public class ViewUtilities {
 		this.universe = universe;
 	}
 
+	public Set<IEntity> getSelected(){
+		return selectedSprites;
+	}
+	
 	private ImageView getImageView(IEntity e) {
 		if (e.hasComponent(AnimatedSprite.class)) {
 			return e.getComponent(AnimatedSprite.class).getImageView();

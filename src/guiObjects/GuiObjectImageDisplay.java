@@ -38,8 +38,8 @@ public class GuiObjectImageDisplay extends GuiObject {
 	}
 
 	private File getImage() {
-		return FileUtilities.promptAndGetFile(FileUtilities.getImageFilters(), myResources.getString("ChooseFile"));
-		
+		return FileUtilities.promptAndGetFile(FileUtilities.getImageFilters(),
+				myResources.getString("ChooseFile"), DefaultStrings.GUI_IMAGES.getDefault());
 	}
 
 	private void setImage(File file) {
