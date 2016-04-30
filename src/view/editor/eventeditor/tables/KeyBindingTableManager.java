@@ -1,4 +1,4 @@
-package view.editor.eventeditor;
+package view.editor.eventeditor.tables;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,7 +12,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.HBox;
 import model.entity.Entity;
+import view.editor.eventeditor.tabs.KeyBindingEditor;
 
+/**
+ * Table Manager that manages the table in the KeyBindingEditor tab.
+ * @author Alankmc
+ *
+ */
 public class KeyBindingTableManager extends TableManager
 {
 	private HBox container;
@@ -30,16 +36,26 @@ public class KeyBindingTableManager extends TableManager
 		container = new HBox();
 		this.language = language;
 		selectedEntitiesFromLevel = FXCollections.observableArrayList();
-		entityTable = new EntityTable( selectedEntitiesFromLevel, this, language);
+
+
+		try {
+			entityTable = new EntityTable( selectedEntitiesFromLevel, this, language);
+		} catch (NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		pickedEntitiesForEvent = new ArrayList<IEntity>();
-		
+
 		this.editor = editor;
-		
+
 		fillLayout();
 	}
-	
+
 	public void entityWasClicked(Entity entity)
 	{
+		editor.setEntityForAnimation(entity);
+		
 		if (pickedEntitiesForEvent.contains(entity))
 		{
 			pickedEntitiesForEvent.remove(entity);
