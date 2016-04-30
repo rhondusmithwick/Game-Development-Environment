@@ -10,6 +10,8 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
+import model.component.visual.AnimatedSprite;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
@@ -17,6 +19,11 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import api.IComponent;
 import api.IEntity;
+import javafx.animation.Animation;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableMap;
 import javafx.scene.Node;
@@ -29,7 +36,7 @@ import javafx.scene.Node;
  * @author Rhondu Smithwick
  */
 public class Entity implements IEntity {
-
+	
 	@XStreamAsAttribute()
 	private final String ID;
 
@@ -143,5 +150,4 @@ public class Entity implements IEntity {
 	public String toString() {
 		return String.format("ID: %s, Components: %s", ID, componentMap.toString());
 	}
-
 }

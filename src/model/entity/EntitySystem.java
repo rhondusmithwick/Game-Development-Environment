@@ -4,12 +4,10 @@ package model.entity;
 import api.IComponent;
 import api.IEntity;
 import api.IEntitySystem;
-
-import com.google.common.collect.Maps;
+import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
-import java.util.Collection;
-import java.util.Map;
+import java.util.List;
 
 /**
  * Created by Tom on 4/24/2016.
@@ -20,7 +18,7 @@ public class EntitySystem implements IEntitySystem {
      * The entities in this system.
      */
     @XStreamAlias("entities")
-    private final Map<String, IEntity> entities = Maps.newLinkedHashMap();
+    private final List<IEntity> entities = Lists.newArrayList();
     private String name;
 
     @Override
@@ -32,32 +30,50 @@ public class EntitySystem implements IEntitySystem {
 
     @Override
     public IEntity addEntity(IEntity entity) {
-        return entities.put(entity.getID(), entity);
+        if(containsID(entity.getID())) {
+            return null;
+        }
+        entities.add(entity);
+        return entity;
     }
 
     @Override
     public IEntity getEntity(String i) {
-        return entities.get(i);
+        for(IEntity e:entities) {
+            if(e.getID().equals(i)) {
+                return e;
+            }
+        }
+        return null;
     }
 
     @Override
-    public Collection<IEntity> getAllEntities() {
-        return entities.values();
+    public List<IEntity> getAllEntities() {
+        return entities;
     }
 
     @Override
     public boolean containsID(String id) {
-        return entities.containsKey(id);
+        for(IEntity e:entities) {
+            if(e.getID().equals(id)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
-    public boolean removeEntity(String id) {
+    public IEntity removeEntity(String id) {
         if (containsID(id)) {
-            IEntity entity = entities.remove(id);
-            entity.getAllComponents().stream().forEach(IComponent::removeBindings);
-            return true;
+            for(IEntity e:entities) {
+                if(e.getID().equals(id)) {
+                    e.getAllComponents().stream().forEach(IComponent::removeBindings);
+                    entities.remove(e);
+                    return e;
+                }
+            }
         }
-        return false;
+        return null;
     }
 
     @Override

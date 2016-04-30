@@ -1,9 +1,9 @@
 package api;
 
-import java.util.List;
-
 import datamanagement.XMLReader;
 import groovy.lang.GroovyShell;
+
+import java.util.List;
 
 /**
  * Created by rhondusmithwick on 3/31/16.
@@ -32,14 +32,21 @@ public interface ISystemManager {
 	 *
 	 * @return IEntitySystem-type entity system
 	 */
-	ILevel getEntitySystem();
+	IEntitySystem getEntitySystem();
+
+	/**
+	 * Get the main entity system
+	 *
+	 * @return IEntitySystem-type entity system
+	 */
+	ILevel getLevel();
 
 	/**
 	 * Get the shared entity system
 	 *
 	 * @return IEntitySystem-type entity system
 	 */
-	ILevel getSharedEntitySystem();
+	ILevel getSharedLevel();
 
 	void saveLevel(String filename);
 

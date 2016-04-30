@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import javafx.animation.Animation;
+
 import com.google.common.base.Preconditions;
 
 import model.entity.PropertiesTemplateLoader;
