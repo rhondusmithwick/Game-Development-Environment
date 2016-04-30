@@ -46,9 +46,10 @@
             <scope>system</scope>
         </dependency>
         <dependency>
-            <groupId>org.codehaus.groovy</groupId>
+            <groupId>groovy</groupId>
             <artifactId>groovy</artifactId>
             <version>2.4.6</version>
+             <systemPath>${project.basedir}/lib/groovy-all-2.4.6-indy.jar</systemPath>
         </dependency>
     </dependencies>
     <build>
