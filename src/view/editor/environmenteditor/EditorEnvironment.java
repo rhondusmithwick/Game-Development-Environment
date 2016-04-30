@@ -1,7 +1,8 @@
-package view.editor;
+package view.editor.environmenteditor;
 
 import api.IEntity;
 import api.ILevel;
+import api.ISerializable;
 import api.IView;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -11,6 +12,7 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -18,6 +20,8 @@ import javafx.scene.layout.VBox;
 import model.component.movement.Position;
 import model.component.visual.Sprite;
 import view.View;
+import view.editor.Editor;
+import view.editor.EditorFactory;
 import view.editor.entityeditor.EditorEntity;
 import view.enums.DefaultEntities;
 import view.enums.GUISize;
@@ -25,6 +29,7 @@ import view.utilities.*;
 import voogasalad.util.reflection.Reflection;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -86,7 +91,7 @@ public class EditorEnvironment extends Editor {
 			loadDefaults();
 		}
 		populateVbox(masterEntityButtonsBox, masterEntityList, "createAddEntityButton");
-		return (new ScrollPane(masterEntityButtonsBox));
+		return (new ScrollPane(TitledPaneFactory.makeTitledPane(myResources.getString("masterTemplates"), masterEntityButtonsBox, true)));
 	}
 
 	private void populateVbox(VBox vbox, Collection<IEntity> collection, String methodName) {
@@ -149,13 +154,13 @@ public class EditorEnvironment extends Editor {
 	private void setRightPane() {
 		rightPane.getChildren()
 				.add(ButtonFactory.makeButton(myResources.getString("saveEnvironment"), e -> saveEnvironment()));
-		rightPane.getChildren().add(new ScrollPane(environmentEntityButtonsBox));
+		rightPane.getChildren().add(new ScrollPane(TitledPaneFactory.makeTitledPane(myResources.getString("environmentInstances"), environmentEntityButtonsBox, true)));
 	}
 
 	private void entityLeftClicked(IEntity entity) {
 		view.toggleHighlight(entity);
 		EditorEntity entityEditor = (EditorEntity) new EditorFactory().createEditor(EditorEntity.class.getName(),
-				myLanguage, entity, masterEntityList);
+				myLanguage, entity);
 		entityEditor.populateLayout();
 		PopUp myPopUp = new PopUp(GUISize.ENTITY_EDITOR_WIDTH.getSize(), GUISize.ENTITY_EDITOR_HEIGHT.getSize());
 		myPopUp.show(entityEditor.getPane());
@@ -168,7 +173,12 @@ public class EditorEnvironment extends Editor {
 		menuMap.put(myResources.getString("sendFront"), e -> sendToFront(entity));
 		menuMap.put(myResources.getString("sendBackOne"), e -> sendBackward(entity));
 		menuMap.put(myResources.getString("sendForwardOne"), e -> sendForward(entity));
+		menuMap.put(myResources.getString("saveAsMasterTemplate"), e -> saveToMasterList(entity));
 		entityButton.setContextMenu(ContextMenuFactory.createContextMenu(menuMap));
+	}
+
+	private void saveToMasterList(IEntity entity) {
+		masterEntityList.add(entity);
 	}
 
 	private void sendToFront(IEntity e) {
