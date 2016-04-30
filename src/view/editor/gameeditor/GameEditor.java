@@ -117,7 +117,7 @@ public class GameEditor extends Editor  {
     private VBox leftPane() {
         VBox temp = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
         temp.getChildren().addAll(gameDetails.getElements());
-        Button mainMenu = ButtonFactory.makeButton("Main Menu", e->toMainMenu());
+        Button mainMenu = ButtonFactory.makeButton(myResources.getString("mainMenu"), e->toMainMenu());
         temp.getChildren().addAll(Arrays.asList(entDisp.makeNewObject(), envDisp.makeNewObject(), eventDisplay.makeNewObject(), mainMenu, ButtonFactory.makeButton(myResources.getString("saveGame"), e->saveGame())));
 
         return temp;
