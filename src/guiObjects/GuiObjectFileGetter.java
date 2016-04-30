@@ -9,11 +9,16 @@ import javafx.stage.FileChooser.ExtensionFilter;
 import utility.FilePathRelativizer;
 import view.utilities.FileUtilities;
 /**
- * 
+ * abstract class to provide frameworks for file getters
  * @author calinelson
  *
  */
 public abstract class GuiObjectFileGetter extends GuiObject{
+	/**
+	 * constructor to make filegetter
+	 * @param name name of property 
+	 * @param resourceBundle string of property bundle
+	 */
 	public GuiObjectFileGetter(String name, String resourceBundle) {
 		super(name, resourceBundle);
 	}
