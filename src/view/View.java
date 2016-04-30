@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.ScrollPane;
@@ -64,7 +65,7 @@ public class View implements IView {
 		this(2000, 2000, new Level(), language);
 	}
 
-	public View(double width, double height, ILevel level, String language) {
+	public View(double width, double height, ILevel level, String language, Scene scene) {
 		subScene = this.createSubScene(root, width, height);
 		model = new SystemManager(subScene, level);
 		myResources = ResourceBundle.getBundle(language);
@@ -72,6 +73,7 @@ public class View implements IView {
 		initConsole();
 		initButtons();
 		pane = createMainBorderPane(root, this.subScene);
+		model.getLevel().setOnInput(scene);
 		viewUtils = new ViewUtilities();
 		DandR = new DragAndResizeDynamic();
 		DandR.makeRootDragAndResize(root);
@@ -82,7 +84,7 @@ public class View implements IView {
 		manager.show();
 	}
 
-	public void setScene(Scene scene) {
+	public void setScene(Node scene) {
 		scene.setOnKeyPressed(e -> keyPressed(e.getCode()));
 	}
 
@@ -110,11 +112,7 @@ public class View implements IView {
 	}
 
 	private void keyPressed(KeyCode code) {
-		if (code == KeyCode.DELETE) {
-			//for (IEntity entity : viewUtils.getSelected()) {
-				//model.getLevel().removeEntity(entity.getID());
-			//}
-		}
+		System.out.println("\t\t" + code);
 	}
 
 	public void toggleHighlight(IEntity entity) {
@@ -219,6 +217,8 @@ public class View implements IView {
 		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("evaluate"), e -> this.evaluate()));
 		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("load"), e -> this.load()));
 		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("loopManager"), e -> this.createLoopManager()));
+		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("startGameLoop"), e -> this.model.play()));
+		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("pauseGameLoop"), e -> this.model.pauseLoop()));
 	}
 
 	private void load() { // TODO: loading
