@@ -56,7 +56,7 @@ public abstract class EventEditorTab extends Editor
 	private AnimationChooser animationChooser;
 	private Entity entityForAnimation;
 	private String animationName;
-	
+	private boolean animationView;
 	public EventEditorTab(String language, ObservableList<ILevel> levelList)
 	{
 		myResources = ResourceBundle.getBundle(language);
@@ -65,7 +65,7 @@ public abstract class EventEditorTab extends Editor
 		levelPicker = new LevelPicker(language, levelList, this);
 		chosenLevels = new ArrayList<ILevel>(levelList);
 		actionReady = false;
-		
+		animationView = false;
 		makeActionPane();
 	}
 
@@ -180,9 +180,11 @@ public abstract class EventEditorTab extends Editor
 			getActionButton.setText(myResources.getString("chooseGroovy"));
 			getActionButton.setOnAction(e -> getFile());
 			getActionButton.setDisable(false);
+			animationView = false;
 		}
 		else if (type.equals(myResources.getString("getFromAnimation")))
 		{
+			animationView = true;
 			getActionButton.setText(myResources.getString("chooseAnimation"));
 			getActionButton.setOnAction(e -> getAnimation());
 			getActionButton.setDisable(false);
@@ -211,9 +213,9 @@ public abstract class EventEditorTab extends Editor
 		this.entityForAnimation = entity;
 
 		// TODO: better if
-		if (getActionButton.getText().equals(myResources.getString("getFromAnimation")))
+		if (animationView)
 		{
-			actionText.setText("Entity for Animation: " + entity.getName() );	// TODO resource file
+			getActionButton.setText("Get Animation for\n" + entity.getName());	// TODO resource
 		}		
 	}
 	public abstract void actionOnChosenLevels(List<ILevel> levels);
