@@ -6,12 +6,16 @@ import api.IEntity;
 import api.ILevel;
 import api.ISerializable;
 import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import model.entity.Level;
 import view.Authoring;
-import view.editor.EditorEnvironment;
+import view.editor.environmenteditor.EditorEnvironment;
 import view.enums.DefaultStrings;
 import view.utilities.ButtonFactory;
 
@@ -46,7 +50,19 @@ public class EnvironmentDisplay extends ObjectDisplay{
 	}
 
 	private void addEnvironmentToScroll(ILevel eSystem, VBox container) {
-		container.getChildren().add(ButtonFactory.makeButton(eSystem.getName(), f->createEditor(EditorEnvironment.class.getName(), language, eSystem, masterEntList, masterEnvList )));
+		Button environment = ButtonFactory.makeButton(eSystem.getName(), null);
+		environment.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				MouseButton button = event.getButton();
+				if (button == MouseButton.PRIMARY) {
+					createEditor(EditorEnvironment.class.getName(), language, eSystem, masterEntList, masterEnvList );
+				} else if (button == MouseButton.SECONDARY) {
+					masterEnvList.remove(eSystem);
+				}
+			}
+		});
+		container.getChildren().add(environment);
 	}
 	
 

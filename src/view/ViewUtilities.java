@@ -11,6 +11,7 @@ import javafx.scene.paint.Color;
 import model.component.movement.Position;
 import model.component.visual.AnimatedSprite;
 import model.component.visual.Sprite;
+import view.utilities.SpriteUtilities;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -36,7 +37,12 @@ public class ViewUtilities {
 		this.universe = universe;
 	}
 
-	private ImageView getImageView(IEntity e) {
+	public Set<IEntity> getSelected(){
+		return selectedSprites;
+	}
+
+	// TODO: remove
+	public static ImageView getImageView(IEntity e) {
 		if (e.hasComponent(AnimatedSprite.class)) {
 			return e.getComponent(AnimatedSprite.class).getImageView();
 		}
@@ -60,7 +66,7 @@ public class ViewUtilities {
 
 	private void dehighlight(IEntity e) {
 //		this.getImageView(e).setEffect(null);
-		getImageView(e).setStyle(NO_SELECT_EFFECT);
+		SpriteUtilities.getImageView(e).setStyle(NO_SELECT_EFFECT);
 		selectedSprites.remove(e); 
 	}
 
@@ -73,7 +79,7 @@ public class ViewUtilities {
 //		borderGlow.setHeight(DEPTH);
 //		this.getImageView(e).setEffect(borderGlow);
 		selectedSprites.add(e);
-		getImageView(e).setStyle(SELECT_EFFECT); // TODO: StringConstants SELECT_EFFECT
+		SpriteUtilities.getImageView(e).setStyle(SELECT_EFFECT); // TODO: StringConstants SELECT_EFFECT
 	}
 
 	private boolean isInBottomResizeRegion(Node node, double y) {
@@ -92,7 +98,7 @@ public class ViewUtilities {
 	}
 
 	private void holdDownSprite(IEntity e, double x, double y) {
-		if (this.isInBottomResizeRegion(this.getImageView(e), y)) {
+		if (this.isInBottomResizeRegion(SpriteUtilities.getImageView(e), y)) {
 			this.resizing = true;
 			this.dragging = false;
 		} else {
