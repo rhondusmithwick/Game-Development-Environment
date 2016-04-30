@@ -3,6 +3,7 @@ package model.physics;
 import api.IEntity;
 import api.ILevel;
 import api.IPhysicsEngine;
+import groovy.ui.SystemOutputInterceptor;
 import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
 import model.component.movement.Position;
@@ -70,7 +71,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 			imageView.setTranslateY(pos.getY());
 		});
 		resetCollisionMasks(universe.getEntitiesWithComponent(Collision.class));
-//		moveCollidingEntities(universe);
+		moveCollidingEntities(universe);
 	}
 	
 	public void moveCollidingEntities(ILevel universe) {
@@ -79,7 +80,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 			Map<IEntity, String> collidingEntitiesToSides = collidingEntitiesAndSides(e, universe);
 			for(IEntity collidingEntity : collidingEntitiesToSides.keySet()) {
 				if (getMass(e) < getMass(collidingEntity) && getMass(e) > 0) {
-				//	moveEntityToSide(e, collidingEntity, collidingEntitiesToSides.get(collidingEntity));
+					moveEntityToSide(e, collidingEntity, collidingEntitiesToSides.get(collidingEntity));
 				}
 			}
 		});
@@ -89,23 +90,23 @@ public class PhysicsEngine implements IPhysicsEngine {
 		Bounds moving = entityToMove.getComponent(Collision.class).getMask();
 		Bounds staying = entityToStay.getComponent(Collision.class).getMask();
 		if (side.equals(Collision.BOTTOM)) { // move down
-			//System.out.println("bottom overlap");
 			double overlap = moving.getMinY() - staying.getMaxY();
-			entityToMove.getComponent(Position.class).add(0, overlap+0.1);
+			System.out.println("bottom overlap "+overlap);
+			entityToMove.getComponent(Position.class).add(0, overlap+0.5);
 		}
 		else if (side.equals(Collision.TOP)) {
-			//System.out.println("top overlap");
 			double overlap = moving.getMaxY() - staying.getMinY();
-			entityToMove.getComponent(Position.class).add(0, -overlap-0.1);			
+			System.out.println("top overlap "+overlap);
+			entityToMove.getComponent(Position.class).add(0, -overlap-0.5);			
 		}
 		else if (side.equals(Collision.LEFT)) {
 			double overlap = moving.getMaxX() - staying.getMinX();
-			//System.out.println("left overlap "+overlap);
+			System.out.println("left overlap "+overlap);
 			entityToMove.getComponent(Position.class).add(-overlap-0.1, 0);			
 		}
 		else if (side.equals(Collision.RIGHT)) {
 			double overlap = moving.getMinX() - staying.getMaxX();
-			//System.out.println("right overlap! "+entityToMove.getID()+" "+overlap);
+			System.out.println("right overlap! "+entityToMove.getID()+" "+overlap);
 			entityToMove.getComponent(Position.class).add(overlap+0.1, 0);					
 		}
 	}
@@ -239,14 +240,24 @@ public class PhysicsEngine implements IPhysicsEngine {
 
 		// TODO: move entity out of collision bounds depending on relative position/side
 
+		if (collisionIsHorizontal(firstEntity)) {
+			setVelocityComponent(m1, m2, velocity1, velocity2, restitution,
+					(Velocity v) -> v.getVX(),
+					(Velocity v, Double val) -> v.setVX(val));
+			setVelocityComponent(m1, m2, velocity1, velocity2, restitution,
+					(Velocity v) -> v.getVY(),
+					(Velocity v, Double val) -> v.setVY(-val));
+		}
+		else if (collisionIsVertical(firstEntity)) {
+			setVelocityComponent(m1, m2, velocity1, velocity2, restitution,
+					(Velocity v) -> v.getVX(),
+					(Velocity v, Double val) -> v.setVX(-val));
+			setVelocityComponent(m1, m2, velocity1, velocity2, restitution,
+					(Velocity v) -> v.getVY(),
+					(Velocity v, Double val) -> v.setVY(val));	
+		}
 
-		setVelocityComponent(m1, m2, velocity1, velocity2, restitution,
-		(Velocity v) -> v.getVX(),
-		(Velocity v, Double val) -> v.setVX(val));
 
-		setVelocityComponent(m1, m2, velocity1, velocity2, restitution,
-		(Velocity v) -> v.getVY(),
-		(Velocity v, Double val) -> v.setVY(val));
 
 	}
 
@@ -369,16 +380,18 @@ public class PhysicsEngine implements IPhysicsEngine {
 
 		double horizontalOverlap = 0;
 		double verticalOverlap = 0;
-		if (first.getMask().getMaxX() > second.getMask().getMinX()) {
+		if (first.getMask().getMaxX() > second.getMask().getMinX() && second.getMask().getMaxX() > first.getMask().getMaxX()) {
 			horizontalOverlap = first.getMask().getMaxX() - second.getMask().getMinX();
 		} else if (first.getMask().getMinX() < second.getMask().getMaxX()) {
 			horizontalOverlap = second.getMask().getMaxX() - first.getMask().getMinX();
 		}
-		if (first.getMask().getMaxY() > second.getMask().getMinY()) {
+		if (first.getMask().getMaxY() > second.getMask().getMinY() && first.getMask().getMinY() < second.getMask().getMinY()) {
 			verticalOverlap = first.getMask().getMaxY() - second.getMask().getMinY();
 		} else if (first.getMask().getMinY() < second.getMask().getMaxY()) {
+			System.out.println("ayyy");
 			verticalOverlap = second.getMask().getMaxY() - first.getMask().getMinY();
 		}
+		System.out.println(horizontalOverlap+" "+verticalOverlap);
 		if (horizontalOverlap < verticalOverlap) {
 			//System.out.println(first.getMask().getMinX()+" "+first.getMask().getMaxX()+" "+second.getMask().getMinX()+" "+second.getMask().getMaxX());
 			if (first.getMask().getMinX() < second.getMask().getMaxX() && second.getMask().getMaxX() > first.getMask().getMaxX()) {
@@ -390,10 +403,12 @@ public class PhysicsEngine implements IPhysicsEngine {
 			}
 		}
 		else {
-			if (first.getMask().getMaxY() > second.getMask().getMinY() && second.getMask().getMinY() < first.getMask().getMinY()) {
+			if (first.getMask().getMaxY() > second.getMask().getMinY() && first.getMask().getMinY() < second.getMask().getMinY()) {
+				System.out.println("add top");
 				first.addCollisionSide(Collision.TOP);
 				second.addCollisionSide(Collision.BOTTOM);
 			} else if (first.getMask().getMinY() < second.getMask().getMaxY()) {
+				System.out.println("add bot");
 				first.addCollisionSide(Collision.BOTTOM);
 				second.addCollisionSide(Collision.TOP);
 			}
