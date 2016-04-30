@@ -6,6 +6,7 @@ public enum DefaultStrings {
 	
 	DEFAULT_LANGUAGE("english"),
 	EVENT_EDITOR_NAME("EditorEvent"),
+	GUI_IMAGES("resources/images"),
 	DEFAULT_ICON("resources/guiImages/default_icon.png"),
 	ENTITY_EDITOR_NAME("EditorEntity"),
 	ENVIRONMENT_EDITOR_NAME("EditorEnvironment"),
@@ -21,6 +22,7 @@ public enum DefaultStrings {
 	RHONDU("resources/testing/RhonduSmithwick.JPG"), 
 	THEME("finalCountdown.mp3"), 
 	MUSIC("resources/music/"),
+	SOUNDFX("resources/soundfx/"),
 	METADATA_LOC("/metadata.xml"),
 	ENTITIES_LOC("/entities.xml"),
 	LEVELS_LOC("/levels/"),

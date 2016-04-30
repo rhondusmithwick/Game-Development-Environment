@@ -54,4 +54,9 @@ public class Orientation implements IComponent {
     public List<SimpleObjectProperty<?>> getProperties() {
         return singleProperty.getProperties();
     }
+
+    @Override
+    public void update() {
+        setOrientation(getOrientation());
+    }
 }

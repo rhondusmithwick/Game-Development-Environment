@@ -8,6 +8,8 @@ import java.util.Set;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
+import javafx.animation.Animation;
+
 import com.google.common.base.Preconditions;
 
 import model.entity.PropertiesTemplateLoader;
@@ -93,6 +95,13 @@ public interface IEntity extends ISerializable {
 	 */
 	default <T extends IComponent> T getComponent(Class<T> componentClass) {
 		return getComponent(componentClass, 0);
+	}
+
+	/**
+	 * Updates all components forcefully.
+	 */
+	default void updateComponents() {
+		getAllComponents().stream().forEach(IComponent::update);
 	}
 
 	/**

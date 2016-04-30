@@ -19,6 +19,7 @@ import view.enums.FileExtensions;
 import view.enums.GUISize;
 import view.enums.Indexes;
 import view.utilities.ButtonFactory;
+import view.utilities.FileUtilities;
 import view.utilities.TextFieldFactory;
 
 public class GameDetails {
@@ -76,12 +77,9 @@ public class GameDetails {
 	}
 
 	private void updateIcon() {
-		Stage s = new Stage();
-		FileChooser fChoose = new FileChooser();
-		fChoose.setTitle(myResources.getString("chooseIcon"));
-		fChoose.getExtensionFilters().addAll(FileExtensions.GIF.getFilter(), FileExtensions.JPG.getFilter(), FileExtensions.PNG.getFilter());
-		File file = fChoose.showOpenDialog(s);
-		if(file!=null){
+		File file = FileUtilities.promptAndGetFile(FileUtilities.getImageFilters(),
+				myResources.getString("chooseIcon"), DefaultStrings.GUI_IMAGES.getDefault());
+		if(file != null){
 			setIconPicture(file);
 		}
 	}

@@ -1,29 +1,21 @@
 package testing.AniPong;
 
-import java.util.HashMap;
-import java.util.Map;
-
+import api.*;
+import events.Action;
+import events.KeyTrigger;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
-import events.Action;
-import events.KeyTrigger;
-import events.MouseTrigger;
 import model.component.character.Score;
 import model.component.character.UserControl;
 import model.component.movement.Position;
 import model.component.visual.Sprite;
 import model.core.SystemManager;
-import api.IEntity;
-import api.IEventSystem;
-import api.ILevel;
-import api.IPhysicsEngine;
-import api.ISystemManager;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 
@@ -36,6 +28,7 @@ public class AniPong {
     private final String movePaddleUpScript = PATH + "MovePaddleUp.groovy";
     private final String movePaddleDownScript = PATH + "MovePaddleDown.groovy";
     private final String stopPaddleScript = PATH + "StopPaddle.groovy";
+    private IEntity ball; 
     private final int winningScore = 3;
     private Scene myScene;
     private Group root;
@@ -48,11 +41,12 @@ public class AniPong {
 		
 		// Create a scene graph to organize the scene
 		this.game = game;
-		this.universe = game.getEntitySystem();
+		this.universe = game.getLevel();
         this.events = universe.getEventSystem();
         this.physics = universe.getPhysicsEngine();
-        initKeyInputs();
+        
         initSprites();
+        initKeyInputs();
         root = new Group();
         // Create a place to see the shapes
         myScene = new Scene(root, width, height, Color.WHITE);
@@ -63,16 +57,16 @@ public class AniPong {
 
     private void initSprites() {
         // Ball
-        IEntity ball = AniSpriteLoader.createBall("Ball", new Position(200.0, 150.0));
+        ball = AniSpriteLoader.createBall("Ball", new Position(200.0, 150.0));
         //Paddles
         IEntity leftPaddle = AniSpriteLoader.createPaddle("LeftPaddle", new Position(100, 160));
         IEntity rightPaddle = AniSpriteLoader.createPaddle("RightPaddle", new Position(540, 160));
 //        events.registerEvent(new MouseTrigger(leftPaddle.getID()), new Action(movePaddleUpScript));
         rightPaddle.addComponent(new UserControl());
         // Walls
-        IEntity leftWall = AniSpriteLoader.createPlatform("LeftWall", new Position(578, 7));
+        IEntity leftWall = AniSpriteLoader.createPlatform("LeftWall", new Position(-578, 7));
         IEntity rightWall = AniSpriteLoader.createPlatform("RightWall", new Position(686, 7));
-        IEntity ceiling = AniSpriteLoader.createPlatform("Ceiling", new Position(7, 500));
+        IEntity ceiling = AniSpriteLoader.createPlatform("Ceiling", new Position(7, -500));
         IEntity floor = AniSpriteLoader.createPlatform("Floor", new Position(7, 500));
 
         universe.addEntities(ball, leftPaddle, rightPaddle, leftWall, rightWall, ceiling, floor);
@@ -84,14 +78,21 @@ public class AniPong {
         Map<String, Object> sKey = new HashMap<>();
         wKey.put("key", "S");
         Map<String, Object> mKey = new HashMap<>();
-        wKey.put("key", "M");
+        mKey.put("key", "M");
         events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_PRESSED), new Action(movePaddleUpScript, wKey));
         events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("S"), KeyEvent.KEY_PRESSED), new Action(movePaddleDownScript, sKey));
-        //events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_RELEASED), new Action(stopPaddleScript, mKey));
-        //events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("S"), KeyEvent.KEY_RELEASED), new Action(stopPaddleScript, mKey));
-        events.registerEvent(new MouseTrigger(MouseButton.PRIMARY, MouseEvent.MOUSE_CLICKED), new Action(stopPaddleScript));
+        events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_RELEASED), new Action(stopPaddleScript, mKey));
+        events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("S"), KeyEvent.KEY_RELEASED), new Action(stopPaddleScript, mKey));
+        //events.registerEvent(new PropertyTrigger(ball.getID(), Position.class, "XPosition"), new Action(stopPaddleScript, mKey));
+        /*events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_PRESSED), new Action(movePaddleUpScript, wKey));
+        events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("S"), KeyEvent.KEY_PRESSED), new Action(movePaddleDownScript, sKey));
+        events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_RELEASED), new Action(stopPaddleScript, mKey));
+        events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("S"), KeyEvent.KEY_RELEASED), new Action(stopPaddleScript, mKey));*/
+       // events.registerEvent(new MouseTrigger(MouseButton.PRIMARY, MouseEvent.MOUSE_CLICKED), new Action(stopPaddleScript));
         //System.out.println("Input keys cannot be registered without de-serialization error.");
-        String s = events.getEventsAsString();
+
+//        String s = events.getEventsAsString();	//NEEDED TO COMMENT OUT TO GET GAME TO FUNCTION
+        int x =1;
     }
 
 //    private initGlobalVariables() {
@@ -118,9 +119,10 @@ public class AniPong {
     
     public ImageView drawCharacter(IEntity character) {
         Sprite imgPath = character.getComponent(Sprite.class);
+        //System.out.println("YO");
         ImageView charSprite = imgPath.getImageView();
         charSprite.setPreserveRatio(true);
-        imgPath.setImageHeight(100);
+        //imgPath.setImageHeight(100);
         charSprite.setPreserveRatio(true);
         root.getChildren().add(charSprite);
         return charSprite;

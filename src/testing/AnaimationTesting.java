@@ -15,7 +15,7 @@ import voogasalad.util.spriteanimation.testing.SandBox;
 public class AnaimationTesting extends Application implements SandBox {
 
     private static final String SPRITE_PATH = "resources/spriteSheets/ryuBlue.gif";
-    private static final String SPRITE_PROPERTIES = "spriteProperties/ryuBlue";
+    private static final String SPRITE_PROPERTIES = "spriteProperties/aniryu";
 
     public static void main(String[] args) {
         launch(args);
@@ -27,9 +27,10 @@ public class AnaimationTesting extends Application implements SandBox {
         entity.forceAddComponent(new AnimatedSprite(SPRITE_PATH, SPRITE_PROPERTIES), true);
         AnimatedSprite animatedSprite = entity.getComponent(AnimatedSprite.class);
         System.out.println(animatedSprite.getAnimationNames());
-        Animation animation = entity.getComponent(AnimatedSprite.class).getAnimation("doubleLeftPunch");
+        Animation animation = entity.getComponent(AnimatedSprite.class).createAnimation("RightKick");
         animation.play();
         init(primaryStage, animatedSprite.getImageView(), animation);
         primaryStage.show();
+        
     }
 }
