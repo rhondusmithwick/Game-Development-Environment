@@ -24,8 +24,8 @@ public class GuiObjectMusicChooser extends GuiObject{
 	@SuppressWarnings("unchecked")
 	public GuiObjectMusicChooser(String name, String resourceBundle, String language, SimpleObjectProperty<?> property, Object object) {
 		super(name, resourceBundle);
-		this.myPropertiesNames=ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
-		myResources= ResourceBundle.getBundle(language);
+		this.myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
+		myResources = ResourceBundle.getBundle(language);
 		setMusic = ButtonFactory.makeButton(myPropertiesNames.getString(name), e->changeMusic());
 		play = ButtonFactory.makeButton(myResources.getString("play"), e->playMusic());
 		this.property=(SimpleObjectProperty<String>) property;
@@ -43,10 +43,8 @@ public class GuiObjectMusicChooser extends GuiObject{
 	}
 
 	private File getMusic() {
-		return FileUtilities.promptAndGetFile(FileExtensions.MP3.getFilter(), myResources.getString("ChooseFile"));
-		
+		return FileUtilities.promptAndGetFile(FileExtensions.MP3.getFilter(), myResources.getString("ChooseFile"));		
 	}
-	
 
 	@Override
 	public Object getCurrentValue() {
@@ -61,16 +59,10 @@ public class GuiObjectMusicChooser extends GuiObject{
 		preview = new AudioClip(file.toURI().toString());
 	}
 
-
 	@Override
 	public Object getGuiNode() {
 		HBox h = new HBox(GUISize.GUI_IM_DISP.getSize());
 		h.getChildren().addAll(setMusic, play);
 		return h;
 	}
-
-	
-
-
-
 }
