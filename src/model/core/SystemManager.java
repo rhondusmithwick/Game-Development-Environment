@@ -34,6 +34,7 @@ public class SystemManager implements ISystemManager {
 
 	@Deprecated
 	public SystemManager() {
+		this(new Level());
 	}
 
 	@Deprecated

@@ -1,6 +1,7 @@
 package model.entity;
 
 import api.*;
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import events.EventSystem;
 import groovy.lang.GroovyShell;
@@ -28,7 +29,7 @@ public class Level implements ILevel {
 	private IPhysicsEngine physics = new PhysicsEngine();
 	private String eventSystemPath;
 //	private transient ResourceBundle scriptLocs = ResourceBundle.getBundle(DefaultStrings.SCRIPTS_LOC.getDefault());
-	private transient List<IGameScript> gameScripts;
+	private transient List<IGameScript> gameScripts = Lists.newArrayList();
 
 	public Level() {
 		this("");

@@ -56,7 +56,7 @@ public class View implements IView {
 	@Deprecated
 	public View() {
 		// Default
-		model = new SystemManager();
+		this(new SystemManager(), 2000, 2000, new ScrollPane());
 	}
 
 	// Needs scene
@@ -206,7 +206,7 @@ public class View implements IView {
 		pane.setCenter(center);
 		// center.setContent(root);
 		center.setContent(subScene);
-		System.out.println(subScene.getRoot());
+//		System.out.println(subScene.getRoot());
 		root.setManaged(false); // IMPORTANT
 
 		// center.setPannable(true);
