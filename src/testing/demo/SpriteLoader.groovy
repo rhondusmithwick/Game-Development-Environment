@@ -21,7 +21,7 @@ public class SpriteLoader {
         ImageView img = disp.getImageView();
         disp.setImageWidth(0.05*disp.getImageWidth());
         e.addComponents(pos, disp, new Velocity(20.0, 0.0),
-                new Collision("ball"), new RestitutionCoefficient(1.0), new Mass(5));
+                new RestitutionCoefficient(1.0), new Mass(5));
         return e;
     }
 
