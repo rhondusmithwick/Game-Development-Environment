@@ -31,6 +31,5 @@ public class AnaimationTesting extends Application implements SandBox {
         animation.play();
         init(primaryStage, animatedSprite.getImageView(), animation);
         primaryStage.show();
-        
     }
 }
