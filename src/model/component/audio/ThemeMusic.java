@@ -12,6 +12,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import utility.SingleProperty;
 
+@SuppressWarnings("serial")
 public class ThemeMusic implements IComponent {
 	private transient Media media;
 	private transient MediaPlayer mediaPlayer;

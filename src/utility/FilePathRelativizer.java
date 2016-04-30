@@ -32,4 +32,32 @@ public class FilePathRelativizer {
         }
     }
 
+	public static String convertToResourceBase(String path,String packagePath) {
+		String relativizedPath = relativize(path);
+		return packagePath+ extractFileName(relativizedPath);
+		
+	}
+	
+	  public static String extractFileName( String filePathName )
+	  {
+	    if ( filePathName == null )
+	      return null;
+
+	    int dotPos = filePathName.lastIndexOf( '.' );
+	    int slashPos = filePathName.lastIndexOf( '\\' );
+	    if ( slashPos == -1 )
+	      slashPos = filePathName.lastIndexOf( '/' );
+
+	    if ( dotPos > slashPos )
+	    {
+	      return filePathName.substring( slashPos > 0 ? slashPos + 1 : 0,
+	          dotPos );
+	    }
+
+	    return filePathName.substring( slashPos > 0 ? slashPos + 1 : 0 );
+	  }
+
 }
+
+
+

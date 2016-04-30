@@ -12,6 +12,7 @@ import java.util.List;
  *
  * @author Roxanne Baker, Rhondu Smithwick
  */
+@SuppressWarnings("serial")
 public class Defense implements IComponent {
 
     /**

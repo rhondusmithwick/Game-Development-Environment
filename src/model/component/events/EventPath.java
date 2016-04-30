@@ -6,6 +6,7 @@ import utility.SingleProperty;
 
 import java.util.List;
 
+@SuppressWarnings("serial")
 public class EventPath implements IComponent {
 
     private final SingleProperty<String> singleProperty = new SingleProperty<>("EventPath", "");

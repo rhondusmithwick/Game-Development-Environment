@@ -25,7 +25,7 @@ public class SystemManager implements ISystemManager {
 	private ILevel universe = new Level();
 	private List<ILevel> levelList = new ArrayList<>();
 	private ILevel sharedUniverse = new Level();
-	private boolean isRunning = true;
+	private boolean isRunning = false;
 	private Node scene; // TODO: remove
 
 	public SystemManager(Node scene) {

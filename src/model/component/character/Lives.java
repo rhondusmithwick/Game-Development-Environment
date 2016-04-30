@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
+@SuppressWarnings("serial")
 public class Lives implements IComponent {
     /**
      * The single property. Contains a single Lives Integer property.
