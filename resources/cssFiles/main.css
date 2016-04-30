@@ -70,7 +70,7 @@
 	-fx-padding: 5
 }
 
-.text-field {
+.text-field, .list-view {
 	-fx-font-size: 12px;
 	-fx-font-family: "baskerville";
 	-fx-border-color: black;
