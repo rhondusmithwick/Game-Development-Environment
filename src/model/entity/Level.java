@@ -12,13 +12,14 @@ import events.EventSystem;
 import groovy.lang.GroovyShell;
 import javafx.scene.Scene;
 import model.physics.PhysicsEngine;
-
+import view.enums.DefaultStrings;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.ResourceBundle;
 
 /**
  * Implementation of a Level. This implementation is focused on the IDs. It
@@ -33,6 +34,7 @@ public class Level implements ILevel {
     private IEventSystem eventSystem = new EventSystem(this);
     private IPhysicsEngine physics = new PhysicsEngine();
     private String eventSystemPath;
+    private transient ResourceBundle myResources;
     //	private transient ResourceBundle scriptLocs = ResourceBundle.getBundle(DefaultStrings.SCRIPTS_LOC.getDefault());
     private transient List<IGameScript> gameScripts = Lists.newArrayList();
 
@@ -42,6 +44,7 @@ public class Level implements ILevel {
 
     public Level (String name) {
         universe.setName(name);
+        myResources = ResourceBundle.getBundle(DefaultStrings.LANG_LOC.getDefault() + DefaultStrings.DEFAULT_LANGUAGE.getDefault());
     }
 
     @Override
@@ -73,8 +76,8 @@ public class Level implements ILevel {
     public String init (GroovyShell shell, ISystemManager game) {
         gameScripts = new ArrayList<>();
         String returnMessage = "";
-        String key = "Script"; // TODO: don't hard-code
-        System.out.println(this.metadata.keySet());
+        String key = myResources.getString("script"); // TODO: don't hard-code
+        //System.out.println(this.metadata.keySet());
         if (this.metadata.containsKey(key)) {
             String value = this.metadata.get(key);
             String[] scripts = value.split(",");
@@ -98,8 +101,8 @@ public class Level implements ILevel {
 
     @Override
     public void update (double dt) {
-//		physics.update(this, dt); // TODO: remove
-        gameScripts.stream().forEach(gs -> gs.update(dt));
+		physics.update(this, dt); // TODO: remove
+        //gameScripts.stream().forEach(gs -> gs.update(dt));
     }
 
     @Override
@@ -133,6 +136,7 @@ public class Level implements ILevel {
 
     private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
+        myResources = ResourceBundle.getBundle(DefaultStrings.LANG_LOC.getDefault() + DefaultStrings.DEFAULT_LANGUAGE.getDefault());
         eventSystem.setLevel(this);
     }
 

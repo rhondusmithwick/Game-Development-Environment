@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
+@SuppressWarnings("serial")
 public class Orientation implements IComponent {
 
     /**

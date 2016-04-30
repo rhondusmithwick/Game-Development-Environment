@@ -13,9 +13,10 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
+@SuppressWarnings("serial")
 public class Mass implements IComponent {
 
-    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Mass", 0.0);
+    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Mass", 1.0);
 
     public Mass() {
     }

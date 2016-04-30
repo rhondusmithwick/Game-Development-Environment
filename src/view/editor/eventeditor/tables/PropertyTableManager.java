@@ -38,7 +38,6 @@ public class PropertyTableManager extends TableManager
 		this.language = language;
 		selectedEntities = FXCollections.observableArrayList();
 
-
 		try {
 			entityTable = new EntityTable(selectedEntities, this, language);
 			componentTable = new ComponentTable(this, language);

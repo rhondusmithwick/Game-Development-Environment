@@ -1,17 +1,16 @@
 package view.utilities;
 
 import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.security.CodeSource;
-import java.security.ProtectionDomain;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import utility.FilePathRelativizer;
 import javafx.stage.FileChooser.ExtensionFilter;
 import view.enums.DefaultStrings;
+import view.enums.FileExtensions;
 
 public class FileUtilities {
 	private FileUtilities(){
@@ -59,32 +58,20 @@ public class FileUtilities {
 		fileChooser.setTitle(prompt);
 		fileChooser.getExtensionFilters().addAll(filters);
 		fileChooser.setInitialDirectory(new File(dir));
-		File file = fileChooser.showOpenDialog(new Stage());
+		File file = new File(FilePathRelativizer.relativize(fileChooser.showOpenDialog(new Stage()).getPath()));
 		return file;
 	}
 	
-	/**
-
-	 * Directs file chooser box to the appropriate directory to use files from
-	 * this project
-	 * 
-	 * @return File directory: local directory being returned
-	 */
-
-	@SuppressWarnings("unused")
-	private static File getLocalDir() {
-		ProtectionDomain pd = FileUtilities.class.getProtectionDomain();
-		CodeSource cs = pd.getCodeSource();
-		URL localDir = cs.getLocation();
-		File directory;
-		try {
-			directory = new File(localDir.toURI());
-		} catch (URISyntaxException e) {
-			directory = new File(localDir.getPath());
-		}
-		return directory;
+	public static File promptAndGetFile(List<ExtensionFilter> filters, String prompt) {
+		FileChooser fileChooser = new FileChooser();
+		fileChooser.setTitle(prompt);
+		fileChooser.getExtensionFilters().addAll(filters);
+		File dir = new File(DefaultStrings.RESOURCES.getDefault());
+		fileChooser.setInitialDirectory(dir);
+		File file = new File(FilePathRelativizer.relativize(fileChooser.showOpenDialog(new Stage()).getPath()));
+		return file;
 	}
-	
+		
 	/**
 	 * Gets all file names from a given directory. Is static so that it can be
 	 * accessed as the actual class is never instantiated, also so that function
@@ -112,11 +99,16 @@ public class FileUtilities {
 	}
 	
 	public static List<ExtensionFilter> getImageFilters() {
-		List<ExtensionFilter> filters = new ArrayList<ExtensionFilter>();
-		filters.add(new FileChooser.ExtensionFilter("All Images", "*.*"));
-		filters.add(new FileChooser.ExtensionFilter("JPG", "*.jpg"));
-		filters.add(new FileChooser.ExtensionFilter("PNG", "*.png"));
-		return filters;
+		return Arrays.asList(FileExtensions.PNG.getFilter(), FileExtensions.PNG.getFilter());
+
+	}
+	
+	public static List<ExtensionFilter> getMusicFilters(){
+		return Arrays.asList(FileExtensions.MP3.getFilter());
+	}
+	
+	public static List<ExtensionFilter> getPropertiesFilters(){
+		return Arrays.asList(FileExtensions.PROPERTIES.getFilter());
 	}
 	
 }
