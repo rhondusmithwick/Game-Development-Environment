@@ -2,6 +2,7 @@ package testing.demo
 
 import api.IEntity
 import javafx.scene.image.ImageView
+import model.component.audio.SoundEffect
 import model.component.character.Score
 import model.component.movement.Position
 import model.component.movement.Velocity
@@ -20,7 +21,7 @@ public class SpriteLoader {
         IEntity e = new Entity(name);
         Sprite disp = new Sprite();
         ImageView img = disp.getImageView();
-        disp.setImageWidth(0.05*disp.getImageWidth());
+        disp.setImageWidth(20);
         e.addComponents(pos, disp, new Velocity(20.0, 0.0),
                 new RestitutionCoefficient(1.0), new Mass(5));
         return e;
@@ -46,7 +47,9 @@ public class SpriteLoader {
 		Sprite sprite = new Sprite();
 		ImageView img = sprite.getImageView();
 		AnimatedSprite animated = new AnimatedSprite();
-		e.addComponents(pos,sprite, animated);
+
+		SoundEffect soundfx = new SoundEffect();
+		e.addComponents(pos, animated, soundfx);
 		return e;
 	}
 

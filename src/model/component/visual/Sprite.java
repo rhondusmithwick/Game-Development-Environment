@@ -44,9 +44,6 @@ public class Sprite implements IComponent {
         //        Image image = getImage(imagePath);
         //        setImageWidth(image.getWidth());
         //        setImageHeight(image.getHeight());
-
-        imageView = createImageView(imagePath);
-
     }
 
     /**
@@ -148,4 +145,5 @@ public class Sprite implements IComponent {
         setImageHeight(getImageHeight());
         setImageWidth(getImageWidth());
     }
+
 }

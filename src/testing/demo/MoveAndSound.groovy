@@ -27,9 +27,9 @@ public class MoveAndSound implements IGameScript{
 	@Override
 	public void init(GroovyShell shell, ISystemManager game) {
 		this.game = game;
-		this.universe = game.getEntitySystem();
-		this.events = universe.getEventSystem()
-		shell.setVariable("punchandsound");
+		this.universe = game.getLevel();
+		this.events = universe.getEventSystem();
+//		shell.setVariable("punchandsound");
 		initKeyInputs();
 		initSprites();
 				}
@@ -37,6 +37,7 @@ public class MoveAndSound implements IGameScript{
 	@Override
 	public void update(double dt) {
 		// TODO Auto-generated method stub
+		println("update");
 		
 	}
 	private void initKeyInputs() {

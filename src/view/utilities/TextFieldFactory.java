@@ -3,7 +3,7 @@ package view.utilities;
 import javafx.scene.control.TextField;
 
 public class TextFieldFactory {
-	private TextFieldFactory(){
+	public TextFieldFactory(){
 		
 	}
 	/**
