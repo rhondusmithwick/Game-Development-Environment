@@ -69,4 +69,10 @@ public class Gravity implements IComponent {
 	public List<SimpleObjectProperty<?>> getProperties() {
 		return gravityProperty.getProperties();
 	}
+
+	@Override
+	public void update() {
+		setGravityX(getGravityX());
+		setGravityY(getGravityY());
+	}
 }

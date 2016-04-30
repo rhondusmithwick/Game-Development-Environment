@@ -1,11 +1,11 @@
 package model.component.physics;
 
-import java.util.List;
-
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Bounds;
 import utility.SingleProperty;
+
+import java.util.List;
 
 /**
  * 
@@ -82,6 +82,13 @@ public class Collision implements IComponent {
 	public List<SimpleObjectProperty<?>> getProperties() {
 		// TODO: add maskID property
 		return collidingIDsProperty.getProperties();
+	}
+
+	@Override
+	public void update() {
+		setCollidingIDs(getCollidingIDs());
+		setMask(getMask());
+		setMaskID(getMaskID());
 	}
 
 }

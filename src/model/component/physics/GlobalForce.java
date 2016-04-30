@@ -73,4 +73,9 @@ public class GlobalForce implements IComponent {
         return twoProperty.getProperties();
     }
 
+    @Override
+    public void update() {
+        setDirection(getDirection());
+    }
+
 }
