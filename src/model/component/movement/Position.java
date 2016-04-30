@@ -86,4 +86,10 @@ public class Position implements IComponent {
         return twoProperty.getProperties();
     }
 
+    @Override
+    public void update() {
+        setX(getX());
+        setY(getY());
+    }
+
 }

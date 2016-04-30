@@ -62,4 +62,9 @@ public class Score implements IComponent {
     public List<SimpleObjectProperty<?>> getProperties() {
         return singleProperty.getProperties();
     }
+
+    @Override
+    public void update() {
+        setScore(getScore());
+    }
 }

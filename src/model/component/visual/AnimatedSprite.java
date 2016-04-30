@@ -125,6 +125,12 @@ public class AnimatedSprite extends Sprite {
     @Override
     public List<SimpleObjectProperty<?>> getProperties () {
         return Arrays.asList(defaultAnimationProperty(), bundlePathProperty(), imagePathProperty(), imageWidthProperty(), imageHeightProperty(), zLevelProperty());
+    }
 
+    @Override
+    public void update() {
+        super.update();
+        setBundlePath(getBundlePath());
+        setDefaultAnimation(getDefaultAnimation());
     }
 }
