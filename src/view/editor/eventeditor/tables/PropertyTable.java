@@ -1,34 +1,24 @@
-package view.editor.eventeditor;
+package view.editor.eventeditor.tables;
 
 import java.util.ResourceBundle;
 
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 
+/**
+ * Property Table, displaying a certain Component's properties. 
+ * @author Alankmc
+ *
+ */
 public class PropertyTable extends Table
 {
 	public PropertyTable(PropertyTableManager manager, String language) throws NoSuchMethodException, SecurityException
 	{
-		// super(manager, ResourceBundle.getBundle(language).getString("pickProperty"));
+
 		super(manager, ResourceBundle.getBundle(language).getString("pickProperty"), 
 				manager.getClass().getMethod("propertyWasClicked", SimpleObjectProperty.class),
 				SimpleObjectProperty.class);	
 
-		/*
-		// Add changeImage listener
-		getTable().
-        getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> 
-        	{
-        		try{
-        		manager.propertyWasClicked((SimpleObjectProperty<?>)observableValue.getValue().getData());
-        		} catch (Exception e)
-        		{
-        			// Do nothing....? I know it's bad code, but all it does it print trace, and continues normally.
-        			// TODO: Fix this, it looks horrible.
-        		}
-        	}
-        	);
-        	*/
    	}
 	
 	@Override

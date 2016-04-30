@@ -1,4 +1,4 @@
-package view.editor.eventeditor;
+package view.editor.eventeditor.tabs;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,6 +18,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import view.editor.eventeditor.tables.EventViewManager;
+import view.editor.eventeditor.tables.KeyBindingTableManager;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.enums.ViewInsets;

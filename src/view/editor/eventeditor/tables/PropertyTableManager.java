@@ -1,4 +1,4 @@
-package view.editor.eventeditor;
+package view.editor.eventeditor.tables;
 
 import java.util.List;
 
@@ -11,8 +11,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.HBox;
 import model.entity.Entity;
+import view.editor.eventeditor.tabs.PropertyEventEditor;
 
-// TODO maybe create abstract of this
+/**
+ * Table manager that will control everyTable in the PropertyEventEditor Tab.
+ * @author Alankmc
+ *
+ */
 public class PropertyTableManager extends TableManager 
 {
 	private HBox container;

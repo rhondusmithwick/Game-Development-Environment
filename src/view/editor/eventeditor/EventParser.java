@@ -2,18 +2,26 @@ package view.editor.eventeditor;
 
 import java.util.HashMap;
 
+/**
+ * Every time an Event's toString() method is called, a different format of String is received.
+ * This class splices that String so the information can be displayed to the user neatly. 
+ * 
+ * @author Alankmc
+ *
+ */
 public class EventParser 
 {	
-	public EventParser()
-	{
-
-	}
-	
 	/*
 	 * {S:KEY_PRESSED=[resources/groovyScripts/ACAddGravity.groovy], A:KEY_PRESSED=[resources/providedScripts/SaveGame.groovy], S:KEY_PRESSED=[resources/groovyScripts/ACGamePositionHandler.groovy]}
 	 * {PropertyTrigger; 013d935c-468f-458b-9fe4-7e97768e7d29; Sprite; ImageHeight=[resources/providedScripts/SaveGame.groovy], PropertyTrigger; 013d935c-468f-458b-9fe4-7e97768e7d29; Health; Health=[resources/groovyScripts/ACGamePositionHandler.groovy]}
 	 * {A=[resources/groovyScripts/ACGamePositionHandler.groovy]}
 
+	 */
+	/**
+	 * Parses the full input String, and returns a HashMap of all the names of the Trigger - Action tuples. 
+	 * 
+	 * @param String string
+	 * @return HashMap<String, String>
 	 */
 	public HashMap<String, String> parse(String string)
 	{
@@ -36,6 +44,12 @@ public class EventParser
 		}
 	}
 	
+	/**
+	 * Called internally if a propertyEvent is recognized.
+	 * 
+	 * @param string
+	 * @return HashMap<String, String>
+	 */
 	private HashMap<String, String> parsePropertyEvent(String string)
 	{
 		HashMap<String, String> parseResults = new HashMap<String, String>();
@@ -61,6 +75,11 @@ public class EventParser
 		return parseResults;
 	}
 	
+	/**
+	 * Splices the filepath String, returning only the file name.
+	 * @param string
+	 * @return HashMap<String, String>
+	 */
 	private String getFilename(String string)
 	{
 		string = string.substring(1, string.length() - 1);
@@ -70,6 +89,11 @@ public class EventParser
 		
 	}
 	
+	/**
+	 * Called internally, if a Key Event is recognized from the String.
+	 * @param string
+	 * @return HashMap<String, String>
+	 */
 	private HashMap<String, String> parseKeyEvent(String string)
 	{
 		HashMap<String, String> parseResults = new HashMap<String, String>();

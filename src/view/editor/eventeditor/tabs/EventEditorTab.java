@@ -1,4 +1,4 @@
-package view.editor.eventeditor;
+package view.editor.eventeditor.tabs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.text.Text;
 import view.editor.Editor;
+import view.editor.eventeditor.LevelPicker;
 import view.enums.GUISize;
 
 /**
