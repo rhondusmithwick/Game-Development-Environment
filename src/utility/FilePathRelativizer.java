@@ -26,6 +26,7 @@ public class FilePathRelativizer {
         } catch (IllegalArgumentException e) {
             boolean inner = new File(base.toString(), other.toString()).exists();
             if (inner) {
+            	
                 return otherDirectory;
             }
             throw new IllegalArgumentException("Relativize problem");
