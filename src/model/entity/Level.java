@@ -35,7 +35,7 @@ public class Level implements ILevel {
     private IEventSystem eventSystem = new EventSystem(this);
     private IPhysicsEngine physics = new PhysicsEngine();
     private String eventSystemPath;
-    private ResourceBundle myResources = ResourceBundle.getBundle(DefaultStrings.DEFAULT_LANGUAGE.getDefault());
+    private ResourceBundle myResources = ResourceBundle.getBundle(DefaultStrings.LANG_LOC.getDefault() + DefaultStrings.DEFAULT_LANGUAGE.getDefault());
     //	private transient ResourceBundle scriptLocs = ResourceBundle.getBundle(DefaultStrings.SCRIPTS_LOC.getDefault());
     private transient List<IGameScript> gameScripts = Lists.newArrayList();
 
