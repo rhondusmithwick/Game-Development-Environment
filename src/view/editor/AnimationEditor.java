@@ -57,14 +57,13 @@ public class AnimationEditor extends Editor{
 	@Override
 	public void populateLayout() {
 		
-		TextFieldFactory textFieldFactory = new TextFieldFactory();
-		spriteSheetField = textFieldFactory.makeTextArea("Sprite Sheet Path");
+
+		spriteSheetField = TextFieldFactory.makeTextArea("Sprite Sheet Path");
 		spriteSheetField.setEditable(false);
-		spritePropertiesField = textFieldFactory.makeTextArea("Properties Path");
+		spritePropertiesField = TextFieldFactory.makeTextArea("Properties Path");
 		spritePropertiesField.setEditable(false);
-		ButtonFactory buttonFactory = new ButtonFactory();
-		spriteSheetButton = buttonFactory.makeButton("Add SpriteSheet", e-> getSpriteSheet());
-		spritePropertiesButton = buttonFactory.makeButton("Add Properties", e->getPropertiesFile());
+		spriteSheetButton = ButtonFactory.makeButton("Add SpriteSheet", e-> getSpriteSheet());
+		spritePropertiesButton = ButtonFactory.makeButton("Add Properties", e->getPropertiesFile());
 		vbox.getChildren().addAll(spriteSheetField, spriteSheetButton, spritePropertiesField, spritePropertiesButton);
 	}
 	@Override

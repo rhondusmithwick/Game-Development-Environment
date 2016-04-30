@@ -5,7 +5,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 
 public class ButtonFactory {
-	public ButtonFactory(){
+	private ButtonFactory(){
 		
 	}
 	/**
