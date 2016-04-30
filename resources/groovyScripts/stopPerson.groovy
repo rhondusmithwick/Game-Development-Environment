@@ -1,15 +1,21 @@
 package groovyScripts
 
-import model.component.movement.Position
+import api.IEntity
+import groovy.transform.BaseScript
+import model.component.movement.Velocity
 
 /**
  * Created by ajonnav on 4/27/16.
  * @author Anirudh Jonnavithula
  */
 
-import model.component.movement.Velocity;
-import model.component.character.Health;
+@BaseScript ScriptHelpers ScriptHelpers
 
-velocity = universe.getEntitiesWithName("Anolyn").get(0).getComponent(Velocity.class);
-position = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Position.class);
-velocity.setVXY(0, velocity.getVY());
+void resetVelocity (IEntity entity) {
+    Velocity velocity = entity.getComponent(Velocity.class);
+    velocity.setVXY(0, 0);
+}
+
+for (IEntity entity: getEntitiesWithNamesAndIDs()) {
+    resetVelocity(entity);
+}
