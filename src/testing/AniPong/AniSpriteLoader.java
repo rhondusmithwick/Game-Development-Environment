@@ -19,7 +19,7 @@ public class AniSpriteLoader {
 
     public static IEntity createBall(String name, Position pos) {
         IEntity e = new Entity(name);
-        Sprite disp = new Sprite();
+        Sprite disp = new Sprite("resources/testing/RhonduSmithwick.JPG", 100, 100);
         ImageView img = disp.getImageView();
         img.setScaleX(0.05);
         img.setScaleY(0.05);
@@ -38,8 +38,8 @@ public class AniSpriteLoader {
 
     public static IEntity createPlatform(String name, Position pos) {
         IEntity e = new Entity(name);
-        e.addComponents(pos, new Sprite(),
-                new Collision("platform"), new RestitutionCoefficient(1.0), new Mass(10000));
+        e.addComponents(pos, new Sprite("resources/testing/RhonduSmithwick.JPG", 638, 518),
+                new Collision("platform"), new RestitutionCoefficient(1.0), new Mass(1000000));
         return e;
     }
 

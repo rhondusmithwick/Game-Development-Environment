@@ -22,6 +22,7 @@ import java.util.List;
 public class Sprite implements IComponent {
 
     private static final String DEFAULT_IMAGE_PATH = "resources/testing/RhonduSmithwick.JPG";
+    private static final double DEFAULT_WIDTH = 638.0, DEFAULT_HEIGHT = 518.0;
 
     private final SingleProperty<String> imagePathProperty = new SingleProperty<>("ImagePath", DEFAULT_IMAGE_PATH);
     private final TwoProperty<Double, Double> imageSizeProperty = new TwoProperty<>("ImageWidth", 0.0, "ImageHeight", 0.0);
@@ -37,11 +38,12 @@ public class Sprite implements IComponent {
      *
      * @param imagePath starting value
      */
-    public Sprite (String imagePath) { // TODO: place default in resource file
+    public Sprite (String imagePath) {
         setImagePath(imagePath);
-        Image image = getImage(imagePath);
-        setImageWidth(image.getWidth());
-        setImageHeight(image.getHeight());
+//        Image image = getImage(imagePath);
+//        setImageWidth(image.getWidth());
+//        setImageHeight(image.getHeight());
+//        imageView = createImageView(imagePath); // TODO: remove?
     }
 
     /**
@@ -58,6 +60,7 @@ public class Sprite implements IComponent {
         setImageHeight(imageHeight);
     }
 
+    @Deprecated
     public Sprite (String imagePath, double imageWidth, double imageHeight, int zLevel) {
         this(imagePath, imageWidth, imageHeight);
         setZLevel(zLevel);
@@ -113,10 +116,12 @@ public class Sprite implements IComponent {
         }
     }
 
+    @Deprecated
     public SimpleObjectProperty<Integer> zLevelProperty () {
         return this.zLevelProperty.property1();
     }
 
+    @Deprecated
     /**
      * Sets the z-layer order.
      *
@@ -126,6 +131,7 @@ public class Sprite implements IComponent {
         zLevelProperty().set(z);
     }
 
+    @Deprecated
     /**
      * Gets the z-layer order.
      *
@@ -139,7 +145,6 @@ public class Sprite implements IComponent {
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
     }
-
     
     private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
@@ -150,6 +155,7 @@ public class Sprite implements IComponent {
         Image image = getImage(imagePath);
         ImageView imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
+//        imageView.set
         return imageView;
     }
 
@@ -166,6 +172,5 @@ public class Sprite implements IComponent {
     public ImageView getImageView () {
         return imageView;
     }
-
 
 }

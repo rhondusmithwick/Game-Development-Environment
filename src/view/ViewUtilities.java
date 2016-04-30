@@ -6,6 +6,7 @@ import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseButton;
 import javafx.scene.paint.Color;
 import model.component.movement.Position;
 import model.component.visual.AnimatedSprite;
@@ -20,13 +21,13 @@ public class ViewUtilities {
 	private static final double MARGIN = 8;
 	private static final int DEPTH = 70;
 	private static final Color HIGHLIGHT_COLOR = Color.YELLOW;
-	private static final String SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(255,255,51,0.8), 10, 0, 0, 0)",
+	private static final String SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(22, 0, 255, 0.8), 10, 0, 0, 0)",
 			NO_SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0, 0, 0)";
 	private Group root;
 	private ILevel universe;
 	private boolean resizing = false, dragging = false;
 	private IEntity heldDownSprite;
-	private Set<IEntity> selectedSprites = new HashSet<IEntity>();
+	private Set<IEntity> selectedSprites = new HashSet<>();
 	private double initialMouseX, initialMouseY;
 	private long timeMouseClicked, clickThresholdMillis = 400;
 
@@ -46,11 +47,14 @@ public class ViewUtilities {
 		// root.setOnKeyPressed(event -> {
 		// if (event.getCode() == KeyCode.DELETE) {
 		// TODO: why doesn't keypress work?!
-		root.setOnContextMenuRequested(event -> {
-			for (IEntity e : this.selectedSprites) {
-				this.universe.removeEntity(e.getID());
+		root.setOnMouseClicked(event -> {
+			System.out.println("clicked");
+			if(event.getButton().equals(MouseButton.SECONDARY)) {
+				System.out.println("right");
+				for (IEntity e : this.selectedSprites) {
+					this.universe.removeEntity(e.getID());
+				}
 			}
-			// }
 		});
 	}
 
@@ -107,27 +111,27 @@ public class ViewUtilities {
 	}
 
 	public void makeSelectable(IEntity e) {
-		Sprite path = e.getComponent(Sprite.class);
-		ImageView imageView = path.getImageView();
+		Sprite sprite = e.getComponent(Sprite.class);
+		ImageView imageView = sprite.getImageView();
 
 		imageView.setOnMouseEntered(event -> this.changeCursorForResizing(imageView, event.getY()));
 		imageView.setOnMousePressed(event -> {
 			this.holdDownSprite(e, event.getX(), event.getY());
 			timeMouseClicked = System.currentTimeMillis(); // click event tracking
-//			System.out.println("pressed");
 		});
+	}
+
+	public void allowSelection() {
 		// TODO: make sure this is not hacky
 		root.setOnMouseReleased(event -> {
-			this.releaseSprite();
 			long duration = System.currentTimeMillis()-timeMouseClicked;
-			if(duration<clickThresholdMillis) {// click event handling
-				if (imageView.getStyle().equals(NO_SELECT_EFFECT)) { // not selected
-					this.highlight(e);
-				} else {
-					this.dehighlight(e);
+			if(duration<clickThresholdMillis) { // click event handling
+				if(heldDownSprite!=null) {
+					toggleHighlight(heldDownSprite);
 				}
 			}
 //			System.out.println("released - "+duration);
+			this.releaseSprite();
 		});
 	}
 
@@ -153,9 +157,9 @@ public class ViewUtilities {
 	}
 
 	public void toggleHighlight(IEntity entity) {
-		Sprite path = entity.getComponent(Sprite.class);
-		ImageView imageView = path.getImageView();
-		if (!imageView.getStyle().equals(SELECT_EFFECT)) { 
+//		Sprite path = entity.getComponent(Sprite.class);
+//		ImageView imageView = path.getImageView();
+		if (!selectedSprites.contains(entity)) {
 			System.out.println("highlight");
 			this.highlight(entity);
 		} else {
