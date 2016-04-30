@@ -1,5 +1,6 @@
 package view.editor;
 
+import java.util.ResourceBundle;
 
 import api.IEntity;
 import javafx.scene.Group;
@@ -19,9 +20,9 @@ import view.utilities.TextFieldFactory;
 public class AnimationEditor extends Editor{
 	private static final String SPRITE_PROPERTIES = "spriteProperties.";
 	private static final String DIR = "resources/";
-	private Group sceneGroup = new Group();
-	private ScrollPane scrollPane = new ScrollPane(sceneGroup);
-	private VBox vbox = new VBox();
+	private final Group sceneGroup = new Group();
+	private final ScrollPane scrollPane = new ScrollPane(sceneGroup);
+	private final VBox vbox = new VBox();
 	private AnimatedSprite animatedSpriteComponent;
 	private String spriteProperties;
 	private String spriteSheet;
@@ -31,15 +32,17 @@ public class AnimationEditor extends Editor{
 	private Button spritePropertiesButton;
 	private Button saveButton;
 	private Label errorLabel;
-	public AnimationEditor(IEntity entity){
+	private ResourceBundle myResources;
+	public AnimationEditor(IEntity entity, String language){
+		myResources = ResourceBundle.getBundle(language);
+
 		sceneGroup.getChildren().add(vbox);
 		if(entity.hasComponent(AnimatedSprite.class)){
 			animatedSpriteComponent = entity.getComponent(AnimatedSprite.class);
 		}else{
 			animatedSpriteComponent = new AnimatedSprite();
-			entity.addComponent(animatedSpriteComponent);
+			entity.forceAddComponent(animatedSpriteComponent, true);
 		}
-		
 
 		
 	}
@@ -58,26 +61,26 @@ public class AnimationEditor extends Editor{
 	}
 	@Override
 	public void populateLayout() {
-		spriteSheetField = TextFieldFactory.makeTextArea("Sprite Sheet Path");
+		spriteSheetField = TextFieldFactory.makeTextArea(myResources.getString("spriteSheetPath"));
 		spriteSheetField.setEditable(false);
-		spritePropertiesField = TextFieldFactory.makeTextArea("Properties Path");
+		spritePropertiesField = TextFieldFactory.makeTextArea(myResources.getString("spritePropertiesPath"));
 		spritePropertiesField.setEditable(false);
-		spriteSheetButton = ButtonFactory.makeButton("Add SpriteSheet", e-> getSpriteSheet());
-		spritePropertiesButton = ButtonFactory.makeButton("Add Properties", e->getPropertiesFile());
+		spriteSheetButton = ButtonFactory.makeButton(myResources.getString("addSpriteSheet"), e-> getSpriteSheet());
+		spritePropertiesButton = ButtonFactory.makeButton(myResources.getString("addProperties"), e->getPropertiesFile());
 		errorLabel = new Label();
-		saveButton = ButtonFactory.makeButton("Save Animated Sprite", e-> saved());
+		saveButton = ButtonFactory.makeButton(myResources.getString("saveAnimatedSprite"), e-> saved());
 		vbox.getChildren().addAll(spriteSheetField, spriteSheetButton, spritePropertiesField, spritePropertiesButton, saveButton, errorLabel);
 	}
 	private void saved() {
 		if(!checkIfError()){
 			sceneGroup.getChildren().clear();
-			Text savedText = new Text("Your AnimatedSprite has been saved! Close this window and continue editing");
+			Text savedText = new Text(myResources.getString("saveAnimatedSpriteSuccess"));
 			sceneGroup.getChildren().add(savedText);
 		}
 	}
 	private boolean checkIfError() {
 		if (spriteSheetField.getText().isEmpty()|| spritePropertiesField.getText().isEmpty()){
-			errorLabel.setText("Please choose a sprite sheet and a properties file");
+			errorLabel.setText(myResources.getString("savedAnimatedSpriteError"));
 			return true;
 			
 		}
