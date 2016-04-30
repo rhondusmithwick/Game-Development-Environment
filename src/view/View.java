@@ -146,7 +146,7 @@ public class View implements IView {
 
 	private ImageView getUpdatedImageView(IEntity e) {
 		Position pos = e.getComponent(Position.class);
-		Sprite display = e.getComponent(Sprite.class);
+//		Sprite display = e.getComponent(Sprite.class);
 		ImageView imageView = SpriteUtilities.getImageView(e); //display.getImageView();
 		imageView.setId(e.getID());
 
