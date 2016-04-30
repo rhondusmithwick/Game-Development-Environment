@@ -5,7 +5,6 @@ import javafx.animation.Animation;
 import javafx.beans.property.SimpleObjectProperty;
 import utility.TwoProperty;
 import voogasalad.util.spriteanimation.animation.AnimationContainer;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
