@@ -95,7 +95,7 @@ public class AnimatedSprite extends Sprite {
     public void setBundlePath (String bundlePath) {
         bundlePathProperty().set(bundlePath);
         reInitializeContainer();
-        setDefaultAnimation(getAnimationNames().iterator().next());
+//        setDefaultAnimation(getAnimationNames().iterator().next());
     }
 
     public SimpleObjectProperty<String> defaultAnimationProperty () {
