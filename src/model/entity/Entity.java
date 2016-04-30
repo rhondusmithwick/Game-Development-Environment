@@ -6,8 +6,6 @@ import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableMap;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -35,13 +33,12 @@ public class Entity implements IEntity {
     private String name;
 
     @XStreamAlias("components")
-    private final ObservableMap<Class<? extends IComponent>, List<IComponent>> componentMap = FXCollections
-            .observableHashMap();
+    private final Map<Class<? extends IComponent>, List<IComponent>> componentMap = Maps.newLinkedHashMap();
 
     @XStreamAlias("Specs")
     private final Map<Class<? extends IComponent>, Integer> specs = Maps.newLinkedHashMap();
 
-    private Set<String> groupIDs = new HashSet<String>();
+    private Set<String> groupIDs = new HashSet<>();
 
     public Entity () {
         this("John Doe");
