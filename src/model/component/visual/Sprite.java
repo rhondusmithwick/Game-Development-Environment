@@ -25,7 +25,7 @@ public class Sprite implements IComponent {
     private static final double DEFAULT_WIDTH = 638.0, DEFAULT_HEIGHT = 518.0;
 
     private final SingleProperty<String> imagePathProperty = new SingleProperty<>("ImagePath", DEFAULT_IMAGE_PATH);
-    private final TwoProperty<Double, Double> imageSizeProperty = new TwoProperty<>("ImageWidth", DEFAULT_WIDTH, "ImageHeight", DEFAULT_HEIGHT);
+    private final TwoProperty<Double, Double> imageSizeProperty = new TwoProperty<>("ImageWidth", 0.0, "ImageHeight", 0.0);
     private final SingleProperty<Integer> zLevelProperty = new SingleProperty<>("zLevel", 0);
     private transient ImageView imageView;
 
