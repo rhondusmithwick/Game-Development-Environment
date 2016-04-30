@@ -3,11 +3,9 @@ package view;
 import javafx.event.EventHandler;
 import javafx.scene.Cursor;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.shape.Shape;
 import model.component.movement.Position;
 import model.component.visual.Sprite;
 
@@ -17,12 +15,15 @@ public class DragAndResize {
 
 	private boolean resizing;
 	private boolean dragging;
+	@SuppressWarnings("unused")
 	private double parentMinX;
 	private double parentMinY;
 	private double parentHeight;
+	@SuppressWarnings("unused")
 	private double parentWidth;
 	private double clickX;
 	private double clickY;
+	@SuppressWarnings("unused")
 	private double minW;
 	private double minH;
 

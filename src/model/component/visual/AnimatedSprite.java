@@ -15,9 +15,10 @@ import java.util.List;
  *
  * @author Rhondu Smithwick, Anirudh Jonnavithula
  */
+@SuppressWarnings("serial")
 public class AnimatedSprite extends Sprite {
     private static final String DEFAULT_IMAGE = "resources/spriteSheets/ryuBlue.gif";
-    private static final String DEFAULT_BUNDLE = "spriteProperties/ryuBlue";
+    private static final String DEFAULT_BUNDLE = "spriteProperties/aniryu";
     private final TwoProperty<String, String> twoProperty = new TwoProperty<>("BundlePath", DEFAULT_BUNDLE, "DefaultAnimation", "");
     private CustomAnimationContainer container = new CustomAnimationContainer(DEFAULT_BUNDLE);
     private String currentAnimationName = "";
@@ -83,12 +84,6 @@ public class AnimatedSprite extends Sprite {
         return currentAnimation;
     }
 
-    public static class CustomAnimationContainer extends AnimationContainer implements ISerializable {
-        public CustomAnimationContainer (String bundlePath) {
-            super(bundlePath);
-        }
-    }
-
     public SimpleObjectProperty<String> bundlePathProperty () {
         return twoProperty.property1();
     }
@@ -100,6 +95,7 @@ public class AnimatedSprite extends Sprite {
     public void setBundlePath (String bundlePath) {
         bundlePathProperty().set(bundlePath);
         reInitializeContainer();
+        setDefaultAnimation(getAnimationNames().iterator().next());
     }
 
     public SimpleObjectProperty<String> defaultAnimationProperty () {
@@ -124,7 +120,7 @@ public class AnimatedSprite extends Sprite {
 
     @Override
     public List<SimpleObjectProperty<?>> getProperties () {
-        return Arrays.asList(defaultAnimationProperty(), bundlePathProperty(), imagePathProperty(), imageWidthProperty(), imageHeightProperty(), zLevelProperty());
+        return Arrays.asList(defaultAnimationProperty(), bundlePathProperty(), imagePathProperty(), imageWidthProperty(), imageHeightProperty());
     }
 
     @Override
@@ -132,5 +128,11 @@ public class AnimatedSprite extends Sprite {
         super.update();
         setBundlePath(getBundlePath());
         setDefaultAnimation(getDefaultAnimation());
+    }
+
+    public static class CustomAnimationContainer extends AnimationContainer implements ISerializable {
+        public CustomAnimationContainer (String bundlePath) {
+            super(bundlePath);
+        }
     }
 }

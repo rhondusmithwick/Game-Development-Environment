@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
+@SuppressWarnings("serial")
 public class Drag implements IComponent {
     private final SingleProperty<Double> singleProperty = new SingleProperty<>("Beta", 0.0);
 

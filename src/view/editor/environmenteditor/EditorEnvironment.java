@@ -2,9 +2,7 @@ package view.editor.environmenteditor;
 
 import api.IEntity;
 import api.ILevel;
-import api.ISerializable;
 import api.IView;
-import javafx.beans.InvalidationListener;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -14,7 +12,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
-import javafx.scene.control.TitledPane;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -30,9 +27,7 @@ import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.utilities.*;
 import voogasalad.util.reflection.Reflection;
-
 import java.io.File;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;

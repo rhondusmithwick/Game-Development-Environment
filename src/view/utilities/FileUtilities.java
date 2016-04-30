@@ -1,11 +1,8 @@
 package view.utilities;
 
 import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.security.CodeSource;
-import java.security.ProtectionDomain;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javafx.stage.FileChooser;
@@ -13,6 +10,7 @@ import javafx.stage.Stage;
 import utility.FilePathRelativizer;
 import javafx.stage.FileChooser.ExtensionFilter;
 import view.enums.DefaultStrings;
+import view.enums.FileExtensions;
 
 public class FileUtilities {
 	private FileUtilities(){
@@ -60,7 +58,7 @@ public class FileUtilities {
 		fileChooser.setTitle(prompt);
 		fileChooser.getExtensionFilters().addAll(filters);
 		fileChooser.setInitialDirectory(new File(dir));
-		File file = fileChooser.showOpenDialog(new Stage());
+		File file = new File(FilePathRelativizer.relativize(fileChooser.showOpenDialog(new Stage()).getPath()));
 		return file;
 	}
 	
@@ -101,11 +99,12 @@ public class FileUtilities {
 	}
 	
 	public static List<ExtensionFilter> getImageFilters() {
-		List<ExtensionFilter> filters = new ArrayList<ExtensionFilter>();
-		filters.add(new FileChooser.ExtensionFilter("All Images", "*.*"));
-		filters.add(new FileChooser.ExtensionFilter("JPG", "*.jpg"));
-		filters.add(new FileChooser.ExtensionFilter("PNG", "*.png"));
-		return filters;
+		return Arrays.asList(FileExtensions.PNG.getFilter(), FileExtensions.PNG.getFilter());
+
+	}
+	
+	public static List<ExtensionFilter> getMusicFilters(){
+		return Arrays.asList(FileExtensions.MP3.getFilter());
 	}
 	
 }

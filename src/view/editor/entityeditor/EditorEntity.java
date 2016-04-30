@@ -41,7 +41,6 @@ public class EditorEntity extends Editor{
 	private List<String> myComponents;
 	private VBox container;
 	private final GuiObjectFactory guiFactory = new GuiObjectFactory();
-	private Button refreshButton;
 
 
 	public EditorEntity(String language, IEntity toEdit){
@@ -85,7 +84,7 @@ public class EditorEntity extends Editor{
 		saveButton = ButtonFactory.makeButton(myResources.getString("saveEntity"), e -> save());
 		addButton = ButtonFactory.makeButton(myResources.getString("addComponent"), e -> addComponent());
 		removeButton = ButtonFactory.makeButton(myResources.getString("removeComponent"), e->removeComponent());
-		container.getChildren().addAll(addButton, removeButton, refreshButton, saveButton);
+		container.getChildren().addAll(addButton, removeButton, saveButton);
 	}
 
 	private void addName() {
@@ -129,9 +128,9 @@ public class EditorEntity extends Editor{
 	}
 
 	private void save() {	
-		
+		myEntity.updateComponents();
 		myEntity.setName(name.getText());
-		myEntity.getAllComponents().stream().forEach(e -> setToSave(e));
+		myEntity.getAllComponents().stream().forEach(e -> removeBindings(e));
 		entityList.remove(myEntity);
 		entityList.add(myEntity);
 		container = new VBox();
@@ -139,8 +138,7 @@ public class EditorEntity extends Editor{
 		scrollPane.setContent(container);
 	}
 
-	private void setToSave(IComponent e) {
-		e.update();
+	private void removeBindings(IComponent e) {
 		e.removeBindings();
 		
 	}

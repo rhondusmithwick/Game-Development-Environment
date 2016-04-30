@@ -9,13 +9,12 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -28,7 +27,7 @@ import model.component.visual.Sprite;
 import model.core.SystemManager;
 import model.entity.Level;
 import update.GameLoopManager;
-import view.utilities.ButtonFactory;
+import view.utilities.SpriteUtilities;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -58,6 +57,7 @@ public class View implements IView {
 	private SubScene subScene;
 	private ViewUtilities viewUtils;
 	private GameLoopManager manager;
+	private HBox buttonBox = new HBox();
 
 	@Deprecated
 	public View(String language) {
@@ -146,8 +146,8 @@ public class View implements IView {
 
 	private ImageView getUpdatedImageView(IEntity e) {
 		Position pos = e.getComponent(Position.class);
-		Sprite display = e.getComponent(Sprite.class);
-		ImageView imageView = display.getImageView();
+//		Sprite display = e.getComponent(Sprite.class);
+		ImageView imageView = SpriteUtilities.getImageView(e); //display.getImageView();
 		imageView.setId(e.getID());
 
 		imageView.setTranslateX(pos.getX());
@@ -249,7 +249,7 @@ public class View implements IView {
 
 		BorderPane inputPane = new BorderPane();
 		inputPane.setTop(console);
-		inputPane.setBottom(evaluateButton);
+		inputPane.setBottom(buttonBox);
 		// inputPane.setRight(loadButton);
 		pane.setBottom(inputPane);
 		return pane;
@@ -269,10 +269,12 @@ public class View implements IView {
 	}
 
 	private void initButtons() {
-		// evaluateButton.setText("Evaluate");
 		evaluateButton.setOnAction(e -> this.evaluate());
 		loadButton.setOnAction(e -> this.load());
 		loopManagerButton.setOnAction(e -> this.createLoopManager());
+		buttonBox.getChildren().add(evaluateButton);
+		buttonBox.getChildren().add(loadButton);
+		buttonBox.getChildren().add(loopManagerButton);
 	}
 
 	private void load() { // TODO: loading
