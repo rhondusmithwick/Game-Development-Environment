@@ -49,8 +49,7 @@ public class EditorEntity extends Editor{
 		myResources = ResourceBundle.getBundle(language);
 		myComponentNames = ResourceBundle.getBundle(language + DefaultStrings.COMPONENTS.getDefault());
 		myEntity = (Entity) toEdit;
-		entityList = addToList;
-		
+		entityList = addToList;	
 	}
 
 	private void getComponents() {
