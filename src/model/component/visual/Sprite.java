@@ -2,6 +2,8 @@ package model.component.visual;
 
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utility.SingleProperty;
@@ -28,6 +30,7 @@ public class Sprite implements IComponent {
     private final TwoProperty<Double, Double> imageSizeProperty = new TwoProperty<>("ImageWidth", 0.0, "ImageHeight", 0.0);
     private final SingleProperty<Integer> zLevelProperty = new SingleProperty<>("zLevel", 0);
     private transient ImageView imageView;
+    private transient ChangeListener<String> imagePathListener;
 
     public Sprite () {
         this(DEFAULT_IMAGE_PATH);
@@ -40,10 +43,21 @@ public class Sprite implements IComponent {
      */
     public Sprite (String imagePath) {
         setImagePath(imagePath);
-//        Image image = getImage(imagePath);
-//        setImageWidth(image.getWidth());
-//        setImageHeight(image.getHeight());
-//        imageView = createImageView(imagePath); // TODO: remove?
+        //        Image image = getImage(imagePath);
+        //        setImageWidth(image.getWidth());
+        //        setImageHeight(image.getHeight());
+        addImagePathListener();
+        imageView = createImageView(imagePath);
+
+    }
+
+    private void addImagePathListener () {
+        imagePathListener = (new ChangeListener<String>() {
+            public void changed (ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                setImagePath(newValue);
+            }
+        });
+        imagePathProperty().addListener(imagePathListener);
     }
 
     /**
@@ -143,11 +157,13 @@ public class Sprite implements IComponent {
 
 
     private void writeObject(ObjectOutputStream out) throws IOException {
+        imagePathProperty().removeListener(imagePathListener);
         out.defaultWriteObject();
     }
-    
+
     private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
+        addImagePathListener();
         this.imageView = this.createImageView(getImagePath());
     }
 
@@ -155,7 +171,7 @@ public class Sprite implements IComponent {
         Image image = getImage(imagePath);
         ImageView imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
-//        imageView.set
+        //        imageView.set
         return imageView;
     }
 
