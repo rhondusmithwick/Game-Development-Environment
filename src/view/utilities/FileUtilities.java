@@ -107,4 +107,8 @@ public class FileUtilities {
 		return Arrays.asList(FileExtensions.MP3.getFilter());
 	}
 	
+	public static List<ExtensionFilter> getPropertiesFilters(){
+		return Arrays.asList(FileExtensions.PROPERTIES.getFilter());
+	}
+	
 }

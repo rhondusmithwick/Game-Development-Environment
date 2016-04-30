@@ -29,7 +29,7 @@ public class GuiObjectFileChooser extends GuiObject {
 	}
 
 	private void getBundle() {
-		property.set( (FileUtilities.promptAndGetFile(FileUtilities.getImageFilters(),
+		property.set( (FileUtilities.promptAndGetFile(FileUtilities.getPropertiesFilters(),
 				myResources.getString("ChooseFile"), DefaultStrings.ANIMATION_LOC.getDefault()).getPath()));
 		text.setText(property.get());
 	}

@@ -5,7 +5,6 @@ import javafx.animation.Animation;
 import javafx.beans.property.SimpleObjectProperty;
 import utility.TwoProperty;
 import voogasalad.util.spriteanimation.animation.AnimationContainer;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
@@ -95,7 +94,7 @@ public class AnimatedSprite extends Sprite {
     public void setBundlePath (String bundlePath) {
         bundlePathProperty().set(bundlePath);
         reInitializeContainer();
-        setDefaultAnimation(getAnimationNames().iterator().next());
+//        setDefaultAnimation(getAnimationNames().iterator().next());
     }
 
     public SimpleObjectProperty<String> defaultAnimationProperty () {
