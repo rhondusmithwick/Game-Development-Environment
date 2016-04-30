@@ -53,9 +53,11 @@ public class EditorEnvironment extends Editor {
 	private TextField nameField = new TextField();
 	private ScrollPane scrollPane = new ScrollPane(environmentPane);
 	private IView view;
+	private EnvironmentButtons myButtonsClass;
 
 	public EditorEnvironment(String language, ILevel toEdit, ObservableList<IEntity> masterList,
 			ObservableList<ILevel> addToList) {
+		myButtonsClass = new EnvironmentButtons(this, language);
 		myLanguage = language;
 		myResources = ResourceBundle.getBundle(language);
 		masterList.addListener((ListChangeListener<IEntity>) c -> {
@@ -93,41 +95,13 @@ public class EditorEnvironment extends Editor {
 		if (masterEntityList.isEmpty()) {
 			loadDefaults();
 		}
-		populateVbox(masterEntityButtonsBox, masterEntityList, "createAddEntityButton");
+		myButtonsClass.populateVbox(masterEntityButtonsBox, masterEntityList, "createAddEntityButton");
 		return (new ScrollPane(TitledPaneFactory.makeTitledPane(myResources.getString("masterTemplates"), masterEntityButtonsBox, true)));
 	}
 
-	private void populateVbox(VBox vbox, Collection<IEntity> collection, String methodName) {
-		vbox.getChildren().clear();
-		for (IEntity entity : collection) {
-			Button button = (Button) Reflection.callMethod(this, methodName, entity);
-			(button).setMaxWidth(Double.MAX_VALUE);
-			vbox.getChildren().add(button);
-		}
-	}
 
-	public Button createAddEntityButton(IEntity entity) {
-		return ButtonFactory.makeButton((entity).getName(), e -> addToSystem(EntityCopier.copyEntity(entity)));
-	}
 
-	public Button createEntityButton(IEntity entity) {
-		Button entityInButton = new Button(entity.getName());
-		entityInButton.setMaxWidth(Double.MAX_VALUE);
-		entityInButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				MouseButton button = event.getButton();
-				if (button == MouseButton.PRIMARY) {
-					entityLeftClicked(entity);
-				} else if (button == MouseButton.SECONDARY) {
-					entityRightClicked(entity, entityInButton, event);
-				}
-			}
-		});
-		return entityInButton;
-	}
-
-	private void addToSystem(IEntity entity) {
+	void addToSystem(IEntity entity) {
 		String newName = UserInputBoxFactory.userInputBox(myResources.getString("noName"),
 				myResources.getString("addEntityName"));
 		if (newName != null) {
@@ -138,7 +112,7 @@ public class EditorEnvironment extends Editor {
 			if (!entity.hasComponent(Position.class) || !entity.hasComponent(Sprite.class)) {
 				addComponents(entity);
 			}
-			environmentEntityButtonsBox.getChildren().add(createEntityButton(entity));
+			environmentEntityButtonsBox.getChildren().add(myButtonsClass.createEntityButton(entity));
 		} catch (Exception e) {
 			Alerts.showAlert(myResources.getString("error"), null, myResources.getString("unableToAddEntity"),
 					AlertType.ERROR);
@@ -160,47 +134,25 @@ public class EditorEnvironment extends Editor {
 		rightPane.getChildren().add(new ScrollPane(TitledPaneFactory.makeTitledPane(myResources.getString("environmentInstances"), environmentEntityButtonsBox, true)));
 	}
 
-	private void entityLeftClicked(IEntity entity) {
-		view.toggleHighlight(entity);
-		ObservableList<IEntity> entityList = FXCollections.observableArrayList();
-		EditorEntity entityEditor = (EditorEntity) new EditorFactory().createEditor(EditorEntity.class.getName(),
-				myLanguage, entity, entityList);
-		entityEditor.populateLayout();
-		entityList.addListener((ListChangeListener<IEntity>) c -> {this.updateEditor();});
-		PopUp myPopUp = new PopUp(GUISize.ENTITY_EDITOR_WIDTH.getSize(), GUISize.ENTITY_EDITOR_HEIGHT.getSize());
-		myPopUp.show(entityEditor.getPane());
-	}
-
-	private void entityRightClicked(IEntity entity, Button entityButton, MouseEvent event) {
-		Map<String, EventHandler<ActionEvent>> menuMap = new LinkedHashMap<String, EventHandler<ActionEvent>>();
-		menuMap.put(myResources.getString("remove"), e -> removeFromDisplay(entity, entityButton));
-		menuMap.put(myResources.getString("sendBack"), e -> sendToBack(entity));
-		menuMap.put(myResources.getString("sendFront"), e -> sendToFront(entity));
-		menuMap.put(myResources.getString("sendBackOne"), e -> sendBackward(entity));
-		menuMap.put(myResources.getString("sendForwardOne"), e -> sendForward(entity));
-		menuMap.put(myResources.getString("saveAsMasterTemplate"), e -> saveToMasterList(entity));
-		entityButton.setContextMenu(ContextMenuFactory.createContextMenu(menuMap));
-	}
-
-	private void saveToMasterList(IEntity entity) {
+	public void saveToMasterList(IEntity entity) {
 		masterEntityList.add(entity);
 	}
 
-	private void sendToFront(IEntity e) {
+	public void sendToFront(IEntity e) {
 		if (view.getEntitySystem().removeEntity(e.getID()) != null) {
 			view.getEntitySystem().addEntity(e);
 		}
-		populateVbox(environmentEntityButtonsBox, view.getLevel().getAllEntities(), "createEntityButton");
+		myButtonsClass.populateVbox(environmentEntityButtonsBox, view.getLevel().getAllEntities(), "createEntityButton");
 	}
 
-	private void sendToBack(IEntity e) {
+	public void sendToBack(IEntity e) {
 		if (view.getEntitySystem().removeEntity(e.getID()) != null) {
 			view.getEntitySystem().getAllEntities().add(0, e);
 		}
-		populateVbox(environmentEntityButtonsBox, view.getLevel().getAllEntities(), "createEntityButton");
+		myButtonsClass.populateVbox(environmentEntityButtonsBox, view.getLevel().getAllEntities(), "createEntityButton");
 	}
 
-	private void sendForward(IEntity e) {
+	public void sendForward(IEntity e) {
 		int index = view.getEntitySystem().getAllEntities().indexOf(e) + 1;
 		if (view.getEntitySystem().removeEntity(e.getID()) != null) {
 			if (index < view.getEntitySystem().getAllEntities().size()) {
@@ -209,10 +161,10 @@ public class EditorEnvironment extends Editor {
 				view.getEntitySystem().getAllEntities().add(e);
 			}
 		}
-		populateVbox(environmentEntityButtonsBox, view.getLevel().getAllEntities(), "createEntityButton");
+		myButtonsClass.populateVbox(environmentEntityButtonsBox, view.getLevel().getAllEntities(), "createEntityButton");
 	}
 
-	private void sendBackward(IEntity e) {
+	public void sendBackward(IEntity e) {
 		int index = view.getEntitySystem().getAllEntities().indexOf(e) - 1;
 		if (view.getEntitySystem().removeEntity(e.getID()) != null) {
 			if (index >= 0) {
@@ -221,13 +173,13 @@ public class EditorEnvironment extends Editor {
 				view.getEntitySystem().getAllEntities().add(0, e);
 			}
 		}
-		populateVbox(environmentEntityButtonsBox, view.getLevel().getAllEntities(), "createEntityButton");
+		myButtonsClass.populateVbox(environmentEntityButtonsBox, view.getLevel().getAllEntities(), "createEntityButton");
 	}
 
 	@Override
 	public void updateEditor() {
-		populateVbox(masterEntityButtonsBox, masterEntityList, "createAddEntityButton");
-		populateVbox(environmentEntityButtonsBox, view.getLevel().getAllEntities(), "createEntityButton");
+		myButtonsClass.populateVbox(masterEntityButtonsBox, masterEntityList, "createAddEntityButton");
+		myButtonsClass.populateVbox(environmentEntityButtonsBox, view.getLevel().getAllEntities(), "createEntityButton");
 	}
 
 	@Override
@@ -278,7 +230,7 @@ public class EditorEnvironment extends Editor {
 		entity.addComponent(new Sprite(file.getPath()));
 	}
 
-	private void removeFromDisplay(IEntity entity, Button entityButton) {
+	public void removeFromDisplay(IEntity entity, Button entityButton) {
 		view.getEntitySystem().removeEntity(entity.getID());
 		environmentEntityButtonsBox.getChildren().remove(entityButton);
 	}
@@ -298,6 +250,11 @@ public class EditorEnvironment extends Editor {
 
 	public boolean environmentContains(IEntity checkEntity) {
 		return view.getEntitySystem().containsEntity(checkEntity);
+	}
+
+	public void toggleHighlight(IEntity entity) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

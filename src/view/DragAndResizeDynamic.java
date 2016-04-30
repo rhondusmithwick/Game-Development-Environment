@@ -10,6 +10,13 @@ import model.component.movement.Position;
 import model.component.visual.AnimatedSprite;
 import model.component.visual.Sprite;
 
+/**
+ * 
+ * @author Tom
+ * @author Bruna
+ *
+ */
+
 public class DragAndResizeDynamic {
 
 	private static final double MARGIN = 8;

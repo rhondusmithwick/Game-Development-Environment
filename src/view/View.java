@@ -52,7 +52,7 @@ public class View implements IView {
 	private ISystemManager model;
 	private BorderPane pane;
 	private SubScene subScene;
-	//private ViewUtilities viewUtils;
+	private ViewUtilities viewUtils;
 	private DragAndResizeDynamic DandR;
 	private GameLoopManager manager;
 	private HBox buttonBox = new HBox();
@@ -65,21 +65,17 @@ public class View implements IView {
 
 	public View(double width, double height, ILevel level, String language) {
 		myResources = ResourceBundle.getBundle(language);
-		this.model = new SystemManager(level);
+		model = new SystemManager(level);
 		manager = new GameLoopManager(language, model);
-		this.initConsole();
-		this.initButtons();
-		//this.viewUtils = new ViewUtilities(root, model.getLevel());
+		initConsole();
+		initButtons();
 		
-		this.subScene = this.createSubScene(root, width, height);
-		this.pane = this.createMainBorderPane(root, this.subScene);
+		subScene = createSubScene(root, width, height);
+		pane = createMainBorderPane(root, this.subScene);
+		viewUtils = new ViewUtilities();
 		DandR = new DragAndResizeDynamic();
 		DandR.makeRootDragAndResize(root);
-		
-		
-		//viewUtils.allowSelection();
-		//viewUtils.allowDragging();
-		//viewUtils.allowDeletion();
+
 		this.startTimeline();
 	}
 
@@ -123,7 +119,7 @@ public class View implements IView {
 	}
 
 	public void toggleHighlight(IEntity entity) {
-		//viewUtils.toggleHighlight(entity);
+		viewUtils.toggleHighlight(entity);
 	}
 
 	@Override
@@ -137,7 +133,7 @@ public class View implements IView {
 	}
 
 	public void highlight(IEntity entity) {
-		//viewUtils.highlight(entity);
+		viewUtils.highlight(entity);
 	}
 
 	private ImageView getUpdatedImageView(IEntity e) {
@@ -188,7 +184,6 @@ public class View implements IView {
 			if (e.hasComponents(Sprite.class, Position.class)) {
 				root.getChildren().addAll(getCollisionShapes(e));
 				DandR.makeEntityDragAndResize(e);
-				//viewUtils.makeSelectable(e);
 				ImageView imageView = getUpdatedImageView(e);
 				root.getChildren().add(imageView);
 				if (!root.getChildren().contains(imageView)) {
