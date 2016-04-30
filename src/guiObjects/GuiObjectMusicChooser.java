@@ -10,14 +10,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import model.component.audio.SoundEffect;
-import utility.FilePathRelativizer;
 import view.enums.DefaultStrings;
 import view.enums.FileExtensions;
 import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.FileUtilities;
 
-public class GuiObjectMusicChooser extends GuiObject{
+public class GuiObjectMusicChooser extends GuiObjectFileGetter{
 	private Button setMusic, play, stop;
 	private ResourceBundle myResources, myPropertiesNames;
 	private SimpleObjectProperty<String> property;
@@ -26,7 +25,7 @@ public class GuiObjectMusicChooser extends GuiObject{
 	
 	@SuppressWarnings("unchecked")
 	public GuiObjectMusicChooser(String name, String resourceBundle, String language, SimpleObjectProperty<?> property, Object object) {
-		super(name, resourceBundle);
+		super(name, resourceBundle, (SimpleObjectProperty<String>) property);
 		this.myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
 		myResources = ResourceBundle.getBundle(language);
 		text.setEditable(false);
@@ -42,10 +41,16 @@ public class GuiObjectMusicChooser extends GuiObject{
 		preview.setCycleCount(1);
 		preview.play();
 	}
+	
+	private void stopMusic() {
+		if(preview != null && preview.isPlaying()) {
+			preview.stop();
+		}
+	}
 
 	private void changeMusic(){
 		File file = getMusic();
-		setPreview(file);
+		setFile(file);
 	}
 
 	private File getMusic() {
@@ -60,12 +65,8 @@ public class GuiObjectMusicChooser extends GuiObject{
 		return null;
 	}
 	
-	private void setPreview(File file) {
-		if(file==null){
-			return;
-		}
+	protected void setPreview(File file) {
 		text.setText(file.getName());
-		property.setValue(FilePathRelativizer.relativize(file.getPath()));
 		stopMusic();
 		preview = new AudioClip(file.toURI().toString());
 	}
@@ -82,9 +83,5 @@ public class GuiObjectMusicChooser extends GuiObject{
 		return h;
 	}
 	
-	private void stopMusic() {
-		if(preview != null && preview.isPlaying()) {
-			preview.stop();
-		}
-	}
+
 }
