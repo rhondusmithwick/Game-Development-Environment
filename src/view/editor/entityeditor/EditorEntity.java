@@ -20,7 +20,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.layout.VBox;
 import api.IComponent;
 import api.IEntity;
-import api.ISerializable;
 import guiObjects.GuiObject;
 import guiObjects.GuiObjectFactory;
 /**
@@ -34,7 +33,7 @@ import guiObjects.GuiObjectFactory;
 public class EditorEntity extends Editor{
 	private IEntity myEntity;
 	private String myLanguage;
-	private ObservableList<ISerializable> entityList = FXCollections.observableArrayList();
+	private ObservableList<IEntity> entityList = FXCollections.observableArrayList();
 	private Button saveButton, addButton, removeButton;
 	private ResourceBundle myResources, myLocs, myComponentNames;
 	private TextField name;
@@ -44,7 +43,8 @@ public class EditorEntity extends Editor{
 	private final GuiObjectFactory guiFactory = new GuiObjectFactory();
 	private Button refreshButton;
 
-	public EditorEntity(String language, ISerializable toEdit){
+
+	public EditorEntity(String language, IEntity toEdit){
 		scrollPane = new ScrollPane();
 		myLanguage = language;
 		myResources = ResourceBundle.getBundle(language);
@@ -52,7 +52,7 @@ public class EditorEntity extends Editor{
 		myEntity = (Entity) toEdit;
 	}
 	
-	public EditorEntity(String language, ISerializable toEdit, ObservableList<ISerializable> addToList) {
+	public EditorEntity(String language, IEntity toEdit, ObservableList<IEntity> addToList) {
 		this(language, toEdit);
 		entityList = addToList;	
 	}
@@ -84,9 +84,6 @@ public class EditorEntity extends Editor{
 	private void addButtons() {
 		saveButton = ButtonFactory.makeButton(myResources.getString("saveEntity"), e -> save());
 		addButton = ButtonFactory.makeButton(myResources.getString("addComponent"), e -> addComponent());
-		////// LOOKIE HERE!!!!!!!!!!!!!!!!!!!!!!!!
-		////// 	REPLACE NULL WITH THE NEEDED METHOD
-		refreshButton = ButtonFactory.makeButton(myResources.getString("refreshEntity"), null);
 		removeButton = ButtonFactory.makeButton(myResources.getString("removeComponent"), e->removeComponent());
 		container.getChildren().addAll(addButton, removeButton, refreshButton, saveButton);
 	}
@@ -132,8 +129,9 @@ public class EditorEntity extends Editor{
 	}
 
 	private void save() {	
+		
 		myEntity.setName(name.getText());
-		myEntity.getAllComponents().stream().forEach(e -> removeBinding(e));
+		myEntity.getAllComponents().stream().forEach(e -> setToSave(e));
 		entityList.remove(myEntity);
 		entityList.add(myEntity);
 		container = new VBox();
@@ -141,7 +139,9 @@ public class EditorEntity extends Editor{
 		scrollPane.setContent(container);
 	}
 
-	private void removeBinding(IComponent e) {
+	private void setToSave(IComponent e) {
+		e.update();
 		e.removeBindings();
+		
 	}
 }
