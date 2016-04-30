@@ -16,6 +16,7 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -58,6 +59,7 @@ public class View implements IView {
 	private SubScene subScene;
 	private ViewUtilities viewUtils;
 	private GameLoopManager manager;
+	private HBox buttonBox = new HBox();
 
 	@Deprecated
 	public View(String language) {
@@ -249,7 +251,7 @@ public class View implements IView {
 
 		BorderPane inputPane = new BorderPane();
 		inputPane.setTop(console);
-		inputPane.setBottom(evaluateButton);
+		inputPane.setBottom(buttonBox);
 		// inputPane.setRight(loadButton);
 		pane.setBottom(inputPane);
 		return pane;
@@ -269,10 +271,12 @@ public class View implements IView {
 	}
 
 	private void initButtons() {
-		// evaluateButton.setText("Evaluate");
 		evaluateButton.setOnAction(e -> this.evaluate());
 		loadButton.setOnAction(e -> this.load());
 		loopManagerButton.setOnAction(e -> this.createLoopManager());
+		buttonBox.getChildren().add(evaluateButton);
+		buttonBox.getChildren().add(loadButton);
+		buttonBox.getChildren().add(loopManagerButton);
 	}
 
 	private void load() { // TODO: loading
