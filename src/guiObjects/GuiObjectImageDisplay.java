@@ -22,18 +22,18 @@ public class GuiObjectImageDisplay extends GuiObjectFileGetter {
 	
 	@SuppressWarnings("unchecked")
 	public GuiObjectImageDisplay(String name, String resourceBundle, String language, SimpleObjectProperty<?> property, Object object) {
-		super(name, resourceBundle, (SimpleObjectProperty<String>) property);
+		super(name, resourceBundle);
 		myPropertiesNames= ResourceBundle.getBundle(language+DefaultStrings.PROPERTIES.getDefault());
 		this.myResources= ResourceBundle.getBundle(language);
 		setImage = ButtonFactory.makeButton(myPropertiesNames.getString(name), e->changeImage());
 		this.property=(SimpleObjectProperty<String>) property;
 		this.preview=new ImageView();
-		setFile(new File(this.property.getValue()));
+		setFile(new File(this.property.getValue()), this.property);
 	}
 
 	private void changeImage(){
 		File file = getImage();
-		setFile(file);
+		setFile(file, property);
 		}
 
 	private File getImage() {

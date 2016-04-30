@@ -25,7 +25,7 @@ public class GuiObjectMusicChooser extends GuiObjectFileGetter{
 	
 	@SuppressWarnings("unchecked")
 	public GuiObjectMusicChooser(String name, String resourceBundle, String language, SimpleObjectProperty<?> property, Object object) {
-		super(name, resourceBundle, (SimpleObjectProperty<String>) property);
+		super(name, resourceBundle);
 		this.myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
 		myResources = ResourceBundle.getBundle(language);
 		text.setEditable(false);
@@ -50,7 +50,7 @@ public class GuiObjectMusicChooser extends GuiObjectFileGetter{
 
 	private void changeMusic(){
 		File file = getMusic();
-		setFile(file);
+		setFile(file, property);
 	}
 
 	private File getMusic() {

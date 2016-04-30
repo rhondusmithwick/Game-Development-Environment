@@ -6,14 +6,12 @@ import javafx.beans.property.SimpleObjectProperty;
 import utility.FilePathRelativizer;
 
 public abstract class GuiObjectFileGetter extends GuiObject{
-	private SimpleObjectProperty<String> property;
-	public GuiObjectFileGetter(String name, String resourceBundle, SimpleObjectProperty<String> property) {
+	public GuiObjectFileGetter(String name, String resourceBundle) {
 		super(name, resourceBundle);
-		property = this.property;
 	}
 
 	
-	protected void setFile(File file){
+	protected void setFile(File file, SimpleObjectProperty<String> property){
 		if(file==null){
 			return;
 		}
