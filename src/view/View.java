@@ -9,6 +9,8 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.ImageView;
@@ -40,6 +42,7 @@ public class View implements IView {
 	private final double MILLISECOND_DELAY = 10;
 	private final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
 	private final double gapSize = 1;
+	private final boolean DEBUG = false;
 
 	private final ConsoleTextArea console = new ConsoleTextArea();
 	private final Button evaluateButton = new Button("Evaluate");
@@ -179,6 +182,29 @@ public class View implements IView {
 		model.step(dt);
 
 		// render
+//<<<<<<< HEAD
+////		root.getChildren().clear();
+//		ObservableList<Node> imageViews = root.getChildren();
+//		List<Node> tempList = new ArrayList<>();
+//		Set<IEntity> renderableEntities = model.getEntitySystem().getEntitiesWithComponents(Sprite.class, Position.class);
+//		for (IEntity e : renderableEntities) {
+//			viewUtils.makeSelectable(e);
+//			if(DEBUG) {
+//				tempList.addAll(this.getCollisionShapes(e));
+//			}
+//			ImageView imageView = this.getUpdatedImageView(e);
+//			tempList.add(imageView);
+//			modulateZLevel(e, imageViews);
+//			if(!imageViews.contains(imageView)) { // populate root with new sprites
+//				imageViews.add(imageView);
+//			}
+//		}
+//		for(int i=0; i<imageViews.size(); i++) { // remove old sprites
+//			Node imageView = imageViews.get(i);
+//			if(!tempList.contains(imageView)) {
+//				imageViews.remove(imageView);
+//				i--;
+//=======
 		root.getChildren().clear();
 		List<IEntity> entities = model.getEntitySystem().getAllEntities();//.getEntitiesWithComponents(Sprite.class, Position.class);
 		for (IEntity e : entities) {
@@ -208,7 +234,6 @@ public class View implements IView {
 		center.setContent(subScene);
 //		System.out.println(subScene.getRoot());
 		root.setManaged(false); // IMPORTANT
-
 		// center.setPannable(true);
 		center.setVbarPolicy(ScrollBarPolicy.NEVER);
 		center.setHbarPolicy(ScrollBarPolicy.NEVER);

@@ -7,7 +7,10 @@ import api.IEntitySystem;
 import com.google.common.collect.Lists;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 
+import java.util.Iterator;
 import java.util.List;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 /**
  * Created by Tom on 4/24/2016.
@@ -22,15 +25,15 @@ public class EntitySystem implements IEntitySystem {
     private String name;
 
     @Override
-    public IEntity createEntity() {
+    public IEntity createEntity () {
         IEntity entity = new Entity();
         addEntity(entity);
         return entity;
     }
 
     @Override
-    public IEntity addEntity(IEntity entity) {
-        if(containsID(entity.getID())) {
+    public IEntity addEntity (IEntity entity) {
+        if (containsID(entity.getID())) {
             return null;
         }
         entities.add(entity);
@@ -38,38 +41,30 @@ public class EntitySystem implements IEntitySystem {
     }
 
     @Override
-    public IEntity getEntity(String i) {
-        for(IEntity e:entities) {
-            if(e.getID().equals(i)) {
-                return e;
-            }
-        }
-        return null;
+    public IEntity getEntity (String id) {
+        return entitiesWIthID(id).findFirst().orElse(null);
     }
 
     @Override
-    public List<IEntity> getAllEntities() {
+    public List<IEntity> getAllEntities () {
         return entities;
     }
 
     @Override
-    public boolean containsID(String id) {
-        for(IEntity e:entities) {
-            if(e.getID().equals(id)) {
-                return true;
-            }
-        }
-        return false;
+    public boolean containsID (String id) {
+        return entitiesWIthID(id).count() > 0;
     }
 
     @Override
-    public IEntity removeEntity(String id) {
+    public IEntity removeEntity (String id) {
         if (containsID(id)) {
-            for(IEntity e:entities) {
-                if(e.getID().equals(id)) {
-                    e.getAllComponents().stream().forEach(IComponent::removeBindings);
-                    entities.remove(e);
-                    return e;
+            Iterator<IEntity> iter = entities.iterator();
+            while (iter.hasNext()) {
+                IEntity entity = iter.next();
+                if (entity.getID().equals(id)) {
+                    entity.getAllComponents().stream().forEach(IComponent::removeBindings);
+                    iter.remove();
+                    return entity;
                 }
             }
         }
@@ -77,18 +72,22 @@ public class EntitySystem implements IEntitySystem {
     }
 
     @Override
-    public String getName() {
+    public String getName () {
         return this.name;
     }
 
     @Override
-    public void setName(String name) {
+    public void setName (String name) {
         this.name = name;
     }
 
     @Override
-    public boolean isEmpty() {
+    public boolean isEmpty () {
         return this.getAllEntities().isEmpty();
     }
 
+    private Stream<IEntity> entitiesWIthID (String id) {
+        Predicate<IEntity> equalID = (e) -> e.getID().equals(id);
+        return entities.stream().filter(equalID);
+    }
 }
