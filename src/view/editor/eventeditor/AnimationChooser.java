@@ -1,40 +1,81 @@
 package view.editor.eventeditor;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import model.component.visual.AnimatedSprite;
 import javafx.scene.Group;
-import javafx.scene.control.ScrollPane;
-
-
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceDialog;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.layout.VBox;
 import view.editor.AnimationEditor;
 import view.utilities.Alerts;
+import view.utilities.ButtonFactory;
+import view.utilities.ChoiceDialogFactory;
 import view.utilities.PopUp;
 import api.IEntity;
 
 public class AnimationChooser{
-	private static final double WIDTH = 500;
-	private static final double HEIGHT = 500;
-	private Group sceneGroup = new Group();
-	private ScrollPane scrollPane = new ScrollPane(sceneGroup);
+	private static final double WIDTH = 300;
+	private static final double HEIGHT = 300;
 	private IEntity myEntity;
+	private AnimatedSprite animatedSprite;
+	private Button saveButton;
+	private ChoiceDialog<String> dialog = new ChoiceDialog<String>();
+
 	public AnimationChooser(IEntity entity){
 		myEntity = entity;
-		PopUp popup = new PopUp(WIDTH, HEIGHT);
-		popup.show(scrollPane);
-		checkIfAnimatedSprite();
-		populateLayout();
 		
 	}
-	private void populateLayout() {
-		// TODO Auto-generated method stub
-		
+
+	private AnimatedSprite getAnimatedSpriteComponent() {
+		return myEntity.getComponent(AnimatedSprite.class);
 	}
-	private void checkIfAnimatedSprite() {
-		if (!myEntity.hasComponent(AnimatedSprite.class)){
-			if (Alerts.showAlert("Entity needs an animated sprite", "Add an Animated Sprite","Click OK to add a sprite", AlertType.CONFIRMATION));
+
+	public String initChooser() {	
+		if (checkIfAnimatedSprite()){
+			animatedSprite = getAnimatedSpriteComponent();
+			List<String> animationNames = new ArrayList<String>(animatedSprite.getAnimationNames());
+			updateDialogBox(animationNames);
+			Optional<String> result = dialog.showAndWait();
+			
+			if (result.isPresent()) {
+				return result.get();
+			}
+		}else{
+			if (Alerts.showAlert("Entity needs an animated sprite", "Add an Animated Sprite","Click OK to add a sprite", AlertType.CONFIRMATION)){
 				initAnimationEditor();
-				
+
+
+
+			}
+		
 		}
+
+
+
+
+		return null;
+	}
+	
+	private void updateDialogBox(List<String>choices) {
+		dialog = new ChoiceDialog<>(choices.get(0), choices);
+		dialog.setTitle("Animation Chooser");
+		dialog.setHeaderText("Choose an animation");
+		dialog.setContentText("Choose");
+		
+	
+	}
+
+	private boolean checkIfAnimatedSprite() {
+		if (!myEntity.hasComponent(AnimatedSprite.class)){
+			return false;
+
+				
+		}return true;
 		
 		
 	}
