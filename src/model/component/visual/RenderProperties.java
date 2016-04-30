@@ -70,4 +70,10 @@ public class RenderProperties implements IComponent {
     public List<SimpleObjectProperty<?>> getProperties() {
         return twoProperty.getProperties();
     }
+
+    @Override
+    public void update() {
+        setTint(getTint());
+        setTransparency(getTransparency());
+    }
 }

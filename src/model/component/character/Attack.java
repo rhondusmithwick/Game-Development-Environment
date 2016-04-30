@@ -56,4 +56,9 @@ public class Attack implements IComponent {
     public List<SimpleObjectProperty<?>> getProperties() {
         return singleProperty.getProperties();
     }
+
+    @Override
+    public void update() {
+        setAttack(getAttack());
+    }
 }

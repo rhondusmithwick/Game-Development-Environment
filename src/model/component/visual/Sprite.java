@@ -173,4 +173,10 @@ public class Sprite implements IComponent {
         return imageView;
     }
 
+    @Override
+    public void update() {
+        setImagePath(getImagePath());
+        setImageHeight(getImageHeight());
+        setImageWidth(getImageWidth());
+    }
 }

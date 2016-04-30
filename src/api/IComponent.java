@@ -98,5 +98,5 @@ public interface IComponent extends ISerializable {
 	//}
 
     void update();
-    
+
 }

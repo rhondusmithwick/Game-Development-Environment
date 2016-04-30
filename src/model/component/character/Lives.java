@@ -72,4 +72,8 @@ public class Lives implements IComponent {
         return singleProperty.getProperties();
     }
 
+    @Override
+    public void update() {
+        setLives(getLives());
+    }
 }

@@ -55,4 +55,9 @@ public class Visible implements IComponent {
     public List<SimpleObjectProperty<?>> getProperties() {
         return Collections.singletonList(visibleProperty());
     }
+
+    @Override
+    public void update() {
+        setVisible(getVisible());
+    }
 }
