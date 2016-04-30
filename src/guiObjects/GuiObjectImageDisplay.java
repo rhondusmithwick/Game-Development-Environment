@@ -46,7 +46,7 @@ public class GuiObjectImageDisplay extends GuiObject {
 		if(file==null){
 			return;
 		}
-		property.setValue(FilePathRelativizer.relativize(file.getPath(), myResources));
+		property.setValue(FilePathRelativizer.relativize(file.getPath()));
 		preview.setImage(new Image(file.toURI().toString()));
 		preview.setFitHeight(GUISize.PREVIEW_SIZE.getSize());
 		preview.setPreserveRatio(true);

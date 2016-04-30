@@ -5,8 +5,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ResourceBundle;
 
-import view.utilities.Alerts;
-
 /**
  * Created by rhondusmithwick on 4/29/16.
  *
@@ -16,9 +14,12 @@ public class FilePathRelativizer {
     private FilePathRelativizer () {
     }
 
+    public static String getBaseDirectory() {
+        return System.getProperty("user.dir");
+
+    }
     public static String relativize (String otherDirectory) {
-        String baseDirectory = System.getProperty("user.dir");
-        Path base = Paths.get(baseDirectory);
+        Path base = Paths.get(getBaseDirectory());
         Path other = Paths.get(otherDirectory);
         try {
             return base.relativize(other).toString();
@@ -27,8 +28,7 @@ public class FilePathRelativizer {
             if (inner) {
                 return otherDirectory;
             }
-           // Alerts.showError(myResources.getString("error"), myResources.getString("cannotRelativize"));
-            return otherDirectory;
+            throw new IllegalArgumentException("Relativize problem");
         }
     }
 

@@ -8,7 +8,7 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Group;
+
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -24,15 +24,13 @@ import update.GameLoopManager;
 import view.View;
 import view.enums.DefaultEntities;
 import view.enums.GUISize;
-import view.utilities.Alerts;
-import view.utilities.ButtonFactory;
-import view.utilities.ContextMenuFactory;
-import view.utilities.EntityCopier;
-import view.utilities.FileUtilities;
-import view.utilities.UserInputBoxFactory;
+import view.utilities.*;
 
 import java.io.File;
-import java.util.*;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.ResourceBundle;
 
 public class EditorEnvironment extends Editor {
 
@@ -67,10 +65,9 @@ public class EditorEnvironment extends Editor {
 	}
 	
 	private void setUpGame(String language){
-		Group gameRoot = new Group();
-		game = new SystemManager(gameRoot, myLevel);
-		view = new View(game, gameRoot, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(),
-				scrollPane); 
+		game = new SystemManager(myLevel);
+		view = new View(game, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(),
+				scrollPane);
 		manager = new GameLoopManager(language, game);
 	}
 
@@ -85,10 +82,10 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private TextField setNameDisplay() {
-		if (myLevel.getName().equals("")) {
+		if (view.getEntitySystem().getName().equals("")) {
 			nameField.setText(myResources.getString("environmentName"));
 		} else {
-			nameField.setText(myLevel.getName());
+			nameField.setText(view.getEntitySystem().getName());
 		}
 		return nameField;
 	}
@@ -112,7 +109,7 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void addToSystem(IEntity entity) {
-		this.myLevel.addEntity(entity);
+		view.getEntitySystem().addEntity(entity);
 		addToScene(entity);
 	}
 
@@ -178,12 +175,34 @@ public class EditorEnvironment extends Editor {
 		entityButton.setContextMenu(ContextMenuFactory.createContextMenu(menuMap));
 	}
 
-	private void sendToBack(IEntity entity) {
-		
-	 }
-
 	private void sendToFront(IEntity e) {
-		e.getComponent(Sprite.class).setZLevel(2);
+		if(view.getEntitySystem().removeEntity(e.getID())!=null) {
+			view.getEntitySystem().addEntity(e);
+		}
+	}
+
+	private void sendToBack(IEntity e) {
+		if(view.getEntitySystem().removeEntity(e.getID())!=null) {
+			view.getEntitySystem().getAllEntities().add(0, e);
+		}
+	}
+
+	private void sendForward(IEntity e) {
+		int index = view.getEntitySystem().getAllEntities().indexOf(e)+1;
+		if(view.getEntitySystem().removeEntity(e.getID())!=null) {
+			if(index<view.getEntitySystem().getAllEntities().size()) {
+				view.getEntitySystem().getAllEntities().add(index, e);
+			}
+		}
+	}
+
+	private void sendBackward(IEntity e) {
+		int index = view.getEntitySystem().getAllEntities().indexOf(e)-1;
+		if(view.getEntitySystem().removeEntity(e.getID())!=null) {
+			if(index>=0) {
+				view.getEntitySystem().getAllEntities().add(index, e);
+			}
+		}
 	}
 
 	private void updateDisplay(ObservableList<IEntity> masterList) {
@@ -201,7 +220,7 @@ public class EditorEnvironment extends Editor {
 		environmentPane.setRight(rightPane);
 		environmentPane.setLeft(leftPane);
 		environmentPane.setCenter(view.getPane());
-		view.getSubScene().setOnMouseClicked(e -> updateEnviornmentBox(environmentEntityButtonsBox,myLevel));
+		view.getSubScene().setOnMouseClicked(e -> updateEnviornmentBox(environmentEntityButtonsBox,view.getLevel()));
 	}
 
 	private void updateEnviornmentBox(VBox vBox, ILevel entities) {
@@ -213,9 +232,9 @@ public class EditorEnvironment extends Editor {
 
 	private void saveEnvironment() {
 		String name = getName();
-		myLevel.setName(name);
-		allEnvironmentsList.remove(myLevel);
-		allEnvironmentsList.add(myLevel);
+		view.getEntitySystem().setName(name);
+		allEnvironmentsList.remove(view.getLevel());
+		allEnvironmentsList.add(view.getLevel());
 		environmentPane.getChildren().clear();
 		environmentPane.setCenter(saveMessage(myResources.getString("saveMessage")));
 	}
@@ -253,12 +272,12 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void removeFromDisplay(IEntity entity, Button entityButton) {
-		myLevel.removeEntity(entity.getID());
+		view.getEntitySystem().removeEntity(entity.getID());
 		environmentEntityButtonsBox.getChildren().remove(entityButton);
 	}
 
-	public ILevel getLevel() {
-		return myLevel;
+	public ILevel getEntitySystem() {
+		return view.getLevel();
 	}
 
 	@Override
@@ -271,7 +290,7 @@ public class EditorEnvironment extends Editor {
 	}
 
 	public boolean environmentContains(IEntity checkEntity) {
-		return myLevel.containsEntity(checkEntity);
+		return view.getEntitySystem().containsEntity(checkEntity);
 	}
 
 }
