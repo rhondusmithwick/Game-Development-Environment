@@ -61,13 +61,13 @@ public class View implements IView {
 
 	// Needs scene
 	@Deprecated
-	public View(ISystemManager model, ScrollPane scene) {
+	public View(ISystemManager model, Scene scene) {
 		this(model, 2000, 2000, scene);
 	}
 
 	// Needs scene
 	@Deprecated
-	public View(ISystemManager model, double width, double height, ScrollPane scene) {
+	public View(ISystemManager model, double width, double height, Scene scene) {
 		this.model = model;
 		this.initConsole();
 		this.initButtons();
@@ -79,12 +79,12 @@ public class View implements IView {
 		viewUtils.allowSelection();
 		viewUtils.allowDragging();
 		viewUtils.allowDeletion();
-		
 		this.startTimeline();
 	}
 
 	public void setScene(Scene scene) {
-		scene.setOnKeyPressed(e -> model.getLevel().getEventSystem().takeInput(e)); // TODO: add all inputs
+		scene.setOnKeyPressed(e -> keyPressed(e.getCode()));
+		//scene.setOnKeyPressed(e -> model.getLevel().getEventSystem().takeInput(e)); // TODO: add all inputs
 	}
 
 	public Pane getPane() {
@@ -107,6 +107,7 @@ public class View implements IView {
 		this.root = root;
 		SubScene subScene = new SubScene(root, width, height);
 		subScene.setFill(Color.WHITE);
+		
 		// TODO: not printing key presses, why?!
 		// subScene.setOnMouseClicked(e -> System.out.println(e.getX()));
 		// scene.setOnKeyTyped(e -> System.out.println(e.getCode()));
@@ -116,6 +117,14 @@ public class View implements IView {
 		return subScene;
 	}
 	
+	private void keyPressed(KeyCode code) {
+		if (code == KeyCode.DELETE ){
+			for (IEntity entity : viewUtils.getSelected()){
+			model.getLevel().removeEntity(entity.getID());
+			}
+		}
+	}
+
 	public void toggleHighlight(IEntity entity){
 		viewUtils.toggleHighlight(entity);
 	}
@@ -186,6 +195,8 @@ public class View implements IView {
 				viewUtils.makeSelectable(e);
 //				root.getChildren().addAll(getCollisionShapes(e));
 				ImageView imageView = getUpdatedImageView(e);
+				root.getChildren().add(imageView);
+				//System.out.println(imageView.getImage());
 				if (!root.getChildren().contains(imageView)) {
 					root.getChildren().add(imageView);
 				}

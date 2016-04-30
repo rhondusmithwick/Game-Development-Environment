@@ -1,7 +1,6 @@
 package view.editor;
 
 import api.IEntity;
-import api.IEntityEditor;
 import api.ILevel;
 import api.ISystemManager;
 import api.IView;
@@ -9,7 +8,6 @@ import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
@@ -18,7 +16,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import model.component.movement.Position;
 import model.component.visual.Sprite;
 import model.core.SystemManager;
@@ -55,7 +52,7 @@ public class EditorEnvironment extends Editor {
 	private GameLoopManager manager;
 
 	public EditorEnvironment(String language, ILevel toEdit, ObservableList<IEntity> masterList,
-			ObservableList<ILevel> addToList) {
+		ObservableList<ILevel> addToList) {
 		myLanguage = language;
 		myResources = ResourceBundle.getBundle(language);
 		masterList.addListener((ListChangeListener<IEntity>) c -> {
@@ -71,7 +68,7 @@ public class EditorEnvironment extends Editor {
 
 	private void setUpGame(String language) {
 		game = new SystemManager(myLevel);
-		view = new View(game, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(), scrollPane);
+		view = new View(game, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(), scrollPane.getScene());
 		manager = new GameLoopManager(language, game);
 	}
 
@@ -177,11 +174,9 @@ public class EditorEnvironment extends Editor {
 		entityEditor.populateLayout();
 		PopUp myPopUp = new PopUp(GUISize.ENTITY_EDITOR_WIDTH.getSize(),GUISize.ENTITY_EDITOR_HEIGHT.getSize());
 		myPopUp.show(entityEditor.getPane());
-		
 	}
 
 	private void entityRightClicked(IEntity entity, Button entityButton, MouseEvent event) {
-		view.highlight(entity);
 		Map<String, EventHandler<ActionEvent>> menuMap = new LinkedHashMap<String, EventHandler<ActionEvent>>();
 		menuMap.put(myResources.getString("remove"), e -> removeFromDisplay(entity, entityButton));
 		menuMap.put(myResources.getString("sendBack"), e -> sendToBack(entity));

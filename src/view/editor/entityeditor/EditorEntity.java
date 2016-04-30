@@ -41,6 +41,7 @@ public class EditorEntity extends Editor{
 	private List<String> myComponents;
 	private VBox container;
 	private final GuiObjectFactory guiFactory = new GuiObjectFactory();
+	private Button refreshButton;
 
 
 	public EditorEntity(String language, ISerializable toEdit, ObservableList<ISerializable> addToList) {
@@ -79,8 +80,11 @@ public class EditorEntity extends Editor{
 	private void addButtons() {
 		saveButton = ButtonFactory.makeButton(myResources.getString("saveEntity"), e -> save());
 		addButton = ButtonFactory.makeButton(myResources.getString("addComponent"), e -> addComponent());
+		////// LOOKIE HERE!!!!!!!!!!!!!!!!!!!!!!!!
+		////// 	REPLACE NULL WITH THE NEEDED METHOD
+		refreshButton = ButtonFactory.makeButton(myResources.getString("refreshEntity"), null);
 		removeButton = ButtonFactory.makeButton(myResources.getString("removeComponent"), e->removeComponent());
-		container.getChildren().addAll(addButton, removeButton, saveButton);
+		container.getChildren().addAll(addButton, removeButton, refreshButton, saveButton);
 	}
 
 	private void addName() {

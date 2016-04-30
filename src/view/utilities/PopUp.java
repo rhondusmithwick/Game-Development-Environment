@@ -6,6 +6,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import view.enums.DefaultStrings;
+
+import java.io.File;
 import java.util.List;
 
 /**
@@ -39,6 +42,7 @@ public class PopUp {
     public void show(ScrollPane pane) {
         stage = new Stage();
         myScene = new Scene(pane, width, height);
+        myScene.getStylesheets().add(new File(DefaultStrings.CSS_LOCATION.getDefault() + DefaultStrings.MAIN_CSS.getDefault()).toURI().toString());
         showScene();
     }
 
