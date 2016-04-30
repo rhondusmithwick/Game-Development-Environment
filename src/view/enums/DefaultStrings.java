@@ -18,7 +18,7 @@ public enum DefaultStrings {
 	POSITION_COMP_NAME(Position.class.getName()),
 	XML(".xml"), 
 	CSS_LOCATION("resources/cssFiles/"),
-	MAIN_CSS("main.css"), 
+	MAIN_CSS("darktheme.css"),
 	RHONDU("resources/testing/RhonduSmithwick.JPG"), 
 	THEME("finalCountdown.mp3"), 
 	MUSIC("resources/music/"),
