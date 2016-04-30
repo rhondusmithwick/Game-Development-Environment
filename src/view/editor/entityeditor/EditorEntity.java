@@ -110,7 +110,7 @@ public class EditorEntity extends Editor{
 
 	private void addVisualObject(SimpleObjectProperty<?> property) {
 		GuiObject object = guiFactory.createNewGuiObject(property.getName(), DefaultStrings.GUI_RESOURCES.getDefault(),myLanguage, property, property.getValue());
-		if (object != null){
+		if (object != null && (property.getName().equals("ImagePath") && !myEntity.hasComponent(AnimatedSprite.class))){
 			container.getChildren().add((Node) object.getGuiNode());
 		}
 	}
