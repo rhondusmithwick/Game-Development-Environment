@@ -103,10 +103,8 @@ public class Vooga extends StartUpMenu {
 			Pane pane = view.getPane();
 			Scene scene = new Scene(pane, 500, 500);
 			myStage.setScene(scene);
-			myStage.show();
-		}else{
-			myStage.show();
 		}
+		myStage.show();
 	}
 
 
