@@ -6,12 +6,20 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Slider;
 
 /**
- * 
+ * Class to set double property with slider
  * @author calinelson
  *
  */
 public class GuiObjectDoubleSlider extends GuiObjectSlider{
 
+	/**
+	 * constructor for double slider
+	 * @param name name of property
+	 * @param resourceBundle resourcebundle 
+	 * @param language display language
+	 * @param property property to bind
+	 * @param object object
+	 */
 	public GuiObjectDoubleSlider(String name, String resourceBundle, String language, SimpleObjectProperty<?> property,
 			Object object) {
 		super(name, resourceBundle, language, property, object);

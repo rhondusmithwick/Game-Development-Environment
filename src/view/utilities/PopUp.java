@@ -59,7 +59,7 @@ public class PopUp {
     /**
      * closes the popup
      */
-    protected void closeScene() {
+    public void closeScene() {
         stage.close();
     }
 

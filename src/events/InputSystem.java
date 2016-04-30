@@ -43,6 +43,11 @@ public class InputSystem {
     public void unListenToInput(ChangeListener listener) {
         currentInput.removeListener(listener);
     }
+    
+    public void clearInputs() {
+    	firstQueue.clear();
+    	secondQueue.clear();
+    }
 
     private void toggleQueues() {
         if (fillQ == firstQueue) {

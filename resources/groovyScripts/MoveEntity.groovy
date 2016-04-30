@@ -3,6 +3,7 @@ package groovyScripts
 import api.IEntity
 import groovy.transform.BaseScript
 import groovy.transform.Field
+import model.component.movement.Position
 import model.component.movement.Velocity
 
 @BaseScript ScriptHelpers ScriptHelpers
@@ -22,5 +23,5 @@ void move(IEntity entity) {
 }
 
 for (IEntity entity: getEntitiesWithNamesAndIDs()) {
-    move(entity);
+    teleport(entity);
 }

@@ -54,6 +54,8 @@ public class KeyBindingTableManager extends TableManager
 
 	public void entityWasClicked(Entity entity)
 	{
+		editor.setEntityForAnimation(entity);
+		
 		if (pickedEntitiesForEvent.contains(entity))
 		{
 			pickedEntitiesForEvent.remove(entity);

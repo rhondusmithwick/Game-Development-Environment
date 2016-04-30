@@ -58,6 +58,8 @@ public class PropertyTableManager extends TableManager
 	public void entityWasClicked(Entity entity)
 	{
 		editor.resetTrigger();
+		editor.setEntityForAnimation(entity);
+		
 		componentTable.refreshTable();
 		propertyTable.refreshTable();
 		componentTable.fillEntries(entity);

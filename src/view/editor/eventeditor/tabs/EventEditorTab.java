@@ -20,7 +20,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import model.entity.Entity;
 import view.editor.Editor;
+import view.editor.eventeditor.AnimationChooser;
 import view.editor.eventeditor.LevelPicker;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
@@ -51,6 +53,9 @@ public abstract class EventEditorTab extends Editor
 	private String actionScriptPath;
 	private Button getActionButton;
 	private boolean actionReady;
+	private AnimationChooser animationChooser;
+	private Entity entityForAnimation;
+	private String animationName;
 	
 	public EventEditorTab(String language, ObservableList<ILevel> levelList)
 	{
@@ -186,8 +191,9 @@ public abstract class EventEditorTab extends Editor
 	
 	private void getAnimation()
 	{
-		System.out.println("HELLO!");
-		flashCreatedEventText();
+		animationChooser = new AnimationChooser(entityForAnimation);
+		animationName = animationChooser.initChooser();
+		// flashCreatedEventText();
 	}
 	
 	public VBox getActionPane()
@@ -198,6 +204,17 @@ public abstract class EventEditorTab extends Editor
 	public String getActionScriptPath()
 	{
 		return actionScriptPath;
+	}
+	
+	public void setEntityForAnimation(Entity entity)
+	{
+		this.entityForAnimation = entity;
+
+		// TODO: better if
+		if (getActionButton.getText().equals(myResources.getString("getFromAnimation")))
+		{
+			actionText.setText("Entity for Animation: " + entity.getName() );	// TODO resource file
+		}		
 	}
 	public abstract void actionOnChosenLevels(List<ILevel> levels);
 }

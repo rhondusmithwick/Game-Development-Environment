@@ -12,7 +12,7 @@ import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.FileUtilities;
 /**
- * 
+ * gui object that allows file choosing and displays a preview
  * @author calinelson
  *
  */
@@ -24,7 +24,14 @@ public class GuiObjectImageDisplay extends GuiObjectFileGetter {
 	private ResourceBundle myPropertiesNames, myResources;
 	private SimpleObjectProperty<String> property;
 	
-	
+	/**
+	 * construct gui object image display
+	 * @param name name of property to be changed
+	 * @param resourceBundle resourcebundle of gui parameters
+	 * @param language string display langauge
+	 * @param property property to bind
+	 * @param object other object
+	 */
 	@SuppressWarnings("unchecked")
 	public GuiObjectImageDisplay(String name, String resourceBundle, String language, SimpleObjectProperty<?> property, Object object) {
 		super(name, resourceBundle);
