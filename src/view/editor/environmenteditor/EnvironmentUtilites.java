@@ -95,7 +95,12 @@ public class EnvironmentUtilites {
 		menuMap.put(myResources.getString("sendBackOne"), e ->sendBackward(entity));
 		menuMap.put(myResources.getString("sendForwardOne"), e -> sendForward(entity));
 		menuMap.put(myResources.getString("saveAsMasterTemplate"), e -> saveToMasterList(entity));
+		menuMap.put(myResources.getString("toggleHighlight"), e -> highlight(entity));
 		return menuMap;
+	}
+
+	private void highlight(IEntity entity) {
+		view.toggleHighlight(entity);
 	}
 
 	public void saveToMasterList(IEntity entity) {
