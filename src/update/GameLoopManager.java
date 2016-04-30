@@ -1,5 +1,6 @@
 package update;
 
+import api.ILevel;
 import api.ISystemManager;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -23,6 +24,7 @@ import view.utilities.ComboFactory;
 import view.utilities.TextFieldFactory;
 import java.io.File;
 import java.util.Arrays;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class GameLoopManager {
@@ -34,18 +36,19 @@ public class GameLoopManager {
 	private ComboBox<String> comboBox;
 	private Scene scene = new Scene(scrollPane, GUISize.LOOP_MANAGER_WIDTH.getSize(), GUISize.LOOP_MANAGER_HEIGHT.getSize());
 	private TextField keyField, valueField;
-	private ISystemManager systemManager;
+	private ILevel level;
 	private ObservableList<String> valueList = FXCollections.observableArrayList();
 	private ListView<String> listView = new ListView<String>(valueList);
+	private Map<String, String> valueMap;
 
 	public GameLoopManager(String language, ISystemManager game) {
 		myResources = ResourceBundle.getBundle(language);
-		File file = new File(DefaultStrings.CSS_LOCATION.getDefault() + DefaultStrings.MAIN_CSS.getDefault());
-		scene.getStylesheets().add(file.toURI().toString());
+		scene.getStylesheets().add(new File(DefaultStrings.CSS_LOCATION.getDefault() + DefaultStrings.MAIN_CSS.getDefault()).toURI().toString());
 		stage.setScene(scene);
 		stage.setTitle(myResources.getString("loopManager"));
 		pane.setPadding(ViewInsets.LOOP_EDIT.getInset());
-		systemManager = game;
+		level = game.getLevel();
+		valueMap = level.getMetadata();
 		keyField = TextFieldFactory.makeTextArea(myResources.getString("addKey"));
 		valueField = TextFieldFactory.makeTextArea(myResources.getString("valueText"));
 		listView.setCellFactory(e -> new DragDropCell<String>());
@@ -71,6 +74,7 @@ public class GameLoopManager {
 		String script = myResources.getString("keyDefault");
 		comboBox = ComboFactory.makeComboBox(myResources.getString("selectKey"), Arrays.asList(script), null);
 		comboBox.setValue(script);
+		populateList(script);
 		Button button = ButtonFactory.makeButton(myResources.getString("addKey"), e -> addKey());
 		vBox.getChildren().addAll(createContainer(keyField, button), comboBox);
 		return vBox;
@@ -95,8 +99,8 @@ public class GameLoopManager {
 				commaList += str + ",";
 			}
 			commaList = commaList.substring(0, commaList.length()- 1);
-			systemManager.getLevel().addMetadata(key, commaList);
-			//valueList.clear();
+			valueMap.put(key, commaList);
+			level.setMetadata(valueMap);
 			stage.close();
 		}
 	}
@@ -112,6 +116,14 @@ public class GameLoopManager {
 		if(!key.isEmpty()) {
 			comboBox.getItems().add(key);
 			keyField.clear();
+		}
+	}
+	
+	private void populateList(String key) {
+		String val = valueMap.get(key);
+		if(val != null) {
+			valueList = FXCollections.observableArrayList(val.split(","));
+			listView = new ListView<String>(valueList);
 		}
 	}
 
