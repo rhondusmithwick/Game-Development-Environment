@@ -1,30 +1,21 @@
-package view.editor.gameeditor;
+package view.editor.gameeditor.displays;
 
 import java.util.ResourceBundle;
 
-import api.IEditor;
 import api.IEntity;
 import api.ILevel;
 import api.ISerializable;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
-import model.entity.Entity;
 import view.Authoring;
-import view.editor.entityeditor.EditorEntity;
 import view.editor.eventeditor.EditorEvent;
 import view.enums.DefaultStrings;
-import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 
 public class EventDisplay extends ObjectDisplay
 {
 
-	private VBox container;
 	private Authoring authoringEnvironment;
 	private String language;
 	private ResourceBundle myResources;
@@ -45,10 +36,7 @@ public class EventDisplay extends ObjectDisplay
 		this.myResources = ResourceBundle.getBundle(language);
 	}	
 	@Override
-	protected void addNewObjects(VBox container) 
-	{
-		// TODO Auto-generated method stub
-	}
+	protected void addNewObjects(VBox container) {}
 
 	@Override
 	public Node makeNewObject() {
