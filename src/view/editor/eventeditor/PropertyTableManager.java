@@ -1,5 +1,6 @@
 package view.editor.eventeditor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import api.IComponent;
@@ -26,6 +27,7 @@ public class PropertyTableManager extends TableManager
 	private PropertyEventEditor editor;
 	
 	private ObservableList<IEntity> selectedEntities;
+	private List<IEntity> chosenEntities = new ArrayList<>();
 	
 	public PropertyTableManager(String language, PropertyEventEditor editor )
 	{
@@ -45,11 +47,19 @@ public class PropertyTableManager extends TableManager
 	
 	public void entityWasClicked(Entity entity)
 	{
-		editor.resetTrigger();
-		componentTable.refreshTable();
-		propertyTable.refreshTable();
-		componentTable.fillEntries(entity);
-		this.entity = entity;
+		if (chosenEntities.contains(entity))
+		{
+			chosenEntities.remove(entity);
+		}
+		else {
+			editor.resetTrigger();
+			chosenEntities.add(entity);
+			componentTable.refreshTable();
+			propertyTable.refreshTable();
+			componentTable.fillEntries(chosenEntities);
+			this.entity = entity;
+			editor.choseEntity(chosenEntities);
+		}
 	}
 	
 	public void componentWasClicked(IComponent component)
@@ -71,8 +81,7 @@ public class PropertyTableManager extends TableManager
 		componentTable.refreshTable();
 		propertyTable.refreshTable();
 		
-		for ( ILevel level: levels )
-		{
+		for ( ILevel level: levels ) {
 			selectedEntities.addAll(level.getAllEntities());
 		}
 		

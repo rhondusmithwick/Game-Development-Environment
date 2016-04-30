@@ -9,7 +9,7 @@ import model.component.visual.Sprite
  * Created by cyao42 on 4/22/2016.
  */
 
-charEntity = universe.getEntity("EntityID");
+charEntity = universe.getEntity(entityID);
 collision = charEntity.getComponent(Collision.class);
 if (!collision.getCollidingIDs().equals("")) {
     health = charEntity.getComponent(Health.class);

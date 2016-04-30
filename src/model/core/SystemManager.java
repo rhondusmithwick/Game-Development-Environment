@@ -61,13 +61,11 @@ public class SystemManager implements ISystemManager {
 
 	@Override
 	public void pauseLoop() {
-		System.out.println("paused");
 		this.isRunning = false;
 	}
 
 	@Override
 	public void step(double dt) {
-		System.out.println("running: " + this.isRunning);
 		if (this.isRunning) {
 			universe.update(dt);
 //			List<IEntity> entities = universe.getAllEntities();

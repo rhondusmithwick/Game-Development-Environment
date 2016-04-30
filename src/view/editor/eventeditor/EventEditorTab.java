@@ -1,11 +1,8 @@
 package view.editor.eventeditor;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.util.*;
 
+import api.IEntity;
 import com.sun.java.accessibility.util.GUIInitializedListener;
 
 import api.ILevel;
@@ -39,10 +36,8 @@ public abstract class EventEditorTab extends Editor
 		this.levelList = levelList;
 		levelPicker = new LevelPicker(language, levelList, this);
 		chosenLevels = new ArrayList<ILevel>(levelList);
-
 		createdEventText = new Text(myResources.getString("eventMade"));
 		createdEventText.setOpacity(0);
-
 	}
 
 	public void flashCreatedEventText()
@@ -88,22 +83,31 @@ public abstract class EventEditorTab extends Editor
 		return chosenLevels;
 	}
 
-	public void addEventToLevels(List<ILevel> levels, String triggerClassName, String scriptPath, Object... args) {
+	public void addEventToLevels(List<ILevel> levels, List<IEntity> entities, String triggerClassName,
+                                  String scriptPath, Object... args) {
 		if (getChosenLevels().isEmpty()) {
 			return;
 		}
 		levels.stream().forEach(level -> {
-			level.getEventSystem().registerEvent(
-					eventFactory.createEvent(triggerClassName, groovyPath+scriptPath, args)
-			);
+            addEventToLevel(level, entities, triggerClassName, scriptPath, args);
 		});
 	}
 
-	public void addEventToLevel(ILevel level, String triggerClassName, String scriptPath, Object... args) {
+	public void addEventToLevel(ILevel level, List<IEntity> entities, String triggerClassName, String scriptPath,
+                                 Object... args) {
 		level.getEventSystem().registerEvent(
-				eventFactory.createEvent(triggerClassName, groovyPath+scriptPath, args)
+				eventFactory.createEvent(triggerClassName, groovyPath+scriptPath,
+                        makeEntityParamMap(entities) , args)
 		);
 	}
+
+    public Map<String, String> makeEntityParamMap(List<IEntity> entities) {
+        Map<String, String> entityParams = new HashMap<>();
+        entities.stream().forEach(entity -> {
+            entityParams.put("entityID", entity.getID());
+        });
+        return entityParams;
+    }
 
 	public abstract void actionOnChosenLevels(List<ILevel> levels);
 }

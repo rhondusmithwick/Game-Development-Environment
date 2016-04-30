@@ -74,18 +74,18 @@ public class CollisionTestGame {
         Entity char1 = addCharacter("Anolyn", "blastoise.xml", IMAGE_PATH_BLASTOISE, 50.0, 200.0, "1");
         Entity char2 = addCharacter("Cani", "charizard.xml", IMAGE_PATH_CHARIZARD, 200.0, 200.0, "2");
         Map<String, String> parameters = new HashMap<String, String>();
-        parameters.put("EntityID", char1.getID());
-//        registerEventSetup("PropertyTrigger", healthScriptPath, parameters, char1.getID(), char1.getComponent(Position.class).getClass(),
-//                char1.getComponent(Position.class).getProperty("YPosition"));
-//        registerEventSetup("PropertyTrigger", healthScriptPath, parameters, char1.getID(), char1.getComponent(Collision.class).getClass(),
-//                char1.getComponent(Collision.class).getProperty("CollidingIDs"));
-//        registerEventSetup("PropertyTrigger", transformScriptPath, parameters, char1.getID(), char1.getComponent(Health.class).getClass(),
-//                char1.getComponent(Health.class).getProperty("Health"));
+        parameters.put("entityID", char1.getID());
+        registerEventSetup("PropertyTrigger", healthScriptPath, parameters, char1.getID(), char1.getComponent(Position.class).getClass(),
+                char1.getComponent(Position.class).getProperty("YPosition"));
+        registerEventSetup("PropertyTrigger", healthScriptPath, parameters, char1.getID(), char1.getComponent(Collision.class).getClass(),
+                char1.getComponent(Collision.class).getProperty("CollidingIDs"));
+        registerEventSetup("PropertyTrigger", transformScriptPath, parameters, char1.getID(), char1.getComponent(Health.class).getClass(),
+                char1.getComponent(Health.class).getProperty("Health"));
         registerEventSetup("KeyTrigger", moveRightScriptPath, parameters, "D");
         registerEventSetup("KeyTrigger", moveLeftScriptPath, parameters, "A");
         registerEventSetup("KeyTrigger", jumpScriptPath, parameters, "W");
         parameters.keySet().clear();
-        parameters.put("EntityID", char2.getID());
+        parameters.put("entityID", char2.getID());
         registerEventSetup("KeyTrigger", moveLeftScriptPath, parameters, "J");
         registerEventSetup("KeyTrigger", moveRightScriptPath, parameters, "L");
     }

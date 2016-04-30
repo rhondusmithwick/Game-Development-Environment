@@ -50,8 +50,7 @@ public abstract class Table
 		return entries;
 	}
 	
-	public void refreshTable()
-	{
+	public void refreshTable() {
 		entries.clear();
 		table.refresh();
 	}

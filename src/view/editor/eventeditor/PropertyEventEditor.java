@@ -35,6 +35,7 @@ public class PropertyEventEditor extends EventEditorTab
 	private Button chooseFileButton;
 	private Button makeEventButton;
 	private PropertyTableManager tableManager;
+	private List<IEntity> chosenEntities;
 	
 	EditorEvent masterEditor;
 	
@@ -135,18 +136,18 @@ public class PropertyEventEditor extends EventEditorTab
 		
 		if (getChosenLevels().isEmpty())
 			return;
-		
 		for ( ILevel level: getChosenLevels() )
 		{
 			for (IEntity entity: level.getAllEntities())
 			{
 				if ( entity.getName().equals(chosenEntityName) )
 				{
-					addEventToLevel(level, "PropertyTrigger", actionScriptPath, entity.getID(),
+					addEventToLevel(level, chosenEntities, "PropertyTrigger", actionScriptPath, entity.getID(),
 									chosenComponent.getClass(), chosenProperty);
 				}
 			}
 		}
+
 
 		// Carolyn's refactoring
 //		if (getChosenLevels().isEmpty()) return;
@@ -164,6 +165,11 @@ public class PropertyEventEditor extends EventEditorTab
 		eventViewManager.updateTable();
 		triggerOK = false;
 		actionOK = false;
+	}
+
+	public void choseEntity(List<IEntity> entities)
+	{
+		this.chosenEntities = entities;
 	}
 	
 	public void populateLayout() 

@@ -107,7 +107,12 @@ public class KeyBindingEditor extends EventEditorTab
 	{
 		if (getChosenLevels().isEmpty())
 			return;
-		addEventToLevels(getChosenLevels(), "KeyTrigger", actionScriptPath, currentKey.getName());
+		// make map like this:
+		// Map<String, String> params = new HashMap<String, String>();
+		// loop thru chosen entities and put them in map
+		// params.put("entityID", chosenEntitiesID);
+		// addEventToLevels(getChosenLevels(), "KeyTrigger", actionScriptPath, params, currentKey.getName());
+		addEventToLevels(getChosenLevels(), getChosenEntities(), "KeyTrigger", actionScriptPath, currentKey.getName());
 		flashCreatedEventText();
 		eventViewManager.updateTable();
 	}
@@ -218,7 +223,10 @@ public class KeyBindingEditor extends EventEditorTab
 	
 		fillChosenEntityBox();
 	}
-	
+
+	public ArrayList<IEntity> getChosenEntities() {
+		return chosenEntities;
+	}
 	
 	@Override
 	public void updateEditor() {}

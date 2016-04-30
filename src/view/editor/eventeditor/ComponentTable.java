@@ -1,6 +1,8 @@
 package view.editor.eventeditor;
 
+import java.util.List;
 import java.util.ResourceBundle;
+import java.util.Set;
 
 import api.IComponent;
 import api.ISerializable;
@@ -35,10 +37,22 @@ public class ComponentTable extends Table
 	@Override
 	public void fillEntries(Object dataHolder) 
 	{
-		for (IComponent component: ((Entity)dataHolder).getAllComponents())
-		{
-			String[] splitClassName = component.getClass().toString().split("\\.");
-			getEntries().add(new Entry(component, splitClassName[splitClassName.length - 1]));
-		}
+        List<Entity> entities = (List<Entity>) dataHolder;
+        Set<IComponent> intersect = (Set) entities.get(0).getAllComponents();
+//        entities.stream().forEach(entity -> {
+//            intersect.retainAll((Set) entity.getAllComponents());
+//        });
+//        intersect.stream().forEach(component -> {
+        entities.get(0).getAllComponents().stream().forEach(component -> {
+            String[] splitClassName = component.getClass().toString().split("\\.");
+            getEntries().add(new Entry(component, splitClassName[splitClassName.length - 1]));
+            System.out.println(component);
+        });
+
+//		for (IComponent component: ((Entity)dataHolder).getAllComponents())
+//		{
+//			String[] splitClassName = component.getClass().toString().split("\\.");
+//			getEntries().add(new Entry(component, splitClassName[splitClassName.length - 1]));
+//		}
 	}
 }
