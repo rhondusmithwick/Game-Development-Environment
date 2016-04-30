@@ -22,15 +22,15 @@ public class SpriteLoader {
         Sprite disp = new Sprite();
         ImageView img = disp.getImageView();
         disp.setImageWidth(20);
-        e.addComponents(pos, disp, new Velocity(20.0, 0.0),
-                new RestitutionCoefficient(1.0), new Mass(5));
+        e.addComponents(pos, disp, new Velocity(20.0, 0.0), new Collision("ball"),
+                new RestitutionCoefficient(1.0), new Mass(1));
         return e;
     }
 
     public static IEntity createPaddle(String name, Position pos) {
         IEntity e = new Entity(name);
         e.addComponents(pos, new Sprite(Pong.PATH+"sprites/red_paddle.png"),
-                new Collision("paddle"), new RestitutionCoefficient(1.1), new Mass(20),
+                new Collision("paddle"), new RestitutionCoefficient(1.2), new Mass(20),
                 new Score(0), new Velocity(0,0));
         return e;
     }
@@ -41,16 +41,16 @@ public class SpriteLoader {
                 new Collision("platform"), new RestitutionCoefficient(1.1), new Mass(1000));
         return e;
     }
-	
-	public static IEntity createAnimatedSprite(String name, Position pos){
-		IEntity e = new Entity(name);
-		Sprite sprite = new Sprite();
-		ImageView img = sprite.getImageView();
-		AnimatedSprite animated = new AnimatedSprite();
 
-		SoundEffect soundfx = new SoundEffect();
-		e.addComponents(pos, animated, soundfx);
-		return e;
-	}
+    public static IEntity createAnimatedSprite(String name, Position pos){
+        IEntity e = new Entity(name);
+        Sprite sprite = new Sprite();
+        ImageView img = sprite.getImageView();
+        AnimatedSprite animated = new AnimatedSprite();
+
+        SoundEffect soundfx = new SoundEffect();
+        e.addComponents(pos, animated, soundfx);
+        return e;
+    }
 
 }

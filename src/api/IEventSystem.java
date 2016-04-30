@@ -68,4 +68,6 @@ public interface IEventSystem extends Observer, ISerializable {
 	String getEventsAsString();
 
 	void setOnInput(Scene scene);
+
+	void clearInputs();
 }

@@ -169,6 +169,11 @@ public class EventSystem implements Observer, IEventSystem {
     	scene.setOnKeyReleased(e->inputSystem.takeInput(e));
     	scene.setOnMouseClicked(e->inputSystem.takeInput(e));
     }
+    
+    @Override
+    public void clearInputs() {
+    	inputSystem.clearInputs();
+    }
 
     private void stopObservingTriggers(ListMultimap<Trigger, Action> map) {
         for (Trigger trigger : map.keySet()) {

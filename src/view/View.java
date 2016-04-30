@@ -149,14 +149,14 @@ public class View implements IView {
 
 	private Collection<Shape> getCollisionShapes(IEntity e) {
 		List<Collision> collisions = e.getComponentList(Collision.class);
+		Collection<Shape> shapes = new ArrayList<>();
 		if(collisions.isEmpty()) {
-			return null;
+			return shapes;
 		}
 		Collection<Bounds> bounds = new ArrayList<>();
 		for (Collision c : collisions) {
 			bounds.add(c.getMask());
 		}
-		Collection<Shape> shapes = new ArrayList<>();
 		for (Bounds b : bounds) {
 			if (b == null) {
 			//	System.out.println("null collide mask: " + e.getName());

@@ -9,7 +9,7 @@ import model.component.movement.Position
 import model.component.physics.Collision
 import model.physics.PhysicsEngine
 /**
- * 
+ *
  * @author Tom
  *
  */
@@ -18,36 +18,36 @@ public class Pong implements IGameScript {
     private final String movePaddleScript = PATH + "MovePaddle.groovy";
     private final int winningScore = 3;
 
-	private ISystemManager game;
-	private ILevel universe;
-	private final IPhysicsEngine physics = new PhysicsEngine();
+    private ISystemManager game;
+    private ILevel universe;
+    private final IPhysicsEngine physics = new PhysicsEngine();
     private IEventSystem events;
 
-	public void init(GroovyShell shell, ISystemManager game) {
-		this.game = game;
-		this.universe = game.getLevel();
+    public void init(GroovyShell shell, ISystemManager game) {
+        this.game = game;
+        this.universe = game.getLevel();
         this.events = universe.getEventSystem();
 
-		// TODO: figure out why these don't work
-		//		this.engine.put("game", this.model);
-		//		this.engine.put("universe", this.model.getEntitySystem());
-		//		this.engine.put("demo", new GroovyDemoTest());
-		shell.setVariable("demo", new GroovyDemoTest());
+        // TODO: figure out why these don't work
+        //		this.engine.put("game", this.model);
+        //		this.engine.put("universe", this.model.getEntitySystem());
+        //		this.engine.put("demo", new GroovyDemoTest());
+        shell.setVariable("demo", new GroovyDemoTest());
 
         initKeyInputs();
         initSprites();
-	}
+    }
 
     private void initSprites() {
         // Ball
-        IEntity ball = SpriteLoader.createBall("Ball", new Position(50.0, 150.0));
+        IEntity ball = SpriteLoader.createBall("Ball", new Position(150.0, 150.0));
         //Paddles
         IEntity leftPaddle = SpriteLoader.createPaddle("LeftPaddle", new Position(100, 160));
         leftPaddle.addComponent(new UserControl());
         IEntity rightPaddle = SpriteLoader.createPaddle("RightPaddle", new Position(500, 160));
         // Walls
         IEntity leftWall = SpriteLoader.createPlatform("LeftWall", new Position(-578, 7));
-        IEntity rightWall = SpriteLoader.createPlatform("RightWall", new Position(600, 7));
+        IEntity rightWall = SpriteLoader.createPlatform("RightWall", new Position(560, 7));
         IEntity ceiling = SpriteLoader.createPlatform("Ceiling", new Position(7, -500));
         IEntity floor = SpriteLoader.createPlatform("Floor", new Position(7, 500));
 
@@ -76,11 +76,11 @@ public class Pong implements IGameScript {
 //        data.addComponent()
 //    }
 
-	public void update(double dt) {
-		physics.update(universe, dt);
+    public void update(double dt) {
+        physics.update(universe, dt);
         events.updateInputs(dt);
         updateGameLogic();
-	}
+    }
 
     private void updateGameLogic() {
         // Check for game over
