@@ -98,7 +98,7 @@ public class Vooga extends StartUpMenu {
 	private void createPlayer() {
 		String path = chooseGame();
 		if (path!= null){
-			View view = new View();
+			View view = new View(getLanguage());
 			Pane pane = view.getPane();
 			Scene scene = new Scene(pane, 500, 500);
 			myStage.setScene(scene);

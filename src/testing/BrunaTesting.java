@@ -7,7 +7,7 @@ import org.junit.Test;
 
 import api.IEntity;
 import model.entity.Entity;
-import view.editor.EditorEnvironment;
+import view.editor.environmenteditor.EditorEnvironment;
 import view.editor.gameeditor.GameEditor;
 
 

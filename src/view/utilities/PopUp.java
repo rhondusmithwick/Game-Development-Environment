@@ -6,6 +6,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import view.enums.DefaultStrings;
+
+import java.io.File;
 import java.util.List;
 
 /**
@@ -15,8 +18,8 @@ import java.util.List;
  */
 public class PopUp {
 
-    private final int height;
-    private final int width;
+    private final double height;
+    private final double width;
     private Stage stage;
     private Scene myScene;
     private VBox vBox;
@@ -24,13 +27,13 @@ public class PopUp {
     /**
      * Super constructor for a popup subclass instance
      *
-     * @param height          int height of window
-     * @param width           int width of window
+     * @param e          int height of window
+     * @param d           int width of window
      * @param backgroundColor css string for window background color
      */
-    protected PopUp(int width, int height) {
-        this.height = height;
-        this.width = width;
+    public PopUp(double d, double e) {
+        this.height = e;
+        this.width = d;
     }
 
     /**
@@ -39,6 +42,7 @@ public class PopUp {
     public void show(ScrollPane pane) {
         stage = new Stage();
         myScene = new Scene(pane, width, height);
+        myScene.getStylesheets().add(new File(DefaultStrings.CSS_LOCATION.getDefault() + DefaultStrings.MAIN_CSS.getDefault()).toURI().toString());
         showScene();
     }
 

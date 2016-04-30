@@ -36,6 +36,7 @@ public enum DefaultStrings {
 	COMPONENTS("-components"),
 	 PROPERTIES("-properties"),
 	 ANIMATION_LOC("resources/spriteProperties/");
+
 	
 
 
