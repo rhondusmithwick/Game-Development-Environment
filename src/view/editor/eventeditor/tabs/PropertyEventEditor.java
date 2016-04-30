@@ -132,15 +132,9 @@ public class PropertyEventEditor extends EventEditorTab
 
 	private void createEvent()
 	{
-		// I think the Entity table now only shows entities through names
-		// So the trigger has to be created here.
-		
-		// Cycle through all levels that were chosen, get their Event System
-		// Make Triggers, and map them with action, on each of the Event Systems
-		
 		if (getChosenLevels().isEmpty())
 			return;
-		
+
 		for ( ILevel level: getChosenLevels() )
 		{
 			for (IEntity entity: level.getAllEntities())
