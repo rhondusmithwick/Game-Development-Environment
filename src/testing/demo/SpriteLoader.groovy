@@ -9,6 +9,7 @@ import model.component.physics.Collision
 import model.component.physics.Mass
 import model.component.physics.RestitutionCoefficient
 import model.component.visual.Sprite
+import model.component.visual.AnimatedSprite
 import model.entity.Entity
 /**
  * Created by Tom on 4/25/2016.
@@ -39,5 +40,14 @@ public class SpriteLoader {
                 new Collision("platform"), new RestitutionCoefficient(1.1), new Mass(1000));
         return e;
     }
+	
+	public static IEntity createAnimatedSprite(String name, Position pos){
+		IEntity e = new Entity(name);
+		Sprite sprite = new Sprite();
+		ImageView img = sprite.getImageView();
+		AnimatedSprite animated = new AnimatedSprite();
+		e.addComponents(pos,sprite, animated);
+		return e;
+	}
 
 }
