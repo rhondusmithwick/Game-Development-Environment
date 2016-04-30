@@ -42,7 +42,7 @@
             <groupId>voogasalad.util</groupId>
             <artifactId>vooga_salad</artifactId>
             <version>8.0.31</version>
-            <systemPath>${java.home}/lib/voogautil.jar</systemPath>
+            <systemPath>${project.basedir}/lib/voogautil.jar</systemPath>
             <scope>system</scope>
         </dependency>
         <dependency>
