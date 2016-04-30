@@ -1,5 +1,11 @@
 package model.core;
 
+import java.util.ArrayList;
+import java.util.List;
+import api.IEntity;
+import api.IEventSystem;
+import api.ILevel;
+import api.ISystemManager;
 import api.*;
 import datamanagement.XMLReader;
 import groovy.lang.GroovyShell;
@@ -18,6 +24,7 @@ public class SystemManager implements ISystemManager {
 
 	private GroovyShell shell = new GroovyShell(); // CANNOT BE SCRIPT ENGINE
 	private ILevel universe = new Level();
+	private List<ILevel> levelList = new ArrayList<>();
 	private ILevel sharedUniverse = new Level();
 	private boolean isRunning = true;
 	private Scene scene = new Scene(new Group()); // TODO: remove
@@ -29,11 +36,13 @@ public class SystemManager implements ISystemManager {
 	public SystemManager(Scene scene, ILevel level) {
 		this.scene = scene;
 		this.universe = level;
+		levelList.add(level);
 		initLevel();
 	}
 
 	@Deprecated
 	public SystemManager() {
+		this(new Level());
 	}
 
 	@Deprecated

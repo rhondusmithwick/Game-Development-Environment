@@ -15,9 +15,11 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import view.Authoring;
+import view.View;
 import view.beginningmenus.StartUpMenu;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
@@ -97,11 +99,12 @@ public class Vooga extends StartUpMenu {
 	private void createPlayer() {
 		String path = chooseGame();
 		if (path!= null){
-			GamePlayer gamePlayer = new GamePlayer(myStage, getLanguage());
-			gamePlayer.init(path);
-		}else{
-			myStage.show();
+			View view = new View(getLanguage());
+			Pane pane = view.getPane();
+			Scene scene = new Scene(pane, 500, 500);
+			myStage.setScene(scene);
 		}
+		myStage.show();
 	}
 
 

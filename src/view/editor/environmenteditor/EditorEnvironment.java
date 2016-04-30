@@ -26,6 +26,7 @@ import view.editor.Editor;
 import view.editor.EditorFactory;
 import view.editor.entityeditor.EditorEntity;
 import view.enums.DefaultEntities;
+import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.utilities.*;
 import voogasalad.util.reflection.Reflection;
@@ -271,8 +272,8 @@ public class EditorEnvironment extends Editor {
 	}
 
 	private void addImagePathComponent(IEntity entity) {
-		File file = FileUtilities.promptAndGetFile(FileUtilities.getImageFilters(),
-				myResources.getString("pickImagePathImage"));
+		File file = FileUtilities.promptAndGetFile(FileUtilities.getImageFilters(), 
+				myResources.getString("pickImagePathImage"), DefaultStrings.GUI_IMAGES.getDefault());
 		entity.setSpec(Sprite.class, 1);
 		entity.addComponent(new Sprite(file.getPath()));
 	}
