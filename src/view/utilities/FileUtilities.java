@@ -26,6 +26,8 @@ public class FileUtilities {
 	 *            others are not allowed
 	 * @param String
 	 *            prompt: prompt for the file chooser box
+	 * @param String
+	 *            dir: default directory for the file chooser box
 	 * @return File: return file selected by the user Note: this method works
 	 *         with promptAndGetFile(List<ExtensionFilter> filters, String
 	 *         prompt), which allows the addition of multiple extension filters,
@@ -33,10 +35,10 @@ public class FileUtilities {
 	 *         needed; pairing the methods reduces replicated code
 	 */
 
-	public static File promptAndGetFile(ExtensionFilter extension, String prompt) {
+	public static File promptAndGetFile(ExtensionFilter extension, String prompt, String dir) {
 		List<ExtensionFilter> filters = new ArrayList<ExtensionFilter>();
 		filters.add(extension);
-		return promptAndGetFile(filters, prompt);
+		return promptAndGetFile(filters, prompt, dir);
 	}
 	
 	/**
@@ -48,14 +50,15 @@ public class FileUtilities {
 	 *            others are not allowed
 	 * @param String
 	 *            prompt: prompt for the file chooser box
+	 * @param String
+	 *            dir: default directory for the file chooser box
 	 * @return File file: return file selected by the user
 	 */
-	public static File promptAndGetFile(List<ExtensionFilter> filters, String prompt) {
+	public static File promptAndGetFile(List<ExtensionFilter> filters, String prompt, String dir) {
 		FileChooser fileChooser = new FileChooser();
 		fileChooser.setTitle(prompt);
 		fileChooser.getExtensionFilters().addAll(filters);
-		File dir = new File(DefaultStrings.RESOURCES.getDefault());
-		fileChooser.setInitialDirectory(dir);
+		fileChooser.setInitialDirectory(new File(dir));
 		File file = fileChooser.showOpenDialog(new Stage());
 		return file;
 	}

@@ -18,6 +18,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
 import view.utilities.ButtonFactory;
@@ -116,7 +117,8 @@ public class KeyBindingEditor extends EventEditorTab
 	{
 		File groovyFile = null;
 		
-		groovyFile = FileUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("groovy", "*.groovy"), myResources.getString("selectGroovy"));
+		groovyFile = FileUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("groovy", "*.groovy"),
+				myResources.getString("selectGroovy"), DefaultStrings.RESOURCES.getDefault());
 		if ( groovyFile != null )
 		{
 			String[] splits = groovyFile.getPath().split("voogasalad_MakeGamesGreatAgain/");			

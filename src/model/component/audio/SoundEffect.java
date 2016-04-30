@@ -42,6 +42,9 @@ public class SoundEffect implements IComponent {
 		audioClip = new AudioClip(new File(path).toURI().toString());
 	}
 	
+	public boolean isPlaying() {
+		return audioClip.isPlaying();
+	}
 	
 	public String getSound(){
 		return effect.property1().get();
