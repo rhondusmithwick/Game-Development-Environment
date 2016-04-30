@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+
 import datamanagement.XMLReader;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -23,7 +24,6 @@ import view.View;
 import view.beginningmenus.StartUpMenu;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
-import view.gameplaying.GamePlayer;
 import view.utilities.ButtonFactory;
 import view.utilities.ComboFactory;
 import view.utilities.FileUtilities;
@@ -99,7 +99,7 @@ public class Vooga extends StartUpMenu {
 	private void createPlayer() {
 		String path = chooseGame();
 		if (path!= null){
-			View view = new View();
+			View view = new View(getLanguage());
 			Pane pane = view.getPane();
 			Scene scene = new Scene(pane, 500, 500);
 			myStage.setScene(scene);

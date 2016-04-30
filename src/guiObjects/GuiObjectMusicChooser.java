@@ -5,72 +5,76 @@ import java.io.File;
 import java.util.ResourceBundle;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
-import utility.FilePathRelativizer;
 import view.enums.DefaultStrings;
-import view.enums.FileExtensions;
 import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.FileUtilities;
 
-
-public class GuiObjectMusicChooser extends GuiObject{
-	private Button setMusic, play;
+/**
+ * 
+ * @author calinelson, Ben Zhang
+ *
+ */
+public class GuiObjectMusicChooser extends GuiObjectFileGetter{
+	private Button setMusic, play, stop;
 	private ResourceBundle myResources, myPropertiesNames;
 	private SimpleObjectProperty<String> property;
 	private AudioClip preview;
+	private TextField text = new TextField();
 	
 	@SuppressWarnings("unchecked")
 	public GuiObjectMusicChooser(String name, String resourceBundle, String language, SimpleObjectProperty<?> property, Object object) {
 		super(name, resourceBundle);
-		this.myPropertiesNames=ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
-		myResources= ResourceBundle.getBundle(language);
-		setMusic = ButtonFactory.makeButton(myPropertiesNames.getString(name), e->changeMusic());
-		play = ButtonFactory.makeButton(myResources.getString("play"), e->playMusic());
-		this.property=(SimpleObjectProperty<String>) property;
-		setPreview(new File(this.property.getValue()));
+		this.myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
+		myResources = ResourceBundle.getBundle(language);
+		text.setEditable(false);
+		play = ButtonFactory.makeButton(myResources.getString("play"), e -> playMusic());
+		stop = ButtonFactory.makeButton(myResources.getString("stop"), e -> stopMusic());
+		this.property = (SimpleObjectProperty<String>) property;
+		setMusic = ButtonFactory.makeButton(myPropertiesNames.getString(name), e -> changeValue(this.property, myResources,DefaultStrings.SOUNDFX.getDefault(), FileUtilities.getMusicFilters()));
+		setFile(new File(this.property.getValue()), this.property);
 	}
 	
 	private void playMusic() {
+		stopMusic();
 		preview.setCycleCount(1);
 		preview.play();
 	}
-
-	private void changeMusic(){
-		File file = getMusic();
-		setPreview(file);
-	}
-
-	private File getMusic() {
-		return FileUtilities.promptAndGetFile(FileExtensions.MP3.getFilter(), myResources.getString("ChooseFile"));
-		
-	}
 	
+	private void stopMusic() {
+		if(preview != null && preview.isPlaying()) {
+			preview.stop();
+		}
+	}
+
 
 	@Override
 	public Object getCurrentValue() {
 		return null;
 	}
 	
-	private void setPreview(File file) {
-		if(file==null){
-			return;
-		}
-		property.setValue(FilePathRelativizer.relativize(file.getPath()));
+	@Override
+	protected void setPreview(File file) {
+		text.setText(file.getName());
+		stopMusic();
 		preview = new AudioClip(file.toURI().toString());
 	}
 
-
 	@Override
 	public Object getGuiNode() {
-		HBox h = new HBox(GUISize.GUI_IM_DISP.getSize());
-		h.getChildren().addAll(setMusic, play);
+		int GUI_IM_DISP = GUISize.GUI_IM_DISP.getSize();
+		HBox h = new HBox(GUI_IM_DISP );
+		VBox left = new VBox(GUI_IM_DISP );
+		VBox right = new VBox(GUI_IM_DISP );
+		left.getChildren().addAll(setMusic, text);
+		right.getChildren().addAll(play, stop);
+		h.getChildren().addAll(left, right);
 		return h;
 	}
-
 	
-
-
 
 }

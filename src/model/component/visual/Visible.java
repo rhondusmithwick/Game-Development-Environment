@@ -12,6 +12,7 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
+@SuppressWarnings("serial")
 public class Visible implements IComponent {
     /**
      * Single Property.
@@ -54,5 +55,10 @@ public class Visible implements IComponent {
     @Override
     public List<SimpleObjectProperty<?>> getProperties() {
         return Collections.singletonList(visibleProperty());
+    }
+
+    @Override
+    public void update() {
+        setVisible(getVisible());
     }
 }

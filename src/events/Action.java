@@ -21,10 +21,12 @@ import java.util.Map;
  */
 public class Action implements ISerializable {
     private final String script;
+    private final String scriptPath;
     private final Bindings parameters = new SimpleBindings();
 
     public Action(String scriptPath) {
         script = getScriptFromPath(scriptPath);
+        this.scriptPath = scriptPath;
     }
 
 //    public Action(String scriptPath, Map<String, Object> parameters) {
@@ -44,6 +46,7 @@ public class Action implements ISerializable {
             engine.eval(getScript(), parameters);
         } catch (ScriptException e) {
             //e.printStackTrace();
+            e.printStackTrace();
             System.out.println("Error with script:" + getScript());
         }
     }
@@ -62,6 +65,10 @@ public class Action implements ISerializable {
 
     public Object removeParameter(String key) {
         return getParameters().remove(key);
+    }
+    
+    public String toString() {
+    	return script;
     }
 
     private String getScriptFromPath(String scriptPath) {

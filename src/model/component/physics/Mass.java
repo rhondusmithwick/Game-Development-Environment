@@ -13,9 +13,10 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
+@SuppressWarnings("serial")
 public class Mass implements IComponent {
 
-    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Mass", 0.0);
+    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Mass", 1.0);
 
     public Mass() {
     }
@@ -38,9 +39,13 @@ public class Mass implements IComponent {
         massProperty().set(mass);
     }
 
-
     @Override
     public List<SimpleObjectProperty<?>> getProperties() {
         return Collections.singletonList(massProperty());
+    }
+
+    @Override
+    public void update() {
+        setMass(getMass());
     }
 }

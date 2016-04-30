@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @author ajonnav, Rhondu Smithwick
  */
+@SuppressWarnings("serial")
 public class Score implements IComponent {
 
     /**
@@ -61,5 +62,10 @@ public class Score implements IComponent {
     @Override
     public List<SimpleObjectProperty<?>> getProperties() {
         return singleProperty.getProperties();
+    }
+
+    @Override
+    public void update() {
+        setScore(getScore());
     }
 }

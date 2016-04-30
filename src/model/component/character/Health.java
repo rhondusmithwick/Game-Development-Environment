@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
+@SuppressWarnings("serial")
 public class Health implements IComponent {
 
     private final SingleProperty<Double> singleProperty = new SingleProperty<>("Health", 0.0);
@@ -50,5 +51,10 @@ public class Health implements IComponent {
     @Override
     public List<SimpleObjectProperty<?>> getProperties() {
         return singleProperty.getProperties();
+    }
+
+    @Override
+    public void update() {
+        setHealth(getHealth());
     }
 }

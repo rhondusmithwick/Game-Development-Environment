@@ -12,6 +12,7 @@ import java.util.List;
  *
  * @author Roxanne Baker, Rhondu Smithwick
  */
+@SuppressWarnings("serial")
 public class Defense implements IComponent {
 
     /**
@@ -59,5 +60,10 @@ public class Defense implements IComponent {
     @Override
     public List<SimpleObjectProperty<?>> getProperties() {
         return singleProperty.getProperties();
+    }
+
+    @Override
+    public void update() {
+        setDefense(getDefense());
     }
 }

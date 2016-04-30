@@ -6,6 +6,7 @@ import utility.SingleProperty;
 
 import java.util.List;
 
+@SuppressWarnings("serial")
 public class EventPath implements IComponent {
 
     private final SingleProperty<String> singleProperty = new SingleProperty<>("EventPath", "");
@@ -45,5 +46,10 @@ public class EventPath implements IComponent {
     @Override
     public List<SimpleObjectProperty<?>> getProperties() {
         return singleProperty.getProperties();
+    }
+
+    @Override
+    public void update() {
+        setEventPath(getEventPath());
     }
 }

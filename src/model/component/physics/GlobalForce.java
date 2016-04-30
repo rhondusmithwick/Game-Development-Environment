@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
+@SuppressWarnings("serial")
 public class GlobalForce implements IComponent {
     /**
      * The two property which will hold the magnitude and the direction.
@@ -71,6 +72,11 @@ public class GlobalForce implements IComponent {
     @Override
     public List<SimpleObjectProperty<?>> getProperties() {
         return twoProperty.getProperties();
+    }
+
+    @Override
+    public void update() {
+        setDirection(getDirection());
     }
 
 }

@@ -12,13 +12,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.stage.FileChooser;
-import javafx.stage.Stage;
 import view.enums.DefaultStrings;
-import view.enums.FileExtensions;
 import view.enums.GUISize;
 import view.enums.Indexes;
 import view.utilities.ButtonFactory;
+import view.utilities.FileUtilities;
 import view.utilities.TextFieldFactory;
 
 public class GameDetails {
@@ -76,13 +74,9 @@ public class GameDetails {
 	}
 
 	private void updateIcon() {
-		Stage s = new Stage();
-		FileChooser fChoose = new FileChooser();
-		fChoose.setTitle(myResources.getString("chooseIcon"));
-		fChoose.setInitialDirectory(new File(DefaultStrings.GUI_IMAGES.getDefault()));
-		fChoose.getExtensionFilters().addAll(FileExtensions.GIF.getFilter(), FileExtensions.JPG.getFilter(), FileExtensions.PNG.getFilter());
-		File file = fChoose.showOpenDialog(s);
-		if(file!=null){
+		File file = FileUtilities.promptAndGetFile(FileUtilities.getImageFilters(),
+				myResources.getString("chooseIcon"), DefaultStrings.GUI_IMAGES.getDefault());
+		if(file != null){
 			setIconPicture(file);
 		}
 	}

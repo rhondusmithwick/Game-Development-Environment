@@ -96,4 +96,7 @@ public interface IComponent extends ISerializable {
 	//default void printBound(SimpleObjectProperty<?> e){
 	//	System.out.print(e.getName() +" "+ e.isBound());
 	//}
+
+    void update();
+
 }

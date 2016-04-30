@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @author Roxanne Baker
  */
+@SuppressWarnings("serial")
 public class Friction implements IComponent {
 
     private final SingleProperty<Double> singleProperty = new SingleProperty<>("Friction", 0.6);
@@ -50,5 +51,10 @@ public class Friction implements IComponent {
     @Override
     public List<SimpleObjectProperty<?>> getProperties() {
         return singleProperty.getProperties();
+    }
+
+    @Override
+    public void update() {
+        setFriction(getFriction());
     }
 }

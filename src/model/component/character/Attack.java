@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @author Roxanne Baker, Rhondu Smithwick
  */
+@SuppressWarnings("serial")
 public class Attack implements IComponent {
 
     private final SingleProperty<Double> singleProperty = new SingleProperty<>("Attack", 0.0);
@@ -55,5 +56,10 @@ public class Attack implements IComponent {
     @Override
     public List<SimpleObjectProperty<?>> getProperties() {
         return singleProperty.getProperties();
+    }
+
+    @Override
+    public void update() {
+        setAttack(getAttack());
     }
 }

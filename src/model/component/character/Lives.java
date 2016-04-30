@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
+@SuppressWarnings("serial")
 public class Lives implements IComponent {
     /**
      * The single property. Contains a single Lives Integer property.
@@ -72,4 +73,8 @@ public class Lives implements IComponent {
         return singleProperty.getProperties();
     }
 
+    @Override
+    public void update() {
+        setLives(getLives());
+    }
 }

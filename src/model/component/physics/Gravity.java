@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @author Roxanne Baker
  */
+@SuppressWarnings("serial")
 public class Gravity implements IComponent {
 
 	private final TwoProperty<Double, Double> gravityProperty = new TwoProperty<>("gx", 0.0, "gy", 20.0);
@@ -68,5 +69,11 @@ public class Gravity implements IComponent {
 	@Override
 	public List<SimpleObjectProperty<?>> getProperties() {
 		return gravityProperty.getProperties();
+	}
+
+	@Override
+	public void update() {
+		setGravityX(getGravityX());
+		setGravityY(getGravityY());
 	}
 }

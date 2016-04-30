@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
+@SuppressWarnings("serial")
 public class Drag implements IComponent {
     private final SingleProperty<Double> singleProperty = new SingleProperty<>("Beta", 0.0);
 
@@ -49,5 +50,10 @@ public class Drag implements IComponent {
     @Override
     public List<SimpleObjectProperty<?>> getProperties() {
         return singleProperty.getProperties();
+    }
+
+    @Override
+    public void update() {
+        setBeta(getBeta());
     }
 }

@@ -12,6 +12,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import utility.SingleProperty;
 
+@SuppressWarnings("serial")
 public class ThemeMusic implements IComponent {
 	private transient Media media;
 	private transient MediaPlayer mediaPlayer;
@@ -21,7 +22,6 @@ public class ThemeMusic implements IComponent {
 	
 	public ThemeMusic(String path) {
 		setSound(path);
-		
 	}
 	
 	public ThemeMusic(){
@@ -49,13 +49,11 @@ public class ThemeMusic implements IComponent {
 		return mediaPlayer.getStatus() == MediaPlayer.Status.PLAYING;
 	}
 	
-	
 	public void setSound(String path){
 		music.property1().set(path);
 		media = new Media(new File(path).toURI().toString());
 		mediaPlayer = new MediaPlayer(media);
 	}
-	
 	
 	public String getSound(){
 		return music.property1().get();
@@ -74,4 +72,9 @@ public class ThemeMusic implements IComponent {
     public List<SimpleObjectProperty<?>> getProperties() {
         return Arrays.asList(music.property1());
     }
+
+	@Override
+	public void update() {
+		setSound(getSound());
+	}
 }
