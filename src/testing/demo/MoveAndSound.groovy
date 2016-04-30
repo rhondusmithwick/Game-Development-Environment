@@ -38,6 +38,7 @@ public class MoveAndSound implements IGameScript{
 	public void update(double dt) {
 		// TODO Auto-generated method stub
 		println("update");
+		physics.update(universe, dt);
 		
 	}
 	private void initKeyInputs() {
