@@ -47,6 +47,7 @@ public class SpriteLoader {
 		Sprite sprite = new Sprite();
 		ImageView img = sprite.getImageView();
 		AnimatedSprite animated = new AnimatedSprite();
+
 		SoundEffect soundfx = new SoundEffect();
 		e.addComponents(pos, animated, soundfx);
 		return e;
