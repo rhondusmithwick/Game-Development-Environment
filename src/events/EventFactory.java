@@ -15,16 +15,24 @@ import voogasalad.util.reflection.Reflection;
 
 public final class EventFactory {
 
-    private final String triggerDirectoryPath = "events.";
+    private final String eventsDirectoryPath = "events.";
 
 	public Pair<Trigger, Action> createEvent(String triggerName, String scriptPath, Object... args) {
-		Trigger trigger = createTrigger(triggerDirectoryPath+triggerName, args);
+		Trigger trigger = createTrigger(eventsDirectoryPath+triggerName, args);
 		Action action = new Action(scriptPath);
 		return new Pair<Trigger, Action>(trigger, action);
 	}
 
+    public Pair<Trigger, Action> createEvent(Trigger trigger, Action action) {
+        return new Pair<Trigger, Action>(trigger, action);
+    }
+
+    public Action createAction(Object... args) {
+        return (Action) Reflection.createInstance(eventsDirectoryPath+"Action", args);
+    }
+
     public Trigger createTrigger(String className, Object... args) {
-        Trigger trigger = (Trigger) Reflection.createInstance(className, args);
+        Trigger trigger = (Trigger) Reflection.createInstance(eventsDirectoryPath+className, args);
         switch (className) {
             case "KeyTrigger":
                 trigger = (KeyTrigger) trigger;
@@ -37,23 +45,5 @@ public final class EventFactory {
                 break;
         }
         return trigger;
-    }
-
-//    public Pair<Trigger, Action> createEvent(String scriptPath, Object... args) {
-//        Trigger trigger = null;
-//        String className = triggerMapDescription.get("trigger_type");
-//        trigger = (Trigger) Reflection.createInstance(className, triggerMapDescription);
-//        Action action = new Action(scriptPath);
-//        return new Pair<Trigger, Action>(trigger, action);
-//    }
-
-	public String getScriptFromPath(String scriptPath) {
-    	String script = null;
-		try {
-			script = Files.toString(new File(scriptPath), Charsets.UTF_8);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return script;
     }
 }

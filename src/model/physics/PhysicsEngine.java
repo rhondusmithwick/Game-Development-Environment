@@ -89,23 +89,23 @@ public class PhysicsEngine implements IPhysicsEngine {
 		Bounds moving = entityToMove.getComponent(Collision.class).getMask();
 		Bounds staying = entityToStay.getComponent(Collision.class).getMask();
 		if (side.equals(Collision.BOTTOM)) { // move down
-			System.out.println("bottom overlap");
+			//System.out.println("bottom overlap");
 			double overlap = moving.getMinY() - staying.getMaxY();
 			entityToMove.getComponent(Position.class).add(0, overlap+0.1);
 		}
 		else if (side.equals(Collision.TOP)) {
-			System.out.println("top overlap");
+			//System.out.println("top overlap");
 			double overlap = moving.getMaxY() - staying.getMinY();
 			entityToMove.getComponent(Position.class).add(0, -overlap-0.1);			
 		}
 		else if (side.equals(Collision.LEFT)) {
 			double overlap = moving.getMaxX() - staying.getMinX();
-			System.out.println("left overlap "+overlap);
+			//System.out.println("left overlap "+overlap);
 			entityToMove.getComponent(Position.class).add(-overlap-0.1, 0);			
 		}
 		else if (side.equals(Collision.RIGHT)) {
 			double overlap = moving.getMinX() - staying.getMaxX();
-			System.out.println("right overlap! "+overlap);
+			//System.out.println("right overlap! "+entityToMove.getID()+" "+overlap);
 			entityToMove.getComponent(Position.class).add(overlap+0.1, 0);					
 		}
 	}
@@ -130,7 +130,6 @@ public class PhysicsEngine implements IPhysicsEngine {
 				IEntity entityCollidingWith = universe.getEntity(entityAndSide[0]);
 				if (entityCollidingWith.getComponent(Collision.class).getMaskID() != entity.getComponent(Collision.class).getMaskID()) {
 					collidingEntitiesToSides.put(entityCollidingWith, entityAndSide[1]);
-					System.out.println(collidingEntitiesToSides);
 				}
 			}
 		}
@@ -173,7 +172,6 @@ public class PhysicsEngine implements IPhysicsEngine {
 				universe.getEntitiesWithComponents(Collision.class, Sprite.class));// ,
 																						// Mass.class));
 		clearCollisionComponents(collidableEntities);
-
 		for (int i = 0; i < collidableEntities.size(); i++) {
 			for (int j = i + 1; j < collidableEntities.size(); j++) {
 				addCollisionComponents(collidableEntities.get(i), collidableEntities.get(j));
@@ -191,7 +189,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 					addEntityIDs(firstEntity, secondEntity);
 					addCollisionSide(firstEntity, secondEntity);
 					changeVelocityAfterCollision(firstEntity, secondEntity);
-					break; // TODO: what's the purpose of this?
+					//break; // TODO: what's the purpose of this?
 				}
 			}
 		}
@@ -381,18 +379,18 @@ public class PhysicsEngine implements IPhysicsEngine {
 		} else if (first.getMask().getMinY() < second.getMask().getMaxY()) {
 			verticalOverlap = second.getMask().getMaxY() - first.getMask().getMinY();
 		}
-
 		if (horizontalOverlap < verticalOverlap) {
-			if (first.getMask().getMaxX() > second.getMask().getMinX()) {
-				first.addCollisionSide(Collision.RIGHT);
-				second.addCollisionSide(Collision.LEFT);
-			} else if (first.getMask().getMinX() < second.getMask().getMaxX()) {
+			//System.out.println(first.getMask().getMinX()+" "+first.getMask().getMaxX()+" "+second.getMask().getMinX()+" "+second.getMask().getMaxX());
+			if (first.getMask().getMinX() < second.getMask().getMaxX() && second.getMask().getMaxX() > first.getMask().getMaxX()) {
 				first.addCollisionSide(Collision.LEFT);
 				second.addCollisionSide(Collision.RIGHT);
+			} else if (first.getMask().getMaxX() > second.getMask().getMinX()) {
+				first.addCollisionSide(Collision.RIGHT);
+				second.addCollisionSide(Collision.LEFT);
 			}
 		}
 		else {
-			if (first.getMask().getMaxY() > second.getMask().getMinY()) {
+			if (first.getMask().getMaxY() > second.getMask().getMinY() && second.getMask().getMinY() < first.getMask().getMinY()) {
 				first.addCollisionSide(Collision.TOP);
 				second.addCollisionSide(Collision.BOTTOM);
 			} else if (first.getMask().getMinY() < second.getMask().getMaxY()) {

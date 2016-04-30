@@ -18,7 +18,7 @@ import view.enums.GUISize;
 
 /**
  * Author: Alan, Carolyn
- * Integration portion of the frontend for events system.
+ * Integr
  */
 
 public abstract class EventEditorTab extends Editor
@@ -84,8 +84,7 @@ public abstract class EventEditorTab extends Editor
 		return createdEventText;
 	}
 	
-	public ArrayList<ILevel> getChosenLevels()
-	{
+	public ArrayList<ILevel> getChosenLevels() {
 		return chosenLevels;
 	}
 

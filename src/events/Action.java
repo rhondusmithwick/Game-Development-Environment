@@ -27,7 +27,12 @@ public class Action implements ISerializable {
         script = getScriptFromPath(scriptPath);
     }
 
-    public Action(String scriptPath, Map<String, Object> parameters) {
+//    public Action(String scriptPath, Map<String, Object> parameters) {
+//        this(scriptPath);
+//        this.parameters.putAll(parameters);
+//    }
+
+    public Action(String scriptPath, Map<String, String> parameters) {
         this(scriptPath);
         this.parameters.putAll(parameters);
     }

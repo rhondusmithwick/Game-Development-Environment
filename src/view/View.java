@@ -210,7 +210,7 @@ public class View implements IView {
 		for (IEntity e : entities) {
 			if(e.hasComponents(Sprite.class, Position.class)) {
 				viewUtils.makeSelectable(e);
-//				root.getChildren().addAll(getCollisionShapes(e));
+				root.getChildren().addAll(getCollisionShapes(e));
 				ImageView imageView = getUpdatedImageView(e);
 				if (!root.getChildren().contains(imageView)) {
 					root.getChildren().add(imageView);

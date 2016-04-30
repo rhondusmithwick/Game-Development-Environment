@@ -1,12 +1,9 @@
 package groovyScripts
 
-import model.component.character.Health
-import model.component.movement.Position
 import model.component.physics.Collision
-import model.component.visual.Sprite
 
 /**
- * Created by cyao42 on 4/22/2016.
+ * Created by cyao42 on 4/30/2016.
  */
 
 charEntity = universe.getEntity("EntityID");
@@ -16,6 +13,6 @@ if (!collision.getCollidingIDs().equals("")) {
     health.setHealth(0);
 }
 else {
-	health = charEntity.getComponent(Health.class);
-	health.setHealth(100);
+    health = charEntity.getComponent(Health.class);
+    health.setHealth(100);
 }

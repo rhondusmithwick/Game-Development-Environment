@@ -17,7 +17,7 @@ public class LevelAction extends Action {
         super(scriptPath);
     }
 
-    public LevelAction(String scriptPath, Map<String, Object> parameters) {
+    public LevelAction(String scriptPath, Map<String, String> parameters) {
         super(scriptPath, parameters);
     }
 
