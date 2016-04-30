@@ -57,7 +57,7 @@ public interface IEntitySystem {
      *
      * @return collection of entities
      */
-    Collection<IEntity> getAllEntities();
+    List<IEntity> getAllEntities();
 
     /**
      * Get all the components in this entity system.
@@ -141,7 +141,7 @@ public interface IEntitySystem {
      *            to remove
      * @return true if removed
      */
-    boolean removeEntity(String id);
+    IEntity removeEntity(String id);
 
     /**
      * Checks if any entities are in this system.
@@ -208,9 +208,9 @@ public interface IEntitySystem {
      * @return all the entities with this component type
      * @see IEntity#hasComponent(Class)
      */
-    default <T extends IComponent> Set<IEntity> getEntitiesWithComponent(Class<T> componentType) {
+    default <T extends IComponent> List<IEntity> getEntitiesWithComponent(Class<T> componentType) {
         Predicate<IEntity> hasComponent = (e) -> e.hasComponent(componentType);
-        return getAllEntities().stream().filter(hasComponent).collect(Collectors.toSet());
+        return getAllEntities().stream().filter(hasComponent).collect(Collectors.toList());
     }
 
     /**
@@ -221,9 +221,9 @@ public interface IEntitySystem {
      * @return all entities with these components
      * @see IEntity#hasComponents(List)
      */
-    default Set<IEntity> getEntitiesWithComponents(List<Class<? extends IComponent>> componentClasses) {
+    default List<IEntity> getEntitiesWithComponents(List<Class<? extends IComponent>> componentClasses) {
         Predicate<IEntity> hasComponents = (e) -> e.hasComponents(componentClasses);
-        return getAllEntities().stream().filter(hasComponents).collect(Collectors.toSet());
+        return getAllEntities().stream().filter(hasComponents).collect(Collectors.toList());
     }
 
     /**
@@ -235,7 +235,7 @@ public interface IEntitySystem {
      * @see #getEntitiesWithComponents(List)
      */
     @SuppressWarnings("unchecked")
-    default Set<IEntity> getEntitiesWithComponents(Class<? extends IComponent>... componentClasses) {
+    default List<IEntity> getEntitiesWithComponents(Class<? extends IComponent>... componentClasses) {
         return getEntitiesWithComponents(Arrays.asList(componentClasses));
     }
 

@@ -25,7 +25,7 @@ public class Pong implements IGameScript {
 
 	public void init(GroovyShell shell, ISystemManager game) {
 		this.game = game;
-		this.universe = game.getEntitySystem();
+		this.universe = game.getLevel();
         this.events = universe.getEventSystem();
 
 		// TODO: figure out why these don't work

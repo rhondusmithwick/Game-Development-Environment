@@ -18,7 +18,7 @@ public abstract class InputTrigger extends Trigger {
 	private EventType eventType;
 	
 	public InputTrigger(EventType eventType) {
-		System.out.println(eventType);
+		this.eventType = eventType;
 	}
 	
     @Override

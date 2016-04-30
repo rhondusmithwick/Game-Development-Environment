@@ -39,9 +39,10 @@ public class Sprite implements IComponent {
      */
     public Sprite (String imagePath) { // TODO: place default in resource file
         setImagePath(imagePath);
-        Image image = getImage(imagePath);
-        setImageWidth(image.getWidth());
-        setImageHeight(image.getHeight());
+//        Image image = getImage(imagePath);
+//        setImageWidth(image.getWidth());
+//        setImageHeight(image.getHeight());
+        imageView = createImageView(imagePath);
     }
 
     /**
@@ -58,6 +59,7 @@ public class Sprite implements IComponent {
         setImageHeight(imageHeight);
     }
 
+    @Deprecated
     public Sprite (String imagePath, double imageWidth, double imageHeight, int zLevel) {
         this(imagePath, imageWidth, imageHeight);
         setZLevel(zLevel);
@@ -113,10 +115,12 @@ public class Sprite implements IComponent {
         }
     }
 
+    @Deprecated
     public SimpleObjectProperty<Integer> zLevelProperty () {
         return this.zLevelProperty.property1();
     }
 
+    @Deprecated
     /**
      * Sets the z-layer order.
      *
@@ -126,6 +130,7 @@ public class Sprite implements IComponent {
         zLevelProperty().set(z);
     }
 
+    @Deprecated
     /**
      * Gets the z-layer order.
      *
@@ -139,7 +144,6 @@ public class Sprite implements IComponent {
     private void writeObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
     }
-
     
     private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
@@ -150,6 +154,7 @@ public class Sprite implements IComponent {
         Image image = getImage(imagePath);
         ImageView imageView = new ImageView(image);
         imageView.setPreserveRatio(true);
+//        imageView.set
         return imageView;
     }
 
@@ -166,6 +171,5 @@ public class Sprite implements IComponent {
     public ImageView getImageView () {
         return imageView;
     }
-
 
 }

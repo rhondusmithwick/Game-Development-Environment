@@ -12,5 +12,4 @@ import model.component.character.Health;
 
 velocity = universe.getEntitiesWithName("Anolyn").get(0).getComponent(Velocity.class);
 position = universe.getEntitiesWithName("Anolyn").get(0)getComponent(Position.class);
-position.setX(position.getX()+30);
-//velocity.setVXY(velocity.getVX()+10, velocity.getVY());
+velocity.setVXY(100, velocity.getVY());

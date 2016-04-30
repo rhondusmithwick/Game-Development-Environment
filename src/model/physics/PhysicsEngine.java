@@ -9,13 +9,8 @@ import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.*;
 import model.component.visual.Sprite;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 
@@ -75,7 +70,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 			imageView.setTranslateY(pos.getY());
 		});
 		resetCollisionMasks(universe.getEntitiesWithComponent(Collision.class));
-		moveCollidingEntities(universe);
+//		moveCollidingEntities(universe);
 	}
 	
 	public void moveCollidingEntities(ILevel universe) {
@@ -84,7 +79,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 			Map<IEntity, String> collidingEntitiesToSides = collidingEntitiesAndSides(e, universe);
 			for(IEntity collidingEntity : collidingEntitiesToSides.keySet()) {
 				if (getMass(e) < getMass(collidingEntity) && getMass(e) > 0) {
-					moveEntityToSide(e, collidingEntity, collidingEntitiesToSides.get(collidingEntity));
+				//	moveEntityToSide(e, collidingEntity, collidingEntitiesToSides.get(collidingEntity));
 				}
 			}
 		});

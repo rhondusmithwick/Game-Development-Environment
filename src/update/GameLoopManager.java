@@ -89,6 +89,7 @@ public class GameLoopManager {
 
 	private void saveMetadata() {
 		String key = comboBox.getValue();
+
 		if(key != null) {
 			String commaList = "";
 			for(String str: valueList) {
@@ -96,7 +97,7 @@ public class GameLoopManager {
 			}
 			commaList = commaList.substring(0, commaList.length()- 1);
 			//System.out.println(commaList);
-			systemManager.getEntitySystem().addMetadata(key, commaList);
+			systemManager.getLevel().addMetadata(key, commaList);
 			//comboBox.getSelectionModel().clearSelection();
 		}
 	}
