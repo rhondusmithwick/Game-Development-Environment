@@ -7,7 +7,6 @@ import model.component.character.Score
 import model.component.character.UserControl
 import model.component.movement.Position
 import model.component.physics.Collision
-import model.physics.PhysicsEngine
 /**
  *
  * @author Tom
@@ -20,7 +19,7 @@ public class Pong implements IGameScript {
 
     private ISystemManager game;
     private ILevel universe;
-    private final IPhysicsEngine physics = new PhysicsEngine();
+//    private final IPhysicsEngine physics = new PhysicsEngine();
     private IEventSystem events;
 
     public void init(GroovyShell shell, ISystemManager game) {
@@ -77,7 +76,7 @@ public class Pong implements IGameScript {
 //    }
 
     public void update(double dt) {
-        physics.update(universe, dt);
+//        physics.update(universe, dt);
         events.updateInputs(dt);
         updateGameLogic();
     }
