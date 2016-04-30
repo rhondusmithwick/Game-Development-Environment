@@ -7,7 +7,11 @@ import api.IComponent;
 import api.IEntity;
 import view.enums.DefaultStrings;
 import view.utilities.Alerts;
-
+/**
+ * 
+ * @author calinelson
+ *
+ */
 public class ComponentRemover extends ComponentModifier {
 	private ResourceBundle myResources, myLocs, myComponentNames;
 	private IEntity entity;
