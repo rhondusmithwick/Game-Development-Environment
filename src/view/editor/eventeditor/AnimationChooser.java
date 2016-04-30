@@ -5,25 +5,18 @@ import java.util.List;
 import java.util.Optional;
 
 import model.component.visual.AnimatedSprite;
-import javafx.scene.Group;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceDialog;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.VBox;
 import view.editor.AnimationEditor;
 import view.utilities.Alerts;
-import view.utilities.ButtonFactory;
-import view.utilities.ChoiceDialogFactory;
 import view.utilities.PopUp;
 import api.IEntity;
 
 public class AnimationChooser{
-	private static final double WIDTH = 300;
-	private static final double HEIGHT = 300;
+	private static final double WIDTH = 400;
+	private static final double HEIGHT = 400;
 	private IEntity myEntity;
 	private AnimatedSprite animatedSprite;
-	private Button saveButton;
 	private ChoiceDialog<String> dialog = new ChoiceDialog<String>();
 
 	public AnimationChooser(IEntity entity){
