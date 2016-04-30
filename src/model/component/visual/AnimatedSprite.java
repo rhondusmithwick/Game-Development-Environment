@@ -127,11 +127,6 @@ public class AnimatedSprite extends Sprite {
         setBundlePath(getBundlePath());
         setDefaultAnimation(getDefaultAnimation());
     }
-    
-    @Override
-    public Class<Sprite> getClassForComponentMap() {
-    	return Sprite.class;
-    }
 
     public static class CustomAnimationContainer extends AnimationContainer implements ISerializable {
         public CustomAnimationContainer (String bundlePath) {
