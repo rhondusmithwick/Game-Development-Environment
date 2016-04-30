@@ -21,7 +21,7 @@ public class SpriteLoader {
         IEntity e = new Entity(name);
         Sprite disp = new Sprite();
         ImageView img = disp.getImageView();
-        disp.setImageWidth(0.05*disp.getImageWidth());
+        disp.setImageWidth(20);
         e.addComponents(pos, disp, new Velocity(20.0, 0.0),
                 new RestitutionCoefficient(1.0), new Mass(5));
         return e;
@@ -47,6 +47,7 @@ public class SpriteLoader {
 		Sprite sprite = new Sprite();
 		ImageView img = sprite.getImageView();
 		AnimatedSprite animated = new AnimatedSprite();
+
 		SoundEffect soundfx = new SoundEffect();
 		e.addComponents(pos, animated, soundfx);
 		return e;

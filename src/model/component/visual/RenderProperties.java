@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
+@SuppressWarnings("serial")
 public class RenderProperties implements IComponent {
 
     private final TwoProperty<Double, Double> twoProperty = new TwoProperty<>("Tint", 0.0, "Transparency", 0.0);

@@ -1,12 +1,9 @@
 package view.editor.gameeditor;
 
-import java.io.File;
 import java.util.Arrays;
-import java.util.List;
 import java.util.ResourceBundle;
 import api.IEntity;
 import api.ILevel;
-import datamanagement.XMLReader;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.geometry.Pos;
@@ -20,7 +17,10 @@ import javafx.stage.Stage;
 import main.Vooga;
 import view.Authoring;
 import view.editor.Editor;
-import view.enums.DefaultStrings;
+import view.editor.gameeditor.displays.EntityDisplay;
+import view.editor.gameeditor.displays.EnvironmentDisplay;
+import view.editor.gameeditor.displays.EventDisplay;
+import view.editor.gameeditor.displays.ObjectDisplay;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
 import view.utilities.Alerts;
@@ -38,10 +38,11 @@ public class GameEditor extends Editor  {
     private GameDetails gameDetails;
     private ObjectDisplay entDisp, envDisp, eventDisplay;
     private ScrollPane scrollPane;
+    private final GameLoader gameLoader = new GameLoader();
 
     public GameEditor(Authoring authEnv, String language, String fileName){
         this(authEnv, language);
-        loadFile(fileName);
+        gameLoader.loadGame(fileName, gameDetails, masterEntityList, masterEnvironmentList);
     }
 
     public GameEditor(Authoring authEnv, String language){
@@ -66,23 +67,6 @@ public class GameEditor extends Editor  {
     }
 
 
-    private void loadFile(String fileName) {
-
-        fileName = DefaultStrings.CREATE_LOC.getDefault() + fileName;
-        gameDetails.setDetails(new XMLReader<List<String>>().readSingleFromFile(fileName + DefaultStrings.METADATA_LOC.getDefault()));
-        masterEntityList.addAll(new XMLReader<List<IEntity>>().readSingleFromFile((fileName + DefaultStrings.ENTITIES_LOC.getDefault())));
-        loadLevels(fileName);
-    }
-
-
-    private void loadLevels(String fileName) {
-        fileName = fileName + DefaultStrings.LEVELS_LOC.getDefault();
-        File file = new File(fileName);
-        for(File f: file.listFiles()){
-            masterEnvironmentList.add(new XMLReader<ILevel>().readSingleFromFile(f.getPath()));
-        }
-
-    }
 
     @Override
     public ScrollPane getPane() {
@@ -113,7 +97,7 @@ public class GameEditor extends Editor  {
     private VBox leftPane() {
         VBox temp = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
         temp.getChildren().addAll(gameDetails.getElements());
-        Button mainMenu = ButtonFactory.makeButton("Main Menu", e->toMainMenu());
+        Button mainMenu = ButtonFactory.makeButton(myResources.getString("mainMenu"), e->toMainMenu());
         temp.getChildren().addAll(Arrays.asList(entDisp.makeNewObject(), envDisp.makeNewObject(), eventDisplay.makeNewObject(), mainMenu, ButtonFactory.makeButton(myResources.getString("saveGame"), e->saveGame())));
 
         return temp;
