@@ -12,7 +12,7 @@ import javafx.scene.media.AudioClip;
 import utility.SingleProperty;
 
 public class SoundEffect implements IComponent {
-	private static final String DEFAULT = "resources/soundfx/laser.mp3";
+	private static final String DEFAULT = "resources/music/roxanne.mp3";
 	private final SingleProperty<String> effect = new SingleProperty<>("SoundEffect", DEFAULT);
 	private transient AudioClip audioClip;
 	
@@ -42,6 +42,9 @@ public class SoundEffect implements IComponent {
 		audioClip = new AudioClip(new File(path).toURI().toString());
 	}
 	
+	public boolean isPlaying() {
+		return audioClip.isPlaying();
+	}
 	
 	public String getSound(){
 		return effect.property1().get();

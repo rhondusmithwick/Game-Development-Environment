@@ -23,6 +23,7 @@ import model.core.SystemManager;
 import update.GameLoopManager;
 import view.View;
 import view.enums.DefaultEntities;
+import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.utilities.*;
 
@@ -266,7 +267,7 @@ public class EditorEnvironment extends Editor {
 
 	private void addImagePathComponent(IEntity entity) {
 		File file = FileUtilities.promptAndGetFile(FileUtilities.getImageFilters(),
-				myResources.getString("pickImagePathImage"));
+				myResources.getString("pickImagePathImage"), DefaultStrings.GUI_IMAGES.getDefault());
 		entity.setSpec(Sprite.class, SINGLE);
 		entity.addComponent(new Sprite(file.getPath()));
 	}

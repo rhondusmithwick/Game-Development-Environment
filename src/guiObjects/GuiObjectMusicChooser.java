@@ -14,7 +14,6 @@ import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.FileUtilities;
 
-
 public class GuiObjectMusicChooser extends GuiObject{
 	private Button setMusic, play;
 	private ResourceBundle myResources, myPropertiesNames;
@@ -26,14 +25,15 @@ public class GuiObjectMusicChooser extends GuiObject{
 		super(name, resourceBundle);
 		this.myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
 		myResources = ResourceBundle.getBundle(language);
-		setMusic = ButtonFactory.makeButton(myPropertiesNames.getString(name), e->changeMusic());
-		play = ButtonFactory.makeButton(myResources.getString("play"), e->playMusic());
-		this.property=(SimpleObjectProperty<String>) property;
+		setMusic = ButtonFactory.makeButton(myPropertiesNames.getString(name), e -> changeMusic());
+		play = ButtonFactory.makeButton(myResources.getString("play"), e -> playMusic());
+		this.property = (SimpleObjectProperty<String>) property;
 		setPreview(new File(this.property.getValue()));
 	}
 	
 	private void playMusic() {
 		preview.setCycleCount(1);
+		stopMusic();
 		preview.play();
 	}
 
@@ -43,7 +43,8 @@ public class GuiObjectMusicChooser extends GuiObject{
 	}
 
 	private File getMusic() {
-		return FileUtilities.promptAndGetFile(FileExtensions.MP3.getFilter(), myResources.getString("ChooseFile"));		
+		return FileUtilities.promptAndGetFile(FileExtensions.MP3.getFilter(),
+				myResources.getString("ChooseFile"), DefaultStrings.RESOURCES.getDefault());		
 	}
 
 	@Override
@@ -56,6 +57,7 @@ public class GuiObjectMusicChooser extends GuiObject{
 			return;
 		}
 		property.setValue(FilePathRelativizer.relativize(file.getPath()));
+		stopMusic();
 		preview = new AudioClip(file.toURI().toString());
 	}
 
@@ -64,5 +66,11 @@ public class GuiObjectMusicChooser extends GuiObject{
 		HBox h = new HBox(GUISize.GUI_IM_DISP.getSize());
 		h.getChildren().addAll(setMusic, play);
 		return h;
+	}
+	
+	private void stopMusic() {
+		if(preview != null && preview.isPlaying()) {
+			preview.stop();
+		}
 	}
 }
