@@ -8,7 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.util.Duration;
 
-
+@Deprecated
 public class AnimatedExplosion extends ImageView {
     private Rectangle2D[] frames;
     private int numFrames;
