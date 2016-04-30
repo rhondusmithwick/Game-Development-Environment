@@ -7,14 +7,14 @@ import groovy.transform.Field
 @BaseScript ScriptHelpers ScriptHelpers
 
 /**
- * Created by rhondusmithwick on 4/8/16.
+ * Move an Entity by the provided X and Y.
  * @author Rhondu Smithwick
  */
 
 import model.component.movement.Position;
 
-@Field Double movedX = (Double) getVariable("movedX");
-@Field Double movedY = (Double) getVariable("movedY");
+@Field Double movedX = containsVariable("movedX") ? (Double) getVariable("movedX") : 0.0;
+@Field Double movedY = containsVariable("movedY") ? (Double) getVariable("movedY") : 0.0;
 
 
 void move(IEntity entity) {

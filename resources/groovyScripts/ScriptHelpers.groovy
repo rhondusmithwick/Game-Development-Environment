@@ -4,15 +4,13 @@ import api.IEntity
 import api.ILevel
 import groovy.transform.Field
 
-import java.util.function.Consumer
-
 /**
- * Created by rhondusmithwick on 4/30/16.
+ * This describes a set of functions that we ant every groovy script to have.
  * @author Rhondu Smithwick
  */
 @Field ILevel universe = (ILevel) binding.getVariable("universe");
 
-boolean containsVariable (String variableName) {
+boolean containsVariable(String variableName) {
     return binding.variables.containsKey(variableName)
 }
 
