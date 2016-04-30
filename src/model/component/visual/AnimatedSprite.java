@@ -54,6 +54,7 @@ public class AnimatedSprite extends Sprite {
     public AnimatedSprite (String imagePath, double imageWidth, double imageHeight, String bundlePath, String defaultAnimation) {
         this(imagePath, imageWidth, imageHeight, bundlePath);
         setDefaultAnimation(defaultAnimation);
+        createAndPlayAnimation(currentAnimationName);
     }
 
 

@@ -50,6 +50,7 @@ public class ACGame {
     private final String moveLeftScriptPath = "resources/groovyScripts/keyInputMoveLeft.groovy";
     private final String jumpScriptPath = "resources/groovyScripts/keyInputJump.groovy";
     private final String addGravityScriptPath = "resources/groovyScripts/ACAddGravity.groovy";
+    private final String stopScriptPath = "resources/groovyScripts/stopPerson.groovy";
     private final String kickRightScriptPath = "resources/groovyScripts/RyuKickRight.groovy";
     private ImageView charSpr;
     private Scene myScene;
@@ -85,7 +86,7 @@ public class ACGame {
             character.forceAddComponent(new Health((double) 100), true);
             character.forceAddComponent(new Score((double) 100), true);
             Position pos = new Position(100.0, 100.0);
-            character.forceAddComponent(new AnimatedSprite(SPRITE_PATH, SPRITE_PROPERTIES), true);
+            character.forceAddComponent(new AnimatedSprite(SPRITE_PATH, 100, 100, SPRITE_PROPERTIES, "RightDefault"), true);
             character.forceAddComponent(pos, true);
             character.forceAddComponent(new Sprite(IMAGE_PATH), true);
             character.forceAddComponent(new Velocity(0, 0), true);
@@ -97,9 +98,9 @@ public class ACGame {
             character.getComponent(AnimatedSprite.class).getImageView().setX(pos.getX());
             character.getComponent(AnimatedSprite.class).getImageView().setY(pos.getY());
             root.getChildren().add(character.getComponent(AnimatedSprite.class).getImageView());
-            Animation animation = character.getComponent(AnimatedSprite.class).createAnimation("RightDefault");
+            /*Animation animation = character.getComponent(AnimatedSprite.class).createAnimation("RightDefault");
             animation.setCycleCount(1000);
-            animation.play();
+            animation.play();*/
             Map<String, Object> map = new HashMap<>();
             map.put("characterName", character.getName());
             map.put("animationName", "RightPunch");
@@ -110,6 +111,8 @@ public class ACGame {
                     new PropertyTrigger(character.getID(), Position.class, "XPosition"),
                     new Action(healthScriptPath));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("D"), KeyEvent.KEY_PRESSED), new Action(moveRightScriptPath, map));
+            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("D"), KeyEvent.KEY_RELEASED), new Action(stopScriptPath, map));
+            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("A"), KeyEvent.KEY_RELEASED), new Action(stopScriptPath, map));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.SPACE, KeyEvent.KEY_PRESSED), new Action(kickRightScriptPath, map));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("A"), KeyEvent.KEY_PRESSED), new Action(moveLeftScriptPath));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_PRESSED), new Action(jumpScriptPath));
@@ -127,19 +130,21 @@ public class ACGame {
     	level.getPhysicsEngine().update(level, dt);
         // inputSystem.processInputs();
         eventSystem.updateInputs(dt);
-      //  root.getChildren().clear();
+        //root.getChildren().clear();
         
-    	//level.getAllEntities().stream().forEach(e->drawCharacter(e));
+    	level.getAllEntities().stream().forEach(e->drawCharacter(e));
         //moveEntity(character, 1);
     }
 
     public ImageView drawCharacter(IEntity character) {
-    	root.getChildren().add(character.getComponent(AnimatedSprite.class).getImageView());
+    	
     	Sprite imgPath = character.getComponent(Sprite.class);
-        ImageView charSprite = imgPath.getImageView();
+        ImageView charSprite = character.getComponent(AnimatedSprite.class).getImageView();
+        charSprite.setLayoutX(character.getComponent(Position.class).getX());
+        charSprite.setLayoutY(character.getComponent(Position.class).getY());
         charSprite.setPreserveRatio(true);
         charSprite.setPreserveRatio(true);
-        root.getChildren().add(charSprite);
+        //root.getChildren().add(charSprite);
         return charSprite;
     }
 

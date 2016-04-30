@@ -84,7 +84,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 			Map<IEntity, String> collidingEntitiesToSides = collidingEntitiesAndSides(e, universe);
 			for(IEntity collidingEntity : collidingEntitiesToSides.keySet()) {
 				if (getMass(e) < getMass(collidingEntity) && getMass(e) > 0) {
-					moveEntityToSide(e, collidingEntity, collidingEntitiesToSides.get(collidingEntity));
+				//	moveEntityToSide(e, collidingEntity, collidingEntitiesToSides.get(collidingEntity));
 				}
 			}
 		});

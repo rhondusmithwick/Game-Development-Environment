@@ -13,6 +13,8 @@ import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
+import javafx.scene.control.Menu;
+import javafx.scene.control.MenuBar;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.ImageView;
@@ -45,6 +47,7 @@ public class View implements IView {
 	private final double MILLISECOND_DELAY = 10;
 	private final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
 	private final double gapSize = 1;
+	private final boolean DEBUG = false;
 
 	private final ConsoleTextArea console = new ConsoleTextArea();
 	private final Button evaluateButton = new Button("Evaluate");
@@ -214,7 +217,9 @@ public class View implements IView {
 		Set<IEntity> renderableEntities = model.getEntitySystem().getEntitiesWithComponents(Sprite.class, Position.class);
 		for (IEntity e : renderableEntities) {
 			viewUtils.makeSelectable(e);
-			tempList.addAll(this.getCollisionShapes(e));
+			if(DEBUG) {
+				tempList.addAll(this.getCollisionShapes(e));
+			}
 			ImageView imageView = this.getUpdatedImageView(e);
 			tempList.add(imageView);
 			modulateZLevel(e, imageViews);
@@ -238,9 +243,8 @@ public class View implements IView {
 		pane.setCenter(center);
 		// center.setContent(root);
 		center.setContent(subScene);
-		System.out.println(subScene.getRoot());
+//		System.out.println(subScene.getRoot());
 		root.setManaged(false); // IMPORTANT
-
 		// center.setPannable(true);
 		center.setVbarPolicy(ScrollBarPolicy.NEVER);
 		center.setHbarPolicy(ScrollBarPolicy.NEVER);
