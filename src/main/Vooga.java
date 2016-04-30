@@ -23,7 +23,6 @@ import view.View;
 import view.beginningmenus.StartUpMenu;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
-import view.gameplaying.GamePlayer;
 import view.utilities.ButtonFactory;
 import view.utilities.ComboFactory;
 import view.utilities.FileUtilities;
