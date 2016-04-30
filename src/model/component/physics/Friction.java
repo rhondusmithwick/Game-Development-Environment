@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @author Roxanne Baker
  */
+@SuppressWarnings("serial")
 public class Friction implements IComponent {
 
     private final SingleProperty<Double> singleProperty = new SingleProperty<>("Friction", 0.6);

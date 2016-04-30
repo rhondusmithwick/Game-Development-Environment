@@ -1,4 +1,6 @@
-package testing;/**
+package testing;
+
+/**
  * Created by rhondusmithwick on 4/27/16.
  *
  * @author Rhondu Smithwick
@@ -31,6 +33,5 @@ public class AnaimationTesting extends Application implements SandBox {
         animation.play();
         init(primaryStage, animatedSprite.getImageView(), animation);
         primaryStage.show();
-        
     }
 }

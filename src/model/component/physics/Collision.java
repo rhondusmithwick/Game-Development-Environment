@@ -12,6 +12,7 @@ import java.util.List;
  * @author Roxanne and Tom
  *
  */
+@SuppressWarnings("serial")
 public class Collision implements IComponent {
 	public static final String TOP = "top";
 	public static final String BOTTOM = "bottom";

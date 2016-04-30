@@ -58,7 +58,6 @@ public class AnimationEditor extends Editor{
 	}
 	@Override
 	public void populateLayout() {
-		
 		spriteSheetField = TextFieldFactory.makeTextArea("Sprite Sheet Path");
 		spriteSheetField.setEditable(false);
 		spritePropertiesField = TextFieldFactory.makeTextArea("Properties Path");
