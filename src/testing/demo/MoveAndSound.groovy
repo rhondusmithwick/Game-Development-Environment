@@ -37,6 +37,7 @@ public class MoveAndSound implements IGameScript{
 	@Override
 	public void update(double dt) {
 		// TODO Auto-generated method stub
+		println("update");
 		
 	}
 	private void initKeyInputs() {

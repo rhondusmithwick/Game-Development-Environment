@@ -96,6 +96,7 @@ public class GameLoopManager {
 			}
 			commaList = commaList.substring(0, commaList.length()- 1);
 			systemManager.getLevel().addMetadata(key, commaList);
+			//valueList.clear();
 			stage.close();
 		}
 	}
