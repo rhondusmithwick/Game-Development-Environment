@@ -98,6 +98,13 @@ public interface IEntity extends ISerializable {
 	}
 
 	/**
+	 * Updates all components forcefully.
+	 */
+	default void updateComponents() {
+		getAllComponents().stream().forEach(IComponent::update);
+	}
+
+	/**
 	 * Get a component of this type that was the index inserted.
 	 *
 	 * @param componentClass
