@@ -89,16 +89,14 @@ public class GameLoopManager {
 
 	private void saveMetadata() {
 		String key = comboBox.getValue();
-
-		if(key != null) {
+		if(key != null && valueList.size() > 0) {
 			String commaList = "";
 			for(String str: valueList) {
 				commaList += str + ",";
 			}
 			commaList = commaList.substring(0, commaList.length()- 1);
-			//System.out.println(commaList);
 			systemManager.getLevel().addMetadata(key, commaList);
-			//comboBox.getSelectionModel().clearSelection();
+			stage.close();
 		}
 	}
 
