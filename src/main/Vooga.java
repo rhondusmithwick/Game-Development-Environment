@@ -28,6 +28,11 @@ import view.utilities.ButtonFactory;
 import view.utilities.ComboFactory;
 import view.utilities.FileUtilities;
 
+/**
+ * 
+ * @author calinelson
+ *
+ */
 public class Vooga extends StartUpMenu {
 
 	private Stage myStage;

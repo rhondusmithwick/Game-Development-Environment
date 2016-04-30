@@ -11,7 +11,11 @@ import javafx.collections.ObservableList;
 import view.enums.DefaultStrings;
 import view.enums.Indexes;
 
-
+/**
+ * 
+ * @author calinelson
+ *
+ */
 public class GameSaver {
 
 	

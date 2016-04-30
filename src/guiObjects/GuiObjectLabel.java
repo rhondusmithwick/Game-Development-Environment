@@ -6,6 +6,11 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.Label;
 import view.enums.DefaultStrings;
 
+/**
+ * 
+ * @author calinelson
+ *
+ */
 
 public class GuiObjectLabel extends GuiObject{
 	private Label myLabel;

@@ -11,7 +11,11 @@ import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.PopUp;
-
+/**
+ * 
+ * @author calinelson
+ *
+ */
 public class AnimationButton extends GuiObject{
 
 	private Button editButton;
