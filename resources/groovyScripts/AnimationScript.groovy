@@ -18,6 +18,6 @@ void animate(IEntity entity) {
     }
 }
 
-for (IEntity entity: getEntitieWithNamesAndIDs()) {
+for (IEntity entity: getEntitiesWithNamesAndIDs()) {
     animate(entity);
 }

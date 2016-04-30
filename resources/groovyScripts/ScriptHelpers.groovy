@@ -20,7 +20,7 @@ Object getVariable(String variableName) {
     return binding.getVariable(variableName);
 }
 
-List<IEntity> getEntitieWithNamesAndIDs() {
+List<IEntity> getEntitiesWithNamesAndIDs() {
     List<IEntity> entities = new ArrayList<>();
     if (containsVariable("entityID")) {
         String entityID = (String) getVariable("entityID");
