@@ -52,10 +52,6 @@ public class DragDropCell<T> extends ListCell<T> {
 			list.set(oldIndex, getItem());
 			list.set(newIndex, (T) dropObject);
 		});
-		
-		setOnEditStart(e -> {
-			
-		});
 	}
 
 	@Override

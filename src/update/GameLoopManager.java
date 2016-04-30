@@ -13,6 +13,7 @@ import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyCode;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -51,10 +52,19 @@ public class GameLoopManager {
 		valueMap = level.getMetadata();
 		keyField = TextFieldFactory.makeTextArea(myResources.getString("addKey"));
 		valueField = TextFieldFactory.makeTextArea(myResources.getString("valueText"));
+		setupList();
+		populateStage();
+	}
+	
+	private void setupList() {
 		listView.setCellFactory(e -> new DragDropCell<String>());
 		listView.setEditable(true);
 		listView.setMaxWidth(GUISize.LIST_VIEW_WIDTH.getSize());
-		populateStage();
+		listView.setOnKeyPressed(e -> {
+			if(e.getCode() == KeyCode.DELETE) {
+				valueList.remove(listView.getSelectionModel().getSelectedIndex());
+			}
+		});
 	}
 
 	private void populateStage() {
@@ -118,7 +128,7 @@ public class GameLoopManager {
 			keyField.clear();
 		}
 	}
-	
+
 	private void populateList(String key) {
 		String val = valueMap.get(key);
 		if(val != null) {
