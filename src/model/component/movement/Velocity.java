@@ -94,4 +94,10 @@ public class Velocity implements IComponent {
 	public List<SimpleObjectProperty<?>> getProperties() {
 		return twoProperty.getProperties();
 	}
+
+	@Override
+	public void update() {
+		setVX(getVX());
+		setVY(getVY());
+	}
 }

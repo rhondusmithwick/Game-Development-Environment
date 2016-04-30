@@ -60,4 +60,9 @@ public class SoundEffect implements IComponent {
     public List<SimpleObjectProperty<?>> getProperties() {
         return Arrays.asList(effect.property1());
     }
+    
+	@Override
+	public void update() {
+		setSound(getSound());
+	}
 }

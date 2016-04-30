@@ -71,4 +71,9 @@ public class ThemeMusic implements IComponent {
     public List<SimpleObjectProperty<?>> getProperties() {
         return Arrays.asList(music.property1());
     }
+
+	@Override
+	public void update() {
+		setSound(getSound());
+	}
 }

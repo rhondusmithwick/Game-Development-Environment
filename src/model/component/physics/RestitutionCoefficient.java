@@ -1,11 +1,11 @@
 package model.component.physics;
 
-import java.util.Collections;
-import java.util.List;
-
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 import utility.SingleProperty;
+
+import java.util.Collections;
+import java.util.List;
 
 /**
  *
@@ -41,6 +41,11 @@ public class RestitutionCoefficient implements IComponent {
 	@Override
 	public List<SimpleObjectProperty<?>> getProperties() {
 		return Collections.singletonList(restitutionCoefficientProperty());
+	}
+
+	@Override
+	public void update() {
+		setRestitutionCoefficient(getRestitutionCoefficient());
 	}
 
 }

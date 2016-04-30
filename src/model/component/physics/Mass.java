@@ -38,9 +38,13 @@ public class Mass implements IComponent {
         massProperty().set(mass);
     }
 
-
     @Override
     public List<SimpleObjectProperty<?>> getProperties() {
         return Collections.singletonList(massProperty());
+    }
+
+    @Override
+    public void update() {
+        setMass(getMass());
     }
 }

@@ -40,7 +40,7 @@ public class Pong implements IGameScript {
 
     private void initSprites() {
         // Ball
-        IEntity ball = SpriteLoader.createBall("Ball", new Position(50.0, -150.0));
+        IEntity ball = SpriteLoader.createBall("Ball", new Position(50.0, 150.0));
         //Paddles
         IEntity leftPaddle = SpriteLoader.createPaddle("LeftPaddle", new Position(100, 160));
         leftPaddle.addComponent(new UserControl());

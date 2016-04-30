@@ -51,4 +51,9 @@ public class Friction implements IComponent {
     public List<SimpleObjectProperty<?>> getProperties() {
         return singleProperty.getProperties();
     }
+
+    @Override
+    public void update() {
+        setFriction(getFriction());
+    }
 }
