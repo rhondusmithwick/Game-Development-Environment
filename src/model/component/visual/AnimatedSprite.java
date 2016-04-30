@@ -15,6 +15,7 @@ import java.util.List;
  *
  * @author Rhondu Smithwick, Anirudh Jonnavithula
  */
+@SuppressWarnings("serial")
 public class AnimatedSprite extends Sprite {
     private static final String DEFAULT_IMAGE = "resources/spriteSheets/ryuBlue.gif";
     private static final String DEFAULT_BUNDLE = "spriteProperties/aniryu";

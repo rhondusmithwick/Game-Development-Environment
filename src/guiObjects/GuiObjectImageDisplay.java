@@ -11,6 +11,11 @@ import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.FileUtilities;
+/**
+ * 
+ * @author calinelson
+ *
+ */
 
 public class GuiObjectImageDisplay extends GuiObjectFileGetter {
 	
@@ -22,32 +27,24 @@ public class GuiObjectImageDisplay extends GuiObjectFileGetter {
 	
 	@SuppressWarnings("unchecked")
 	public GuiObjectImageDisplay(String name, String resourceBundle, String language, SimpleObjectProperty<?> property, Object object) {
-		super(name, resourceBundle, (SimpleObjectProperty<String>) property);
+		super(name, resourceBundle);
 		myPropertiesNames= ResourceBundle.getBundle(language+DefaultStrings.PROPERTIES.getDefault());
 		this.myResources= ResourceBundle.getBundle(language);
-		setImage = ButtonFactory.makeButton(myPropertiesNames.getString(name), e->changeImage());
+
 		this.property=(SimpleObjectProperty<String>) property;
 		this.preview=new ImageView();
-		setFile(new File(this.property.getValue()));
+		setImage = ButtonFactory.makeButton(myPropertiesNames.getString(name), e->changeValue(this.property, myResources, DefaultStrings.GUI_IMAGES.getDefault(), FileUtilities.getImageFilters()));
+		setFile(new File(this.property.getValue()), this.property);
 	}
 
-	private void changeImage(){
-		File file = getImage();
-		setFile(file);
-		}
 
-	private File getImage() {
-		return FileUtilities.promptAndGetFile(FileUtilities.getImageFilters(),
-				myResources.getString("ChooseFile"), DefaultStrings.GUI_IMAGES.getDefault());
-	}
 
-	
+	@Override
 	protected void setPreview(File file){
 		preview.setImage(new Image(file.toURI().toString()));
 		preview.setFitHeight(GUISize.PREVIEW_SIZE.getSize());
 		preview.setPreserveRatio(true);
 	}
-
 
 
 	@Override

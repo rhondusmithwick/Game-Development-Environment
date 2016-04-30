@@ -9,13 +9,16 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
-import model.component.audio.SoundEffect;
 import view.enums.DefaultStrings;
-import view.enums.FileExtensions;
 import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.FileUtilities;
 
+/**
+ * 
+ * @author calinelson, Ben Zhang
+ *
+ */
 public class GuiObjectMusicChooser extends GuiObjectFileGetter{
 	private Button setMusic, play, stop;
 	private ResourceBundle myResources, myPropertiesNames;
@@ -25,15 +28,15 @@ public class GuiObjectMusicChooser extends GuiObjectFileGetter{
 	
 	@SuppressWarnings("unchecked")
 	public GuiObjectMusicChooser(String name, String resourceBundle, String language, SimpleObjectProperty<?> property, Object object) {
-		super(name, resourceBundle, (SimpleObjectProperty<String>) property);
+		super(name, resourceBundle);
 		this.myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
 		myResources = ResourceBundle.getBundle(language);
 		text.setEditable(false);
-		setMusic = ButtonFactory.makeButton(myPropertiesNames.getString(name), e -> changeMusic());
 		play = ButtonFactory.makeButton(myResources.getString("play"), e -> playMusic());
 		stop = ButtonFactory.makeButton(myResources.getString("stop"), e -> stopMusic());
 		this.property = (SimpleObjectProperty<String>) property;
-		setPreview(new File(this.property.getValue()));
+		setMusic = ButtonFactory.makeButton(myPropertiesNames.getString(name), e -> changeValue(this.property, myResources,DefaultStrings.SOUNDFX.getDefault(), FileUtilities.getMusicFilters()));
+		setFile(new File(this.property.getValue()), this.property);
 	}
 	
 	private void playMusic() {
@@ -48,23 +51,13 @@ public class GuiObjectMusicChooser extends GuiObjectFileGetter{
 		}
 	}
 
-	private void changeMusic(){
-		File file = getMusic();
-		setFile(file);
-	}
-
-	private File getMusic() {
-		String path = setMusic.getText().equals(SoundEffect.class.getSimpleName()) ? 
-				DefaultStrings.SOUNDFX.getDefault() : DefaultStrings.MUSIC.getDefault();
-		return FileUtilities.promptAndGetFile(FileExtensions.MP3.getFilter(),
-				myResources.getString("ChooseFile"), path);		
-	}
 
 	@Override
 	public Object getCurrentValue() {
 		return null;
 	}
 	
+	@Override
 	protected void setPreview(File file) {
 		text.setText(file.getName());
 		stopMusic();
