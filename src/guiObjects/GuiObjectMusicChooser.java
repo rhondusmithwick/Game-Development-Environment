@@ -57,7 +57,7 @@ public class GuiObjectMusicChooser extends GuiObject{
 		if(file==null){
 			return;
 		}
-		property.setValue(FilePathRelativizer.relativize(file.getPath(), myResources));
+		property.setValue(FilePathRelativizer.relativize(file.getPath()));
 		preview = new AudioClip(file.toURI().toString());
 	}
 
