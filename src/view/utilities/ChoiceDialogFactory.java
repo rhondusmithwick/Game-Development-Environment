@@ -29,7 +29,7 @@ public class ChoiceDialogFactory {
 	 *         options
 	 */
 
-	public String choiceBox(List<String> choices, String title, String header, String content) {
+	public static String choiceBox(List<String> choices, String title, String header, String content) {
 		ChoiceDialog<String> dialog = new ChoiceDialog<>(choices.get(0), choices);
 		dialog.setTitle(title);
 		dialog.setHeaderText(header);

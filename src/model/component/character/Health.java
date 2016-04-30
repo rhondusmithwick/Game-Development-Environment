@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @author Rhondu Smithwick
  */
+@SuppressWarnings("serial")
 public class Health implements IComponent {
 
     private final SingleProperty<Double> singleProperty = new SingleProperty<>("Health", 0.0);

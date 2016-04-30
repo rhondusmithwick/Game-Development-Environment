@@ -4,7 +4,6 @@ import api.ICollisionSide;
 import api.IEntity;
 import api.ILevel;
 import api.IPhysicsEngine;
-import groovy.ui.SystemOutputInterceptor;
 import javafx.geometry.Bounds;
 import javafx.scene.image.ImageView;
 import model.component.movement.Position;

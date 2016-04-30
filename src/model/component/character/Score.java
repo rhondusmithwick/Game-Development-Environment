@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @author ajonnav, Rhondu Smithwick
  */
+@SuppressWarnings("serial")
 public class Score implements IComponent {
 
     /**

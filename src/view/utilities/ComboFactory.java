@@ -7,7 +7,7 @@ import javafx.event.EventHandler;
 import javafx.scene.control.ComboBox;
 
 public class ComboFactory {
-	private ComboFactory(){
+	public ComboFactory(){
 		
 	}
 	

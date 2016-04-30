@@ -10,7 +10,7 @@ import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.FileUtilities;
 
-public class GuiObjectFileChooser extends GuiObject {
+public class GuiObjectBundleChooser extends GuiObject {
 	
 	private Button setBundle;
 	private ResourceBundle myPropertiesNames, myResources;
@@ -19,7 +19,7 @@ public class GuiObjectFileChooser extends GuiObject {
 	
 	
 	@SuppressWarnings("unchecked")
-	public GuiObjectFileChooser(String name, String resourceBundle, String language, SimpleObjectProperty<?> property, Object object) {
+	public GuiObjectBundleChooser(String name, String resourceBundle, String language, SimpleObjectProperty<?> property, Object object) {
 		super(name, resourceBundle);
 		myPropertiesNames= ResourceBundle.getBundle(language+DefaultStrings.PROPERTIES.getDefault());
 		this.myResources= ResourceBundle.getBundle(language);
@@ -29,7 +29,7 @@ public class GuiObjectFileChooser extends GuiObject {
 	}
 
 	private void getBundle() {
-		property.set( (FileUtilities.promptAndGetFile(FileUtilities.getImageFilters(),
+		property.set( (FileUtilities.promptAndGetFile(FileUtilities.getPropertiesFilters(),
 				myResources.getString("ChooseFile"), DefaultStrings.ANIMATION_LOC.getDefault()).getPath()));
 		text.setText(property.get());
 	}

@@ -1,4 +1,4 @@
-package view.editor.gameeditor;
+package view.editor.gameeditor.displays;
 
 import java.util.ResourceBundle;
 
@@ -8,6 +8,7 @@ import api.ISerializable;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseButton;
@@ -24,15 +25,16 @@ public class EnvironmentDisplay extends ObjectDisplay{
 	private ObservableList<IEntity> masterEntList;
 	private ResourceBundle myResources;
 	private String language;
+	private Scene scene;
 	
-	public EnvironmentDisplay(String language, ObservableList<ILevel> masterEnvList, ObservableList<IEntity> masterEntList, Authoring authEnv){
+	public EnvironmentDisplay(String language, ObservableList<ILevel> masterEnvList, ObservableList<IEntity> masterEntList, Authoring authEnv, Scene myScene){
 		
 		super(authEnv);
 		this.masterEntList=masterEntList;
 		this.masterEnvList = masterEnvList;
 		this.myResources = ResourceBundle.getBundle(language);
 		this.language=language;
-		
+		this.scene = myScene;
 
 	}
 	
@@ -56,7 +58,7 @@ public class EnvironmentDisplay extends ObjectDisplay{
 			public void handle(MouseEvent event) {
 				MouseButton button = event.getButton();
 				if (button == MouseButton.PRIMARY) {
-					createEditor(EditorEnvironment.class.getName(), language, eSystem, masterEntList, masterEnvList );
+					createEditor(EditorEnvironment.class.getName(), language, eSystem, masterEntList, masterEnvList, scene);
 				} else if (button == MouseButton.SECONDARY) {
 					masterEnvList.remove(eSystem);
 				}
@@ -69,7 +71,7 @@ public class EnvironmentDisplay extends ObjectDisplay{
 	@Override
 	public Node makeNewObject(){
 		return ButtonFactory.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
-			e->createEditor(EditorEnvironment.class.getName(), language,  new Level(), masterEntList,  masterEnvList ));
+			e->createEditor(EditorEnvironment.class.getName(), language,  new Level(), masterEntList,  masterEnvList, scene ));
 	}
 
 
