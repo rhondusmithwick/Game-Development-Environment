@@ -1,4 +1,4 @@
-package view.editor.gameeditor;
+package view.editor.gameeditor.displays;
 
 import java.util.Map;
 import api.IComponent;
