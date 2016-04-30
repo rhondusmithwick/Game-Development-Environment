@@ -2,7 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="resources"/>
-	<classpathentry kind="src" path="voogasalad_util/src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/lib"/>
 	<classpathentry kind="lib" path="lib/xstream-1.4.9.jar"/>
@@ -18,5 +17,6 @@
 	<classpathentry kind="lib" path="voogasalad_util/lib/slf4j-simple-1.7.21.jar"/>
 	<classpathentry kind="lib" path="voogasalad_util/lib/async-http-client-1.9.38.jar"/>
 	<classpathentry exported="true" kind="con" path="GROOVY_SUPPORT"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/voogasalad_util"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
