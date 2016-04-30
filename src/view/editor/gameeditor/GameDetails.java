@@ -18,7 +18,11 @@ import view.enums.Indexes;
 import view.utilities.ButtonFactory;
 import view.utilities.FileUtilities;
 import view.utilities.TextFieldFactory;
-
+/**
+ * 
+ * @author calinelson
+ *
+ */
 public class GameDetails {
 	
 	private ResourceBundle myResources;

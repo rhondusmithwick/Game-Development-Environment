@@ -1,5 +1,7 @@
 package view.editor.gameeditor;
-
+/**
+ * @author calinelson
+ */
 import java.io.File;
 import java.util.List;
 
