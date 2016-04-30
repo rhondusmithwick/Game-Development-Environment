@@ -19,7 +19,6 @@ import javafx.collections.ObservableList;
 import javafx.scene.layout.VBox;
 import api.IComponent;
 import api.IEntity;
-import api.ISerializable;
 import guiObjects.GuiObject;
 import guiObjects.GuiObjectFactory;
 /**
@@ -33,7 +32,7 @@ import guiObjects.GuiObjectFactory;
 public class EditorEntity extends Editor{
 	private IEntity myEntity;
 	private String myLanguage;
-	private ObservableList<ISerializable> entityList;
+	private ObservableList<IEntity> entityList;
 	private Button saveButton, addButton, removeButton;
 	private ResourceBundle myResources, myLocs, myComponentNames;
 	private TextField name;
@@ -43,7 +42,7 @@ public class EditorEntity extends Editor{
 	private final GuiObjectFactory guiFactory = new GuiObjectFactory();
 
 
-	public EditorEntity(String language, ISerializable toEdit, ObservableList<ISerializable> addToList) {
+	public EditorEntity(String language, IEntity toEdit, ObservableList<IEntity> addToList) {
 		scrollPane = new ScrollPane();
 		myLanguage = language;
 		myResources = ResourceBundle.getBundle(language);
@@ -126,8 +125,9 @@ public class EditorEntity extends Editor{
 	}
 
 	private void save() {	
+		
 		myEntity.setName(name.getText());
-		myEntity.getAllComponents().stream().forEach(e -> removeBinding(e));
+		myEntity.getAllComponents().stream().forEach(e -> setToSave(e));
 		entityList.remove(myEntity);
 		entityList.add(myEntity);
 		container = new VBox();
@@ -135,7 +135,9 @@ public class EditorEntity extends Editor{
 		scrollPane.setContent(container);
 	}
 
-	private void removeBinding(IComponent e) {
+	private void setToSave(IComponent e) {
+		e.update();
 		e.removeBindings();
+		
 	}
 }
