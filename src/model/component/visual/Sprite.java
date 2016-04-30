@@ -2,17 +2,13 @@ package model.component.visual;
 
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utility.SingleProperty;
 import utility.TwoProperty;
-
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.Arrays;
 import java.util.List;
 
@@ -21,10 +17,10 @@ import java.util.List;
  *
  * @author Rhondu Smithwick, Melissa Zhang, Bruna Liborio
  */
+@SuppressWarnings("serial")
 public class Sprite implements IComponent {
 
     private static final String DEFAULT_IMAGE_PATH = "resources/testing/RhonduSmithwick.JPG";
-    private static final double DEFAULT_WIDTH = 638.0, DEFAULT_HEIGHT = 518.0;
 
     private final SingleProperty<String> imagePathProperty = new SingleProperty<>("ImagePath", DEFAULT_IMAGE_PATH);
     private final TwoProperty<Double, Double> imageSizeProperty = new TwoProperty<>("ImageWidth", 0.0, "ImageHeight", 0.0);

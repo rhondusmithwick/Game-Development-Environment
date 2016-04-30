@@ -11,6 +11,7 @@ import java.util.List;
  *
  * @author Roxanne Baker
  */
+@SuppressWarnings("serial")
 public class RestitutionCoefficient implements IComponent {
 
 	private final SingleProperty<Double> singleProperty = new SingleProperty<>("CoefficientofRestitution", 0.0);
@@ -31,10 +32,6 @@ public class RestitutionCoefficient implements IComponent {
 	}
 
 	public void setRestitutionCoefficient(double restitutionCoefficient) {
-		// boolean valid = (restitutionCoefficient >= 0) &&
-		// (restitutionCoefficient <= 1);
-		// Preconditions.checkArgument(valid, "Coefficient of restitution should
-		// be between 0 and 1");
 		restitutionCoefficientProperty().set(restitutionCoefficient);
 	}
 

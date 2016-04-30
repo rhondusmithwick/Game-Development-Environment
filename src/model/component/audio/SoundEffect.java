@@ -11,6 +11,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.media.AudioClip;
 import utility.SingleProperty;
 
+@SuppressWarnings("serial")
 public class SoundEffect implements IComponent {
 	private static final String DEFAULT = "resources/soundfx/laser.mp3";
 	private final SingleProperty<String> effect = new SingleProperty<>("SoundEffect", DEFAULT);
