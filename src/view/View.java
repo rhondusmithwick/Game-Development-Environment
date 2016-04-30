@@ -25,7 +25,6 @@ import model.component.movement.Position;
 import model.component.physics.Collision;
 import model.component.visual.Sprite;
 import model.core.SystemManager;
-import model.entity.Level;
 import update.GameLoopManager;
 import view.utilities.ButtonFactory;
 import view.utilities.SpriteUtilities;
@@ -62,7 +61,7 @@ public class View implements IView {
 
 	@Deprecated
 	public View(String language) {
-		this(2000, 2000, new Level(), language);
+		// this(2000, 2000, new Level(), language);
 	}
 
 	public View(double width, double height, ILevel level, String language, Scene scene) {
