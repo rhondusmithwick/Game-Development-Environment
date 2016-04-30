@@ -2,15 +2,14 @@ package model.core;
 
 import java.util.ArrayList;
 import java.util.List;
-import api.IEntity;
-import api.IEventSystem;
-import api.ILevel;
-import api.ISystemManager;
+
 import api.*;
 import datamanagement.XMLReader;
 import groovy.lang.GroovyShell;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import model.component.movement.Position;
 import model.entity.Entity;
 import model.entity.Level;
 //import testing.demo.GroovyDemoTest;
@@ -27,13 +26,13 @@ public class SystemManager implements ISystemManager {
 	private List<ILevel> levelList = new ArrayList<>();
 	private ILevel sharedUniverse = new Level();
 	private boolean isRunning = true;
-	private Scene scene = new Scene(new Group()); // TODO: remove
+	private Node scene; // TODO: remove
 
-	public SystemManager(Scene scene) {
+	public SystemManager(Node scene) {
 		this(scene, new Level());
 	}
 
-	public SystemManager(Scene scene, ILevel level) {
+	public SystemManager(Node scene, ILevel level) {
 		this.scene = scene;
 		this.universe = level;
 		levelList.add(level);
@@ -68,11 +67,11 @@ public class SystemManager implements ISystemManager {
 	public void step(double dt) {
 		if (this.isRunning) {
 			universe.update(dt);
-//			List<IEntity> entities = universe.getAllEntities();
-//			for(IEntity e : entities) {
-//				System.out.print(e.getName()+", ");
-//			}
-//			System.out.println();
+			List<IEntity> entities = universe.getAllEntities();
+			for(IEntity e : entities) {
+				System.out.print(e.getComponent(Position.class).getY());
+			}
+			System.out.println();
 		}
 	}
 

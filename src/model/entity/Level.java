@@ -98,8 +98,8 @@ public class Level implements ILevel {
 
     @Override
     public void update (double dt) {
-//		physics.update(this, dt); // TODO: remove
-        gameScripts.stream().forEach(gs -> gs.update(dt));
+		physics.update(this, dt); // TODO: remove
+        //gameScripts.stream().forEach(gs -> gs.update(dt));
     }
 
     @Override

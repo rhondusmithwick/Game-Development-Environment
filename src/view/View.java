@@ -51,6 +51,8 @@ public class View implements IView {
 	private final Button evaluateButton = new Button("Evaluate");
 	private final Button loadButton = new Button("Load");
 	private final Button loopManagerButton = new Button("Loop Manager");
+	private final Button loopStartButton = new Button("Start Loop");
+	private final Button loopPauseButton = new Button("Pause Looop");
 	// private final ScriptEngine engine = new
 	// ScriptEngineManager().getEngineByName("Groovy");
 	private Group root = new Group();
@@ -68,12 +70,12 @@ public class View implements IView {
 
 
 	public View(double width, double height, ILevel level, String language) {
-		this.model = new SystemManager(level);
+		this.subScene = this.createSubScene(root, width, height);
+		this.model = new SystemManager(subScene, level);
 		manager = new GameLoopManager(language, model);
 		this.initConsole();
 		this.initButtons();
 		this.viewUtils = new ViewUtilities(root, model.getLevel());
-		this.subScene = this.createSubScene(root, width, height);
 		this.pane = this.createBorderPane(root, this.subScene);
 		viewUtils.allowSelection();
 		viewUtils.allowDragging();
@@ -172,7 +174,7 @@ public class View implements IView {
 		Collection<Shape> shapes = new ArrayList<>();
 		for (Bounds b : bounds) {
 			if (b == null) {
-				System.out.println("null collide mask: " + e.getName());
+			//	System.out.println("null collide mask: " + e.getName());
 				continue;
 			}
 			Shape r = new Rectangle(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
@@ -274,9 +276,14 @@ public class View implements IView {
 		evaluateButton.setOnAction(e -> this.evaluate());
 		loadButton.setOnAction(e -> this.load());
 		loopManagerButton.setOnAction(e -> this.createLoopManager());
+		loopStartButton.setOnAction(e -> model.play());
+		loopPauseButton.setOnAction(e -> model.pauseLoop());
 		buttonBox.getChildren().add(evaluateButton);
 		buttonBox.getChildren().add(loadButton);
+		buttonBox.getChildren().add(loopStartButton);
+		buttonBox.getChildren().add(loopPauseButton);
 		buttonBox.getChildren().add(loopManagerButton);
+		
 	}
 
 	private void load() { // TODO: loading
