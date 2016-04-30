@@ -17,15 +17,15 @@ import java.util.Set;
 
 public class ViewUtilities {
 
-	// TODO: resource file
-	private static final double MARGIN = 8;
+/*	private static final double MARGIN = 8;
 	private static final int DEPTH = 70;
 	private static final Color HIGHLIGHT_COLOR = Color.YELLOW;
 	private static final String SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(22, 0, 255, 0.8), 10, 0, 0, 0)",
 			NO_SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0, 0, 0)";
 	private Group root;
 	private ILevel universe;
-	private boolean resizing = false, dragging = false;
+	private boolean resizing = false;
+	private boolean dragging = false;
 	private IEntity heldDownSprite;
 	private Set<IEntity> selectedSprites = new HashSet<>();
 	private double initialMouseX, initialMouseY;
@@ -48,9 +48,6 @@ public class ViewUtilities {
 	}
 
 	public void allowDeletion() {
-		// root.setOnKeyPressed(event -> {
-		// if (event.getCode() == KeyCode.DELETE) {
-		// TODO: why doesn't keypress work?!
 		root.setOnMouseClicked(event -> {
 			System.out.println("clicked");
 			if(event.getButton().equals(MouseButton.SECONDARY)) {
@@ -63,21 +60,13 @@ public class ViewUtilities {
 	}
 
 	private void dehighlight(IEntity e) {
-//		this.getImageView(e).setEffect(null);
-		getImageView(e).setStyle(NO_SELECT_EFFECT);
 		selectedSprites.remove(e); 
+		getImageView(e).setStyle(NO_SELECT_EFFECT);
 	}
 
 	public void highlight(IEntity e) {
-//		DropShadow borderGlow = new DropShadow();
-//		borderGlow.setOffsetY(0f);
-//		borderGlow.setOffsetX(0f);
-//		borderGlow.setColor(HIGHLIGHT_COLOR);
-//		borderGlow.setWidth(DEPTH);
-//		borderGlow.setHeight(DEPTH);
-//		this.getImageView(e).setEffect(borderGlow);
 		selectedSprites.add(e);
-		getImageView(e).setStyle(SELECT_EFFECT); // TODO: StringConstants SELECT_EFFECT
+		getImageView(e).setStyle(SELECT_EFFECT);
 	}
 
 	private boolean isInBottomResizeRegion(Node node, double y) {
@@ -126,7 +115,6 @@ public class ViewUtilities {
 	}
 
 	public void allowSelection() {
-		// TODO: make sure this is not hacky
 		root.setOnMouseReleased(event -> {
 			long duration = System.currentTimeMillis()-timeMouseClicked;
 			if(duration<clickThresholdMillis) { // click event handling
@@ -134,7 +122,6 @@ public class ViewUtilities {
 					toggleHighlight(heldDownSprite);
 				}
 			}
-//			System.out.println("released - "+duration);
 			this.releaseSprite();
 		});
 	}
@@ -161,8 +148,6 @@ public class ViewUtilities {
 	}
 
 	public void toggleHighlight(IEntity entity) {
-//		Sprite path = entity.getComponent(Sprite.class);
-//		ImageView imageView = path.getImageView();
 		if (!selectedSprites.contains(entity)) {
 			System.out.println("highlight");
 			this.highlight(entity);
@@ -170,6 +155,6 @@ public class ViewUtilities {
 			System.out.println("dehighlight");
 			this.dehighlight(entity);
 		}
-	}
+	}*/
 
 }
