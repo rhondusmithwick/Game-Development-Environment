@@ -65,18 +65,16 @@ public class View implements IView {
 	}
 
 	public View(double width, double height, ILevel level, String language) {
+		subScene = this.createSubScene(root, width, height);
+		model = new SystemManager(subScene, level);
 		myResources = ResourceBundle.getBundle(language);
-		model = new SystemManager(level);
 		manager = new GameLoopManager(language, model);
 		initConsole();
 		initButtons();
-		
-		subScene = createSubScene(root, width, height);
 		pane = createMainBorderPane(root, this.subScene);
 		viewUtils = new ViewUtilities();
 		DandR = new DragAndResizeDynamic();
 		DandR.makeRootDragAndResize(root);
-
 		this.startTimeline();
 	}
 
@@ -153,6 +151,9 @@ public class View implements IView {
 
 	private Collection<Shape> getCollisionShapes(IEntity e) {
 		List<Collision> collisions = e.getComponentList(Collision.class);
+		if(collisions.isEmpty()) {
+			return null;
+		}
 		Collection<Bounds> bounds = new ArrayList<>();
 		for (Collision c : collisions) {
 			bounds.add(c.getMask());
@@ -160,7 +161,7 @@ public class View implements IView {
 		Collection<Shape> shapes = new ArrayList<>();
 		for (Bounds b : bounds) {
 			if (b == null) {
-				System.out.println("null collide mask: " + e.getName());
+			//	System.out.println("null collide mask: " + e.getName());
 				continue;
 			}
 			Shape r = new Rectangle(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());

@@ -13,7 +13,6 @@ import groovy.lang.GroovyShell;
 import javafx.scene.Scene;
 import model.physics.PhysicsEngine;
 import view.enums.DefaultStrings;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -102,9 +101,8 @@ public class Level implements ILevel {
 
     @Override
     public void update (double dt) {
-//		physics.update(this, dt); // TODO: remove
-    	eventSystem.updateInputs(dt);
-        gameScripts.stream().forEach(gs -> gs.update(dt));
+		physics.update(this, dt); // TODO: remove
+        //gameScripts.stream().forEach(gs -> gs.update(dt));
     }
 
     @Override
