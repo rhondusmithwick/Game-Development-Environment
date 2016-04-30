@@ -41,16 +41,15 @@ public class Authoring {
 		
 		public  Scene init(ReadOnlyDoubleProperty height, ReadOnlyDoubleProperty width){
 			display = new TabPane();
-			GameEditor gEdit;
-			if(fileName == null){
-				gEdit = new GameEditor(this, language);
-			}else{
-				gEdit = new GameEditor(this, language, fileName);
-			}
-			
-			createTab(gEdit.getPane(), "gameDetails", false);
 			myScene = new Scene(display,GUISize.AUTHORING_WIDTH.getSize(), GUISize.AUTHORING_HEIGHT.getSize());
 			myScene.getStylesheets().add(new File(DefaultStrings.CSS_LOCATION.getDefault() + DefaultStrings.MAIN_CSS.getDefault()).toURI().toString());
+			GameEditor gEdit;
+			if(fileName == null){
+				gEdit = new GameEditor(this, language, myScene);
+			}else{
+				gEdit = new GameEditor(this, language, fileName, myScene);
+			}
+			createTab(gEdit.getPane(), "gameDetails", false);
 			display.prefHeightProperty().bind(height);
 			display.prefWidthProperty().bind(width);
 			return myScene;

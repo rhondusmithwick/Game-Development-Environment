@@ -9,6 +9,7 @@ import view.editor.Editor;
 import view.enums.DefaultStrings;
 import view.utilities.ButtonFactory;
 import view.utilities.TextFieldFactory;
+import model.component.visual.AnimatedSprite;
 import model.entity.Entity;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
@@ -101,6 +102,9 @@ public class EditorEntity extends Editor{
 	}
 	
 	private void addObject(IComponent component) {
+		if(component.getClass().equals(AnimatedSprite.class)){
+			container.getChildren().add( (Node) guiFactory.createNewGuiObject("AnimatedSprite", DefaultStrings.GUI_RESOURCES.getDefault(), myLanguage, myEntity).getGuiNode());
+		}
 		component.getProperties().stream().forEach(e -> addVisualObject(e));
 	}
 

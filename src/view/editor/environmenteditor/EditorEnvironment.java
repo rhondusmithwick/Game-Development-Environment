@@ -5,6 +5,7 @@ import api.ILevel;
 import api.IView;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
@@ -18,6 +19,7 @@ import view.enums.DefaultEntities;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.utilities.*;
+
 import java.io.File;
 import java.util.ResourceBundle;
 
@@ -39,7 +41,7 @@ public class EditorEnvironment extends Editor {
 	private EnvironmentUtilites myButtonsClass;
 
 	public EditorEnvironment(String language, ILevel toEdit, ObservableList<IEntity> masterList,
-			ObservableList<ILevel> addToList) {
+			ObservableList<ILevel> addToList, Scene myScene) {
 		myLanguage = language;
 		myResources = ResourceBundle.getBundle(language);
 		masterList.addListener((ListChangeListener<IEntity>) c -> {
@@ -50,7 +52,7 @@ public class EditorEnvironment extends Editor {
 		allEnvironmentsList = addToList;
 
 		view = new View((GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(), myLevel,
-				myLanguage);
+				myLanguage, myScene);
 		myButtonsClass = new EnvironmentUtilites(view, environmentEntityButtonsBox, masterList, this, language);
 		addLayoutComponents();
 	}
