@@ -14,6 +14,11 @@ import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.FileUtilities;
 
+/**
+ * 
+ * @author calinelson, Ben Zhang
+ *
+ */
 public class GuiObjectMusicChooser extends GuiObjectFileGetter{
 	private Button setMusic, play, stop;
 	private ResourceBundle myResources, myPropertiesNames;

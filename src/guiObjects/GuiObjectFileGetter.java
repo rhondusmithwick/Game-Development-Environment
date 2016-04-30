@@ -8,7 +8,11 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.stage.FileChooser.ExtensionFilter;
 import utility.FilePathRelativizer;
 import view.utilities.FileUtilities;
-
+/**
+ * 
+ * @author calinelson
+ *
+ */
 public abstract class GuiObjectFileGetter extends GuiObject{
 	public GuiObjectFileGetter(String name, String resourceBundle) {
 		super(name, resourceBundle);

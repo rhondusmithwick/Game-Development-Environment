@@ -11,6 +11,11 @@ import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.FileUtilities;
+/**
+ * 
+ * @author calinelson
+ *
+ */
 
 public class GuiObjectImageDisplay extends GuiObjectFileGetter {
 	
