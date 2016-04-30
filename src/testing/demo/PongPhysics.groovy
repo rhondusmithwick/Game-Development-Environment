@@ -41,7 +41,7 @@ class PongPhysics implements IGameScript {
 
     void changeVelocity(Velocity v) {
         double r = Math.random() - 0.5;
-        v.setDirection(v.getDirection()+r);
+        v.setDirection(v.getDirection()+10*r);
         v.setSpeed(1.05*ballSpeed);
     }
 
