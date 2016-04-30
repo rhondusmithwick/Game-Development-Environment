@@ -165,7 +165,7 @@ public class EventSystem implements Observer, IEventSystem {
     
     @Override
     public void setOnInput(Scene scene) {
-    	scene.setOnKeyPressed(e->inputSystem.takeInput(e));
+    	scene.setOnKeyPressed(e->{ inputSystem.takeInput(e);System.out.println("EHAHFKKJDSFK "+e.getCode());});
     	scene.setOnKeyReleased(e->inputSystem.takeInput(e));
     	scene.setOnMouseClicked(e->inputSystem.takeInput(e));
     }
