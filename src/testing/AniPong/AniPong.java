@@ -91,7 +91,7 @@ public class AniPong {
         //events.registerEvent(new KeyTrigger(KeyCode.getKeyCode("S"), KeyEvent.KEY_RELEASED), new Action(stopPaddleScript, mKey));
         events.registerEvent(new MouseTrigger(MouseButton.PRIMARY, MouseEvent.MOUSE_CLICKED), new Action(stopPaddleScript));
         //System.out.println("Input keys cannot be registered without de-serialization error.");
-        String s = events.getEventsAsString();
+//        String s = events.getEventsAsString();
     }
 
 //    private initGlobalVariables() {
