@@ -28,12 +28,14 @@ public class PropertyTrigger extends Trigger {
         this.entityID = entityID;
         this.componentClass = componentClass;
         this.property = property;
+        this.propertyName = property.getName();
     }
 
     public PropertyTrigger(String entityID, Class<? extends IComponent> componentClass, String propertyName) {
         this.entityID = entityID;
         this.componentClass = componentClass;
         this.propertyName = propertyName;
+        
     }
     
     @Override
@@ -54,12 +56,12 @@ public class PropertyTrigger extends Trigger {
     @Override
     @Deprecated
     public void addHandler(ILevel universe, InputSystem inputSystem) {
-        property.addListener(this);
+        getProperty(universe).addListener(this);
     }
 
     @Override
     public void addHandler(ILevel universe) {
-        property.addListener(this);
+        getProperty(universe).addListener(this);
     }
 
     private SimpleObjectProperty<?> getProperty(ILevel level) {
