@@ -1,5 +1,6 @@
 package view;
 
+import api.IComponent;
 import api.IEntity;
 import api.ILevel;
 import javafx.scene.Cursor;
@@ -39,7 +40,8 @@ public class ViewUtilities {
 	public Set<IEntity> getSelected(){
 		return selectedSprites;
 	}
-	
+
+
 	private ImageView getImageView(IEntity e) {
 		if (e.hasComponent(AnimatedSprite.class)) {
 			return e.getComponent(AnimatedSprite.class).getImageView();
