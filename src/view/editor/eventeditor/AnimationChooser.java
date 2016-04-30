@@ -11,13 +11,18 @@ import view.utilities.Alerts;
 import view.utilities.ChoiceDialogFactory;
 import view.utilities.PopUp;
 import api.IEntity;
-
+/**
+ * This class is for choosing an animation given an entity. Includes error handling if AnimatedSprite component doesn't exist
+ * @author Melissa Zhang
+ *
+ */
 public class AnimationChooser{
 	private static final double WIDTH = 400;
 	private static final double HEIGHT = 400;
+	private static final String DEFAULT_LANGUAGE = "languages.english";
+
 	private IEntity myEntity;
 	private AnimatedSprite animatedSprite;
-	private static final String DEFAULT_LANGUAGE = "languages.english";
 	private ResourceBundle myResources = ResourceBundle.getBundle(DEFAULT_LANGUAGE);
 	
 
@@ -31,7 +36,10 @@ public class AnimationChooser{
 	private AnimatedSprite getAnimatedSpriteComponent() {
 		return myEntity.getComponent(AnimatedSprite.class);
 	}
-
+	/**
+	 * Call this method to get the chosen animation. If an AnimatedSprite component doesn't exist, then it returns null and opens up an AnimationEditor.
+	 * @return String
+	 */
 	public String initChooser() {	
 		if (checkIfAnimatedSprite()){
 			animatedSprite = getAnimatedSpriteComponent();
