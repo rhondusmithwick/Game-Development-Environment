@@ -125,7 +125,6 @@ public class EditorEntity extends Editor{
 		updateEditor();
 	}
 
-
 	@Override
 	public void updateEditor() {
 		getComponents();

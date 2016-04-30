@@ -4,6 +4,8 @@ import api.IEntity;
 import api.ILevel;
 import api.ISerializable;
 import api.IView;
+import javafx.beans.InvalidationListener;
+import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -159,9 +161,11 @@ public class EditorEnvironment extends Editor {
 
 	private void entityLeftClicked(IEntity entity) {
 		view.toggleHighlight(entity);
+		ObservableList<IEntity> entityList = FXCollections.observableArrayList();
 		EditorEntity entityEditor = (EditorEntity) new EditorFactory().createEditor(EditorEntity.class.getName(),
-				myLanguage, entity);
+				myLanguage, entity, entityList);
 		entityEditor.populateLayout();
+		entityList.addListener((ListChangeListener<IEntity>) c -> {this.updateEditor();});
 		PopUp myPopUp = new PopUp(GUISize.ENTITY_EDITOR_WIDTH.getSize(), GUISize.ENTITY_EDITOR_HEIGHT.getSize());
 		myPopUp.show(entityEditor.getPane());
 	}
