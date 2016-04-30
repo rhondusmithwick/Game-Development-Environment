@@ -1,10 +1,6 @@
 package view.utilities;
 
 import java.io.File;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.security.CodeSource;
-import java.security.ProtectionDomain;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -60,7 +56,7 @@ public class FileUtilities {
 		fileChooser.setTitle(prompt);
 		fileChooser.getExtensionFilters().addAll(filters);
 		fileChooser.setInitialDirectory(new File(dir));
-		File file = fileChooser.showOpenDialog(new Stage());
+		File file = new File(FilePathRelativizer.relativize(fileChooser.showOpenDialog(new Stage()).getPath()));
 		return file;
 	}
 	
