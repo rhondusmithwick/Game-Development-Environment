@@ -2,7 +2,6 @@ package view.editor;
 
 import api.IEntity;
 import api.ILevel;
-import api.ISystemManager;
 import api.IView;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
@@ -18,8 +17,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import model.component.movement.Position;
 import model.component.visual.Sprite;
-import model.core.SystemManager;
-import update.GameLoopManager;
 import view.View;
 import view.editor.entityeditor.EditorEntity;
 import view.enums.DefaultEntities;
@@ -47,29 +44,22 @@ public class EditorEnvironment extends Editor {
 	private VBox environmentEntityButtonsBox = new VBox();
 	private TextField nameField = new TextField();
 	private ScrollPane scrollPane = new ScrollPane(environmentPane);
-	private ISystemManager game;
 	private IView view;
-	private GameLoopManager manager;
 
 	public EditorEnvironment(String language, ILevel toEdit, ObservableList<IEntity> masterList,
-		ObservableList<ILevel> addToList) {
+			ObservableList<ILevel> addToList) {
 		myLanguage = language;
 		myResources = ResourceBundle.getBundle(language);
 		masterList.addListener((ListChangeListener<IEntity>) c -> {
-			this.updateDisplay(masterList);
+			this.updateEditor();
 		});
 		masterEntityList = masterList;
 		myLevel = toEdit;
 		allEnvironmentsList = addToList;
 
-		setUpGame(language);
+		view = new View((GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(), myLevel,
+				myLanguage);
 		addLayoutComponents();
-	}
-
-	private void setUpGame(String language) {
-		game = new SystemManager(myLevel);
-		view = new View(game, (GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(), scrollPane.getScene());
-		manager = new GameLoopManager(language, game);
 	}
 
 	private void addLayoutComponents() {
@@ -103,21 +93,18 @@ public class EditorEnvironment extends Editor {
 		vbox.getChildren().clear();
 		for (IEntity entity : collection) {
 			Button button = (Button) Reflection.callMethod(this, methodName, entity);
-			
-			//Button addEntityButton = ButtonFactory.makeButton((entity).getName(),
-					//e -> addToSystem(EntityCopier.copyEntity(entity)));
-			
 			(button).setMaxWidth(Double.MAX_VALUE);
 			vbox.getChildren().add(button);
 		}
 	}
-	
-	public Button createAddEntityButton(IEntity entity){
+
+	public Button createAddEntityButton(IEntity entity) {
 		return ButtonFactory.makeButton((entity).getName(), e -> addToSystem(EntityCopier.copyEntity(entity)));
 	}
-	
+
 	public Button createEntityButton(IEntity entity) {
 		Button entityInButton = new Button(entity.getName());
+		entityInButton.setMaxWidth(Double.MAX_VALUE);
 		entityInButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -131,16 +118,19 @@ public class EditorEnvironment extends Editor {
 		});
 		return entityInButton;
 	}
-	
+
 	private void addToSystem(IEntity entity) {
+		String newName = UserInputBoxFactory.userInputBox(myResources.getString("noName"),
+				myResources.getString("addEntityName"));
+		if (newName != null) {
+			entity.setName(newName);
+		}
 		view.getEntitySystem().addEntity(entity);
 		try {
 			if (!entity.hasComponent(Position.class) || !entity.hasComponent(Sprite.class)) {
 				addComponents(entity);
 			}
-			Button environmentEntityButton = createEntityButton(entity);
-			environmentEntityButton.setMaxWidth(Double.MAX_VALUE);
-			environmentEntityButtonsBox.getChildren().add(environmentEntityButton);
+			environmentEntityButtonsBox.getChildren().add(createEntityButton(entity));
 		} catch (Exception e) {
 			Alerts.showAlert(myResources.getString("error"), null, myResources.getString("unableToAddEntity"),
 					AlertType.ERROR);
@@ -160,19 +150,14 @@ public class EditorEnvironment extends Editor {
 		rightPane.getChildren()
 				.add(ButtonFactory.makeButton(myResources.getString("saveEnvironment"), e -> saveEnvironment()));
 		rightPane.getChildren().add(new ScrollPane(environmentEntityButtonsBox));
-		rightPane.getChildren()
-				.add(ButtonFactory.makeButton(myResources.getString("loopManager"), e -> createLoopManager()));
-	}
-
-	private void createLoopManager() {
-		manager.show();
 	}
 
 	private void entityLeftClicked(IEntity entity) {
 		view.toggleHighlight(entity);
-		EditorEntity entityEditor = (EditorEntity) new EditorFactory().createEditor(EditorEntity.class.getName(), myLanguage, entity, masterEntityList);
+		EditorEntity entityEditor = (EditorEntity) new EditorFactory().createEditor(EditorEntity.class.getName(),
+				myLanguage, entity, masterEntityList);
 		entityEditor.populateLayout();
-		PopUp myPopUp = new PopUp(GUISize.ENTITY_EDITOR_WIDTH.getSize(),GUISize.ENTITY_EDITOR_HEIGHT.getSize());
+		PopUp myPopUp = new PopUp(GUISize.ENTITY_EDITOR_WIDTH.getSize(), GUISize.ENTITY_EDITOR_HEIGHT.getSize());
 		myPopUp.show(entityEditor.getPane());
 	}
 
@@ -217,23 +202,17 @@ public class EditorEnvironment extends Editor {
 		if (view.getEntitySystem().removeEntity(e.getID()) != null) {
 			if (index >= 0) {
 				view.getEntitySystem().getAllEntities().add(index, e);
-			}
-			else{
-				view.getEntitySystem().getAllEntities().add(0,e);
+			} else {
+				view.getEntitySystem().getAllEntities().add(0, e);
 			}
 		}
-		populateVbox(environmentEntityButtonsBox, view.getLevel().getAllEntities(), "createEntityButton");
-	}
-
-	private void updateDisplay(ObservableList<IEntity> masterList) {
-		//masterEntityList = masterList;
-		populateVbox(masterEntityButtonsBox, masterEntityList, "createAddEntityButton");
 		populateVbox(environmentEntityButtonsBox, view.getLevel().getAllEntities(), "createEntityButton");
 	}
 
 	@Override
 	public void updateEditor() {
 		populateVbox(masterEntityButtonsBox, masterEntityList, "createAddEntityButton");
+		populateVbox(environmentEntityButtonsBox, view.getLevel().getAllEntities(), "createEntityButton");
 	}
 
 	@Override
@@ -241,15 +220,7 @@ public class EditorEnvironment extends Editor {
 		environmentPane.setRight(rightPane);
 		environmentPane.setLeft(leftPane);
 		environmentPane.setCenter(view.getPane());
-		//view.getSubScene().setOnMouseClicked(e -> populateVbox(environmentEntityButtonsBox, view.getLevel().getAllEntities(), "createEntityButton"));
 	}
-
-	//private void updateEnviornmentBox(VBox vBox, ILevel entities) {
-		//vBox.getChildren().clear();
-		//for (IEntity entity : entities.getAllEntities()) {
-			//vBox.getChildren().add(createEntityButton(entity));
-		//}
-	//}
 
 	private void saveEnvironment() {
 		String name = getName();
@@ -297,7 +268,7 @@ public class EditorEnvironment extends Editor {
 		environmentEntityButtonsBox.getChildren().remove(entityButton);
 	}
 
-	public ILevel getEntitySystem() {
+	public ILevel getLevel() {
 		return view.getLevel();
 	}
 

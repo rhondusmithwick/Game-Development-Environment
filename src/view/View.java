@@ -24,6 +24,8 @@ import model.component.movement.Position;
 import model.component.physics.Collision;
 import model.component.visual.Sprite;
 import model.core.SystemManager;
+import update.GameLoopManager;
+import view.utilities.ButtonFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -35,8 +37,7 @@ import java.util.List;
  *
  */
 public class View implements IView {
-
-	// TODO: resource file
+	
 	private final double MILLISECOND_DELAY = 10;
 	private final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
 	private final double gapSize = 1;
@@ -44,6 +45,7 @@ public class View implements IView {
 	private final ConsoleTextArea console = new ConsoleTextArea();
 	private final Button evaluateButton = new Button("Evaluate");
 	private final Button loadButton = new Button("Load");
+	private final Button loopManagerButton = new Button("Loop Manager");
 	// private final ScriptEngine engine = new
 	// ScriptEngineManager().getEngineByName("Groovy");
 	private Group root = new Group();
@@ -51,37 +53,27 @@ public class View implements IView {
 	private BorderPane pane;
 	private SubScene subScene;
 	private ViewUtilities viewUtils;
+	private GameLoopManager manager;
 
-	// Needs scene
-	@Deprecated
-	public View() {
-		// Default
-		model = new SystemManager();
-	}
 
-	// Needs scene
-	@Deprecated
-	public View(ISystemManager model, Scene scene) {
-		this(model, 2000, 2000, scene);
-	}
-
-	// Needs scene
-	@Deprecated
-	public View(ISystemManager model, double width, double height, Scene scene) {
-		this.model = model;
+	public View(double width, double height, ILevel level, String language) {
+		this.model = new SystemManager(level);
+		manager = new GameLoopManager(language, model);
 		this.initConsole();
 		this.initButtons();
 		this.viewUtils = new ViewUtilities(root, model.getLevel());
 		this.subScene = this.createSubScene(root, width, height);
-		
 		this.pane = this.createBorderPane(root, this.subScene);
-		// TODO: make these into switches
 		viewUtils.allowSelection();
 		viewUtils.allowDragging();
 		viewUtils.allowDeletion();
 		this.startTimeline();
 	}
 
+	private void createLoopManager() {
+		manager.show();
+	}
+	
 	public void setScene(Scene scene) {
 		scene.setOnKeyPressed(e -> keyPressed(e.getCode()));
 		//scene.setOnKeyPressed(e -> model.getLevel().getEventSystem().takeInput(e)); // TODO: add all inputs
@@ -249,6 +241,7 @@ public class View implements IView {
 		// evaluateButton.setText("Evaluate");
 		evaluateButton.setOnAction(e -> this.evaluate());
 		loadButton.setOnAction(e -> this.load());
+		loopManagerButton.setOnAction(e -> this.createLoopManager());
 	}
 
 	private void load() { // TODO: loading
