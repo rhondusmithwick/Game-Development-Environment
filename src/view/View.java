@@ -8,7 +8,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.ImageView;
@@ -27,30 +26,27 @@ import model.component.visual.Sprite;
 import model.core.SystemManager;
 import model.entity.Level;
 import update.GameLoopManager;
+import view.utilities.ButtonFactory;
 import view.utilities.SpriteUtilities;
 
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * 
  * @author Tom
  *
  */
+
 public class View implements IView {
-	
+
 	private final double MILLISECOND_DELAY = 10;
 	private final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
 	private final double gapSize = 1;
-	private final boolean DEBUG = false;
 
 	private final ConsoleTextArea console = new ConsoleTextArea();
-	private final Button evaluateButton = new Button("Evaluate");
-	private final Button loadButton = new Button("Load");
-	private final Button loopManagerButton = new Button("Loop Manager");
-	private final Button loopStartButton = new Button("Start Loop");
-	private final Button loopPauseButton = new Button("Pause Looop");
 	// private final ScriptEngine engine = new
 	// ScriptEngineManager().getEngineByName("Groovy");
 	private Group root = new Group();
@@ -58,36 +54,36 @@ public class View implements IView {
 	private BorderPane pane;
 	private SubScene subScene;
 	private ViewUtilities viewUtils;
+	private DragAndResizeDynamic DandR;
 	private GameLoopManager manager;
 	private HBox buttonBox = new HBox();
+	private ResourceBundle myResources;
 
 	@Deprecated
 	public View(String language) {
 		this(2000, 2000, new Level(), language);
 	}
 
-
 	public View(double width, double height, ILevel level, String language) {
-		this.subScene = this.createSubScene(root, width, height);
-		this.model = new SystemManager(subScene, level);
+		subScene = this.createSubScene(root, width, height);
+		model = new SystemManager(subScene, level);
+		myResources = ResourceBundle.getBundle(language);
 		manager = new GameLoopManager(language, model);
-		this.initConsole();
-		this.initButtons();
-		this.viewUtils = new ViewUtilities(root, model.getLevel());
-		this.pane = this.createBorderPane(root, this.subScene);
-		viewUtils.allowSelection();
-		viewUtils.allowDragging();
-		viewUtils.allowDeletion();
+		initConsole();
+		initButtons();
+		pane = createMainBorderPane(root, this.subScene);
+		viewUtils = new ViewUtilities();
+		DandR = new DragAndResizeDynamic();
+		DandR.makeRootDragAndResize(root);
 		this.startTimeline();
 	}
 
 	private void createLoopManager() {
 		manager.show();
 	}
-	
+
 	public void setScene(Scene scene) {
 		scene.setOnKeyPressed(e -> keyPressed(e.getCode()));
-		//scene.setOnKeyPressed(e -> model.getLevel().getEventSystem().takeInput(e)); // TODO: add all inputs
 	}
 
 	public Pane getPane() {
@@ -110,25 +106,18 @@ public class View implements IView {
 		this.root = root;
 		SubScene subScene = new SubScene(root, width, height);
 		subScene.setFill(Color.WHITE);
-		
-		// TODO: not printing key presses, why?!
-		// subScene.setOnMouseClicked(e -> System.out.println(e.getX()));
-		// scene.setOnKeyTyped(e -> System.out.println(e.getCode()));
-		// scene.setOnKeyReleased(e -> System.out.println(e.getCode()));
-		// scene.setOnKeyPressed(e -> System.out.println(e.getCode()));
-		
 		return subScene;
 	}
-	
+
 	private void keyPressed(KeyCode code) {
-		if (code == KeyCode.DELETE ){
-			for (IEntity entity : viewUtils.getSelected()){
-			model.getLevel().removeEntity(entity.getID());
-			}
+		if (code == KeyCode.DELETE) {
+			//for (IEntity entity : viewUtils.getSelected()) {
+				//model.getLevel().removeEntity(entity.getID());
+			//}
 		}
 	}
 
-	public void toggleHighlight(IEntity entity){
+	public void toggleHighlight(IEntity entity) {
 		viewUtils.toggleHighlight(entity);
 	}
 
@@ -142,7 +131,7 @@ public class View implements IView {
 		return model.getLevel();
 	}
 
-	public void highlight(IEntity entity){
+	public void highlight(IEntity entity) {
 		viewUtils.highlight(entity);
 	}
 
@@ -151,15 +140,12 @@ public class View implements IView {
 //		Sprite display = e.getComponent(Sprite.class);
 		ImageView imageView = SpriteUtilities.getImageView(e); //display.getImageView();
 		imageView.setId(e.getID());
-
 		imageView.setTranslateX(pos.getX());
 		imageView.setTranslateY(pos.getY());
-
 		if (e.hasComponent(Orientation.class)) {
 			Orientation o = e.getComponent(Orientation.class);
 			imageView.setRotate(o.getOrientation());
 		}
-
 		return imageView;
 	}
 
@@ -179,8 +165,8 @@ public class View implements IView {
 				continue;
 			}
 			Shape r = new Rectangle(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
-//			 double val = 1.0;// Math.random();
-//			 r.setFill(new Color(val, val, val, val));
+			// double val = 1.0;// Math.random();
+			// r.setFill(new Color(val, val, val, val));
 			r.setFill(Color.TRANSPARENT);
 			r.setStroke(Color.RED);
 			r.setStrokeWidth(2);
@@ -189,80 +175,60 @@ public class View implements IView {
 		return shapes;
 	}
 
+	@SuppressWarnings("unchecked")
 	private void step(double dt) { // game loop
-		// simulate
 		model.step(dt);
 
-		// render
-//<<<<<<< HEAD
-////		root.getChildren().clear();
-//		ObservableList<Node> imageViews = root.getChildren();
-//		List<Node> tempList = new ArrayList<>();
-//		Set<IEntity> renderableEntities = model.getEntitySystem().getEntitiesWithComponents(Sprite.class, Position.class);
-//		for (IEntity e : renderableEntities) {
-//			viewUtils.makeSelectable(e);
-//			if(DEBUG) {
-//				tempList.addAll(this.getCollisionShapes(e));
-//			}
-//			ImageView imageView = this.getUpdatedImageView(e);
-//			tempList.add(imageView);
-//			modulateZLevel(e, imageViews);
-//			if(!imageViews.contains(imageView)) { // populate root with new sprites
-//				imageViews.add(imageView);
-//			}
-//		}
-//		for(int i=0; i<imageViews.size(); i++) { // remove old sprites
-//			Node imageView = imageViews.get(i);
-//			if(!tempList.contains(imageView)) {
-//				imageViews.remove(imageView);
-//				i--;
-//=======
 		root.getChildren().clear();
-		List<IEntity> entities = model.getEntitySystem().getAllEntities();//.getEntitiesWithComponents(Sprite.class, Position.class);
+		List<IEntity> entities = model.getEntitySystem().getAllEntities();// .getEntitiesWithComponents(Sprite.class,
+																			// Position.class);
 		for (IEntity e : entities) {
-			if(e.hasComponents(Sprite.class, Position.class)) {
-				viewUtils.makeSelectable(e);
+			if (e.hasComponents(Sprite.class, Position.class)) {
 				root.getChildren().addAll(getCollisionShapes(e));
+				DandR.makeEntityDragAndResize(e);
 				ImageView imageView = getUpdatedImageView(e);
 				root.getChildren().add(imageView);
-				//System.out.println(imageView.getImage());
 				if (!root.getChildren().contains(imageView)) {
 					root.getChildren().add(imageView);
 				}
 			}
 		}
-
-//		List<Node> nodes = root.getChildren();
-//		for(Node node:nodes) {
-//			System.out.print(node.getId() + "  ");
-//		}
-//		System.out.println();
 	}
 
-	private BorderPane createBorderPane(Group root, SubScene subScene) {
+	private BorderPane createMainBorderPane(Group root, SubScene subScene) {
 		BorderPane pane = new BorderPane();
 		ScrollPane center = new ScrollPane();
+		root.setManaged(false); // IMPORTANT
 		pane.setPadding(new Insets(gapSize, gapSize, gapSize, gapSize));
 		pane.setCenter(center);
-		// center.setContent(root);
 		center.setContent(subScene);
-//		System.out.println(subScene.getRoot());
-		root.setManaged(false); // IMPORTANT
-		// center.setPannable(true);
 		center.setVbarPolicy(ScrollBarPolicy.NEVER);
 		center.setHbarPolicy(ScrollBarPolicy.NEVER);
-
-		BorderPane inputPane = new BorderPane();
-		inputPane.setTop(console);
-		inputPane.setBottom(buttonBox);
-		// inputPane.setRight(loadButton);
-		pane.setBottom(inputPane);
+		pane.setBottom(setUpInputPane());
 		return pane;
 	}
 
+	private BorderPane setUpInputPane() {
+		BorderPane pane = new BorderPane();
+		pane.setTop(console);
+		pane.setBottom(buttonBox);
+		return pane;
+	}
+
+	private void initButtons() {
+		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("evaluate"), e -> this.evaluate()));
+		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("load"), e -> this.load()));
+		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("loopManager"), e -> this.createLoopManager()));
+	}
+
+	private void load() { // TODO: loading
+		// XMLReader<ISystemManager>().readSingleFromFile("demo.xml");
+	}
+
 	private void initConsole() {
+		console.setText(myResources.getString("enterCommands"));
 		console.appendText("\n");
-		
+
 		console.setOnKeyPressed(e -> {
 			KeyCode keyCode = e.getCode();
 			if (keyCode == KeyCode.ENTER) {
@@ -270,25 +236,6 @@ public class View implements IView {
 				e.consume();
 			}
 		});
-		
-	}
-
-	private void initButtons() {
-		evaluateButton.setOnAction(e -> this.evaluate());
-		loadButton.setOnAction(e -> this.load());
-		loopManagerButton.setOnAction(e -> this.createLoopManager());
-		loopStartButton.setOnAction(e -> model.play());
-		loopPauseButton.setOnAction(e -> model.pauseLoop());
-		buttonBox.getChildren().add(evaluateButton);
-		buttonBox.getChildren().add(loadButton);
-		buttonBox.getChildren().add(loopStartButton);
-		buttonBox.getChildren().add(loopPauseButton);
-		buttonBox.getChildren().add(loopManagerButton);
-		
-	}
-
-	private void load() { // TODO: loading
-		// XMLReader<ISystemManager>().readSingleFromFile("demo.xml");
 	}
 
 	private void evaluate() {

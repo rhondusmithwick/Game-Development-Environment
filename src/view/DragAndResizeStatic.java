@@ -9,7 +9,7 @@ import javafx.scene.shape.Rectangle;
 import model.component.movement.Position;
 import model.component.visual.Sprite;
 
-public class DragAndResize {
+public class DragAndResizeStatic {
 
 	private double margin = 8;
 
@@ -33,7 +33,7 @@ public class DragAndResize {
 	private final ImageView image;
 	private final Sprite component;
 
-	private DragAndResize(Sprite component, Position aPos) {
+	private DragAndResizeStatic(Sprite component, Position aPos) {
 		this.component = component;
 		this.image = component.getImageView();
 		this.node = component.getImageView();
@@ -43,7 +43,7 @@ public class DragAndResize {
 		minH = image.minHeight(image.getFitWidth());
 	}
 
-	public DragAndResize(Rectangle shape) {
+	public DragAndResizeStatic(Rectangle shape) {
 		this.component = new Sprite();
 		this.node = shape;
 		this.image = new ImageView();
@@ -71,17 +71,17 @@ public class DragAndResize {
 	}
 
 	public static void makeResizable(Sprite component, Position aPos) {
-		final DragAndResize resizer = new DragAndResize(component, aPos);
+		final DragAndResizeStatic resizer = new DragAndResizeStatic(component, aPos);
 		ImageView anImage = component.getImageView();
 		set(anImage, resizer);
 	}
 
 	public static void makeResizable(Rectangle aShape) {
-		final DragAndResize resizer = new DragAndResize(aShape);
+		final DragAndResizeStatic resizer = new DragAndResizeStatic(aShape);
 		set(aShape, resizer);
 	}
 
-	public static void set(Node node, DragAndResize resizer) {
+	public static void set(Node node, DragAndResizeStatic resizer) {
 		node.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
