@@ -12,6 +12,8 @@ public class EventParser
 	/*
 	 * {S:KEY_PRESSED=[resources/groovyScripts/ACAddGravity.groovy], A:KEY_PRESSED=[resources/providedScripts/SaveGame.groovy], S:KEY_PRESSED=[resources/groovyScripts/ACGamePositionHandler.groovy]}
 	 * {PropertyTrigger; 013d935c-468f-458b-9fe4-7e97768e7d29; Sprite; ImageHeight=[resources/providedScripts/SaveGame.groovy], PropertyTrigger; 013d935c-468f-458b-9fe4-7e97768e7d29; Health; Health=[resources/groovyScripts/ACGamePositionHandler.groovy]}
+	 * {A=[resources/groovyScripts/ACGamePositionHandler.groovy]}
+
 	 */
 	public HashMap<String, String> parse(String string)
 	{
@@ -28,14 +30,10 @@ public class EventParser
 		{
 			return parsePropertyEvent(string);
 		}
-		else if ( string.contains("KEY_PRESSED") ) 
+		else  
 		{
 			return parseKeyEvent(string);
 		}
-		
-		return null;
-		
-		
 	}
 	
 	private HashMap<String, String> parsePropertyEvent(String string)

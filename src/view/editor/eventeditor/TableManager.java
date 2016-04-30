@@ -9,6 +9,4 @@ public abstract class TableManager
 {
 	public abstract void entityWasClicked(Entity entity);
 	public abstract void levelWasPicked(List<ILevel> levels);
-
-	
 }

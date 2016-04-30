@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ResourceBundle;
 
+import api.IComponent;
 import api.IEntity;
 import api.ISerializable;
 import javafx.collections.ObservableList;
@@ -13,11 +14,14 @@ public class EntityTable extends Table
 {
 	private ArrayList<String> entityNames;
 
-	public EntityTable(ObservableList<IEntity> entities, TableManager manager, String language)
+	public EntityTable(ObservableList<IEntity> entities, TableManager manager, String language) throws NoSuchMethodException, SecurityException
 	{
-		super(manager, ResourceBundle.getBundle(language).getString("pickEntity"));
+		// super(manager, ResourceBundle.getBundle(language).getString("pickEntity"));
+		super(manager, ResourceBundle.getBundle(language).getString("pickEntity"), 
+				manager.getClass().getMethod("entityWasClicked", Entity.class),
+				Entity.class);	
 
-
+		/*
 		// Add change listener
 		getTable().
 		getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> 
@@ -31,6 +35,8 @@ public class EntityTable extends Table
 			}
 		}
 				);
+				*/
+		
 		entityNames = new ArrayList<String>();
 
 		fillEntries(entities);

@@ -10,7 +10,7 @@ public class SimpleStringTable extends Table
 {
 
 	public SimpleStringTable(TableManager manager, String name) {
-		super(manager, name);
+		super(manager, name, null, null);
 		
 		/*
 		getTable().

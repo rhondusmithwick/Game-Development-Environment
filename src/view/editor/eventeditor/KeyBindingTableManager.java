@@ -30,14 +30,22 @@ public class KeyBindingTableManager extends TableManager
 		container = new HBox();
 		this.language = language;
 		selectedEntitiesFromLevel = FXCollections.observableArrayList();
-		entityTable = new EntityTable( selectedEntitiesFromLevel, this, language);
+
+
+		try {
+			entityTable = new EntityTable( selectedEntitiesFromLevel, this, language);
+		} catch (NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		pickedEntitiesForEvent = new ArrayList<IEntity>();
-		
+
 		this.editor = editor;
-		
+
 		fillLayout();
 	}
-	
+
 	public void entityWasClicked(Entity entity)
 	{
 		if (pickedEntitiesForEvent.contains(entity))

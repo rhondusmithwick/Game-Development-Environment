@@ -13,10 +13,13 @@ import model.entity.Entity;
 
 public class ComponentTable extends Table
 {
-	public ComponentTable(PropertyTableManager manager, String language)
+	public ComponentTable(PropertyTableManager manager, String language) throws NoSuchMethodException, SecurityException
 	{
-		super(manager, ResourceBundle.getBundle(language).getString("pickComponent"));	// TODO resource file
+		super(manager, ResourceBundle.getBundle(language).getString("pickComponent"), 
+				manager.getClass().getMethod("componentWasClicked", IComponent.class),
+				IComponent.class);	
 
+		/*
 		// Add changeImage listener
 		getTable().
         getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> 
@@ -30,6 +33,7 @@ public class ComponentTable extends Table
         		}
         	}
         	);
+        	*/
    	}
 	
 	@Override

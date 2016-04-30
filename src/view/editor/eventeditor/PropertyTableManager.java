@@ -26,19 +26,27 @@ public class PropertyTableManager extends TableManager
 	private PropertyEventEditor editor;
 	
 	private ObservableList<IEntity> selectedEntities;
-	
+
 	public PropertyTableManager(String language, PropertyEventEditor editor )
 	{
 		container = new HBox();
 		this.language = language;
 		selectedEntities = FXCollections.observableArrayList();
 
-		entityTable = new EntityTable(selectedEntities, this, language);
-		componentTable = new ComponentTable(this, language);
-		propertyTable = new PropertyTable(this, language);
-		
+
+		try {
+			entityTable = new EntityTable(selectedEntities, this, language);
+			componentTable = new ComponentTable(this, language);
+			propertyTable = new PropertyTable(this, language);
+
+		} catch (NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
 		this.editor = editor;
-		
+
 		editor.resetTrigger();
 		fillLayout();
 	}

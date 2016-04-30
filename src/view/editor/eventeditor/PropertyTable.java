@@ -7,10 +7,14 @@ import javafx.beans.property.SimpleObjectProperty;
 
 public class PropertyTable extends Table
 {
-	public PropertyTable(PropertyTableManager manager, String language)
+	public PropertyTable(PropertyTableManager manager, String language) throws NoSuchMethodException, SecurityException
 	{
-		super(manager, ResourceBundle.getBundle(language).getString("pickProperty"));
+		// super(manager, ResourceBundle.getBundle(language).getString("pickProperty"));
+		super(manager, ResourceBundle.getBundle(language).getString("pickProperty"), 
+				manager.getClass().getMethod("propertyWasClicked", SimpleObjectProperty.class),
+				SimpleObjectProperty.class);	
 
+		/*
 		// Add changeImage listener
 		getTable().
         getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> 
@@ -24,6 +28,7 @@ public class PropertyTable extends Table
         		}
         	}
         	);
+        	*/
    	}
 	
 	@Override
