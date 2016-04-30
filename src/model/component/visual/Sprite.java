@@ -28,7 +28,6 @@ public class Sprite implements IComponent {
 
     private final SingleProperty<String> imagePathProperty = new SingleProperty<>("ImagePath", DEFAULT_IMAGE_PATH);
     private final TwoProperty<Double, Double> imageSizeProperty = new TwoProperty<>("ImageWidth", 0.0, "ImageHeight", 0.0);
-    private final SingleProperty<Integer> zLevelProperty = new SingleProperty<>("zLevel", 0);
     private transient ImageView imageView;
 
     public Sprite () {
@@ -64,11 +63,6 @@ public class Sprite implements IComponent {
         setImageHeight(imageHeight);
     }
 
-    @Deprecated
-    public Sprite (String imagePath, double imageWidth, double imageHeight, int zLevel) {
-        this(imagePath, imageWidth, imageHeight);
-        setZLevel(zLevel);
-    }
 
     /**
      * Get the imagePath property.
@@ -121,36 +115,6 @@ public class Sprite implements IComponent {
         }
     }
 
-    @Deprecated
-    public SimpleObjectProperty<Integer> zLevelProperty () {
-        return this.zLevelProperty.property1();
-    }
-
-    @Deprecated
-    /**
-     * Sets the z-layer order.
-     *
-     * @param z the z-layer order (1=>send to back, 1=>send to front)
-     */
-    public void setZLevel (int z) {
-        zLevelProperty().set(z);
-    }
-
-    @Deprecated
-    /**
-     * Gets the z-layer order.
-     *
-     * @return the z-layer order (1=>send to back, 1=>send to front)
-     */
-    public int getZLevel () {
-        return zLevelProperty().get();
-    }
-
-
-    private void writeObject(ObjectOutputStream out) throws IOException {
-        out.defaultWriteObject();
-    }
-
     private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         this.imageView = this.createImageView(getImagePath());
@@ -170,7 +134,7 @@ public class Sprite implements IComponent {
 
     @Override
     public List<SimpleObjectProperty<?>> getProperties () {
-        return Arrays.asList(imagePathProperty(), imageWidthProperty(), imageHeightProperty(), zLevelProperty());
+        return Arrays.asList(imagePathProperty(), imageWidthProperty(), imageHeightProperty());
     }
 
     public ImageView getImageView () {

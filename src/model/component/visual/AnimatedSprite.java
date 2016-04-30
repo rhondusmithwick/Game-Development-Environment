@@ -82,12 +82,6 @@ public class AnimatedSprite extends Sprite {
         return currentAnimation;
     }
 
-    public static class CustomAnimationContainer extends AnimationContainer implements ISerializable {
-        public CustomAnimationContainer (String bundlePath) {
-            super(bundlePath);
-        }
-    }
-
     public SimpleObjectProperty<String> bundlePathProperty () {
         return twoProperty.property1();
     }
@@ -123,7 +117,7 @@ public class AnimatedSprite extends Sprite {
 
     @Override
     public List<SimpleObjectProperty<?>> getProperties () {
-        return Arrays.asList(defaultAnimationProperty(), bundlePathProperty(), imagePathProperty(), imageWidthProperty(), imageHeightProperty(), zLevelProperty());
+        return Arrays.asList(defaultAnimationProperty(), bundlePathProperty(), imagePathProperty(), imageWidthProperty(), imageHeightProperty());
     }
 
     @Override
@@ -132,10 +126,10 @@ public class AnimatedSprite extends Sprite {
         setBundlePath(getBundlePath());
         setDefaultAnimation(getDefaultAnimation());
     }
-    
-    @Override
-    public Class<Sprite> getClassForComponentMap() {
-    	return Sprite.class;
+
+    public static class CustomAnimationContainer extends AnimationContainer implements ISerializable {
+        public CustomAnimationContainer (String bundlePath) {
+            super(bundlePath);
+        }
     }
-    
 }
