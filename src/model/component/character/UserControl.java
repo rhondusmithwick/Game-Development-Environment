@@ -1,7 +1,13 @@
 package model.component.character;
 
-/**
- * Created by User on 4/30/2016.
- */
-public class UserControl {
+import api.IComponent;
+
+public class UserControl implements IComponent {
+
+	@Override
+	public void update() {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

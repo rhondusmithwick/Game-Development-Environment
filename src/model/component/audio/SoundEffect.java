@@ -12,7 +12,7 @@ import javafx.scene.media.AudioClip;
 import utility.SingleProperty;
 
 public class SoundEffect implements IComponent {
-	private static final String DEFAULT = "resources/music/roxanne.mp3";
+	private static final String DEFAULT = "resources/soundfx/laser.mp3";
 	private final SingleProperty<String> effect = new SingleProperty<>("SoundEffect", DEFAULT);
 	private transient AudioClip audioClip;
 	
@@ -60,8 +60,7 @@ public class SoundEffect implements IComponent {
     public List<SimpleObjectProperty<?>> getProperties() {
         return Arrays.asList(effect.property1());
     }
-
-
+    
 	@Override
 	public void update() {
 		setSound(getSound());
