@@ -44,10 +44,10 @@ public class Pong implements IGameScript {
         //Paddles
         IEntity leftPaddle = SpriteLoader.createPaddle("LeftPaddle", new Position(100, 160));
         leftPaddle.addComponent(new UserControl());
-        IEntity rightPaddle = SpriteLoader.createPaddle("RightPaddle", new Position(540, 160));
+        IEntity rightPaddle = SpriteLoader.createPaddle("RightPaddle", new Position(500, 160));
         // Walls
         IEntity leftWall = SpriteLoader.createPlatform("LeftWall", new Position(-578, 7));
-        IEntity rightWall = SpriteLoader.createPlatform("RightWall", new Position(686, 7));
+        IEntity rightWall = SpriteLoader.createPlatform("RightWall", new Position(600, 7));
         IEntity ceiling = SpriteLoader.createPlatform("Ceiling", new Position(7, -500));
         IEntity floor = SpriteLoader.createPlatform("Floor", new Position(7, 500));
 
