@@ -36,7 +36,6 @@ public class EntityDisplay extends ObjectDisplay{
 
 	}
 	
-	
 	@SuppressWarnings("unchecked")
 	@Override
 	public ScrollPane init() {

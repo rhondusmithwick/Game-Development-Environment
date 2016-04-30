@@ -16,6 +16,7 @@ import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -26,6 +27,9 @@ import model.component.movement.Position;
 import model.component.physics.Collision;
 import model.component.visual.Sprite;
 import model.core.SystemManager;
+import model.entity.Level;
+import update.GameLoopManager;
+import view.utilities.ButtonFactory;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -37,8 +41,7 @@ import java.util.List;
  *
  */
 public class View implements IView {
-
-	// TODO: resource file
+	
 	private final double MILLISECOND_DELAY = 10;
 	private final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
 	private final double gapSize = 1;
@@ -47,6 +50,7 @@ public class View implements IView {
 	private final ConsoleTextArea console = new ConsoleTextArea();
 	private final Button evaluateButton = new Button("Evaluate");
 	private final Button loadButton = new Button("Load");
+	private final Button loopManagerButton = new Button("Loop Manager");
 	// private final ScriptEngine engine = new
 	// ScriptEngineManager().getEngineByName("Groovy");
 	private Group root = new Group();
@@ -54,40 +58,36 @@ public class View implements IView {
 	private BorderPane pane;
 	private SubScene subScene;
 	private ViewUtilities viewUtils;
+	private GameLoopManager manager;
+	private HBox buttonBox = new HBox();
 
-	// Needs scene
 	@Deprecated
-	public View() {
-		// Default
-		this(new SystemManager(), 2000, 2000, new ScrollPane());
+	public View(String language) {
+		this(2000, 2000, new Level(), language);
 	}
 
-	// Needs scene
-	@Deprecated
-	public View(ISystemManager model, ScrollPane scene) {
-		this(model, 2000, 2000, scene);
-	}
 
-	// Needs scene
-	@Deprecated
-	public View(ISystemManager model, double width, double height, ScrollPane scene) {
-		this.model = model;
+	public View(double width, double height, ILevel level, String language) {
+		this.model = new SystemManager(level);
+		manager = new GameLoopManager(language, model);
 		this.initConsole();
 		this.initButtons();
 		this.viewUtils = new ViewUtilities(root, model.getLevel());
 		this.subScene = this.createSubScene(root, width, height);
-		
 		this.pane = this.createBorderPane(root, this.subScene);
-		// TODO: make these into switches
 		viewUtils.allowSelection();
 		viewUtils.allowDragging();
 		viewUtils.allowDeletion();
-		
 		this.startTimeline();
 	}
 
+	private void createLoopManager() {
+		manager.show();
+	}
+	
 	public void setScene(Scene scene) {
-		scene.setOnKeyPressed(e -> model.getLevel().getEventSystem().takeInput(e)); // TODO: add all inputs
+		scene.setOnKeyPressed(e -> keyPressed(e.getCode()));
+		//scene.setOnKeyPressed(e -> model.getLevel().getEventSystem().takeInput(e)); // TODO: add all inputs
 	}
 
 	public Pane getPane() {
@@ -110,6 +110,7 @@ public class View implements IView {
 		this.root = root;
 		SubScene subScene = new SubScene(root, width, height);
 		subScene.setFill(Color.WHITE);
+		
 		// TODO: not printing key presses, why?!
 		// subScene.setOnMouseClicked(e -> System.out.println(e.getX()));
 		// scene.setOnKeyTyped(e -> System.out.println(e.getCode()));
@@ -119,6 +120,14 @@ public class View implements IView {
 		return subScene;
 	}
 	
+	private void keyPressed(KeyCode code) {
+		if (code == KeyCode.DELETE ){
+			for (IEntity entity : viewUtils.getSelected()){
+			model.getLevel().removeEntity(entity.getID());
+			}
+		}
+	}
+
 	public void toggleHighlight(IEntity entity){
 		viewUtils.toggleHighlight(entity);
 	}
@@ -212,6 +221,8 @@ public class View implements IView {
 				viewUtils.makeSelectable(e);
 				root.getChildren().addAll(getCollisionShapes(e));
 				ImageView imageView = getUpdatedImageView(e);
+				root.getChildren().add(imageView);
+				//System.out.println(imageView.getImage());
 				if (!root.getChildren().contains(imageView)) {
 					root.getChildren().add(imageView);
 				}
@@ -240,7 +251,7 @@ public class View implements IView {
 
 		BorderPane inputPane = new BorderPane();
 		inputPane.setTop(console);
-		inputPane.setBottom(evaluateButton);
+		inputPane.setBottom(buttonBox);
 		// inputPane.setRight(loadButton);
 		pane.setBottom(inputPane);
 		return pane;
@@ -260,9 +271,12 @@ public class View implements IView {
 	}
 
 	private void initButtons() {
-		// evaluateButton.setText("Evaluate");
 		evaluateButton.setOnAction(e -> this.evaluate());
 		loadButton.setOnAction(e -> this.load());
+		loopManagerButton.setOnAction(e -> this.createLoopManager());
+		buttonBox.getChildren().add(evaluateButton);
+		buttonBox.getChildren().add(loadButton);
+		buttonBox.getChildren().add(loopManagerButton);
 	}
 
 	private void load() { // TODO: loading
