@@ -29,7 +29,7 @@ public class Sprite implements IComponent {
     private final TwoProperty<Double, Double> imageSizeProperty = new TwoProperty<>("ImageWidth", 0.0, "ImageHeight", 0.0);
     private final SingleProperty<Integer> zLevelProperty = new SingleProperty<>("zLevel", 0);
     private transient ImageView imageView;
-    private ChangeListener<String> imagePathListener;
+    private transient ChangeListener<String> imagePathListener;
 
     public Sprite () {
         this(DEFAULT_IMAGE_PATH);
@@ -51,12 +51,8 @@ public class Sprite implements IComponent {
 
     private void addImagePathListener () {
         imagePathListener = (new ChangeListener<String>() {
-            public void changed (ObservableValue<? extends String> observable,
-                                 String oldValue,
-                                 String newValue) {
-                System.out.println(newValue);
+            public void changed (ObservableValue<? extends String> observable, String oldValue, String newValue) {
                 setImagePath(newValue);
-
             }
         });
         imagePathProperty().addListener(imagePathListener);
@@ -165,6 +161,7 @@ public class Sprite implements IComponent {
 
     private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
+        addImagePathListener();
         this.imageView = this.createImageView(getImagePath());
     }
 
