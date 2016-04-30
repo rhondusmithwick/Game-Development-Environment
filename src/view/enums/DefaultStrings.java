@@ -22,6 +22,7 @@ public enum DefaultStrings {
 	RHONDU("resources/testing/RhonduSmithwick.JPG"), 
 	THEME("finalCountdown.mp3"), 
 	MUSIC("resources/music/"),
+	SOUNDFX("resources/soundfx/"),
 	METADATA_LOC("/metadata.xml"),
 	ENTITIES_LOC("/entities.xml"),
 	LEVELS_LOC("/levels/"),
