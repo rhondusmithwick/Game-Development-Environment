@@ -13,7 +13,7 @@ public class AnimationEditorTesting extends Application{
 	public void start(Stage stage) throws Exception {
 		Entity entity = new Entity();
 		entity.addComponent(new AnimatedSprite());
-		AnimationEditor animatorEditor = new AnimationEditor(null);
+		AnimationEditor animatorEditor = new AnimationEditor(entity);
 		animatorEditor.populateLayout();
 		Group g = new Group();
 		Scene scene = new Scene(g);
