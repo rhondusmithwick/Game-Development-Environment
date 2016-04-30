@@ -18,7 +18,6 @@ import java.util.List;
 public class AnimatedSprite extends Sprite {
     private static final String DEFAULT_IMAGE = "resources/spriteSheets/ryuBlue.gif";
     private static final String DEFAULT_BUNDLE = "spriteProperties/ryuBlue";
-
     private final TwoProperty<String, String> twoProperty = new TwoProperty<>("BundlePath", DEFAULT_BUNDLE, "DefaultAnimation", "");
     private CustomAnimationContainer container = new CustomAnimationContainer(DEFAULT_BUNDLE);
     private String currentAnimationName = "";
@@ -89,7 +88,6 @@ public class AnimatedSprite extends Sprite {
             super(bundlePath);
         }
     }
-
 
     public SimpleObjectProperty<String> bundlePathProperty () {
         return twoProperty.property1();

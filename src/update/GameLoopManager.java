@@ -50,6 +50,7 @@ public class GameLoopManager {
 		valueField = TextFieldFactory.makeTextArea(myResources.getString("valueText"));
 		listView.setCellFactory(e -> new DragDropCell<String>());
 		listView.setEditable(true);
+		listView.setMaxWidth(GUISize.LIST_VIEW_WIDTH.getSize());
 		populateStage();
 	}
 
@@ -67,7 +68,9 @@ public class GameLoopManager {
 
 	private VBox populateLeft() {
 		VBox vBox = new VBox(padding);
-		comboBox = ComboFactory.makeComboBox(myResources.getString("selectKey"), Arrays.asList(myResources.getString("keyDefault")), null);
+		String script = myResources.getString("keyDefault");
+		comboBox = ComboFactory.makeComboBox(myResources.getString("selectKey"), Arrays.asList(script), null);
+		comboBox.setValue(script);
 		Button button = ButtonFactory.makeButton(myResources.getString("addKey"), e -> addKey());
 		vBox.getChildren().addAll(createContainer(keyField, button), comboBox);
 		return vBox;
@@ -86,15 +89,16 @@ public class GameLoopManager {
 
 	private void saveMetadata() {
 		String key = comboBox.getValue();
+
 		if(key != null) {
 			String commaList = "";
 			for(String str: valueList) {
 				commaList += str + ",";
 			}
-			commaList = commaList.substring(0, commaList.length()-1);
-			System.out.println(commaList);
-			//systemManager.getEntitySystem().addMetadata(key, commaList);
-			comboBox.getSelectionModel().clearSelection();
+			commaList = commaList.substring(0, commaList.length()- 1);
+			//System.out.println(commaList);
+			systemManager.getLevel().addMetadata(key, commaList);
+			//comboBox.getSelectionModel().clearSelection();
 		}
 	}
 

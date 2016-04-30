@@ -1,23 +1,19 @@
 package model.entity;
 
 import api.*;
-
+import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import events.EventSystem;
 import groovy.lang.GroovyShell;
+import javafx.scene.Scene;
 import model.physics.PhysicsEngine;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-
-import javafx.scene.Node;
-import javafx.scene.Scene;
 
 /**
  * Implementation of a Level. This implementation is focused on the IDs. It
@@ -33,7 +29,7 @@ public class Level implements ILevel {
 	private IPhysicsEngine physics = new PhysicsEngine();
 	private String eventSystemPath;
 //	private transient ResourceBundle scriptLocs = ResourceBundle.getBundle(DefaultStrings.SCRIPTS_LOC.getDefault());
-	private transient List<IGameScript> gameScripts;
+	private transient List<IGameScript> gameScripts = Lists.newArrayList();
 
 	public Level() {
 		this("");
@@ -144,7 +140,7 @@ public class Level implements ILevel {
 	}
 
 	@Override
-	public Collection<IEntity> getAllEntities() {
+	public List<IEntity> getAllEntities() {
 		return universe.getAllEntities();
 	}
 
@@ -154,7 +150,7 @@ public class Level implements ILevel {
 	}
 
 	@Override
-	public boolean removeEntity(String id) {
+	public IEntity removeEntity(String id) {
 		return universe.removeEntity(id);
 	}
 

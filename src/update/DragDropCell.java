@@ -11,6 +11,7 @@ import javafx.scene.input.TransferMode;
 public class DragDropCell<T> extends ListCell<T> {
 	public static final DataFormat dataFormat = new DataFormat("custom");
 
+	@SuppressWarnings("unchecked")
 	public DragDropCell() {
 		setOnDragDetected(e -> {
 			if(getItem() == null) {

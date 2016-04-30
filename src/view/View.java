@@ -1,15 +1,11 @@
 package view;
 
-import api.IEntity;
-import api.ISystemManager;
-import api.IView;
+import api.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.collections.ObservableList;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.Button;
@@ -34,7 +30,6 @@ import model.core.SystemManager;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 /**
  * 
@@ -55,52 +50,44 @@ public class View implements IView {
 	// private final ScriptEngine engine = new
 	// ScriptEngineManager().getEngineByName("Groovy");
 	private Group root = new Group();
-	private ISystemManager model = new SystemManager(root);
+	private ISystemManager model;
 	private BorderPane pane;
 	private SubScene subScene;
 	private ViewUtilities viewUtils;
 
+	// Needs scene
 	@Deprecated
-	public View(ISystemManager model, ScrollPane scene) {
-		this(model, new Group(), 2000, 2000, scene);
+	public View() {
+		// Default
+		this(new SystemManager(), 2000, 2000, new ScrollPane());
 	}
 
+	// Needs scene
 	@Deprecated
-	public View(ISystemManager model, Group root, double width, double height, ScrollPane scene) {
+	public View(ISystemManager model, ScrollPane scene) {
+		this(model, 2000, 2000, scene);
+	}
+
+	// Needs scene
+	@Deprecated
+	public View(ISystemManager model, double width, double height, ScrollPane scene) {
 		this.model = model;
 		this.initConsole();
 		this.initButtons();
-		this.viewUtils = new ViewUtilities(root, model.getEntitySystem());
+		this.viewUtils = new ViewUtilities(root, model.getLevel());
 		this.subScene = this.createSubScene(root, width, height);
 		
 		this.pane = this.createBorderPane(root, this.subScene);
+		// TODO: make these into switches
+		viewUtils.allowSelection();
 		viewUtils.allowDragging();
 		viewUtils.allowDeletion();
 		
-		this.startTimeline();
-	}
-
-	@Deprecated
-	public View() {
-		this(2000, 2000);
-	}
-
-	@Deprecated
-	public View(double width, double height) { // TODO: Scene
-		this.initConsole();
-		this.initButtons();
-		this.viewUtils = new ViewUtilities(root, model.getEntitySystem());
-		this.subScene = this.createSubScene(root, width, height);
-
-		this.pane = this.createBorderPane(root, this.subScene);
-		viewUtils.allowDragging();
-		viewUtils.allowDeletion();
-
 		this.startTimeline();
 	}
 
 	public void setScene(Scene scene) {
-		scene.setOnKeyPressed(e -> model.getEntitySystem().getEventSystem().takeInput(e)); // TODO: add all inputs
+		scene.setOnKeyPressed(e -> model.getLevel().getEventSystem().takeInput(e)); // TODO: add all inputs
 	}
 
 	public Pane getPane() {
@@ -135,42 +122,26 @@ public class View implements IView {
 	public void toggleHighlight(IEntity entity){
 		viewUtils.toggleHighlight(entity);
 	}
-	
-	public void highlight(IEntity entity){
-		viewUtils.highlight(entity);
+
+	@Override
+	public IEntitySystem getEntitySystem() {
+		return model.getLevel().getEntitySystem();
 	}
 
-	private void modulateZLevel(IEntity e, ObservableList<Node> imageViews) {
-		Sprite display = e.getComponent(Sprite.class);
-		ImageView imageView = display.getImageView();
-		imageViews.remove(imageView); // important
+	@Override
+	public ILevel getLevel() {
+		return model.getLevel();
+	}
 
-		int z = display.getZLevel();
-		int index = imageViews.indexOf(imageView);
-		switch(z) {
-			case -2:
-				imageViews.add(0, imageView);
-				break;
-			case -1:
-				if(index-1>=0) {
-					root.getChildren().add(index - 1, imageView);
-				}
-				break;
-			case 1:
-				if(index+1<imageViews.size()) {
-					root.getChildren().add(index + 1, imageView);
-					break;
-				}
-			case 2:
-				imageViews.add(imageView); // to end of list
-				break;
-		}
+	public void highlight(IEntity entity){
+		viewUtils.highlight(entity);
 	}
 
 	private ImageView getUpdatedImageView(IEntity e) {
 		Position pos = e.getComponent(Position.class);
 		Sprite display = e.getComponent(Sprite.class);
 		ImageView imageView = display.getImageView();
+		imageView.setId(e.getID());
 
 		imageView.setTranslateX(pos.getX());
 		imageView.setTranslateY(pos.getY());
@@ -211,29 +182,47 @@ public class View implements IView {
 		model.step(dt);
 
 		// render
-//		root.getChildren().clear();
-		ObservableList<Node> imageViews = root.getChildren();
-		List<Node> tempList = new ArrayList<>();
-		Set<IEntity> renderableEntities = model.getEntitySystem().getEntitiesWithComponents(Sprite.class, Position.class);
-		for (IEntity e : renderableEntities) {
-			viewUtils.makeSelectable(e);
-			if(DEBUG) {
-				tempList.addAll(this.getCollisionShapes(e));
-			}
-			ImageView imageView = this.getUpdatedImageView(e);
-			tempList.add(imageView);
-			modulateZLevel(e, imageViews);
-			if(!imageViews.contains(imageView)) { // populate root with new sprites
-				imageViews.add(imageView);
+//<<<<<<< HEAD
+////		root.getChildren().clear();
+//		ObservableList<Node> imageViews = root.getChildren();
+//		List<Node> tempList = new ArrayList<>();
+//		Set<IEntity> renderableEntities = model.getEntitySystem().getEntitiesWithComponents(Sprite.class, Position.class);
+//		for (IEntity e : renderableEntities) {
+//			viewUtils.makeSelectable(e);
+//			if(DEBUG) {
+//				tempList.addAll(this.getCollisionShapes(e));
+//			}
+//			ImageView imageView = this.getUpdatedImageView(e);
+//			tempList.add(imageView);
+//			modulateZLevel(e, imageViews);
+//			if(!imageViews.contains(imageView)) { // populate root with new sprites
+//				imageViews.add(imageView);
+//			}
+//		}
+//		for(int i=0; i<imageViews.size(); i++) { // remove old sprites
+//			Node imageView = imageViews.get(i);
+//			if(!tempList.contains(imageView)) {
+//				imageViews.remove(imageView);
+//				i--;
+//=======
+		root.getChildren().clear();
+		List<IEntity> entities = model.getEntitySystem().getAllEntities();//.getEntitiesWithComponents(Sprite.class, Position.class);
+		for (IEntity e : entities) {
+			if(e.hasComponents(Sprite.class, Position.class)) {
+				viewUtils.makeSelectable(e);
+//				root.getChildren().addAll(getCollisionShapes(e));
+				ImageView imageView = getUpdatedImageView(e);
+				if (!root.getChildren().contains(imageView)) {
+					root.getChildren().add(imageView);
+				}
 			}
 		}
-		for(int i=0; i<imageViews.size(); i++) { // remove old sprites
-			Node imageView = imageViews.get(i);
-			if(!tempList.contains(imageView)) {
-				imageViews.remove(imageView);
-				i--;
-			}
-		}
+
+//		List<Node> nodes = root.getChildren();
+//		for(Node node:nodes) {
+//			System.out.print(node.getId() + "  ");
+//		}
+//		System.out.println();
 	}
 
 	private BorderPane createBorderPane(Group root, SubScene subScene) {
