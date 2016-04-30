@@ -46,7 +46,7 @@ public class SpriteLoader {
 		Sprite sprite = new Sprite();
 		ImageView img = sprite.getImageView();
 		AnimatedSprite animated = new AnimatedSprite();
-		e.addComponents(pos,sprite, animated);
+		e.addComponents(pos,sprite);
 		return e;
 	}
 
