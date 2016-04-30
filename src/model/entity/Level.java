@@ -34,7 +34,7 @@ public class Level implements ILevel {
     private IEventSystem eventSystem = new EventSystem(this);
     private IPhysicsEngine physics = new PhysicsEngine();
     private String eventSystemPath;
-    private ResourceBundle myResources = ResourceBundle.getBundle(DefaultStrings.LANG_LOC.getDefault() + DefaultStrings.DEFAULT_LANGUAGE.getDefault());
+    private transient ResourceBundle myResources;
     //	private transient ResourceBundle scriptLocs = ResourceBundle.getBundle(DefaultStrings.SCRIPTS_LOC.getDefault());
     private transient List<IGameScript> gameScripts = Lists.newArrayList();
 
@@ -44,6 +44,7 @@ public class Level implements ILevel {
 
     public Level (String name) {
         universe.setName(name);
+        myResources = ResourceBundle.getBundle(DefaultStrings.LANG_LOC.getDefault() + DefaultStrings.DEFAULT_LANGUAGE.getDefault());
     }
 
     @Override
@@ -135,6 +136,7 @@ public class Level implements ILevel {
 
     private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
+        myResources = ResourceBundle.getBundle(DefaultStrings.LANG_LOC.getDefault() + DefaultStrings.DEFAULT_LANGUAGE.getDefault());
         eventSystem.setLevel(this);
     }
 
