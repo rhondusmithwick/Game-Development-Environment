@@ -1,6 +1,6 @@
 package api;
 
-import model.physics.Vector;
+import javafx.geometry.Point2D;
 
 /**
  * Interface for the physics engine
@@ -31,5 +31,5 @@ public interface IPhysicsEngine {
 	 * @return whether J is successfully applied to body
 	 *   (false if body does not have Mass, Position, and Velocity)
 	 */
-    boolean applyImpulse(IEntity body, Vector J);
+    boolean applyImpulse(IEntity body, Point2D impulse);
 }
