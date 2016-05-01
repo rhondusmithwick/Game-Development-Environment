@@ -155,7 +155,7 @@ public class PhysicsEngine implements IPhysicsEngine {
                 Velocity.class);
 
         entitiesSubjectToGravity.stream().forEach(entity -> {
-            // System.out.println(entity.getComponent(Collision.class).getCollidingIDs());
+            System.out.println(entity.getComponent(Collision.class).getCollidingIDs());
             // if
             // (!entity.getComponent(Collision.class).getCollidingIDs().contains(Collision.BOTTOM))
             // {

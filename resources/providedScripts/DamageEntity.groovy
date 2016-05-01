@@ -1,11 +1,16 @@
 package providedScripts
 
+import api.IEntity
+
 /**
  * Created by cyao42 on 5/1/2016.
  */
 import groovy.transform.BaseScript
 import groovy.transform.Field
+import model.component.character.Attack
 import model.component.movement.Position
+import model.component.physics.Collision
+
 @BaseScript ScriptHelpers ScriptHelpers
 
 /**
@@ -13,17 +18,16 @@ import model.component.movement.Position
  * @author Carolyn Yao
  */
 
-@Field Double movedX = containsVariable("movedX") ? (Double) getVariable("movedX") : 0.0;
-@Field Double movedY = containsVariable("movedY") ? (Double) getVariable("movedY") : 0.0;
+@Field Double damageRatio = containsVariable("damageRatio") ? (Double) getVariable("damageRatio") : 0.0;
 
 
 def damage = { entity ->
-
-
     if (entity.hasComponent(Attack.class)) {
-        Position position = entity.getComponent(Position.class);
-        position.setX(position.getX() + movedX);
-        position.setY(position.getY() + movedY);
+        Collision collision = entity.getComponent(Collision.class);
+        String attacked = collision.getCollidingIDs();
+        // get the ID's of all the colliding entities
+
+
     }
 }
 
