@@ -349,6 +349,9 @@ public class PhysicsEngine implements IPhysicsEngine {
 				collisionSide = collision;
 			}
 		}
+		if (collisionSide == null) {
+			return;
+		}
 		collisionSide.addCollision(first, second);
 	}
 
