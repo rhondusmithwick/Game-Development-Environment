@@ -28,6 +28,7 @@ import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import main.Vooga;
+import model.component.hud.HUD;
 import model.component.movement.Orientation;
 import model.component.movement.Position;
 import model.component.physics.Collision;
@@ -38,8 +39,13 @@ import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.PopUp;
 import view.utilities.SpriteUtilities;
+<<<<<<< HEAD
+import voogasalad.util.reflection.Reflection;
+=======
 import view.utilities.ToMainMenu;
+>>>>>>> refs/remotes/origin/master
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -149,7 +155,7 @@ public class View implements IView {
 	public void highlight(IEntity entity) {
 		viewUtils.highlight(entity);
 	}
-	
+
 	public Scene getScene() {
 		return scene;
 	}
@@ -191,8 +197,10 @@ public class View implements IView {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void step(double dt) { 
+	private void step(double dt) {
+		// simulate
 		model.step(dt);
+		// render
 		root.getChildren().clear();
 		List<IEntity> entities = model.getEntitySystem().getAllEntities();
 		for (IEntity e : entities) {
@@ -209,6 +217,33 @@ public class View implements IView {
 				if (!root.getChildren().contains(imageView)) {
 					root.getChildren().add(imageView);
 				}
+			}
+
+			if(e.hasComponents(HUD.class, Position.class)) {
+				String hud = e.getComponent(HUD.class).getHUD();
+				String shape = "Rectangle";
+				double width = 100;
+				double height = 100;
+				String color = "10,10,10,1";
+				for(String str: hud.split(";")) {
+					String[] strip = str.split(":");
+					String key = strip[0];
+					String val = strip[1];
+					if(key.equals(myResources.getString("shape"))) {
+						shape = val;
+					}
+					if(key.equals(myResources.getString("width"))) {
+						width = Double.parseDouble(val);
+					}
+					if(key.equals(myResources.getString("height"))) {
+						height = Double.parseDouble(val);
+					}
+					if(key.equals(myResources.getString("color"))) {
+						color = val;
+					}
+				}
+				Shape s = (Shape) Reflection.createInstance(shape, width, height);
+
 			}
 		}
 	}
@@ -244,6 +279,18 @@ public class View implements IView {
 		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("startGameLoop"), e -> this.model.play()));
 		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("pauseGameLoop"), e -> this.model.pauseLoop()));
 	}
+<<<<<<< HEAD
+
+	private void mainMenu() { 
+		Stage myStage = (Stage) pane.getScene().getWindow();
+		myStage.setWidth(GUISize.MAIN_SIZE.getSize());
+		myStage.setHeight(GUISize.MAIN_SIZE.getSize());
+		Vooga vooga = new Vooga(myStage);
+		vooga.init();
+	}
+
+=======
+>>>>>>> refs/remotes/origin/master
 	private void initConsole() {
 		console.setText(myResources.getString("enterCommands"));
 		console.appendText("\n\n");
