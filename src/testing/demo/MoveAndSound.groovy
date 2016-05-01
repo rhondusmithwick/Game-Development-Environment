@@ -14,7 +14,6 @@ public class MoveAndSound implements IGameScript{
 	public static final String PATH = "src/testing/demo/";
 	
 	private final String punchScript = PATH + "Punch.groovy";
-	
 	private IEventSystem events;
 
 	@Override
@@ -44,8 +43,8 @@ public class MoveAndSound implements IGameScript{
 	}
 
     private void initSprites() {
-		IEntity sprite = SpriteLoader.createAnimatedSprite("ryu",new Position(50.0, 150.0));
+		IEntity sprite = SpriteLoader.createAnimatedSprite("ryu", new Position(50.0, 150.0));
 		universe.addEntities(sprite);
     }
-		
+
 }

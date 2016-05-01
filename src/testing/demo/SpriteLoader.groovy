@@ -1,7 +1,6 @@
 package testing.demo
 
 import api.IEntity
-import javafx.scene.image.ImageView
 import model.component.audio.SoundEffect
 import model.component.character.Score
 import model.component.movement.Position
@@ -9,8 +8,8 @@ import model.component.movement.Velocity
 import model.component.physics.Collision
 import model.component.physics.Mass
 import model.component.physics.RestitutionCoefficient
-import model.component.visual.Sprite
 import model.component.visual.AnimatedSprite
+import model.component.visual.Sprite
 import model.entity.Entity
 /**
  * Created by Tom on 4/25/2016.
@@ -44,8 +43,8 @@ public class SpriteLoader {
 
     public static IEntity createAnimatedSprite(String name, Position pos){
         IEntity e = new Entity(name);
-        Sprite sprite = new Sprite();
-        ImageView img = sprite.getImageView();
+//        Sprite sprite = new Sprite();
+//        ImageView img = sprite.getImageView();
         AnimatedSprite animated = new AnimatedSprite();
 
         SoundEffect soundfx = new SoundEffect();
