@@ -34,6 +34,10 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * @author Bruna
+ *
+ */
 public class EditorEnvironment extends Editor {
 
     private final BorderPane environmentPane = new BorderPane();

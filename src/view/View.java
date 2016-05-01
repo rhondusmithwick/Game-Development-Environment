@@ -49,6 +49,9 @@ import java.util.stream.Collectors;
 
 /**
  * @author Tom
+ * @author Bruna
+ * @author Ben
+ * 
  */
 
 public class View implements IView {

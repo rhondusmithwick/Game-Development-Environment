@@ -20,6 +20,10 @@ import voogasalad.util.reflection.Reflection;
 
 import java.util.Collection;
 
+/**
+ * @author Bruna
+ *
+ */
 public class EnvironmentButtonUtilites {
 
     private final EditorEnvironment myEditor;
