@@ -4,8 +4,8 @@ import groovy.transform.BaseScript
 import model.component.movement.Velocity
 
 /**
- * Created by ajonnav on 4/27/16.
- * @author Anirudh Jonnavithula
+ * Stops a person.
+ * @author Anirudh Jonnavithula, Rhondu Smithwick
  */
 
 @BaseScript ScriptHelpers ScriptHelpers

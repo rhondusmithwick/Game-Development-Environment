@@ -1,6 +1,5 @@
 package providedScripts
 
-import api.IEntity
 import groovy.transform.BaseScript
 import groovy.transform.Field
 import model.component.visual.AnimatedSprite
@@ -8,7 +7,7 @@ import model.component.visual.AnimatedSprite
 @BaseScript ScriptHelpers ScriptHelpers
 
 /**
- * Created by rhondusmithwick on 4/30/16.
+ * Animates sprites.
  * @author Rhondu Smithwick
  */
 
