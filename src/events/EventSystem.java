@@ -119,9 +119,10 @@ public class EventSystem implements Observer, IEventSystem {
     }
 
     public void setLevel (ILevel level) {
-		if (!actionMap.isEmpty() && this.level.getEntitySystem() != null) {
-			this.unbindEvents();
-		}
+        boolean canUnbind = this.level != null && !actionMap.isEmpty() && this.level.getEntitySystem() != null;
+        if (canUnbind) {
+            this.unbindEvents();
+        }
         this.level = level;
         this.bindEvents();
     }
