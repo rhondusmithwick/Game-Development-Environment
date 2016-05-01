@@ -68,7 +68,6 @@ public class Collision implements IComponent {
                 .map(s -> s.split(Collision.SIDE_SEPARATOR))
                 .map(t -> t[0])
                 .collect(Collectors.toList());
-        System.out.println(collidingIDs);
         return collidingIDs;
     }
 
