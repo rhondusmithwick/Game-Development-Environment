@@ -30,7 +30,6 @@ public class AniPhysics implements IPhysicsEngine {
 		// TODO Auto-generated method stub
 		
 	}
-
 	
 	public void addGlobalForce(String forceName, Vector force) {
 		globalForces.put(forceName, force);

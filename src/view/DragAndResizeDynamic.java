@@ -22,6 +22,7 @@ public class DragAndResizeDynamic {
 
 	private Group root;
 	private boolean resizing = false;
+	private boolean resizingRight = false;
 	private boolean dragging = false;
 	private IEntity heldDownSprite;
 	private double initialMouseX, initialMouseY;
@@ -78,9 +79,16 @@ public class DragAndResizeDynamic {
 	}
 	
 	private void mousePressed(IEntity e, double x, double y) {
+		boolean south = this.isInBottomResizeRegion(getImageView(e), y);
+		boolean east = this.isInRightResizeRegion(getImageView(e), x);
 		if (this.isInBottomResizeRegion(getImageView(e), y) || this.isInRightResizeRegion(getImageView(e), x)) {
 			this.resizing = true;
 			this.dragging = false;
+			if(east) {
+				resizingRight = true;
+			} else if(south) {
+				resizingRight = false;
+			}
 		} else {
 			this.dragging = true;
 			this.resizing = false;
@@ -106,7 +114,7 @@ public class DragAndResizeDynamic {
 			position.setX(translateX);
 			position.setY(translateY);
 		} else if (resizing) {
-			if (this.isInBottomResizeRegion(getImageView(e), y)){
+			if (!resizingRight){
 			path.setImageHeight(y - position.getY());
 			}
 			else{
