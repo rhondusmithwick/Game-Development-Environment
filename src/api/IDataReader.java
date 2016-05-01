@@ -1,11 +1,8 @@
 package api;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
+
+import static utility.ReadFile.readFile;
 
 /**
  * Class to read in serializables of type T.
@@ -20,13 +17,7 @@ public interface IDataReader<T> {
      * @return list of objects of type T read from file
      */
     default List<T> readFromFile (String fileName) {
-        File file = new File(fileName);
-        String readFromFile = null;
-        try {
-            readFromFile = Files.toString(file, Charsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        String readFromFile = readFile(fileName);
         return readFromString(readFromFile);
     }
 

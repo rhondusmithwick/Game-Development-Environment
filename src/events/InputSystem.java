@@ -9,9 +9,9 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 /**
- * Created by rhondusmithwick on 4/10/16.
+ * Input system implemntation.
  *
- * @author Rhondu Smithwick, Anirudh Jonnavithula, Carolyn Yao
+ * @author Rhondu Smithwick,Anirudh Jonnavithula, Carolyn Yao
  */
 public class InputSystem implements IInputSystem {
     private final Queue<InputEvent> firstQueue = new LinkedList<>();

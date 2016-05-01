@@ -8,8 +8,10 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
 
 /***
- * @author Anirudh Jonnavithula, Carolyn Yao Implements a ChangeListener that
- *         listens to change in a SimpleObjectProperty.
+ * Implements a changeListener that listens to change in a SimpleObjectProperty.
+ * <p> The check on the action IE Health == 0 would then occur in a Groovy Script</p>
+ *
+ * @author Anirudh Jonnavithula, Carolyn Yao
  */
 
 public class PropertyTrigger extends Trigger {
