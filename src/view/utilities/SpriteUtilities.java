@@ -11,17 +11,17 @@ import model.component.visual.Sprite;
  * @author Rhondu Smithwick
  */
 public class SpriteUtilities {
-    private SpriteUtilities() {
+    private SpriteUtilities () {
     }
 
-    public static <T extends Sprite> T getSpriteComponent(IEntity entity, Class<T> spriteClass) {
+    public static <T extends Sprite> T getSpriteComponent (IEntity entity, Class<T> spriteClass) {
         if (entity.hasComponent(AnimatedSprite.class)) {
             return spriteClass.cast(entity.getComponent(AnimatedSprite.class));
         }
         return entity.getComponent(spriteClass);
     }
 
-    public static ImageView getImageView(IEntity entity) {
+    public static ImageView getImageView (IEntity entity) {
         return getSpriteComponent(entity, Sprite.class).getImageView();
     }
 }

@@ -32,7 +32,7 @@ public class PropertiesTemplateLoader implements ITemplateLoader<Class<? extends
      */
     @SuppressWarnings("unchecked")
     @Override
-    public Map<Class<? extends IComponent>, Integer> loadSpecs(String resourceFile) {
+    public Map<Class<? extends IComponent>, Integer> loadSpecs (String resourceFile) {
         ResourceBundle bundle = ResourceBundle.getBundle(resourceFile);
         Map<Class<? extends IComponent>, Integer> specs = Maps.newHashMap();
         Enumeration<String> iter = bundle.getKeys();

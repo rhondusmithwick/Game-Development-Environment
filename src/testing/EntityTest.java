@@ -33,18 +33,18 @@ public class EntityTest {
 
 
     @Before
-    public void setUP() {
+    public void setUP () {
     }
 
     @Test
-    public void loadSpecsTest() {
+    public void loadSpecsTest () {
         Map<Class<? extends IComponent>, Integer> specs = getSpecsTestMap();
         IEntity entity1 = new Entity();
         entity1.loadSpecsFromPropertiesFile("templates/player");
         assertEquals(entity1.getSpecs(), specs);
     }
 
-    private Map<Class<? extends IComponent>, Integer> getSpecsTestMap() {
+    private Map<Class<? extends IComponent>, Integer> getSpecsTestMap () {
         Map<Class<? extends IComponent>, Integer> specs = new HashMap<>();
         List<Class<? extends IComponent>> classes = Arrays.asList(Attack.class, Defense.class,
                 Health.class, Mass.class,

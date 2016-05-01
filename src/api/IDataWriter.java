@@ -23,11 +23,11 @@ public interface IDataWriter<T> {
      * @return the File written
      * @see #writeToString(List)
      */
-    default File writeToFile(String fileName, List<T> objects) {
+    default File writeToFile (String fileName, List<T> objects) {
         String objectsString = writeToString(objects);
         File file = new File(fileName);
         try {
-            Files.write(objectsString,file, Charsets.UTF_8);
+            Files.write(objectsString, file, Charsets.UTF_8);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -43,7 +43,7 @@ public interface IDataWriter<T> {
      * @see #writeToFile(String, List)
      */
     @SuppressWarnings("unchecked")
-    default File writeToFile(String fileName, T... objects) {
+    default File writeToFile (String fileName, T... objects) {
         return writeToFile(fileName, Arrays.asList(objects));
     }
 
@@ -53,7 +53,7 @@ public interface IDataWriter<T> {
      * @param objects to be written
      * @return a string of the objects in a data format
      */
-    String writeToString(List<T> objects);
+    String writeToString (List<T> objects);
 
     /**
      * Write the specified objects (array/ varargs) to a string.
@@ -63,7 +63,7 @@ public interface IDataWriter<T> {
      * @see #writeToString(List)
      */
     @SuppressWarnings("unchecked")
-    default String writeToString(T... objects) {
+    default String writeToString (T... objects) {
         return writeToString(Arrays.asList(objects));
     }
 

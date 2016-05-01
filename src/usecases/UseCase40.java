@@ -14,7 +14,7 @@ public class UseCase40 {
     private final ISystemManager systemManager = new SystemManager();
     //private final IEnvironmentEditor editor = new EnvironmentEditor();
 
-    void doUseCase() {
+    void doUseCase () {
         systemManager.pauseLoop(); // stop the game
         //editor.show();  // show the editor
     }

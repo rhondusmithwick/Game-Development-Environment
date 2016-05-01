@@ -30,7 +30,6 @@
     button-outline-gray: #b1b0b2;
     tracks: #babbbe;
 
-
     /*-fx-shadow-highlight-color: derive(icon-grey, 95%);
     -fx-outer-border: carboard-grey;
     -fx-inner-border: #b6b8bb;
@@ -52,8 +51,6 @@
     -fx-text-fill: shade-black;
 }
 
-
-
 /**** Button Style 2 ****/
 .button {
     -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border-color, -fx-inner-border-color, -fx-body-color;
@@ -61,6 +58,7 @@
     -fx-background-radius: 3px, 2px, 2px, 1px;
     /*-fx-padding: 0.333333em 0.666667em 0.333333em 0.666667em;*/
 }
+
 .button:hover {
     -fx-background-color: -fx-shadow-highlight-color, #4e96b9, #4e96b9, -fx-body-color;
 }
@@ -77,7 +75,6 @@
 
 /**** Arrows ****/
 
-
 /**** Choice Box Items ****/
 .choice-box {
     -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border-color, -fx-inner-border-color, -fx-body-color;
@@ -85,13 +82,14 @@
     -fx-background-radius: 3px, 2px, 2px, 1px;
     /*-fx-padding: 0.333333em 0.666667em 0.333333em 0.666667em;*/
 }
+
 .choice-box:hover {
     -fx-background-color: -fx-shadow-highlight-color, #4e96b9, #4e96b9, -fx-body-color;
 }
+
 .choice-box:armed {
     -fx-background-color: -fx-shadow-highlight-color, #3daee6, #3daee6, #3daee6;
 }
-
 
 /**** Box Items ****/
 
@@ -104,23 +102,23 @@
 /* Pill Button*/
 /* Selected Toggle */
 
-
 /**** Radio Button ****/
 .radio-button {
     -fx-label-padding: 0.0em 0.0em 0.0em 0.416667em; /* 0 0 0 5 */
     -fx-text-fill: -fx-text-background-color;
 }
+
 .radio-button > .radio,
-.radio-button:focused > .radio  {
-   -fx-background-radius: 1.0em; /* large value to make sure this remains circular */
-   -fx-padding: 0.333333em; /* 4 -- padding from outside edge to the inner black dot */
-}
-.radio-button > .radio > .dot {
-   -fx-background-color: transparent;
-   -fx-background-radius: 1.0em; /* large value to make sure this remains circular */
-   -fx-padding: 0.333333em; /* 4 -- radius of the inner black dot when selected */
+.radio-button:focused > .radio {
+    -fx-background-radius: 1.0em; /* large value to make sure this remains circular */
+    -fx-padding: 0.333333em; /* 4 -- padding from outside edge to the inner black dot */
 }
 
+.radio-button > .radio > .dot {
+    -fx-background-color: transparent;
+    -fx-background-radius: 1.0em; /* large value to make sure this remains circular */
+    -fx-padding: 0.333333em; /* 4 -- radius of the inner black dot when selected */
+}
 
 /**** CheckBox ****/
 
@@ -130,35 +128,39 @@
 
 /**** ToolBar ****/
 
-
 /**** Scrollbar ****/
-.scroll-bar { 
+.scroll-bar {
     -fx-background-color: transparent;
 }
+
 .scroll-bar > .track {
     -fx-background-color: tracks;
     -fx-background-radius: 5em; /*24px;*/
     -fx-background-insets: 0.23em; /*4px;*/
 }
+
 .scroll-bar > .increment-button, .decrement-button {
     -fx-background-color: transparent;
 }
+
 .scroll-bar > .increment-button:hover > .increment-arrow,
 .scroll-bar > .decrement-button:hover > .decrement-arrow {
     -fx-background-color: light-blue;
 }
+
 .scroll-bar > .thumb {
     -fx-background-color: plasma-blue;
     -fx-background-radius: 5em; /*24px;*/
     -fx-background-insets: 0.23em; /* 0.333333em;*/ /*4px;*/
 }
+
 .scroll-bar > .thumb:hover {
     -fx-background-color: light-blue;
 }
+
 .scroll-bar > .thumb:pressed {
     -fx-background-color: light-blue;
 }
-
 
 /**** Progress Bar ****/
 .progress-bar {
@@ -168,51 +170,55 @@
     -fx-indeterminate-bar-flip: true;
     -fx-indeterminate-bar-animation-time: 2;
 }
+
 .progress-bar > .track {
     -fx-background-color: tracks;
     /*-fx-background-radius: 5em;*/
-    -fx-background-insets: 0.53em; 
+    -fx-background-insets: 0.53em;
 }
+
 .progress-bar > .bar {
     -fx-background-color: plasma-blue;
     /*-fx-background-radius: 5em;*/
-    -fx-background-insets: 0.53em; 
+    -fx-background-insets: 0.53em;
 }
+
 .progress-bar:indeterminate > .bar {
     -fx-background-color: linear-gradient(to left, light-blue, plasma-blue);
 }
 
-
 /**** Slider ****/
 .slider .track {
-      -fx-background-color: tracks;/*
-          -fx-shadow-highlight-color,
-          linear-gradient(to bottom, derive(-fx-text-box-border, -10%), -fx-text-box-border),
-          linear-gradient(to bottom, 
-            derive(-fx-control-inner-background, -9%),
-            derive(-fx-control-inner-background, 0%),
-            derive(-fx-control-inner-background, -5%),
-            derive(-fx-control-inner-background, -12%)
-          );*/
+    -fx-background-color: tracks;
+    /*
+              -fx-shadow-highlight-color,
+              linear-gradient(to bottom, derive(-fx-text-box-border, -10%), -fx-text-box-border),
+              linear-gradient(to bottom,
+                derive(-fx-control-inner-background, -9%),
+                derive(-fx-control-inner-background, 0%),
+                derive(-fx-control-inner-background, -5%),
+                derive(-fx-control-inner-background, -12%)
+              );*/
     /*-fx-background-radius: 5em;*/
     -fx-background-insets: 0.22;
-    
+
     /*-fx-padding: 0.25em; *//* 3 */
 }
+
 .slider > .bar {
     -fx-background-color: plasma-blue;
 }
 
 .slider .thumb {
-    -fx-background-color: 
-        linear-gradient(to bottom, derive(-fx-text-box-border, -20%), derive(-fx-text-box-border, -30%)),
-        -fx-inner-border,
-        -fx-body-color;
+    -fx-background-color: linear-gradient(to bottom, derive(-fx-text-box-border, -20%), derive(-fx-text-box-border, -30%)),
+    -fx-inner-border,
+    -fx-body-color;
     -fx-background-insets: 0, 1, 2;
     -fx-background-radius: 1.0em; /* makes sure this remains circular */
     /*-fx-padding: 0.583333em; */ /* 7 */
-    -fx-effect: dropshadow(two-pass-box , rgba(0, 0, 0, 0.1), 5, 0.0 , 0, 2);
+    -fx-effect: dropshadow(two-pass-box, rgba(0, 0, 0, 0.1), 5, 0.0, 0, 2);
 }
+
 .slider:focused .thumb {
     -fx-background-radius: 1.0em; /* makes sure this remains circular */
 }
@@ -234,47 +240,51 @@
     -fx-border-color: null;
 }*/
 
-
-
 /**** TextArea & TextField ****/
 .text-area,
 .text-field {
     /*-fx-padding: 0;*/
     /*-fx-cursor: default;*/
-    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border-color, -fx-inner-border-color, paper-white; /*linear-gradient(to bottom, derive(-fx-text-box-border, -10%), -fx-text-box-border),
-        derive(-fx-base,-1%);*/
+    -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border-color, -fx-inner-border-color, paper-white;
+    /*linear-gradient(to bottom, derive(-fx-text-box-border, -10%), -fx-text-box-border),
+           derive(-fx-base,-1%);*/
     -fx-background-insets: 0px -1px -1px 0px, 0px, 0px, 1px;
     -fx-background-radius: 3px, 2px, 2px, 1px;
 }
+
 .text-area:hover,
 .text-field:hover {
     -fx-background-color: light-blue, light-blue, light-blue, paper-white;
 }
+
 .text-area > .scroll-pane {
     -fx-background-color: null;
 }
+
 .text-area > .scroll-pane > .scroll-bar:horizontal {
     -fx-background-radius: 0 0 2 2;
 }
+
 .text-area > .scroll-pane > .scroll-bar:vertical {
     -fx-background-radius: 0 2 2 0;
 }
+
 .text-area > .scroll-pane > .corner {
     -fx-background-radius: 0 0 2 0;
 }
+
 .text-area .content {
     /*the is 1px less top and bottom than TextInput because of scrollpane border */
     -fx-padding: 0.25em 0.583em 0.25em 0.583em; /* 3 7 3 7 */
     -fx-cursor: text;
-    -fx-background-color:
-        linear-gradient(from 0px 0px to 0px 4px, derive(-fx-control-inner-background, -8%), -fx-control-inner-background);
+    -fx-background-color: linear-gradient(from 0px 0px to 0px 4px, derive(-fx-control-inner-background, -8%), -fx-control-inner-background);
     -fx-background-radius: 2;
 }
+
 .text-area:focused .content {
-    -fx-background-color: 
-        -fx-control-inner-background,
-        -fx-faint-focus-color,
-        linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
+    -fx-background-color: -fx-control-inner-background,
+    -fx-faint-focus-color,
+    linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
     -fx-background-insets: 0, 0, 2;
     -fx-background-radius: 2, 1, 0;
 }

@@ -19,30 +19,30 @@ public class MouseSystem {
 
     private SimpleObjectProperty<MouseEvent> currentChar = new SimpleObjectProperty<>();
 
-    public void takeInput(MouseEvent k) {
-		fillQ.add(k);
+    public void takeInput (MouseEvent k) {
+        fillQ.add(k);
     }
 
-    public void processInputs() {
+    public void processInputs () {
         toggleQueues();
         while (!processQ.isEmpty()) {
             MouseEvent k = processQ.poll();
             if (k != null) {
                 currentChar.set(k);
             }
-            
+
         }
     }
 
-    public void listenToMousePress(ChangeListener listener) {
+    public void listenToMousePress (ChangeListener listener) {
         currentChar.addListener(listener);
     }
 
-    public void unListenToMousePress(ChangeListener listener) {
+    public void unListenToMousePress (ChangeListener listener) {
         currentChar.removeListener(listener);
     }
 
-    private void toggleQueues() {
+    private void toggleQueues () {
         if (fillQ == firstQueue) {
             fillQ = secondQueue;
             processQ = firstQueue;
@@ -52,7 +52,7 @@ public class MouseSystem {
         }
     }
 
-    public MouseEvent getCurrentCharKeyEvent() {
+    public MouseEvent getCurrentCharKeyEvent () {
         return currentChar.get();
     }
 

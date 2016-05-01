@@ -7,13 +7,10 @@ import api.IGameScript;
 import api.ILevel;
 import api.IPhysicsEngine;
 import api.ISystemManager;
-
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
-
 import events.EventSystem;
 import groovy.lang.GroovyShell;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import model.physics.PhysicsEngine;
 import model.physics.RealisticVelocityCalculator;
@@ -57,13 +54,13 @@ public class Level implements ILevel {
     }
 
     @Override
-    public void setName (String name) {
-        universe.setName(name);
+    public String getName () {
+        return universe.getName();
     }
 
     @Override
-    public String getName () {
-        return universe.getName();
+    public void setName (String name) {
+        universe.setName(name);
     }
 
     @Override
@@ -83,7 +80,7 @@ public class Level implements ILevel {
 
     @Override
     public String init (GroovyShell shell, ISystemManager game, Scene scene) {
-    	setOnInput(scene);
+        setOnInput(scene);
         gameScripts = new ArrayList<>();
         String returnMessage = "";
         String key = myResources.getString("script"); // TODO: don't hard-code
@@ -111,7 +108,7 @@ public class Level implements ILevel {
 
     @Override
     public void update (double dt) {
-		getEventSystem().updateInputs(dt);
+        getEventSystem().updateInputs(dt);
         gameScripts.stream().forEach(gs -> gs.update(dt));
         getPhysicsEngine().update(this, dt); // TODO: remove
         //handleCollisions();
@@ -145,29 +142,29 @@ public class Level implements ILevel {
     public void setOnInput (Scene scene) {
         getEventSystem().setOnInput(scene);
     }
-    
+
     @Override
-    public void setLevelOverAndLoadNextLevel(String nextLevelPath) {
-    	levelOverBool = true;
-    	this.nextLevelPath = nextLevelPath;
-    }
-    
-    @Override
-    public boolean checkIfLevelOver() {
-    	return levelOverBool; 
+    public void setLevelOverAndLoadNextLevel (String nextLevelPath) {
+        levelOverBool = true;
+        this.nextLevelPath = nextLevelPath;
     }
 
     @Override
-    public String getNextLevelPath() {
-    	return nextLevelPath;
+    public boolean checkIfLevelOver () {
+        return levelOverBool;
     }
-    
+
+    @Override
+    public String getNextLevelPath () {
+        return nextLevelPath;
+    }
+
     private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         myResources = ResourceBundle.getBundle(DefaultStrings.LANG_LOC.getDefault() + DefaultStrings.DEFAULT_LANGUAGE.getDefault());
         eventSystem.setLevel(this);
         levelOverBool = false;
-        nextLevelPath ="";
+        nextLevelPath = "";
     }
 
 }

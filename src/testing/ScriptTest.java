@@ -28,14 +28,14 @@ public class ScriptTest {
     private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
 
     @Before
-    public void setUp() {
+    public void setUp () {
         final IEntity entity = new Entity();
         ID = entity.getID();
         universe.addEntity(entity);
     }
 
     @Test
-    public void teleportTest() {
+    public void teleportTest () {
         IEntity entity = universe.getEntity(ID);
         entity.addComponent(new Position());
         Action action = new Action(TELEPORT_PATH);

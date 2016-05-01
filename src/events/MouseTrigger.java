@@ -9,40 +9,40 @@ import javafx.scene.input.MouseEvent;
 /***
  * @author ani, roxanne
  *         Authors: Anirudh Jonnavithula, Roxanne Baker
- *         Listeners that notify the event system if a specific key is pressed. 
+ *         Listeners that notify the event system if a specific key is pressed.
  *         Created 04/27/16
  */
 
 public class MouseTrigger extends InputTrigger {
 
-	private MouseButton button;
-	
-    public MouseTrigger(MouseButton button, EventType eventType) {
-    	super(eventType);
-    	setButton(button);
+    private MouseButton button;
+
+    public MouseTrigger (MouseButton button, EventType eventType) {
+        super(eventType);
+        setButton(button);
     }
-    
+
     @Override
-    public boolean meetsCriteria(ObservableValue observable, Object oldValue, Object newValue) {
-    	if(getEventType() == ((InputEvent)newValue).getEventType()) {
-			MouseEvent mouse = (MouseEvent)newValue;
-			if(mouse.getButton() == getButton()) {
-				return true;
-			}
-		}
-		return false;
+    public boolean meetsCriteria (ObservableValue observable, Object oldValue, Object newValue) {
+        if (getEventType() == ((InputEvent) newValue).getEventType()) {
+            MouseEvent mouse = (MouseEvent) newValue;
+            if (mouse.getButton() == getButton()) {
+                return true;
+            }
+        }
+        return false;
     }
-    
-    public String toString() {
-    	return getButton().toString()+":"+getEventType().toString();
+
+    public String toString () {
+        return getButton().toString() + ":" + getEventType().toString();
     }
-    
-    protected MouseButton getButton() {
-    	return button;
+
+    protected MouseButton getButton () {
+        return button;
     }
-    
-    private void setButton(MouseButton button) {
-    	this.button = button;
+
+    private void setButton (MouseButton button) {
+        this.button = button;
     }
-    
+
 }

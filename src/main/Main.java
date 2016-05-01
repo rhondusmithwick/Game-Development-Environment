@@ -1,36 +1,37 @@
-
 package main;
 
 import javafx.application.Application;
 import javafx.stage.Stage;
 import view.enums.GUISize;
 
-public class Main extends Application{
+public class Main extends Application {
 
-		private Stage myStage;
+    private Stage myStage;
 
-		/**
-		 * Sets up a stage to launch our window and initializes the splash screen.
-		 * @param stage 
-		 */
+    /**
+     * Launches our program.
+     *
+     * @param args
+     */
 
-		@Override
-		public void start (Stage stage) {
-			System.setProperty("glass.accessible.force", "false");
-			myStage = stage;
-			myStage.setTitle("VOOGA");
-			myStage.setWidth(GUISize.MAIN_SIZE.getSize());
-			myStage.setHeight(GUISize.MAIN_SIZE.getSize());
-			Vooga vooga = new Vooga(myStage);
-			vooga.init();
-		}
+    public static void main (String[] args) {
+        launch(args);
+    }
 
-		/**
-		 * Launches our program.
-		 * @param args
-		 */
+    /**
+     * Sets up a stage to launch our window and initializes the splash screen.
+     *
+     * @param stage
+     */
 
-		public static void main (String[] args) {
-			launch(args);
-		}
+    @Override
+    public void start (Stage stage) {
+        System.setProperty("glass.accessible.force", "false");
+        myStage = stage;
+        myStage.setTitle("VOOGA");
+        myStage.setWidth(GUISize.MAIN_SIZE.getSize());
+        myStage.setHeight(GUISize.MAIN_SIZE.getSize());
+        Vooga vooga = new Vooga(myStage);
+        vooga.init();
+    }
 }

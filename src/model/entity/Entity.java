@@ -28,16 +28,12 @@ public class Entity implements IEntity {
 
     @XStreamAsAttribute()
     private final String ID;
-
-    @XStreamAsAttribute()
-    private String name;
-
     @XStreamAlias("components")
     private final Map<Class<? extends IComponent>, List<IComponent>> componentMap = Maps.newLinkedHashMap();
-
     @XStreamAlias("Specs")
     private final Map<Class<? extends IComponent>, Integer> specs = Maps.newLinkedHashMap();
-
+    @XStreamAsAttribute()
+    private String name;
     private Set<String> groupIDs = new HashSet<>();
 
     public Entity () {

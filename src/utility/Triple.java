@@ -22,7 +22,7 @@ public class Triple<A, B, C> extends Pair<A, B> {
      * @param _2 second value
      * @param _3 third value
      */
-    public Triple(A _1, B _2, C _3) {
+    public Triple (A _1, B _2, C _3) {
         super(_1, _2);
         this._3 = _3;
     }
@@ -32,7 +32,7 @@ public class Triple<A, B, C> extends Pair<A, B> {
      *
      * @return the thrid value
      */
-    public C _3() {
+    public C _3 () {
         return _3;
     }
 }

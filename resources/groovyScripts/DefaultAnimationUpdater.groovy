@@ -19,6 +19,6 @@ void ensureDefault(IEntity entity) {
     animatedSprite.setDefaultAnimation(orientation.getOrientationString() + "Default");
 }
 
-for (IEntity entity: universe.getEntitiesWithComponents(AnimatedSprite.class, Orientation.class)) {
+for (IEntity entity : universe.getEntitiesWithComponents(AnimatedSprite.class, Orientation.class)) {
     ensureDefault(entity);
 }

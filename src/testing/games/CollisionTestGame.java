@@ -2,16 +2,18 @@ package testing.games;
 
 /**
  * Created by cyao42 on 4/22/2016.
- *
+ * <p>
  * Author: Carolyn Yao
  * refactored version of game for testing collision events.
  */
 
 import api.IEntity;
+import api.IEventSystem;
 import api.ILevel;
 import api.IPhysicsEngine;
-import events.*;
-import api.IEventSystem;
+import events.Action;
+import events.EventFactory;
+import events.Trigger;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
@@ -25,6 +27,7 @@ import model.component.physics.RestitutionCoefficient;
 import model.component.visual.Sprite;
 import model.entity.Entity;
 import model.entity.Level;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,10 +37,6 @@ public class CollisionTestGame {
     public static final int KEY_INPUT_SPEED = 5;
     private static Group root;
     private final ILevel universe = new Level();
-
-    //private final EventSystem eventSystem = new EventSystem(universe);
-    private IEventSystem eventSystem = universe.getEventSystem();
-    private IPhysicsEngine physics = universe.getPhysicsEngine();
     //private IEntity character;
     //private IEntity platform;
     private final String IMAGE_PATH_BLASTOISE = "resources/images/blastoise.png";
@@ -47,20 +46,23 @@ public class CollisionTestGame {
     private final String moveRightScriptPath = "resources/groovyScripts/keyInputMoveRight.groovy";
     private final String moveLeftScriptPath = "resources/groovyScripts/keyInputMoveLeft.groovy";
     private final String jumpScriptPath = "resources/groovyScripts/keyInputJump.groovy";
-    private Scene myScene;
     EventFactory eventFactory = new EventFactory();
+    //private final EventSystem eventSystem = new EventSystem(universe);
+    private IEventSystem eventSystem = universe.getEventSystem();
+    private IPhysicsEngine physics = universe.getPhysicsEngine();
+    private Scene myScene;
 
     /**
      * Returns name of the game.
      */
-    public String getTitle() {
+    public String getTitle () {
         return TITLE;
     }
 
     /**
      * Create the game's scene
      */
-    public Scene init(int width, int height) {
+    public Scene init (int width, int height) {
         // Create a scene graph to organize the scene
         root = new Group();
         // Create a place to see the shapes
@@ -70,7 +72,7 @@ public class CollisionTestGame {
         return myScene;
     }
 
-    public void initEngine() {
+    public void initEngine () {
         Entity char1 = addCharacter("Anolyn", "blastoise.xml", IMAGE_PATH_BLASTOISE, 50.0, 200.0, "1");
         Entity char2 = addCharacter("Cani", "charizard.xml", IMAGE_PATH_CHARIZARD, 200.0, 200.0, "2");
         Map<String, Object> parameters = new HashMap<String, Object>();
@@ -90,7 +92,7 @@ public class CollisionTestGame {
         registerEventSetup("KeyTrigger", moveRightScriptPath, parameters, "L");
     }
 
-    private Entity addCharacter(String name, String XMLName, String imagePath, Double posX, Double posY, String id) {
+    private Entity addCharacter (String name, String XMLName, String imagePath, Double posX, Double posY, String id) {
         //int var = 0;
         //if (var == 0) {
         Entity character = new Entity(name);
@@ -108,19 +110,19 @@ public class CollisionTestGame {
         return character;
     }
 
-    public void registerEventSetup(String className, String scriptName, Map<String, Object> params, Object... args) {
+    public void registerEventSetup (String className, String scriptName, Map<String, Object> params, Object... args) {
         //Pair<Trigger, Action> event = eventFactory.createEvent(className, scriptName, args);
         Trigger trigger = eventFactory.createTrigger(className, args);
         Action action = new Action(scriptName, params);
         eventSystem.registerEvent(trigger, action);
     }
 
-    public void step(double dt) {
+    public void step (double dt) {
         physics.update(universe, dt);
         eventSystem.updateInputs(dt);
     }
 
-    public void drawCharacter(IEntity character) {
+    public void drawCharacter (IEntity character) {
         Sprite imgPath = character.getComponent(Sprite.class);
         ImageView charSprite = imgPath.getImageView();
         charSprite.setLayoutX(character.getComponent(Position.class).getX());

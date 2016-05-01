@@ -1,6 +1,10 @@
 package view;
 
-import api.*;
+import api.IEntity;
+import api.IEntitySystem;
+import api.ILevel;
+import api.ISystemManager;
+import api.IView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -45,330 +49,328 @@ import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.PopUp;
 import view.utilities.SpriteUtilities;
-import voogasalad.util.reflection.Reflection;
 import view.utilities.ToMainMenu;
+import voogasalad.util.reflection.Reflection;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.Map.Entry;
+import java.util.ResourceBundle;
 
 /**
- * 
  * @author Tom
- *
  */
 
 public class View implements IView {
 
-	private final double MILLISECOND_DELAY = 10;
-	private final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
-	private final double gapSize = 1;
-	private final ConsoleTextArea console = new ConsoleTextArea();
-	private Group root = new Group();
-	private ISystemManager model;
-	private BorderPane pane;
-	private SubScene subScene;
-	private ViewUtilities viewUtils;
-	private DragAndResizeDynamic DandR;
-	private GameLoopManager manager;
-	private HBox buttonBox = new HBox();
-	private ResourceBundle myResources;
-	private boolean debug;
-	private Scene scene;
-	private List<PopUp> myPopUpList = new ArrayList<PopUp>();
+    private final double MILLISECOND_DELAY = 10;
+    private final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
+    private final double gapSize = 1;
+    private final ConsoleTextArea console = new ConsoleTextArea();
+    private Group root = new Group();
+    private ISystemManager model;
+    private BorderPane pane;
+    private SubScene subScene;
+    private ViewUtilities viewUtils;
+    private DragAndResizeDynamic DandR;
+    private GameLoopManager manager;
+    private HBox buttonBox = new HBox();
+    private ResourceBundle myResources;
+    private boolean debug;
+    private Scene scene;
+    private List<PopUp> myPopUpList = new ArrayList<PopUp>();
 
-	public View(double viewWidth, double viewHeight, double sceneWidth, double sceneHeight, ILevel level, String language, boolean debug) {
-		subScene = this.createSubScene(root, viewWidth, viewHeight);
-		subScene.setOnMouseClicked(e -> deletePopUps(e));
-		this.debug=debug;
-		myResources = ResourceBundle.getBundle(language);
-		initConsole();
-		initButtons();
-		pane = createMainBorderPane(root, this.subScene);
-		scene = new Scene(pane, sceneWidth, sceneHeight);
-		model = new SystemManager(scene, level);
-		manager = new GameLoopManager(language, model);
-		viewUtils = new ViewUtilities();
-		if(this.debug){
-			DandR = new DragAndResizeDynamic();
-			DandR.makeRootDragAndResize(root);
-		}
-		ViewFeatureMethods.startTimeline(MILLISECOND_DELAY, e -> step(SECOND_DELAY));
-	}
+    public View (double viewWidth, double viewHeight, double sceneWidth, double sceneHeight, ILevel level, String language, boolean debug) {
+        subScene = this.createSubScene(root, viewWidth, viewHeight);
+        subScene.setOnMouseClicked(e -> deletePopUps(e));
+        this.debug = debug;
+        myResources = ResourceBundle.getBundle(language);
+        initConsole();
+        initButtons();
+        pane = createMainBorderPane(root, this.subScene);
+        scene = new Scene(pane, sceneWidth, sceneHeight);
+        model = new SystemManager(scene, level);
+        manager = new GameLoopManager(language, model);
+        viewUtils = new ViewUtilities();
+        if (this.debug) {
+            DandR = new DragAndResizeDynamic();
+            DandR.makeRootDragAndResize(root);
+        }
+        ViewFeatureMethods.startTimeline(MILLISECOND_DELAY, e -> step(SECOND_DELAY));
+    }
 
-	private void deletePopUps(MouseEvent e) {
-		if (e.getButton() == MouseButton.PRIMARY){
-		for (PopUp popUp : myPopUpList){
-			popUp.closeScene();
-		}
-		myPopUpList.clear();
-	}
-	}
+    private void deletePopUps (MouseEvent e) {
+        if (e.getButton() == MouseButton.PRIMARY) {
+            for (PopUp popUp : myPopUpList) {
+                popUp.closeScene();
+            }
+            myPopUpList.clear();
+        }
+    }
 
-	private void createLoopManager() {
-		manager.show();
-	}
-	@Override
-	public void setScene(Scene scene) {
-		model.getLevel().setOnInput(scene);
-	}
+    private void createLoopManager () {
+        manager.show();
+    }
 
-	public Pane getPane() {
-		return this.pane;
-	}
+    public Pane getPane () {
+        return this.pane;
+    }
 
-	public SubScene getSubScene() {
-		return this.subScene;
-	}
+    public SubScene getSubScene () {
+        return this.subScene;
+    }
 
-	public void startTimeline() {
-		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> this.step(SECOND_DELAY));
-		Timeline timeline = new Timeline();
-		timeline.setCycleCount(Timeline.INDEFINITE);
-		timeline.getKeyFrames().add(frame);
-		timeline.play();
-	}
+    public void startTimeline () {
+        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> this.step(SECOND_DELAY));
+        Timeline timeline = new Timeline();
+        timeline.setCycleCount(Timeline.INDEFINITE);
+        timeline.getKeyFrames().add(frame);
+        timeline.play();
+    }
 
-	private SubScene createSubScene(Group root, double width, double height) {
-		this.root = root;
-		SubScene subScene = new SubScene(root, width, height);
-		subScene.setFill(Color.WHITE);
-		return subScene;
-	}
+    private SubScene createSubScene (Group root, double width, double height) {
+        this.root = root;
+        SubScene subScene = new SubScene(root, width, height);
+        subScene.setFill(Color.WHITE);
+        return subScene;
+    }
 
-	public void toggleHighlight(IEntity entity) {
-		viewUtils.toggleHighlight(entity);
-	}
+    public void toggleHighlight (IEntity entity) {
+        viewUtils.toggleHighlight(entity);
+    }
 
-	@Override
-	public IEntitySystem getEntitySystem() {
-		return model.getLevel().getEntitySystem();
-	}
+    @Override
+    public IEntitySystem getEntitySystem () {
+        return model.getLevel().getEntitySystem();
+    }
 
-	@Override
-	public ILevel getLevel() {
-		return model.getLevel();
-	}
+    @Override
+    public ILevel getLevel () {
+        return model.getLevel();
+    }
 
-	public void highlight(IEntity entity) {
-		viewUtils.highlight(entity);
-	}
+    public void highlight (IEntity entity) {
+        viewUtils.highlight(entity);
+    }
 
-	public Scene getScene() {
-		return scene;
-	}
+    public Scene getScene () {
+        return scene;
+    }
 
-	private ImageView getUpdatedImageView(IEntity e) {
-		Position pos = e.getComponent(Position.class);
-		ImageView imageView = SpriteUtilities.getImageView(e);
-		imageView.setId(e.getID());
-		imageView.setTranslateX(pos.getX());
-		imageView.setTranslateY(pos.getY());
-		if (e.hasComponent(Orientation.class)) {
-			Orientation o = e.getComponent(Orientation.class);
-			imageView.setRotate(o.getOrientation());
-		}
-		return imageView;
-	}
+    @Override
+    public void setScene (Scene scene) {
+        model.getLevel().setOnInput(scene);
+    }
 
-	private Collection<Shape> getCollisionShapes(IEntity e) {
-		List<Collision> collisions = e.getComponentList(Collision.class);
-		Collection<Shape> shapes = new ArrayList<>();
-		if(collisions.isEmpty()) {
-			return shapes;
-		}
-		Collection<Bounds> bounds = new ArrayList<>();
-		for (Collision c : collisions) {
-			bounds.add(c.getMask());
-		}
-		for (Bounds b : bounds) {
-			if (b == null) {
-				continue;
-			}
-			Shape r = new Rectangle(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
-			r.setFill(Color.TRANSPARENT);
-			r.setStroke(Color.RED);
-			r.setStrokeWidth(2);
-			shapes.add(r);
-		}
-		return shapes;
-	}
+    private ImageView getUpdatedImageView (IEntity e) {
+        Position pos = e.getComponent(Position.class);
+        ImageView imageView = SpriteUtilities.getImageView(e);
+        imageView.setId(e.getID());
+        imageView.setTranslateX(pos.getX());
+        imageView.setTranslateY(pos.getY());
+        if (e.hasComponent(Orientation.class)) {
+            Orientation o = e.getComponent(Orientation.class);
+            imageView.setRotate(o.getOrientation());
+        }
+        return imageView;
+    }
 
-	@SuppressWarnings("unchecked")
-	private void step(double dt) {
-		// simulate
-		model.step(dt);
-		// render
-		root.getChildren().clear();
-		List<IEntity> entities = model.getEntitySystem().getAllEntities();
-		for (IEntity e : entities) {
-			if (e.hasComponents(Sprite.class, Position.class)) {
-				if(debug){
-					root.getChildren().addAll(getCollisionShapes(e));
-				}
-				if(debug){
-					DandR.makeEntityDragAndResize(e);
-				}
-				ImageView imageView = getUpdatedImageView(e);
-				imageView.setOnContextMenuRequested(event -> showPopUp(e,event));
-				root.getChildren().add(imageView);
-				if (!root.getChildren().contains(imageView)) {
-					root.getChildren().add(imageView);
-				}
-			}
+    private Collection<Shape> getCollisionShapes (IEntity e) {
+        List<Collision> collisions = e.getComponentList(Collision.class);
+        Collection<Shape> shapes = new ArrayList<>();
+        if (collisions.isEmpty()) {
+            return shapes;
+        }
+        Collection<Bounds> bounds = new ArrayList<>();
+        for (Collision c : collisions) {
+            bounds.add(c.getMask());
+        }
+        for (Bounds b : bounds) {
+            if (b == null) {
+                continue;
+            }
+            Shape r = new Rectangle(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
+            r.setFill(Color.TRANSPARENT);
+            r.setStroke(Color.RED);
+            r.setStrokeWidth(2);
+            shapes.add(r);
+        }
+        return shapes;
+    }
 
-			if(e.hasComponents(HUD.class, Position.class)) {
-				String hud = e.getComponent(HUD.class).getHUD();
-				String shape = "", color = "";
-				double width = 0, height = 0;
-				for(String str: hud.split(";")) {
-					String[] strip = str.split(":");
-					String key = strip[0];
-					String val = strip[1];
-					if(key.equals(myResources.getString("shape"))) {
-						shape = val;
-					}
-					if(key.equals(myResources.getString("width"))) {
-						width = Double.parseDouble(val);
-					}
-					if(key.equals(myResources.getString("height"))) {
-						height = Double.parseDouble(val);
-					}
-					if(key.equals(myResources.getString("color"))) {
-						color = val;
-					}
-				}
-				Shape s = (Shape) Reflection.createInstance(shape, width, height);
-				String[] strip = color.split(",");
-				s.setFill(Color.rgb(Integer.parseInt(strip[0]), Integer.parseInt(strip[1]), Integer.parseInt(strip[2])));
-				s.setOpacity(Double.parseDouble(strip[3]));
-				double x = e.getComponent(Position.class).getX();
-				double y = e.getComponent(Position.class).getY();
-				double padding = GUISize.HUD_PADDING.getSize();
-				s.setTranslateX(x + padding);
-				s.setTranslateY(y + padding);
-				String text = "";
-				if (e.hasComponent(Score.class)) {
-					double score = e.getComponent(Score.class).getScore();
-					text += Score.class.getSimpleName() + ": " + Double.toString(score) + "\n";
-				}
-				if (e.hasComponent(Lives.class)) {
-					int lives = e.getComponent(Lives.class).getLives();
-					text += Lives.class.getSimpleName() + ": " + Integer.toString(lives)  + "\n";
-				}
-				if (e.hasComponent(Health.class)) {
-					double health = e.getComponent(Health.class).getHealth();
-					text += Health.class.getSimpleName() + ": " + Double.toString(health)  + "\n";
-				}
-				StackPane stack = new StackPane();
-				Text t = new Text(text);
-				t.setBoundsType(TextBoundsType.VISUAL); 
-				stack.getChildren().addAll(s, t);
-				root.getChildren().add(stack);
-			}
-		}
-	}
+    @SuppressWarnings("unchecked")
+    private void step (double dt) {
+        // simulate
+        model.step(dt);
+        // render
+        root.getChildren().clear();
+        List<IEntity> entities = model.getEntitySystem().getAllEntities();
+        for (IEntity e : entities) {
+            if (e.hasComponents(Sprite.class, Position.class)) {
+                if (debug) {
+                    root.getChildren().addAll(getCollisionShapes(e));
+                }
+                if (debug) {
+                    DandR.makeEntityDragAndResize(e);
+                }
+                ImageView imageView = getUpdatedImageView(e);
+                imageView.setOnContextMenuRequested(event -> showPopUp(e, event));
+                root.getChildren().add(imageView);
+                if (!root.getChildren().contains(imageView)) {
+                    root.getChildren().add(imageView);
+                }
+            }
 
-	private BorderPane createMainBorderPane(Group root, SubScene subScene) {
-		BorderPane pane = new BorderPane();
-		ScrollPane center = new ScrollPane();
-		root.setManaged(false);
-		pane.setPadding(new Insets(gapSize, gapSize, gapSize, gapSize));
-		pane.setCenter(center);
-		center.setContent(subScene);
-		center.setVbarPolicy(ScrollBarPolicy.NEVER);
-		center.setHbarPolicy(ScrollBarPolicy.NEVER);
-		pane.setBottom(setUpInputPane());
-		return pane;
-	}
+            if (e.hasComponents(HUD.class, Position.class)) {
+                String hud = e.getComponent(HUD.class).getHUD();
+                String shape = "", color = "";
+                double width = 0, height = 0;
+                for (String str : hud.split(";")) {
+                    String[] strip = str.split(":");
+                    String key = strip[0];
+                    String val = strip[1];
+                    if (key.equals(myResources.getString("shape"))) {
+                        shape = val;
+                    }
+                    if (key.equals(myResources.getString("width"))) {
+                        width = Double.parseDouble(val);
+                    }
+                    if (key.equals(myResources.getString("height"))) {
+                        height = Double.parseDouble(val);
+                    }
+                    if (key.equals(myResources.getString("color"))) {
+                        color = val;
+                    }
+                }
+                Shape s = (Shape) Reflection.createInstance(shape, width, height);
+                String[] strip = color.split(",");
+                s.setFill(Color.rgb(Integer.parseInt(strip[0]), Integer.parseInt(strip[1]), Integer.parseInt(strip[2])));
+                s.setOpacity(Double.parseDouble(strip[3]));
+                double x = e.getComponent(Position.class).getX();
+                double y = e.getComponent(Position.class).getY();
+                double padding = GUISize.HUD_PADDING.getSize();
+                s.setTranslateX(x + padding);
+                s.setTranslateY(y + padding);
+                String text = "";
+                if (e.hasComponent(Score.class)) {
+                    double score = e.getComponent(Score.class).getScore();
+                    text += Score.class.getSimpleName() + ": " + Double.toString(score) + "\n";
+                }
+                if (e.hasComponent(Lives.class)) {
+                    int lives = e.getComponent(Lives.class).getLives();
+                    text += Lives.class.getSimpleName() + ": " + Integer.toString(lives) + "\n";
+                }
+                if (e.hasComponent(Health.class)) {
+                    double health = e.getComponent(Health.class).getHealth();
+                    text += Health.class.getSimpleName() + ": " + Double.toString(health) + "\n";
+                }
+                StackPane stack = new StackPane();
+                Text t = new Text(text);
+                t.setBoundsType(TextBoundsType.VISUAL);
+                stack.getChildren().addAll(s, t);
+                root.getChildren().add(stack);
+            }
+        }
+    }
 
-	private BorderPane setUpInputPane() {
-		BorderPane pane = new BorderPane();
-		if(debug){
-			pane.setTop(console);
-		}
-		pane.setBottom(buttonBox);
-		return pane;
-	}
+    private BorderPane createMainBorderPane (Group root, SubScene subScene) {
+        BorderPane pane = new BorderPane();
+        ScrollPane center = new ScrollPane();
+        root.setManaged(false);
+        pane.setPadding(new Insets(gapSize, gapSize, gapSize, gapSize));
+        pane.setCenter(center);
+        center.setContent(subScene);
+        center.setVbarPolicy(ScrollBarPolicy.NEVER);
+        center.setHbarPolicy(ScrollBarPolicy.NEVER);
+        pane.setBottom(setUpInputPane());
+        return pane;
+    }
 
-	private void initButtons() {
-		if(debug){
-			buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("evaluate"), e -> this.evaluate()));
-			buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("loopManager"), e -> this.createLoopManager()));
-		}
-		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("mainMenu"), e -> ToMainMenu.toMainMenu(pane)));
-		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("startGameLoop"), e -> this.model.play()));
-		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("pauseGameLoop"), e -> this.model.pauseLoop()));
-	}
+    private BorderPane setUpInputPane () {
+        BorderPane pane = new BorderPane();
+        if (debug) {
+            pane.setTop(console);
+        }
+        pane.setBottom(buttonBox);
+        return pane;
+    }
 
-	private void mainMenu() { 
-		Stage myStage = (Stage) pane.getScene().getWindow();
-		myStage.setWidth(GUISize.MAIN_SIZE.getSize());
-		myStage.setHeight(GUISize.MAIN_SIZE.getSize());
-		Vooga vooga = new Vooga(myStage);
-		vooga.init();
-	}
-	
-	private void initConsole() {
-		console.setText(myResources.getString("enterCommands"));
-		console.appendText("\n\n");
+    private void initButtons () {
+        if (debug) {
+            buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("evaluate"), e -> this.evaluate()));
+            buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("loopManager"), e -> this.createLoopManager()));
+        }
+        buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("mainMenu"), e -> ToMainMenu.toMainMenu(pane)));
+        buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("startGameLoop"), e -> this.model.play()));
+        buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("pauseGameLoop"), e -> this.model.pauseLoop()));
+    }
 
-		console.setOnKeyPressed(e -> {
-			KeyCode keyCode = e.getCode();
-			if (keyCode == KeyCode.ENTER) {
-				this.evaluate();
-				e.consume();
-			}
-		});
-	}
-	
-	public void showPopUp(IEntity entity, ContextMenuEvent event) {
-		
-		Map<String, EventHandler<ActionEvent>> menuMap = new LinkedHashMap<String, EventHandler<ActionEvent>>();
-		menuMap.put(myResources.getString("remove"), e -> ViewFeatureMethods.removeFromDisplay(entity, getEntitySystem()));
-		menuMap.put(myResources.getString("sendBack"), e -> ViewFeatureMethods.sendToBack(entity, getEntitySystem()));
-		menuMap.put(myResources.getString("sendFront"), e -> ViewFeatureMethods.sendToFront(entity, getEntitySystem()));
-		menuMap.put(myResources.getString("sendBackOne"), e ->ViewFeatureMethods.sendBackward(entity, getEntitySystem()));
-		menuMap.put(myResources.getString("sendForwardOne"), e -> ViewFeatureMethods.sendForward(entity, getEntitySystem()));
-		
-		PopUp myPopUp = new PopUp(GUISize.POP_UP_WIDTH.getSize(),GUISize.POP_UP_HIEGHT.getSize());
-		myPopUp.show(setPopUp(menuMap),event.getScreenX(),event.getScreenY());
-		myPopUpList.add(myPopUp);
-	}
-	
-	public ScrollPane setPopUp(Map<String,EventHandler<ActionEvent>> map){
-		VBox box = new VBox();
-		for (Entry<String, EventHandler<ActionEvent>> entry : map.entrySet()){
-			Button button = ButtonFactory.makeButton(entry.getKey(), entry.getValue());
-			button.setMaxWidth(Double.MAX_VALUE);
-			box.getChildren().add(button);
-		}
-		return new ScrollPane(box);
-	}
+    private void mainMenu () {
+        Stage myStage = (Stage) pane.getScene().getWindow();
+        myStage.setWidth(GUISize.MAIN_SIZE.getSize());
+        myStage.setHeight(GUISize.MAIN_SIZE.getSize());
+        Vooga vooga = new Vooga(myStage);
+        vooga.init();
+    }
 
-	private void evaluate() {
-		String text = console.getText();
-		String command = text.substring(text.lastIndexOf("\n")).trim();
-		console.println("\n----------------");
-		try {
-			Object result = model.getShell().evaluate(command);
-			if (result != null) {
-				console.println(result.toString());
-			}
-		} catch (Exception e) {
-			console.println(e.getMessage());
-		}
-		console.println();
-	}
+    private void initConsole () {
+        console.setText(myResources.getString("enterCommands"));
+        console.appendText("\n\n");
 
-	@Override
-	public void dehighlight(IEntity entity) {
-		viewUtils.dehighlight(entity);
-	}
-	
+        console.setOnKeyPressed(e -> {
+            KeyCode keyCode = e.getCode();
+            if (keyCode == KeyCode.ENTER) {
+                this.evaluate();
+                e.consume();
+            }
+        });
+    }
+
+    public void showPopUp (IEntity entity, ContextMenuEvent event) {
+
+        Map<String, EventHandler<ActionEvent>> menuMap = new LinkedHashMap<String, EventHandler<ActionEvent>>();
+        menuMap.put(myResources.getString("remove"), e -> ViewFeatureMethods.removeFromDisplay(entity, getEntitySystem()));
+        menuMap.put(myResources.getString("sendBack"), e -> ViewFeatureMethods.sendToBack(entity, getEntitySystem()));
+        menuMap.put(myResources.getString("sendFront"), e -> ViewFeatureMethods.sendToFront(entity, getEntitySystem()));
+        menuMap.put(myResources.getString("sendBackOne"), e -> ViewFeatureMethods.sendBackward(entity, getEntitySystem()));
+        menuMap.put(myResources.getString("sendForwardOne"), e -> ViewFeatureMethods.sendForward(entity, getEntitySystem()));
+
+        PopUp myPopUp = new PopUp(GUISize.POP_UP_WIDTH.getSize(), GUISize.POP_UP_HIEGHT.getSize());
+        myPopUp.show(setPopUp(menuMap), event.getScreenX(), event.getScreenY());
+        myPopUpList.add(myPopUp);
+    }
+
+    public ScrollPane setPopUp (Map<String, EventHandler<ActionEvent>> map) {
+        VBox box = new VBox();
+        for (Entry<String, EventHandler<ActionEvent>> entry : map.entrySet()) {
+            Button button = ButtonFactory.makeButton(entry.getKey(), entry.getValue());
+            button.setMaxWidth(Double.MAX_VALUE);
+            box.getChildren().add(button);
+        }
+        return new ScrollPane(box);
+    }
+
+    private void evaluate () {
+        String text = console.getText();
+        String command = text.substring(text.lastIndexOf("\n")).trim();
+        console.println("\n----------------");
+        try {
+            Object result = model.getShell().evaluate(command);
+            if (result != null) {
+                console.println(result.toString());
+            }
+        } catch (Exception e) {
+            console.println(e.getMessage());
+        }
+        console.println();
+    }
+
+    @Override
+    public void dehighlight (IEntity entity) {
+        viewUtils.dehighlight(entity);
+    }
+
 }

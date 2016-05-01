@@ -24,7 +24,7 @@ public class Quad<A, B, C, D> extends Triple<A, B, C> {
      * @param _3 third value
      * @param _4 fourth value
      */
-    public Quad(A _1, B _2, C _3, D _4) {
+    public Quad (A _1, B _2, C _3, D _4) {
         super(_1, _2, _3);
         this._4 = _4;
     }
@@ -34,7 +34,7 @@ public class Quad<A, B, C, D> extends Triple<A, B, C> {
      *
      * @return the fourth value
      */
-    public D _4() {
+    public D _4 () {
         return _4;
     }
 }
