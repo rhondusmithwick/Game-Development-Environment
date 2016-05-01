@@ -1,7 +1,6 @@
 package testing.demo
 
 import api.IEntity
-import javafx.animation.Animation
 import model.component.audio.SoundEffect
 import model.component.character.Score
 import model.component.movement.Position
@@ -48,11 +47,10 @@ public class SpriteLoader {
 //        Sprite sprite = new Sprite();
 //        ImageView img = sprite.getImageView();
         AnimatedSprite animated = new AnimatedSprite();
+//        animated.createAnimation("LeftPunch");
 
         SoundEffect soundfx = new SoundEffect();
         e.addComponents(pos, animated, soundfx);
-        Animation animation = e.getComponent(AnimatedSprite.class).createAnimation("LeftPunch");
-        animation.play();
         return e;
     }
 
