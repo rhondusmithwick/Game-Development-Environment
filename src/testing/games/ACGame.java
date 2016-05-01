@@ -218,13 +218,14 @@ public class ACGame {
                     new PropertyTrigger(character.getID(), Position.class, "XPosition"),
                     new Action(healthScriptPath));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("D"), KeyEvent.KEY_PRESSED), new Action(moveRightScriptPath, map));
-            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("A"), KeyEvent.KEY_PRESSED), new Action(moveLeftScriptPath));
+            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("A"), KeyEvent.KEY_PRESSED), new Action(moveLeftScriptPath, map));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("A"), KeyEvent.KEY_RELEASED), new Action(stopScriptPath, map));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.SPACE, KeyEvent.KEY_PRESSED), new Action(animationScriptPath, map));
+            eventSystem.registerEvent(new KeyTrigger(KeyCode.SPACE, KeyEvent.KEY_PRESSED), new Action(stopScriptPath, map));
             map.clear();
             map.put("entityName", character.getName());
             map.put("velocityX", character.getComponent(Velocity.class).getVX());
-            map.put("velocityY", -500.0);
+            map.put("velocityY", -700.0);
             eventSystem.registerEvent(new PropertyTrigger(character.getID(), Position.class, "YPosition"), new Action(deGravityScriptPath));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_PRESSED), new Action(jumpScriptPath, map));
             // eventSystem.registerEvent(new MouseTrigger(MouseButton.PRIMARY, MouseEvent.MOUSE_CLICKED), new Action(moveLeftScriptPath));
