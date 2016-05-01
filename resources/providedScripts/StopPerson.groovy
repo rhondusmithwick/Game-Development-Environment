@@ -17,5 +17,7 @@ void resetVelocity (IEntity entity) {
 }
 
 for (IEntity entity: getEntitiesWithNamesAndIDs()) {
-    resetVelocity(entity);
+    if (entity.hasComponent(Velocity.class)) {
+        resetVelocity(entity);
+    }
 }

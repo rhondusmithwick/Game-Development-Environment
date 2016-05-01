@@ -4,7 +4,6 @@ import api.IEntity
 import groovy.transform.BaseScript
 import groovy.transform.Field
 import model.component.movement.Velocity
-import providedScripts.ScriptHelpers
 
 @BaseScript ScriptHelpers ScriptHelpers
 
@@ -22,6 +21,8 @@ void move(IEntity entity) {
     velocity.setVXY(movedX, movedY);
 }
 
-for (IEntity entity: getEntitiesWithNamesAndIDs()) {
-    move(entity);
+for (IEntity entity : getEntitiesWithNamesAndIDs()) {
+    if (entity.hasComponent(Velocity.class)) {
+        move(entity);
+    }
 }
