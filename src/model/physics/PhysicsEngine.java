@@ -10,7 +10,6 @@ import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.*;
 import model.component.visual.Sprite;
-import view.enums.DefaultStrings;
 import voogasalad.util.reflection.Reflection;
 
 import java.util.*;
@@ -69,12 +68,18 @@ public class PhysicsEngine implements IPhysicsEngine {
 			double dx = dt * velocity.getVX();
 			double dy = dt * velocity.getVY();
 			pos.add(dx, dy);
+//			ImageView imageView = p.getComponent(Sprite.class).getImageView();
+//			imageView.setTranslateX(pos.getX());
+//			imageView.setTranslateY(pos.getY());
+		});
+		resetCollisionMasks(universe.getEntitiesWithComponent(Collision.class));
+		moveCollidingEntities(universe);
+		entities.stream().forEach(p -> {
+			Position pos = p.getComponent(Position.class);
 			ImageView imageView = p.getComponent(Sprite.class).getImageView();
 			imageView.setTranslateX(pos.getX());
 			imageView.setTranslateY(pos.getY());
 		});
-		resetCollisionMasks(universe.getEntitiesWithComponent(Collision.class));
-		moveCollidingEntities(universe);
 	}
 	
 	public void moveCollidingEntities(ILevel universe) {
@@ -344,6 +349,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 		for(CollisionTypeEnum collisionType : CollisionTypeEnum.values()) {
 			ICollisionSide collision = (ICollisionSide) Reflection.createInstance(collisionType.getType());
 			double sideOverlap = collision.getOverlap(first.getMask(), second.getMask());
+			System.out.println(collision.getSide()+" "+sideOverlap);
 			if (sideOverlap < minOverlap) {
 				minOverlap = sideOverlap;
 				collisionSide = collision;

@@ -31,6 +31,7 @@ public class Action implements ISerializable {
 
     public Action(String scriptPath, Map<String, Object> parameters) {
         this(scriptPath);
+        System.out.println(parameters);
         this.parameters.putAll(parameters);
     }
 
@@ -42,7 +43,7 @@ public class Action implements ISerializable {
         } catch (ScriptException e) {
             //e.printStackTrace();
             e.printStackTrace();
-            System.out.println("Error with script:" + getScript());
+            System.out.println("Error with script:" + scriptPath);
         }
     }
 

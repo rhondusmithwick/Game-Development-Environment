@@ -1,4 +1,4 @@
-package groovyScripts
+package providedScripts
 
 import api.IEntity
 import api.ILevel
@@ -8,10 +8,10 @@ import groovy.transform.Field
  * This describes a set of functions that we ant every groovy script to have.
  * @author Rhondu Smithwick
  */
-@Field ILevel universe = (ILevel) binding.getVariable("universe");
+@Field universe = binding.getVariable("universe");
 
 boolean containsVariable(String variableName) {
-    return binding.variables.containsKey(variableName)
+    return binding.variables.containsKey(variableName);
 }
 
 Object getVariable(String variableName) {
@@ -33,4 +33,8 @@ List<IEntity> getEntitiesWithNamesAndIDs() {
         entities.addAll(universe.getEntitiesWithName(entityName));
     }
     return entities;
+}
+
+void workOnEntities(Closure closure) {
+    getEntitiesWithNamesAndIDs().each(closure);
 }

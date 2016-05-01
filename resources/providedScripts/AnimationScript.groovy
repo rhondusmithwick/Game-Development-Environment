@@ -1,8 +1,10 @@
-package groovyScripts
+package providedScripts
 
 import api.IEntity
 import groovy.transform.BaseScript
+import groovy.transform.Field
 import model.component.visual.AnimatedSprite
+
 @BaseScript ScriptHelpers ScriptHelpers
 
 /**
@@ -10,14 +12,15 @@ import model.component.visual.AnimatedSprite
  * @author Rhondu Smithwick
  */
 
-void animate(IEntity entity) {
+@Field String animationName = containsVariable("animationName") ? (String) getVariable("animationName") : "";
+
+def animate = { entity ->
     if (entity.hasComponent(AnimatedSprite.class)) {
         AnimatedSprite animatedSprite = entity.getComponent(AnimatedSprite.class);
-        String animationName = (String) getVariable("animationName");
-        animatedSprite.createAndPlayAnimation(animationName);
+        if (animatedSprite.hasAnimation(animationName)) {
+            animatedSprite.createAndPlayAnimation(animationName);
+        }
     }
 }
 
-for (IEntity entity: getEntitiesWithNamesAndIDs()) {
-    animate(entity);
-}
+workOnEntities(animate);

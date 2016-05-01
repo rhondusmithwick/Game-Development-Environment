@@ -109,7 +109,7 @@ public class EventParser
 		{
 			key = event.split("=")[0].split(":")[0].trim();
 			
-			parseResults.put(key, getFilename(event.split("=")[1]));
+			//parseResults.put(key, getFilename(event.split("=")[1]));
 		}
 		
 		return parseResults;

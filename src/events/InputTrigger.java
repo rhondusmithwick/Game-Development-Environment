@@ -1,5 +1,6 @@
 package events;
 
+import api.IInputSystem;
 import api.ILevel;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventType;
@@ -31,7 +32,7 @@ public abstract class InputTrigger extends Trigger {
     
     @Override
     @Deprecated
-    public void clearListener(ILevel universe, InputSystem inputSystem) {
+    public void clearListener(ILevel universe, IInputSystem inputSystem) {
         inputSystem.unListenToInput(this);
     }
     
@@ -42,7 +43,7 @@ public abstract class InputTrigger extends Trigger {
 
     @Override
     @Deprecated
-    public void addHandler(ILevel universe, InputSystem inputSystem) {
+    public void addHandler(ILevel universe, IInputSystem inputSystem) {
         inputSystem.listenToInput(this);
     }
     
