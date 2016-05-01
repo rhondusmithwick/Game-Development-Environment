@@ -5,7 +5,7 @@ import javafx.beans.property.SimpleObjectProperty;
 import utility.SingleProperty;
 
 public class HUD implements IComponent {
-	private static final String DEFAULT = "shape:Rectangle;width:100;height:100;color:10,10,10,1";
+	private static final String DEFAULT = "Shape:Rectangle;Width:100;Height:100;Color:10,10,10,1";
 	private final SingleProperty<String> singleProperty = new SingleProperty<>("HUD", DEFAULT);
 
 	public HUD() {

@@ -21,13 +21,19 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.scene.text.Text;
+import javafx.scene.text.TextBoundsType;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import main.Vooga;
+import model.component.character.Health;
+import model.component.character.Lives;
+import model.component.character.Score;
 import model.component.hud.HUD;
 import model.component.movement.Orientation;
 import model.component.movement.Position;
@@ -218,10 +224,8 @@ public class View implements IView {
 
 			if(e.hasComponents(HUD.class, Position.class)) {
 				String hud = e.getComponent(HUD.class).getHUD();
-				String shape = "Rectangle";
-				double width = 100;
-				double height = 100;
-				String color = "10,10,10,1";
+				String shape = "", color = "";
+				double width = 0, height = 0;
 				for(String str: hud.split(";")) {
 					String[] strip = str.split(":");
 					String key = strip[0];
@@ -240,7 +244,32 @@ public class View implements IView {
 					}
 				}
 				Shape s = (Shape) Reflection.createInstance(shape, width, height);
-
+				String[] strip = color.split(",");
+				s.setFill(Color.rgb(Integer.parseInt(strip[0]), Integer.parseInt(strip[1]), Integer.parseInt(strip[2])));
+				s.setOpacity(Double.parseDouble(strip[3]));
+				double x = e.getComponent(Position.class).getX();
+				double y = e.getComponent(Position.class).getY();
+				double padding = GUISize.HUD_PADDING.getSize();
+				s.setTranslateX(x + padding);
+				s.setTranslateY(y + padding);
+				String text = "";
+				if (e.hasComponent(Score.class)) {
+					double score = e.getComponent(Score.class).getScore();
+					text += Score.class.getSimpleName() + ": " + Double.toString(score) + "\n";
+				}
+				if (e.hasComponent(Lives.class)) {
+					int lives = e.getComponent(Lives.class).getLives();
+					text += Lives.class.getSimpleName() + ": " + Integer.toString(lives)  + "\n";
+				}
+				if (e.hasComponent(Health.class)) {
+					double health = e.getComponent(Health.class).getHealth();
+					text += Health.class.getSimpleName() + ": " + Double.toString(health)  + "\n";
+				}
+				StackPane stack = new StackPane();
+				Text t = new Text(text);
+				t.setBoundsType(TextBoundsType.VISUAL); 
+				stack.getChildren().addAll(s, t);
+				root.getChildren().add(stack);
 			}
 		}
 	}
