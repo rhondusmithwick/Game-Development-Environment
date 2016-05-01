@@ -53,6 +53,7 @@ public abstract class EventEditorTab extends Editor {
 	private String animationName;
 	private boolean animationView;
     private Map<String, Object> parameters;
+    private HBox parametersPane;
 
 	public EventEditorTab(String language, ObservableList<ILevel> levelList)
 	{
@@ -149,10 +150,9 @@ public abstract class EventEditorTab extends Editor {
         return actionReady;
 	}
 
-    public void addToMap(String a, String b) {
+    public void addToParameters(String a, String b) {
         parameters.put(a, b);
         flashText(addedParametersText);
-
         System.out.println(parameters);
     }
 
@@ -202,19 +202,20 @@ public abstract class EventEditorTab extends Editor {
         animationChooser = new AnimationChooser(entityForAnimation);
         animationName = animationChooser.initChooser();
         if (animationName != null) {
-            addToMap("animationName", animationName);
+            addToParameters("animationName", animationName);
             actionScriptPath = "AnimationScript.groovy";
         }
     }
 
     public void addParametersPane(VBox pane) {
         HBox parametersPane = new HBox(GUISize.EVENT_EDITOR_SUBPADDING.getSize());
+        this.parametersPane = parametersPane;
         TextField keyField = new TextField();
         TextField valueField = new TextField();
         parametersPane.getChildren().add(keyField);
         parametersPane.getChildren().add(valueField);
         parametersPane.getChildren().add(ButtonFactory.makeButton("Add Groovy Parameter",
-                e-> addToMap(keyField.getText(), valueField.getText())));
+                e-> addToParameters(keyField.getText(), valueField.getText())));
         parametersPane.getChildren().add(ButtonFactory.makeButton("Restart Groovy Parameters",
                 e-> clearParameters()));
         pane.getChildren().add(parametersPane);

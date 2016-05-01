@@ -12,7 +12,7 @@ public class TimeTrigger extends Trigger{
 	public TimeTrigger(double time) {
 		this.time = time;
 	}
-
+	
 	public TimeTrigger(Map<String, String> triggerMapDescription) {
 		time = Double.parseDouble(triggerMapDescription.get("time"));
 	}
