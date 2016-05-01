@@ -1,36 +1,39 @@
-package view.editor.eventeditor;
+package view.editor.eventeditor.tables;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.ResourceBundle;
 
+import api.IComponent;
 import api.IEntity;
 import api.ISerializable;
 import javafx.collections.ObservableList;
 import model.entity.Entity;
 
-
+/**
+ * Entity table.
+ * @author Alankmc
+ *
+ */
 public class EntityTable extends Table
 {
 	private ArrayList<String> entityNames;
 
-	public EntityTable(ObservableList<IEntity> entities, TableManager manager, String language)
+	/**
+	 * Constructor. Throws the exceptions in case the given method is not present in the manager class.
+	 * 
+	 * @param ObservableList<IEntity> entities
+	 * @param TableManger manager
+	 * @param String language
+	 * @throws NoSuchMethodException
+	 * @throws SecurityException
+	 */
+	public EntityTable(ObservableList<IEntity> entities, TableManager manager, String language) throws NoSuchMethodException, SecurityException
 	{
-		super(manager, ResourceBundle.getBundle(language).getString("pickEntity"));
-
-
-		// Add change listener
-		getTable().
-		getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> 
-		{
-			try
-			{
-				manager.entityWasClicked((Entity)observableValue.getValue().getData());
-			} catch (Exception E)
-			{
-				// TODO bad bad bad
-			}
-		}
-				);
+		// Passes the manager's pickEntity
+		super(manager, ResourceBundle.getBundle(language).getString("pickEntity"), 
+				manager.getClass().getMethod("entityWasClicked", Entity.class),
+				Entity.class);	
+		
 		entityNames = new ArrayList<String>();
 
 		fillEntries(entities);
@@ -52,6 +55,11 @@ public class EntityTable extends Table
 		}
 	}
 
+	/**
+	 * Updates the entities being shown, given the Levels. 
+	 * The selectedEntities are chosen from the selected level list in the manager.
+	 * @param ObservableList<IEntity> selectedEntities
+	 */
 	public void levelWasPicked(ObservableList<IEntity> selectedEntities)
 	{
 		refreshTable();

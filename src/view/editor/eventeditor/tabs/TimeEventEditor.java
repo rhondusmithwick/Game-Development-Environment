@@ -1,4 +1,4 @@
-package view.editor.eventeditor;
+package view.editor.eventeditor.tabs;
 
 import java.util.List;
 

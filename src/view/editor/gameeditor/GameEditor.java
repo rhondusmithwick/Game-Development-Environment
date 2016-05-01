@@ -27,7 +27,11 @@ import view.enums.GUISize;
 import view.enums.ViewInsets;
 import view.utilities.Alerts;
 import view.utilities.ButtonFactory;
-
+/**
+ * 
+ * @author calinelson
+ *
+ */
 public class GameEditor extends Editor  {
 
     private VBox pane;

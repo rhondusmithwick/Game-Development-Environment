@@ -50,7 +50,7 @@ public class ACGame {
     private final String moveLeftScriptPath = "resources/groovyScripts/keyInputMoveLeft.groovy";
     private final String jumpScriptPath = "resources/groovyScripts/keyInputJump.groovy";
     private final String addGravityScriptPath = "resources/groovyScripts/ACAddGravity.groovy";
-    private final String stopScriptPath = "resources/groovyScripts/stopPerson.groovy";
+    private final String stopScriptPath = "resources/groovyScripts/StopPerson.groovy";
     private final String kickRightScriptPath = "resources/groovyScripts/RyuKickRight.groovy";
     private ImageView charSpr;
     private Scene myScene;

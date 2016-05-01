@@ -8,6 +8,8 @@ import javafx.scene.layout.Pane;
 import java.util.List;
 import java.util.ResourceBundle;
 import view.editor.Editor;
+import view.editor.eventeditor.tabs.KeyBindingEditor;
+import view.editor.eventeditor.tabs.PropertyEventEditor;
 import api.IEntity;
 import api.ILevel;
 import view.enums.GUISize;
@@ -20,6 +22,9 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
 /**
+ * Main Event Editor class, extends the abstract Editor. Contains all different tabs.
+ * Each tab is - quite literally - a TabPane, and each one will display a different type of
+ * Event Editor.
  * 
  * @author Alankmc
  *
@@ -39,6 +44,13 @@ public class EditorEvent extends Editor
 	private final PropertyEventEditor propertyEventEditor;
 	private final KeyBindingEditor keyBindingEditor;
 	
+	/**
+	 * Constructor, follows the super's constructor.
+	 * 
+	 * @param language
+	 * @param masterList
+	 * @param levelList
+	 */
 	public EditorEvent(String language, ObservableList<IEntity> masterList, ObservableList<ILevel> levelList)
 	{	
 		propertyEventEditor = new PropertyEventEditor(language, levelList);
@@ -64,6 +76,10 @@ public class EditorEvent extends Editor
 		populateEditorTab(keyBindingEditor);
 	}
 
+	/**
+	 * Makes a tab with a certain Editor in it.
+	 * @param editor
+	 */
 	private void populateEditorTab(Editor editor) {
         Tab newTab = new Tab();
 
