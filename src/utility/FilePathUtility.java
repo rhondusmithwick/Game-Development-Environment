@@ -15,7 +15,7 @@ public class FilePathUtility {
 
     /**
      * Get the base directory.
-     * @return the base directory
+     * @return the base directorya
      */
     public static String getBaseDirectory () {
         return System.getProperty("user.dir");
