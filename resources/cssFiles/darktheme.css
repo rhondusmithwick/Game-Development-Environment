@@ -55,7 +55,7 @@
 
 .tab {
     -fx-background-color: linear-gradient(to top, -fx-base, derive(-fx-base, 30%));
-    -fx-background-color: blue;
+    -fx-background-color: gray;
 }
 
 .menu-bar {

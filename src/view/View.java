@@ -6,7 +6,6 @@ import javafx.animation.Timeline;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.ScrollPane;
@@ -59,11 +58,6 @@ public class View implements IView {
 	private HBox buttonBox = new HBox();
 	private ResourceBundle myResources;
 
-	@Deprecated
-	public View(String language) {
-		// this(2000, 2000, new Level(), language);
-	}
-
 	public View(double width, double height, ILevel level, String language, Scene scene) {
 		subScene = this.createSubScene(root, width, height);
 		model = new SystemManager(subScene, level);
@@ -72,7 +66,6 @@ public class View implements IView {
 		initConsole();
 		initButtons();
 		pane = createMainBorderPane(root, this.subScene);
-		model.getLevel().setOnInput(scene);
 		viewUtils = new ViewUtilities();
 		DandR = new DragAndResizeDynamic();
 		DandR.makeRootDragAndResize(root);
@@ -83,8 +76,9 @@ public class View implements IView {
 		manager.show();
 	}
 
-	public void setScene(Node scene) {
-		scene.setOnKeyPressed(e -> keyPressed(e.getCode()));
+	public void setScene(Scene scene) {
+		model.getLevel().setOnInput(scene);
+//		scene.setOnKeyPressed(e -> keyPressed(e.getCode()));
 	}
 
 	public Pane getPane() {
