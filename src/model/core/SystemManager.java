@@ -69,9 +69,6 @@ public class SystemManager implements ISystemManager {
             }
             level.update(dt);
             List<IEntity> entities = level.getAllEntities();
-            for (IEntity e : entities) {
-                System.out.print(e.getComponent(Position.class).getY());
-            }
             System.out.println();
         }
     }
