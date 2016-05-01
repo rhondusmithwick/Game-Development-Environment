@@ -17,8 +17,8 @@ import javafx.beans.value.ObservableValue;
 public class PropertyTrigger extends Trigger {
     private final String entityID;
     private final Class<? extends IComponent> componentClass;
-    private SimpleObjectProperty<Double> property;
     private final String propertyName;
+    private SimpleObjectProperty<Double> property;
 
     public PropertyTrigger (String entityID, Class<? extends IComponent> componentClass, SimpleObjectProperty<Double> property) {
         this.entityID = entityID;

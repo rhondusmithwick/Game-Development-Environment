@@ -15,8 +15,8 @@ import java.util.ResourceBundle;
 public class Authoring {
 
     private final ResourceBundle myResources;
-    private TabPane display;
     private final String language;
+    private TabPane display;
     private String fileName;
 
     /**

@@ -22,7 +22,6 @@ import java.util.Collection;
 
 /**
  * @author Bruna
- *
  */
 public class EnvironmentButtonUtilites {
 

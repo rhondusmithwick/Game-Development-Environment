@@ -1,8 +1,6 @@
 package view.utilities;
 
-import api.IComponent;
 import api.IEntity;
-import api.ISerializable;
 import model.component.movement.Position;
 import model.component.visual.Sprite;
 import model.entity.Entity;

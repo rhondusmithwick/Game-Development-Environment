@@ -17,6 +17,7 @@ import view.editor.Editor;
 import view.enums.DefaultStrings;
 import view.utilities.ButtonFactory;
 import view.utilities.TextFieldFactory;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
@@ -33,11 +34,11 @@ public class EditorEntity extends Editor {
     private final GuiObjectFactory guiFactory = new GuiObjectFactory();
     private final IEntity myEntity;
     private final String myLanguage;
-    private ObservableList<IEntity> entityList = FXCollections.observableArrayList();
     private final ResourceBundle myResources;
     private final ResourceBundle myComponentNames;
-    private TextField name;
     private final ScrollPane scrollPane;
+    private ObservableList<IEntity> entityList = FXCollections.observableArrayList();
+    private TextField name;
     private List<String> myComponents;
     private VBox container;
 

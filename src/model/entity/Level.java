@@ -13,6 +13,7 @@ import groovy.lang.GroovyShell;
 import javafx.scene.Scene;
 import model.physics.PhysicsEngine;
 import view.enums.DefaultStrings;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -48,13 +49,13 @@ public class Level implements ILevel {
     }
 
     @Override
-    public void setName (String name) {
-        universe.setName(name);
+    public String getName () {
+        return universe.getName();
     }
 
     @Override
-    public String getName () {
-        return universe.getName();
+    public void setName (String name) {
+        universe.setName(name);
     }
 
     @Override

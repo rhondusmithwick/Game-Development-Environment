@@ -104,8 +104,8 @@ public class Vooga extends StartUpMenu {
             ILevel toPlay = new XMLReader<ILevel>().readSingleFromFile(path + DefaultStrings.LEVELS_LOC.getDefault() + firstLevel + DefaultStrings.XML.getDefault());
             View view = new View(GUISize.VIEW_SIZE.getSize(), GUISize.VIEW_SIZE.getSize(), GUISize.SCENE_SIZE.getSize(), GUISize.SCENE_SIZE.getSize(), toPlay, getLanguage(), false);
             view.getScene().getStylesheets()
-            .add(new File(DefaultStrings.CSS_LOCATION.getDefault() + DefaultStrings.MAIN_CSS.getDefault()).toURI()
-                    .toString());
+                    .add(new File(DefaultStrings.CSS_LOCATION.getDefault() + DefaultStrings.MAIN_CSS.getDefault()).toURI()
+                            .toString());
             myStage.setScene(view.getScene());
         }
         myStage.show();

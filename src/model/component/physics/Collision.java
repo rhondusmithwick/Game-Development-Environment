@@ -8,9 +8,7 @@ import utility.SingleProperty;
 import java.util.List;
 
 /**
- *
  * @author Roxanne and Tom
- *
  */
 @SuppressWarnings("serial")
 public class Collision implements IComponent {
@@ -23,70 +21,70 @@ public class Collision implements IComponent {
     private SingleProperty<String> maskIDProperty = new SingleProperty<>("MaskID", "");
     private SingleProperty<String> collidingIDsProperty = new SingleProperty<>("CollidingIDs", "");
 
-    public Collision() {
+    public Collision () {
     }
 
-    public Collision(Bounds mask, String ID) {
+    public Collision (Bounds mask, String ID) {
         this.mask = mask;
         this.setMaskID(ID);
     }
 
-    public Collision(String ID) {
+    public Collision (String ID) {
         this(null, ID); // TODO: needs to be null?
     }
 
-    public Bounds getMask() {
+    public Bounds getMask () {
         return this.mask;
     }
 
-    public void setMask(Bounds mask) {
+    public void setMask (Bounds mask) {
         this.mask = mask;
     }
 
-    public SimpleObjectProperty<String> maskIDProperty() {
+    public SimpleObjectProperty<String> maskIDProperty () {
         return maskIDProperty.property1();
     }
 
-    public String getMaskID() {
+    public String getMaskID () {
         return maskIDProperty().get();
     }
 
-    public void setMaskID(String ID) {
+    public void setMaskID (String ID) {
         this.maskIDProperty().set(ID);
     }
 
-    public SimpleObjectProperty<String> collidingIDsProperty() {
+    public SimpleObjectProperty<String> collidingIDsProperty () {
         return collidingIDsProperty.property1();
     }
 
-    public String getCollidingIDs() {
+    public String getCollidingIDs () {
         return this.collidingIDsProperty().get();
     }
 
-    public void setCollidingIDs(String collidingIDs) {
+    public void setCollidingIDs (String collidingIDs) {
         this.collidingIDsProperty().set(collidingIDs);
     }
 
-    public void addCollidingID(String collidingIDs) {
+    public void addCollidingID (String collidingIDs) {
         this.collidingIDsProperty().set(this.getCollidingIDs() + "~" + collidingIDs);
     }
 
-    public void addCollisionSide(String side) {
+    public void addCollisionSide (String side) {
         this.collidingIDsProperty().set(this.getCollidingIDs() + "_" + side);
     }
 
-    public void clearCollidingIDs() {
+    public void clearCollidingIDs () {
         this.collidingIDsProperty().set("");
     }
 
     @Override
-    public List<SimpleObjectProperty<?>> getProperties() {
+    public List<SimpleObjectProperty<?>> getProperties () {
         // TODO: add maskID property
         return collidingIDsProperty.getProperties();
     }
 
     @Override
-    public void update() {
+    public void update () {
         setCollidingIDs(getCollidingIDs());
         setMask(getMask());
         setMaskID(getMaskID());
