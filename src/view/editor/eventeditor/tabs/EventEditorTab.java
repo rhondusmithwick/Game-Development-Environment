@@ -106,24 +106,26 @@ public abstract class EventEditorTab extends Editor {
 	}
 
 	public void addEventToLevels(List<ILevel> levels, List<IEntity> entities, String triggerClassName,
-								 String scriptPath, Object... args) {
+								 Object... args) {
 		if (getChosenLevels().isEmpty()) {
 			return;
 		}
 		levels.stream().forEach(level -> {
-			addEventToLevel(level, entities, triggerClassName, scriptPath, args);
+			addEventToLevel(level, entities, triggerClassName, actionScriptPath, args);
 		});
 	}
 
-	public void addEventToLevel(ILevel level, List<IEntity> entities, String triggerClassName, String scriptPath,
-								Object... args) {
-        entities.stream().forEach(entity-> {
-            parameters.put("entityID", entity.getID());
-        });
+	public void addEventToLevel(ILevel level, List<IEntity> entities, String triggerClassName, 
+			Object... args) {
+
+		entities.stream().forEach(entity-> {
+			parameters.put("entityID", entity.getID());
+		});
+		
 		level.getEventSystem().registerEvent(
-				eventFactory.createEvent(triggerClassName, groovyPath+scriptPath,
+				eventFactory.createEvent(triggerClassName, groovyPath+actionScriptPath,
 						parameters, args)
-		);
+				);
 	}
 
 	private void actionSet(String actionScriptPath)
@@ -131,7 +133,7 @@ public abstract class EventEditorTab extends Editor {
 		this.actionScriptPath = actionScriptPath;
 		actionText.setText(myResources.getString("action") + actionScriptPath);
 	}
-	
+
 	public void getFile()
 	{
 		File groovyFile = null;
@@ -150,7 +152,7 @@ public abstract class EventEditorTab extends Editor {
         return actionReady;
 	}
 
-    public void addToParameters(String a, String b) {
+    public void addToParameters(String a, Object b) {
         parameters.put(a, b);
         flashText(addedParametersText);
         System.out.println(parameters);
@@ -251,5 +253,7 @@ public abstract class EventEditorTab extends Editor {
 			getActionButton.setText("Get Animation for\n" + entity.getName());	// TODO resource
 		}		
 	}
+	
 	public abstract void actionOnChosenLevels(List<ILevel> levels);
+	public abstract void choseEntity(List<IEntity> entities);
 }

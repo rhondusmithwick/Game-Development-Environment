@@ -10,6 +10,7 @@ import java.util.ResourceBundle;
 import view.editor.Editor;
 import view.editor.eventeditor.tabs.KeyBindingEditor;
 import view.editor.eventeditor.tabs.PropertyEventEditor;
+import view.editor.eventeditor.tabs.TimeEventEditor;
 import api.IEntity;
 import api.ILevel;
 import view.enums.GUISize;
@@ -43,6 +44,7 @@ public class EditorEvent extends Editor
 	private final Tab propertyTab;
 	private final PropertyEventEditor propertyEventEditor;
 	private final KeyBindingEditor keyBindingEditor;
+	private final TimeEventEditor timeEventEditor;
 	
 	/**
 	 * Constructor, follows the super's constructor.
@@ -55,7 +57,8 @@ public class EditorEvent extends Editor
 	{	
 		propertyEventEditor = new PropertyEventEditor(language, levelList);
 		keyBindingEditor = new KeyBindingEditor(language, levelList);
-
+		timeEventEditor = new TimeEventEditor(language, levelList);
+		
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.EVENT_EDIT.getInset());
 		pane.setPrefWidth(GUISize.EVENT_EDITOR_WIDTH.getSize());
@@ -68,6 +71,7 @@ public class EditorEvent extends Editor
 		// TODO: Put editors in map and use cool for loop for this
 		populateEditorTab(propertyEventEditor);
 		populateEditorTab(keyBindingEditor);
+		populateEditorTab(timeEventEditor);
 	}
 
 	/**

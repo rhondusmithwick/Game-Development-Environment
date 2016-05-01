@@ -45,7 +45,7 @@ public class KeyBindingEditor extends EventEditorTab
 	private KeyBindingTableManager tableManager;
 	private EventViewManager eventViewManager;
 
-	private ArrayList<IEntity> chosenEntities;
+	private List<IEntity> chosenEntities;
 	
 	public KeyBindingEditor(String language, ObservableList<ILevel> levelList)
 	{
@@ -127,8 +127,6 @@ public class KeyBindingEditor extends EventEditorTab
 		
 		createEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
 		
-		createEventButton.setOnAction(e -> createEvent());
-		
 		innerContainer.getChildren().addAll(listenToKey, keyInputText, createEventButton, getActionPane());
 		
 		chosenEntityText = new Text();
@@ -178,14 +176,14 @@ public class KeyBindingEditor extends EventEditorTab
 		}
 	}
 	
-	public void choseEntity(ArrayList<IEntity> entities)
+	public void choseEntity(List<IEntity> entities)
 	{
 		this.chosenEntities = entities;
 	
 		fillChosenEntityBox();
 	}
 
-	public ArrayList<IEntity> getChosenEntities() {
+	public List<IEntity> getChosenEntities() {
 		return chosenEntities;
 	}
 	
