@@ -7,7 +7,7 @@ import model.component.movement.Position
 @BaseScript ScriptHelpers ScriptHelpers
 
 /**
- * Instantly move an entity. 
+ * Instantly move an entity.
  * @author Rhondu Smithwick
  */
 
