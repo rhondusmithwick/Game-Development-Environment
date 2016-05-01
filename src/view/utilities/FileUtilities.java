@@ -99,7 +99,7 @@ public class FileUtilities {
 	}
 	
 	public static List<ExtensionFilter> getImageFilters() {
-		return Arrays.asList(FileExtensions.PNG.getFilter(), FileExtensions.PNG.getFilter());
+		return Arrays.asList(FileExtensions.PNG.getFilter(), FileExtensions.JPG.getFilter(), FileExtensions.GIF.getFilter());
 
 	}
 	
