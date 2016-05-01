@@ -13,7 +13,7 @@ public class TimeTrigger extends Trigger{
 	public TimeTrigger(double time) {
 		this.time = time;
 	}
-
+	
 	public TimeTrigger(Map<String, String> triggerMapDescription) {
 		time = Double.parseDouble(triggerMapDescription.get("time"));
 	}
@@ -33,7 +33,6 @@ public class TimeTrigger extends Trigger{
 	@Deprecated
 	public void clearListener(ILevel universe, IInputSystem inputSystem) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	@Override
