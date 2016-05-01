@@ -5,6 +5,7 @@ package model.physics;
  *
  * @author Tom Wu
  */
+@Deprecated
 public class Vector {
 	private double x, y;
 

@@ -38,6 +38,7 @@ import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.PopUp;
 import view.utilities.SpriteUtilities;
+import view.utilities.ToMainMenu;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -239,19 +240,10 @@ public class View implements IView {
 			buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("evaluate"), e -> this.evaluate()));
 			buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("loopManager"), e -> this.createLoopManager()));
 		}
-		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("mainMenu"), e -> this.mainMenu()));
+		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("mainMenu"), e -> ToMainMenu.toMainMenu(pane)));
 		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("startGameLoop"), e -> this.model.play()));
 		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("pauseGameLoop"), e -> this.model.pauseLoop()));
 	}
-
-	private void mainMenu() { 
-        Stage myStage = (Stage) pane.getScene().getWindow();
-        myStage.setWidth(GUISize.MAIN_SIZE.getSize());
-        myStage.setHeight(GUISize.MAIN_SIZE.getSize());
-        Vooga vooga = new Vooga(myStage);
-        vooga.init();
-	}
-
 	private void initConsole() {
 		console.setText(myResources.getString("enterCommands"));
 		console.appendText("\n\n");
