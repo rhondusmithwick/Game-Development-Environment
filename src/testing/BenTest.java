@@ -22,6 +22,7 @@ import model.component.visual.Sprite;
 import model.entity.Entity;
 import model.entity.Level;
 import model.physics.PhysicsEngine;
+import model.physics.RealisticVelocityCalculator;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class BenTest extends Application {
 		ILevel system = new Level();
 		system.addEntities(list);
 		// TODO: don't lazy-initialize!
-		physics = new PhysicsEngine();
+		physics = new PhysicsEngine(new RealisticVelocityCalculator());
 
 		// TODO: seriously, don't lazy-initialize
 		testSprite = createImage(character.getComponent(Sprite.class), character.getComponent(Position.class));

@@ -1,7 +1,6 @@
 package view;
 
 import api.IEntity;
-import api.ILevel;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;
@@ -37,6 +36,13 @@ public class DragAndResizeDynamic {
 		}
 		return e.getComponent(Sprite.class).getImageView();
 	}
+	
+	private boolean isInRightResizeRegion(Node node, double x){
+		double width = node.getBoundsInParent().getWidth();
+		double innerRightSide = width - MARGIN;
+		double outerRightSide = width;
+		return ((x > innerRightSide) && (x < outerRightSide));
+	}
 
 	private boolean isInBottomResizeRegion(Node node, double y) {
 		double height = node.getBoundsInParent().getHeight();
@@ -45,10 +51,14 @@ public class DragAndResizeDynamic {
 		return ((y > innerBottomSide) && (y < outerBottomSide));
 	}
 
-	private void updateCursor(ImageView imageView, double y) {
+	private void updateCursor(ImageView imageView, double y, double x) {
 		if (this.isInBottomResizeRegion(imageView, y)) {
 			imageView.setCursor(Cursor.S_RESIZE);
-		} else {
+		}
+		else if(this.isInRightResizeRegion(imageView,x)){
+			imageView.setCursor(Cursor.E_RESIZE);
+		}
+		else {
 			imageView.setCursor(Cursor.DEFAULT);
 		}
 	}
@@ -56,7 +66,7 @@ public class DragAndResizeDynamic {
 	public void makeEntityDragAndResize(IEntity e) {
 		Sprite sprite = e.getComponent(Sprite.class);
 		ImageView imageView = sprite.getImageView();
-		imageView.setOnMouseEntered(event -> updateCursor(imageView, event.getY()));
+		imageView.setOnMouseEntered(event -> updateCursor(imageView, event.getY(), event.getX()));
 		imageView.setOnMousePressed(event -> mousePressed(e, event.getX(), 
 				event.getY()));
 	}
@@ -68,7 +78,7 @@ public class DragAndResizeDynamic {
 	}
 	
 	private void mousePressed(IEntity e, double x, double y) {
-		if (this.isInBottomResizeRegion(getImageView(e), y)) {
+		if (this.isInBottomResizeRegion(getImageView(e), y) || this.isInRightResizeRegion(getImageView(e), x)) {
 			this.resizing = true;
 			this.dragging = false;
 		} else {
@@ -96,7 +106,12 @@ public class DragAndResizeDynamic {
 			position.setX(translateX);
 			position.setY(translateY);
 		} else if (resizing) {
+			if (this.isInBottomResizeRegion(getImageView(e), y)){
 			path.setImageHeight(y - position.getY());
+			}
+			else{
+			path.setImageWidth(x - position.getX());
+			}
 		}
 		}
 	}

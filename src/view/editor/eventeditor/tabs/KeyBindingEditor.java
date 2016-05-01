@@ -7,11 +7,15 @@ import java.util.ResourceBundle;
 import api.IEntity;
 import api.ILevel;
 import events.Action;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.EventType;
 import javafx.geometry.Pos;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
@@ -21,6 +25,7 @@ import view.editor.eventeditor.tables.KeyBindingTableManager;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
 import view.utilities.ButtonFactory;
+import view.utilities.ComboFactory;
 
 // TODO put Action setting and file picker on abstract
 public class KeyBindingEditor extends EventEditorTab 
@@ -30,12 +35,13 @@ public class KeyBindingEditor extends EventEditorTab
 	private ScrollPane chosenEntityBox;
 	private Text chosenEntityText;
 	private Text chosenEntityTitle;
+	private ComboBox<String> chooseKeyEventTypeBox;
 	
 	private VBox pane;
 	
 	private KeyCode currentKey;
 	private Button listenToKey;
-	
+	private EventType<KeyEvent> keyEventType;
 	private Text keyInputText;
 	private ResourceBundle myResources;
 	private Action action;
@@ -125,10 +131,16 @@ public class KeyBindingEditor extends EventEditorTab
 		
 		// chooseFileButton = ButtonFactory.makeButton(myResources.getString("chooseGroovy"), e -> getFile());
 		
+		ObservableList<String> keyEventTypes = FXCollections.observableArrayList(myResources.getString("keyPress"), myResources.getString("keyRelease")); 
+		
+		chooseKeyEventTypeBox = ComboFactory.makeComboBox(myResources.getString("chooseKeyEventType"), keyEventTypes, e->setEventType(chooseKeyEventTypeBox.getValue()));
+		
 		createEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
-		
+
 		innerContainer.getChildren().addAll(listenToKey, keyInputText, getActionPane(), createEventButton);
-		
+
+		createEventButton.setOnAction(e -> createEvent());
+
 		chosenEntityText = new Text();
 		
 		chosenEntityBox = new ScrollPane(new VBox(chosenEntityTitle, chosenEntityText));
@@ -155,6 +167,15 @@ public class KeyBindingEditor extends EventEditorTab
 		makeBottomSide();
 		
 		scrollPane.setContent(pane);
+	}
+	
+	private void setEventType(String eventType) {
+		if(eventType.equals(myResources.getString("keyPress"))) {
+			keyEventType = KeyEvent.KEY_PRESSED;
+		}
+		if(eventType.equals(myResources.getString("keyRelease"))) {
+			keyEventType = KeyEvent.KEY_RELEASED;
+		}
 	}
 
 	

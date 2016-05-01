@@ -3,24 +3,32 @@ package view;
 import api.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.MouseButton;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import main.Vooga;
+import model.component.hud.HUD;
 import model.component.movement.Orientation;
 import model.component.movement.Position;
 import model.component.physics.Collision;
@@ -29,11 +37,19 @@ import model.core.SystemManager;
 import update.GameLoopManager;
 import view.enums.GUISize;
 import view.utilities.ButtonFactory;
+import view.utilities.PopUp;
 import view.utilities.SpriteUtilities;
+import voogasalad.util.reflection.Reflection;
+import view.utilities.ToMainMenu;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Map.Entry;
 
 /**
  * 
@@ -57,23 +73,35 @@ public class View implements IView {
 	private HBox buttonBox = new HBox();
 	private ResourceBundle myResources;
 	private boolean debug;
+	private Scene scene;
+	private List<PopUp> myPopUpList = new ArrayList<PopUp>();
 
-	public View(double width, double height, ILevel level, String language, boolean debug) {
-
-		subScene = this.createSubScene(root, width, height);
-		model = new SystemManager(subScene, level);
+	public View(double viewWidth, double viewHeight, double sceneWidth, double sceneHeight, ILevel level, String language, boolean debug) {
+		subScene = this.createSubScene(root, viewWidth, viewHeight);
+		subScene.setOnMouseClicked(e -> deletePopUps(e));
 		this.debug=debug;
 		myResources = ResourceBundle.getBundle(language);
-		manager = new GameLoopManager(language, model);
 		initConsole();
 		initButtons();
 		pane = createMainBorderPane(root, this.subScene);
+		scene = new Scene(pane, sceneWidth, sceneHeight);
+		model = new SystemManager(scene, level);
+		manager = new GameLoopManager(language, model);
 		viewUtils = new ViewUtilities();
 		if(this.debug){
 			DandR = new DragAndResizeDynamic();
 			DandR.makeRootDragAndResize(root);
 		}
-		this.startTimeline();
+		ViewFeatureMethods.startTimeline(MILLISECOND_DELAY, e -> step(SECOND_DELAY));
+	}
+
+	private void deletePopUps(MouseEvent e) {
+		if (e.getButton() == MouseButton.PRIMARY){
+		for (PopUp popUp : myPopUpList){
+			popUp.closeScene();
+		}
+		myPopUpList.clear();
+	}
 	}
 
 	private void createLoopManager() {
@@ -92,7 +120,7 @@ public class View implements IView {
 		return this.subScene;
 	}
 
-	private void startTimeline() {
+	public void startTimeline() {
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> this.step(SECOND_DELAY));
 		Timeline timeline = new Timeline();
 		timeline.setCycleCount(Timeline.INDEFINITE);
@@ -123,6 +151,10 @@ public class View implements IView {
 
 	public void highlight(IEntity entity) {
 		viewUtils.highlight(entity);
+	}
+
+	public Scene getScene() {
+		return scene;
 	}
 
 	private ImageView getUpdatedImageView(IEntity e) {
@@ -162,8 +194,10 @@ public class View implements IView {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void step(double dt) { 
+	private void step(double dt) {
+		// simulate
 		model.step(dt);
+		// render
 		root.getChildren().clear();
 		List<IEntity> entities = model.getEntitySystem().getAllEntities();
 		for (IEntity e : entities) {
@@ -175,10 +209,38 @@ public class View implements IView {
 					DandR.makeEntityDragAndResize(e);
 				}
 				ImageView imageView = getUpdatedImageView(e);
+				imageView.setOnContextMenuRequested(event -> showPopUp(e,event));
 				root.getChildren().add(imageView);
 				if (!root.getChildren().contains(imageView)) {
 					root.getChildren().add(imageView);
 				}
+			}
+
+			if(e.hasComponents(HUD.class, Position.class)) {
+				String hud = e.getComponent(HUD.class).getHUD();
+				String shape = "Rectangle";
+				double width = 100;
+				double height = 100;
+				String color = "10,10,10,1";
+				for(String str: hud.split(";")) {
+					String[] strip = str.split(":");
+					String key = strip[0];
+					String val = strip[1];
+					if(key.equals(myResources.getString("shape"))) {
+						shape = val;
+					}
+					if(key.equals(myResources.getString("width"))) {
+						width = Double.parseDouble(val);
+					}
+					if(key.equals(myResources.getString("height"))) {
+						height = Double.parseDouble(val);
+					}
+					if(key.equals(myResources.getString("color"))) {
+						color = val;
+					}
+				}
+				Shape s = (Shape) Reflection.createInstance(shape, width, height);
+
 			}
 		}
 	}
@@ -210,19 +272,19 @@ public class View implements IView {
 			buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("evaluate"), e -> this.evaluate()));
 			buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("loopManager"), e -> this.createLoopManager()));
 		}
-		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("mainMenu"), e -> this.mainMenu()));
+		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("mainMenu"), e -> ToMainMenu.toMainMenu(pane)));
 		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("startGameLoop"), e -> this.model.play()));
 		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("pauseGameLoop"), e -> this.model.pauseLoop()));
 	}
 
 	private void mainMenu() { 
-        Stage myStage = (Stage) pane.getScene().getWindow();
-        myStage.setWidth(GUISize.MAIN_SIZE.getSize());
-        myStage.setHeight(GUISize.MAIN_SIZE.getSize());
-        Vooga vooga = new Vooga(myStage);
-        vooga.init();
+		Stage myStage = (Stage) pane.getScene().getWindow();
+		myStage.setWidth(GUISize.MAIN_SIZE.getSize());
+		myStage.setHeight(GUISize.MAIN_SIZE.getSize());
+		Vooga vooga = new Vooga(myStage);
+		vooga.init();
 	}
-
+	
 	private void initConsole() {
 		console.setText(myResources.getString("enterCommands"));
 		console.appendText("\n\n");
@@ -234,6 +296,30 @@ public class View implements IView {
 				e.consume();
 			}
 		});
+	}
+	
+	public void showPopUp(IEntity entity, ContextMenuEvent event) {
+		
+		Map<String, EventHandler<ActionEvent>> menuMap = new LinkedHashMap<String, EventHandler<ActionEvent>>();
+		menuMap.put(myResources.getString("remove"), e -> ViewFeatureMethods.removeFromDisplay(entity, getEntitySystem()));
+		menuMap.put(myResources.getString("sendBack"), e -> ViewFeatureMethods.sendToBack(entity, getEntitySystem()));
+		menuMap.put(myResources.getString("sendFront"), e -> ViewFeatureMethods.sendToFront(entity, getEntitySystem()));
+		menuMap.put(myResources.getString("sendBackOne"), e ->ViewFeatureMethods.sendBackward(entity, getEntitySystem()));
+		menuMap.put(myResources.getString("sendForwardOne"), e -> ViewFeatureMethods.sendForward(entity, getEntitySystem()));
+		
+		PopUp myPopUp = new PopUp(GUISize.POP_UP_WIDTH.getSize(),GUISize.POP_UP_HIEGHT.getSize());
+		myPopUp.show(setPopUp(menuMap),event.getScreenX(),event.getScreenY());
+		myPopUpList.add(myPopUp);
+	}
+	
+	public ScrollPane setPopUp(Map<String,EventHandler<ActionEvent>> map){
+		VBox box = new VBox();
+		for (Entry<String, EventHandler<ActionEvent>> entry : map.entrySet()){
+			Button button = ButtonFactory.makeButton(entry.getKey(), entry.getValue());
+			button.setMaxWidth(Double.MAX_VALUE);
+			box.getChildren().add(button);
+		}
+		return new ScrollPane(box);
 	}
 
 	private void evaluate() {
@@ -251,4 +337,9 @@ public class View implements IView {
 		console.println();
 	}
 
+	@Override
+	public void dehighlight(IEntity entity) {
+		viewUtils.dehighlight(entity);
+	}
+	
 }

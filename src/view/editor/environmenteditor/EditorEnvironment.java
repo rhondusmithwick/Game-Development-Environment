@@ -5,8 +5,12 @@ import api.ILevel;
 import api.IView;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.BorderPane;
@@ -14,6 +18,7 @@ import javafx.scene.layout.VBox;
 import model.component.movement.Position;
 import model.component.visual.Sprite;
 import view.View;
+import view.ViewFeatureMethods;
 import view.editor.Editor;
 import view.enums.DefaultEntities;
 import view.enums.DefaultStrings;
@@ -21,9 +26,13 @@ import view.enums.GUISize;
 import view.utilities.*;
 
 import java.io.File;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.ResourceBundle;
 
 public class EditorEnvironment extends Editor {
+	
+	private final double DELAY = 3000;
 
 	private String myLanguage;
 	private BorderPane environmentPane = new BorderPane();
@@ -38,7 +47,7 @@ public class EditorEnvironment extends Editor {
 	private TextField nameField = new TextField();
 	private ScrollPane scrollPane = new ScrollPane(environmentPane);
 	private IView view;
-	private EnvironmentUtilites myButtonsClass;
+	private EnvironmentButtonUtilites myButtonsClass;
 
 	public EditorEnvironment(String language, ILevel toEdit, ObservableList<IEntity> masterList,
 			ObservableList<ILevel> addToList, Scene myScene) {
@@ -51,12 +60,14 @@ public class EditorEnvironment extends Editor {
 		myLevel = toEdit;
 		allEnvironmentsList = addToList;
 
-		view = new View((GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(), myLevel,
+		view = new View((GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(), GUISize.SCENE_SIZE.getSize(), GUISize.SCENE_SIZE.getSize(), myLevel,
 				myLanguage, true);
 		view.setScene(myScene);
-		myButtonsClass = new EnvironmentUtilites(view, environmentEntityButtonsBox, masterList, this, language);
+		myButtonsClass = new EnvironmentButtonUtilites(view, environmentEntityButtonsBox, masterList, this, language);
 		addLayoutComponents();
 		System.setProperty("glass.accessible.force", "false");
+		ViewFeatureMethods.startTimeline(DELAY, e -> updateEditor());
+
 	}
 
 	private void addLayoutComponents() {
@@ -121,6 +132,7 @@ public class EditorEnvironment extends Editor {
 
 	@Override
 	public void updateEditor() {
+		
 		myButtonsClass.populateVbox(masterEntityButtonsBox, masterEntityList, "createAddEntityButton");
 		myButtonsClass.populateVbox(environmentEntityButtonsBox, view.getLevel().getAllEntities(), "createEntityButton");
 	}
@@ -172,9 +184,29 @@ public class EditorEnvironment extends Editor {
 		entity.setSpec(Sprite.class, 1);
 		entity.addComponent(new Sprite(file.getPath()));
 	}
+	
+	private void toggleHighlight(IEntity entity) {
+		view.toggleHighlight(entity);
+	}
+
+	public void saveToMasterList(IEntity entity) {
+		masterEntityList.add(entity);
+	}
 
 	public ILevel getLevel() {
 		return view.getLevel();
+	}
+	
+	public Map<String,EventHandler<ActionEvent>> makeMenuMap(IEntity entity, Button entityButton, MouseEvent event) {
+		Map<String, EventHandler<ActionEvent>> menuMap = new LinkedHashMap<String, EventHandler<ActionEvent>>();
+		menuMap.put(myResources.getString("remove"), e -> ViewFeatureMethods.removeFromDisplay(entity, view.getEntitySystem()));
+		menuMap.put(myResources.getString("sendBack"), e -> ViewFeatureMethods.sendToBack(entity, view.getEntitySystem()));
+		menuMap.put(myResources.getString("sendFront"), e -> ViewFeatureMethods.sendToFront(entity, view.getEntitySystem()));
+		menuMap.put(myResources.getString("sendBackOne"), e ->ViewFeatureMethods.sendBackward(entity, view.getEntitySystem()));
+		menuMap.put(myResources.getString("sendForwardOne"), e -> ViewFeatureMethods.sendForward(entity, view.getEntitySystem()));
+		menuMap.put(myResources.getString("saveAsMasterTemplate"), e -> saveToMasterList(entity));
+		menuMap.put(myResources.getString("toggleHighlight"), e -> toggleHighlight(entity));
+		return menuMap;
 	}
 
 	@Override
@@ -188,6 +220,14 @@ public class EditorEnvironment extends Editor {
 
 	public boolean environmentContains(IEntity checkEntity) {
 		return view.getEntitySystem().containsEntity(checkEntity);
+	}
+	
+	public void highlight(IEntity entity){
+		view.highlight(entity);
+	}
+	
+	public void dehighlight(IEntity entity){
+		view.dehighlight(entity);
 	}
 
 }

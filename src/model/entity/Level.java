@@ -1,17 +1,22 @@
 package model.entity;
 
+import api.ICollisionVelocityCalculator;
 import api.IEntitySystem;
 import api.IEventSystem;
 import api.IGameScript;
 import api.ILevel;
 import api.IPhysicsEngine;
 import api.ISystemManager;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import events.EventSystem;
 import groovy.lang.GroovyShell;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import model.physics.PhysicsEngine;
+import model.physics.RealisticVelocityCalculator;
 import view.enums.DefaultStrings;
 
 import java.io.IOException;
@@ -33,11 +38,14 @@ public class Level implements ILevel {
     private IEntitySystem universe = new EntitySystem();
     private Map<String, String> metadata = Maps.newLinkedHashMap();
     private IEventSystem eventSystem = new EventSystem(this);
-    private IPhysicsEngine physics = new PhysicsEngine();
+    private ICollisionVelocityCalculator velocityCalculator = new RealisticVelocityCalculator();
+    private IPhysicsEngine physics = new PhysicsEngine(velocityCalculator);
     private String eventSystemPath;
     private transient ResourceBundle myResources;
     //	private transient ResourceBundle scriptLocs = ResourceBundle.getBundle(DefaultStrings.SCRIPTS_LOC.getDefault());
     private transient List<IGameScript> gameScripts = Lists.newArrayList();
+    private transient boolean levelOverBool = false;
+    private transient String nextLevelPath = "";
 
     public Level () {
         this("");
@@ -74,7 +82,8 @@ public class Level implements ILevel {
     }
 
     @Override
-    public String init (GroovyShell shell, ISystemManager game) {
+    public String init (GroovyShell shell, ISystemManager game, Scene scene) {
+    	setOnInput(scene);
         gameScripts = new ArrayList<>();
         String returnMessage = "";
         String key = myResources.getString("script"); // TODO: don't hard-code
@@ -102,9 +111,10 @@ public class Level implements ILevel {
 
     @Override
     public void update (double dt) {
-//		getPhysicsEngine().update(this, dt); // TODO: remove
-        getEventSystem().updateInputs(dt);
+		getEventSystem().updateInputs(dt);
         gameScripts.stream().forEach(gs -> gs.update(dt));
+        getPhysicsEngine().update(this, dt); // TODO: remove
+        //handleCollisions();
     }
 
     @Override
@@ -135,11 +145,29 @@ public class Level implements ILevel {
     public void setOnInput (Scene scene) {
         getEventSystem().setOnInput(scene);
     }
+    
+    @Override
+    public void setLevelOverAndLoadNextLevel(String nextLevelPath) {
+    	levelOverBool = true;
+    	this.nextLevelPath = nextLevelPath;
+    }
+    
+    @Override
+    public boolean checkIfLevelOver() {
+    	return levelOverBool; 
+    }
 
+    @Override
+    public String getNextLevelPath() {
+    	return nextLevelPath;
+    }
+    
     private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         myResources = ResourceBundle.getBundle(DefaultStrings.LANG_LOC.getDefault() + DefaultStrings.DEFAULT_LANGUAGE.getDefault());
         eventSystem.setLevel(this);
+        levelOverBool = false;
+        nextLevelPath ="";
     }
 
 }

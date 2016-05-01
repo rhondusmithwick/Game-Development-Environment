@@ -8,12 +8,14 @@ import javafx.scene.input.KeyEvent;
 import java.util.LinkedList;
 import java.util.Queue;
 
+import api.IInputSystem;
+
 /**
  * Created by rhondusmithwick on 4/10/16.
  *
  * @author Rhondu Smithwick, Anirudh Jonnavithula, Carolyn Yao
  */
-public class InputSystem {
+public class InputSystem implements IInputSystem{
     private final Queue<InputEvent> firstQueue = new LinkedList<>();
     private final Queue<InputEvent> secondQueue = new LinkedList<>();
     private Queue<InputEvent> fillQ = firstQueue;
@@ -21,10 +23,12 @@ public class InputSystem {
 
     private SimpleObjectProperty<InputEvent> currentInput = new SimpleObjectProperty<>();
 
+    @Override
     public void takeInput(InputEvent e) {
 		fillQ.add(e);
     }
 
+    @Override
     public void processInputs() {
         toggleQueues();
         while (!processQ.isEmpty()) {
@@ -36,14 +40,17 @@ public class InputSystem {
         }
     }
 
+    @Override
     public void listenToInput(ChangeListener listener) {
         currentInput.addListener(listener);
     }
 
+    @Override
     public void unListenToInput(ChangeListener listener) {
         currentInput.removeListener(listener);
     }
     
+    @Override
     public void clearInputs() {
     	firstQueue.clear();
     	secondQueue.clear();
@@ -59,6 +66,7 @@ public class InputSystem {
         }
     }
 
+    @Override
     public InputEvent getCurrentInputEvent() {
         return currentInput.get();
     }

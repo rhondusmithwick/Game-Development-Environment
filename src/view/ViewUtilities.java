@@ -35,7 +35,7 @@ public class ViewUtilities {
 		return e.getComponent(Sprite.class).getImageView();
 	}
 
-	private void dehighlight(IEntity e) {
+	public void dehighlight(IEntity e) {
 		selectedSprites.remove(e); 
 		getImageView(e).setStyle(NO_SELECT_EFFECT);
 	}

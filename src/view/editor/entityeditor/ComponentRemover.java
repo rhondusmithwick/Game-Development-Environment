@@ -1,6 +1,7 @@
 package view.editor.entityeditor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 import api.IComponent;
@@ -30,6 +31,7 @@ public class ComponentRemover extends ComponentModifier {
 		List<IComponent> components = (List<IComponent>) entity.getAllComponents();
 		List<String> componentNames = new ArrayList<>();
 		components.forEach(component->componentNames.add(myComponentNames.getString(component.getClass().getSimpleName())));
+		Collections.sort(componentNames);
 		String componentName = super.makeAndShowChooser("chooseToRemove", componentNames);
 		if(componentName == null){
 			return;
