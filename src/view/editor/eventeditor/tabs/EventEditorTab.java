@@ -38,6 +38,7 @@ import java.util.TimerTask;
  */
 
 public abstract class EventEditorTab extends Editor {
+    private static final String SCRIPT_PATH = "resources/providedScripts/";
     private final String language;
     private ArrayList<ILevel> chosenLevels;
     private final LevelPicker levelPicker;
@@ -114,9 +115,9 @@ public abstract class EventEditorTab extends Editor {
 
         entities.stream().forEach(entity -> parameters.put("entityID", entity.getID()));
 
-        String groovyPath = "resources/groovyScripts/";
+        System.out.println(parameters.toString());
         level.getEventSystem().registerEvent(
-                EventFactory.createEvent(triggerClassName, groovyPath + actionScriptPath,
+                EventFactory.createEvent(triggerClassName, SCRIPT_PATH + actionScriptPath,
                         parameters, args)
         );
     }
@@ -190,7 +191,7 @@ public abstract class EventEditorTab extends Editor {
         String animationName = animationChooser.initChooser();
         if (animationName != null) {
             addToParameters("animationName", animationName);
-            actionScriptPath = "GeneralAnimationScript.groovy";
+            actionScriptPath = "AnimationScript.groovy";
         }
     }
 
