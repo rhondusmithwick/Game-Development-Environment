@@ -1,4 +1,4 @@
-package groovyScripts
+package providedScripts
 
 import api.IEntity
 import api.ILevel
@@ -33,4 +33,8 @@ List<IEntity> getEntitiesWithNamesAndIDs() {
         entities.addAll(universe.getEntitiesWithName(entityName));
     }
     return entities;
+}
+
+void workOnEntities(Closure closure) {
+    getEntitiesWithNamesAndIDs().each(closure);
 }

@@ -19,7 +19,7 @@ public class LeftCollision implements ICollisionSide {
 	
 	public void moveEntity(IEntity entityToMove, IEntity entityToStay) {
 		entityToMove.getComponent(Position.class)
-					.add(-getOverlapWithoutCheck(entityToMove, entityToStay)-0.1, 0);	
+					.add(-getOverlapWithoutCheck(entityToMove, entityToStay)-0.1, 0);
 	}
 	
 	public double getOverlapWithoutCheck(Bounds first, Bounds second) {
@@ -27,7 +27,8 @@ public class LeftCollision implements ICollisionSide {
 	}
 	
 	public boolean isCollision(Bounds first, Bounds second) {
-		return first.getMaxX() > second.getMinX() && first.getMinX() < second.getMinX();
+		System.out.println(first.getMinX()+" "+first.getMaxX()+" "+second.getMinX()+" "+second.getMaxX());
+		return first.getMaxX() >= second.getMinX() && first.getMinX() <= second.getMinX();
 	}
 	
 	public void addCollision(Collision first, Collision second) {

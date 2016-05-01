@@ -1,5 +1,6 @@
 package view.editor.eventeditor.tables;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import api.IComponent;
@@ -18,8 +19,7 @@ import view.editor.eventeditor.tabs.PropertyEventEditor;
  * @author Alankmc
  *
  */
-public class PropertyTableManager extends TableManager 
-{
+public class PropertyTableManager extends TableManager {
 	private HBox container;
 	private EntityTable entityTable;
 	private ComponentTable componentTable;
@@ -31,9 +31,9 @@ public class PropertyTableManager extends TableManager
 	private PropertyEventEditor editor;
 	
 	private ObservableList<IEntity> selectedEntities;
+	private List<IEntity> chosenEntities = new ArrayList<>();
 
-	public PropertyTableManager(String language, PropertyEventEditor editor )
-	{
+	public PropertyTableManager(String language, PropertyEventEditor editor ) {
 		container = new HBox();
 		this.language = language;
 		selectedEntities = FXCollections.observableArrayList();
@@ -55,15 +55,27 @@ public class PropertyTableManager extends TableManager
 		fillLayout();
 	}
 	
-	public void entityWasClicked(Entity entity)
-	{
-		editor.resetTrigger();
-		editor.setEntityForAnimation(entity);
-		
-		componentTable.refreshTable();
-		propertyTable.refreshTable();
-		componentTable.fillEntries(entity);
-		this.entity = entity;
+	public void entityWasClicked(Entity entity) {
+		if (chosenEntities.contains(entity))
+		{
+			chosenEntities.remove(entity);
+		}
+		else {
+			editor.resetTrigger();
+			chosenEntities.add(entity);
+			componentTable.refreshTable();
+			propertyTable.refreshTable();
+			componentTable.fillEntries(entity);
+			this.entity = entity;
+			editor.choseEntity(chosenEntities);
+		}
+//		editor.resetTrigger();
+//		editor.setEntityForAnimation(entity);
+//
+//		componentTable.refreshTable();
+//		propertyTable.refreshTable();
+//		componentTable.fillEntries(entity);
+//		this.entity = entity;
 	}
 	
 	public void componentWasClicked(IComponent component)
@@ -85,8 +97,7 @@ public class PropertyTableManager extends TableManager
 		componentTable.refreshTable();
 		propertyTable.refreshTable();
 		
-		for ( ILevel level: levels )
-		{
+		for ( ILevel level: levels ) {
 			selectedEntities.addAll(level.getAllEntities());
 		}
 		

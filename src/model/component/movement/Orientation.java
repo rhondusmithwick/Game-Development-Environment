@@ -18,6 +18,7 @@ public class Orientation implements IComponent {
      * Single Proprety.
      */
     private final SingleProperty<Double> singleProperty = new SingleProperty<>("Orientation", 0.0);
+    private String orientationString = "north";
 
     /**
      * Empty constructor. Starts at 0.0.
@@ -35,9 +36,9 @@ public class Orientation implements IComponent {
     }
 
     /**
-     * Get the orientation property.
+     * Get the orientationString property.
      *
-     * @return the orientation property
+     * @return the orientationString property
      */
     public SimpleObjectProperty<Double> orientationProperty() {
         return singleProperty.property1();
@@ -49,6 +50,19 @@ public class Orientation implements IComponent {
 
     public void setOrientation(double orientation) {
         orientationProperty().set(orientation);
+        if (orientation < 90) {
+            orientationString = "north";
+        } else if (orientation < 180) {
+            orientationString = "east";
+        } else if (orientation < 270) {
+            orientationString = "south";
+        } else {
+            orientationString = "west";
+        }
+    }
+
+    public String getOrientationString() {
+        return orientationString;
     }
 
     @Override
