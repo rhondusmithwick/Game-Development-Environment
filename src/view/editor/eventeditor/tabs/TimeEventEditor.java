@@ -103,13 +103,8 @@ public class TimeEventEditor extends EventEditorTab
 		{
 			return;
 		}
-		// make map like this:
-		// Map<String, String> params = new HashMap<String, String>();
-		// loop thru chosen entities and put them in map
-		// params.put("entityID", chosenEntitiesID);
-		// addEventToLevels(getChosenLevels(), "KeyTrigger", actionScriptPath, params, currentKey.getName());
 		addEventToLevels(getChosenLevels(), getChosenEntities(), "TimeTrigger", time);
-		flashCreatedEventText();
+		flashText(getEventCreatedText());
 		eventViewManager.updateTable();
 	}
 	
@@ -131,7 +126,7 @@ public class TimeEventEditor extends EventEditorTab
 		
 		createEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
 		
-		innerContainer.getChildren().addAll(textField, createEventButton, getActionPane());
+		innerContainer.getChildren().addAll(textField, getActionPane(), createEventButton);
 		
 		chosenEntityText = new Text();
 		
@@ -175,7 +170,7 @@ public class TimeEventEditor extends EventEditorTab
 			{
 				entityString += entity.getName() + "\n";
 			}
-			
+
 			chosenEntityText.setText(entityString);
 		}
 	}

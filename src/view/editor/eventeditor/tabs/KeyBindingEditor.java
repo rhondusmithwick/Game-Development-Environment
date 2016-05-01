@@ -96,7 +96,7 @@ public class KeyBindingEditor extends EventEditorTab
 	
 	private void createEvent()
 	{
-		addEventToLevels(getChosenLevels(), getChosenEntities(), "KeyTrigger", getActionScriptPath(), currentKey.getName());
+		addEventToLevels(getChosenLevels(), getChosenEntities(), "KeyTrigger", currentKey.getName());
 		flashText(getEventCreatedText());
 		eventViewManager.updateTable();
 	}
@@ -127,7 +127,7 @@ public class KeyBindingEditor extends EventEditorTab
 		
 		createEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
 		
-		innerContainer.getChildren().addAll(listenToKey, keyInputText, createEventButton, getActionPane());
+		innerContainer.getChildren().addAll(listenToKey, keyInputText, getActionPane(), createEventButton);
 		
 		chosenEntityText = new Text();
 		

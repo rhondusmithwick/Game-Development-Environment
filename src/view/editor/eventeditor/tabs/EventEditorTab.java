@@ -111,7 +111,7 @@ public abstract class EventEditorTab extends Editor {
 			return;
 		}
 		levels.stream().forEach(level -> {
-			addEventToLevel(level, entities, triggerClassName, actionScriptPath, args);
+			addEventToLevel(level, entities, triggerClassName, args);
 		});
 	}
 
@@ -205,7 +205,7 @@ public abstract class EventEditorTab extends Editor {
         animationName = animationChooser.initChooser();
         if (animationName != null) {
             addToParameters("animationName", animationName);
-            actionScriptPath = "AnimationScript.groovy";
+            actionScriptPath = "GeneralAnimationScript.groovy";
         }
     }
 
