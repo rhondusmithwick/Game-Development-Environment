@@ -39,7 +39,6 @@ public class MoveAndSound implements IGameScript{
 		Map<String, Object> wKey = new HashMap<>();
 		wKey.put("key", "W");
 		events.registerEvent(new KeyTrigger("W"), new Action(punchScript, wKey));
-		
 		events.registerEvent(new KeyTrigger("S"), new Action(punchScript, sKey));
 	}
 

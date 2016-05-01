@@ -1,6 +1,5 @@
 package providedScripts
 
-import api.IEntity
 import groovy.transform.BaseScript
 import groovy.transform.Field
 import model.component.movement.Velocity
@@ -8,7 +7,7 @@ import model.component.movement.Velocity
 @BaseScript ScriptHelpers ScriptHelpers
 
 /**
- * Created by rhondusmithwick on 4/30/16.
+ * Movs a sprite using the Physics Engine.
  * @author Rhondu Smithwick
  */
 

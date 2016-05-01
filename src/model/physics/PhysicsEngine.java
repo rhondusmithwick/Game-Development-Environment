@@ -6,6 +6,7 @@ import api.IEntity;
 import api.ILevel;
 import api.IPhysicsEngine;
 import javafx.geometry.Bounds;
+import javafx.geometry.Point2D;
 import javafx.scene.image.ImageView;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
@@ -108,11 +109,11 @@ public class PhysicsEngine implements IPhysicsEngine {
 	}
 
 	@Override
-	public boolean applyImpulse(IEntity body, Vector impulse) {
+	public boolean applyImpulse(IEntity body, Point2D impulse) {
 		if (body.hasComponents(Mass.class, Velocity.class)) {
 			Velocity v = body.getComponent(Velocity.class);
 			double m = body.getComponent(Mass.class).getMass();
-			v.add(impulse.getXComponent() / m, impulse.getYComponent() / m);
+			v.add(impulse.getX() / m, impulse.getY() / m);
 			return true;
 		} else {
 			return false;

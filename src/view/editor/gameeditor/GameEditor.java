@@ -15,8 +15,6 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
-import main.Vooga;
 import view.Authoring;
 import view.editor.Editor;
 import view.editor.gameeditor.displays.EntityDisplay;
@@ -27,6 +25,7 @@ import view.enums.GUISize;
 import view.enums.ViewInsets;
 import view.utilities.Alerts;
 import view.utilities.ButtonFactory;
+import view.utilities.ToMainMenu;
 /**
  * 
  * @author calinelson
@@ -103,20 +102,13 @@ public class GameEditor extends Editor  {
     private VBox leftPane() {
         VBox temp = new VBox(GUISize.GAME_EDITOR_PADDING.getSize());
         temp.getChildren().addAll(gameDetails.getElements());
-        Button mainMenu = ButtonFactory.makeButton(myResources.getString("mainMenu"), e->toMainMenu());
+        Button mainMenu = ButtonFactory.makeButton(myResources.getString("mainMenu"), e->ToMainMenu.toMainMenu(pane));
         temp.getChildren().addAll(Arrays.asList(entDisp.makeNewObject(), envDisp.makeNewObject(), eventDisplay.makeNewObject(), mainMenu, ButtonFactory.makeButton(myResources.getString("saveGame"), e->saveGame())));
 
         return temp;
     }
 
 
-    private void toMainMenu () {
-        Stage myStage = (Stage) pane.getScene().getWindow();
-        myStage.setWidth(GUISize.MAIN_SIZE.getSize());
-        myStage.setHeight(GUISize.MAIN_SIZE.getSize());
-        Vooga vooga = new Vooga(myStage);
-        vooga.init();
-    }
 
     private void saveGame() {
         new GameSaver().saveGame(masterEnvironmentList, masterEntityList, gameDetails.getGameDetails());

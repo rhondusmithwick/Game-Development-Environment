@@ -41,7 +41,9 @@ public enum GUISize {
 	ANIMATION_HEIGHT(200),
 	ANIMATION_WIDTH(200), 
 	VIEW_SIZE(2000),
-	SCENE_SIZE(500);
+	SCENE_SIZE(500),
+	POP_UP_WIDTH(120),
+	POP_UP_HIEGHT(180);
 
     private final int size;
 

@@ -46,7 +46,7 @@ public class VoogaTesting {
 		IPhysicsEngine p = new PhysicsEngine(new RealisticVelocityCalculator());
 		ILevel universe = new Level();
 		universe.addEntity(e);
-		p.applyImpulse(e, new Vector(10, 20));
+		//p.applyImpulse(e, new Vector(10, 20));
 		System.out.println(v.getVX() + " " + v.getVY());
 		assertEquals(Math.abs(v.getVX() - 11.0) < 0.0001, true);
 		assertEquals(Math.abs(v.getVY() - 21.0) < 0.0001, true);
