@@ -2,20 +2,18 @@ package events;
 
 import api.ILevel;
 import api.ISerializable;
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
 
 import javax.script.Bindings;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
 import javax.script.SimpleBindings;
-import java.io.File;
-import java.io.IOException;
 import java.util.Map;
+
+import static utility.ReadFile.readFile;
 
 
 /**
- * Created by rhondusmithwick on 4/9/16.
+ * Holds a script for Groovy and executes it with parameters.
  *
  * @author Rhondu Smithwick
  */
@@ -24,18 +22,18 @@ public class Action implements ISerializable {
     private final String scriptPath;
     private final Bindings parameters = new SimpleBindings();
 
-    public Action(String scriptPath) {
-        script = getScriptFromPath(scriptPath);
+    public Action (String scriptPath) {
+        script = readFile(scriptPath);
         this.scriptPath = scriptPath;
     }
 
-    public Action(String scriptPath, Map<String, Object> parameters) {
+    public Action (String scriptPath, Map<String, Object> parameters) {
         this(scriptPath);
         System.out.println(parameters);
         this.parameters.putAll(parameters);
     }
 
-    public void activate(ScriptEngine engine, ILevel level) {
+    public void activate (ScriptEngine engine, ILevel level) {
         parameters.put("universe", level);
         parameters.put("level", level);
         try {
@@ -47,33 +45,25 @@ public class Action implements ISerializable {
         }
     }
 
-    public String getScript() {
+    public String getScript () {
         return script;
     }
 
-    protected Bindings getParameters() {
+    public Bindings getParameters () {
         return parameters;
     }
 
-    public Object putParameter(String key, Object value) {
+    public Object putParameter (String key, Object value) {
         return getParameters().put(key, value);
     }
 
-    public Object removeParameter(String key) {
+    public Object removeParameter (String key) {
         return getParameters().remove(key);
     }
-    
-    public String toString() {
-    	return script;
+
+    @Override
+    public String toString () {
+        return String.format("Script: %s \n\n, Parameters: %s", script, parameters.toString());
     }
 
-    private String getScriptFromPath(String scriptPath) {
-        String script = "";
-        try {
-            script = Files.toString(new File(scriptPath), Charsets.UTF_8);
-        } catch (IOException e) {
-            System.out.println("Groovy script not found at " + scriptPath);
-        }
-        return script;
-    }
 }

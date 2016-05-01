@@ -1,4 +1,3 @@
-
 package model.entity;
 
 import api.IComponent;

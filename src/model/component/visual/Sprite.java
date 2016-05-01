@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utility.SingleProperty;
 import utility.TwoProperty;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -72,8 +73,7 @@ public class Sprite implements IComponent {
 
     public void setImagePath (String imagePath) {
         imagePathProperty().set(imagePath);
-        System.out.println("image path " + imagePath);
-        imageView = this.createImageView(imagePath);
+        imageView = this.createImageView(imagePath); // TODO: refactor
         setImageHeight(getImageHeight());
         setImageWidth(getImageWidth());
     }
@@ -111,12 +111,14 @@ public class Sprite implements IComponent {
     private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         this.imageView = this.createImageView(getImagePath());
+        setImageHeight(getImageHeight());
+        setImageWidth(getImageWidth());
     }
 
     private ImageView createImageView (String imagePath) {
         Image image = getImage(imagePath);
         ImageView imageView = new ImageView(image);
-        imageView.setPreserveRatio(true);
+        imageView.setPreserveRatio(false);
         return imageView;
     }
 
@@ -131,12 +133,12 @@ public class Sprite implements IComponent {
     }
 
     public ImageView getImageView () {
-    		//return createImageView(this.getImagePath());
+        //return createImageView(this.getImagePath());
         return imageView;
     }
 
     @Override
-    public void update() {
+    public void update () {
         setImagePath(getImagePath());
         setImageHeight(getImageHeight());
         setImageWidth(getImageWidth());

@@ -3,6 +3,7 @@ package model.component.character;
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 import utility.SingleProperty;
+
 import java.util.List;
 
 
@@ -19,7 +20,7 @@ public class Attack implements IComponent {
     /**
      * Empty constructor. Has attack at 0.
      */
-    public Attack() {
+    public Attack () {
     }
 
     /**
@@ -27,7 +28,7 @@ public class Attack implements IComponent {
      *
      * @param attack the initial value
      */
-    public Attack(double attack) {
+    public Attack (double attack) {
         setAttack(attack);
     }
 
@@ -36,30 +37,30 @@ public class Attack implements IComponent {
      *
      * @return the attack property
      */
-    public SimpleObjectProperty<Double> attackProperty() {
+    public SimpleObjectProperty<Double> attackProperty () {
         return singleProperty.property1();
     }
 
-    public double getAttack() {
+    public double getAttack () {
         return attackProperty().get();
     }
 
-    public void setAttack(double attack) {
+    public void setAttack (double attack) {
         attackProperty().set(attack);
     }
 
     @Override
-    public String toString() {
+    public String toString () {
         return String.format("Attack: %s", getAttack());
     }
 
     @Override
-    public List<SimpleObjectProperty<?>> getProperties() {
+    public List<SimpleObjectProperty<?>> getProperties () {
         return singleProperty.getProperties();
     }
 
     @Override
-    public void update() {
+    public void update () {
         setAttack(getAttack());
     }
 }

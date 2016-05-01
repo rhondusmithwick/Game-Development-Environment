@@ -20,7 +20,7 @@ public class Pair<A, B> extends Unit<A> {
      * @param _1 first value
      * @param _2 second value
      */
-    public Pair(A _1, B _2) {
+    public Pair (A _1, B _2) {
         super(_1);
         this._2 = _2;
     }
@@ -30,7 +30,7 @@ public class Pair<A, B> extends Unit<A> {
      *
      * @return second value
      */
-    public B _2() {
+    public B _2 () {
         return _2;
     }
 }

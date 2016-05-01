@@ -25,7 +25,7 @@ public enum FileExtensions {
      * @param type file type of extension
      * @param ext  file extension
      */
-    FileExtensions(String type, String ext) {
+    FileExtensions (String type, String ext) {
         this.filter = new ExtensionFilter(type, ext);
     }
 
@@ -34,7 +34,7 @@ public enum FileExtensions {
      *
      * @return ExtensionFilter for a file type
      */
-    public ExtensionFilter getFilter() {
+    public ExtensionFilter getFilter () {
         return this.filter;
     }
 }

@@ -5,16 +5,16 @@ import javafx.scene.input.InputEvent;
 
 public interface IInputSystem {
 
-	void takeInput(InputEvent e);
+    void takeInput (InputEvent e);
 
-	void processInputs();
+    void processInputs ();
 
-	void listenToInput(ChangeListener listener);
+    void listenToInput (ChangeListener listener);
 
-	void unListenToInput(ChangeListener listener);
+    void unListenToInput (ChangeListener listener);
 
-	void clearInputs();
+    void clearInputs ();
 
-	InputEvent getCurrentInputEvent();
+    InputEvent getCurrentInputEvent ();
 
 }

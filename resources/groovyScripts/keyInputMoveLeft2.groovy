@@ -7,5 +7,5 @@ package groovyScripts
 
 import model.component.movement.Position;
 
-position = universe.getEntitiesWithName("Cani").get(0)getComponent(Position.class);
-position.setX(position.getX()-30);
+position = universe.getEntitiesWithName("Cani").get(0) getComponent(Position.class);
+position.setX(position.getX() - 30);

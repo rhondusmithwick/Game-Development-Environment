@@ -3,8 +3,8 @@ package usecases;
 @SuppressWarnings("unused")
 public class UseCase24 {
 
-	// game creator adds music to an environment
-    void doUseCase() {
+    // game creator adds music to an environment
+    void doUseCase () {
 
         //IEnvironmentEditor myEditor = (IEnvironmentEditor) new EditorEnvironment();
         //myEditor.show();

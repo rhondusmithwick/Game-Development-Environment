@@ -21,7 +21,7 @@ public class GlobalForce implements IComponent {
     /**
      * Default constructor. Starts with both at 0.0.
      */
-    public GlobalForce() {
+    public GlobalForce () {
     }
 
     /**
@@ -30,7 +30,7 @@ public class GlobalForce implements IComponent {
      * @param magnitude initial magnitude
      * @param direction initial direction
      */
-    public GlobalForce(double magnitude, double direction) {
+    public GlobalForce (double magnitude, double direction) {
         setMagnitude(magnitude);
         setDirection(direction);
     }
@@ -40,15 +40,15 @@ public class GlobalForce implements IComponent {
      *
      * @return the magnitude property
      */
-    public SimpleObjectProperty<Double> magnitudeProperty() {
+    public SimpleObjectProperty<Double> magnitudeProperty () {
         return twoProperty.property1();
     }
 
-    public Double getMagnitude() {
+    public Double getMagnitude () {
         return magnitudeProperty().get();
     }
 
-    public void setMagnitude(double magnitude) {
+    public void setMagnitude (double magnitude) {
         magnitudeProperty().set(magnitude);
     }
 
@@ -57,25 +57,25 @@ public class GlobalForce implements IComponent {
      *
      * @return the direction property
      */
-    public SimpleObjectProperty<Double> directionProperty() {
+    public SimpleObjectProperty<Double> directionProperty () {
         return twoProperty.property2();
     }
 
-    public Double getDirection() {
+    public Double getDirection () {
         return directionProperty().get();
     }
 
-    public void setDirection(double direction) {
+    public void setDirection (double direction) {
         directionProperty().set(direction);
     }
 
     @Override
-    public List<SimpleObjectProperty<?>> getProperties() {
+    public List<SimpleObjectProperty<?>> getProperties () {
         return twoProperty.getProperties();
     }
 
     @Override
-    public void update() {
+    public void update () {
         setDirection(getDirection());
     }
 

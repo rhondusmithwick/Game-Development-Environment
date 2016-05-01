@@ -1,6 +1,5 @@
 package view.editor;
 
-public class GroovyTableEntry 
-{
-	
+public class GroovyTableEntry {
+
 }

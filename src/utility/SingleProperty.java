@@ -4,9 +4,6 @@ import javafx.beans.property.SimpleObjectProperty;
 
 import java.util.Collections;
 import java.util.List;
-import java.util.Observable;
-
-import events.Trigger;
 
 /**
  * Holds one property of type A.
@@ -24,7 +21,7 @@ public class SingleProperty<A> {
      * @param name1  of the property
      * @param value1 initial value of the property
      */
-    public SingleProperty(String name1, A value1) {
+    public SingleProperty (String name1, A value1) {
         property1 = new SimpleObjectProperty<>(this, name1, value1);
     }
 
@@ -33,7 +30,7 @@ public class SingleProperty<A> {
      *
      * @return the first property
      */
-    public SimpleObjectProperty<A> property1() {
+    public SimpleObjectProperty<A> property1 () {
         return property1;
     }
 
@@ -42,7 +39,7 @@ public class SingleProperty<A> {
      *
      * @return the property as a list
      */
-    public List<SimpleObjectProperty<?>> getProperties() {
+    public List<SimpleObjectProperty<?>> getProperties () {
         return Collections.singletonList(property1());
     }
 }
