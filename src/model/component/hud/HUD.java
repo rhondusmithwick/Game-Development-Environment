@@ -1,48 +1,35 @@
 package model.component.hud;
 
-import java.util.HashMap;
-import java.util.Map;
 import api.IComponent;
+import javafx.beans.property.SimpleObjectProperty;
+import utility.SingleProperty;
 
 public class HUD implements IComponent {
-	private Map<String, PositionColor> shapes = new HashMap<String, PositionColor>();
-	private Map<String, PositionColor> text = new HashMap<String, PositionColor>();
-	
+	private static final String DEFAULT = "shape:Rectangle;width:100;height:100;color:10,10,10,1";
+	private final SingleProperty<String> singleProperty = new SingleProperty<>("HUD", DEFAULT);
+
 	public HUD() {
 	}
 	
-	public HUD(Map<String, PositionColor> shapes) {
-		setShapes(shapes);
+	public HUD(String data) {
+		setHUD(data);
 	}
 	
-	public HUD(Map<String, PositionColor> text, boolean flag) {
-		setText(text);
+	public void setHUD(String hud) {
+		HUDProperty().set(hud);
 	}
 	
-	public HUD(Map<String, PositionColor> shapes, Map<String, PositionColor> text) {
-		setShapes(shapes);
-		setText(text);
-	}
+	public SimpleObjectProperty<String> HUDProperty() {
+        return singleProperty.property1();
+    }
 	
+	public String getHUD() {
+        return HUDProperty().get();
+    }
+
 	@Override
 	public void update() {
-		// Do nothing.
+		// TODO Auto-generated method stub
+		
 	}
-
-	public Map<String, PositionColor> getShapes() {
-		return shapes;
-	}
-
-	public void setShapes(Map<String, PositionColor> shapes) {
-		this.shapes = shapes;
-	}
-
-	public Map<String, PositionColor> getText() {
-		return text;
-	}
-
-	public void setText(Map<String, PositionColor> text) {
-		this.text = text;
-	}
-	
 }

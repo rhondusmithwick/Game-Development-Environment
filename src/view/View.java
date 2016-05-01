@@ -21,6 +21,7 @@ import javafx.scene.shape.Shape;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import main.Vooga;
+import model.component.hud.HUD;
 import model.component.movement.Orientation;
 import model.component.movement.Position;
 import model.component.physics.Collision;
@@ -162,8 +163,10 @@ public class View implements IView {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void step(double dt) { 
+	private void step(double dt) {
+		// simulate
 		model.step(dt);
+		// render
 		root.getChildren().clear();
 		List<IEntity> entities = model.getEntitySystem().getAllEntities();
 		for (IEntity e : entities) {
@@ -178,6 +181,17 @@ public class View implements IView {
 				root.getChildren().add(imageView);
 				if (!root.getChildren().contains(imageView)) {
 					root.getChildren().add(imageView);
+				}
+			}
+			
+			if(e.hasComponents(HUD.class, Position.class)) {
+				String hud = e.getComponent(HUD.class).getHUD();
+				String[] split = hud.split(";");
+				for(String str: split) {
+					String[] s = str.split(":");
+					if(s.equals("shape)") {
+						Shape shape = Class.forName(str).
+					}
 				}
 			}
 		}
