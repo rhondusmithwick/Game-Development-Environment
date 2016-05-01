@@ -24,24 +24,26 @@ import java.util.Observable;
 import java.util.Observer;
 
 /***
- * Created by ajonnav 04/12/16
+ * Implementation of an EventSystem.
+ * <p>
+ * For non-key events, we want to
+ * write a string that denotes which entity and which property to watch.
+ * For a key event, we ask the inputSystem to listen, and write the
+ * key character to file to write to data.
+ * We also write to file the Action that corresponds to the property change or
+ * key event. When we read the file, aka play the game, we read the strings from data files
+ * and create Triggers, which add listeners to said properties or keys. The
+ * Triggers are mapped to Actions in the EventSystem map.
+ * <p>
+ * </p>
  *
- * @author Anirudh Jonnavithula, Carolyn Yao For non-key events, we want to
- *         write a string that denotes which entity and which property to watch.
- *         For a key event, we ask the inputSystem to listen, and write the
- *         key character to file to write to data.
- *         We also write to file the Action that corresponds to the property change or
- *         key event. When we read the file, aka play the game, we read the strings from data files
- *         and create Triggers, which add listeners to said properties or keys. The
- *         Triggers are mapped to Actions in the EventSystem map.
+ * @author Anirudh Jonnavithula, Carolyn Yao, Rhondu Smithwick, Tom Wu
  */
 
 public class EventSystem implements Observer, IEventSystem {
-    private final EventFactory eventFactory = new EventFactory();
     private final SimpleDoubleProperty timer = new SimpleDoubleProperty(this, "timer", 0.0);
     private transient IInputSystem inputSystem = new InputSystem();
     private transient ILevel level;
-    //    private final MouseSystem mouseSystem = new MouseSystem();
     private ListMultimap<Trigger, Action> actionMap = ArrayListMultimap.create();
     private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
 
@@ -64,29 +66,13 @@ public class EventSystem implements Observer, IEventSystem {
     @Override
     public void updateInputs (double dt) {
         this.inputSystem.processInputs();
-//        this.mouseSystem.processInputs();
         timer.set(timer.get() + dt);
-        //System.out.println(timer.get());
     }
 
     @Override
     public void takeInput (KeyEvent k) {
-        System.out.println("WHOO");
         this.inputSystem.takeInput(k);
     }
-
-//    public void takeMousePress(MouseEvent m) {
-//    	System.out.println("AYYYOOOOOO");
-//    	this.mouseSystem.takeInput(m);
-//    }
-//    
-//    public void listenToMousePress(ChangeListener listener) {
-//    	mouseSystem.listenToMousePress(listener);
-//    }
-//    
-//    public void unListenToMousePress(ChangeListener listener) {
-//    	mouseSystem.unListenToMousePress(listener);
-//    }
 
     @Override
     public void listenToInput (ChangeListener listener) {

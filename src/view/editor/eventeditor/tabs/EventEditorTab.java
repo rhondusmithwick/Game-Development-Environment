@@ -38,7 +38,6 @@ import java.util.TimerTask;
  */
 
 public abstract class EventEditorTab extends Editor {
-    private final EventFactory eventFactory = new EventFactory();
     private final String language;
     private ArrayList<ILevel> chosenLevels;
     private final LevelPicker levelPicker;
@@ -117,7 +116,7 @@ public abstract class EventEditorTab extends Editor {
 
         String groovyPath = "resources/groovyScripts/";
         level.getEventSystem().registerEvent(
-                eventFactory.createEvent(triggerClassName, groovyPath + actionScriptPath,
+                EventFactory.createEvent(triggerClassName, groovyPath + actionScriptPath,
                         parameters, args)
         );
     }

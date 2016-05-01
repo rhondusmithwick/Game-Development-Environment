@@ -8,9 +8,10 @@ import javafx.beans.value.ChangeListener;
 import java.util.Observable;
 
 /***
+ * Implements a ChangeListener that listens to changeImage in a SimpleObjectProperty for now, signals EventSystem
+ * potential subclasses: PropertyTrigger, KeyTrigger, CollisionTrigger?, OtherEventTrigger
+ *
  * @author Anirudh Jonnavithula, Carolyn Yao
- *         Implements a ChangeListener that listens to changeImage in a SimpleObjectProperty for now, signals EventSystem
- *         potential subclasses: PropertyTrigger, KeyTrigger, CollisionTrigger?, OtherEventTrigger
  */
 public abstract class Trigger extends Observable implements ChangeListener, ISerializable {
 

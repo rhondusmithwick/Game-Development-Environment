@@ -46,7 +46,6 @@ public class CollisionTestGame {
     private final String moveRightScriptPath = "resources/groovyScripts/keyInputMoveRight.groovy";
     private final String moveLeftScriptPath = "resources/groovyScripts/keyInputMoveLeft.groovy";
     private final String jumpScriptPath = "resources/groovyScripts/keyInputJump.groovy";
-    EventFactory eventFactory = new EventFactory();
     //private final EventSystem eventSystem = new EventSystem(universe);
     private IEventSystem eventSystem = universe.getEventSystem();
     private IPhysicsEngine physics = universe.getPhysicsEngine();
@@ -112,7 +111,7 @@ public class CollisionTestGame {
 
     public void registerEventSetup (String className, String scriptName, Map<String, Object> params, Object... args) {
         //Pair<Trigger, Action> event = eventFactory.createEvent(className, scriptName, args);
-        Trigger trigger = eventFactory.createTrigger(className, args);
+        Trigger trigger = EventFactory.createTrigger(className, args);
         Action action = new Action(scriptName, params);
         eventSystem.registerEvent(trigger, action);
     }

@@ -7,9 +7,10 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 
 /***
+ * Listeners that notify the event system if a specific key is pressed.
+ *
  * @author cyao42, ani
  *         Authors: Carolyn Yao, Anirudh Jonnavithula
- *         Listeners that notify the event system if a specific key is pressed.
  */
 
 public class KeyTrigger extends InputTrigger {
