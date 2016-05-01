@@ -50,13 +50,13 @@ public class ACGame {
     private final String SPRITE_PATH = "resources/spriteSheets/ryuBlue.gif";
     private final String SPRITE_PROPERTIES = "spriteProperties/aniryu";
     private final String IMAGE_PATH = "resources/spriteSheets/aniryu.gif";
-    private final String animationScriptPath = "resources/groovyScripts/AnimationScript.groovy";
+    private final String animationScriptPath = "resources/providedScripts/AnimationScript.groovy";
     private final String healthScriptPath = "resources/groovyScripts/ACGameTestScript.groovy";
     private final String moveRightScriptPath = "resources/groovyScripts/keyInputMoveRight.groovy";
     private final String moveLeftScriptPath = "resources/groovyScripts/keyInputMoveLeft.groovy";
-    private final String jumpScriptPath = "resources/groovyScripts/MoveEntity.groovy";
+    private final String jumpScriptPath = "resources/providedScripts/MoveEntity.groovy";
     private final String addGravityScriptPath = "resources/groovyScripts/ACAddGravity.groovy";
-    private final String stopScriptPath = "resources/groovyScripts/StopPerson.groovy";
+    private final String stopScriptPath = "resources/providedScripts/StopPerson.groovy";
     private final String deGravityScriptPath = "resources/groovyScripts/stopGravityScript.groovy";
     private ImageView charSpr;
     private Scene myScene;
@@ -98,7 +98,7 @@ public class ACGame {
             character.forceAddComponent(new Velocity(0, 0), true);
             level.getEntitySystem().addEntity(character);
             //character.addComponent(new Sprite(IMAGE_PATH));
-            character.addComponent(new Gravity(3));
+            character.addComponent(new Gravity(30));
 //            character.serialize("character.xml");
             character.getComponent(AnimatedSprite.class).setImageHeight(100);
             character.getComponent(AnimatedSprite.class).getImageView().setX(pos.getX());
@@ -108,20 +108,22 @@ public class ACGame {
             animation.setCycleCount(1000);
             animation.play();*/
             Map<String, Object> map = new HashMap<>();
-            map.put("characterName", character.getName());
+            map.put("entityName", character.getName());
+            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("D"), KeyEvent.KEY_RELEASED), new Action(stopScriptPath, map));
+            map.clear();
+            map.put("entityName", character.getName());
             map.put("animationName", "RightPunch");
             eventSystem.registerEvent(
                     new PropertyTrigger(character.getID(), Position.class, "XPosition"),
                     new Action(healthScriptPath));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("D"), KeyEvent.KEY_PRESSED), new Action(moveRightScriptPath, map));
-            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("D"), KeyEvent.KEY_RELEASED), new Action(stopScriptPath, map));
+            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("A"), KeyEvent.KEY_PRESSED), new Action(moveLeftScriptPath));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("A"), KeyEvent.KEY_RELEASED), new Action(stopScriptPath, map));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.SPACE, KeyEvent.KEY_PRESSED), new Action(animationScriptPath, map));
-            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("A"), KeyEvent.KEY_PRESSED), new Action(moveLeftScriptPath));
             map.clear();
             map.put("entityName", character.getName());
-            map.put("velocityX", 0.0);
-            map.put("velocityY", 20.0);
+            map.put("velocityX", character.getComponent(Velocity.class).getVX());
+            map.put("velocityY", -500.0);
             eventSystem.registerEvent(new PropertyTrigger(character.getID(), Position.class, "YPosition"), new Action(deGravityScriptPath));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_PRESSED), new Action(jumpScriptPath, map));
            // eventSystem.registerEvent(new MouseTrigger(MouseButton.PRIMARY, MouseEvent.MOUSE_CLICKED), new Action(moveLeftScriptPath));
