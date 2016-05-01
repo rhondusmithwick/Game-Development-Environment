@@ -52,9 +52,10 @@ public class EditorEnvironment extends Editor {
 		allEnvironmentsList = addToList;
 
 		view = new View((GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(), myLevel,
-				myLanguage, myScene);
+				myLanguage, myScene, true);
 		myButtonsClass = new EnvironmentUtilites(view, environmentEntityButtonsBox, masterList, this, language);
 		addLayoutComponents();
+		System.setProperty("glass.accessible.force", "false");
 	}
 
 	private void addLayoutComponents() {

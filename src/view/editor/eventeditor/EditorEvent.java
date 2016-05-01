@@ -59,18 +59,12 @@ public class EditorEvent extends Editor
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.EVENT_EDIT.getInset());
 		pane.setPrefWidth(GUISize.EVENT_EDITOR_WIDTH.getSize());
-
 		myResources = ResourceBundle.getBundle(language);
 		scrollPane = new ScrollPane(pane);
-		
 		tabPane = new TabPane();
 		propertyTab = new Tab();
-		
 		pane.getChildren().add(tabPane);
-		
-		
 		myResources = ResourceBundle.getBundle(language);
-
 		// TODO: Put editors in map and use cool for loop for this
 		populateEditorTab(propertyEventEditor);
 		populateEditorTab(keyBindingEditor);
@@ -82,7 +76,6 @@ public class EditorEvent extends Editor
 	 */
 	private void populateEditorTab(Editor editor) {
         Tab newTab = new Tab();
-
         newTab.setContent(editor.getPane());
         newTab.setClosable(false);
         tabPane.getTabs().add(newTab);
