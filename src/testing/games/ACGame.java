@@ -222,7 +222,6 @@ public class ACGame {
             map.clear();
             map.put("entityName", character.getName());
             map.put("animationName", "RightPunch");
-<<<<<<< HEAD
             eventSystem.registerEvent(
                     new PropertyTrigger(character.getID(), Position.class, "XPosition"),
                     new Action(healthScriptPath));
@@ -266,17 +265,6 @@ public class ACGame {
         charSprite.setPreserveRatio(true);
         //root.getChildren().add(charSprite);
         return charSprite;
-    }
-
-    private Action getAction(String scriptPath) {
-        String script = null;
-        try {
-            script = Files.toString(new File(scriptPath), Charsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-=======
->>>>>>> bbaab69f3a30129bb27c506ee8374c19982ae417
-        }
     }
 }
 //            eventSystem.registerEvent(
