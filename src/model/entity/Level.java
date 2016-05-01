@@ -73,7 +73,8 @@ public class Level implements ILevel {
     }
 
     @Override
-    public String init (GroovyShell shell, ISystemManager game) {
+    public String init (GroovyShell shell, ISystemManager game, Scene scene) {
+    	setOnInput(scene);
         gameScripts = new ArrayList<>();
         String returnMessage = "";
         String key = myResources.getString("script"); // TODO: don't hard-code
@@ -101,9 +102,10 @@ public class Level implements ILevel {
 
     @Override
     public void update (double dt) {
-		getPhysicsEngine().update(this, dt); // TODO: remove
 		getEventSystem().updateInputs(dt);
         gameScripts.stream().forEach(gs -> gs.update(dt));
+        getPhysicsEngine().update(this, dt); // TODO: remove
+        //handleCollisions();
     }
 
     @Override

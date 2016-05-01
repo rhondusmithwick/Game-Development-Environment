@@ -20,7 +20,7 @@ public class BrunaTesting {
 	@Before
 
 	public void setUp () {
-		myGameEditor = new GameEditor(null, "propertyFiles/english");
+//		myGameEditor = new GameEditor(null, "propertyFiles/english");
 	}
 
 

@@ -22,20 +22,18 @@ import model.entity.Level;
 public class SystemManager implements ISystemManager {
 
 	private GroovyShell shell = new GroovyShell(); // CANNOT BE SCRIPT ENGINE
-	private ILevel universe = new Level();
-	private List<ILevel> levelList = new ArrayList<>();
+	private ILevel level = new Level();
 	private ILevel sharedUniverse = new Level();
 	private boolean isRunning = false;
-	private Node scene; // TODO: remove
+	private Scene scene; // TODO: remove
 
-	public SystemManager(Node scene) {
+	public SystemManager(Scene scene) {
 		this(scene, new Level());
 	}
 
-	public SystemManager(Node scene, ILevel level) {
+	public SystemManager(Scene scene, ILevel level) {
 		this.scene = scene;
-		this.universe = level;
-		levelList.add(level);
+		this.level = level;
 		initLevel();
 	}
 
@@ -46,15 +44,14 @@ public class SystemManager implements ISystemManager {
 
 	@Deprecated
 	public SystemManager(ILevel level) {
-		this.universe = level;
+		this.level = level;
 		initLevel();
 	}
 
 	private void initLevel() {
-		universe.init(shell, this);
-		scene.setOnKeyPressed(e -> universe.getEventSystem().takeInput(e)); // TODO: take in all inputs
+		level.init(shell, this, scene);
 		shell.setVariable("game", this);
-		shell.setVariable("universe", universe);
+		shell.setVariable("universe", level);
 		//shell.setVariable("demo", new GroovyDemoTest()); // TODO: remove
 	}
 
@@ -66,8 +63,8 @@ public class SystemManager implements ISystemManager {
 	@Override
 	public void step(double dt) {
 		if (this.isRunning) {
-			universe.update(dt);
-			List<IEntity> entities = universe.getAllEntities();
+			level.update(dt);
+			List<IEntity> entities = level.getAllEntities();
 			for(IEntity e : entities) {
 				System.out.print(e.getComponent(Position.class).getY());
 			}
@@ -77,12 +74,12 @@ public class SystemManager implements ISystemManager {
 
 	@Override
 	public IEntitySystem getEntitySystem() {
-		return universe.getEntitySystem();
+		return level.getEntitySystem();
 	}
 
 	@Override
 	public ILevel getLevel() {
-		return this.universe;
+		return this.level;
 	}
 
 	@Override
@@ -101,7 +98,7 @@ public class SystemManager implements ISystemManager {
 	@Override
 	public void play() {
 		this.isRunning = true;
-		universe.getEventSystem().clearInputs();
+		level.getEventSystem().clearInputs();
 	}
 
 	// private void readObject(ObjectInputStream in) throws IOException,
@@ -113,7 +110,7 @@ public class SystemManager implements ISystemManager {
 
 	@Override
 	public void saveLevel(String filename) {
-		this.universe.serialize(filename);
+		this.level.serialize(filename);
 	}
 
 	@Override
@@ -123,7 +120,7 @@ public class SystemManager implements ISystemManager {
 
 	@Override
 	public void loadLevel(String filename) {
-		this.universe = new XMLReader<ILevel>().readSingleFromFile(filename);
+		this.level = new XMLReader<ILevel>().readSingleFromFile(filename);
 		initLevel();
 	}
 
@@ -144,7 +141,7 @@ public class SystemManager implements ISystemManager {
 	public void moveEntitiesToMainSystem(IEntity... entities) {
 		for (IEntity e : entities) {
 			this.sharedUniverse.removeEntity(e.getID());
-			this.universe.addEntity(e);
+			this.level.addEntity(e);
 		}
 	}
 
@@ -156,14 +153,14 @@ public class SystemManager implements ISystemManager {
 	@Override
 	public void moveEntitiesToSharedSystem(IEntity... entities) {
 		for (IEntity e : entities) {
-			this.universe.removeEntity(e.getID());
+			this.level.removeEntity(e.getID());
 			this.sharedUniverse.addEntity(e);
 		}
 	}
 
 	@Override
 	public void moveEntitiesToSharedSystem(String... ids) {
-		this.moveEntitiesToSharedSystem(this.idsToEntityArray(this.universe, ids));
+		this.moveEntitiesToSharedSystem(this.idsToEntityArray(this.level, ids));
 	}
 
 	@Override

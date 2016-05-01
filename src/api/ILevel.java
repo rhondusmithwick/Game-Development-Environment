@@ -57,7 +57,7 @@ public interface ILevel extends ISerializable {
      */
     void setMetadata (Map<String, String> metadata);
 
-    String init (GroovyShell shell, ISystemManager game);
+    String init (GroovyShell shell, ISystemManager game, Scene scene);
 
     void update (double dt);
 
