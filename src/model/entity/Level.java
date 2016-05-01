@@ -1,5 +1,6 @@
 package model.entity;
 
+import api.ICollisionVelocityCalculator;
 import api.IEntitySystem;
 import api.IEventSystem;
 import api.IGameScript;
@@ -15,6 +16,7 @@ import groovy.lang.GroovyShell;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import model.physics.PhysicsEngine;
+import model.physics.RealisticVelocityCalculator;
 import view.enums.DefaultStrings;
 
 import java.io.IOException;
@@ -36,7 +38,8 @@ public class Level implements ILevel {
     private IEntitySystem universe = new EntitySystem();
     private Map<String, String> metadata = Maps.newLinkedHashMap();
     private IEventSystem eventSystem = new EventSystem(this);
-    private IPhysicsEngine physics = new PhysicsEngine();
+    private ICollisionVelocityCalculator velocityCalculator = new RealisticVelocityCalculator();
+    private IPhysicsEngine physics = new PhysicsEngine(velocityCalculator);
     private String eventSystemPath;
     private transient ResourceBundle myResources;
     //	private transient ResourceBundle scriptLocs = ResourceBundle.getBundle(DefaultStrings.SCRIPTS_LOC.getDefault());
