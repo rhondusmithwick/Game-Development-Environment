@@ -8,12 +8,8 @@ import api.ISystemManager;
 import datamanagement.XMLReader;
 import groovy.lang.GroovyShell;
 import javafx.scene.Scene;
-import model.component.movement.Position;
 import model.entity.Entity;
 import model.entity.Level;
-
-import java.util.List;
-//import testing.demo.GroovyDemoTest;
 
 /**
  * Created by rhondusmithwick on 3/31/16.
