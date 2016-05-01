@@ -63,6 +63,9 @@ public class SystemManager implements ISystemManager {
 	@Override
 	public void step(double dt) {
 		if (this.isRunning) {
+			if(level.checkIfLevelOver()) {
+				loadLevel(level.getNextLevelPath());
+			}
 			level.update(dt);
 			List<IEntity> entities = level.getAllEntities();
 			for(IEntity e : entities) {
