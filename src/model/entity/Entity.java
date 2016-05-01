@@ -27,7 +27,7 @@ import java.util.stream.Collectors;
 public class Entity implements IEntity {
 
     @XStreamAsAttribute()
-    private final String ID;
+    private String ID;
     @XStreamAlias("components")
     private final Map<Class<? extends IComponent>, List<IComponent>> componentMap = Maps.newLinkedHashMap();
     @XStreamAlias("Specs")
@@ -41,7 +41,7 @@ public class Entity implements IEntity {
     }
 
     public Entity (String name) {
-        ID = UUID.randomUUID().toString();
+        regenerateID();
         setName(name);
     }
 
@@ -128,6 +128,11 @@ public class Entity implements IEntity {
     @Override
     public Map<Class<? extends IComponent>, Integer> getSpecs () {
         return specs;
+    }
+
+    @Override
+    public void regenerateID() {
+        ID = UUID.randomUUID().toString();
     }
 
     @Override
