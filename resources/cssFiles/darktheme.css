@@ -147,6 +147,13 @@
     -fx-text-fill: orange;
 }
 
+.choice-box .context-menu .label {
+    -fx-base: #4f4d50;
+}
+.choice-box  .label {
+    -fx-base: #363736;
+}
+
 #decorationArea {
     -fx-padding: 10px;
     -fx-background-color: derive(-fx-base, +10%);
