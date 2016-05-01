@@ -6,6 +6,7 @@ import java.util.Map;
 import api.IEntity;
 import api.ILevel;
 import api.IPhysicsEngine;
+import javafx.geometry.Point2D;
 
 public class AniPhysics implements IPhysicsEngine {
 	
@@ -31,7 +32,7 @@ public class AniPhysics implements IPhysicsEngine {
 	}
 
 	@Override
-	public boolean applyImpulse(IEntity body, Vector J) {
+	public boolean applyImpulse(IEntity body, Point2D J) {
 		// TODO Auto-generated method stub
 		return false;
 	}
