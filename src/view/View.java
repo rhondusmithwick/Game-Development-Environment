@@ -30,7 +30,6 @@ import update.GameLoopManager;
 import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.SpriteUtilities;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -47,10 +46,7 @@ public class View implements IView {
 	private final double MILLISECOND_DELAY = 10;
 	private final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
 	private final double gapSize = 1;
-
 	private final ConsoleTextArea console = new ConsoleTextArea();
-	// private final ScriptEngine engine = new
-	// ScriptEngineManager().getEngineByName("Groovy");
 	private Group root = new Group();
 	private ISystemManager model;
 	private BorderPane pane;
@@ -72,8 +68,10 @@ public class View implements IView {
 		initButtons();
 		pane = createMainBorderPane(root, this.subScene);
 		viewUtils = new ViewUtilities();
-		DandR = new DragAndResizeDynamic();
-		DandR.makeRootDragAndResize(root);
+		if(debug){
+			DandR = new DragAndResizeDynamic();
+			DandR.makeRootDragAndResize(root);
+		}
 		this.startTimeline();
 	}
 
@@ -83,7 +81,6 @@ public class View implements IView {
 
 	public void setScene(Scene scene) {
 		model.getLevel().setOnInput(scene);
-//		scene.setOnKeyPressed(e -> keyPressed(e.getCode()));
 	}
 
 	public Pane getPane() {
@@ -109,10 +106,6 @@ public class View implements IView {
 		return subScene;
 	}
 
-	private void keyPressed(KeyCode code) {
-		System.out.println("\t\t" + code);
-	}
-
 	public void toggleHighlight(IEntity entity) {
 		viewUtils.toggleHighlight(entity);
 	}
@@ -133,8 +126,7 @@ public class View implements IView {
 
 	private ImageView getUpdatedImageView(IEntity e) {
 		Position pos = e.getComponent(Position.class);
-//		Sprite display = e.getComponent(Sprite.class);
-		ImageView imageView = SpriteUtilities.getImageView(e); //display.getImageView();
+		ImageView imageView = SpriteUtilities.getImageView(e);
 		imageView.setId(e.getID());
 		imageView.setTranslateX(pos.getX());
 		imageView.setTranslateY(pos.getY());
@@ -157,12 +149,9 @@ public class View implements IView {
 		}
 		for (Bounds b : bounds) {
 			if (b == null) {
-			//	System.out.println("null collide mask: " + e.getName());
 				continue;
 			}
 			Shape r = new Rectangle(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
-			// double val = 1.0;// Math.random();
-			// r.setFill(new Color(val, val, val, val));
 			r.setFill(Color.TRANSPARENT);
 			r.setStroke(Color.RED);
 			r.setStrokeWidth(2);
@@ -172,18 +161,18 @@ public class View implements IView {
 	}
 
 	@SuppressWarnings("unchecked")
-	private void step(double dt) { // game loop
+	private void step(double dt) { 
 		model.step(dt);
-
 		root.getChildren().clear();
-		List<IEntity> entities = model.getEntitySystem().getAllEntities();// .getEntitiesWithComponents(Sprite.class,
-																			// Position.class);
+		List<IEntity> entities = model.getEntitySystem().getAllEntities();
 		for (IEntity e : entities) {
 			if (e.hasComponents(Sprite.class, Position.class)) {
 				if(debug){
 					root.getChildren().addAll(getCollisionShapes(e));
 				}
-				DandR.makeEntityDragAndResize(e);
+				if(debug){
+					DandR.makeEntityDragAndResize(e);
+				}
 				ImageView imageView = getUpdatedImageView(e);
 				root.getChildren().add(imageView);
 				if (!root.getChildren().contains(imageView)) {
@@ -196,7 +185,7 @@ public class View implements IView {
 	private BorderPane createMainBorderPane(Group root, SubScene subScene) {
 		BorderPane pane = new BorderPane();
 		ScrollPane center = new ScrollPane();
-		root.setManaged(false); // IMPORTANT
+		root.setManaged(false);
 		pane.setPadding(new Insets(gapSize, gapSize, gapSize, gapSize));
 		pane.setCenter(center);
 		center.setContent(subScene);
@@ -220,7 +209,6 @@ public class View implements IView {
 			buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("evaluate"), e -> this.evaluate()));
 			buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("loopManager"), e -> this.createLoopManager()));
 		}
-
 		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("mainMenu"), e -> this.mainMenu()));
 		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("startGameLoop"), e -> this.model.play()));
 		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("pauseGameLoop"), e -> this.model.pauseLoop()));
@@ -252,7 +240,6 @@ public class View implements IView {
 		String command = text.substring(text.lastIndexOf("\n")).trim();
 		console.println("\n----------------");
 		try {
-			// Object result = engine.eval(command);
 			Object result = model.getShell().evaluate(command);
 			if (result != null) {
 				console.println(result.toString());
