@@ -41,5 +41,5 @@ void workOnEntities(Closure closure) {
 
 
 Double getDouble(String variableName) {
-    return Double.parseDouble(getVariable(variableName).toString());
+    return getVariable(variableName) as double;
 }
