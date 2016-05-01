@@ -1,6 +1,7 @@
 package events;
 
 import javafx.beans.value.ObservableValue;
+import api.IInputSystem;
 import api.ILevel;
 
 import java.util.Map;
@@ -30,7 +31,7 @@ public class TimeTrigger extends Trigger{
 
 	@Override
 	@Deprecated
-	public void clearListener(ILevel universe, InputSystem inputSystem) {
+	public void clearListener(ILevel universe, IInputSystem inputSystem) {
 		// TODO Auto-generated method stub
 		
 	}
@@ -42,7 +43,7 @@ public class TimeTrigger extends Trigger{
 
 	@Override
 	@Deprecated
-	public void addHandler(ILevel universe, InputSystem inputSystem) {
+	public void addHandler(ILevel universe, IInputSystem inputSystem) {
 		// TODO Auto-generated method stub
 		
 	}
