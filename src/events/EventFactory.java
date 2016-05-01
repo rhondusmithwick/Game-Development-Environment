@@ -1,14 +1,8 @@
 package events;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
 import utility.Pair;
-
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
 import voogasalad.util.reflection.Reflection;
 
 /***
