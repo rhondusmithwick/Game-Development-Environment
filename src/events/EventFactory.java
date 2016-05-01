@@ -2,6 +2,9 @@ package events;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
 import utility.Pair;
 
 import com.google.common.base.Charsets;
@@ -9,22 +12,28 @@ import com.google.common.io.Files;
 import voogasalad.util.reflection.Reflection;
 
 /***
- * @author Carolyn Yao, Anirudh Jonnavithula
+ * @author Carolyn Yao
  *  factory to create triggers and events using duvall's reflection utility.
  */
 
 public final class EventFactory {
 
-    private final String triggerDirectoryPath = "events.";
+    private final String eventsDirectoryPath = "events.";
 
-	public Pair<Trigger, Action> createEvent(String triggerName, String scriptPath, Object... args) {
-		Trigger trigger = createTrigger(triggerDirectoryPath+triggerName, args);
-		Action action = new Action(scriptPath);
-		return new Pair<Trigger, Action>(trigger, action);
+	public Pair<Trigger, Action> createEvent(String triggerName, String scriptPath,
+                                             Map<String, Object> parameters, Object... args) {
+		Trigger trigger = createTrigger(triggerName, args);
+		Action action = new Action(scriptPath, parameters);
+		return new Pair<>(trigger, action);
 	}
 
+    public Pair<Trigger, Action> createEvent(String triggerName, String scriptPath,
+                                              Object... args) {
+        return createEvent(triggerName, scriptPath, new HashMap<String, String>(), args);
+    }
+
     public Trigger createTrigger(String className, Object... args) {
-        Trigger trigger = (Trigger) Reflection.createInstance(className, args);
+        Trigger trigger = (Trigger) Reflection.createInstance(eventsDirectoryPath+className, args);
         switch (className) {
             case "KeyTrigger":
                 trigger = (KeyTrigger) trigger;
@@ -37,23 +46,5 @@ public final class EventFactory {
                 break;
         }
         return trigger;
-    }
-
-//    public Pair<Trigger, Action> createEvent(String scriptPath, Object... args) {
-//        Trigger trigger = null;
-//        String className = triggerMapDescription.get("trigger_type");
-//        trigger = (Trigger) Reflection.createInstance(className, triggerMapDescription);
-//        Action action = new Action(scriptPath);
-//        return new Pair<Trigger, Action>(trigger, action);
-//    }
-
-	public String getScriptFromPath(String scriptPath) {
-    	String script = null;
-		try {
-			script = Files.toString(new File(scriptPath), Charsets.UTF_8);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return script;
     }
 }

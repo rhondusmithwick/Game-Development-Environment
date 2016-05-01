@@ -37,6 +37,7 @@ public class PropertyEventEditor extends EventEditorTab
 	
 	private Button makeEventButton;
 	private PropertyTableManager tableManager;
+	private List<IEntity> chosenEntities;
 	
 	EditorEvent masterEditor;
 	
@@ -51,26 +52,20 @@ public class PropertyEventEditor extends EventEditorTab
 	public PropertyEventEditor(String language, ObservableList<ILevel> levelList)
 	{
 		super(language, levelList);
-		
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
+
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
 		pane.setAlignment(Pos.TOP_LEFT);
+        addParametersPane(pane);
 		this.language = language;
 		eventViewManager = new EventViewManager();
-		
 		myResources = ResourceBundle.getBundle(language);
-		
 		triggerOK = false;
 		actionOK = false;
-		
 		triggerText = new Text();
-		
 		makeEventButton = new Button();
-		
 		tableManager = new PropertyTableManager(language, this);
-		
 		populateLayout();
-		
 		choseLevels(new ArrayList<ILevel>(levelList));
 		eventViewManager.levelWasPicked(new ArrayList<ILevel>(levelList));
 		scrollPane = new ScrollPane(pane);
@@ -114,17 +109,20 @@ public class PropertyEventEditor extends EventEditorTab
 
 	private void createEvent()
 	{
-		if (getChosenLevels().isEmpty())
-			return;
+		// I think the Entity table now only shows entities through names
+		// So the trigger has to be created here.
 
-		for ( ILevel level: getChosenLevels() )
-		{
+		// Cycle through all levels that were chosen, get their Event System
+		// Make Triggers, and map them with action, on each of the Event Systems
+
+		if (getChosenLevels().isEmpty()) return;
+		for ( ILevel level: getChosenLevels() ) {
 			for (IEntity entity: level.getAllEntities())
 			{
 				if ( entity.getName().equals(chosenEntityName) )
 				{
-					addEventToLevel(level, "PropertyTrigger", getActionScriptPath(), entity.getID(),
-									chosenComponent.getClass(), chosenProperty);
+					addEventToLevel(level, chosenEntities, "PropertyTrigger", getActionScriptPath(), entity.getID(),
+							chosenComponent.getClass(), chosenProperty);
 				}
 			}
 		}
@@ -140,43 +138,40 @@ public class PropertyEventEditor extends EventEditorTab
 //						})
 //		);
 
-		
 		flashCreatedEventText();
 		eventViewManager.updateTable();
 		triggerOK = false;
 		actionOK = false;
 	}
-	
-	public void populateLayout() 
+
+	public void choseEntity(List<IEntity> entities)
 	{
+		this.chosenEntities = entities;
+	}
+	
+	public void populateLayout() {
 		makeTables();
 		makeBottomPart();
 	}
 
-	public void triggerSet(String entityName, IComponent component, SimpleObjectProperty<?> property)
-	{
+	public void triggerSet(String entityName, IComponent component, SimpleObjectProperty<?> property) {
 		String[] splitClassName = component.getClass().toString().split("\\.");
-		
 		triggerText.setText(myResources.getString("trigger") + 
 				entityName + " - " + 
 				splitClassName[splitClassName.length - 1] + " - " + 
-				property.getName());	
-		
+				property.getName());
 		chosenEntityName = entityName;
 		chosenComponent = component;
 		chosenProperty = property;
-		
 		triggerOK = true;
 		// makeEventButton.setDisable( !triggerOK || !actionOK );
 	}
 	
-	public void resetTrigger()
-	{
+	public void resetTrigger() {
 		triggerText.setText(ResourceBundle.getBundle(language).getString("notYetDefined"));
 		triggerOK = false;
 	}
-	
-	
+
 	@Override
 	public ScrollPane getPane() 
 	{
@@ -187,8 +182,7 @@ public class PropertyEventEditor extends EventEditorTab
 	public void updateEditor() {}
 
 	@Override
-	public void actionOnChosenLevels(List<ILevel> levels) 
-	{
+	public void actionOnChosenLevels(List<ILevel> levels) {
 		tableManager.levelWasPicked(levels);
 		eventViewManager.levelWasPicked(levels);
 	}

@@ -87,8 +87,7 @@ public class GameDetails {
 			setIconPicture(file);
 		}
 	}
-	
-	
+
 	public void setDetails(List<String> list){
 		name.setText(list.get(Indexes.GAME_NAME.getIndex()));
 		desc.setText(list.get(Indexes.GAME_DESC.getIndex()));
