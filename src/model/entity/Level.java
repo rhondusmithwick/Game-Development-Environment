@@ -29,7 +29,7 @@ import java.util.ResourceBundle;
  * Implementation of a Level. This implementation is focused on the IDs. It
  * spawns entities based on the next available ID and adds them to the system.
  *
- * @author Rhondu Smithwick
+ * @author Tom Wu
  */
 public class Level implements ILevel {
 

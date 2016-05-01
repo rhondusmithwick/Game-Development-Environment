@@ -73,7 +73,7 @@ public class View implements IView {
 		model = new SystemManager(scene, level);
 		manager = new GameLoopManager(language, model);
 		viewUtils = new ViewUtilities();
-		if(debug){
+		if(this.debug){
 			DandR = new DragAndResizeDynamic();
 			DandR.makeRootDragAndResize(root);
 		}
