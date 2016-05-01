@@ -33,7 +33,9 @@ import update.GameLoopManager;
 import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.SpriteUtilities;
+import voogasalad.util.reflection.Reflection;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -129,7 +131,7 @@ public class View implements IView {
 	public void highlight(IEntity entity) {
 		viewUtils.highlight(entity);
 	}
-	
+
 	public Scene getScene() {
 		return scene;
 	}
@@ -191,16 +193,32 @@ public class View implements IView {
 					root.getChildren().add(imageView);
 				}
 			}
-			
+
 			if(e.hasComponents(HUD.class, Position.class)) {
 				String hud = e.getComponent(HUD.class).getHUD();
-				String[] split = hud.split(";");
-				for(String str: split) {
-					String[] s = str.split(":");
-					if(s.equals("shape)") {
-						Shape shape = Class.forName(str).
+				String shape = "Rectangle";
+				double width = 100;
+				double height = 100;
+				String color = "10,10,10,1";
+				for(String str: hud.split(";")) {
+					String[] strip = str.split(":");
+					String key = strip[0];
+					String val = strip[1];
+					if(key.equals(myResources.getString("shape"))) {
+						shape = val;
+					}
+					if(key.equals(myResources.getString("width"))) {
+						width = Double.parseDouble(val);
+					}
+					if(key.equals(myResources.getString("height"))) {
+						height = Double.parseDouble(val);
+					}
+					if(key.equals(myResources.getString("color"))) {
+						color = val;
 					}
 				}
+				Shape s = (Shape) Reflection.createInstance(shape, width, height);
+
 			}
 		}
 	}
@@ -238,11 +256,11 @@ public class View implements IView {
 	}
 
 	private void mainMenu() { 
-        Stage myStage = (Stage) pane.getScene().getWindow();
-        myStage.setWidth(GUISize.MAIN_SIZE.getSize());
-        myStage.setHeight(GUISize.MAIN_SIZE.getSize());
-        Vooga vooga = new Vooga(myStage);
-        vooga.init();
+		Stage myStage = (Stage) pane.getScene().getWindow();
+		myStage.setWidth(GUISize.MAIN_SIZE.getSize());
+		myStage.setHeight(GUISize.MAIN_SIZE.getSize());
+		Vooga vooga = new Vooga(myStage);
+		vooga.init();
 	}
 
 	private void initConsole() {
