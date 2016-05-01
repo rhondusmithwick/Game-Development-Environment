@@ -18,7 +18,7 @@ public class Drag implements IComponent {
     /**
      * Empty constructor that starts at 0.
      */
-    public Drag() {
+    public Drag () {
     }
 
     /**
@@ -26,7 +26,7 @@ public class Drag implements IComponent {
      *
      * @param beta the initial value
      */
-    public Drag(double beta) {
+    public Drag (double beta) {
         setBeta(beta);
     }
 
@@ -35,25 +35,25 @@ public class Drag implements IComponent {
      *
      * @return the beta property
      */
-    public SimpleObjectProperty<Double> betaProperty() {
+    public SimpleObjectProperty<Double> betaProperty () {
         return singleProperty.property1();
     }
 
-    public Double getBeta() {
+    public Double getBeta () {
         return betaProperty().get();
     }
 
-    public void setBeta(double beta) {
+    public void setBeta (double beta) {
         betaProperty().set(beta);
     }
 
     @Override
-    public List<SimpleObjectProperty<?>> getProperties() {
+    public List<SimpleObjectProperty<?>> getProperties () {
         return singleProperty.getProperties();
     }
 
     @Override
-    public void update() {
+    public void update () {
         setBeta(getBeta());
     }
 }

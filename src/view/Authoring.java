@@ -13,59 +13,60 @@ import java.io.File;
 import java.util.ResourceBundle;
 
 public class Authoring {
-		
-		private ResourceBundle myResources;
-		private Scene myScene;
-		private TabPane display;
-		private String language, fileName;
 
-		/**
-		 * Constructor that takes in the language choice of the user.
-		 * @param language that the user chooses the program from.
-		 */
-		public Authoring(String language){
-			this.language = language;
-			myResources = ResourceBundle.getBundle(language);
-			this.fileName=null;
-		}
-		
-		public Authoring(String language, String fileName){
-			this(language);
-			this.fileName = fileName;
-		}
+    private final ResourceBundle myResources;
+    private TabPane display;
+    private final String language;
+    private String fileName;
 
-		/**
-		 * Initializes the scene which is displayed in the window.
-		 * @return the splash screen scene
-		 */
-		
-		public  Scene init(ReadOnlyDoubleProperty height, ReadOnlyDoubleProperty width){
-			display = new TabPane();
-			myScene = new Scene(display,GUISize.AUTHORING_WIDTH.getSize(), GUISize.AUTHORING_HEIGHT.getSize());
-			myScene.getStylesheets().add(new File(DefaultStrings.CSS_LOCATION.getDefault() + DefaultStrings.MAIN_CSS.getDefault()).toURI().toString());
-			GameEditor gEdit;
-			if(fileName == null){
-				gEdit = new GameEditor(this, language, myScene);
-			}else{
-				gEdit = new GameEditor(this, language, fileName, myScene);
-			}
-			createTab(gEdit.getPane(), "gameDetails", false);
-			display.prefHeightProperty().bind(height);
-			display.prefWidthProperty().bind(width);
-			return myScene;
-		}
-		
-		public void createTab(ScrollPane tabContent, String key, boolean closable){
-			Tab tab = new Tab(myResources.getString(key));
-			tab.setContent(tabContent);
-			tab.setClosable(closable);
-			tabContent.prefHeightProperty().bind(display.heightProperty().subtract(GUISize.TOP_TAB.getSize()));
-			tabContent.prefWidthProperty().bind(display.widthProperty());
-			display.getTabs().add(tab);
-			display.getSelectionModel().select(tab);
-		}
-		
+    /**
+     * Constructor that takes in the language choice of the user.
+     *
+     * @param language that the user chooses the program from.
+     */
+    public Authoring (String language) {
+        this.language = language;
+        myResources = ResourceBundle.getBundle(language);
+        this.fileName = null;
+    }
 
-		
-	}
+    public Authoring (String language, String fileName) {
+        this(language);
+        this.fileName = fileName;
+    }
+
+    /**
+     * Initializes the scene which is displayed in the window.
+     *
+     * @return the splash screen scene
+     */
+
+    public Scene init (ReadOnlyDoubleProperty height, ReadOnlyDoubleProperty width) {
+        display = new TabPane();
+        Scene myScene = new Scene(display, GUISize.AUTHORING_WIDTH.getSize(), GUISize.AUTHORING_HEIGHT.getSize());
+        myScene.getStylesheets().add(new File(DefaultStrings.CSS_LOCATION.getDefault() + DefaultStrings.MAIN_CSS.getDefault()).toURI().toString());
+        GameEditor gEdit;
+        if (fileName == null) {
+            gEdit = new GameEditor(this, language, myScene);
+        } else {
+            gEdit = new GameEditor(this, language, fileName, myScene);
+        }
+        createTab(gEdit.getPane(), "gameDetails", false);
+        display.prefHeightProperty().bind(height);
+        display.prefWidthProperty().bind(width);
+        return myScene;
+    }
+
+    public void createTab (ScrollPane tabContent, String key, boolean closable) {
+        Tab tab = new Tab(myResources.getString(key));
+        tab.setContent(tabContent);
+        tab.setClosable(closable);
+        tabContent.prefHeightProperty().bind(display.heightProperty().subtract(GUISize.TOP_TAB.getSize()));
+        tabContent.prefWidthProperty().bind(display.widthProperty());
+        display.getTabs().add(tab);
+        display.getSelectionModel().select(tab);
+    }
+
+
+}
 

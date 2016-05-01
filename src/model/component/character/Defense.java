@@ -23,7 +23,7 @@ public class Defense implements IComponent {
     /**
      * Construct to start defense at 0.
      */
-    public Defense() {
+    public Defense () {
     }
 
     /**
@@ -31,7 +31,7 @@ public class Defense implements IComponent {
      *
      * @param defense the initial defense value
      */
-    public Defense(double defense) {
+    public Defense (double defense) {
         setDefense(defense);
     }
 
@@ -40,30 +40,30 @@ public class Defense implements IComponent {
      *
      * @return the defense property
      */
-    public SimpleObjectProperty<Double> defenseProperty() {
+    public SimpleObjectProperty<Double> defenseProperty () {
         return singleProperty.property1();
     }
 
-    public double getDefense() {
+    public double getDefense () {
         return defenseProperty().get();
     }
 
-    public void setDefense(double defense) {
+    public void setDefense (double defense) {
         defenseProperty().set(defense);
     }
 
     @Override
-    public String toString() {
+    public String toString () {
         return String.format("Defense: %s", getDefense());
     }
 
     @Override
-    public List<SimpleObjectProperty<?>> getProperties() {
+    public List<SimpleObjectProperty<?>> getProperties () {
         return singleProperty.getProperties();
     }
 
     @Override
-    public void update() {
+    public void update () {
         setDefense(getDefense());
     }
 }

@@ -12,11 +12,11 @@ import model.component.movement.Velocity
 ILevel level = universe;
 Set<IEntity> paddles = level.getEntitiesWithComponents(UserControl.class, Velocity.class);
 
-for(IEntity paddle:paddles) {
-	Velocity v = paddle.getComponent(Velocity.class);
-	stop(v); break;
+for (IEntity paddle : paddles) {
+    Velocity v = paddle.getComponent(Velocity.class);
+    stop(v); break;
 }
 
 void stop(Velocity v) {
-	v.setVXY(0,0);
+    v.setVXY(0, 0);
 }

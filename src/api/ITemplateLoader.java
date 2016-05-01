@@ -15,6 +15,6 @@ public interface ITemplateLoader<T> {
      * @param fileName the name of the file
      * @return the specs from the file
      */
-    Map<T, Integer> loadSpecs(String fileName);
+    Map<T, Integer> loadSpecs (String fileName);
 
 }

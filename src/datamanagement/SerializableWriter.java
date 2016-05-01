@@ -19,13 +19,13 @@ import java.util.List;
 @Deprecated
 public class SerializableWriter<T> implements IDataWriter<T> {
     @Override
-    public String writeToString(List<T> objects) {
+    public String writeToString (List<T> objects) {
         return null;
     }
 
     @Override
     @SafeVarargs
-    public final File writeToFile(String fileName, T... objects) {
+    public final File writeToFile (String fileName, T... objects) {
         File file = new File(fileName);
         try {
             FileOutputStream fileOut = new FileOutputStream(file);
@@ -39,7 +39,7 @@ public class SerializableWriter<T> implements IDataWriter<T> {
 
     @Override
     @SafeVarargs
-    public final String writeToString(T... objects) {
+    public final String writeToString (T... objects) {
         try {
             ByteArrayOutputStream bos = new ByteArrayOutputStream();
             doWrite(bos, objects);
@@ -52,7 +52,7 @@ public class SerializableWriter<T> implements IDataWriter<T> {
     }
 
 
-    public void doWrite(OutputStream writeTo, Object... objects) throws IOException {
+    public void doWrite (OutputStream writeTo, Object... objects) throws IOException {
         ObjectOutputStream out = new ObjectOutputStream(writeTo);
         for (Object object : objects) {
             out.writeObject(object);

@@ -1,49 +1,49 @@
 .root {
-	-fx-font-size: 12pt;
-	-fx-font-family: "Avenir Black";
-	-fx-base: rgb(255, 0, 0);
-	-fx-background:rgb(0, 0, 0);
+    -fx-font-size: 12pt;
+    -fx-font-family: "Avenir Black";
+    -fx-base: rgb(255, 0, 0);
+    -fx-background: rgb(0, 0, 0);
 }
 
 .button {
-	-fx-text-fill: #0000ff;
-	-fx-background-color: #7cfc00;
-	-fx-border-radius: 20;
-	-fx-background-radius: 20;
-	-fx-padding: 8;
+    -fx-text-fill: #0000ff;
+    -fx-background-color: #7cfc00;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 8;
 }
 
 .slider {
-	-fx-text-fill: #ffa500;
-	-fx-prompt-text-fill: #ffa500;
+    -fx-text-fill: #ffa500;
+    -fx-prompt-text-fill: #ffa500;
 }
 
 .button:hover {
-	-fx-background-color: #ffa500;
+    -fx-background-color: #ffa500;
 
 }
 
 .combo-box-base {
-	-fx-text-base-color: #0000ff;
-	-fx-background-color: #7cfc00;
-	-fx-border-radius: 20;
-	-fx-background-radius: 20;
+    -fx-text-base-color: #0000ff;
+    -fx-background-color: #7cfc00;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
 }
 
 .combo-box-base:hover {
-	-fx-background-color: #ffa500;
+    -fx-background-color: #ffa500;
 }
 
 .combo-box-popup .list-view .list-cell {
-	-fx-background-color: #7cfc00;
+    -fx-background-color: #7cfc00;
 }
 
 .combo-box-popup .list-view .list-cell:filled:hover {
-	-fx-background-color: blue;
+    -fx-background-color: blue;
 }
 
 .label {
-	-fx-font-size: 10pt;
-	-fx-font-family: "Arial Black";
-	-fx-text-fill: #ff0000;
+    -fx-font-size: 10pt;
+    -fx-font-family: "Arial Black";
+    -fx-text-fill: #ff0000;
 }

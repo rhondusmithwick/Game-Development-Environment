@@ -1,37 +1,29 @@
 package view.editor.eventeditor.tables;
 
-import java.util.List;
-import java.util.ResourceBundle;
-import java.util.Set;
-
 import api.IComponent;
 import api.IEntity;
-import api.ISerializable;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.cell.PropertyValueFactory;
 import model.entity.Entity;
+
+import java.util.ResourceBundle;
 
 /**
  * Component Table. Lists certain Components from a given entity.
- * @author Alankmc
  *
+ * @author Alankmc
  */
-public class ComponentTable extends Table
-{
-	public ComponentTable(PropertyTableManager manager, String language) throws NoSuchMethodException, SecurityException
-	{
-		// Passes the manager's pickComponent method.
-		super(manager, ResourceBundle.getBundle(language).getString("pickComponent"), 
-				manager.getClass().getMethod("componentWasClicked", IComponent.class),
-				IComponent.class);	
-   	}
-	
-	@Override
-	public void fillEntries(Object dataHolder) 
-	{
+public class ComponentTable extends Table {
+    public ComponentTable (PropertyTableManager manager, String language) throws NoSuchMethodException, SecurityException {
+        // Passes the manager's pickComponent method.
+        super(manager, ResourceBundle.getBundle(language).getString("pickComponent"),
+                manager.getClass().getMethod("componentWasClicked", IComponent.class),
+                IComponent.class);
+    }
+
+    /**
+     * Takes an IEntity, and fills in the table with the Components in said entity.
+     */
+    @Override
+    public void fillEntries (Object dataHolder) {
 //        List<Entity> entities = (List<Entity>) dataHolder;
 //        entities.stream().forEach(entity -> {
 //            System.out.println(entity.getName());
@@ -62,5 +54,5 @@ public class ComponentTable extends Table
 //			String[] splitClassName = component.getClass().toString().split("\\.");
 //			getEntries().add(new Entry(component, splitClassName[splitClassName.length - 1]));
 //		}
-	}
+    }
 }

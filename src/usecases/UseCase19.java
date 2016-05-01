@@ -11,7 +11,7 @@ import model.core.SystemManager;
 public class UseCase19 {
     private final ISystemManager systemManager = new SystemManager();
 
-    void doUseCase() {
+    void doUseCase () {
         systemManager.pauseLoop();
     }
 }

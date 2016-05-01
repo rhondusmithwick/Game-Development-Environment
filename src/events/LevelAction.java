@@ -2,26 +2,24 @@ package events;
 
 import api.ILevel;
 
-import javax.script.Bindings;
 import javax.script.ScriptEngine;
 import javax.script.ScriptException;
-import javax.script.SimpleBindings;
 import java.util.Map;
-
+@Deprecated
 /**
  * Created by cyao42 on 4/24/2016.
  */
 public class LevelAction extends Action {
 
-    public LevelAction(String scriptPath) {
+    public LevelAction (String scriptPath) {
         super(scriptPath);
     }
 
-    public LevelAction(String scriptPath, Map<String, Object> parameters) {
+    public LevelAction (String scriptPath, Map<String, Object> parameters) {
         super(scriptPath, parameters);
     }
 
-    public void activate(ScriptEngine engine, ILevel level) {
+    public void activate (ScriptEngine engine, ILevel level) {
         getParameters().put("level", level);
         try {
             engine.eval(getScript(), getParameters());

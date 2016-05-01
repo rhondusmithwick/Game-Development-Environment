@@ -6,6 +6,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import utility.SingleProperty;
 import utility.TwoProperty;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -116,7 +117,7 @@ public class Sprite implements IComponent {
     private ImageView createImageView (String imagePath) {
         Image image = getImage(imagePath);
         ImageView imageView = new ImageView(image);
-        imageView.setPreserveRatio(true);
+        imageView.setPreserveRatio(false);
         return imageView;
     }
 
@@ -131,12 +132,12 @@ public class Sprite implements IComponent {
     }
 
     public ImageView getImageView () {
-    		//return createImageView(this.getImagePath());
+        //return createImageView(this.getImagePath());
         return imageView;
     }
 
     @Override
-    public void update() {
+    public void update () {
         setImagePath(getImagePath());
         setImageHeight(getImageHeight());
         setImageWidth(getImageWidth());

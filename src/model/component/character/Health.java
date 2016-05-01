@@ -19,7 +19,7 @@ public class Health implements IComponent {
     /**
      * Empty constructor. Defaults to 0.
      */
-    public Health() {
+    public Health () {
     }
 
     /**
@@ -27,7 +27,7 @@ public class Health implements IComponent {
      *
      * @param health the initial value
      */
-    public Health(double health) {
+    public Health (double health) {
         setHealth(health);
     }
 
@@ -36,25 +36,25 @@ public class Health implements IComponent {
      *
      * @return the health property
      */
-    public SimpleObjectProperty<Double> healthProperty() {
+    public SimpleObjectProperty<Double> healthProperty () {
         return singleProperty.property1();
     }
 
-    public double getHealth() {
+    public double getHealth () {
         return healthProperty().get();
     }
 
-    public void setHealth(double health) {
+    public void setHealth (double health) {
         healthProperty().set(health);
     }
 
     @Override
-    public List<SimpleObjectProperty<?>> getProperties() {
+    public List<SimpleObjectProperty<?>> getProperties () {
         return singleProperty.getProperties();
     }
 
     @Override
-    public void update() {
+    public void update () {
         setHealth(getHealth());
     }
 }

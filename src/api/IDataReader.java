@@ -1,11 +1,8 @@
 package api;
 
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
-
-import java.io.File;
-import java.io.IOException;
 import java.util.List;
+
+import static utility.ReadFile.readFile;
 
 /**
  * Class to read in serializables of type T.
@@ -19,14 +16,8 @@ public interface IDataReader<T> {
      *
      * @return list of objects of type T read from file
      */
-    default List<T> readFromFile(String fileName) {
-        File file = new File(fileName);
-        String readFromFile = null;
-        try {
-            readFromFile = Files.toString(file, Charsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    default List<T> readFromFile (String fileName) {
+        String readFromFile = readFile(fileName);
         return readFromString(readFromFile);
     }
 
@@ -37,7 +28,7 @@ public interface IDataReader<T> {
      * @param fileName file to be read
      * @return single object of type T read from file
      */
-    default T readSingleFromFile(String fileName) {
+    default T readSingleFromFile (String fileName) {
         return readFromFile(fileName).get(0);
     }
 
@@ -47,7 +38,7 @@ public interface IDataReader<T> {
      * @param stringInput input to read objects from
      * @return a list of objects of type T read from stringInput
      */
-    List<T> readFromString(String stringInput);
+    List<T> readFromString (String stringInput);
 
     /**
      * Return single object of type T read from string. Will be first object read (or only one
@@ -56,7 +47,7 @@ public interface IDataReader<T> {
      * @param stringInput string to be read
      * @return single object of type T read from string
      */
-    default T readSingleFromString(String stringInput) {
+    default T readSingleFromString (String stringInput) {
         return readFromString(stringInput).get(0);
     }
 

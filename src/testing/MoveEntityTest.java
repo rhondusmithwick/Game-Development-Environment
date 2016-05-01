@@ -29,7 +29,7 @@ public class MoveEntityTest {
     private final IEntity entity = new XMLReader<IEntity>().readSingleFromFile(LOAD_FILE_NAME);
 
     @Test
-    public void moveTest() {
+    public void moveTest () {
         double oldX = entity.getComponent(Position.class).getX();
         engine.put("entity", entity);
         double moved = 100;

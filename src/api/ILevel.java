@@ -22,18 +22,18 @@ import java.util.stream.Collectors;
 public interface ILevel extends ISerializable {
 
     /**
-     * Names the entity System
-     *
-     * @param name with the name
-     */
-    void setName (String name);
-
-    /**
      * Gets the Entity Systems name
      *
      * @return string entity system name
      */
     String getName ();
+
+    /**
+     * Names the entity System
+     *
+     * @param name with the name
+     */
+    void setName (String name);
 
     /**
      * Gets the metadata about this level
@@ -43,6 +43,13 @@ public interface ILevel extends ISerializable {
     Map<String, String> getMetadata ();
 
     /**
+     * Sets the metadata
+     *
+     * @param metadata
+     */
+    void setMetadata (Map<String, String> metadata);
+
+    /**
      * Add a piece of metadata to this level
      *
      * @param key   the field name (e.g. "Description")
@@ -50,14 +57,7 @@ public interface ILevel extends ISerializable {
      */
     void addMetadata (String key, String value);
 
-    /**
-     * Sets the metadata
-     *
-     * @param metadata
-     */
-    void setMetadata (Map<String, String> metadata);
-
-    String init (GroovyShell shell, ISystemManager game);
+    String init (GroovyShell shell, ISystemManager game, Scene scene);
 
     void update (double dt);
 
@@ -338,4 +338,10 @@ public interface ILevel extends ISerializable {
     }
 
     void setOnInput (Scene scene);
+
+    void setLevelOverAndLoadNextLevel (String nextLevelPath);
+
+    boolean checkIfLevelOver ();
+
+    String getNextLevelPath ();
 }

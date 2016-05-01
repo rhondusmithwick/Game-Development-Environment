@@ -1,73 +1,71 @@
 package api;
 
-import java.io.File;
-import java.util.Observer;
-
-import javafx.beans.value.ChangeListener;
-import javafx.scene.Node;
-import javafx.scene.Scene;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import events.Action;
 import events.Trigger;
+import javafx.beans.value.ChangeListener;
+import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import utility.Pair;
+
+import java.io.File;
+import java.util.Observer;
 
 /**
  * Might be scrapped in the future! Reference:
  * http://stackoverflow.com/questions/937302/simple-java-message-dispatching-
  * system
- * 
+ * <p>
  * Interface for a global event system based on this model:
  * https://wiki.jmonkeyengine.org/doku.php/jme3:scripting:groovy_event [Trigger:
  * Event(s)+Condition(s)->Result(s)]
- * 
+ *
  * @author Tom Wu, ANirudh Jonnavithula, Carolyn Yao
  */
 public interface IEventSystem extends Observer, ISerializable {
 
-	// void init(IEntitySystem universe);
-	
-	/**
-	 * Registers a trigger-action pair in the event system
-	 * @param trigger - The trigger
-	 * @param action - The corresponding action
-	 */
-	void registerEvent(Trigger trigger, Action action);
+    // void init(IEntitySystem universe);
 
-	void registerEvent(Pair<Trigger, Action> eventPair);
+    /**
+     * Registers a trigger-action pair in the event system
+     *
+     * @param trigger - The trigger
+     * @param action  - The corresponding action
+     */
+    void registerEvent (Trigger trigger, Action action);
 
-	void readEventFromFile(String filepath);
+    void registerEvent (Pair<Trigger, Action> eventPair);
 
-	File saveEventsToFile(String filepath);
+    void readEventFromFile (String filepath);
 
-	void readEventsFromFile(File file);
+    File saveEventsToFile (String filepath);
 
-	String returnEventsAsString();
-	
-	void setLevel(ILevel level);
+    void readEventsFromFile (File file);
 
-	void updateInputs(double dt);
+    String returnEventsAsString ();
 
-	void takeInput(KeyEvent k);
-	
+    void setLevel (ILevel level);
+
+    void updateInputs (double dt);
+
+    void takeInput (KeyEvent k);
+
 //	void takeMousePress(MouseEvent m);
 //	
 //	void unListenToMousePress(ChangeListener listener);
 //
 //	void listenToMousePress(ChangeListener listener);
 
-	void unListenToInput(ChangeListener listener);
+    void unListenToInput (ChangeListener listener);
 
-	void listenToInput(ChangeListener listener);
+    void listenToInput (ChangeListener listener);
 
-	void unListenToTimer(ChangeListener listener);
+    void unListenToTimer (ChangeListener listener);
 
-	void listenToTimer(ChangeListener listener);
-	
-	String getEventsAsString();
+    void listenToTimer (ChangeListener listener);
 
-	void setOnInput(Scene scene);
+    String getEventsAsString ();
 
-	void clearInputs();
+    void setOnInput (Scene scene);
+
+    void clearInputs ();
 }

@@ -14,7 +14,7 @@ String keyStr = key;
 Set<IEntity> paddles = level.getEntitiesWithComponents(UserControl.class, Velocity.class);
 print(keyStr); // TODO: remove
 
-for(IEntity paddle:paddles) {
+for (IEntity paddle : paddles) {
     Velocity v = paddle.getComponent(Velocity.class);
     switch (keyStr) {
         case "W": moveUp(v); break;
@@ -32,5 +32,5 @@ void moveDown(Velocity v) {
 }
 
 void stop(Velocity v) {
-    v.setVXY(0,0);
+    v.setVXY(0, 0);
 }
