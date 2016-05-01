@@ -73,7 +73,7 @@ public class CollisionTestGame {
     public void initEngine() {
         Entity char1 = addCharacter("Anolyn", "blastoise.xml", IMAGE_PATH_BLASTOISE, 50.0, 200.0, "1");
         Entity char2 = addCharacter("Cani", "charizard.xml", IMAGE_PATH_CHARIZARD, 200.0, 200.0, "2");
-        Map<String, String> parameters = new HashMap<String, String>();
+        Map<String, Object> parameters = new HashMap<String, Object>();
         parameters.put("entityID", char1.getID());
         registerEventSetup("PropertyTrigger", healthScriptPath, parameters, char1.getID(), char1.getComponent(Position.class).getClass(),
                 char1.getComponent(Position.class).getProperty("YPosition"));
@@ -108,7 +108,7 @@ public class CollisionTestGame {
         return character;
     }
 
-    public void registerEventSetup(String className, String scriptName, Map<String, String> params, Object... args) {
+    public void registerEventSetup(String className, String scriptName, Map<String, Object> params, Object... args) {
         //Pair<Trigger, Action> event = eventFactory.createEvent(className, scriptName, args);
         Trigger trigger = eventFactory.createTrigger(className, args);
         Action action = new Action(scriptName, params);

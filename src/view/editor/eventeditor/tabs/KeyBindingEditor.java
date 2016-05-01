@@ -1,6 +1,5 @@
 package view.editor.eventeditor.tabs;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -17,14 +16,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
 import view.editor.eventeditor.tables.EventViewManager;
 import view.editor.eventeditor.tables.KeyBindingTableManager;
-import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
 import view.utilities.ButtonFactory;
-import view.utilities.FileUtilities;
 
 // TODO put Action setting and file picker on abstract
 public class KeyBindingEditor extends EventEditorTab 
@@ -48,6 +44,8 @@ public class KeyBindingEditor extends EventEditorTab
 	
 	private KeyBindingTableManager tableManager;
 	private EventViewManager eventViewManager;
+    private HBox parametersPane;
+    Text addedParametersText;
 	
 	// TODO test
 	private Button getEventsString;
@@ -71,17 +69,14 @@ public class KeyBindingEditor extends EventEditorTab
 		pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
 		pane.setPadding(ViewInsets.GAME_EDIT.getInset());
 		pane.setAlignment(Pos.TOP_LEFT);
-
 		tableManager = new KeyBindingTableManager(language, this);
-		
 		action = null;
 		currentKey = null;
 		
 		pane.setOnKeyPressed(e -> keyWasPressed(e.getCode()));
-		
+        addParametersPane(pane);
 		choseLevels(new ArrayList<ILevel>(levelList));
 		eventViewManager.levelWasPicked(new ArrayList<ILevel>(levelList));
-		
 		populateLayout();
 	}
 	
@@ -94,6 +89,7 @@ public class KeyBindingEditor extends EventEditorTab
 		keyInputText.setText(myResources.getString("key")+ code.getName());	
 		keyListenerIsActive = false;
 	}
+
 
 	// TODO test
 	private void printEvents()
@@ -109,16 +105,12 @@ public class KeyBindingEditor extends EventEditorTab
 	{
 		if (getChosenLevels().isEmpty())
 			return;
-<<<<<<< HEAD:src/view/editor/eventeditor/KeyBindingEditor.java
 		// make map like this:
 		// Map<String, String> params = new HashMap<String, String>();
 		// loop thru chosen entities and put them in map
 		// params.put("entityID", chosenEntitiesID);
 		// addEventToLevels(getChosenLevels(), "KeyTrigger", actionScriptPath, params, currentKey.getName());
-		addEventToLevels(getChosenLevels(), getChosenEntities(), "KeyTrigger", actionScriptPath, currentKey.getName());
-=======
-		addEventToLevels(getChosenLevels(), "KeyTrigger", getActionScriptPath(), currentKey.getName());
->>>>>>> ac3edc11c6966ef8c14d98492fc54f956c11f7ef:src/view/editor/eventeditor/tabs/KeyBindingEditor.java
+		addEventToLevels(getChosenLevels(), getChosenEntities(), "KeyTrigger", getActionScriptPath(), currentKey.getName());
 		flashCreatedEventText();
 		eventViewManager.updateTable();
 	}

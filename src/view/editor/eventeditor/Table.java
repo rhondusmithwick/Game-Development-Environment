@@ -7,6 +7,8 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import view.editor.eventeditor.tables.Entry;
+import view.editor.eventeditor.tables.TableManager;
 import view.enums.GUISize;
 
 public abstract class Table 

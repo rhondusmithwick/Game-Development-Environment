@@ -4,6 +4,7 @@ import api.IEntity;
 import model.entity.Entity;
 import org.junit.Before;
 import org.junit.Test;
+import view.editor.environmenteditor.EditorEnvironment;
 import view.editor.gameeditor.GameEditor;
 
 import static org.junit.Assert.assertTrue;

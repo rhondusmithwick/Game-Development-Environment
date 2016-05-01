@@ -9,6 +9,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import model.entity.Entity;
 import view.editor.eventeditor.EventParser;
+import view.utilities.ButtonFactory;
 
 /**
  * Table manager that updates the table that contains the madeEvents.

@@ -19,8 +19,7 @@ import view.editor.eventeditor.tabs.PropertyEventEditor;
  * @author Alankmc
  *
  */
-public class PropertyTableManager extends TableManager 
-{
+public class PropertyTableManager extends TableManager {
 	private HBox container;
 	private EntityTable entityTable;
 	private ComponentTable componentTable;
@@ -32,14 +31,9 @@ public class PropertyTableManager extends TableManager
 	private PropertyEventEditor editor;
 	
 	private ObservableList<IEntity> selectedEntities;
-<<<<<<< HEAD:src/view/editor/eventeditor/PropertyTableManager.java
 	private List<IEntity> chosenEntities = new ArrayList<>();
-	
-=======
 
->>>>>>> ac3edc11c6966ef8c14d98492fc54f956c11f7ef:src/view/editor/eventeditor/tables/PropertyTableManager.java
-	public PropertyTableManager(String language, PropertyEventEditor editor )
-	{
+	public PropertyTableManager(String language, PropertyEventEditor editor ) {
 		container = new HBox();
 		this.language = language;
 		selectedEntities = FXCollections.observableArrayList();
@@ -61,9 +55,7 @@ public class PropertyTableManager extends TableManager
 		fillLayout();
 	}
 	
-	public void entityWasClicked(Entity entity)
-	{
-<<<<<<< HEAD:src/view/editor/eventeditor/PropertyTableManager.java
+	public void entityWasClicked(Entity entity) {
 		if (chosenEntities.contains(entity))
 		{
 			chosenEntities.remove(entity);
@@ -73,19 +65,17 @@ public class PropertyTableManager extends TableManager
 			chosenEntities.add(entity);
 			componentTable.refreshTable();
 			propertyTable.refreshTable();
-			componentTable.fillEntries(chosenEntities);
+			componentTable.fillEntries(entity);
 			this.entity = entity;
 			editor.choseEntity(chosenEntities);
 		}
-=======
-		editor.resetTrigger();
-		editor.setEntityForAnimation(entity);
-		
-		componentTable.refreshTable();
-		propertyTable.refreshTable();
-		componentTable.fillEntries(entity);
-		this.entity = entity;
->>>>>>> ac3edc11c6966ef8c14d98492fc54f956c11f7ef:src/view/editor/eventeditor/tables/PropertyTableManager.java
+//		editor.resetTrigger();
+//		editor.setEntityForAnimation(entity);
+//
+//		componentTable.refreshTable();
+//		propertyTable.refreshTable();
+//		componentTable.fillEntries(entity);
+//		this.entity = entity;
 	}
 	
 	public void componentWasClicked(IComponent component)

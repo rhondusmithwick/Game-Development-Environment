@@ -5,6 +5,7 @@ import java.util.ResourceBundle;
 import java.util.Set;
 
 import api.IComponent;
+import api.IEntity;
 import api.ISerializable;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -31,18 +32,31 @@ public class ComponentTable extends Table
 	@Override
 	public void fillEntries(Object dataHolder) 
 	{
-        List<Entity> entities = (List<Entity>) dataHolder;
-        Set<IComponent> intersect = (Set) entities.get(0).getAllComponents();
+//        List<Entity> entities = (List<Entity>) dataHolder;
+//        entities.stream().forEach(entity -> {
+//            System.out.println(entity.getName());
+//            entity.getAllComponents().stream().forEach(component -> {
+//                String[] splitClassName = component.getClass().toString().split("\\.");
+//                getEntries().add(new Entry(component, splitClassName[splitClassName.length - 1]));
+//            });
+//        });
+//        Set<IComponent> intersect = (Set) entities.get(0).getAllComponents();
 //        entities.stream().forEach(entity -> {
 //            intersect.retainAll((Set) entity.getAllComponents());
 //        });
 //        intersect.stream().forEach(component -> {
-        entities.get(0).getAllComponents().stream().forEach(component -> {
+
+
+//        entities.get(0).getAllComponents().stream().forEach(component -> {
+//            String[] splitClassName = component.getClass().toString().split("\\.");
+//            getEntries().add(new Entry(component, splitClassName[splitClassName.length - 1]));
+//            System.out.println(component);
+//        });
+        IEntity entity = (Entity) dataHolder;
+        entity.getAllComponents().stream().forEach(component -> {
             String[] splitClassName = component.getClass().toString().split("\\.");
             getEntries().add(new Entry(component, splitClassName[splitClassName.length - 1]));
-            System.out.println(component);
         });
-
 //		for (IComponent component: ((Entity)dataHolder).getAllComponents())
 //		{
 //			String[] splitClassName = component.getClass().toString().split("\\.");

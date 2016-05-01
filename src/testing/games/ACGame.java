@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 //package testing.games;
 //
 //import api.IEntity;
@@ -108,7 +107,6 @@
 ////            eventSystem.registerEvent(
 ////                    new TimeTrigger(3.0),
 ////                    new Action(addGravityScriptPath));
-=======
 package testing.games;
 
 import api.IEntity;
@@ -215,7 +213,9 @@ public class ACGame {
             Map<String, Object> map = new HashMap<>();
             map.put("characterName", character.getName());
             map.put("animationName", "RightPunch");
->>>>>>> ac3edc11c6966ef8c14d98492fc54f956c11f7ef
+        }
+    }
+}
 //            eventSystem.registerEvent(
 //                    new PropertyTrigger(character.getID(), Position.class, "XPosition"),
 //                    new Action(healthScriptPath));

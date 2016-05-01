@@ -14,8 +14,7 @@ import model.entity.Entity;
  * @author Alankmc
  *
  */
-public class EntityTable extends Table
-{
+public class EntityTable extends Table {
 	private ArrayList<String> entityNames;
 
 	/**
@@ -41,8 +40,7 @@ public class EntityTable extends Table
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void fillEntries(Object dataHolder) 
-	{
+	public void fillEntries(Object dataHolder) {
 		for (ISerializable entity: (ObservableList<ISerializable>)dataHolder)
 		{
 			if ( entityNames.contains( ((Entity)entity).getName() ))
@@ -60,8 +58,7 @@ public class EntityTable extends Table
 	 * The selectedEntities are chosen from the selected level list in the manager.
 	 * @param ObservableList<IEntity> selectedEntities
 	 */
-	public void levelWasPicked(ObservableList<IEntity> selectedEntities)
-	{
+	public void levelWasPicked(ObservableList<IEntity> selectedEntities) {
 		refreshTable();
 		entityNames.clear();
 		if ( !selectedEntities.isEmpty() )

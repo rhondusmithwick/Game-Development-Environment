@@ -16,6 +16,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import model.entity.Level;
 import view.Authoring;
+import view.editor.environmenteditor.EditorEnvironment;
 import view.enums.DefaultStrings;
 import view.utilities.ButtonFactory;
 
@@ -27,14 +28,12 @@ public class EnvironmentDisplay extends ObjectDisplay{
 	private Scene scene;
 	
 	public EnvironmentDisplay(String language, ObservableList<ILevel> masterEnvList, ObservableList<IEntity> masterEntList, Authoring authEnv, Scene myScene){
-		
 		super(authEnv);
 		this.masterEntList=masterEntList;
 		this.masterEnvList = masterEnvList;
 		this.myResources = ResourceBundle.getBundle(language);
 		this.language=language;
 		this.scene = myScene;
-
 	}
 	
 	@SuppressWarnings("unchecked")
@@ -65,13 +64,11 @@ public class EnvironmentDisplay extends ObjectDisplay{
 		});
 		container.getChildren().add(environment);
 	}
-	
 
 	@Override
 	public Node makeNewObject(){
 		return ButtonFactory.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
 			e->createEditor(EditorEnvironment.class.getName(), language,  new Level(), masterEntList,  masterEnvList, scene ));
 	}
-
 
 }
