@@ -11,6 +11,7 @@ import view.utilities.Alerts;
 import view.utilities.ChoiceDialogFactory;
 import view.utilities.PopUp;
 import api.IEntity;
+
 /**
  * This class is for choosing an animation given an entity. Includes error handling if AnimatedSprite component doesn't exist
  * @author Melissa Zhang
