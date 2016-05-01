@@ -27,6 +27,8 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
+import static com.sun.tools.doclint.Entity.le;
+
 /***
  * Created by ajonnav 04/12/16
  *
@@ -119,7 +121,8 @@ public class EventSystem implements Observer, IEventSystem {
     }
 
     public void setLevel (ILevel level) {
-        if (!actionMap.isEmpty() && this.level.getEntitySystem() != null) {
+        boolean canUnbind = level != null && !actionMap.isEmpty() && this.level.getEntitySystem() != null;
+        if (canUnbind) {
             this.unbindEvents();
         }
         this.level = level;
