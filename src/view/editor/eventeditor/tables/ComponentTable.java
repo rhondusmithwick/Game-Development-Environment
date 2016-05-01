@@ -1,4 +1,4 @@
-package view.editor.eventeditor;
+package view.editor.eventeditor.tables;
 
 import java.util.ResourceBundle;
 
@@ -11,25 +11,19 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import model.entity.Entity;
 
+/**
+ * Component Table. Lists certain Components from a given entity.
+ * @author Alankmc
+ *
+ */
 public class ComponentTable extends Table
 {
-	public ComponentTable(PropertyTableManager manager, String language)
+	public ComponentTable(PropertyTableManager manager, String language) throws NoSuchMethodException, SecurityException
 	{
-		super(manager, ResourceBundle.getBundle(language).getString("pickComponent"));	// TODO resource file
-
-		// Add changeImage listener
-		getTable().
-        getSelectionModel().selectedItemProperty().addListener((observableValue, oldValue, newValue) -> 
-        	{
-        		try
-        		{
-        			manager.componentWasClicked((IComponent)observableValue.getValue().getData());
-        		} catch (Exception e)
-        		{
-        			// TODO BAAAAAAD
-        		}
-        	}
-        	);
+		// Passes the manager's pickComponent method.
+		super(manager, ResourceBundle.getBundle(language).getString("pickComponent"), 
+				manager.getClass().getMethod("componentWasClicked", IComponent.class),
+				IComponent.class);	
    	}
 	
 	@Override

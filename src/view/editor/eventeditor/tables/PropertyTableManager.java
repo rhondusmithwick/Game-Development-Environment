@@ -1,4 +1,4 @@
-package view.editor.eventeditor;
+package view.editor.eventeditor.tables;
 
 import java.util.List;
 
@@ -11,8 +11,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.HBox;
 import model.entity.Entity;
+import view.editor.eventeditor.tabs.PropertyEventEditor;
 
-// TODO maybe create abstract of this
+/**
+ * Table manager that will control everyTable in the PropertyEventEditor Tab.
+ * @author Alankmc
+ *
+ */
 public class PropertyTableManager extends TableManager 
 {
 	private HBox container;
@@ -26,19 +31,26 @@ public class PropertyTableManager extends TableManager
 	private PropertyEventEditor editor;
 	
 	private ObservableList<IEntity> selectedEntities;
-	
+
 	public PropertyTableManager(String language, PropertyEventEditor editor )
 	{
 		container = new HBox();
 		this.language = language;
 		selectedEntities = FXCollections.observableArrayList();
 
-		entityTable = new EntityTable(selectedEntities, this, language);
-		componentTable = new ComponentTable(this, language);
-		propertyTable = new PropertyTable(this, language);
-		
+		try {
+			entityTable = new EntityTable(selectedEntities, this, language);
+			componentTable = new ComponentTable(this, language);
+			propertyTable = new PropertyTable(this, language);
+
+		} catch (NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
 		this.editor = editor;
-		
+
 		editor.resetTrigger();
 		fillLayout();
 	}
@@ -46,6 +58,8 @@ public class PropertyTableManager extends TableManager
 	public void entityWasClicked(Entity entity)
 	{
 		editor.resetTrigger();
+		editor.setEntityForAnimation(entity);
+		
 		componentTable.refreshTable();
 		propertyTable.refreshTable();
 		componentTable.fillEntries(entity);

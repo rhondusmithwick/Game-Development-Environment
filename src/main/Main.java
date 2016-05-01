@@ -11,7 +11,7 @@ public class Main extends Application{
 
 		/**
 		 * Sets up a stage to launch our window and initializes the splash screen.
-		 * @param stage
+		 * @param stage 
 		 */
 
 		@Override
@@ -32,5 +32,4 @@ public class Main extends Application{
 		public static void main (String[] args) {
 			launch(args);
 		}
-
 }

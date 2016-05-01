@@ -18,6 +18,10 @@ Object getVariable(String variableName) {
     return binding.getVariable(variableName);
 }
 
+void setVariable(String variableName, Object value) {
+    binding.setVariable(variableName, value);
+}
+
 List<IEntity> getEntitiesWithNamesAndIDs() {
     List<IEntity> entities = new ArrayList<>();
     if (containsVariable("entityID")) {

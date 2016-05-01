@@ -1,14 +1,13 @@
 package testing;
 
-import static org.junit.Assert.*;
-
-import org.junit.Before;
-import org.junit.Test;
-
 import api.IEntity;
 import model.entity.Entity;
+import org.junit.Before;
+import org.junit.Test;
 import view.editor.environmenteditor.EditorEnvironment;
 import view.editor.gameeditor.GameEditor;
+
+import static org.junit.Assert.assertTrue;
 
 
 public class BrunaTesting {
@@ -20,7 +19,7 @@ public class BrunaTesting {
 	@Before
 
 	public void setUp () {
-		myGameEditor = new GameEditor(null, "propertyFiles/english");
+//		myGameEditor = new GameEditor(null, "propertyFiles/english");
 	}
 
 

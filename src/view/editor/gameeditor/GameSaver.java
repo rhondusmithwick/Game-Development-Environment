@@ -11,18 +11,18 @@ import javafx.collections.ObservableList;
 import view.enums.DefaultStrings;
 import view.enums.Indexes;
 
-
+/**
+ * 
+ * @author calinelson
+ *
+ */
 public class GameSaver {
 
 	
 	@SuppressWarnings("unchecked")
 	public void saveGame(ObservableList<ILevel> levels, ObservableList<IEntity> entityList, List<String> details){
-		ArrayList<String> metaData = new ArrayList<>(details);
-		if(!levels.isEmpty()){
-			metaData.add(levels.get(0).getName());
-		}
 		String fileName = getDirectory(details);
-		new XMLWriter<List<String>>().writeToFile(fileName + DefaultStrings.METADATA_LOC.getDefault(), metaData);
+		new XMLWriter<List<String>>().writeToFile(fileName + DefaultStrings.METADATA_LOC.getDefault(), details);
 		new XMLWriter<List<IEntity>>().writeToFile(fileName+DefaultStrings.ENTITIES_LOC.getDefault(), new ArrayList<IEntity>(entityList));
 		saveLevels(levels, fileName);
 	}

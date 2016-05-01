@@ -101,6 +101,7 @@ public class SystemManager implements ISystemManager {
 	@Override
 	public void play() {
 		this.isRunning = true;
+		universe.getEventSystem().clearInputs();
 	}
 
 	// private void readObject(ObjectInputStream in) throws IOException,
