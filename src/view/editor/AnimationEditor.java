@@ -17,6 +17,11 @@ import view.utilities.ButtonFactory;
 import view.utilities.FileUtilities;
 import view.utilities.TextFieldFactory;
 
+/**
+ * This class is for choosing and editing the AnimatedSprite
+ * @author Melissa Zhang
+ *
+ */
 public class AnimationEditor extends Editor{
 	private static final String SPRITE_PROPERTIES = "spriteProperties.";
 	private static final String DIR = "resources/";
