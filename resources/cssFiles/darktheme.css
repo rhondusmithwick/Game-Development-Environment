@@ -19,6 +19,7 @@
 	-fx-font-size: 12px;
 	-fx-font-family: "baskerville";
 	-fx-border-color: black;
+    -fx-font-weight: bold;
     -fx-font-color: white;
 }
 
@@ -42,8 +43,19 @@
 	-fx-alignment: center;
 }
 
+
+.title-text {
+    -fx-font-size: 24px;
+    -fx-font-family: "baskerville";
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-fill: white;
+    -fx-stroke: black;
+}
+
 .tab {
     -fx-background-color: linear-gradient(to top, -fx-base, derive(-fx-base, 30%));
+    -fx-background-color: gray;
 }
 
 .menu-bar {
@@ -81,6 +93,7 @@
 .button {
     -fx-background-color: transparent;
     -fx-border-color: greenyellow;
+    -fx-font-weight: bold;
     -fx-padding: 8;
     -fx-border-radius: 20;
     -fx-background-radius: 20;
@@ -90,6 +103,24 @@
 .button:hover {
     -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
     -fx-color: -fx-hover-base;
+}
+
+
+.label {
+    -fx-background-color: transparent;
+    -fx-font-weight: bold;
+    -fx-padding: 8;
+    -fx-effect: dropshadow(three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1);
+}
+
+.combo-box {
+    -fx-background-color: transparent;
+    -fx-border-color: greenyellow;
+    -fx-font-weight: bold;
+    -fx-padding: 8;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1);
 }
 
 .table-view {

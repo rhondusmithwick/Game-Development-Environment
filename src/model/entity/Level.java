@@ -13,6 +13,7 @@ import groovy.lang.GroovyShell;
 import javafx.scene.Scene;
 import model.physics.PhysicsEngine;
 import view.enums.DefaultStrings;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
@@ -25,7 +26,7 @@ import java.util.ResourceBundle;
  * Implementation of a Level. This implementation is focused on the IDs. It
  * spawns entities based on the next available ID and adds them to the system.
  *
- * @author Rhondu Smithwick
+ * @author Tom Wu
  */
 public class Level implements ILevel {
 
@@ -102,7 +103,7 @@ public class Level implements ILevel {
     @Override
     public void update (double dt) {
 //		getPhysicsEngine().update(this, dt); // TODO: remove
-		getEventSystem().updateInputs(dt);
+        getEventSystem().updateInputs(dt);
         gameScripts.stream().forEach(gs -> gs.update(dt));
     }
 

@@ -30,7 +30,7 @@ public class SpriteLoader {
     public static IEntity createPaddle(String name, Position pos) {
         IEntity e = new Entity(name);
         e.addComponents(pos, new Sprite(Pong.PATH+"sprites/red_paddle.png"),
-                new Collision("paddle"), new RestitutionCoefficient(1.2), new Mass(20),
+                new Collision("paddle"), new RestitutionCoefficient(1.0), new Mass(20),
                 new Score(0), new Velocity(0,0));
         return e;
     }

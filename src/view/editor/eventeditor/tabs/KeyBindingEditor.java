@@ -85,8 +85,6 @@ public class KeyBindingEditor extends EventEditorTab
 		keyListenerIsActive = false;
 	}
 
-
-	// TODO test
 	private void printEvents()
 	{
 		for ( ILevel level: getChosenLevels() )
@@ -98,7 +96,6 @@ public class KeyBindingEditor extends EventEditorTab
 	
 	private void createEvent()
 	{
-		if (getChosenLevels().isEmpty()) return;
 		addEventToLevels(getChosenLevels(), getChosenEntities(), "KeyTrigger", getActionScriptPath(), currentKey.getName());
 		flashText(getEventCreatedText());
 		eventViewManager.updateTable();
@@ -150,8 +147,6 @@ public class KeyBindingEditor extends EventEditorTab
 		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
 		
 		container.getChildren().add(eventViewManager.getPane());
-
-		
 		pane.getChildren().add(container);
 	}
 	

@@ -32,7 +32,6 @@ public class TimeTrigger extends Trigger{
 	@Deprecated
 	public void clearListener(ILevel universe, InputSystem inputSystem) {
 		// TODO Auto-generated method stub
-		
 	}
 	
 	@Override
