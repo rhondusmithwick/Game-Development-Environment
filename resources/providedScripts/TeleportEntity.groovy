@@ -15,12 +15,12 @@ import model.component.movement.Position
 @Field Double movedY = containsVariable("movedY") ? (Double) getVariable("movedY") : 0.0;
 
 
-void move(IEntity entity) {
-    Position position = entity.getComponent(Position.class);
-    position.setX(position.getX() + movedX);
-    position.setY(position.getY() + movedY);
+def move = { entity ->
+    if (entity.hasComponent(Position.class)) {
+        Position position = entity.getComponent(Position.class);
+        position.setX(position.getX() + movedX);
+        position.setY(position.getY() + movedY);
+    }
 }
 
-for (IEntity entity: getEntitiesWithNamesAndIDs()) {
-    move(entity);
-}
+workOnEntities(move);
