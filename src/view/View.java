@@ -69,7 +69,7 @@ public class View implements IView {
 		initButtons();
 		pane = createMainBorderPane(root, this.subScene);
 		viewUtils = new ViewUtilities();
-		if(debug){
+		if(this.debug){
 			DandR = new DragAndResizeDynamic();
 			DandR.makeRootDragAndResize(root);
 		}
