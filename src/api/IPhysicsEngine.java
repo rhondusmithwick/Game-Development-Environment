@@ -21,7 +21,7 @@ public interface IPhysicsEngine {
 	 * @param dynamicsOn if true, then impulses are subsequently applied to applicable IEntities
 	 *   (with Mass, Position, Velocity, and of course, Collision)
 	 */
-    void applyCollisions(ILevel universe, boolean dynamicsOn);
+    void applyCollisions(ILevel universe);
 
     /**
      * Useful for debugging but will be deprecated!
