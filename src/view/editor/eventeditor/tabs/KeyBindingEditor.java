@@ -105,6 +105,7 @@ public class KeyBindingEditor extends EventEditorTab
 	{
 		if (getChosenLevels().isEmpty())
 			return;
+		
 		// make map like this:
 		// Map<String, String> params = new HashMap<String, String>();
 		// loop thru chosen entities and put them in map

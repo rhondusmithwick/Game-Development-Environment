@@ -192,11 +192,7 @@ public abstract class EventEditorTab extends Editor {
 		createdEventText = new Text(myResources.getString("eventMade"));
 		createdEventText.setOpacity(0);
 		
-		// actionPane.getChildren().addAll(actionTypes, getActionButton, actionText, createdEventText);
-		actionPane.getChildren().add(actionTypes);
-		actionPane.getChildren().add(getActionButton);
-		actionPane.getChildren().add(actionText);
-		actionPane.getChildren().add(createdEventText);
+		actionPane.getChildren().addAll(actionTypes, getActionButton, actionText, createdEventText);
 	}
 	
 	private void choseActionType(String type)
@@ -222,8 +218,10 @@ public abstract class EventEditorTab extends Editor {
 	}
 	
 	private void getAnimation() {
+		System.out.println(entityForAnimation.getName());
 		animationChooser = new AnimationChooser(entityForAnimation);
 		animationName = animationChooser.initChooser();
+		
 		// flashCreatedEventText();
 	}
 
