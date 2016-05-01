@@ -1,7 +1,8 @@
 package testing.games;
 
-import testing.AniPong.AniPong;
-import testing.games.ACGame;
+import model.component.physics.Collision;
+//import testing.AniPong.AniPong;
+//import testing.games.ACGame;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.application.Application;

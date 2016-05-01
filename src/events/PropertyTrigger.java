@@ -36,7 +36,6 @@ public class PropertyTrigger extends Trigger {
         this.entityID = entityID;
         this.componentClass = componentClass;
         this.propertyName = propertyName;
-        
     }
     
     @Override

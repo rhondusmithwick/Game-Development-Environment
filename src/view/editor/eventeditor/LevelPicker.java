@@ -39,6 +39,7 @@ public class LevelPicker
 	 * @param ObservableList<ILevel> levelList
 	 * @param EventAuthoringTab eventAuthoring
 	 */
+
 	public LevelPicker(String language, ObservableList<ILevel> levelList, EventEditorTab eventAuthoring)
 	{
 		checkBoxMap = new HashMap<CheckBox, ILevel>();

@@ -60,17 +60,18 @@ public class View implements IView {
 	private HBox buttonBox = new HBox();
 	private ResourceBundle myResources;
 	private boolean debug;
+	private Scene scene;
 
-
-	public View(double width, double height, ILevel level, String language, Scene scene, boolean debug) {
-		subScene = this.createSubScene(root, width, height);
-		model = new SystemManager(scene, level);
+	public View(double viewWidth, double viewHeight, double sceneWidth, double sceneHeight, ILevel level, String language, boolean debug) {
+		subScene = this.createSubScene(root, viewWidth, viewHeight);
 		this.debug=debug;
 		myResources = ResourceBundle.getBundle(language);
-		manager = new GameLoopManager(language, model);
 		initConsole();
 		initButtons();
 		pane = createMainBorderPane(root, this.subScene);
+		scene = new Scene(pane, sceneWidth, sceneHeight);
+		model = new SystemManager(scene, level);
+		manager = new GameLoopManager(language, model);
 		viewUtils = new ViewUtilities();
 		if(debug){
 			DandR = new DragAndResizeDynamic();
@@ -82,7 +83,7 @@ public class View implements IView {
 	private void createLoopManager() {
 		manager.show();
 	}
-
+	@Override
 	public void setScene(Scene scene) {
 		model.getLevel().setOnInput(scene);
 	}
@@ -126,6 +127,10 @@ public class View implements IView {
 
 	public void highlight(IEntity entity) {
 		viewUtils.highlight(entity);
+	}
+	
+	public Scene getScene() {
+		return scene;
 	}
 
 	private ImageView getUpdatedImageView(IEntity e) {

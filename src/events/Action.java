@@ -31,6 +31,7 @@ public class Action implements ISerializable {
 
     public Action(String scriptPath, Map<String, Object> parameters) {
         this(scriptPath);
+        System.out.println(parameters);
         this.parameters.putAll(parameters);
     }
 

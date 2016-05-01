@@ -9,5 +9,5 @@ import model.component.movement.Velocity;
 import model.component.character.Health;
 import model.physics.PhysicsEngine;
 
-velocity = universe.getEntityWithID(id).get(0)getComponent(Velocity.class);
+velocity = universe.getEntity(EntityID).get(0)getComponent(Velocity.class);
 velocity.setVXY(velocity.getVX(), velocity.getVY()-10);
