@@ -18,4 +18,7 @@ public interface IView {
 	ILevel getLevel();
 	
 	void setScene(Scene scene);
+
+	void dehighlight(IEntity entity);
+
 }
