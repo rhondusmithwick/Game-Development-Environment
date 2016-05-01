@@ -107,11 +107,9 @@ public class Vooga extends StartUpMenu {
 			path = DefaultStrings.CREATE_LOC.getDefault()+path;
 			String firstLevel = new XMLReader<List<String>>().readSingleFromFile(path+DefaultStrings.METADATA_LOC.getDefault()).get(Indexes.GAME_FIRST_LEVEL.getIndex());
 			ILevel toPlay = new XMLReader<ILevel>().readSingleFromFile(path + DefaultStrings.LEVELS_LOC.getDefault()+firstLevel+DefaultStrings.XML.getDefault());
-			IView view = new View(GUISize.VIEW_SIZE.getSize(), GUISize.VIEW_SIZE.getSize(), toPlay, getLanguage(),false);
-			Pane pane = view.getPane();
-			Scene scene = new Scene(pane,GUISize.SCENE_SIZE.getSize(), GUISize.SCENE_SIZE.getSize());
-			view.setScene(scene);
-			myStage.setScene(scene);
+			View view = new View(GUISize.VIEW_SIZE.getSize(), GUISize.VIEW_SIZE.getSize(), GUISize.SCENE_SIZE.getSize(), GUISize.SCENE_SIZE.getSize(), toPlay, getLanguage(), true);
+			//view.setScene(scene);
+			myStage.setScene(view.getScene());
 		}
 		myStage.show();
 	}

@@ -5,7 +5,7 @@ import datamanagement.XMLWriter
 import groovy.transform.Field
 
 /**
- * Created by rhondusmithwick on 4/20/16.
+ * Save a game.
  * @author Rhondu Smithwick
  */
 

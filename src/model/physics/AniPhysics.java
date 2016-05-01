@@ -25,7 +25,7 @@ public class AniPhysics implements IPhysicsEngine {
 	}
 
 	@Override
-	public void applyCollisions(ILevel universe, boolean dynamicsOn) {
+	public void applyCollisions(ILevel universe) {
 		// TODO Auto-generated method stub
 		
 	}

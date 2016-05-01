@@ -6,6 +6,7 @@ import javafx.animation.Timeline;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
 import javafx.scene.control.ScrollPane;
@@ -27,10 +28,12 @@ import model.component.movement.Position;
 import model.component.physics.Collision;
 import model.component.visual.Sprite;
 import model.core.SystemManager;
+import model.entity.Level;
 import update.GameLoopManager;
 import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.SpriteUtilities;
+
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -58,19 +61,20 @@ public class View implements IView {
 	private HBox buttonBox = new HBox();
 	private ResourceBundle myResources;
 	private boolean debug;
+	private Scene scene;
 
-	public View(double width, double height, ILevel level, String language, boolean debug) {
-
-		subScene = this.createSubScene(root, width, height);
-		model = new SystemManager(subScene, level);
+	public View(double viewWidth, double viewHeight, double sceneWidth, double sceneHeight, ILevel level, String language, boolean debug) {
+		subScene = this.createSubScene(root, viewWidth, viewHeight);
 		this.debug=debug;
 		myResources = ResourceBundle.getBundle(language);
-		manager = new GameLoopManager(language, model);
 		initConsole();
 		initButtons();
 		pane = createMainBorderPane(root, this.subScene);
+		scene = new Scene(pane, sceneWidth, sceneHeight);
+		model = new SystemManager(scene, level);
+		manager = new GameLoopManager(language, model);
 		viewUtils = new ViewUtilities();
-		if(debug){
+		if(this.debug){
 			DandR = new DragAndResizeDynamic();
 			DandR.makeRootDragAndResize(root);
 		}
@@ -124,6 +128,10 @@ public class View implements IView {
 
 	public void highlight(IEntity entity) {
 		viewUtils.highlight(entity);
+	}
+	
+	public Scene getScene() {
+		return scene;
 	}
 
 	private ImageView getUpdatedImageView(IEntity e) {

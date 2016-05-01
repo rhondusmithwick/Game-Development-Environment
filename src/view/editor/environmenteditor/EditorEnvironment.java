@@ -51,7 +51,7 @@ public class EditorEnvironment extends Editor {
 		myLevel = toEdit;
 		allEnvironmentsList = addToList;
 
-		view = new View((GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(), myLevel,
+		view = new View((GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(), GUISize.SCENE_SIZE.getSize(), GUISize.SCENE_SIZE.getSize(), myLevel,
 				myLanguage, true);
 		view.setScene(myScene);
 		myButtonsClass = new EnvironmentUtilites(view, environmentEntityButtonsBox, masterList, this, language);

@@ -56,6 +56,7 @@ public class PropertyTableManager extends TableManager {
 	}
 	
 	public void entityWasClicked(Entity entity) {
+		editor.setEntityForAnimation(entity);
 		if (chosenEntities.contains(entity))
 		{
 			chosenEntities.remove(entity);

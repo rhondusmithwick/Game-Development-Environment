@@ -14,7 +14,7 @@ public class AnimationEditorTesting extends Application{
 	public void start(Stage stage) throws Exception {
 		Entity entity = new Entity();
 		entity.addComponent(new AnimatedSprite());
-//			AnimationEditor animatorEditor = new AnimationEditor(entity);
+//		AnimationEditor animatorEditor = new AnimationEditor(entity);
 //		animatorEditor.populateLayout();
 		String animationName = new AnimationChooser(entity).initChooser();
 		System.out.println(animationName);
