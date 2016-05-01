@@ -2,7 +2,7 @@ package guiObjects;
 
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.stage.FileChooser.ExtensionFilter;
-import utility.FilePathRelativizer;
+import utility.FilePathUtility;
 import view.utilities.FileUtilities;
 
 import java.io.File;
@@ -35,7 +35,7 @@ public abstract class GuiObjectFileGetter extends GuiObject {
         if (file == null) {
             return;
         }
-        property.set(FilePathRelativizer.relativize(file.getPath()));
+        property.set(FilePathUtility.relativize(file.getPath()));
         setPreview(file);
 
     }

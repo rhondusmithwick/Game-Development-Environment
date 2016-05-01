@@ -3,7 +3,7 @@ package view.utilities;
 import javafx.stage.FileChooser;
 import javafx.stage.FileChooser.ExtensionFilter;
 import javafx.stage.Stage;
-import utility.FilePathRelativizer;
+import utility.FilePathUtility;
 import view.enums.DefaultStrings;
 import view.enums.FileExtensions;
 
@@ -54,7 +54,7 @@ public class FileUtilities {
         fileChooser.setTitle(prompt);
         fileChooser.getExtensionFilters().addAll(filters);
         fileChooser.setInitialDirectory(new File(dir));
-        return new File(FilePathRelativizer.relativize(fileChooser.showOpenDialog(new Stage()).getPath()));
+        return new File(FilePathUtility.relativize(fileChooser.showOpenDialog(new Stage()).getPath()));
     }
 
     public static File promptAndGetFile (List<ExtensionFilter> filters, String prompt) {
@@ -63,7 +63,7 @@ public class FileUtilities {
         fileChooser.getExtensionFilters().addAll(filters);
         File dir = new File(DefaultStrings.RESOURCES.getDefault());
         fileChooser.setInitialDirectory(dir);
-        return new File(FilePathRelativizer.relativize(fileChooser.showOpenDialog(new Stage()).getPath()));
+        return new File(FilePathUtility.relativize(fileChooser.showOpenDialog(new Stage()).getPath()));
     }
 
     /**
