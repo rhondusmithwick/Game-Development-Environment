@@ -43,7 +43,7 @@ public class Action implements ISerializable {
         } catch (ScriptException e) {
             //e.printStackTrace();
             e.printStackTrace();
-            System.out.println("Error with script:" + getScript());
+            System.out.println("Error with script:" + scriptPath);
         }
     }
 

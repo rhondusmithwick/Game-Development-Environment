@@ -112,8 +112,10 @@ package testing.games;
 import api.IEntity;
 import api.IEventSystem;
 import api.ILevel;
+
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
+
 import datamanagement.XMLReader;
 import events.Action;
 import events.KeyTrigger;
@@ -131,15 +133,18 @@ import model.component.character.Health;
 import model.component.character.Score;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
+import model.component.physics.Gravity;
 import model.component.visual.AnimatedSprite;
 import model.component.visual.Sprite;
 import model.entity.Entity;
 import model.entity.Level;
 import model.physics.PhysicsEngine;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+
 import javafx.scene.input.MouseEvent;
 
 public class ACGame {
@@ -154,13 +159,14 @@ public class ACGame {
     private final String SPRITE_PATH = "resources/spriteSheets/ryuBlue.gif";
     private final String SPRITE_PROPERTIES = "spriteProperties/aniryu";
     private final String IMAGE_PATH = "resources/spriteSheets/aniryu.gif";
+    private final String animationScriptPath = "resources/providedScripts/AnimationScript.groovy";
     private final String healthScriptPath = "resources/groovyScripts/ACGameTestScript.groovy";
     private final String moveRightScriptPath = "resources/groovyScripts/keyInputMoveRight.groovy";
     private final String moveLeftScriptPath = "resources/groovyScripts/keyInputMoveLeft.groovy";
-    private final String jumpScriptPath = "resources/groovyScripts/keyInputJump.groovy";
+    private final String jumpScriptPath = "resources/providedScripts/MoveEntity.groovy";
     private final String addGravityScriptPath = "resources/groovyScripts/ACAddGravity.groovy";
-    private final String stopScriptPath = "resources/groovyScripts/StopPerson.groovy";
-    private final String kickRightScriptPath = "resources/groovyScripts/RyuKickRight.groovy";
+    private final String stopScriptPath = "resources/providedScripts/StopPerson.groovy";
+    private final String deGravityScriptPath = "resources/groovyScripts/stopGravityScript.groovy";
     private ImageView charSpr;
     private Scene myScene;
 
@@ -201,7 +207,7 @@ public class ACGame {
             character.forceAddComponent(new Velocity(0, 0), true);
             level.getEntitySystem().addEntity(character);
             //character.addComponent(new Sprite(IMAGE_PATH));
-            //character.addComponent(new Gravity(5000));
+            character.addComponent(new Gravity(30));
 //            character.serialize("character.xml");
             character.getComponent(AnimatedSprite.class).setImageHeight(100);
             character.getComponent(AnimatedSprite.class).getImageView().setX(pos.getX());
@@ -211,8 +217,65 @@ public class ACGame {
             animation.setCycleCount(1000);
             animation.play();*/
             Map<String, Object> map = new HashMap<>();
-            map.put("characterName", character.getName());
+            map.put("entityName", character.getName());
+            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("D"), KeyEvent.KEY_RELEASED), new Action(stopScriptPath, map));
+            map.clear();
+            map.put("entityName", character.getName());
             map.put("animationName", "RightPunch");
+<<<<<<< HEAD
+            eventSystem.registerEvent(
+                    new PropertyTrigger(character.getID(), Position.class, "XPosition"),
+                    new Action(healthScriptPath));
+            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("D"), KeyEvent.KEY_PRESSED), new Action(moveRightScriptPath, map));
+            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("A"), KeyEvent.KEY_PRESSED), new Action(moveLeftScriptPath));
+            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("A"), KeyEvent.KEY_RELEASED), new Action(stopScriptPath, map));
+            eventSystem.registerEvent(new KeyTrigger(KeyCode.SPACE, KeyEvent.KEY_PRESSED), new Action(animationScriptPath, map));
+            map.clear();
+            map.put("entityName", character.getName());
+            map.put("velocityX", character.getComponent(Velocity.class).getVX());
+            map.put("velocityY", -500.0);
+            eventSystem.registerEvent(new PropertyTrigger(character.getID(), Position.class, "YPosition"), new Action(deGravityScriptPath));
+            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_PRESSED), new Action(jumpScriptPath, map));
+           // eventSystem.registerEvent(new MouseTrigger(MouseButton.PRIMARY, MouseEvent.MOUSE_CLICKED), new Action(moveLeftScriptPath));
+        } else {
+            character = new XMLReader<IEntity>().readSingleFromFile("character.xml");
+            level.getEntitySystem().addEntity(character);
+            eventSystem.readEventFromFile("eventtest.xml");
+        }
+        //charSpr = drawCharacter(character);
+    }
+
+    public void step(double dt) {
+    	
+    	level.getPhysicsEngine().update(level, dt);
+        // inputSystem.processInputs();
+        eventSystem.updateInputs(dt);
+        //root.getChildren().clear();
+        
+    	level.getAllEntities().stream().forEach(e->drawCharacter(e));
+        //moveEntity(character, 1);
+    }
+
+    public ImageView drawCharacter(IEntity character) {
+    	
+    	Sprite imgPath = character.getComponent(Sprite.class);
+        ImageView charSprite = character.getComponent(AnimatedSprite.class).getImageView();
+        charSprite.setLayoutX(character.getComponent(Position.class).getX());
+        charSprite.setLayoutY(character.getComponent(Position.class).getY());
+        charSprite.setPreserveRatio(true);
+        charSprite.setPreserveRatio(true);
+        //root.getChildren().add(charSprite);
+        return charSprite;
+    }
+
+    private Action getAction(String scriptPath) {
+        String script = null;
+        try {
+            script = Files.toString(new File(scriptPath), Charsets.UTF_8);
+        } catch (IOException e) {
+            e.printStackTrace();
+=======
+>>>>>>> bbaab69f3a30129bb27c506ee8374c19982ae417
         }
     }
 }
