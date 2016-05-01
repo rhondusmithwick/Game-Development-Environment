@@ -1,6 +1,5 @@
 package providedScripts
 
-import api.IEntity
 import groovy.transform.BaseScript
 import model.component.movement.Velocity
 
@@ -11,13 +10,11 @@ import model.component.movement.Velocity
 
 @BaseScript ScriptHelpers ScriptHelpers
 
-void resetVelocity (IEntity entity) {
-    Velocity velocity = entity.getComponent(Velocity.class);
-    velocity.setVXY(0, 0);
-}
-
-for (IEntity entity: getEntitiesWithNamesAndIDs()) {
+def resetVelocity = { entity ->
     if (entity.hasComponent(Velocity.class)) {
-        resetVelocity(entity);
+        Velocity velocity = entity.getComponent(Velocity.class);
+        velocity.setVXY(0, 0);
     }
 }
+
+workOnEntities(resetVelocity);
