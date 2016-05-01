@@ -142,7 +142,7 @@ public class KeyBindingEditor extends EventEditorTab
 		
 		createEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
 		
-		innerContainer.getChildren().addAll(listenToKey, keyInputText, createEventButton, getActionPane());
+		innerContainer.getChildren().addAll(listenToKey, keyInputText,  getActionPane(), createEventButton);
 		
 		chosenEntityText = new Text();
 		

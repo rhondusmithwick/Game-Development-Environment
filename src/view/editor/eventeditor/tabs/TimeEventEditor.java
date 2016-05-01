@@ -131,7 +131,7 @@ public class TimeEventEditor extends EventEditorTab
 		
 		createEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
 		
-		innerContainer.getChildren().addAll(textField, createEventButton, getActionPane());
+		innerContainer.getChildren().addAll(textField, getActionPane(), createEventButton);
 		
 		chosenEntityText = new Text();
 		
