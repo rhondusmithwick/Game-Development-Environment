@@ -116,7 +116,7 @@ public class Sprite implements IComponent {
     private ImageView createImageView (String imagePath) {
         Image image = getImage(imagePath);
         ImageView imageView = new ImageView(image);
-        imageView.setPreserveRatio(true);
+        imageView.setPreserveRatio(false);
         return imageView;
     }
 
