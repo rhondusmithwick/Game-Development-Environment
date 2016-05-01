@@ -50,13 +50,8 @@ public class KeyBindingEditor extends EventEditorTab
 	
 	private KeyBindingTableManager tableManager;
 	private EventViewManager eventViewManager;
-    private HBox parametersPane;
-    Text addedParametersText;
-	
-	// TODO test
-	private Button getEventsString;
 
-	private ArrayList<IEntity> chosenEntities;
+	private List<IEntity> chosenEntities;
 	
 	public KeyBindingEditor(String language, ObservableList<ILevel> levelList)
 	{
@@ -96,8 +91,6 @@ public class KeyBindingEditor extends EventEditorTab
 		keyListenerIsActive = false;
 	}
 
-
-	// TODO test
 	private void printEvents()
 	{
 		for ( ILevel level: getChosenLevels() )
@@ -109,16 +102,8 @@ public class KeyBindingEditor extends EventEditorTab
 	
 	private void createEvent()
 	{
-		if (getChosenLevels().isEmpty())
-			return;
-		
-		// make map like this:
-		// Map<String, String> params = new HashMap<String, String>();
-		// loop thru chosen entities and put them in map
-		// params.put("entityID", chosenEntitiesID);
-		// addEventToLevels(getChosenLevels(), "KeyTrigger", actionScriptPath, params, currentKey.getName());
-		addEventToLevels(getChosenLevels(), getChosenEntities(), "KeyTrigger", getActionScriptPath(), currentKey.getName(), keyEventType);
-		flashCreatedEventText();
+		addEventToLevels(getChosenLevels(), getChosenEntities(), "KeyTrigger", currentKey.getName());
+		flashText(getEventCreatedText());
 		eventViewManager.updateTable();
 	}
 	
@@ -151,11 +136,11 @@ public class KeyBindingEditor extends EventEditorTab
 		chooseKeyEventTypeBox = ComboFactory.makeComboBox(myResources.getString("chooseKeyEventType"), keyEventTypes, e->setEventType(chooseKeyEventTypeBox.getValue()));
 		
 		createEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
-		
+
+		innerContainer.getChildren().addAll(listenToKey, keyInputText, getActionPane(), createEventButton);
+
 		createEventButton.setOnAction(e -> createEvent());
-		
-		innerContainer.getChildren().addAll(listenToKey, keyInputText, chooseKeyEventTypeBox, createEventButton, getActionPane());
-		
+
 		chosenEntityText = new Text();
 		
 		chosenEntityBox = new ScrollPane(new VBox(chosenEntityTitle, chosenEntityText));
@@ -212,14 +197,14 @@ public class KeyBindingEditor extends EventEditorTab
 		}
 	}
 	
-	public void choseEntity(ArrayList<IEntity> entities)
+	public void choseEntity(List<IEntity> entities)
 	{
 		this.chosenEntities = entities;
 	
 		fillChosenEntityBox();
 	}
 
-	public ArrayList<IEntity> getChosenEntities() {
+	public List<IEntity> getChosenEntities() {
 		return chosenEntities;
 	}
 	

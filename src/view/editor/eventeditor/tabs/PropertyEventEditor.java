@@ -121,7 +121,7 @@ public class PropertyEventEditor extends EventEditorTab
 			{
 				if ( entity.getName().equals(chosenEntityName) )
 				{
-					addEventToLevel(level, chosenEntities, "PropertyTrigger", getActionScriptPath(), entity.getID(),
+					addEventToLevel(level, chosenEntities, "PropertyTrigger", entity.getID(),
 							chosenComponent.getClass(), chosenProperty);
 				}
 			}
@@ -138,7 +138,7 @@ public class PropertyEventEditor extends EventEditorTab
 //						})
 //		);
 
-		flashCreatedEventText();
+		flashText(getEventCreatedText());
 		eventViewManager.updateTable();
 		triggerOK = false;
 		actionOK = false;
@@ -186,5 +186,6 @@ public class PropertyEventEditor extends EventEditorTab
 		tableManager.levelWasPicked(levels);
 		eventViewManager.levelWasPicked(levels);
 	}
+
 	
 }

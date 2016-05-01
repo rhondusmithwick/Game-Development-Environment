@@ -52,8 +52,8 @@ public abstract class EventEditorTab extends Editor {
 	private Entity entityForAnimation;
 	private String animationName;
 	private boolean animationView;
-    private HBox parametersPane;
     private Map<String, Object> parameters;
+    private HBox parametersPane;
 
 	public EventEditorTab(String language, ObservableList<ILevel> levelList)
 	{
@@ -68,17 +68,6 @@ public abstract class EventEditorTab extends Editor {
 		makeActionPane();
         parameters = new HashMap<>();
         addedParametersText = new Text("Groovy parameter added!");
-	}
-
-	public void flashCreatedEventText() {
-		createdEventText.setOpacity(1);
-		timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
-			@Override
-			public void run() {
-				disappearText();
-			}
-		}, GUISize.EVENT_EDITOR_DISAPPEAR_SPEED.getSize(), GUISize.EVENT_EDITOR_DISAPPEAR_SPEED.getSize());
 	}
 
     public void flashText(Text text) {
@@ -99,14 +88,6 @@ public abstract class EventEditorTab extends Editor {
             timer.cancel();
         }
     }
-
-	private void disappearText() {
-		createdEventText.setOpacity(createdEventText.getOpacity() - 0.02);
-		if ( createdEventText.getOpacity() <= 0 )
-		{
-			timer.cancel();
-		}
-	}
 	
 	public ScrollPane getLevelPickerPane()
 	{
@@ -125,24 +106,26 @@ public abstract class EventEditorTab extends Editor {
 	}
 
 	public void addEventToLevels(List<ILevel> levels, List<IEntity> entities, String triggerClassName,
-								 String scriptPath, Object... args) {
+								 Object... args) {
 		if (getChosenLevels().isEmpty()) {
 			return;
 		}
 		levels.stream().forEach(level -> {
-			addEventToLevel(level, entities, triggerClassName, scriptPath, args);
+			addEventToLevel(level, entities, triggerClassName, args);
 		});
 	}
 
-	public void addEventToLevel(ILevel level, List<IEntity> entities, String triggerClassName, String scriptPath,
-								Object... args) {
-        entities.stream().forEach(entity-> {
-            parameters.put("entityID", entity.getID());
-        });
+	public void addEventToLevel(ILevel level, List<IEntity> entities, String triggerClassName, 
+			Object... args) {
+
+		entities.stream().forEach(entity-> {
+			parameters.put("entityID", entity.getID());
+		});
+		
 		level.getEventSystem().registerEvent(
-				eventFactory.createEvent(triggerClassName, groovyPath+scriptPath,
+				eventFactory.createEvent(triggerClassName, groovyPath+actionScriptPath,
 						parameters, args)
-		);
+				);
 	}
 
 	private void actionSet(String actionScriptPath)
@@ -150,7 +133,7 @@ public abstract class EventEditorTab extends Editor {
 		this.actionScriptPath = actionScriptPath;
 		actionText.setText(myResources.getString("action") + actionScriptPath);
 	}
-	
+
 	public void getFile()
 	{
 		File groovyFile = null;
@@ -169,10 +152,9 @@ public abstract class EventEditorTab extends Editor {
         return actionReady;
 	}
 
-    public void addToMap(String a, String b) {
+    public void addToParameters(String a, Object b) {
         parameters.put(a, b);
         flashText(addedParametersText);
-
         System.out.println(parameters);
     }
 
@@ -218,21 +200,24 @@ public abstract class EventEditorTab extends Editor {
 	}
 	
 	private void getAnimation() {
-		System.out.println(entityForAnimation.getName());
-		animationChooser = new AnimationChooser(entityForAnimation);
-		animationName = animationChooser.initChooser();
-		
-		// flashCreatedEventText();
-	}
+        System.out.println(entityForAnimation.getName());
+        animationChooser = new AnimationChooser(entityForAnimation);
+        animationName = animationChooser.initChooser();
+        if (animationName != null) {
+            addToParameters("animationName", animationName);
+            actionScriptPath = "GeneralAnimationScript.groovy";
+        }
+    }
 
     public void addParametersPane(VBox pane) {
         HBox parametersPane = new HBox(GUISize.EVENT_EDITOR_SUBPADDING.getSize());
+        this.parametersPane = parametersPane;
         TextField keyField = new TextField();
         TextField valueField = new TextField();
         parametersPane.getChildren().add(keyField);
         parametersPane.getChildren().add(valueField);
         parametersPane.getChildren().add(ButtonFactory.makeButton("Add Groovy Parameter",
-                e-> addToMap(keyField.getText(), valueField.getText())));
+                e-> addToParameters(keyField.getText(), valueField.getText())));
         parametersPane.getChildren().add(ButtonFactory.makeButton("Restart Groovy Parameters",
                 e-> clearParameters()));
         pane.getChildren().add(parametersPane);
@@ -257,6 +242,10 @@ public abstract class EventEditorTab extends Editor {
 	{
 		return actionScriptPath;
 	}
+
+    public Text getEventCreatedText() {
+        return createdEventText;
+    }
 	
 	public void setEntityForAnimation(Entity entity) {
 		this.entityForAnimation = entity;
@@ -264,5 +253,7 @@ public abstract class EventEditorTab extends Editor {
 			getActionButton.setText("Get Animation for\n" + entity.getName());	// TODO resource
 		}		
 	}
+	
 	public abstract void actionOnChosenLevels(List<ILevel> levels);
+	public abstract void choseEntity(List<IEntity> entities);
 }
