@@ -3,8 +3,8 @@ package groovyScripts
 import api.IEntity
 import groovy.transform.BaseScript
 import groovy.transform.Field
-import model.component.movement.Position
 import model.component.movement.Velocity
+import providedScripts.ScriptHelpers
 
 @BaseScript ScriptHelpers ScriptHelpers
 

@@ -1,10 +1,10 @@
 package model.component.movement;
 
-import java.util.List;
-
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 import utility.TwoProperty;
+
+import java.util.List;
 
 /**
  * Created by rhondusmithwick on 4/1/16.
@@ -30,14 +30,16 @@ public class Velocity implements IComponent {
 	}
 
 	public void setSpeed(double speed) {
-		double ratio = speed / getSpeed();
-		setVX(getVX() * ratio);
-		setVY(getVY() * ratio);
+//		double ratio = speed / getSpeed();
+//		setVX(getVX() * ratio);
+//		setVY(getVY() * ratio);
+		setVXY(speed*Math.cos(getDirection()), speed*Math.sin(getDirection()));
 	}
 
 	public void setDirection(double direction) {
-		double ratio = Math.tan(direction) / (getVX() / getVY());
-		setVXY(getVX() * ratio, getVY() * ratio);
+//		double ratio = Math.tan(direction) / (getVX() / getVY());
+//		setVXY(getVX() * ratio, getVY() * ratio);
+		setVXY(getSpeed()*Math.cos(direction), getSpeed()*Math.sin(direction));
 	}
 
 	public double getSpeed() {
@@ -45,7 +47,7 @@ public class Velocity implements IComponent {
 	}
 
 	public double getDirection() {
-		return Math.atan(getVX() / getVY());
+		return Math.atan2(getVX(), getVY());
 	}
 
 	public SimpleObjectProperty<Double> vxProperty() {

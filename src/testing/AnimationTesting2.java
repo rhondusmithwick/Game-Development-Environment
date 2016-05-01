@@ -27,8 +27,8 @@ import java.util.Map;
 
 public class AnimationTesting2 extends Application {
 
-    private static final String SCRIPT_PATH = "resources/groovyScripts/AnimationScript.groovy";
-    private static final String STOP_PATH = "resources/groovyScripts/StopPerson.groovy";
+    private static final String SCRIPT_PATH = "resources/providedScripts/AnimationScript.groovy";
+    private static final String STOP_PATH = "resources/providedScripts/StopPerson.groovy";
     private static final String SPRITE_PATH = "resources/spriteSheets/ryuBlue.gif";
     private static final String SPRITE_PROPERTIES = "spriteProperties/aniryu";
     private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");

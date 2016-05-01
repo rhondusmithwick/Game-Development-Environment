@@ -1,4 +1,4 @@
-package groovyScripts
+package providedScripts
 
 import api.IEntity
 import api.ILevel
