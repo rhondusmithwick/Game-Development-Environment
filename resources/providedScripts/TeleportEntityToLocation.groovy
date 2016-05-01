@@ -11,8 +11,8 @@ import model.component.movement.Position
  * @author Rhondu Smithwick
  */
 
-@Field Double newX = containsVariable("newX") ? (Double) getVariable("newX") : null;
-@Field Double newY = containsVariable("newY") ? (Double) getVariable("newY") : null;
+@Field Double newX = containsVariable("newX") ? getDouble("newX") : null;
+@Field Double newY = containsVariable("newY") ? getDouble("newY") : null;
 
 def move = { entity ->
     if (entity.hasComponent(Position.class)) {

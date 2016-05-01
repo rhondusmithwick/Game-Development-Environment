@@ -191,7 +191,7 @@ public abstract class EventEditorTab extends Editor {
         String animationName = animationChooser.initChooser();
         if (animationName != null) {
             addToParameters("animationName", animationName);
-            actionScriptPath = "GeneralAnimationScript.groovy";
+            actionScriptPath = "AnimationScript.groovy";
         }
     }
 
