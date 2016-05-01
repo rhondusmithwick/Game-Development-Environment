@@ -18,13 +18,16 @@ import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
+import javafx.stage.Stage;
 import javafx.util.Duration;
+import main.Vooga;
 import model.component.movement.Orientation;
 import model.component.movement.Position;
 import model.component.physics.Collision;
 import model.component.visual.Sprite;
 import model.core.SystemManager;
 import update.GameLoopManager;
+import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.SpriteUtilities;
 
@@ -57,10 +60,12 @@ public class View implements IView {
 	private GameLoopManager manager;
 	private HBox buttonBox = new HBox();
 	private ResourceBundle myResources;
+	private boolean debug;
 
-	public View(double width, double height, ILevel level, String language, Scene scene) {
+	public View(double width, double height, ILevel level, String language, Scene scene, boolean debug) {
 		subScene = this.createSubScene(root, width, height);
 		model = new SystemManager(subScene, level);
+		this.debug=debug;
 		myResources = ResourceBundle.getBundle(language);
 		manager = new GameLoopManager(language, model);
 		initConsole();
@@ -175,7 +180,9 @@ public class View implements IView {
 																			// Position.class);
 		for (IEntity e : entities) {
 			if (e.hasComponents(Sprite.class, Position.class)) {
-				root.getChildren().addAll(getCollisionShapes(e));
+				if(debug){
+					root.getChildren().addAll(getCollisionShapes(e));
+				}
 				DandR.makeEntityDragAndResize(e);
 				ImageView imageView = getUpdatedImageView(e);
 				root.getChildren().add(imageView);
@@ -201,21 +208,30 @@ public class View implements IView {
 
 	private BorderPane setUpInputPane() {
 		BorderPane pane = new BorderPane();
-		pane.setTop(console);
+		if(debug){
+			pane.setTop(console);
+		}
 		pane.setBottom(buttonBox);
 		return pane;
 	}
 
 	private void initButtons() {
-		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("evaluate"), e -> this.evaluate()));
-		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("load"), e -> this.load()));
-		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("loopManager"), e -> this.createLoopManager()));
+		if(debug){
+			buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("evaluate"), e -> this.evaluate()));
+			buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("loopManager"), e -> this.createLoopManager()));
+		}
+
+		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("mainMenu"), e -> this.mainMenu()));
 		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("startGameLoop"), e -> this.model.play()));
 		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("pauseGameLoop"), e -> this.model.pauseLoop()));
 	}
 
-	private void load() { // TODO: loading
-		// XMLReader<ISystemManager>().readSingleFromFile("demo.xml");
+	private void mainMenu() { 
+        Stage myStage = (Stage) pane.getScene().getWindow();
+        myStage.setWidth(GUISize.MAIN_SIZE.getSize());
+        myStage.setHeight(GUISize.MAIN_SIZE.getSize());
+        Vooga vooga = new Vooga(myStage);
+        vooga.init();
 	}
 
 	private void initConsole() {
