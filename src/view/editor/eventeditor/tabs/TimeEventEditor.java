@@ -24,20 +24,19 @@ import java.util.ResourceBundle;
 
 
 public class TimeEventEditor extends EventEditorTab {
-    Text addedParametersText;
     private final ScrollPane scrollPane;
-    private Text chosenEntityText;
     private final Text chosenEntityTitle;
     private final VBox pane;
     private final ResourceBundle myResources;
     private final KeyBindingTableManager tableManager;
     private final EventViewManager eventViewManager;
+    private final TextField textField;
+    Text addedParametersText;
+    private Text chosenEntityText;
     private HBox parametersPane;
     // TODO test
     private Button getEventsString;
-
     private List<IEntity> chosenEntities;
-    private final TextField textField;
 
     public TimeEventEditor (String language, ObservableList<ILevel> levelList) {
         super(language, levelList);

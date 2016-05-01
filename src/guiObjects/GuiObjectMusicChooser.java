@@ -24,8 +24,8 @@ public class GuiObjectMusicChooser extends GuiObjectFileGetter {
     private final Button stop;
     private final ResourceBundle myResources;
     private final SimpleObjectProperty<String> property;
-    private AudioClip preview;
     private final TextField text = new TextField();
+    private AudioClip preview;
 
     @SuppressWarnings("unchecked")
     public GuiObjectMusicChooser (String name, String resourceBundle, String language, SimpleObjectProperty<?> property) {

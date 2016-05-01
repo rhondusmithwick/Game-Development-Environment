@@ -14,10 +14,9 @@ import java.util.Queue;
 public class MouseSystem {
     private final Queue<MouseEvent> firstQueue = new LinkedList<>();
     private final Queue<MouseEvent> secondQueue = new LinkedList<>();
+    private final SimpleObjectProperty<MouseEvent> currentChar = new SimpleObjectProperty<>();
     private Queue<MouseEvent> fillQ = firstQueue;
     private Queue<MouseEvent> processQ = secondQueue;
-
-    private final SimpleObjectProperty<MouseEvent> currentChar = new SimpleObjectProperty<>();
 
     public void takeInput (MouseEvent k) {
         fillQ.add(k);

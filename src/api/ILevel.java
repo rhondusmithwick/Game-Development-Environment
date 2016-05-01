@@ -57,7 +57,7 @@ public interface ILevel extends ISerializable {
      */
     void addMetadata (String key, String value);
 
-    String init (GroovyShell shell, ISystemManager game, Scene scene);
+    String init (GroovyShell shell, ISystemManager game);
 
     void update (double dt);
 
@@ -339,9 +339,9 @@ public interface ILevel extends ISerializable {
 
     void setOnInput (Scene scene);
 
-    void setLevelOverAndLoadNextLevel (String nextLevelPath);
-
-    boolean checkIfLevelOver ();
-
-    String getNextLevelPath ();
+//    void setLevelOverAndLoadNextLevel (String nextLevelPath);
+//
+//    boolean checkIfLevelOver ();
+//
+//    String getNextLevelPath ();
 }

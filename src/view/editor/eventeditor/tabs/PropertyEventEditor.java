@@ -27,11 +27,11 @@ public class PropertyEventEditor extends EventEditorTab {
     private final VBox pane;
     private final ResourceBundle myResources;
     private final String language;
-    EditorEvent masterEditor;
     private final EventViewManager eventViewManager;
     private final Text triggerText;
-    private Button makeEventButton;
     private final PropertyTableManager tableManager;
+    EditorEvent masterEditor;
+    private Button makeEventButton;
     private List<IEntity> chosenEntities;
     private String chosenEntityName;
     private IComponent chosenComponent;

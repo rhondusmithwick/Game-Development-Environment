@@ -9,7 +9,6 @@ import model.component.physics.Mass;
 import model.entity.Entity;
 import model.entity.Level;
 import model.physics.PhysicsEngine;
-import model.physics.RealisticVelocityCalculator;
 import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
@@ -23,7 +22,7 @@ public class VoogaTesting {
         IEntity e = new Entity();
         e.forceAddComponent(pos, true);
         e.forceAddComponent(v, true);
-        IPhysicsEngine p = new PhysicsEngine(new RealisticVelocityCalculator());
+        IPhysicsEngine p = new PhysicsEngine();
         ILevel universe = new Level();
         universe.addEntity(e);
         p.update(universe, 2);
@@ -40,7 +39,7 @@ public class VoogaTesting {
         e.forceAddComponent(new Mass(1), true);
         e.forceAddComponent(pos, true);
         e.forceAddComponent(v, true);
-        IPhysicsEngine p = new PhysicsEngine(new RealisticVelocityCalculator());
+        IPhysicsEngine p = new PhysicsEngine();
         ILevel universe = new Level();
         universe.addEntity(e);
         //p.applyImpulse(e, new Vector(10, 20));

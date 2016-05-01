@@ -36,7 +36,6 @@ import java.util.ResourceBundle;
 
 /**
  * @author Bruna
- *
  */
 public class EditorEnvironment extends Editor {
 
