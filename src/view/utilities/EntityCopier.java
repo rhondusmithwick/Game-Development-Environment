@@ -30,6 +30,7 @@ public class EntityCopier {
         return newEntity;
     }
 
+    // TODO: account for animated sprite?
     private static void componentInitialization (IEntity newEntity, IEntity oldEntity) {
         if (newEntity.hasComponent(Position.class)) {
             newEntity.removeComponent(Position.class);

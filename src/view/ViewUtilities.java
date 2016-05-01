@@ -1,9 +1,7 @@
 package view;
 
 import api.IEntity;
-import javafx.scene.image.ImageView;
-import model.component.visual.AnimatedSprite;
-import model.component.visual.Sprite;
+import view.utilities.SpriteUtilities;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -20,28 +18,20 @@ public class ViewUtilities {
     private Set<IEntity> selectedSprites = new HashSet<>();
 
     public ViewUtilities () {
-
     }
 
     public Set<IEntity> getSelected () {
         return selectedSprites;
     }
 
-    private ImageView getImageView (IEntity e) {
-        if (e.hasComponent(AnimatedSprite.class)) {
-            return e.getComponent(AnimatedSprite.class).getImageView();
-        }
-        return e.getComponent(Sprite.class).getImageView();
-    }
-
     public void dehighlight (IEntity e) {
         selectedSprites.remove(e);
-        getImageView(e).setStyle(NO_SELECT_EFFECT);
+        SpriteUtilities.getImageView(e).setStyle(NO_SELECT_EFFECT);
     }
 
     public void highlight (IEntity e) {
         selectedSprites.add(e);
-        getImageView(e).setStyle(SELECT_EFFECT);
+        SpriteUtilities.getImageView(e).setStyle(SELECT_EFFECT);
     }
 
     public void toggleHighlight (IEntity entity) {

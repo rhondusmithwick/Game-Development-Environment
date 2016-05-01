@@ -28,7 +28,6 @@ public class MoveAndSound implements IGameScript {
 
     @Override
     public void update(double dt) {
-        println("update");
 //        physics.update(universe, dt);
     }
 

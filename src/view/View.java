@@ -1,10 +1,6 @@
 package view;
 
-import api.IEntity;
-import api.IEntitySystem;
-import api.ILevel;
-import api.ISystemManager;
-import api.IView;
+import api.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -22,11 +18,7 @@ import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -42,7 +34,6 @@ import model.component.hud.HUD;
 import model.component.movement.Orientation;
 import model.component.movement.Position;
 import model.component.physics.Collision;
-import model.component.visual.Sprite;
 import model.core.SystemManager;
 import update.GameLoopManager;
 import view.enums.GUISize;
@@ -52,13 +43,8 @@ import view.utilities.SpriteUtilities;
 import view.utilities.ToMainMenu;
 import voogasalad.util.reflection.Reflection;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 /**
@@ -204,7 +190,7 @@ public class View implements IView {
         root.getChildren().clear();
         List<IEntity> entities = model.getEntitySystem().getAllEntities();
         for (IEntity e : entities) {
-            if (e.hasComponents(Sprite.class, Position.class)) {
+            if (SpriteUtilities.getSpriteComponent(e)!=null && e.hasComponent(Position.class)) {
                 if (debug) {
                     root.getChildren().addAll(getCollisionShapes(e));
                 }

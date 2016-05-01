@@ -30,4 +30,5 @@ public class DefaultAnimationUpdater implements IGameScript {
         Orientation orientation = entity.getComponent(Orientation.class);
         animatedSprite.setDefaultAnimation(orientation.getOrientationString() + "Default");
     }
+
 }

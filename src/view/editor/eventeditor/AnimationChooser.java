@@ -35,7 +35,7 @@ public class AnimationChooser {
     }
 
     private AnimatedSprite getAnimatedSpriteComponent () {
-        return myEntity.getComponent(AnimatedSprite.class);
+        return myEntity.getComponent(AnimatedSprite.class); // TODO: move this one-liner to the location of use
     }
 
     /**
@@ -65,7 +65,7 @@ public class AnimationChooser {
     private boolean checkIfAnimatedSprite () {
         return myEntity.hasComponent(AnimatedSprite.class);
 
-
+        // TODO: move one-liner to if-statement
     }
 
     private void initAnimationEditor () {
