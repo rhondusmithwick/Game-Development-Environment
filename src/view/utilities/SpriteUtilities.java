@@ -14,6 +14,13 @@ public class SpriteUtilities {
     private SpriteUtilities () {
     }
 
+    public static Sprite getSpriteComponent (IEntity entity) {
+        if (entity.hasComponent(AnimatedSprite.class)) {
+            return entity.getComponent(AnimatedSprite.class);
+        }
+        return entity.getComponent(Sprite.class);
+    }
+
     public static <T extends Sprite> T getSpriteComponent (IEntity entity, Class<T> spriteClass) {
         if (entity.hasComponent(AnimatedSprite.class)) {
             return spriteClass.cast(entity.getComponent(AnimatedSprite.class));
@@ -22,6 +29,6 @@ public class SpriteUtilities {
     }
 
     public static ImageView getImageView (IEntity entity) {
-        return getSpriteComponent(entity, Sprite.class).getImageView();
+        return getSpriteComponent(entity).getImageView();
     }
 }
