@@ -27,7 +27,11 @@ import view.enums.GUISize;
 import view.enums.ViewInsets;
 import view.utilities.Alerts;
 import view.utilities.ButtonFactory;
-
+/**
+ * 
+ * @author calinelson
+ *
+ */
 public class GameEditor extends Editor  {
 
     private VBox pane;
@@ -49,7 +53,6 @@ public class GameEditor extends Editor  {
 
     public GameEditor(Authoring authEnv, String language, Scene myScene){
         myLanguage = language;
-        gameDetails = new GameDetails(language);
         myResources = ResourceBundle.getBundle(language);
         this.authEnv=authEnv;
         this.masterEntityList = FXCollections.observableArrayList();
@@ -57,6 +60,7 @@ public class GameEditor extends Editor  {
         entDisp = new EntityDisplay(myLanguage, masterEntityList, authEnv);
         envDisp = new EnvironmentDisplay(myLanguage, masterEnvironmentList, masterEntityList, authEnv, myScene);
         eventDisplay = new EventDisplay(myLanguage, masterEntityList, masterEnvironmentList, authEnv);
+        gameDetails = new GameDetails(language);
         setPane();
     }
 

@@ -5,8 +5,15 @@ import java.util.Enumeration;
 import java.util.List;
 import java.util.ResourceBundle;
 import api.IEntity;
+import model.component.visual.AnimatedSprite;
+import model.component.visual.Sprite;
 import view.enums.DefaultStrings;
 
+/**
+ * 
+ * @author calinelson
+ *
+ */
 public class ComponentAdder extends ComponentModifier{
 
 	private ResourceBundle myComponentNames;
@@ -26,7 +33,11 @@ public class ComponentAdder extends ComponentModifier{
 	public void modifyComponentList() {
 		Enumeration<String> iter = myLocs.getKeys();
 		while(iter.hasMoreElements()) {
-			myComponents.add(myComponentNames.getString(iter.nextElement()));
+			String component = iter.nextElement();
+			if( !(component.equals("Sprite") && entity.hasComponent(AnimatedSprite.class)) && 
+					!(component.equals("AnimatedSprite") && entity.hasComponent(Sprite.class))){
+				myComponents.add(myComponentNames.getString(component));
+			}
 		}
 		String componentName = super.makeAndShowChooser("chooseComponent", myComponents);
 		if(componentName != null){

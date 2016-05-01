@@ -19,12 +19,13 @@ public class Pong implements IGameScript {
 
     private ISystemManager game;
     private ILevel universe;
-//    private final IPhysicsEngine physics = new PhysicsEngine();
+    private IPhysicsEngine physics;
     private IEventSystem events;
 
     public void init(GroovyShell shell, ISystemManager game) {
         this.game = game;
         this.universe = game.getLevel();
+        this.physics = game.getLevel().getPhysicsEngine();
         this.events = universe.getEventSystem();
 
         // TODO: figure out why these don't work
@@ -39,7 +40,7 @@ public class Pong implements IGameScript {
 
     private void initSprites() {
         // Ball
-        IEntity ball = SpriteLoader.createBall("Ball", new Position(150.0, 150.0));
+        IEntity ball = SpriteLoader.createBall("Ball", new Position(190.0, 190.0));
         //Paddles
         IEntity leftPaddle = SpriteLoader.createPaddle("LeftPaddle", new Position(100, 160));
         leftPaddle.addComponent(new UserControl());
@@ -76,7 +77,7 @@ public class Pong implements IGameScript {
 //    }
 
     public void update(double dt) {
-//        physics.update(universe, dt);
+        physics.update(universe, dt);
         events.updateInputs(dt);
         updateGameLogic();
     }

@@ -20,7 +20,7 @@ public class SpriteLoader {
     public static IEntity createBall(String name, Position pos) {
         IEntity e = new Entity(name);
         Sprite disp = new Sprite();
-        ImageView img = disp.getImageView();
+//        ImageView img = disp.getImageView();
         disp.setImageWidth(20);
         e.addComponents(pos, disp, new Velocity(20.0, 0.0), new Collision("ball"),
                 new RestitutionCoefficient(1.0), new Mass(1));

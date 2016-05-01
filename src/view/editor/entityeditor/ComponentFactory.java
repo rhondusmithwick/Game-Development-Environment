@@ -4,7 +4,11 @@ import api.IComponent;
 import api.IEntity;
 import voogasalad.util.reflection.Reflection;
 
-
+/**
+ * 
+ * @author calinelson
+ *
+ */
 public class ComponentFactory {
 
 
