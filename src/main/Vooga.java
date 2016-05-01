@@ -9,12 +9,12 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import model.entity.Level;
 import view.Authoring;
 import view.View;
 import view.beginningmenus.StartUpMenu;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
+import view.enums.Indexes;
 import view.utilities.ButtonFactory;
 import view.utilities.ComboFactory;
 import view.utilities.FileUtilities;
@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
+
+import api.ILevel;
 
 /**
  * 
@@ -101,7 +103,10 @@ public class Vooga extends StartUpMenu {
 	private void createPlayer() {
 		String path = chooseGame();
 		if (path!= null){
-			View view = new View(2000, 2000, new Level(), getLanguage(), null);
+			path = DefaultStrings.CREATE_LOC.getDefault()+path;
+			String firstLevel = new XMLReader<List<String>>().readSingleFromFile(path+DefaultStrings.METADATA_LOC.getDefault()).get(Indexes.GAME_FIRST_LEVEL.getIndex());
+			ILevel toPlay = new XMLReader<ILevel>().readSingleFromFile(path + DefaultStrings.LEVELS_LOC.getDefault()+firstLevel+DefaultStrings.XML.getDefault());
+			View view = new View(2000, 2000, toPlay, getLanguage(), null);
 			Pane pane = view.getPane();
 			Scene scene = new Scene(pane, 500, 500);
 			view.setScene(scene);

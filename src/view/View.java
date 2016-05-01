@@ -58,11 +58,6 @@ public class View implements IView {
 	private HBox buttonBox = new HBox();
 	private ResourceBundle myResources;
 
-	@Deprecated
-	public View(String language) {
-		// this(2000, 2000, new Level(), language);
-	}
-
 	public View(double width, double height, ILevel level, String language, Scene scene) {
 		subScene = this.createSubScene(root, width, height);
 		model = new SystemManager(subScene, level);
