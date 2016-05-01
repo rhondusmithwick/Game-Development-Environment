@@ -44,11 +44,6 @@ public class KeyBindingEditor extends EventEditorTab
 	
 	private KeyBindingTableManager tableManager;
 	private EventViewManager eventViewManager;
-    private HBox parametersPane;
-    Text addedParametersText;
-	
-	// TODO test
-	private Button getEventsString;
 
 	private ArrayList<IEntity> chosenEntities;
 	
@@ -103,15 +98,9 @@ public class KeyBindingEditor extends EventEditorTab
 	
 	private void createEvent()
 	{
-		if (getChosenLevels().isEmpty())
-			return;
-		// make map like this:
-		// Map<String, String> params = new HashMap<String, String>();
-		// loop thru chosen entities and put them in map
-		// params.put("entityID", chosenEntitiesID);
-		// addEventToLevels(getChosenLevels(), "KeyTrigger", actionScriptPath, params, currentKey.getName());
+		if (getChosenLevels().isEmpty()) return;
 		addEventToLevels(getChosenLevels(), getChosenEntities(), "KeyTrigger", getActionScriptPath(), currentKey.getName());
-		flashCreatedEventText();
+		flashText(getEventCreatedText());
 		eventViewManager.updateTable();
 	}
 	

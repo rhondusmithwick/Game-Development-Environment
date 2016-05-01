@@ -138,7 +138,7 @@ public class PropertyEventEditor extends EventEditorTab
 //						})
 //		);
 
-		flashCreatedEventText();
+		flashText(getEventCreatedText());
 		eventViewManager.updateTable();
 		triggerOK = false;
 		actionOK = false;

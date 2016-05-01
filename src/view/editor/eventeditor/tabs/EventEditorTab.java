@@ -52,7 +52,6 @@ public abstract class EventEditorTab extends Editor {
 	private Entity entityForAnimation;
 	private String animationName;
 	private boolean animationView;
-    private HBox parametersPane;
     private Map<String, Object> parameters;
 
 	public EventEditorTab(String language, ObservableList<ILevel> levelList)
@@ -67,17 +66,6 @@ public abstract class EventEditorTab extends Editor {
 		makeActionPane();
         parameters = new HashMap<>();
         addedParametersText = new Text("Groovy parameter added!");
-	}
-
-	public void flashCreatedEventText() {
-		createdEventText.setOpacity(1);
-		timer = new Timer();
-		timer.scheduleAtFixedRate(new TimerTask() {
-			@Override
-			public void run() {
-				disappearText();
-			}
-		}, GUISize.EVENT_EDITOR_DISAPPEAR_SPEED.getSize(), GUISize.EVENT_EDITOR_DISAPPEAR_SPEED.getSize());
 	}
 
     public void flashText(Text text) {
@@ -98,14 +86,6 @@ public abstract class EventEditorTab extends Editor {
             timer.cancel();
         }
     }
-
-	private void disappearText() {
-		createdEventText.setOpacity(createdEventText.getOpacity() - 0.02);
-		if ( createdEventText.getOpacity() <= 0 )
-		{
-			timer.cancel();
-		}
-	}
 	
 	public ScrollPane getLevelPickerPane()
 	{
@@ -219,7 +199,6 @@ public abstract class EventEditorTab extends Editor {
 	private void getAnimation() {
 		animationChooser = new AnimationChooser(entityForAnimation);
 		animationName = animationChooser.initChooser();
-		// flashCreatedEventText();
 	}
 
     public void addParametersPane(VBox pane) {
@@ -254,6 +233,10 @@ public abstract class EventEditorTab extends Editor {
 	{
 		return actionScriptPath;
 	}
+
+    public Text getEventCreatedText() {
+        return createdEventText;
+    }
 	
 	public void setEntityForAnimation(Entity entity) {
 		this.entityForAnimation = entity;
