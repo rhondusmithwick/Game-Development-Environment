@@ -26,8 +26,8 @@ import view.utilities.TextFieldFactory;
 public class GameDetails {
 	
 	private ResourceBundle myResources;
-	private HBox nameBox, descriptionBox, iconBox;
-	private TextField name, desc;
+	private HBox nameBox, descriptionBox, iconBox, levelBox;
+	private TextField name, desc, level;
 	private String iconPath;
 	private ImageView icon;
 
@@ -42,6 +42,9 @@ public class GameDetails {
 		name = (TextField) nameBox.getChildren().get(1);
 		descriptionBox = createTextEntry("gameDescription");
 		desc = (TextField) descriptionBox.getChildren().get(1);
+		levelBox = createTextEntry("firstLevel");
+		level = (TextField) levelBox.getChildren().get(1);
+		
 		showIcon();
 		
 	}
@@ -90,13 +93,14 @@ public class GameDetails {
 		name.setText(list.get(Indexes.GAME_NAME.getIndex()));
 		desc.setText(list.get(Indexes.GAME_DESC.getIndex()));
 		iconPath = list.get(Indexes.GAME_ICON.getIndex());
+		level.setText(list.get(Indexes.GAME_FIRST_LEVEL.getIndex()));
 		setImage();
 	}
 
 	
 	
 	public List<Node> getElements(){
-		return Arrays.asList(nameBox, descriptionBox, iconBox);
+		return Arrays.asList(nameBox, descriptionBox, iconBox, levelBox);
 	}
 	
 	public List<String> getGameDetails(){
@@ -104,6 +108,6 @@ public class GameDetails {
 		if(nameText.isEmpty()){
 			nameText = DefaultStrings.DEF_NAME.getDefault();
 		}
-		return Arrays.asList(nameText, desc.getText(), iconPath);
+		return Arrays.asList(nameText, desc.getText(), iconPath, level.getText());
 	}
 }
