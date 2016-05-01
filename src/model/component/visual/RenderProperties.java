@@ -19,7 +19,7 @@ public class RenderProperties implements IComponent {
     /**
      * Empty constructor. Both Start at 0.0.
      */
-    public RenderProperties() {
+    public RenderProperties () {
     }
 
     /**
@@ -28,7 +28,7 @@ public class RenderProperties implements IComponent {
      * @param tint         initial value for tint
      * @param transparency initial value for transparency
      */
-    public RenderProperties(double tint, double transparency) {
+    public RenderProperties (double tint, double transparency) {
         setTint(tint);
         setTransparency(transparency);
     }
@@ -38,15 +38,15 @@ public class RenderProperties implements IComponent {
      *
      * @return the tint property
      */
-    public SimpleObjectProperty<Double> tintProperty() {
+    public SimpleObjectProperty<Double> tintProperty () {
         return twoProperty.property1();
     }
 
-    public Double getTint() {
+    public Double getTint () {
         return tintProperty().get();
     }
 
-    public void setTint(double tint) {
+    public void setTint (double tint) {
         tintProperty().set(tint);
     }
 
@@ -55,25 +55,25 @@ public class RenderProperties implements IComponent {
      *
      * @return the transparency property
      */
-    public SimpleObjectProperty<Double> transparencyProperty() {
+    public SimpleObjectProperty<Double> transparencyProperty () {
         return twoProperty.property2();
     }
 
-    public Double getTransparency() {
+    public Double getTransparency () {
         return transparencyProperty().get();
     }
 
-    public void setTransparency(double transparency) {
+    public void setTransparency (double transparency) {
         transparencyProperty().set(transparency);
     }
 
     @Override
-    public List<SimpleObjectProperty<?>> getProperties() {
+    public List<SimpleObjectProperty<?>> getProperties () {
         return twoProperty.getProperties();
     }
 
     @Override
-    public void update() {
+    public void update () {
         setTint(getTint());
         setTransparency(getTransparency());
     }

@@ -19,12 +19,12 @@ public class AnaimationTesting extends Application implements SandBox {
     private static final String SPRITE_PATH = "resources/spriteSheets/ryuBlue.gif";
     private static final String SPRITE_PROPERTIES = "spriteProperties/aniryu";
 
-    public static void main(String[] args) {
+    public static void main (String[] args) {
         launch(args);
     }
 
     @Override
-    public void start(Stage primaryStage) {
+    public void start (Stage primaryStage) {
         IEntity entity = new Entity();
         entity.forceAddComponent(new AnimatedSprite(SPRITE_PATH, SPRITE_PROPERTIES), true);
         AnimatedSprite animatedSprite = entity.getComponent(AnimatedSprite.class);

@@ -10,9 +10,9 @@ import javafx.util.Duration;
 
 @Deprecated
 public class AnimatedExplosion extends ImageView {
+    private static final Duration FRAME_DURATION = Duration.seconds(0.1);
     private Rectangle2D[] frames;
     private int numFrames;
-    private static final Duration FRAME_DURATION = Duration.seconds(0.1);
 
     public AnimatedExplosion (Image explosionImage, int numFrames) {
         super(explosionImage);

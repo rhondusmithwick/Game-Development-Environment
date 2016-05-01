@@ -1,1 +1,12 @@
-<?xml version="1.0" ?><object-stream><java.util.Arrays_-ArrayList><a class="string-array"><string>FindTheBug</string><string></string><string>file:/Users/rhondusmithwick/Documents/Classes/CS308/voogasalad/resources/guiImages/default_icon.png</string></a></java.util.Arrays_-ArrayList></object-stream>
+<?xml version="1.0" ?>
+<object-stream>
+    <java.util.Arrays_-ArrayList>
+        <a class="string-array">
+            <string>FindTheBug</string>
+            <string></string>
+            <string>
+                file:/Users/rhondusmithwick/Documents/Classes/CS308/voogasalad/resources/guiImages/default_icon.png
+            </string>
+        </a>
+    </java.util.Arrays_-ArrayList>
+</object-stream>

@@ -8,10 +8,10 @@ package api;
  */
 public interface IEvent extends ISerializable {
 
-	/**
-	 * Gets the message id of an event
-	 * 
-	 * @return the message id of an event
-	 */
-	String getEventID();
+    /**
+     * Gets the message id of an event
+     *
+     * @return the message id of an event
+     */
+    String getEventID ();
 }

@@ -1,4 +1,5 @@
 package groovyScripts
+
 import model.component.movement.Position;
 
 /**

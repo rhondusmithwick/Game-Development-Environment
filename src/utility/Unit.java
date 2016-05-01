@@ -19,7 +19,7 @@ public class Unit<A> {
      *
      * @param _1 the first value.
      */
-    public Unit(A _1) {
+    public Unit (A _1) {
         this._1 = _1;
     }
 
@@ -28,7 +28,7 @@ public class Unit<A> {
      *
      * @return first value
      */
-    public A _1() {
+    public A _1 () {
         return _1;
     }
 

@@ -23,7 +23,7 @@ public class Orientation implements IComponent {
     /**
      * Empty constructor. Starts at 0.0.
      */
-    public Orientation() { 
+    public Orientation () {
     }
 
     /**
@@ -31,7 +31,7 @@ public class Orientation implements IComponent {
      *
      * @param orientation the default value
      */
-    public Orientation(double orientation) {
+    public Orientation (double orientation) {
         setOrientation(orientation);
     }
 
@@ -40,15 +40,15 @@ public class Orientation implements IComponent {
      *
      * @return the orientationString property
      */
-    public SimpleObjectProperty<Double> orientationProperty() {
+    public SimpleObjectProperty<Double> orientationProperty () {
         return singleProperty.property1();
     }
 
-    public double getOrientation() {
+    public double getOrientation () {
         return orientationProperty().get();
     }
 
-    public void setOrientation(double orientation) {
+    public void setOrientation (double orientation) {
         orientationProperty().set(orientation);
         if (orientation < 90) {
             orientationString = "north";
@@ -61,17 +61,17 @@ public class Orientation implements IComponent {
         }
     }
 
-    public String getOrientationString() {
+    public String getOrientationString () {
         return orientationString;
     }
 
     @Override
-    public List<SimpleObjectProperty<?>> getProperties() {
+    public List<SimpleObjectProperty<?>> getProperties () {
         return singleProperty.getProperties();
     }
 
     @Override
-    public void update() {
+    public void update () {
         setOrientation(getOrientation());
     }
 }

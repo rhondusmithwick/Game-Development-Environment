@@ -6,5 +6,5 @@ package testing;
  * @author Rhondu Smithwick
  */
 public interface Tester {
-    void test();
+    void test ();
 }

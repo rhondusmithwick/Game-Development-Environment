@@ -7,6 +7,7 @@ import model.component.character.Score
 import model.component.character.UserControl
 import model.component.movement.Position
 import model.component.physics.Collision
+
 /**
  *
  * @author Tom
@@ -84,10 +85,10 @@ public class Pong implements IGameScript {
 
     private void updateGameLogic() {
         // Check for game over
-        for(IEntity e:universe.getEntitiesWithComponents(Score.class)) {
+        for (IEntity e : universe.getEntitiesWithComponents(Score.class)) {
             Score score = e.getComponent(Score.class);
-            if(score.getScore()==winningScore) {
-                System.out.println(e.getName()+" has won.");
+            if (score.getScore() == winningScore) {
+                System.out.println(e.getName() + " has won.");
             }
         }
 
@@ -97,20 +98,20 @@ public class Pong implements IGameScript {
 
         IEntity leftWall = universe.getEntitiesWithName("LeftWall").get(0);
         String leftColStr = leftWall.getComponent(Collision.class).getCollidingIDs();
-        if(leftColStr.contains(ballID)) {
+        if (leftColStr.contains(ballID)) {
             IEntity rightPaddle = universe.getEntitiesWithName("RightPaddle").get(0);
             Score s = rightPaddle.getComponent(Score.class);
             s.increment();
-            System.out.println("Right: "+s.getScore());
+            System.out.println("Right: " + s.getScore());
         }
 
         IEntity rightWall = universe.getEntitiesWithName("RightWall").get(0);
         String rightColStr = rightWall.getComponent(Collision.class).getCollidingIDs();
-        if(rightColStr.contains(ballID)) {
+        if (rightColStr.contains(ballID)) {
             IEntity leftPaddle = universe.getEntitiesWithName("LeftPaddle").get(0);
             Score s = leftPaddle.getComponent(Score.class);
             s.increment();
-            System.out.println("Left: "+s.getScore());
+            System.out.println("Left: " + s.getScore());
         }
     }
 

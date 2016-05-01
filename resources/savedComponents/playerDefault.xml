@@ -1,1 +1,35 @@
-<?xml version="1.0" ?><object-stream><model.component.movement.Position><twoProperty><property1><value class="double">50.0</value><valid>false</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>X</name></property1><property2><value class="double">40.0</value><valid>false</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>Y</name></property2></twoProperty></model.component.movement.Position><model.component.movement.Velocity><twoProperty><property1><value class="double">100.0</value><valid>false</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>Speed</name></property1><property2><value class="double">10.0</value><valid>false</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>Direction</name></property2></twoProperty></model.component.movement.Velocity></object-stream>
+<?xml version="1.0" ?>
+<object-stream>
+    <model.component.movement.Position>
+        <twoProperty>
+            <property1>
+                <value class="double">50.0</value>
+                <valid>false</valid>
+                <bean class="utility.TwoProperty" reference="../.."></bean>
+                <name>X</name>
+            </property1>
+            <property2>
+                <value class="double">40.0</value>
+                <valid>false</valid>
+                <bean class="utility.TwoProperty" reference="../.."></bean>
+                <name>Y</name>
+            </property2>
+        </twoProperty>
+    </model.component.movement.Position>
+    <model.component.movement.Velocity>
+        <twoProperty>
+            <property1>
+                <value class="double">100.0</value>
+                <valid>false</valid>
+                <bean class="utility.TwoProperty" reference="../.."></bean>
+                <name>Speed</name>
+            </property1>
+            <property2>
+                <value class="double">10.0</value>
+                <valid>false</valid>
+                <bean class="utility.TwoProperty" reference="../.."></bean>
+                <name>Direction</name>
+            </property2>
+        </twoProperty>
+    </model.component.movement.Velocity>
+</object-stream>

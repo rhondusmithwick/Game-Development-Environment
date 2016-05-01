@@ -1,8 +1,10 @@
 package events;
 
+import api.IInputSystem;
 import api.ILevel;
 import api.ISerializable;
 import javafx.beans.value.ChangeListener;
+
 import java.util.Observable;
 
 /***
@@ -12,22 +14,22 @@ import java.util.Observable;
  */
 public abstract class Trigger extends Observable implements ChangeListener, ISerializable {
 
-	@Deprecated
-    public abstract void clearListener(ILevel universe, InputSystem inputSystem);
-	
-	public abstract void clearListener(ILevel universe);
+    @Deprecated
+    public abstract void clearListener (ILevel universe, IInputSystem inputSystem);
+
+    public abstract void clearListener (ILevel universe);
 
     @Deprecated
-    public abstract void addHandler(ILevel universe, InputSystem inputSystem);
-    
-    public abstract void addHandler(ILevel universe);
+    public abstract void addHandler (ILevel universe, IInputSystem inputSystem);
 
-    public String getID() {
+    public abstract void addHandler (ILevel universe);
+
+    public String getID () {
         return toString();
     }
 
     @Override
-    public boolean equals(Object o) {
+    public boolean equals (Object o) {
         boolean isInstance = o instanceof Trigger;
         if (!isInstance) {
             return false;

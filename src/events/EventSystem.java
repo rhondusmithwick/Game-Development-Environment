@@ -1,6 +1,7 @@
 package events;
 
 import api.IEventSystem;
+import api.IInputSystem;
 import api.ILevel;
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
@@ -36,12 +37,12 @@ import java.util.Observer;
  */
 
 public class EventSystem implements Observer, IEventSystem {
-    private transient InputSystem inputSystem = new InputSystem();
     private final EventFactory eventFactory = new EventFactory();
+    private final SimpleDoubleProperty timer = new SimpleDoubleProperty(this, "timer", 0.0);
+    private transient IInputSystem inputSystem = new InputSystem();
     private transient ILevel level;
     //    private final MouseSystem mouseSystem = new MouseSystem();
     private ListMultimap<Trigger, Action> actionMap = ArrayListMultimap.create();
-    private final SimpleDoubleProperty timer = new SimpleDoubleProperty(this, "timer", 0.0);
     private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
 
     public EventSystem (ILevel level) {
@@ -97,11 +98,13 @@ public class EventSystem implements Observer, IEventSystem {
         inputSystem.unListenToInput(listener);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void listenToTimer (ChangeListener listener) {
         timer.addListener(listener);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void unListenToTimer (ChangeListener listener) {
         timer.removeListener(listener);
@@ -114,7 +117,8 @@ public class EventSystem implements Observer, IEventSystem {
     }
 
     public void setLevel (ILevel level) {
-        if (!actionMap.isEmpty() && this.level.getEntitySystem() != null) {
+        boolean canUnbind = this.level != null && !actionMap.isEmpty() && this.level.getEntitySystem() != null;
+        if (canUnbind) {
             this.unbindEvents();
         }
         this.level = level;

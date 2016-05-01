@@ -1,4 +1,3 @@
-
 package model.entity;
 
 import api.IComponent;
@@ -13,7 +12,10 @@ import java.util.function.Predicate;
 import java.util.stream.Stream;
 
 /**
- * Created by Tom on 4/24/2016.
+ * {@inheritDoc}
+ * Implementation of IEntitySystem.
+ *
+ * @author Rhondu Smithwick
  */
 public class EntitySystem implements IEntitySystem {
 
@@ -83,7 +85,7 @@ public class EntitySystem implements IEntitySystem {
 
     @Override
     public boolean isEmpty () {
-        return this.getAllEntities().isEmpty();
+        return getAllEntities().isEmpty();
     }
 
     private Stream<IEntity> entitiesWIthID (String id) {

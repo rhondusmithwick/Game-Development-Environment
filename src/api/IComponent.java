@@ -24,18 +24,19 @@ public interface IComponent extends ISerializable {
      *
      * @return all the properties this component holds
      */
-    default List<SimpleObjectProperty<?>> getProperties() {
+    default List<SimpleObjectProperty<?>> getProperties () {
         return Collections.emptyList();
     }
 
     /**
      * Get property with specified name.
+     *
      * @param name of property to get
      * @return the property
      * @throws IllegalArgumentException if no such property
      */
     @SuppressWarnings("OptionalGetWithoutIsPresent")
-    default SimpleObjectProperty<?> getProperty(String name)  throws IllegalArgumentException{
+    default SimpleObjectProperty<?> getProperty (String name) throws IllegalArgumentException {
         Predicate<SimpleObjectProperty<?>> isRight = (s) -> (Objects.equals(s.getName(), name));
         Optional<SimpleObjectProperty<?>> rightProperty = getProperties().stream().filter(isRight).findFirst();
         boolean hasProperty = rightProperty.isPresent();
@@ -56,7 +57,7 @@ public interface IComponent extends ISerializable {
      * @throws IllegalArgumentException if incorrect propertyClass or no property with this name is present
      */
     @SuppressWarnings("unchecked")
-    default <T> SimpleObjectProperty<T> getProperty(Class<T> propertyClass, String name) throws IllegalArgumentException {
+    default <T> SimpleObjectProperty<T> getProperty (Class<T> propertyClass, String name) throws IllegalArgumentException {
         SimpleObjectProperty<?> property = getProperty(name);
         boolean rightClass = propertyClass.isInstance(property.get());
         Preconditions.checkArgument(rightClass, "Incorrect value class");
@@ -68,7 +69,7 @@ public interface IComponent extends ISerializable {
      *
      * @return a map, where each entry is a component name to it's value class
      */
-    default Map<String, Class<?>> getPropertyNamesAndClasses() {
+    default Map<String, Class<?>> getPropertyNamesAndClasses () {
         Map<String, Class<?>> nameCLassMap = new HashMap<>();
         for (SimpleObjectProperty<?> property : getProperties()) {
             nameCLassMap.put(property.getName(), property.get().getClass());
@@ -81,22 +82,22 @@ public interface IComponent extends ISerializable {
      *
      * @return the class to be put into an Entity map
      */
-    default Class<? extends IComponent> getClassForComponentMap() {
+    default Class<? extends IComponent> getClassForComponentMap () {
         return getClass();
     }
 
     /**
      * Remove the bindings from all this Component's properties.
      */
-    default void removeBindings() {
+    default void removeBindings () {
         getProperties().stream().forEach(ObjectPropertyBase::unbind);
-       // getProperties().stream().forEach(e->printBound(e));
+        // getProperties().stream().forEach(e->printBound(e));
     }
 
-	//default void printBound(SimpleObjectProperty<?> e){
-	//	System.out.print(e.getName() +" "+ e.isBound());
-	//}
+    //default void printBound(SimpleObjectProperty<?> e){
+    //	System.out.print(e.getName() +" "+ e.isBound());
+    //}
 
-    void update();
+    void update ();
 
 }
