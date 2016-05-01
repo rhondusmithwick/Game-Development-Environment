@@ -121,7 +121,7 @@ public class PropertyEventEditor extends EventEditorTab
 			{
 				if ( entity.getName().equals(chosenEntityName) )
 				{
-					addEventToLevel(level, chosenEntities, "PropertyTrigger", getActionScriptPath(), entity.getID(),
+					addEventToLevel(level, chosenEntities, "PropertyTrigger", entity.getID(),
 							chosenComponent.getClass(), chosenProperty);
 				}
 			}

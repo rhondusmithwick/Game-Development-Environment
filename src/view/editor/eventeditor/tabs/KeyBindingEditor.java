@@ -111,7 +111,7 @@ public class KeyBindingEditor extends EventEditorTab
 		// loop thru chosen entities and put them in map
 		// params.put("entityID", chosenEntitiesID);
 		// addEventToLevels(getChosenLevels(), "KeyTrigger", actionScriptPath, params, currentKey.getName());
-		addEventToLevels(getChosenLevels(), getChosenEntities(), "KeyTrigger", getActionScriptPath(), currentKey.getName());
+		addEventToLevels(getChosenLevels(), getChosenEntities(), "KeyTrigger", currentKey.getName());
 		flashCreatedEventText();
 		eventViewManager.updateTable();
 	}
