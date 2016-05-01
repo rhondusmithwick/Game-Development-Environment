@@ -34,6 +34,7 @@
 	-fx-font-size: 12px;
 	-fx-font-family: "baskerville";
 	-fx-border-color: black;
+    -fx-prompt-text-fill: white;
 }
 
 .hbox {
@@ -79,8 +80,10 @@
 
 .button {
     -fx-background-color: transparent;
-    -fx-padding: 4;
-    -fx-border-color: grey ;
+    -fx-border-color: greenyellow;
+    -fx-padding: 8;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
     -fx-effect: dropshadow(three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1);
 }
 
