@@ -1,4 +1,4 @@
-package groovyScripts
+package providedScripts
 
 import api.IEntity
 import groovy.transform.BaseScript
@@ -21,6 +21,8 @@ void move(IEntity entity) {
     position.setY(position.getY() + movedY);
 }
 
-for (IEntity entity: getEntitiesWithNamesAndIDs()) {
-    move(entity);
+for (IEntity entity : getEntitiesWithNamesAndIDs()) {
+    if (entity.hasComponent(Position.class)) {
+        move(entity);
+    }
 }
