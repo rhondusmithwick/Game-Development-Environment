@@ -1,24 +1,15 @@
 package main;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.ResourceBundle;
-
 import datamanagement.XMLReader;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceDialog;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import model.entity.Level;
 import view.Authoring;
 import view.View;
 import view.beginningmenus.StartUpMenu;
@@ -27,6 +18,12 @@ import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.ComboFactory;
 import view.utilities.FileUtilities;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * 
@@ -104,9 +101,10 @@ public class Vooga extends StartUpMenu {
 	private void createPlayer() {
 		String path = chooseGame();
 		if (path!= null){
-			View view = new View(getLanguage());
+			View view = new View(2000, 2000, new Level(), getLanguage(), null);
 			Pane pane = view.getPane();
 			Scene scene = new Scene(pane, 500, 500);
+			view.setScene(scene);
 			myStage.setScene(scene);
 		}
 		myStage.show();
