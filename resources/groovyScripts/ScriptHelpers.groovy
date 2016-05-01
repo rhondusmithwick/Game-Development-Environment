@@ -11,7 +11,7 @@ import groovy.transform.Field
 @Field ILevel universe = (ILevel) binding.getVariable("universe");
 
 boolean containsVariable(String variableName) {
-    return binding.variables.containsKey(variableName)
+    return binding.variables.containsKey(variableName);
 }
 
 Object getVariable(String variableName) {
