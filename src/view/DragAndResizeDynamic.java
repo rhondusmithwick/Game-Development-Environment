@@ -6,8 +6,8 @@ import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.image.ImageView;
 import model.component.movement.Position;
-import model.component.visual.AnimatedSprite;
 import model.component.visual.Sprite;
+import view.utilities.SpriteUtilities;
 
 /**
  * @author Tom
@@ -28,12 +28,12 @@ public class DragAndResizeDynamic {
 
     }
 
-    private ImageView getImageView (IEntity e) {
-        if (e.hasComponent(AnimatedSprite.class)) {
-            return e.getComponent(AnimatedSprite.class).getImageView();
-        }
-        return e.getComponent(Sprite.class).getImageView();
-    }
+//    private ImageView getImageView (IEntity e) {
+//        if (e.hasComponent(AnimatedSprite.class)) {
+//            return e.getComponent(AnimatedSprite.class).getImageView();
+//        }
+//        return e.getComponent(Sprite.class).getImageView();
+//    }
 
     private boolean isInRightResizeRegion (Node node, double x) {
         double width = node.getBoundsInParent().getWidth();
@@ -58,8 +58,9 @@ public class DragAndResizeDynamic {
     }
 
     public void makeEntityDragAndResize (IEntity e) {
-        Sprite sprite = e.getComponent(Sprite.class);
-        ImageView imageView = sprite.getImageView();
+//        Sprite sprite = e.getComponent(Sprite.class);
+//        ImageView imageView = sprite.getImageView();
+        ImageView imageView = SpriteUtilities.getImageView(e);
         imageView.setOnMouseEntered(event -> updateCursor(imageView, event.getY(), event.getX()));
         imageView.setOnMousePressed(event -> mousePressed(e, event.getX(),
                 event.getY()));
@@ -72,9 +73,10 @@ public class DragAndResizeDynamic {
     }
 
     private void mousePressed (IEntity e, double x, double y) {
-        boolean south = this.isInBottomResizeRegion(getImageView(e), y);
-        boolean east = this.isInRightResizeRegion(getImageView(e), x);
-        if (this.isInBottomResizeRegion(getImageView(e), y) || this.isInRightResizeRegion(getImageView(e), x)) {
+        boolean south = this.isInBottomResizeRegion(SpriteUtilities.getImageView(e), y);
+        boolean east = this.isInRightResizeRegion(SpriteUtilities.getImageView(e), x);
+        if (this.isInBottomResizeRegion(SpriteUtilities.getImageView(e), y)
+                || this.isInRightResizeRegion(SpriteUtilities.getImageView(e), x)) {
             this.resizing = true;
             this.dragging = false;
             if (east) {
@@ -99,7 +101,7 @@ public class DragAndResizeDynamic {
 
     private void mouseDragged (IEntity e, double x, double y) {
         if (e != null) {
-            Sprite path = e.getComponent(Sprite.class);
+            Sprite path = SpriteUtilities.getSpriteComponent(e); //e.getComponent(Sprite.class);
             Position position = e.getComponent(Position.class);
             if (dragging) {
                 double translateX = x - initialMouseX;

@@ -104,7 +104,7 @@ public class EditorEnvironment extends Editor {
         }
         view.getEntitySystem().addEntity(entity);
         try {
-            if (!entity.hasComponent(Position.class) || !entity.hasComponent(Sprite.class)) {
+            if (!entity.hasComponent(Position.class) || !entity.hasComponent(Sprite.class)) { // TODO: animation?
                 addComponents(entity);
             }
             environmentEntityButtonsBox.getChildren().add(myButtonsClass.createEntityButton(entity));
