@@ -13,12 +13,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import model.component.visual.AnimatedSprite;
-import model.entity.Entity;
 import view.editor.Editor;
 import view.enums.DefaultStrings;
 import view.utilities.ButtonFactory;
 import view.utilities.TextFieldFactory;
-
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Enumeration;
