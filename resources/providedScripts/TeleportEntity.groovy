@@ -6,20 +6,23 @@ import model.component.movement.Position
 
 @BaseScript ScriptHelpers ScriptHelpers
 
+
 /**
  * Move an Entity by the provided X and Y.
  * @author Rhondu Smithwick
  */
-@Field Double movedX = containsVariable("movedX") ? getDouble("movedX") : 0.0;
-@Field Double movedY = containsVariable("movedY") ? getDouble("movedY") : 0.0;
+// Parameter: movedX: how much to move in x direction
+// Parameter: movedY: how much to move in y direction
+
+@Field Double movedXField = containsVariable("movedX") ? getDouble("movedX") : 0.0;
+@Field Double movedYField = containsVariable("movedY") ? getDouble("movedY") : 0.0;
 
 
 def move = { entity ->
     if (entity.hasComponent(Position.class)) {
         Position position = entity.getComponent(Position.class);
-        position.setX(position.getX() + movedX);
-        position.setY(position.getY() + movedY);
+        position.setX(position.getX() + movedXField);
+        position.setY(position.getY() + movedYField);
     }
 }
-
 workOnEntities(move);

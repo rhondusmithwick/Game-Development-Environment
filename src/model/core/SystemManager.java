@@ -65,11 +65,6 @@ public class SystemManager implements ISystemManager {
     public void step(double dt) {
         if (this.isRunning) {
             universe.update(dt);
-            List<IEntity> entities = universe.getAllEntities();
-            for(IEntity e : entities) {
-                System.out.print(e.getComponent(Position.class).getY());
-            }
-            System.out.println();
         }
     }
 

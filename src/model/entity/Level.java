@@ -101,9 +101,9 @@ public class Level implements ILevel {
 
     @Override
     public void update (double dt) {
-//		getPhysicsEngine().update(this, dt); // TODO: remove
         getEventSystem().updateInputs(dt);
-        gameScripts.stream().forEach(gs -> gs.update(dt));
+        //gameScripts.stream().forEach(gs -> gs.update(dt));
+        getPhysicsEngine().update(this, dt);
     }
 
     @Override

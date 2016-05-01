@@ -7,6 +7,6 @@ import model.component.movement.Velocity
  * Created by carolyn on 4/13/16.
  * @author Carolyn Yao, Anirudh Jonnavithula
  */
-velocity = universe.getEntity(entityID).getComponent(Velocity.class);
-position = universe.getEntity(entityID).getComponent(Position.class);
+velocity = universe.getEntitiesWithName(entityName).get(0).getComponent(Velocity.class);
+position = universe.getEntitiesWithName(entityName).get(0).getComponent(Position.class);
 velocity.setVXY(100, velocity.getVY());
