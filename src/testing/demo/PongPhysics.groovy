@@ -30,10 +30,10 @@ class PongPhysics implements IGameScript {
         for(IEntity e : entities) {
             if(e.hasComponents(Collision.class, Velocity.class)) {
                 Collision collision = e.getComponent(Collision.class);
-                String id = collision.getMaskID();
                 String collidingIDs = collision.getCollidingIDs();
-                if (id.equals("Ball") && !collidingIDs.isEmpty()) {
+                if (!collidingIDs.isEmpty()) {
                     changeVelocity(e.getComponent(Velocity.class));
+                    println("\n\nhit\n\n");
                 }
             }
         }
@@ -41,8 +41,8 @@ class PongPhysics implements IGameScript {
 
     void changeVelocity(Velocity v) {
         double r = Math.random() - 0.5;
-        v.setDirection(v.getDirection()+10*r);
-        v.setSpeed(1.05*ballSpeed);
+        v.setDirection(v.getDirection()+r*0.2);
+        v.setSpeed(1.0*ballSpeed);
     }
 
 }

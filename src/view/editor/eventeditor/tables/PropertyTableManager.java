@@ -1,4 +1,4 @@
-package view.editor.eventeditor;
+package view.editor.eventeditor.tables;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,8 +12,13 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.HBox;
 import model.entity.Entity;
+import view.editor.eventeditor.tabs.PropertyEventEditor;
 
-// TODO maybe create abstract of this
+/**
+ * Table manager that will control everyTable in the PropertyEventEditor Tab.
+ * @author Alankmc
+ *
+ */
 public class PropertyTableManager extends TableManager 
 {
 	private HBox container;
@@ -27,26 +32,38 @@ public class PropertyTableManager extends TableManager
 	private PropertyEventEditor editor;
 	
 	private ObservableList<IEntity> selectedEntities;
+<<<<<<< HEAD:src/view/editor/eventeditor/PropertyTableManager.java
 	private List<IEntity> chosenEntities = new ArrayList<>();
 	
+=======
+
+>>>>>>> ac3edc11c6966ef8c14d98492fc54f956c11f7ef:src/view/editor/eventeditor/tables/PropertyTableManager.java
 	public PropertyTableManager(String language, PropertyEventEditor editor )
 	{
 		container = new HBox();
 		this.language = language;
 		selectedEntities = FXCollections.observableArrayList();
 
-		entityTable = new EntityTable(selectedEntities, this, language);
-		componentTable = new ComponentTable(this, language);
-		propertyTable = new PropertyTable(this, language);
-		
+		try {
+			entityTable = new EntityTable(selectedEntities, this, language);
+			componentTable = new ComponentTable(this, language);
+			propertyTable = new PropertyTable(this, language);
+
+		} catch (NoSuchMethodException | SecurityException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+
 		this.editor = editor;
-		
+
 		editor.resetTrigger();
 		fillLayout();
 	}
 	
 	public void entityWasClicked(Entity entity)
 	{
+<<<<<<< HEAD:src/view/editor/eventeditor/PropertyTableManager.java
 		if (chosenEntities.contains(entity))
 		{
 			chosenEntities.remove(entity);
@@ -60,6 +77,15 @@ public class PropertyTableManager extends TableManager
 			this.entity = entity;
 			editor.choseEntity(chosenEntities);
 		}
+=======
+		editor.resetTrigger();
+		editor.setEntityForAnimation(entity);
+		
+		componentTable.refreshTable();
+		propertyTable.refreshTable();
+		componentTable.fillEntries(entity);
+		this.entity = entity;
+>>>>>>> ac3edc11c6966ef8c14d98492fc54f956c11f7ef:src/view/editor/eventeditor/tables/PropertyTableManager.java
 	}
 	
 	public void componentWasClicked(IComponent component)

@@ -27,7 +27,7 @@ public class GuiObjectMusicChooser extends GuiObjectFileGetter{
 	private TextField text = new TextField();
 	
 	@SuppressWarnings("unchecked")
-	public GuiObjectMusicChooser(String name, String resourceBundle, String language, SimpleObjectProperty<?> property, Object object) {
+	public GuiObjectMusicChooser(String name, String resourceBundle, String language, SimpleObjectProperty<?> property){
 		super(name, resourceBundle);
 		this.myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
 		myResources = ResourceBundle.getBundle(language);

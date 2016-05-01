@@ -1,4 +1,4 @@
-package view.editor.eventeditor;
+package view.editor.eventeditor.tabs;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -18,6 +18,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
+import view.editor.eventeditor.tables.EventViewManager;
+import view.editor.eventeditor.tables.KeyBindingTableManager;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
@@ -37,20 +39,19 @@ public class KeyBindingEditor extends EventEditorTab
 	
 	private KeyCode currentKey;
 	private Button listenToKey;
-	private Button chooseFileButton;
+	
 	private Text keyInputText;
 	private ResourceBundle myResources;
 	private Action action;
 	private Button createEventButton;
 	private String language;
-	private String actionScriptPath;
+	
 	private KeyBindingTableManager tableManager;
 	private EventViewManager eventViewManager;
 	
 	// TODO test
 	private Button getEventsString;
 
-	private Text actionText;
 	private ArrayList<IEntity> chosenEntities;
 	
 	public KeyBindingEditor(String language, ObservableList<ILevel> levelList)
@@ -75,7 +76,7 @@ public class KeyBindingEditor extends EventEditorTab
 		
 		action = null;
 		currentKey = null;
-		actionText = new Text(ResourceBundle.getBundle(language).getString("notYetDefined"));
+		
 		pane.setOnKeyPressed(e -> keyWasPressed(e.getCode()));
 		
 		choseLevels(new ArrayList<ILevel>(levelList));
@@ -108,34 +109,24 @@ public class KeyBindingEditor extends EventEditorTab
 	{
 		if (getChosenLevels().isEmpty())
 			return;
+<<<<<<< HEAD:src/view/editor/eventeditor/KeyBindingEditor.java
 		// make map like this:
 		// Map<String, String> params = new HashMap<String, String>();
 		// loop thru chosen entities and put them in map
 		// params.put("entityID", chosenEntitiesID);
 		// addEventToLevels(getChosenLevels(), "KeyTrigger", actionScriptPath, params, currentKey.getName());
 		addEventToLevels(getChosenLevels(), getChosenEntities(), "KeyTrigger", actionScriptPath, currentKey.getName());
+=======
+		addEventToLevels(getChosenLevels(), "KeyTrigger", getActionScriptPath(), currentKey.getName());
+>>>>>>> ac3edc11c6966ef8c14d98492fc54f956c11f7ef:src/view/editor/eventeditor/tabs/KeyBindingEditor.java
 		flashCreatedEventText();
 		eventViewManager.updateTable();
-	}
-
-	private void getFile()
-	{
-		File groovyFile = null;
-		
-		groovyFile = FileUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("groovy", "*.groovy"),
-				myResources.getString("selectGroovy"), DefaultStrings.RESOURCES.getDefault());
-		if ( groovyFile != null )
-		{
-			String[] splits = groovyFile.getPath().split("voogasalad_MakeGamesGreatAgain/");			
-			
-			actionSet(groovyFile.getName());
-		}
 	}
 	
 	private void listenButtonPress()
 	{
 		keyListenerIsActive = true;
-		keyInputText.setText("Listening....");
+		keyInputText.setText("Listening....");	// TODO resource
 	}
 	
 	@Override
@@ -144,28 +135,23 @@ public class KeyBindingEditor extends EventEditorTab
 		return scrollPane;
 	}
 	
-	private void actionSet(String actionScriptPath)
-	{
-		this.actionScriptPath = actionScriptPath;
-		actionText.setText(myResources.getString("action") + actionScriptPath);
-	}
 	
 	public void makeUpperSide()
 	{
 		HBox container = new HBox(GUISize.EVENT_EDITOR_PADDING.getSize());
-		VBox innerContainer = new VBox(GUISize.EVENT_EDITOR_SUBPADDING.getSize());	// TODO magic value
+		VBox innerContainer = new VBox(GUISize.EVENT_EDITOR_SUBPADDING.getSize());
 		
 		listenToKey = ButtonFactory.makeButton(myResources.getString("pressKey"), e -> listenButtonPress());
 		
 		keyInputText = new Text(myResources.getString("noKeyPressed"));	
 		
-		chooseFileButton = ButtonFactory.makeButton(myResources.getString("chooseGroovy"), e -> getFile());
+		// chooseFileButton = ButtonFactory.makeButton(myResources.getString("chooseGroovy"), e -> getFile());
 		
 		createEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
 		
 		createEventButton.setOnAction(e -> createEvent());
 		
-		innerContainer.getChildren().addAll(listenToKey, keyInputText, chooseFileButton, actionText, createEventButton, getCreatedEventText());
+		innerContainer.getChildren().addAll(listenToKey, keyInputText, createEventButton, getActionPane());
 		
 		chosenEntityText = new Text();
 		
@@ -183,10 +169,7 @@ public class KeyBindingEditor extends EventEditorTab
 		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
 		
 		container.getChildren().add(eventViewManager.getPane());
-		/*
-		// TODO test
-		getEventsString = Utilities.makeButton("TEST", e -> printEvents());
-		*/
+
 		
 		pane.getChildren().add(container);
 	}

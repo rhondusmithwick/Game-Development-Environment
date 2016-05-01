@@ -6,6 +6,11 @@ import java.util.ResourceBundle;
 import javafx.scene.control.ChoiceDialog;
 import view.enums.DefaultStrings;
 
+/**
+ * 
+ * @author calinelson
+ *
+ */
 public abstract class ComponentModifier {
 	
 	private ResourceBundle myResources, myComponentNames;

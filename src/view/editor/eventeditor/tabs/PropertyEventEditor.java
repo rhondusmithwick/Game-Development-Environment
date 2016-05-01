@@ -1,4 +1,4 @@
-package view.editor.eventeditor;
+package view.editor.eventeditor.tabs;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -17,7 +17,10 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
-import javafx.stage.FileChooser;
+
+import view.editor.eventeditor.EditorEvent;
+import view.editor.eventeditor.tables.EventViewManager;
+import view.editor.eventeditor.tables.PropertyTableManager;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
@@ -31,9 +34,7 @@ public class PropertyEventEditor extends EventEditorTab
 	private final ResourceBundle myResources;
 	private EventViewManager eventViewManager;
 	private Text triggerText;
-	private Text actionText;
-	private String actionScriptPath;
-	private Button chooseFileButton;
+	
 	private Button makeEventButton;
 	private PropertyTableManager tableManager;
 	private List<IEntity> chosenEntities;
@@ -64,9 +65,7 @@ public class PropertyEventEditor extends EventEditorTab
 		actionOK = false;
 		
 		triggerText = new Text();
-		actionText = new Text();
 		
-		chooseFileButton = new Button();
 		makeEventButton = new Button();
 		
 		tableManager = new PropertyTableManager(language, this);
@@ -82,24 +81,10 @@ public class PropertyEventEditor extends EventEditorTab
 	{
 		VBox container = new VBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
 		// Adding now the Groovy Table
-		chooseFileButton =ButtonFactory.makeButton(myResources.getString("chooseGroovy"), e -> getFile());
 		
-		container.getChildren().addAll(chooseFileButton);
+		
+		// container.getChildren().addAll(getActionPane());
 		return container;
-	}
-
-	private void getFile()
-	{
-		File groovyFile = null;
-		
-		groovyFile = FileUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("groovy", "*.groovy"),
-				myResources.getString("selectGroovy"), DefaultStrings.RESOURCES.getDefault());
-		if ( groovyFile != null )
-		{
-			String[] splits = groovyFile.getPath().split("voogasalad_MakeGamesGreatAgain/");			
-			
-			actionSet(groovyFile.getName());
-		}
 	}
 
 	private void makeTables()
@@ -107,7 +92,8 @@ public class PropertyEventEditor extends EventEditorTab
 		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
 
 		container.getChildren().add(getLevelPickerPane());
-		container.getChildren().add(tableManager.getContainer());	
+		container.getChildren().add(tableManager.getContainer());
+		container.getChildren().add(getActionPane());
 		
 		pane.getChildren().add(container);
 	}
@@ -116,40 +102,29 @@ public class PropertyEventEditor extends EventEditorTab
 	{
 		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
 		resetTrigger();
-		resetAction();
 		
 		makeEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
-		makeEventButton.setDisable(true);
+		// makeEventButton.setDisable(true);
 		
-		container.getChildren().addAll(triggerText, actionText, makeEventButton);
+		container.getChildren().addAll(triggerText, makeEventButton);
 		container.getChildren().add(makeGroovySide());
-		container.getChildren().add(getCreatedEventText());
+		// container.getChildren().add(getCreatedEventText());
 		pane.getChildren().add(container);
 		pane.getChildren().add(eventViewManager.getPane());
 	}
 
 	private void createEvent()
 	{
-		// I think the Entity table now only shows entities through names
-		// So the trigger has to be created here.
-		
-		// Cycle through all levels that were chosen, get their Event System
-		// Make Triggers, and map them with action, on each of the Event Systems
-		
-		if (getChosenLevels().isEmpty())
-			return;
+		if (getChosenLevels().isEmpty()) return;
 		for ( ILevel level: getChosenLevels() )
 		{
-			for (IEntity entity: level.getAllEntities())
-			{
-				if ( entity.getName().equals(chosenEntityName) )
-				{
-					addEventToLevel(level, chosenEntities, "PropertyTrigger", actionScriptPath, entity.getID(),
+			for (IEntity entity: level.getAllEntities()) {
+				if ( entity.getName().equals(chosenEntityName) ) {
+					addEventToLevel(level, "PropertyTrigger", getActionScriptPath(), entity.getID(),
 									chosenComponent.getClass(), chosenProperty);
 				}
 			}
 		}
-
 
 		// Carolyn's refactoring
 //		if (getChosenLevels().isEmpty()) return;
@@ -161,8 +136,6 @@ public class PropertyEventEditor extends EventEditorTab
 //									chosenComponent.getClass(), property.get());
 //						})
 //		);
-
-		
 		flashCreatedEventText();
 		eventViewManager.updateTable();
 		triggerOK = false;
@@ -194,7 +167,7 @@ public class PropertyEventEditor extends EventEditorTab
 		chosenProperty = property;
 		
 		triggerOK = true;
-		makeEventButton.setDisable( !triggerOK || !actionOK );
+		// makeEventButton.setDisable( !triggerOK || !actionOK );
 	}
 	
 	public void resetTrigger()
@@ -203,19 +176,6 @@ public class PropertyEventEditor extends EventEditorTab
 		triggerOK = false;
 	}
 	
-	public void resetAction()
-	{
-		actionText.setText(ResourceBundle.getBundle(language).getString("notYetDefined"));
-		actionOK = false;
-	}
-	
-	private void actionSet(String actionScriptPath)
-	{
-		this.actionScriptPath = actionScriptPath;
-		actionText.setText(myResources.getString("action") + actionScriptPath);
-		actionOK = true;
-		makeEventButton.setDisable( !triggerOK || !actionOK );
-	}
 	
 	@Override
 	public ScrollPane getPane() 

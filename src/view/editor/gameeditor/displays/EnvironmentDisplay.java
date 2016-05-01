@@ -16,7 +16,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import model.entity.Level;
 import view.Authoring;
-import view.editor.environmenteditor.EditorEnvironment;
 import view.enums.DefaultStrings;
 import view.utilities.ButtonFactory;
 

@@ -33,7 +33,7 @@ public class GuiObjectImageDisplay extends GuiObjectFileGetter {
 	 * @param object other object
 	 */
 	@SuppressWarnings("unchecked")
-	public GuiObjectImageDisplay(String name, String resourceBundle, String language, SimpleObjectProperty<?> property, Object object) {
+	public GuiObjectImageDisplay(String name, String resourceBundle, String language, SimpleObjectProperty<?> property){
 		super(name, resourceBundle);
 		myPropertiesNames= ResourceBundle.getBundle(language+DefaultStrings.PROPERTIES.getDefault());
 		this.myResources= ResourceBundle.getBundle(language);
