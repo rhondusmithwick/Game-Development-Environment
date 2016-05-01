@@ -1,28 +1,25 @@
 package model.component.hud;
 
+import java.util.HashMap;
 import java.util.Map;
-
-import com.google.common.collect.Maps;
-
 import api.IComponent;
-import utility.Pair;
 
 public class HUD implements IComponent {
-	private Map<String, Pair<Double, Double>> shapes = Maps.newLinkedHashMap();
-	private Map<String, Pair<Double, Double>> text = Maps.newLinkedHashMap();
+	private Map<String, PositionColor> shapes = new HashMap<String, PositionColor>();
+	private Map<String, PositionColor> text = new HashMap<String, PositionColor>();
 	
 	public HUD() {
 	}
 	
-	public HUD(Map<String, Pair<Double, Double>> shapes) {
+	public HUD(Map<String, PositionColor> shapes) {
 		setShapes(shapes);
 	}
 	
-	public HUD(Map<String, Pair<Double, Double>> text, boolean flag) {
+	public HUD(Map<String, PositionColor> text, boolean flag) {
 		setText(text);
 	}
 	
-	public HUD(Map<String, Pair<Double, Double>> shapes, Map<String, Pair<Double, Double>> text) {
+	public HUD(Map<String, PositionColor> shapes, Map<String, PositionColor> text) {
 		setShapes(shapes);
 		setText(text);
 	}
@@ -31,21 +28,21 @@ public class HUD implements IComponent {
 	public void update() {
 		// Do nothing.
 	}
-	
-	public Map<String, Pair<Double, Double>> getShapes() {
-		return this.shapes;
+
+	public Map<String, PositionColor> getShapes() {
+		return shapes;
 	}
-	
-	public void setShapes(Map<String, Pair<Double, Double>> map) {
-		this.shapes = map;
+
+	public void setShapes(Map<String, PositionColor> shapes) {
+		this.shapes = shapes;
 	}
-	
-	public Map<String, Pair<Double, Double>> getText() {
-		return this.text;
+
+	public Map<String, PositionColor> getText() {
+		return text;
 	}
-	
-	public void setText(Map<String, Pair<Double, Double>> map) {
-		this.text = map;
+
+	public void setText(Map<String, PositionColor> text) {
+		this.text = text;
 	}
 	
 }
