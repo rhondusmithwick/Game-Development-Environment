@@ -8,7 +8,7 @@ import groovy.transform.Field
  * This describes a set of functions that we ant every groovy script to have.
  * @author Rhondu Smithwick
  */
-@Field ILevel universe = (ILevel) binding.getVariable("universe");
+@Field universe = binding.getVariable("universe");
 
 boolean containsVariable(String variableName) {
     return binding.variables.containsKey(variableName);
