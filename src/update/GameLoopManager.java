@@ -134,6 +134,7 @@ public class GameLoopManager {
 		if(val != null) {
 			valueList = FXCollections.observableArrayList(val.split(","));
 			listView = new ListView<String>(valueList);
+			setupList();
 		}
 	}
 

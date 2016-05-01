@@ -9,6 +9,7 @@ import view.editor.Editor;
 import view.enums.DefaultStrings;
 import view.utilities.ButtonFactory;
 import view.utilities.TextFieldFactory;
+import model.component.visual.AnimatedSprite;
 import model.entity.Entity;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.Node;
@@ -101,12 +102,15 @@ public class EditorEntity extends Editor{
 	}
 	
 	private void addObject(IComponent component) {
+		if(component.getClass().equals(AnimatedSprite.class)){
+			container.getChildren().add( (Node) guiFactory.createNewGuiObject("AnimatedSprite", DefaultStrings.GUI_RESOURCES.getDefault(), myLanguage, myEntity).getGuiNode());
+		}
 		component.getProperties().stream().forEach(e -> addVisualObject(e));
 	}
 
 	private void addVisualObject(SimpleObjectProperty<?> property) {
-		GuiObject object = guiFactory.createNewGuiObject(property.getName(), DefaultStrings.GUI_RESOURCES.getDefault(),myLanguage, property, property.getValue());
-		if (object != null){
+		GuiObject object = guiFactory.createNewGuiObject(property.getName(), DefaultStrings.GUI_RESOURCES.getDefault(),myLanguage, property);
+		if (object != null && !(property.getName().equals("ImagePath") && myEntity.hasComponent(AnimatedSprite.class))){
 			container.getChildren().add((Node) object.getGuiNode());
 		}
 	}

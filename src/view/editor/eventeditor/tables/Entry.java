@@ -1,7 +1,13 @@
-package view.editor.eventeditor;
+package view.editor.eventeditor.tables;
 
 import javafx.beans.property.SimpleStringProperty;
 
+/**
+ * Entry class, simply contains some object and its name as a SimpleStringProperty.
+ * To be used in a Table as data.
+ * @author Alankmc
+ *
+ */
 public class Entry 
 {
 	private SimpleStringProperty name;
@@ -11,8 +17,7 @@ public class Entry
 	{
 		
 		this.data = data;
-		this.name = new SimpleStringProperty(name);
-		
+		this.name = new SimpleStringProperty(name);	
 	}
 	
 	public String getName()

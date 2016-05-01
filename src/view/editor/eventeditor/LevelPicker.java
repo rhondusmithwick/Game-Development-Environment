@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.ResourceBundle;
 
 import api.ILevel;
+import view.editor.eventeditor.tabs.EventEditorTab;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
 import javafx.collections.ObservableList;
@@ -13,6 +14,13 @@ import javafx.scene.control.CheckBox;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
 
+/**
+ * Contains a pane full of Checkboxes, that lets the user choose an amount of previously created Levels.
+ * These are put into a List, and can be used by any Pane that has an instance of the Level Picker.
+ * 
+ * @author Alankmc
+ *
+ */
 public class LevelPicker 
 {
 	private ObservableList<ILevel> levelList;
@@ -25,6 +33,12 @@ public class LevelPicker
 	private final EventEditorTab eventAuthoring;
 	private ResourceBundle myResources;
 	
+	/**
+	 * Constructor. Takes in any EventAuthoringTab as the authoring Pane that contains this Level Picker.
+	 * @param String language
+	 * @param ObservableList<ILevel> levelList
+	 * @param EventAuthoringTab eventAuthoring
+	 */
 	public LevelPicker(String language, ObservableList<ILevel> levelList, EventEditorTab eventAuthoring)
 	{
 		checkBoxMap = new HashMap<CheckBox, ILevel>();
@@ -41,6 +55,9 @@ public class LevelPicker
 		pane = new ScrollPane(vbox);
 	}
 	
+	/**
+	 * Creates all visual components.
+	 */
 	private void populatePane()
 	{
 		allBox = new CheckBox(myResources.getString("all"));
@@ -61,6 +78,10 @@ public class LevelPicker
 		}
 	}
 	
+	/**
+	 * Selects/Deselects the "ALL" Checkbox, and selects/deselects all other boxes accordingly.
+	 * @param boolean isSelected
+	 */
 	private void allBoxCheck(boolean isSelected)
 	{
 		System.out.println("hm.");
@@ -72,16 +93,19 @@ public class LevelPicker
 		levelCheck();
 	}
 	
+	/**
+	 * Checkbox handler. Adds/removes the selected level from the selected Level list.
+	 */
 	private void levelCheck()
 	{
 		selectedLevels.clear();
 		boolean allAreSelected = true;
-		System.out.println("   === IN LEVELPICKER");
+		// System.out.println("   === IN LEVELPICKER");
 		for ( CheckBox checkbox: checkBoxMap.keySet() )
 		{
 			if ( checkbox.isSelected() )
 			{
-				System.out.println("   " + checkBoxMap.get(checkbox).getName());
+				// System.out.println("   " + checkBoxMap.get(checkbox).getName());
 				selectedLevels.add(checkBoxMap.get(checkbox));
 			}
 			else
@@ -89,12 +113,16 @@ public class LevelPicker
 				allAreSelected = false;
 			}
 		}
-		System.out.println("   ==== ENDED\n");
+		// System.out.println("   ==== ENDED\n");
 		
 		allBox.setSelected(allAreSelected);
 		eventAuthoring.choseLevels(selectedLevels);
 	}
 	
+	/**
+	 * Returns the ScrollPane containing Level.
+	 * @return ScrollPane
+	 */
 	public ScrollPane getPane()
 	{
 		return pane;

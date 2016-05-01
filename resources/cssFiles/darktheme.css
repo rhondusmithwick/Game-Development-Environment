@@ -8,6 +8,39 @@
     -fx-control-inner-background: rgb(50, 50, 50);
 }
 
+
+.vbox {
+	-fx-spacing: 20;
+	-fx-alignment: center;
+}
+
+
+.text-field, .list-view {
+	-fx-font-size: 12px;
+	-fx-font-family: "baskerville";
+	-fx-border-color: black;
+    -fx-font-color: white;
+}
+
+.scroll-pane {
+	-fx-background: rgb(50, 50, 50);
+    -fx-background-insets: 10;
+	-fx-border-color: black;
+    -fx-alignment: center;
+
+}
+
+.text-field, .list-view {
+	-fx-font-size: 12px;
+	-fx-font-family: "baskerville";
+	-fx-border-color: black;
+}
+
+.hbox {
+	-fx-spacing: 10;
+	-fx-alignment: center;
+}
+
 .tab {
     -fx-background-color: linear-gradient(to top, -fx-base, derive(-fx-base, 30%));
 }
@@ -47,6 +80,8 @@
 .button {
     -fx-background-color: transparent;
     -fx-padding: 4;
+    -fx-border-color: grey ;
+    -fx-effect: dropshadow(three-pass-box , rgba(0,0,0,0.6) , 5, 0.0 , 0 , 1);
 }
 
 .button:hover {

@@ -5,7 +5,8 @@ public enum Indexes {
 	GAME_NAME(0),
 	GAME_DESC(1),
 	GAME_ICON(2),
-	XML_GAME_DETAILS(0);
+	XML_GAME_DETAILS(0),
+	GAME_FIRST_LEVEL(3);
 	
 	
 

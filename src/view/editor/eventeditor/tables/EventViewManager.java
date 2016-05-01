@@ -1,4 +1,4 @@
-package view.editor.eventeditor;
+package view.editor.eventeditor.tables;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +8,13 @@ import api.ILevel;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import model.entity.Entity;
+import view.editor.eventeditor.EventParser;
 
+/**
+ * Table manager that updates the table that contains the madeEvents.
+ * @author Alankmc
+ *
+ */
 public class EventViewManager extends TableManager
 {
 	private HBox pane;
@@ -38,6 +44,7 @@ public class EventViewManager extends TableManager
 
 		pane.getChildren().addAll(levelTable.getTable(), keyTable.getTable(), actionTable.getTable());
 	}
+	
 	// TODO Other table manager. More abstracts
 	@Override
 	public void entityWasClicked(Entity entity) 
