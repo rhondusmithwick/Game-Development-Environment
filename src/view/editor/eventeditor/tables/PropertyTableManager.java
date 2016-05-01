@@ -53,6 +53,11 @@ public class PropertyTableManager extends TableManager {
         fillLayout();
     }
 
+    /**
+     * When Entity is clicked, update the subsequent Tables. 
+     * 
+     * @param Entity entity
+     */
     public void entityWasClicked (Entity entity) {
         editor.setEntityForAnimation(entity);
         if (chosenEntities.contains(entity)) {
@@ -75,6 +80,11 @@ public class PropertyTableManager extends TableManager {
 //		this.entity = entity;
     }
 
+    /**
+     * When a component is clicked, update the Property table. 
+     *   
+     * @param IComponent component
+     */
     public void componentWasClicked (IComponent component) {
         editor.resetTrigger();
         propertyTable.refreshTable();
@@ -82,10 +92,21 @@ public class PropertyTableManager extends TableManager {
         this.component = component;
     }
 
+    /**
+     * Then a property is clicked, a Property Trigger is ready to be made.
+     * 
+     * @param SimpleObjectProperty<?> property
+     */
     public void propertyWasClicked (SimpleObjectProperty<?> property) {
         editor.triggerSet(entity.getName(), component, property);
     }
 
+    /**
+     * When level is picked, change the Entities that are being displayed, 
+     * and that will be affected by the Event.
+     * 
+     * @param List<ILevel> levels
+     */
     public void levelWasPicked (List<ILevel> levels) {
         selectedEntities.clear();
         componentTable.refreshTable();

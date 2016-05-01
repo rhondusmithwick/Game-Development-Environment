@@ -34,7 +34,9 @@ import java.util.TimerTask;
 
 /**
  * Author: Alankmc, Carolyn
+ * 
  * Integration portion of the frontend for events system.
+ * Abstract Class that contains the method all the Event Editor Tabs have in common.
  */
 
 public abstract class EventEditorTab extends Editor {
@@ -56,6 +58,7 @@ public abstract class EventEditorTab extends Editor {
     private boolean animationView;
     private final Map<String, Object> parameters;
 
+    
     public EventEditorTab (String language, ObservableList<ILevel> levelList) {
         myResources = ResourceBundle.getBundle(language);
         this.language = language;
