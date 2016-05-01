@@ -39,11 +39,8 @@ import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.PopUp;
 import view.utilities.SpriteUtilities;
-<<<<<<< HEAD
 import voogasalad.util.reflection.Reflection;
-=======
 import view.utilities.ToMainMenu;
->>>>>>> refs/remotes/origin/master
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -279,7 +276,6 @@ public class View implements IView {
 		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("startGameLoop"), e -> this.model.play()));
 		buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("pauseGameLoop"), e -> this.model.pauseLoop()));
 	}
-<<<<<<< HEAD
 
 	private void mainMenu() { 
 		Stage myStage = (Stage) pane.getScene().getWindow();
@@ -288,9 +284,7 @@ public class View implements IView {
 		Vooga vooga = new Vooga(myStage);
 		vooga.init();
 	}
-
-=======
->>>>>>> refs/remotes/origin/master
+	
 	private void initConsole() {
 		console.setText(myResources.getString("enterCommands"));
 		console.appendText("\n\n");
