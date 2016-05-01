@@ -160,8 +160,6 @@ public class KeyBindingEditor extends EventEditorTab
 		HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
 		
 		container.getChildren().add(eventViewManager.getPane());
-
-		
 		pane.getChildren().add(container);
 	}
 	

@@ -62,6 +62,7 @@ public abstract class EventEditorTab extends Editor
 		myResources = ResourceBundle.getBundle(language);
 		this.language = language;
 		this.levelList = levelList;
+		entityForAnimation = null;
 		levelPicker = new LevelPicker(language, levelList, this);
 		chosenLevels = new ArrayList<ILevel>(levelList);
 		actionReady = false;
@@ -185,7 +186,11 @@ public abstract class EventEditorTab extends Editor
 		else if (type.equals(myResources.getString("getFromAnimation")))
 		{
 			animationView = true;
-			getActionButton.setText(myResources.getString("chooseAnimation"));
+			if ( entityForAnimation == null )
+				getActionButton.setText(myResources.getString("chooseAnimation"));
+			else
+				getActionButton.setText("Get Animation for\n" + entityForAnimation.getName());	// TODO resource
+
 			getActionButton.setOnAction(e -> getAnimation());
 			getActionButton.setDisable(false);
 		}
