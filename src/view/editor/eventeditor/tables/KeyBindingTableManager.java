@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.HBox;
 import model.entity.Entity;
+import view.editor.eventeditor.tabs.EventEditorTab;
 import view.editor.eventeditor.tabs.KeyBindingEditor;
 
 /**
@@ -27,11 +28,11 @@ public class KeyBindingTableManager extends TableManager
 	private Entity entity;
 	private IComponent component;
 	private String language;
-	private KeyBindingEditor editor;
+	private EventEditorTab editor;
 	private ArrayList<IEntity> pickedEntitiesForEvent;
 	private ObservableList<IEntity> selectedEntitiesFromLevel;
 	
-	public KeyBindingTableManager( String language, KeyBindingEditor editor )
+	public KeyBindingTableManager( String language, EventEditorTab editor )
 	{
 		container = new HBox();
 		this.language = language;

@@ -140,11 +140,11 @@ public abstract class EventEditorTab extends Editor {
 		entities.stream().forEach(entity-> {
 			parameters.put("entityID", entity.getID());
 		});
+		
 		level.getEventSystem().registerEvent(
 				eventFactory.createEvent(triggerClassName, groovyPath+actionScriptPath,
 						parameters, args)
 				);
-
 	}
 
 	private void actionSet(String actionScriptPath)
@@ -219,7 +219,7 @@ public abstract class EventEditorTab extends Editor {
 	}
 	
 	private void getAnimation() {
-		animationChooser = new AnimationChooser(entityForAnimation);
+		animationChooser = new AnimationChooser(entityForAnimation);	
 		animationName = animationChooser.initChooser();
 		
 		if ( animationName != null )
@@ -270,5 +270,7 @@ public abstract class EventEditorTab extends Editor {
 			getActionButton.setText("Get Animation for\n" + entity.getName());	// TODO resource
 		}		
 	}
+	
 	public abstract void actionOnChosenLevels(List<ILevel> levels);
+	public abstract void choseEntity(List<IEntity> entities);
 }

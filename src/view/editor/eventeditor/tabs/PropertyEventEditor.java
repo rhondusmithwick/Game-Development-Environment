@@ -186,5 +186,6 @@ public class PropertyEventEditor extends EventEditorTab
 		tableManager.levelWasPicked(levels);
 		eventViewManager.levelWasPicked(levels);
 	}
+
 	
 }
