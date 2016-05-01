@@ -27,7 +27,6 @@ import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
 
-import static com.sun.tools.doclint.Entity.le;
 
 /***
  * Created by ajonnav 04/12/16
