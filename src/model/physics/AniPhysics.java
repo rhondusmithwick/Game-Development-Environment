@@ -30,12 +30,6 @@ public class AniPhysics implements IPhysicsEngine {
 		// TODO Auto-generated method stub
 		
 	}
-
-	@Override
-	public boolean applyImpulse(IEntity body, Point2D J) {
-		// TODO Auto-generated method stub
-		return false;
-	}
 	
 	public void addGlobalForce(String forceName, Vector force) {
 		globalForces.put(forceName, force);
@@ -70,6 +64,12 @@ public class AniPhysics implements IPhysicsEngine {
 		ani.addGlobalForce("f2", new Vector(3, 4));
 		System.out.println(ani.netGlobalForces().getXComponent());
 		System.out.println(ani.netGlobalForces().getYComponent());
+	}
+
+	@Override
+	public boolean applyImpulse(IEntity body, Point2D impulse) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

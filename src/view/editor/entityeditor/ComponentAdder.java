@@ -1,6 +1,7 @@
 package view.editor.entityeditor;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Enumeration;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -39,6 +40,7 @@ public class ComponentAdder extends ComponentModifier{
 				myComponents.add(myComponentNames.getString(component));
 			}
 		}
+		Collections.sort(myComponents);
 		String componentName = super.makeAndShowChooser("chooseComponent", myComponents);
 		if(componentName != null){
 			componentFactory.addComponentToEntity(myLocs.getString(componentName), entity);
