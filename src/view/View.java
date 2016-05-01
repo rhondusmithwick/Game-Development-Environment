@@ -58,7 +58,8 @@ public class View implements IView {
 	private ResourceBundle myResources;
 	private boolean debug;
 
-	public View(double width, double height, ILevel level, String language, Scene scene, boolean debug) {
+	public View(double width, double height, ILevel level, String language, boolean debug) {
+
 		subScene = this.createSubScene(root, width, height);
 		model = new SystemManager(subScene, level);
 		this.debug=debug;
@@ -78,7 +79,7 @@ public class View implements IView {
 	private void createLoopManager() {
 		manager.show();
 	}
-
+	@Override
 	public void setScene(Scene scene) {
 		model.getLevel().setOnInput(scene);
 	}
