@@ -6,7 +6,6 @@ import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import view.Authoring;
@@ -26,7 +25,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 
 import api.ILevel;
-import api.IView;
 
 /**
  * 
