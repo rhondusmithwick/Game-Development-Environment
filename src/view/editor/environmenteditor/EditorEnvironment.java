@@ -36,32 +36,26 @@ import java.util.ResourceBundle;
 
 public class EditorEnvironment extends Editor {
 
-    private final double DELAY = 3000;
-
-    private String myLanguage;
-    private BorderPane environmentPane = new BorderPane();
-    private ILevel myLevel;
-    private ResourceBundle myResources;
-    private ObservableList<IEntity> masterEntityList;
-    private ObservableList<ILevel> allEnvironmentsList;
-    private VBox leftPane = new VBox();
-    private VBox rightPane = new VBox();
-    private VBox masterEntityButtonsBox = new VBox();
-    private VBox environmentEntityButtonsBox = new VBox();
-    private TextField nameField = new TextField();
-    private ScrollPane scrollPane = new ScrollPane(environmentPane);
-    private IView view;
-    private EnvironmentButtonUtilites myButtonsClass;
+    private final BorderPane environmentPane = new BorderPane();
+    private final ResourceBundle myResources;
+    private final ObservableList<IEntity> masterEntityList;
+    private final ObservableList<ILevel> allEnvironmentsList;
+    private final VBox leftPane = new VBox();
+    private final VBox rightPane = new VBox();
+    private final VBox masterEntityButtonsBox = new VBox();
+    private final VBox environmentEntityButtonsBox = new VBox();
+    private final TextField nameField = new TextField();
+    private final ScrollPane scrollPane = new ScrollPane(environmentPane);
+    private final IView view;
+    private final EnvironmentButtonUtilites myButtonsClass;
 
     public EditorEnvironment (String language, ILevel toEdit, ObservableList<IEntity> masterList,
                               ObservableList<ILevel> addToList, Scene myScene) {
-        myLanguage = language;
+        String myLanguage = language;
         myResources = ResourceBundle.getBundle(language);
-        masterList.addListener((ListChangeListener<IEntity>) c -> {
-            this.updateEditor();
-        });
+        masterList.addListener((ListChangeListener<IEntity>) c -> this.updateEditor());
         masterEntityList = masterList;
-        myLevel = toEdit;
+        ILevel myLevel = toEdit;
         allEnvironmentsList = addToList;
 
         view = new View((GUISize.TWO_THIRDS_OF_SCREEN.getSize()), GUISize.HEIGHT_MINUS_TAB.getSize(), GUISize.SCENE_SIZE.getSize(), GUISize.SCENE_SIZE.getSize(), myLevel,
@@ -70,6 +64,7 @@ public class EditorEnvironment extends Editor {
         myButtonsClass = new EnvironmentButtonUtilites(view, environmentEntityButtonsBox, masterList, this, language);
         addLayoutComponents();
         System.setProperty("glass.accessible.force", "false");
+        double DELAY = 3000;
         ViewFeatureMethods.startTimeline(DELAY, e -> updateEditor());
 
     }
@@ -202,7 +197,7 @@ public class EditorEnvironment extends Editor {
     }
 
     public Map<String, EventHandler<ActionEvent>> makeMenuMap (IEntity entity, Button entityButton, MouseEvent event) {
-        Map<String, EventHandler<ActionEvent>> menuMap = new LinkedHashMap<String, EventHandler<ActionEvent>>();
+        Map<String, EventHandler<ActionEvent>> menuMap = new LinkedHashMap<>();
         menuMap.put(myResources.getString("remove"), e -> ViewFeatureMethods.removeFromDisplay(entity, view.getEntitySystem()));
         menuMap.put(myResources.getString("sendBack"), e -> ViewFeatureMethods.sendToBack(entity, view.getEntitySystem()));
         menuMap.put(myResources.getString("sendFront"), e -> ViewFeatureMethods.sendToFront(entity, view.getEntitySystem()));

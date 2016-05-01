@@ -24,7 +24,7 @@ import java.util.ResourceBundle;
  */
 public class GameDetails {
 
-    private ResourceBundle myResources;
+    private final ResourceBundle myResources;
     private HBox nameBox, descriptionBox, iconBox, levelBox;
     private TextField name, desc, level;
     private String iconPath;

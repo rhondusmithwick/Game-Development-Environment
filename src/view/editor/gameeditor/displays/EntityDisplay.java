@@ -26,9 +26,10 @@ import java.util.ResourceBundle;
 public class EntityDisplay extends ObjectDisplay {
 
     private final EntityFactory entFact = new EntityFactory();
-    private ResourceBundle myResources, myTemplates;
-    private ObservableList<IEntity> masterEntList;
-    private String language;
+    private final ResourceBundle myResources;
+    private final ResourceBundle myTemplates;
+    private final ObservableList<IEntity> masterEntList;
+    private final String language;
 
     public EntityDisplay (String language, ObservableList<IEntity> masterEntList, Authoring authEnv) {
         super(authEnv);
@@ -55,15 +56,12 @@ public class EntityDisplay extends ObjectDisplay {
 
     private void addEntityToScroll (IEntity entity, VBox container) {
         Button entityButton = ButtonFactory.makeButton(entity.getName(), null);
-        entityButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle (MouseEvent event) {
-                MouseButton button = event.getButton();
-                if (button == MouseButton.PRIMARY) {
-                    createEditor(EditorEntity.class.getName(), language, entity, masterEntList);
-                } else if (button == MouseButton.SECONDARY) {
-                    masterEntList.remove(entity);
-                }
+        entityButton.setOnMouseClicked(event -> {
+            MouseButton button = event.getButton();
+            if (button == MouseButton.PRIMARY) {
+                createEditor(EditorEntity.class.getName(), language, entity, masterEntList);
+            } else if (button == MouseButton.SECONDARY) {
+                masterEntList.remove(entity);
             }
         });
         container.getChildren().add(entityButton);

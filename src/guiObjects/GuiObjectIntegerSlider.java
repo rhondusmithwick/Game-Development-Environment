@@ -38,13 +38,10 @@ public class GuiObjectIntegerSlider extends GuiObjectSlider {
     @Override
     @SuppressWarnings("rawtypes")
     protected void bindProperty (SimpleObjectProperty property, Slider slider) {
-        slider.valueProperty().addListener(new ChangeListener<Number>() {
-            @SuppressWarnings("unchecked")
-            public void changed (ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
-                SimpleObjectProperty<Integer> newproperty = (SimpleObjectProperty<Integer>) property;
-                newproperty.setValue(((Double) slider.valueProperty().get()).intValue());
+        slider.valueProperty().addListener((ov, old_val, new_val) -> {
+            SimpleObjectProperty<Integer> newproperty = (SimpleObjectProperty<Integer>) property;
+            newproperty.setValue(((Double) slider.valueProperty().get()).intValue());
 
-            }
         });
     }
 

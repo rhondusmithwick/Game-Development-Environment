@@ -35,12 +35,9 @@ public class GuiObjectDoubleSlider extends GuiObjectSlider {
     @Override
     @SuppressWarnings("rawtypes")
     protected void bindProperty (SimpleObjectProperty property, Slider slider) {
-        slider.valueProperty().addListener(new ChangeListener<Number>() {
-            @SuppressWarnings("unchecked")
-            public void changed (ObservableValue<? extends Number> ov, Number old_val, Number new_val) {
-                property.setValue(slider.valueProperty().get());
+        slider.valueProperty().addListener((ov, old_val, new_val) -> {
+            property.setValue(slider.valueProperty().get());
 
-            }
         });
     }
 

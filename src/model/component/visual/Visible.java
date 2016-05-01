@@ -18,7 +18,6 @@ public class Visible implements IComponent {
      * Single Property.
      */
     private final SingleProperty<Boolean> singleProperty = new SingleProperty<>("Visible", true);
-    ;
 
     /**
      * Empty Constructor. Starts as true.

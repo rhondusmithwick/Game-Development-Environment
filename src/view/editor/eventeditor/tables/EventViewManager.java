@@ -16,27 +16,27 @@ import java.util.List;
  * @author Alankmc
  */
 public class EventViewManager extends TableManager {
-    private HBox pane;
-    private SimpleStringTable levelTable;
-    private SimpleStringTable keyTable;
-    private SimpleStringTable actionTable;
-    private EventParser parser;
+    private final HBox pane;
+    private final SimpleStringTable levelTable;
+    private final SimpleStringTable keyTable;
+    private final SimpleStringTable actionTable;
+    private final EventParser parser;
 
-    private ArrayList<String> levelStrings;
-    private ArrayList<String> keyStrings;
-    private ArrayList<String> actionStrings;
+    private final ArrayList<String> levelStrings;
+    private final ArrayList<String> keyStrings;
+    private final ArrayList<String> actionStrings;
     private List<ILevel> levels;
 
 
     public EventViewManager () {
-        levels = new ArrayList<ILevel>();
+        levels = new ArrayList<>();
         levelTable = new SimpleStringTable(this, "Levels");    // TODO resource
         keyTable = new SimpleStringTable(this, "Trigger");    // TODO resource
         actionTable = new SimpleStringTable(this, "Action");    // TODO resource
 
-        levelStrings = new ArrayList<String>();
-        keyStrings = new ArrayList<String>();
-        actionStrings = new ArrayList<String>();
+        levelStrings = new ArrayList<>();
+        keyStrings = new ArrayList<>();
+        actionStrings = new ArrayList<>();
         parser = new EventParser();
         pane = new HBox();
 

@@ -10,19 +10,18 @@ import view.editor.eventeditor.tables.TableManager;
 import view.enums.GUISize;
 
 public abstract class Table {
-    private TableView<Entry> table;
-    private TableColumn<Entry, String> column;
-    private ObservableList<Entry> entries;
-    private TableManager manager;
+    private final TableView<Entry> table;
+    private final ObservableList<Entry> entries;
+    private final TableManager manager;
 
     public Table (TableManager manager, String name) {
         this.manager = manager;
-        table = new TableView<Entry>();
+        table = new TableView<>();
         table.setEditable(true);
         table.setPrefWidth(GUISize.EVENT_EDITOR_TABLE_WIDTH.getSize());
         table.setMaxHeight(250);    // TODO magic value
-        column = new TableColumn<Entry, String>(name);
-        column.setCellValueFactory(new PropertyValueFactory<Entry, String>("name"));
+        TableColumn<Entry, String> column = new TableColumn<>(name);
+        column.setCellValueFactory(new PropertyValueFactory<>("name"));
         column.minWidthProperty().bind(table.prefWidthProperty());
         column.maxWidthProperty().bind(table.prefWidthProperty());
 

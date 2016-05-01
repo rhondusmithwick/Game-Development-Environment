@@ -18,6 +18,7 @@ public class SimpleStringTable extends Table {
      * Pass in a ArrayList of Strings.
      */
 
+    @SuppressWarnings("unchecked")
     @Override
     public void fillEntries (Object dataHolder) {
         for (String string : ((Collection<String>) dataHolder)) {

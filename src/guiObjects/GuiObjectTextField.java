@@ -10,18 +10,18 @@ import view.enums.DefaultStrings;
 import java.util.ResourceBundle;
 
 public class GuiObjectTextField extends GuiObject {
-    private ResourceBundle myPropertiesNames;
-    private TextField textField;
-    private Label textFieldLabel;
+    private final TextField textField;
+    private final Label textFieldLabel;
 
     public GuiObjectTextField (String name, String resourceBundle, String language, SimpleObjectProperty<?> property) {
         super(name, resourceBundle);
-        this.myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
+        ResourceBundle myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
         textFieldLabel = new Label(myPropertiesNames.getString(getObjectName()));
         textField = new TextField();
         bindProperty(property, textField);
     }
 
+    @SuppressWarnings("unchecked")
     private void bindProperty (SimpleObjectProperty<?> property, TextField textField2) {
         textField.textProperty().bind((ObservableValue<? extends String>) property);
     }

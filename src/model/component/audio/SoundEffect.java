@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("serial")
@@ -63,7 +64,7 @@ public class SoundEffect implements IComponent {
 
     @Override
     public List<SimpleObjectProperty<?>> getProperties () {
-        return Arrays.asList(effect.property1());
+        return Collections.singletonList(effect.property1());
     }
 
     @Override

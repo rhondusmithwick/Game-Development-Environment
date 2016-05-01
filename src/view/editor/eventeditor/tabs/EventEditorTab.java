@@ -39,35 +39,30 @@ import java.util.TimerTask;
 
 public abstract class EventEditorTab extends Editor {
     private final EventFactory eventFactory = new EventFactory();
-    private final String groovyPath = "resources/groovyScripts/";
     private final String language;
-    private ObservableList<ILevel> levelList;
     private ArrayList<ILevel> chosenLevels;
-    private LevelPicker levelPicker;
+    private final LevelPicker levelPicker;
     private Text createdEventText;
     private Text addedParametersText;
     private Timer timer;
-    private ResourceBundle myResources;
+    private final ResourceBundle myResources;
     private Text actionText;
     private VBox actionPane;
     private ComboBox<String> actionTypes;
     private String actionScriptPath;
     private Button getActionButton;
     private boolean actionReady;
-    private AnimationChooser animationChooser;
     private Entity entityForAnimation;
-    private String animationName;
     private boolean animationView;
-    private Map<String, Object> parameters;
-    private HBox parametersPane;
+    private final Map<String, Object> parameters;
 
     public EventEditorTab (String language, ObservableList<ILevel> levelList) {
         myResources = ResourceBundle.getBundle(language);
         this.language = language;
-        this.levelList = levelList;
+        ObservableList<ILevel> levelList1 = levelList;
         entityForAnimation = null;
         levelPicker = new LevelPicker(language, levelList, this);
-        chosenLevels = new ArrayList<ILevel>(levelList);
+        chosenLevels = new ArrayList<>(levelList);
         actionReady = false;
         animationView = false;
         makeActionPane();
@@ -112,18 +107,15 @@ public abstract class EventEditorTab extends Editor {
         if (getChosenLevels().isEmpty()) {
             return;
         }
-        levels.stream().forEach(level -> {
-            addEventToLevel(level, entities, triggerClassName, args);
-        });
+        levels.stream().forEach(level -> addEventToLevel(level, entities, triggerClassName, args));
     }
 
     public void addEventToLevel (ILevel level, List<IEntity> entities, String triggerClassName,
                                  Object... args) {
 
-        entities.stream().forEach(entity -> {
-            parameters.put("entityID", entity.getID());
-        });
+        entities.stream().forEach(entity -> parameters.put("entityID", entity.getID()));
 
+        String groovyPath = "resources/groovyScripts/";
         level.getEventSystem().registerEvent(
                 eventFactory.createEvent(triggerClassName, groovyPath + actionScriptPath,
                         parameters, args)
@@ -160,7 +152,7 @@ public abstract class EventEditorTab extends Editor {
     private void makeActionPane () {
         actionPane = new VBox(GUISize.EVENT_EDITOR_SUBPADDING.getSize());
         actionTypes = ComboFactory.makeComboBox(myResources.getString("chooseActionType"),
-                new ArrayList<String>(Arrays.asList(myResources.getString("getFromGroovy"), myResources.getString("getFromAnimation"))),
+                new ArrayList<>(Arrays.asList(myResources.getString("getFromGroovy"), myResources.getString("getFromAnimation"))),
                 e -> choseActionType(actionTypes.getValue()));
 
         // Might break here?
@@ -195,8 +187,8 @@ public abstract class EventEditorTab extends Editor {
 
     private void getAnimation () {
         System.out.println(entityForAnimation.getName());
-        animationChooser = new AnimationChooser(entityForAnimation);
-        animationName = animationChooser.initChooser();
+        AnimationChooser animationChooser = new AnimationChooser(entityForAnimation);
+        String animationName = animationChooser.initChooser();
         if (animationName != null) {
             addToParameters("animationName", animationName);
             actionScriptPath = "GeneralAnimationScript.groovy";
@@ -205,7 +197,7 @@ public abstract class EventEditorTab extends Editor {
 
     public void addParametersPane (VBox pane) {
         HBox parametersPane = new HBox(GUISize.EVENT_EDITOR_SUBPADDING.getSize());
-        this.parametersPane = parametersPane;
+        HBox parametersPane1 = parametersPane;
         TextField keyField = new TextField();
         TextField valueField = new TextField();
         parametersPane.getChildren().add(keyField);

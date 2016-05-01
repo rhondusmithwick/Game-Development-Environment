@@ -30,38 +30,32 @@ import java.util.ResourceBundle;
 // TODO put Action setting and file picker on abstract
 public class KeyBindingEditor extends EventEditorTab {
     private boolean keyListenerIsActive;
-    private ScrollPane scrollPane;
-    private ScrollPane chosenEntityBox;
+    private final ScrollPane scrollPane;
     private Text chosenEntityText;
-    private Text chosenEntityTitle;
+    private final Text chosenEntityTitle;
     private ComboBox<String> chooseKeyEventTypeBox;
 
-    private VBox pane;
+    private final VBox pane;
 
     private KeyCode currentKey;
-    private Button listenToKey;
-    private EventType<KeyEvent> keyEventType;
     private Text keyInputText;
-    private ResourceBundle myResources;
-    private Action action;
-    private Button createEventButton;
-    private String language;
+    private final ResourceBundle myResources;
 
-    private KeyBindingTableManager tableManager;
-    private EventViewManager eventViewManager;
+    private final KeyBindingTableManager tableManager;
+    private final EventViewManager eventViewManager;
 
     private List<IEntity> chosenEntities;
 
     public KeyBindingEditor (String language, ObservableList<ILevel> levelList) {
         super(language, levelList);
-        this.language = language;
+        String language1 = language;
 
         eventViewManager = new EventViewManager();
 
         chosenEntityTitle = new Text("== PICKED ENTITIES ==\n");    // TODO resource
         chosenEntityTitle.setFont(new Font(20));    // TODO enum...?
 
-        chosenEntities = new ArrayList<IEntity>();
+        chosenEntities = new ArrayList<>();
         scrollPane = new ScrollPane();
         myResources = ResourceBundle.getBundle(language);
         keyListenerIsActive = false;
@@ -69,13 +63,13 @@ public class KeyBindingEditor extends EventEditorTab {
         pane.setPadding(ViewInsets.GAME_EDIT.getInset());
         pane.setAlignment(Pos.TOP_LEFT);
         tableManager = new KeyBindingTableManager(language, this);
-        action = null;
+        Action action = null;
         currentKey = null;
 
         pane.setOnKeyPressed(e -> keyWasPressed(e.getCode()));
         addParametersPane(pane);
-        choseLevels(new ArrayList<ILevel>(levelList));
-        eventViewManager.levelWasPicked(new ArrayList<ILevel>(levelList));
+        choseLevels(new ArrayList<>(levelList));
+        eventViewManager.levelWasPicked(new ArrayList<>(levelList));
         populateLayout();
     }
 
@@ -116,7 +110,7 @@ public class KeyBindingEditor extends EventEditorTab {
         HBox container = new HBox(GUISize.EVENT_EDITOR_PADDING.getSize());
         VBox innerContainer = new VBox(GUISize.EVENT_EDITOR_SUBPADDING.getSize());
 
-        listenToKey = ButtonFactory.makeButton(myResources.getString("pressKey"), e -> listenButtonPress());
+        Button listenToKey = ButtonFactory.makeButton(myResources.getString("pressKey"), e -> listenButtonPress());
 
         keyInputText = new Text(myResources.getString("noKeyPressed"));
 
@@ -126,7 +120,7 @@ public class KeyBindingEditor extends EventEditorTab {
 
         chooseKeyEventTypeBox = ComboFactory.makeComboBox(myResources.getString("chooseKeyEventType"), keyEventTypes, e -> setEventType(chooseKeyEventTypeBox.getValue()));
 
-        createEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
+        Button createEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
 
         innerContainer.getChildren().addAll(listenToKey, keyInputText, getActionPane(), createEventButton);
 
@@ -134,7 +128,7 @@ public class KeyBindingEditor extends EventEditorTab {
 
         chosenEntityText = new Text();
 
-        chosenEntityBox = new ScrollPane(new VBox(chosenEntityTitle, chosenEntityText));
+        ScrollPane chosenEntityBox = new ScrollPane(new VBox(chosenEntityTitle, chosenEntityText));
 
         fillChosenEntityBox();
         container.getChildren().addAll(getLevelPickerPane(), tableManager.getContainer(), chosenEntityBox, innerContainer);
@@ -159,6 +153,7 @@ public class KeyBindingEditor extends EventEditorTab {
     }
 
     private void setEventType (String eventType) {
+        EventType<KeyEvent> keyEventType;
         if (eventType.equals(myResources.getString("keyPress"))) {
             keyEventType = KeyEvent.KEY_PRESSED;
         }

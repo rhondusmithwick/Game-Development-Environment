@@ -10,6 +10,7 @@ import view.enums.FileExtensions;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class FileUtilities {
@@ -33,7 +34,7 @@ public class FileUtilities {
      */
 
     public static File promptAndGetFile (ExtensionFilter extension, String prompt, String dir) {
-        List<ExtensionFilter> filters = new ArrayList<ExtensionFilter>();
+        List<ExtensionFilter> filters = new ArrayList<>();
         filters.add(extension);
         return promptAndGetFile(filters, prompt, dir);
     }
@@ -53,8 +54,7 @@ public class FileUtilities {
         fileChooser.setTitle(prompt);
         fileChooser.getExtensionFilters().addAll(filters);
         fileChooser.setInitialDirectory(new File(dir));
-        File file = new File(FilePathRelativizer.relativize(fileChooser.showOpenDialog(new Stage()).getPath()));
-        return file;
+        return new File(FilePathRelativizer.relativize(fileChooser.showOpenDialog(new Stage()).getPath()));
     }
 
     public static File promptAndGetFile (List<ExtensionFilter> filters, String prompt) {
@@ -63,8 +63,7 @@ public class FileUtilities {
         fileChooser.getExtensionFilters().addAll(filters);
         File dir = new File(DefaultStrings.RESOURCES.getDefault());
         fileChooser.setInitialDirectory(dir);
-        File file = new File(FilePathRelativizer.relativize(fileChooser.showOpenDialog(new Stage()).getPath()));
-        return file;
+        return new File(FilePathRelativizer.relativize(fileChooser.showOpenDialog(new Stage()).getPath()));
     }
 
     /**
@@ -97,11 +96,11 @@ public class FileUtilities {
     }
 
     public static List<ExtensionFilter> getMusicFilters () {
-        return Arrays.asList(FileExtensions.MP3.getFilter());
+        return Collections.singletonList(FileExtensions.MP3.getFilter());
     }
 
     public static List<ExtensionFilter> getPropertiesFilters () {
-        return Arrays.asList(FileExtensions.PROPERTIES.getFilter());
+        return Collections.singletonList(FileExtensions.PROPERTIES.getFilter());
     }
 
 }

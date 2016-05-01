@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Editor implements IEditor {
-    private List<IEntity> entityList;
+    private final List<IEntity> entityList;
 
     public Editor () {
-        entityList = new ArrayList<IEntity>();
+        entityList = new ArrayList<>();
     }
 
     public List<IEntity> getEntities () {

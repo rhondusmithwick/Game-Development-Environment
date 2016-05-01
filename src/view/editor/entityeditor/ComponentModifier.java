@@ -11,7 +11,8 @@ import java.util.ResourceBundle;
  */
 public abstract class ComponentModifier {
 
-    private ResourceBundle myResources, myComponentNames;
+    private final ResourceBundle myResources;
+    private final ResourceBundle myComponentNames;
 
     public ComponentModifier (String language) {
         myResources = ResourceBundle.getBundle(language);

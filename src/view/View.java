@@ -59,6 +59,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 
 /**
  * @author Tom
@@ -68,24 +69,23 @@ public class View implements IView {
 
     private final double MILLISECOND_DELAY = 10;
     private final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
-    private final double gapSize = 1;
     private final ConsoleTextArea console = new ConsoleTextArea();
     private Group root = new Group();
-    private ISystemManager model;
-    private BorderPane pane;
-    private SubScene subScene;
-    private ViewUtilities viewUtils;
+    private final ISystemManager model;
+    private final BorderPane pane;
+    private final SubScene subScene;
+    private final ViewUtilities viewUtils;
     private DragAndResizeDynamic DandR;
-    private GameLoopManager manager;
-    private HBox buttonBox = new HBox();
-    private ResourceBundle myResources;
-    private boolean debug;
-    private Scene scene;
-    private List<PopUp> myPopUpList = new ArrayList<PopUp>();
+    private final GameLoopManager manager;
+    private final HBox buttonBox = new HBox();
+    private final ResourceBundle myResources;
+    private final boolean debug;
+    private final Scene scene;
+    private final List<PopUp> myPopUpList = new ArrayList<>();
 
     public View (double viewWidth, double viewHeight, double sceneWidth, double sceneHeight, ILevel level, String language, boolean debug) {
         subScene = this.createSubScene(root, viewWidth, viewHeight);
-        subScene.setOnMouseClicked(e -> deletePopUps(e));
+        subScene.setOnMouseClicked(this::deletePopUps);
         this.debug = debug;
         myResources = ResourceBundle.getBundle(language);
         initConsole();
@@ -104,9 +104,7 @@ public class View implements IView {
 
     private void deletePopUps (MouseEvent e) {
         if (e.getButton() == MouseButton.PRIMARY) {
-            for (PopUp popUp : myPopUpList) {
-                popUp.closeScene();
-            }
+            myPopUpList.stream().forEach(PopUp::closeScene);
             myPopUpList.clear();
         }
     }
@@ -184,10 +182,7 @@ public class View implements IView {
         if (collisions.isEmpty()) {
             return shapes;
         }
-        Collection<Bounds> bounds = new ArrayList<>();
-        for (Collision c : collisions) {
-            bounds.add(c.getMask());
-        }
+        Collection<Bounds> bounds = collisions.stream().map(c -> c.getMask()).collect(Collectors.toCollection(ArrayList::new));
         for (Bounds b : bounds) {
             if (b == null) {
                 continue;
@@ -280,6 +275,7 @@ public class View implements IView {
         BorderPane pane = new BorderPane();
         ScrollPane center = new ScrollPane();
         root.setManaged(false);
+        double gapSize = 1;
         pane.setPadding(new Insets(gapSize, gapSize, gapSize, gapSize));
         pane.setCenter(center);
         center.setContent(subScene);
@@ -331,7 +327,7 @@ public class View implements IView {
 
     public void showPopUp (IEntity entity, ContextMenuEvent event) {
 
-        Map<String, EventHandler<ActionEvent>> menuMap = new LinkedHashMap<String, EventHandler<ActionEvent>>();
+        Map<String, EventHandler<ActionEvent>> menuMap = new LinkedHashMap<>();
         menuMap.put(myResources.getString("remove"), e -> ViewFeatureMethods.removeFromDisplay(entity, getEntitySystem()));
         menuMap.put(myResources.getString("sendBack"), e -> ViewFeatureMethods.sendToBack(entity, getEntitySystem()));
         menuMap.put(myResources.getString("sendFront"), e -> ViewFeatureMethods.sendToFront(entity, getEntitySystem()));

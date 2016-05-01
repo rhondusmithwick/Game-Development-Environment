@@ -15,7 +15,7 @@ import java.io.File;
 
 public class DragList {
 
-    ObservableList<Button> buttons;
+    final ObservableList<Button> buttons;
 
     public DragList (ObservableList<Button> theButtons) {
         buttons = theButtons;
@@ -92,6 +92,5 @@ public class DragList {
         Image image = new Image(resource.toURI().toString());
         db.setDragView(image);
         event.consume();
-        return;
     }
 }

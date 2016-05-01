@@ -19,8 +19,7 @@ import java.util.ResourceBundle;
  */
 public class AnimationButton extends GuiObject {
 
-    private Button editButton;
-    private ResourceBundle myComponentNames;
+    private final Button editButton;
 
     /**
      * create new animation button class
@@ -32,7 +31,7 @@ public class AnimationButton extends GuiObject {
      */
     public AnimationButton (String name, String resourceBundle, String language, IEntity entity) {
         super(name, resourceBundle);
-        this.myComponentNames = ResourceBundle.getBundle(language + DefaultStrings.COMPONENTS.getDefault());
+        ResourceBundle myComponentNames = ResourceBundle.getBundle(language + DefaultStrings.COMPONENTS.getDefault());
         editButton = ButtonFactory.makeButton(myComponentNames.getString(name), e -> makeAnimationEditor(entity, language));
 
 

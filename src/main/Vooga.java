@@ -26,6 +26,7 @@ import view.utilities.FileUtilities;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.ResourceBundle;
 
@@ -34,12 +35,9 @@ import java.util.ResourceBundle;
  */
 public class Vooga extends StartUpMenu {
 
-    private Stage myStage;
-    private Scene myScene;
-    private ResourceBundle myResources;
+    private final Stage myStage;
+    private final ResourceBundle myResources;
     private ComboBox<String> languages;
-    private ScrollPane root;
-    private ChoiceDialog<HBox> gameChooser;
     private Authoring authEnv;
 
     public Vooga (Stage stage) {
@@ -51,7 +49,7 @@ public class Vooga extends StartUpMenu {
 
     @Override
     protected ScrollPane createDisplay () {
-        root = super.createDisplay();
+        ScrollPane root = super.createDisplay();
         titleText();
         setLanguage();
         createButtons();
@@ -80,11 +78,10 @@ public class Vooga extends StartUpMenu {
         List<String> games = new ArrayList<>(FileUtilities.getAllFromDirectory(DefaultStrings.CREATE_LOC.getDefault()));
         List<HBox> hboxes = new ArrayList<>();
         games.stream().forEach(game -> makeHBox(game, hboxes));
-        gameChooser = new ChoiceDialog<HBox>(null, hboxes);
+        ChoiceDialog<HBox> gameChooser = new ChoiceDialog<>(null, hboxes);
         myStage.hide();
         gameChooser.showAndWait();
-        String chosen = ((Label) gameChooser.getSelectedItem().getChildren().get(0)).getText();
-        return chosen;
+        return ((Label) gameChooser.getSelectedItem().getChildren().get(0)).getText();
     }
 
 
@@ -115,7 +112,7 @@ public class Vooga extends StartUpMenu {
 
     private void setLanguage () {
         languages = ComboFactory.makeComboBox(myResources.getString("displayLanguage"), Arrays.asList("english", "arabic"), null);
-        super.addNodesToVBox(Arrays.asList(languages));
+        super.addNodesToVBox(Collections.singletonList(languages));
 
     }
 
@@ -156,7 +153,7 @@ public class Vooga extends StartUpMenu {
     }
 
     private void showAuthoring () {
-        myScene = authEnv.init(myStage.widthProperty(), myStage.heightProperty());
+        Scene myScene = authEnv.init(myStage.widthProperty(), myStage.heightProperty());
         myStage.setScene(myScene);
         myStage.show();
     }

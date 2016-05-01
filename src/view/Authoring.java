@@ -14,10 +14,10 @@ import java.util.ResourceBundle;
 
 public class Authoring {
 
-    private ResourceBundle myResources;
-    private Scene myScene;
+    private final ResourceBundle myResources;
     private TabPane display;
-    private String language, fileName;
+    private final String language;
+    private String fileName;
 
     /**
      * Constructor that takes in the language choice of the user.
@@ -43,7 +43,7 @@ public class Authoring {
 
     public Scene init (ReadOnlyDoubleProperty height, ReadOnlyDoubleProperty width) {
         display = new TabPane();
-        myScene = new Scene(display, GUISize.AUTHORING_WIDTH.getSize(), GUISize.AUTHORING_HEIGHT.getSize());
+        Scene myScene = new Scene(display, GUISize.AUTHORING_WIDTH.getSize(), GUISize.AUTHORING_HEIGHT.getSize());
         myScene.getStylesheets().add(new File(DefaultStrings.CSS_LOCATION.getDefault() + DefaultStrings.MAIN_CSS.getDefault()).toURI().toString());
         GameEditor gEdit;
         if (fileName == null) {

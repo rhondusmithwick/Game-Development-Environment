@@ -33,13 +33,13 @@ import java.util.ResourceBundle;
 
 public class EditorEntity extends Editor {
     private final GuiObjectFactory guiFactory = new GuiObjectFactory();
-    private IEntity myEntity;
-    private String myLanguage;
+    private final IEntity myEntity;
+    private final String myLanguage;
     private ObservableList<IEntity> entityList = FXCollections.observableArrayList();
-    private Button saveButton, addButton, removeButton;
-    private ResourceBundle myResources, myLocs, myComponentNames;
+    private final ResourceBundle myResources;
+    private final ResourceBundle myComponentNames;
     private TextField name;
-    private ScrollPane scrollPane;
+    private final ScrollPane scrollPane;
     private List<String> myComponents;
     private VBox container;
 
@@ -49,7 +49,7 @@ public class EditorEntity extends Editor {
         myLanguage = language;
         myResources = ResourceBundle.getBundle(language);
         myComponentNames = ResourceBundle.getBundle(language + DefaultStrings.COMPONENTS.getDefault());
-        myEntity = (Entity) toEdit;
+        myEntity = toEdit;
     }
 
     public EditorEntity (String language, IEntity toEdit, ObservableList<IEntity> addToList) {
@@ -58,7 +58,7 @@ public class EditorEntity extends Editor {
     }
 
     private void getComponents () {
-        myLocs = ResourceBundle.getBundle(DefaultStrings.COMPONENT_LOC.getDefault());
+        ResourceBundle myLocs = ResourceBundle.getBundle(DefaultStrings.COMPONENT_LOC.getDefault());
         Enumeration<String> iter = myLocs.getKeys();
         while (iter.hasMoreElements()) {
             myComponents.add(myComponentNames.getString(iter.nextElement()));
@@ -75,16 +75,16 @@ public class EditorEntity extends Editor {
         container = new VBox();
         scrollPane.setContent(container);
         container.getStyleClass().add("vbox");
-        myComponents = new ArrayList<String>();
+        myComponents = new ArrayList<>();
         addName();
         addComponentsToPane();
         addButtons();
     }
 
     private void addButtons () {
-        saveButton = ButtonFactory.makeButton(myResources.getString("saveEntity"), e -> save());
-        addButton = ButtonFactory.makeButton(myResources.getString("addComponent"), e -> addComponent());
-        removeButton = ButtonFactory.makeButton(myResources.getString("removeComponent"), e -> removeComponent());
+        Button saveButton = ButtonFactory.makeButton(myResources.getString("saveEntity"), e -> save());
+        Button addButton = ButtonFactory.makeButton(myResources.getString("addComponent"), e -> addComponent());
+        Button removeButton = ButtonFactory.makeButton(myResources.getString("removeComponent"), e -> removeComponent());
         container.getChildren().addAll(addButton, removeButton, saveButton);
     }
 
@@ -96,16 +96,14 @@ public class EditorEntity extends Editor {
 
     private void addComponentsToPane () {
         Collection<IComponent> componentList = myEntity.getAllComponents();
-        for (IComponent component : componentList) {
-            addObject(component);
-        }
+        componentList.stream().forEach(this::addObject);
     }
 
     private void addObject (IComponent component) {
         if (component.getClass().equals(AnimatedSprite.class)) {
             container.getChildren().add((Node) guiFactory.createNewGuiObject("AnimatedSprite", DefaultStrings.GUI_RESOURCES.getDefault(), myLanguage, myEntity).getGuiNode());
         }
-        component.getProperties().stream().forEach(e -> addVisualObject(e));
+        component.getProperties().stream().forEach(this::addVisualObject);
     }
 
     private void addVisualObject (SimpleObjectProperty<?> property) {
@@ -134,7 +132,7 @@ public class EditorEntity extends Editor {
     private void save () {
         myEntity.updateComponents();
         myEntity.setName(name.getText());
-        myEntity.getAllComponents().stream().forEach(e -> removeBindings(e));
+        myEntity.getAllComponents().stream().forEach(this::removeBindings);
         entityList.remove(myEntity);
         entityList.add(myEntity);
         container = new VBox();

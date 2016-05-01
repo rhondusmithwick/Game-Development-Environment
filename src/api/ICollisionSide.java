@@ -5,7 +5,7 @@ import model.component.physics.Collision;
 
 public interface ICollisionSide {
 
-    public void moveEntity (IEntity entityToMove, IEntity entityToStay);
+    void moveEntity (IEntity entityToMove, IEntity entityToStay);
 
     boolean isCollision (Bounds first, Bounds second);
 

@@ -21,6 +21,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Implementation of the physics engine
@@ -80,11 +81,9 @@ public class PhysicsEngine implements IPhysicsEngine {
         Collection<IEntity> allCollidableEntities = universe.getEntitiesWithComponent(Collision.class);
         allCollidableEntities.stream().forEach(e -> {
             Map<IEntity, String> collidingEntitiesToSides = collidingEntitiesAndSides(e, universe);
-            for (IEntity collidingEntity : collidingEntitiesToSides.keySet()) {
-                if (velocityCalculator.getMass(e) < velocityCalculator.getMass(collidingEntity)) {
-                    moveEntityToSide(e, collidingEntity, collidingEntitiesToSides.get(collidingEntity));
-                }
-            }
+            collidingEntitiesToSides.keySet().stream().filter(collidingEntity -> velocityCalculator.getMass(e) < velocityCalculator.getMass(collidingEntity)).forEach(collidingEntity -> {
+                moveEntityToSide(e, collidingEntity, collidingEntitiesToSides.get(collidingEntity));
+            });
         });
     }
 
@@ -100,8 +99,8 @@ public class PhysicsEngine implements IPhysicsEngine {
     public Map<IEntity, String> collidingEntitiesAndSides (IEntity entity, ILevel universe) {
         List<Collision> coll = entity.getComponentList(Collision.class);
         Map<IEntity, String> collidingEntitiesToSides = new HashMap<>();
-        for (int i = 0; i < coll.size(); i++) {
-            String[] entitiesWithSides = coll.get(i).getCollidingIDsWithSides().split(Collision.ID_SEPARATOR);
+        for (Collision aColl : coll) {
+            String[] entitiesWithSides = aColl.getCollidingIDsWithSides().split(Collision.ID_SEPARATOR);
             for (int j = 1; j < entitiesWithSides.length; j++) {
                 String[] entityAndSide = entitiesWithSides[j].split(Collision.SIDE_SEPARATOR);
                 IEntity entityCollidingWith = universe.getEntity(entityAndSide[0]);
@@ -114,6 +113,7 @@ public class PhysicsEngine implements IPhysicsEngine {
         return collidingEntitiesToSides;
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public boolean applyImpulse (IEntity body, Point2D impulse) {
         if (body.hasComponents(Mass.class, Velocity.class)) {
@@ -126,6 +126,7 @@ public class PhysicsEngine implements IPhysicsEngine {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void applyGravity (ILevel universe, double secondsPassed) {
         Collection<IEntity> entitiesSubjectToGravity = universe.getEntitiesWithComponents(Gravity.class,
                 Velocity.class);
@@ -137,9 +138,10 @@ public class PhysicsEngine implements IPhysicsEngine {
         });
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void applyCollisions (ILevel universe) {
-        List<IEntity> collidableEntities = new ArrayList<IEntity>(
+        List<IEntity> collidableEntities = new ArrayList<>(
                 universe.getEntitiesWithComponents(Collision.class, Sprite.class));// ,
         // Mass.class));
         clearCollisionComponents(collidableEntities);
@@ -152,13 +154,11 @@ public class PhysicsEngine implements IPhysicsEngine {
 
     private void addCollisionComponents (IEntity firstEntity, IEntity secondEntity) {
         for (Bounds firstHitBox : getHitBoxesForEntity(firstEntity)) {
-            for (Bounds secondHitBox : getHitBoxesForEntity(secondEntity)) {
-                if (firstHitBox.intersects(secondHitBox)) {
-                    addEntityIDs(firstEntity, secondEntity);
-                    addCollisionSide(firstEntity, secondEntity);
-                    velocityCalculator.changeVelocityAfterCollision(firstEntity, secondEntity);
-                }
-            }
+            getHitBoxesForEntity(secondEntity).stream().filter(secondHitBox -> firstHitBox.intersects(secondHitBox)).forEach(secondHitBox -> {
+                addEntityIDs(firstEntity, secondEntity);
+                addCollisionSide(firstEntity, secondEntity);
+                velocityCalculator.changeVelocityAfterCollision(firstEntity, secondEntity);
+            });
         }
     }
 
@@ -185,10 +185,7 @@ public class PhysicsEngine implements IPhysicsEngine {
 
     private List<Bounds> getHitBoxesForEntity (IEntity entity) {
         List<Collision> collisionComponents = entity.getComponentList(Collision.class);
-        List<Bounds> hitBoxes = new ArrayList<>();
-        for (Collision hitBox : collisionComponents) {
-            hitBoxes.add(hitBox.getMask());
-        }
+        List<Bounds> hitBoxes = collisionComponents.stream().map(Collision::getMask).collect(Collectors.toList());
         return hitBoxes;
     }
 

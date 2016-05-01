@@ -21,11 +21,11 @@ import view.utilities.ButtonFactory;
 import java.util.ResourceBundle;
 
 public class EnvironmentDisplay extends ObjectDisplay {
-    private ObservableList<ILevel> masterEnvList;
-    private ObservableList<IEntity> masterEntList;
-    private ResourceBundle myResources;
-    private String language;
-    private Scene scene;
+    private final ObservableList<ILevel> masterEnvList;
+    private final ObservableList<IEntity> masterEntList;
+    private final ResourceBundle myResources;
+    private final String language;
+    private final Scene scene;
 
     public EnvironmentDisplay (String language, ObservableList<ILevel> masterEnvList, ObservableList<IEntity> masterEntList, Authoring authEnv, Scene myScene) {
         super(authEnv);
@@ -51,15 +51,12 @@ public class EnvironmentDisplay extends ObjectDisplay {
 
     private void addEnvironmentToScroll (ILevel eSystem, VBox container) {
         Button environment = ButtonFactory.makeButton(eSystem.getName(), null);
-        environment.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle (MouseEvent event) {
-                MouseButton button = event.getButton();
-                if (button == MouseButton.PRIMARY) {
-                    createEditor(EditorEnvironment.class.getName(), language, eSystem, masterEntList, masterEnvList, scene);
-                } else if (button == MouseButton.SECONDARY) {
-                    masterEnvList.remove(eSystem);
-                }
+        environment.setOnMouseClicked(event -> {
+            MouseButton button = event.getButton();
+            if (button == MouseButton.PRIMARY) {
+                createEditor(EditorEnvironment.class.getName(), language, eSystem, masterEntList, masterEnvList, scene);
+            } else if (button == MouseButton.SECONDARY) {
+                masterEnvList.remove(eSystem);
             }
         });
         container.getChildren().add(environment);

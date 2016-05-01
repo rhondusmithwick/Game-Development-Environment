@@ -14,7 +14,7 @@ import java.util.ResourceBundle;
 
 
 public class GuiObjectFactory {
-    private ResourceBundle myBundle = ResourceBundle.getBundle(DefaultStrings.GUI_FACTORY.getDefault());
+    private final ResourceBundle myBundle = ResourceBundle.getBundle(DefaultStrings.GUI_FACTORY.getDefault());
 
     /**
      * creates a gui object of type args[0] and passes it args[1] to end

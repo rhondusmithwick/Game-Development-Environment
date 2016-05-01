@@ -29,13 +29,8 @@ import java.util.ResourceBundle;
  * TODO: Clean this shit up
  */
 public class EditorEvent extends Editor {
-    private final Pane pane;
     private final ScrollPane scrollPane;
     private final TabPane tabPane;
-    private final Tab propertyTab;
-    private final PropertyEventEditor propertyEventEditor;
-    private final KeyBindingEditor keyBindingEditor;
-    private final TimeEventEditor timeEventEditor;
     private ResourceBundle myResources;
 
     /**
@@ -46,17 +41,17 @@ public class EditorEvent extends Editor {
      * @param levelList
      */
     public EditorEvent (String language, ObservableList<IEntity> masterList, ObservableList<ILevel> levelList) {
-        propertyEventEditor = new PropertyEventEditor(language, levelList);
-        keyBindingEditor = new KeyBindingEditor(language, levelList);
-        timeEventEditor = new TimeEventEditor(language, levelList);
+        PropertyEventEditor propertyEventEditor = new PropertyEventEditor(language, levelList);
+        KeyBindingEditor keyBindingEditor = new KeyBindingEditor(language, levelList);
+        TimeEventEditor timeEventEditor = new TimeEventEditor(language, levelList);
 
-        pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
+        Pane pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
         pane.setPadding(ViewInsets.EVENT_EDIT.getInset());
         pane.setPrefWidth(GUISize.EVENT_EDITOR_WIDTH.getSize());
         myResources = ResourceBundle.getBundle(language);
         scrollPane = new ScrollPane(pane);
         tabPane = new TabPane();
-        propertyTab = new Tab();
+        Tab propertyTab = new Tab();
         pane.getChildren().add(tabPane);
         myResources = ResourceBundle.getBundle(language);
         // TODO: Put editors in map and use cool for loop for this

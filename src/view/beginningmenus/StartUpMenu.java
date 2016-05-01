@@ -17,21 +17,16 @@ import java.util.List;
 
 public abstract class StartUpMenu {
 
-    private Scene myScene;
-    private Stage myStage;
+    private final Stage myStage;
     private Group root;
     private VBox myVBox;
-    private Media media;
-    private MediaPlayer mediaPlayer;
-
-    private ScrollPane scrollPane;
 
     public StartUpMenu (Stage myStage) {
         this.myStage = myStage;
     }
 
     public void init () {
-        myScene = new Scene(createDisplay(), GUISize.MAIN_SIZE.getSize(), GUISize.MAIN_SIZE.getSize());
+        Scene myScene = new Scene(createDisplay(), GUISize.MAIN_SIZE.getSize(), GUISize.MAIN_SIZE.getSize());
         myScene.getStylesheets()
                 .add(new File(DefaultStrings.CSS_LOCATION.getDefault() + DefaultStrings.MAIN_CSS.getDefault()).toURI()
                         .toString());
@@ -43,13 +38,13 @@ public abstract class StartUpMenu {
     protected ScrollPane createDisplay () {
         root = new Group();
         createVBox();
-        scrollPane = new ScrollPane(root);
+        ScrollPane scrollPane = new ScrollPane(root);
         return scrollPane;
     }
 
     private void setMusic (String file) {
-        media = new Media(new File(file).toURI().toString());
-        mediaPlayer = new MediaPlayer(media);
+        Media media = new Media(new File(file).toURI().toString());
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
         mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
         // mediaPlayer.play(); TODO: rm
     }

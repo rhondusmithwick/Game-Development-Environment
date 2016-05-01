@@ -31,7 +31,7 @@ public class EntityTable extends Table {
                 manager.getClass().getMethod("entityWasClicked", Entity.class),
                 Entity.class);
 
-        entityNames = new ArrayList<String>();
+        entityNames = new ArrayList<>();
 
         fillEntries(entities);
     }
@@ -40,8 +40,8 @@ public class EntityTable extends Table {
     @Override
     public void fillEntries (Object dataHolder) {
         for (ISerializable entity : (ObservableList<ISerializable>) dataHolder) {
-            if (entityNames.contains(((Entity) entity).getName()))
-                continue;
+            if (entityNames.contains(((Entity) entity).getName())) {
+            }
             else {
                 entityNames.add(((Entity) entity).getName());
                 getEntries().add(new Entry(entity, ((Entity) entity).getName()));

@@ -23,8 +23,8 @@ public class Collision implements IComponent {
     public static final String SIDE_SEPARATOR = "_";
 
     private Bounds mask;
-    private SingleProperty<String> maskIDProperty = new SingleProperty<>("MaskID", "");
-    private SingleProperty<String> collidingIDsProperty = new SingleProperty<>("CollidingIDs", "");
+    private final SingleProperty<String> maskIDProperty = new SingleProperty<>("MaskID", "");
+    private final SingleProperty<String> collidingIDsProperty = new SingleProperty<>("CollidingIDs", "");
 
     public Collision () {
     }

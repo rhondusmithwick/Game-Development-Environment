@@ -12,13 +12,12 @@ import java.util.ResourceBundle;
  */
 
 public class GuiObjectLabel extends GuiObject {
-    private Label myLabel;
-    private ResourceBundle myResources, myPropertiesNames;
+    private final Label myLabel;
 
     public GuiObjectLabel (String name, String resourceBundle, String language, SimpleObjectProperty<?> property) {
         super(name, resourceBundle);
-        this.myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
-        myResources = ResourceBundle.getBundle(language);
+        ResourceBundle myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
+        ResourceBundle myResources = ResourceBundle.getBundle(language);
         myLabel = new Label(myPropertiesNames.getString(name) + myResources.getString("true"));
 
     }

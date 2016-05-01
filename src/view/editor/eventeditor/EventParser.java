@@ -48,7 +48,7 @@ public class EventParser {
      * @return HashMap<String, String>
      */
     private HashMap<String, String> parsePropertyEvent (String string) {
-        HashMap<String, String> parseResults = new HashMap<String, String>();
+        HashMap<String, String> parseResults = new HashMap<>();
 
         String[] events = string.split(",");
         String trigger;
@@ -92,7 +92,7 @@ public class EventParser {
      */
     // {A=[events.Action@f1fe7ad]}
     private HashMap<String, String> parseKeyEvent (String string) {
-        HashMap<String, String> parseResults = new HashMap<String, String>();
+        HashMap<String, String> parseResults = new HashMap<>();
 
         String[] events = string.split(",");
         String key;

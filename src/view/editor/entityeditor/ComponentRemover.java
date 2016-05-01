@@ -14,8 +14,10 @@ import java.util.ResourceBundle;
  * @author calinelson
  */
 public class ComponentRemover extends ComponentModifier {
-    private ResourceBundle myResources, myLocs, myComponentNames;
-    private IEntity entity;
+    private final ResourceBundle myResources;
+    private final ResourceBundle myLocs;
+    private final ResourceBundle myComponentNames;
+    private final IEntity entity;
 
     public ComponentRemover (String language, IEntity entity) {
         super(language);

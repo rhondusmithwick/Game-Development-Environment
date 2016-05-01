@@ -19,16 +19,18 @@ import java.util.ResourceBundle;
  * @author calinelson, Ben Zhang
  */
 public class GuiObjectMusicChooser extends GuiObjectFileGetter {
-    private Button setMusic, play, stop;
-    private ResourceBundle myResources, myPropertiesNames;
-    private SimpleObjectProperty<String> property;
+    private final Button setMusic;
+    private final Button play;
+    private final Button stop;
+    private final ResourceBundle myResources;
+    private final SimpleObjectProperty<String> property;
     private AudioClip preview;
-    private TextField text = new TextField();
+    private final TextField text = new TextField();
 
     @SuppressWarnings("unchecked")
     public GuiObjectMusicChooser (String name, String resourceBundle, String language, SimpleObjectProperty<?> property) {
         super(name, resourceBundle);
-        this.myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
+        ResourceBundle myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
         myResources = ResourceBundle.getBundle(language);
         text.setEditable(false);
         play = ButtonFactory.makeButton(myResources.getString("play"), e -> playMusic());

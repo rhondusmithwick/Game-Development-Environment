@@ -32,11 +32,11 @@ import java.util.ResourceBundle;
  */
 public class Level implements ILevel {
 
-    private IEntitySystem universe = new EntitySystem();
+    private final IEntitySystem universe = new EntitySystem();
     private Map<String, String> metadata = Maps.newLinkedHashMap();
-    private IEventSystem eventSystem = new EventSystem(this);
-    private ICollisionVelocityCalculator velocityCalculator = new RealisticVelocityCalculator();
-    private IPhysicsEngine physics = new PhysicsEngine(velocityCalculator);
+    private final IEventSystem eventSystem = new EventSystem(this);
+    private final ICollisionVelocityCalculator velocityCalculator = new RealisticVelocityCalculator();
+    private final IPhysicsEngine physics = new PhysicsEngine(velocityCalculator);
     private String eventSystemPath;
     private transient ResourceBundle myResources;
     //	private transient ResourceBundle scriptLocs = ResourceBundle.getBundle(DefaultStrings.SCRIPTS_LOC.getDefault());

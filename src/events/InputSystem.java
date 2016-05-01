@@ -19,7 +19,7 @@ public class InputSystem implements IInputSystem {
     private Queue<InputEvent> fillQ = firstQueue;
     private Queue<InputEvent> processQ = secondQueue;
 
-    private SimpleObjectProperty<InputEvent> currentInput = new SimpleObjectProperty<>();
+    private final SimpleObjectProperty<InputEvent> currentInput = new SimpleObjectProperty<>();
 
     @Override
     public void takeInput (InputEvent e) {
@@ -38,11 +38,13 @@ public class InputSystem implements IInputSystem {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void listenToInput (ChangeListener listener) {
         currentInput.addListener(listener);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void unListenToInput (ChangeListener listener) {
         currentInput.removeListener(listener);

@@ -7,7 +7,8 @@ package model.physics;
  */
 @Deprecated
 public class Vector {
-    private double x, y;
+    private final double x;
+    private final double y;
 
     public Vector (double x, double y) {
         this.x = x;

@@ -15,10 +15,9 @@ import java.lang.reflect.Method;
  * @author Alankmc
  */
 public abstract class Table {
-    private TableView<Entry> table;
-    private TableColumn<Entry, String> column;
-    private ObservableList<Entry> entries;
-    private TableManager manager;
+    private final TableView<Entry> table;
+    private final ObservableList<Entry> entries;
+    private final TableManager manager;
 
     /**
      * Constructor.
@@ -36,7 +35,7 @@ public abstract class Table {
      */
     public Table (TableManager manager, String name, Method clickHandler, Class handlerArgumentClass) {
         this.manager = manager;
-        table = new TableView<Entry>();
+        table = new TableView<>();
         table.setEditable(true);
         table.setPrefWidth(GUISize.EVENT_EDITOR_TABLE_WIDTH.getSize());
         table.setMaxHeight(250);    // TODO magic value
@@ -53,8 +52,8 @@ public abstract class Table {
             );
         }
 
-        column = new TableColumn<Entry, String>(name);
-        column.setCellValueFactory(new PropertyValueFactory<Entry, String>("name"));
+        TableColumn<Entry, String> column = new TableColumn<>(name);
+        column.setCellValueFactory(new PropertyValueFactory<>("name"));
         column.minWidthProperty().bind(table.prefWidthProperty());
         column.maxWidthProperty().bind(table.prefWidthProperty());
         column.setSortable(false);

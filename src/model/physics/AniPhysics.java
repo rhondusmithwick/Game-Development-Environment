@@ -26,9 +26,7 @@ public class AniPhysics implements IPhysicsEngine {
 
     @Override
     public void update (ILevel level, double dt) {
-        level.getEntitySystem().getAllEntities().stream().forEach(e -> {
-            calculateForces(e);
-        });
+        level.getEntitySystem().getAllEntities().stream().forEach(this::calculateForces);
 
 
     }
@@ -57,7 +55,7 @@ public class AniPhysics implements IPhysicsEngine {
 
     private Vector netGlobalForces () {
         Vector netVector = globalForces.values().stream()
-                .reduce((a, b) -> a.add(b))
+                .reduce(Vector::add)
                 .get();
         return netVector;
     }

@@ -11,13 +11,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @SuppressWarnings("serial")
 public class ThemeMusic implements IComponent {
     private static final String DEFAULT = "resources/music/finalCountdown.mp3";
     private final SingleProperty<String> music = new SingleProperty<>("ThemeMusic", DEFAULT);
-    private transient Media media;
     private transient MediaPlayer mediaPlayer;
 
     public ThemeMusic (String path) {
@@ -55,7 +55,7 @@ public class ThemeMusic implements IComponent {
 
     public void setSound (String path) {
         music.property1().set(path);
-        media = new Media(new File(path).toURI().toString());
+        Media media = new Media(new File(path).toURI().toString());
         mediaPlayer = new MediaPlayer(media);
     }
 
@@ -70,7 +70,7 @@ public class ThemeMusic implements IComponent {
 
     @Override
     public List<SimpleObjectProperty<?>> getProperties () {
-        return Arrays.asList(music.property1());
+        return Collections.singletonList(music.property1());
     }
 
     @Override

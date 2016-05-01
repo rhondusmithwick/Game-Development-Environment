@@ -22,7 +22,7 @@ import java.util.List;
  */
 public class SystemManager implements ISystemManager {
 
-    private GroovyShell shell = new GroovyShell(); // CANNOT BE SCRIPT ENGINE
+    private final GroovyShell shell = new GroovyShell(); // CANNOT BE SCRIPT ENGINE
     private ILevel level = new Level();
     private ILevel sharedUniverse = new Level();
     private boolean isRunning = false;

@@ -18,7 +18,6 @@ public class DragAndResizeDynamic {
 
     private static final double MARGIN = 8;
 
-    private Group root;
     private boolean resizing = false;
     private boolean resizingRight = false;
     private boolean dragging = false;
@@ -39,15 +38,13 @@ public class DragAndResizeDynamic {
     private boolean isInRightResizeRegion (Node node, double x) {
         double width = node.getBoundsInParent().getWidth();
         double innerRightSide = width - MARGIN;
-        double outerRightSide = width;
-        return ((x > innerRightSide) && (x < outerRightSide));
+        return ((x > innerRightSide) && (x < width));
     }
 
     private boolean isInBottomResizeRegion (Node node, double y) {
         double height = node.getBoundsInParent().getHeight();
         double innerBottomSide = height - MARGIN;
-        double outerBottomSide = height;
-        return ((y > innerBottomSide) && (y < outerBottomSide));
+        return ((y > innerBottomSide) && (y < height));
     }
 
     private void updateCursor (ImageView imageView, double y, double x) {
@@ -69,9 +66,9 @@ public class DragAndResizeDynamic {
     }
 
     public void makeRootDragAndResize (Group root) {
-        this.root = root;
-        this.root.setOnMouseReleased(event -> mouseReleased());
-        this.root.setOnMouseDragged(event -> mouseDragged(this.heldDownSprite, event.getX(), event.getY()));
+        Group root1 = root;
+        root1.setOnMouseReleased(event -> mouseReleased());
+        root1.setOnMouseDragged(event -> mouseDragged(this.heldDownSprite, event.getX(), event.getY()));
     }
 
     private void mousePressed (IEntity e, double x, double y) {

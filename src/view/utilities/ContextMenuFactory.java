@@ -17,7 +17,7 @@ public class ContextMenuFactory {
 
     public static ContextMenu createContextMenu (Map<String, EventHandler<ActionEvent>> menuMap) {
         ContextMenu context = new ContextMenu();
-        List<MenuItem> menuItems = new ArrayList<MenuItem>();
+        List<MenuItem> menuItems = new ArrayList<>();
         for (Entry<String, EventHandler<ActionEvent>> entry : menuMap.entrySet()) {
             MenuItem item = new MenuItem(entry.getKey());
             item.setOnAction(entry.getValue());

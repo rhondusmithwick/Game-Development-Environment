@@ -13,8 +13,6 @@ import java.util.Map;
 
 public final class EventFactory {
 
-    private final String eventsDirectoryPath = "events.";
-
     public Pair<Trigger, Action> createEvent (String triggerName, String scriptPath,
                                               Map<String, Object> parameters, Object... args) {
         Trigger trigger = createTrigger(triggerName, args);
@@ -28,18 +26,7 @@ public final class EventFactory {
     }
 
     public Trigger createTrigger (String className, Object... args) {
-        Trigger trigger = (Trigger) Reflection.createInstance(eventsDirectoryPath + className, args);
-        switch (className) {
-            case "KeyTrigger":
-                trigger = (KeyTrigger) trigger;
-                break;
-            case "PropertyTrigger":
-                trigger = (PropertyTrigger) trigger;
-                break;
-            case "TimeTrigger":
-                trigger = (TimeTrigger) trigger;
-                break;
-        }
-        return trigger;
+        String eventsDirectoryPath = "events.";
+        return (Trigger) Reflection.createInstance(eventsDirectoryPath + className, args);
     }
 }

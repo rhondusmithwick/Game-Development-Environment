@@ -32,27 +32,26 @@ import java.util.ResourceBundle;
  */
 public class GameEditor extends Editor {
 
-    private final GameLoader gameLoader = new GameLoader();
     private VBox pane;
-    private ResourceBundle myResources;
-    @SuppressWarnings("unused")
-    private Authoring authEnv;
-    private String myLanguage;
-    private ObservableList<IEntity> masterEntityList;
-    private ObservableList<ILevel> masterEnvironmentList;
-    private GameDetails gameDetails;
-    private ObjectDisplay entDisp, envDisp, eventDisplay;
+    private final ResourceBundle myResources;
+    private final ObservableList<IEntity> masterEntityList;
+    private final ObservableList<ILevel> masterEnvironmentList;
+    private final GameDetails gameDetails;
+    private final ObjectDisplay entDisp;
+    private final ObjectDisplay envDisp;
+    private final ObjectDisplay eventDisplay;
     private ScrollPane scrollPane;
 
     public GameEditor (Authoring authEnv, String language, String fileName, Scene myScene) {
         this(authEnv, language, myScene);
+        GameLoader gameLoader = new GameLoader();
         gameLoader.loadGame(fileName, gameDetails, masterEntityList, masterEnvironmentList);
     }
 
     public GameEditor (Authoring authEnv, String language, Scene myScene) {
-        myLanguage = language;
+        String myLanguage = language;
         myResources = ResourceBundle.getBundle(language);
-        this.authEnv = authEnv;
+        Authoring authEnv1 = authEnv;
         this.masterEntityList = FXCollections.observableArrayList();
         this.masterEnvironmentList = FXCollections.observableArrayList();
         entDisp = new EntityDisplay(myLanguage, masterEntityList, authEnv);

@@ -18,19 +18,18 @@ import java.util.List;
  * @author Alankmc
  */
 public class KeyBindingTableManager extends TableManager {
-    private HBox container;
+    private final HBox container;
     private EntityTable entityTable;
 
     private Entity entity;
     private IComponent component;
-    private String language;
-    private EventEditorTab editor;
-    private ArrayList<IEntity> pickedEntitiesForEvent;
-    private ObservableList<IEntity> selectedEntitiesFromLevel;
+    private final EventEditorTab editor;
+    private final ArrayList<IEntity> pickedEntitiesForEvent;
+    private final ObservableList<IEntity> selectedEntitiesFromLevel;
 
     public KeyBindingTableManager (String language, EventEditorTab editor) {
         container = new HBox();
-        this.language = language;
+        String language1 = language;
         selectedEntitiesFromLevel = FXCollections.observableArrayList();
 
 
@@ -41,7 +40,7 @@ public class KeyBindingTableManager extends TableManager {
             e.printStackTrace();
         }
 
-        pickedEntitiesForEvent = new ArrayList<IEntity>();
+        pickedEntitiesForEvent = new ArrayList<>();
 
         this.editor = editor;
 

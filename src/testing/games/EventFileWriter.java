@@ -8,7 +8,7 @@ import java.util.List;
 
 public class EventFileWriter {
 
-    private List<String> eventList = new ArrayList<>();
+    private final List<String> eventList = new ArrayList<>();
 
     public void addEvent (String scriptPath, String... args) {
         String toAdd = getEventID(scriptPath, args);
@@ -31,12 +31,10 @@ public class EventFileWriter {
     }
 
     public File writeEventsToFile (String filePath) {
-        File file = new XMLWriter<String>().writeToFile(filePath, eventList);
-        return file;
+        return new XMLWriter<String>().writeToFile(filePath, eventList);
     }
 
     public String writeEventsToString (String filePath) {
-        String eventString = new XMLWriter<String>().writeToString(eventList);
-        return eventString;
+        return new XMLWriter<String>().writeToString(eventList);
     }
 }

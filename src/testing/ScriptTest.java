@@ -25,7 +25,7 @@ public class ScriptTest {
     private final ILevel universe = new Level();
     private String ID;
 
-    private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
+    private final transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
 
     @Before
     public void setUp () {

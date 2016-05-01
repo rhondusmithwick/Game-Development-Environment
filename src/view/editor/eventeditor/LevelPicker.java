@@ -23,13 +23,13 @@ import java.util.ResourceBundle;
 public class LevelPicker {
     private final HashMap<CheckBox, ILevel> checkBoxMap;
     private final EventEditorTab eventAuthoring;
-    private ObservableList<ILevel> levelList;
-    private ScrollPane pane;
-    private VBox vbox;
+    private final ObservableList<ILevel> levelList;
+    private final ScrollPane pane;
+    private final VBox vbox;
     private String language;
     private CheckBox allBox;
-    private ArrayList<ILevel> selectedLevels;
-    private ResourceBundle myResources;
+    private final ArrayList<ILevel> selectedLevels;
+    private final ResourceBundle myResources;
 
     /**
      * Constructor. Takes in any EventAuthoringTab as the authoring Pane that contains this Level Picker.
@@ -40,10 +40,10 @@ public class LevelPicker {
      */
 
     public LevelPicker (String language, ObservableList<ILevel> levelList, EventEditorTab eventAuthoring) {
-        checkBoxMap = new HashMap<CheckBox, ILevel>();
+        checkBoxMap = new HashMap<>();
         this.eventAuthoring = eventAuthoring;
         this.levelList = levelList;
-        selectedLevels = new ArrayList<ILevel>();
+        selectedLevels = new ArrayList<>();
         myResources = ResourceBundle.getBundle(language);
 
         vbox = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());

@@ -19,22 +19,21 @@ import java.util.List;
  * @author Alankmc
  */
 public class PropertyTableManager extends TableManager {
-    private HBox container;
+    private final HBox container;
     private EntityTable entityTable;
     private ComponentTable componentTable;
     private PropertyTable propertyTable;
 
     private Entity entity;
     private IComponent component;
-    private String language;
-    private PropertyEventEditor editor;
+    private final PropertyEventEditor editor;
 
-    private ObservableList<IEntity> selectedEntities;
-    private List<IEntity> chosenEntities = new ArrayList<>();
+    private final ObservableList<IEntity> selectedEntities;
+    private final List<IEntity> chosenEntities = new ArrayList<>();
 
     public PropertyTableManager (String language, PropertyEventEditor editor) {
         container = new HBox();
-        this.language = language;
+        String language1 = language;
         selectedEntities = FXCollections.observableArrayList();
 
         try {

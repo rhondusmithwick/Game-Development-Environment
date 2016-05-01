@@ -25,12 +25,12 @@ public class RealisticVelocityCalculator implements ICollisionVelocityCalculator
 
         if (collisionIsHorizontal(firstEntity)) {
             changeVelocity(m1, m2, velocity1, velocity2, restitution,
-                    (Velocity v, Double val) -> v.setVX(val),
+                    Velocity::setVX,
                     (Velocity v, Double val) -> v.setVY(-val));
         } else if (collisionIsVertical(firstEntity)) {
             changeVelocity(m1, m2, velocity1, velocity2, restitution,
                     (Velocity v, Double val) -> v.setVX(-val),
-                    (Velocity v, Double val) -> v.setVY(val));
+                    Velocity::setVY);
 
         }
     }
@@ -49,9 +49,9 @@ public class RealisticVelocityCalculator implements ICollisionVelocityCalculator
                                  BiConsumer<Velocity, Double> setXVelocity,
                                  BiConsumer<Velocity, Double> setYVelocity) {
         setVelocityComponent(m1, m2, velocity1, velocity2, restitution,
-                (Velocity v) -> v.getVX(), setXVelocity);
+                Velocity::getVX, setXVelocity);
         setVelocityComponent(m1, m2, velocity1, velocity2, restitution,
-                (Velocity v) -> v.getVY(), setYVelocity);
+                Velocity::getVY, setYVelocity);
     }
 
     private boolean collisionIsFromSide (IEntity entity, String side) {

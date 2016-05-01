@@ -9,8 +9,8 @@ import javafx.beans.property.SimpleStringProperty;
  * @author Alankmc
  */
 public class Entry {
-    private SimpleStringProperty name;
-    private Object data;
+    private final SimpleStringProperty name;
+    private final Object data;
 
     public Entry (Object data, String name) {
 

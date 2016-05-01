@@ -21,10 +21,10 @@ import java.util.ResourceBundle;
 
 public class GuiObjectImageDisplay extends GuiObjectFileGetter {
 
-    private ImageView preview;
-    private Button setImage;
-    private ResourceBundle myPropertiesNames, myResources;
-    private SimpleObjectProperty<String> property;
+    private final ImageView preview;
+    private final Button setImage;
+    private final ResourceBundle myResources;
+    private final SimpleObjectProperty<String> property;
 
     /**
      * construct gui object image display
@@ -38,7 +38,7 @@ public class GuiObjectImageDisplay extends GuiObjectFileGetter {
     @SuppressWarnings("unchecked")
     public GuiObjectImageDisplay (String name, String resourceBundle, String language, SimpleObjectProperty<?> property) {
         super(name, resourceBundle);
-        myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
+        ResourceBundle myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
         this.myResources = ResourceBundle.getBundle(language);
 
         this.property = (SimpleObjectProperty<String>) property;

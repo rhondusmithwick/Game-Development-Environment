@@ -6,8 +6,6 @@ import view.enums.GUISize;
 
 public class Main extends Application {
 
-    private Stage myStage;
-
     /**
      * Launches our program.
      *
@@ -27,7 +25,7 @@ public class Main extends Application {
     @Override
     public void start (Stage stage) {
         System.setProperty("glass.accessible.force", "false");
-        myStage = stage;
+        Stage myStage = stage;
         myStage.setTitle("VOOGA");
         myStage.setWidth(GUISize.MAIN_SIZE.getSize());
         myStage.setHeight(GUISize.MAIN_SIZE.getSize());

@@ -51,7 +51,7 @@ public class Action implements ISerializable {
         return script;
     }
 
-    protected Bindings getParameters () {
+    public Bindings getParameters () {
         return parameters;
     }
 

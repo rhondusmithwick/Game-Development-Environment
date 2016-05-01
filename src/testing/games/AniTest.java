@@ -65,7 +65,7 @@ public class AniTest {
         // inputSystem.processInputs();
         eventSystem.updateInputs(dt);
 
-        universe.getAllEntities().stream().forEach(e -> drawCharacter(e));
+        universe.getAllEntities().stream().forEach(this::drawCharacter);
         //moveEntity(character, 1);
     }
 

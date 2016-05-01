@@ -243,7 +243,7 @@ public class ACGame {
         eventSystem.updateInputs(dt);
         //root.getChildren().clear();
 
-        level.getAllEntities().stream().forEach(e -> drawCharacter(e));
+        level.getAllEntities().stream().forEach(this::drawCharacter);
         //moveEntity(character, 1);
     }
 

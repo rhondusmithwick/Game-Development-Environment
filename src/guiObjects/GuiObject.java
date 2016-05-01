@@ -8,8 +8,8 @@ import java.util.ResourceBundle;
  * @author calinelson
  */
 public abstract class GuiObject {
-    private String objectName;
-    private ResourceBundle myResources;
+    private final String objectName;
+    private final ResourceBundle myResources;
 
     /**
      * constructor for gui objects

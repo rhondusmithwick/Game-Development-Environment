@@ -8,7 +8,7 @@ import java.util.Map;
 
 public class TimeTrigger extends Trigger {
 
-    private double time;
+    private final double time;
 
     public TimeTrigger (double time) {
         this.time = time;

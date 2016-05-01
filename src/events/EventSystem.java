@@ -98,11 +98,13 @@ public class EventSystem implements Observer, IEventSystem {
         inputSystem.unListenToInput(listener);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void listenToTimer (ChangeListener listener) {
         timer.addListener(listener);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void unListenToTimer (ChangeListener listener) {
         timer.removeListener(listener);

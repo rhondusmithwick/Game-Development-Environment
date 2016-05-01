@@ -12,6 +12,7 @@ import java.util.Set;
  * @author Tom
  */
 
+@SuppressWarnings("ALL")
 public class ViewUtilities {
 
     private static final String SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(22, 0, 255, 0.8), 10, 0, 0, 0)",

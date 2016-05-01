@@ -23,8 +23,8 @@ import java.util.Collection;
 
 public class EnvironmentButtonUtilites {
 
-    private EditorEnvironment myEditor;
-    private String myLanguage;
+    private final EditorEnvironment myEditor;
+    private final String myLanguage;
 
     EnvironmentButtonUtilites (IView view, VBox box, ObservableList<IEntity> masterList, EditorEnvironment editor, String language) {
         myLanguage = language;
@@ -47,15 +47,12 @@ public class EnvironmentButtonUtilites {
     public Button createEntityButton (IEntity entity) {
         Button entityInButton = new Button(entity.getName());
         entityInButton.setMaxWidth(Double.MAX_VALUE);
-        entityInButton.setOnMouseClicked(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle (MouseEvent event) {
-                MouseButton button = event.getButton();
-                if (button == MouseButton.PRIMARY) {
-                    entityLeftClicked(entity);
-                } else if (button == MouseButton.SECONDARY) {
-                    entityRightClicked(entity, entityInButton, event);
-                }
+        entityInButton.setOnMouseClicked(event -> {
+            MouseButton button = event.getButton();
+            if (button == MouseButton.PRIMARY) {
+                entityLeftClicked(entity);
+            } else if (button == MouseButton.SECONDARY) {
+                entityRightClicked(entity, entityInButton, event);
             }
         });
         entityInButton.setOnMouseEntered(e -> myEditor.highlight(entity));
@@ -68,9 +65,7 @@ public class EnvironmentButtonUtilites {
         EditorEntity entityEditor = (EditorEntity) new EditorFactory().createEditor(EditorEntity.class.getName(),
                 myLanguage, entity, entityList);
         entityEditor.populateLayout();
-        entityList.addListener((ListChangeListener<IEntity>) c -> {
-            myEditor.updateEditor();
-        });
+        entityList.addListener((ListChangeListener<IEntity>) c -> myEditor.updateEditor());
         PopUp myPopUp = new PopUp(GUISize.ENTITY_EDITOR_WIDTH.getSize(), GUISize.ENTITY_EDITOR_HEIGHT.getSize());
         myPopUp.show(entityEditor.getPane());
     }

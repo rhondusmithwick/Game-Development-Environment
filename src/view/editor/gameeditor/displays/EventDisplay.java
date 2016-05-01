@@ -15,12 +15,12 @@ import java.util.ResourceBundle;
 
 public class EventDisplay extends ObjectDisplay {
 
-    private Authoring authoringEnvironment;
+    private final Authoring authoringEnvironment;
     private String language;
-    private ResourceBundle myResources;
-    private ObservableList<IEntity> masterEntityList;
+    private final ResourceBundle myResources;
+    private final ObservableList<IEntity> masterEntityList;
     private ObservableList<ISerializable> masterEnvironmentList;
-    private ObservableList<ILevel> levelList;
+    private final ObservableList<ILevel> levelList;
 
     public EventDisplay (String language,
                          ObservableList<IEntity> masterEntityList, ObservableList<ILevel> levelList,

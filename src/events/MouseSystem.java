@@ -17,7 +17,7 @@ public class MouseSystem {
     private Queue<MouseEvent> fillQ = firstQueue;
     private Queue<MouseEvent> processQ = secondQueue;
 
-    private SimpleObjectProperty<MouseEvent> currentChar = new SimpleObjectProperty<>();
+    private final SimpleObjectProperty<MouseEvent> currentChar = new SimpleObjectProperty<>();
 
     public void takeInput (MouseEvent k) {
         fillQ.add(k);
@@ -34,10 +34,12 @@ public class MouseSystem {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public void listenToMousePress (ChangeListener listener) {
         currentChar.addListener(listener);
     }
 
+    @SuppressWarnings("unchecked")
     public void unListenToMousePress (ChangeListener listener) {
         currentChar.removeListener(listener);
     }

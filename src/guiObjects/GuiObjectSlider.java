@@ -16,10 +16,9 @@ import java.util.ResourceBundle;
  */
 
 public abstract class GuiObjectSlider extends GuiObject {
-    private Slider slider;
-    private Label textLabel;
-    private Label numLabel;
-    private ResourceBundle myPropertiesNames;
+    private final Slider slider;
+    private final Label textLabel;
+    private final Label numLabel;
 
     /**
      * constructor of new gui slider instance
@@ -32,7 +31,7 @@ public abstract class GuiObjectSlider extends GuiObject {
      */
     public GuiObjectSlider (String name, String resourceBundle, String language, SimpleObjectProperty<?> property) {
         super(name, resourceBundle);
-        this.myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
+        ResourceBundle myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
         this.slider = createSlider(name, property);
         textLabel = new Label(myPropertiesNames.getString(getObjectName()));
         numLabel = new Label(Double.toString(slider.getValue()));

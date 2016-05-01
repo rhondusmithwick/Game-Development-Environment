@@ -25,33 +25,30 @@ import java.util.ResourceBundle;
 
 public class TimeEventEditor extends EventEditorTab {
     Text addedParametersText;
-    private ScrollPane scrollPane;
-    private ScrollPane chosenEntityBox;
+    private final ScrollPane scrollPane;
     private Text chosenEntityText;
-    private Text chosenEntityTitle;
-    private VBox pane;
-    private ResourceBundle myResources;
-    private Button createEventButton;
-    private String language;
-    private KeyBindingTableManager tableManager;
-    private EventViewManager eventViewManager;
+    private final Text chosenEntityTitle;
+    private final VBox pane;
+    private final ResourceBundle myResources;
+    private final KeyBindingTableManager tableManager;
+    private final EventViewManager eventViewManager;
     private HBox parametersPane;
     // TODO test
     private Button getEventsString;
 
     private List<IEntity> chosenEntities;
-    private TextField textField;
+    private final TextField textField;
 
     public TimeEventEditor (String language, ObservableList<ILevel> levelList) {
         super(language, levelList);
-        this.language = language;
+        String language1 = language;
 
         eventViewManager = new EventViewManager();
 
         chosenEntityTitle = new Text("== PICKED ENTITIES ==\n");    // TODO resource
         chosenEntityTitle.setFont(new Font(20));    // TODO enum...?
 
-        chosenEntities = new ArrayList<IEntity>();
+        chosenEntities = new ArrayList<>();
         scrollPane = new ScrollPane();
         myResources = ResourceBundle.getBundle(language);
 
@@ -61,8 +58,8 @@ public class TimeEventEditor extends EventEditorTab {
         tableManager = new KeyBindingTableManager(language, this);
 
         addParametersPane(pane);
-        choseLevels(new ArrayList<ILevel>(levelList));
-        eventViewManager.levelWasPicked(new ArrayList<ILevel>(levelList));
+        choseLevels(new ArrayList<>(levelList));
+        eventViewManager.levelWasPicked(new ArrayList<>(levelList));
         textField = TextFieldFactory.makeTextArea("INPUT TIME!");
 
         populateLayout();
@@ -106,13 +103,13 @@ public class TimeEventEditor extends EventEditorTab {
 
         // chooseFileButton = ButtonFactory.makeButton(myResources.getString("chooseGroovy"), e -> getFile());
 
-        createEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
+        Button createEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
 
         innerContainer.getChildren().addAll(textField, getActionPane(), createEventButton);
 
         chosenEntityText = new Text();
 
-        chosenEntityBox = new ScrollPane(new VBox(chosenEntityTitle, chosenEntityText));
+        ScrollPane chosenEntityBox = new ScrollPane(new VBox(chosenEntityTitle, chosenEntityText));
 
         fillChosenEntityBox();
         container.getChildren().addAll(getLevelPickerPane(), tableManager.getContainer(), chosenEntityBox, innerContainer);

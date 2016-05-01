@@ -28,10 +28,10 @@ public class PropertyEventEditor extends EventEditorTab {
     private final ResourceBundle myResources;
     private final String language;
     EditorEvent masterEditor;
-    private EventViewManager eventViewManager;
-    private Text triggerText;
+    private final EventViewManager eventViewManager;
+    private final Text triggerText;
     private Button makeEventButton;
-    private PropertyTableManager tableManager;
+    private final PropertyTableManager tableManager;
     private List<IEntity> chosenEntities;
     private String chosenEntityName;
     private IComponent chosenComponent;
@@ -54,18 +54,17 @@ public class PropertyEventEditor extends EventEditorTab {
         makeEventButton = new Button();
         tableManager = new PropertyTableManager(language, this);
         populateLayout();
-        choseLevels(new ArrayList<ILevel>(levelList));
-        eventViewManager.levelWasPicked(new ArrayList<ILevel>(levelList));
+        choseLevels(new ArrayList<>(levelList));
+        eventViewManager.levelWasPicked(new ArrayList<>(levelList));
         scrollPane = new ScrollPane(pane);
     }
 
     private VBox makeGroovySide () {
-        VBox container = new VBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
         // Adding now the Groovy Table
 
 
         // container.getChildren().addAll(getActionPane());
-        return container;
+        return new VBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
     }
 
     private void makeTables () {
@@ -101,12 +100,10 @@ public class PropertyEventEditor extends EventEditorTab {
 
         if (getChosenLevels().isEmpty()) return;
         for (ILevel level : getChosenLevels()) {
-            for (IEntity entity : level.getAllEntities()) {
-                if (entity.getName().equals(chosenEntityName)) {
-                    addEventToLevel(level, chosenEntities, "PropertyTrigger", entity.getID(),
-                            chosenComponent.getClass(), chosenProperty);
-                }
-            }
+            level.getAllEntities().stream().filter(entity -> entity.getName().equals(chosenEntityName)).forEach(entity -> {
+                addEventToLevel(level, chosenEntities, "PropertyTrigger", entity.getID(),
+                        chosenComponent.getClass(), chosenProperty);
+            });
         }
 
         // Carolyn's refactoring

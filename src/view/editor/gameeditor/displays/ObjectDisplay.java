@@ -14,7 +14,7 @@ import view.enums.GUISize;
 public abstract class ObjectDisplay {
 
     private final EditorFactory editFact = new EditorFactory();
-    private Authoring authEnv;
+    private final Authoring authEnv;
     private VBox container;
 
 
@@ -33,11 +33,8 @@ public abstract class ObjectDisplay {
 
 
     protected void addListeners (ObservableList<ISerializable> toObserve) {
-        toObserve.addListener(new ListChangeListener<ISerializable>() {
-            @Override
-            public void onChanged (@SuppressWarnings("rawtypes") ListChangeListener.Change change) {
-                updateDisplay();
-            }
+        toObserve.addListener((ListChangeListener<ISerializable>) change -> {
+            updateDisplay();
         });
 
     }
@@ -51,7 +48,6 @@ public abstract class ObjectDisplay {
 
     protected void updateDisplay () {
         container.getChildren().clear();
-        ;
         addNewObjects(container);
 
     }

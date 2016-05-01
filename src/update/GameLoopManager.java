@@ -26,25 +26,27 @@ import view.utilities.TextFieldFactory;
 
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Map;
 import java.util.ResourceBundle;
 
 public class GameLoopManager {
-    private int padding = GUISize.LOOP_MANAGER_PADDING.getSize();
-    private ResourceBundle myResources;
-    private Stage stage = new Stage();
-    private VBox pane = new VBox(padding);
-    private ScrollPane scrollPane = new ScrollPane(pane);
+    private final int padding = GUISize.LOOP_MANAGER_PADDING.getSize();
+    private final ResourceBundle myResources;
+    private final Stage stage = new Stage();
+    private final VBox pane = new VBox(padding);
+    private final ScrollPane scrollPane = new ScrollPane(pane);
     private ComboBox<String> comboBox;
-    private Scene scene = new Scene(scrollPane, GUISize.LOOP_MANAGER_WIDTH.getSize(), GUISize.LOOP_MANAGER_HEIGHT.getSize());
-    private TextField keyField, valueField;
-    private ILevel level;
+    private final TextField keyField;
+    private final TextField valueField;
+    private final ILevel level;
     private ObservableList<String> valueList = FXCollections.observableArrayList();
-    private ListView<String> listView = new ListView<String>(valueList);
-    private Map<String, String> valueMap;
+    private ListView<String> listView = new ListView<>(valueList);
+    private final Map<String, String> valueMap;
 
     public GameLoopManager (String language, ISystemManager game) {
         myResources = ResourceBundle.getBundle(language);
+        Scene scene = new Scene(scrollPane, GUISize.LOOP_MANAGER_WIDTH.getSize(), GUISize.LOOP_MANAGER_HEIGHT.getSize());
         scene.getStylesheets().add(new File(DefaultStrings.CSS_LOCATION.getDefault() + DefaultStrings.MAIN_CSS.getDefault()).toURI().toString());
         stage.setScene(scene);
         stage.setTitle(myResources.getString("loopManager"));
@@ -58,7 +60,7 @@ public class GameLoopManager {
     }
 
     private void setupList () {
-        listView.setCellFactory(e -> new DragDropCell<String>());
+        listView.setCellFactory(e -> new DragDropCell<>());
         listView.setEditable(true);
         listView.setMaxWidth(GUISize.LIST_VIEW_WIDTH.getSize());
         listView.setOnKeyPressed(e -> {
@@ -83,7 +85,7 @@ public class GameLoopManager {
     private VBox populateLeft () {
         VBox vBox = new VBox(padding);
         String script = myResources.getString("keyDefault");
-        comboBox = ComboFactory.makeComboBox(myResources.getString("selectKey"), Arrays.asList(script), null);
+        comboBox = ComboFactory.makeComboBox(myResources.getString("selectKey"), Collections.singletonList(script), null);
         comboBox.setValue(script);
         populateList(script);
         Button button = ButtonFactory.makeButton(myResources.getString("addKey"), e -> addKey());
@@ -134,7 +136,7 @@ public class GameLoopManager {
         String val = valueMap.get(key);
         if (val != null) {
             valueList = FXCollections.observableArrayList(val.split(","));
-            listView = new ListView<String>(valueList);
+            listView = new ListView<>(valueList);
             setupList();
         }
     }

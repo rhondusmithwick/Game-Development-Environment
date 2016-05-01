@@ -75,7 +75,7 @@ public class CollisionTestGame {
     public void initEngine () {
         Entity char1 = addCharacter("Anolyn", "blastoise.xml", IMAGE_PATH_BLASTOISE, 50.0, 200.0, "1");
         Entity char2 = addCharacter("Cani", "charizard.xml", IMAGE_PATH_CHARIZARD, 200.0, 200.0, "2");
-        Map<String, Object> parameters = new HashMap<String, Object>();
+        Map<String, Object> parameters = new HashMap<>();
         parameters.put("entityID", char1.getID());
         registerEventSetup("PropertyTrigger", healthScriptPath, parameters, char1.getID(), char1.getComponent(Position.class).getClass(),
                 char1.getComponent(Position.class).getProperty("YPosition"));

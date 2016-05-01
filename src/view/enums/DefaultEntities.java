@@ -38,7 +38,7 @@ public enum DefaultEntities {
     DefaultEntities (String name, String template, List<IComponent> components) {
         entity = new Entity(name);
         entity.loadSpecsFromPropertiesFile(template);
-        components.stream().forEach(e -> entity.addComponent(e));
+        components.stream().forEach(entity::addComponent);
 
 
     }

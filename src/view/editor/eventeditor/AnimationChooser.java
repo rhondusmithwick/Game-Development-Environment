@@ -22,8 +22,7 @@ public class AnimationChooser {
     private static final double HEIGHT = 400;
     private static final String DEFAULT_LANGUAGE = "languages.english";
 
-    private IEntity myEntity;
-    private AnimatedSprite animatedSprite;
+    private final IEntity myEntity;
     private ResourceBundle myResources = ResourceBundle.getBundle(DEFAULT_LANGUAGE);
 
 
@@ -46,8 +45,8 @@ public class AnimationChooser {
      */
     public String initChooser () {
         if (checkIfAnimatedSprite()) {
-            animatedSprite = getAnimatedSpriteComponent();
-            List<String> animationNames = new ArrayList<String>(animatedSprite.getAnimationNames());
+            AnimatedSprite animatedSprite = getAnimatedSpriteComponent();
+            List<String> animationNames = new ArrayList<>(animatedSprite.getAnimationNames());
             return ChoiceDialogFactory.choiceBox(animationNames, myResources.getString("animationChooserTitle"), myResources.getString("animationChooserHeader"), myResources.getString("animationChooserContent"));
 
         } else {
@@ -64,12 +63,7 @@ public class AnimationChooser {
 
 
     private boolean checkIfAnimatedSprite () {
-        if (!myEntity.hasComponent(AnimatedSprite.class)) {
-            return false;
-
-
-        }
-        return true;
+        return myEntity.hasComponent(AnimatedSprite.class);
 
 
     }

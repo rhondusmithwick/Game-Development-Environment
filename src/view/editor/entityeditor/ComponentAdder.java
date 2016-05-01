@@ -18,9 +18,9 @@ public class ComponentAdder extends ComponentModifier {
 
     private final ResourceBundle myLocs = ResourceBundle.getBundle(DefaultStrings.COMPONENT_LOC.getDefault());
     private final ComponentFactory componentFactory = new ComponentFactory();
-    private ResourceBundle myComponentNames;
-    private IEntity entity;
-    private List<String> myComponents;
+    private final ResourceBundle myComponentNames;
+    private final IEntity entity;
+    private final List<String> myComponents;
 
     public ComponentAdder (String language, IEntity entity) {
         super(language);

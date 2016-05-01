@@ -22,8 +22,8 @@ public class GuavaTester implements Tester {
             System.out.println(i);
         }
         // System.out.println(list1.retainAll(list2));
-        Set<Integer> s1 = new HashSet<Integer>(list1);
-        Set<Integer> s2 = new HashSet<Integer>(list2);
+        Set<Integer> s1 = new HashSet<>(list1);
+        Set<Integer> s2 = new HashSet<>(list2);
         // System.out.println(s1.retainAll(s2));
         System.out.println(Sets.intersection(s1, s2));
     }
