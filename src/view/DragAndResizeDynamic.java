@@ -1,7 +1,6 @@
 package view;
 
 import api.IEntity;
-import api.ILevel;
 import javafx.scene.Cursor;
 import javafx.scene.Group;
 import javafx.scene.Node;

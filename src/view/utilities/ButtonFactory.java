@@ -25,4 +25,5 @@ public class ButtonFactory {
 		button.setOnAction(handler);
 		return button;
 	}
+	
 }

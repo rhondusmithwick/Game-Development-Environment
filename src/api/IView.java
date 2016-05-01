@@ -15,4 +15,6 @@ public interface IView {
 	IEntitySystem getEntitySystem();
 
 	ILevel getLevel();
+
+	void dehighlight(IEntity entity);
 }

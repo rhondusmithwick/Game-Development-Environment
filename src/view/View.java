@@ -3,19 +3,24 @@ package view;
 import api.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -27,12 +32,16 @@ import model.component.visual.Sprite;
 import model.core.SystemManager;
 import update.GameLoopManager;
 import view.utilities.ButtonFactory;
+import view.utilities.PopUp;
 import view.utilities.SpriteUtilities;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
+import java.util.Map.Entry;
 
 /**
  * 
@@ -76,7 +85,8 @@ public class View implements IView {
 		viewUtils = new ViewUtilities();
 		DandR = new DragAndResizeDynamic();
 		DandR.makeRootDragAndResize(root);
-		this.startTimeline();
+		ViewFeatureMethods.startTimeline(MILLISECOND_DELAY, e -> step(SECOND_DELAY));
+		//this.startTimeline();
 	}
 
 	private void createLoopManager() {
@@ -95,7 +105,7 @@ public class View implements IView {
 		return this.subScene;
 	}
 
-	private void startTimeline() {
+	public void startTimeline() {
 		KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> this.step(SECOND_DELAY));
 		Timeline timeline = new Timeline();
 		timeline.setCycleCount(Timeline.INDEFINITE);
@@ -184,6 +194,7 @@ public class View implements IView {
 				root.getChildren().addAll(getCollisionShapes(e));
 				DandR.makeEntityDragAndResize(e);
 				ImageView imageView = getUpdatedImageView(e);
+				imageView.setOnContextMenuRequested(event -> showPopUp(e,event));
 				root.getChildren().add(imageView);
 				if (!root.getChildren().contains(imageView)) {
 					root.getChildren().add(imageView);
@@ -236,6 +247,29 @@ public class View implements IView {
 			}
 		});
 	}
+	
+	public void showPopUp(IEntity entity, ContextMenuEvent event) {
+		
+		Map<String, EventHandler<ActionEvent>> menuMap = new LinkedHashMap<String, EventHandler<ActionEvent>>();
+		menuMap.put(myResources.getString("remove"), e -> ViewFeatureMethods.removeFromDisplay(entity, getEntitySystem()));
+		menuMap.put(myResources.getString("sendBack"), e -> ViewFeatureMethods.sendToBack(entity, getEntitySystem()));
+		menuMap.put(myResources.getString("sendFront"), e -> ViewFeatureMethods.sendToFront(entity, getEntitySystem()));
+		menuMap.put(myResources.getString("sendBackOne"), e ->ViewFeatureMethods.sendBackward(entity, getEntitySystem()));
+		menuMap.put(myResources.getString("sendForwardOne"), e -> ViewFeatureMethods.sendForward(entity, getEntitySystem()));
+		
+		PopUp myPopUp = new PopUp(120, 180);
+		myPopUp.show(setPopUp(menuMap),event.getScreenX(),event.getScreenY());
+	}
+	
+	public ScrollPane setPopUp(Map<String,EventHandler<ActionEvent>> map){
+		VBox box = new VBox();
+		for (Entry<String, EventHandler<ActionEvent>> entry : map.entrySet()){
+			Button button = ButtonFactory.makeButton(entry.getKey(), entry.getValue());
+			button.setMaxWidth(Double.MAX_VALUE);
+			box.getChildren().add(button);
+		}
+		return new ScrollPane(box);
+	}
 
 	private void evaluate() {
 		String text = console.getText();
@@ -253,4 +287,9 @@ public class View implements IView {
 		console.println();
 	}
 
+	@Override
+	public void dehighlight(IEntity entity) {
+		viewUtils.dehighlight(entity);
+	}
+	
 }
