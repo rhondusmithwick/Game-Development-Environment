@@ -34,3 +34,7 @@ List<IEntity> getEntitiesWithNamesAndIDs() {
     }
     return entities;
 }
+
+void workOnEntities(Closure closure) {
+    getEntitiesWithNamesAndIDs().each(closure);
+}
