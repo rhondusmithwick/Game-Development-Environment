@@ -34,6 +34,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+import static view.utilities.SpriteUtilities.isSprite;
+
 /**
  * @author Bruna
  */
@@ -107,7 +109,7 @@ public class EditorEnvironment extends Editor {
         }
         view.getEntitySystem().addEntity(entity);
         try {
-            if (!entity.hasComponent(Position.class) || !entity.hasComponent(Sprite.class)) { // TODO: animation?
+            if (!entity.hasComponent(Position.class) || !isSprite(entity)) { // TODO: animation?
                 addComponents(entity);
             }
             environmentEntityButtonsBox.getChildren().add(myButtonsClass.createEntityButton(entity));
