@@ -1,11 +1,10 @@
 package groovyScripts
 
 import api.IEntity
-import api.IGameScript
-import api.ISystemManager
 import groovy.transform.BaseScript
 import model.component.movement.Orientation
 import model.component.visual.AnimatedSprite
+import providedScripts.ScriptHelpers
 
 /**
  * Created by rhondusmithwick on 4/30/16.
