@@ -155,7 +155,7 @@ public class PhysicsEngine implements IPhysicsEngine {
                 Velocity.class);
 
         entitiesSubjectToGravity.stream().forEach(entity -> {
-            System.out.println(entity.getComponent(Collision.class).getCollidingIDs());
+            System.out.println("colliding iDs!: " +entity.getComponent(Collision.class).getCollidingIDs());
             // if
             // (!entity.getComponent(Collision.class).getCollidingIDs().contains(Collision.BOTTOM))
             // {
@@ -352,7 +352,7 @@ public class PhysicsEngine implements IPhysicsEngine {
         for (CollisionTypeEnum collisionType : CollisionTypeEnum.values()) {
             ICollisionSide collision = (ICollisionSide) Reflection.createInstance(collisionType.getType());
             double sideOverlap = collision.getOverlap(first.getMask(), second.getMask());
-            System.out.println(collision.getSide() + " " + sideOverlap);
+//            System.out.println(collision.getSide() + " " + sideOverlap);
             if (sideOverlap < minOverlap) {
                 minOverlap = sideOverlap;
                 collisionSide = collision;
