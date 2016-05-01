@@ -226,7 +226,7 @@ public class View implements IView {
 
 	private void initConsole() {
 		console.setText(myResources.getString("enterCommands"));
-		console.appendText("\n");
+		console.appendText("\n\n");
 
 		console.setOnKeyPressed(e -> {
 			KeyCode keyCode = e.getCode();
