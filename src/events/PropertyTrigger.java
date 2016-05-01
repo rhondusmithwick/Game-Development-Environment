@@ -2,6 +2,7 @@ package events;
 
 import api.IComponent;
 import api.IEntity;
+import api.IInputSystem;
 import api.ILevel;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.value.ObservableValue;
@@ -45,7 +46,7 @@ public class PropertyTrigger extends Trigger {
 
     @Override
     @Deprecated
-    public void clearListener(ILevel universe, InputSystem inputSystem) {
+    public void clearListener(ILevel universe, IInputSystem inputSystem) {
         property.removeListener(this);
     }
     
@@ -54,7 +55,7 @@ public class PropertyTrigger extends Trigger {
 
     @Override
     @Deprecated
-    public void addHandler(ILevel universe, InputSystem inputSystem) {
+    public void addHandler(ILevel universe, IInputSystem inputSystem) {
         getProperty(universe).addListener(this);
     }
 
