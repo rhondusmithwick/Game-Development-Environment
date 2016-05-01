@@ -311,4 +311,10 @@ public interface IEntity extends ISerializable {
     default <T extends IComponent> void setSpec (Class<T> componentClass, int numToHave) {
         getSpecs().put(componentClass, numToHave);
     }
+
+    /**
+     * Regenerate the unique id.
+     */
+    void regenerateID();
+
 }
