@@ -46,7 +46,6 @@ public class Vooga extends StartUpMenu {
         myResources = ResourceBundle.getBundle(DefaultStrings.LANG_LOC.getDefault() + DefaultStrings.DEFAULT_LANGUAGE.getDefault());
     }
 
-
     @Override
     protected ScrollPane createDisplay () {
         ScrollPane root = super.createDisplay();

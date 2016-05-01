@@ -19,7 +19,7 @@ import java.util.List;
 public class AnimatedSprite extends Sprite {
     private static final String DEFAULT_IMAGE = "resources/spriteSheets/ryuBlue.gif";
     private static final String DEFAULT_BUNDLE = "spriteProperties/aniryu";
-    private final TwoProperty<String, String> twoProperty = new TwoProperty<>("BundlePath", DEFAULT_BUNDLE, "DefaultAnimation", "RightDefault");
+    private final TwoProperty<String, String> twoProperty = new TwoProperty<>("BundlePath", DEFAULT_BUNDLE, "DefaultAnimation", "westDefault");
     private CustomAnimationContainer container = new CustomAnimationContainer(DEFAULT_BUNDLE);
     private String currentAnimationName = "";
     private transient Animation currentAnimation;
