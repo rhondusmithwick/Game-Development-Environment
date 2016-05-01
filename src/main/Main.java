@@ -16,6 +16,7 @@ public class Main extends Application{
 
 		@Override
 		public void start (Stage stage) {
+			System.setProperty("glass.accessible.force", "false");
 			myStage = stage;
 			myStage.setTitle("VOOGA");
 			myStage.setWidth(GUISize.MAIN_SIZE.getSize());

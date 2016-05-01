@@ -10,11 +10,6 @@ package testing.games;
 import api.IEntity;
 import api.ILevel;
 import api.IPhysicsEngine;
-
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
-
-import datamanagement.XMLReader;
 import events.*;
 import api.IEventSystem;
 import javafx.scene.Group;
@@ -22,48 +17,16 @@ import javafx.scene.Scene;
 import javafx.scene.image.ImageView;
 import javafx.scene.paint.Color;
 import model.component.character.Health;
-import model.component.character.Score;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.physics.Collision;
-import model.component.physics.Gravity;
 import model.component.physics.Mass;
+import model.component.physics.RestitutionCoefficient;
 import model.component.visual.Sprite;
 import model.entity.Entity;
 import model.entity.Level;
-import model.physics.PhysicsEngine;
-
-import java.io.File;
-import java.io.IOException;
-
-import api.IEntity;
-import api.ILevel;
-
-import com.google.common.base.Charsets;
-import com.google.common.io.Files;
-
-import datamanagement.XMLReader;
-import events.Action;
-import events.EventSystem;
-import events.KeyTrigger;
-import events.PropertyTrigger;
-import javafx.scene.Group;
-import javafx.scene.Scene;
-import javafx.scene.image.ImageView;
-import javafx.scene.paint.Color;
-import model.component.character.Health;
-import model.component.character.Score;
-import model.component.movement.Position;
-import model.component.movement.Velocity;
-import model.component.physics.Gravity;
-import model.component.visual.Sprite;
-import model.entity.Entity;
-import model.entity.Level;
-import model.physics.PhysicsEngine;
-import utility.Pair;
-
-import java.io.File;
-import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CollisionTestGame {
 
@@ -83,9 +46,6 @@ public class CollisionTestGame {
     private final String transformScriptPath = "resources/groovyScripts/CollisionGameHealthChangeImage.groovy";
     private final String moveRightScriptPath = "resources/groovyScripts/keyInputMoveRight.groovy";
     private final String moveLeftScriptPath = "resources/groovyScripts/keyInputMoveLeft.groovy";
-
-    private final String moveRightScriptPath2 = "resources/groovyScripts/keyInputMoveRight2.groovy";
-    private final String moveLeftScriptPath2 = "resources/groovyScripts/keyInputMoveLeft2.groovy";
     private final String jumpScriptPath = "resources/groovyScripts/keyInputJump.groovy";
     private Scene myScene;
     EventFactory eventFactory = new EventFactory();
@@ -111,23 +71,29 @@ public class CollisionTestGame {
     }
 
     public void initEngine() {
-        addCharacter("Anolyn", "blastoise.xml", IMAGE_PATH_BLASTOISE, 50.0, 200.0, "1");
-        addCharacter("Cani", "charizard.xml", IMAGE_PATH_CHARIZARD, 200.0, 200.0, "2");
-        registerEventSetup("PropertyTrigger", healthScriptPath, "Anolyn", Position.class, "YPosition");
-        registerEventSetup("PropertyTrigger", healthScriptPath, "Anolyn", Collision.class, "CollidingIDs");
-        registerEventSetup("PropertyTrigger", transformScriptPath, "Anolyn", Health.class, "Health");
-        registerEventSetup("KeyTrigger", moveRightScriptPath, "D");
-        registerEventSetup("KeyTrigger", moveLeftScriptPath, "A");
-        registerEventSetup("KeyTrigger", jumpScriptPath, "W");
-        registerEventSetup("KeyTrigger", moveLeftScriptPath2, "J");
-        registerEventSetup("KeyTrigger", moveRightScriptPath2, "L");
-
+        Entity char1 = addCharacter("Anolyn", "blastoise.xml", IMAGE_PATH_BLASTOISE, 50.0, 200.0, "1");
+        Entity char2 = addCharacter("Cani", "charizard.xml", IMAGE_PATH_CHARIZARD, 200.0, 200.0, "2");
+        Map<String, Object> parameters = new HashMap<String, Object>();
+        parameters.put("entityID", char1.getID());
+        registerEventSetup("PropertyTrigger", healthScriptPath, parameters, char1.getID(), char1.getComponent(Position.class).getClass(),
+                char1.getComponent(Position.class).getProperty("YPosition"));
+        registerEventSetup("PropertyTrigger", healthScriptPath, parameters, char1.getID(), char1.getComponent(Collision.class).getClass(),
+                char1.getComponent(Collision.class).getProperty("CollidingIDs"));
+        registerEventSetup("PropertyTrigger", transformScriptPath, parameters, char1.getID(), char1.getComponent(Health.class).getClass(),
+                char1.getComponent(Health.class).getProperty("Health"));
+        registerEventSetup("KeyTrigger", moveRightScriptPath, parameters, "D");
+        registerEventSetup("KeyTrigger", moveLeftScriptPath, parameters, "A");
+        registerEventSetup("KeyTrigger", jumpScriptPath, parameters, "W");
+        parameters.keySet().clear();
+        parameters.put("entityID", char2.getID());
+        registerEventSetup("KeyTrigger", moveLeftScriptPath, parameters, "J");
+        registerEventSetup("KeyTrigger", moveRightScriptPath, parameters, "L");
     }
 
-    private void addCharacter(String name, String XMLName, String imagePath, Double posX, Double posY, String id) {
+    private Entity addCharacter(String name, String XMLName, String imagePath, Double posX, Double posY, String id) {
         //int var = 0;
         //if (var == 0) {
-        IEntity character = new Entity(name);
+        Entity character = new Entity(name);
         character.forceAddComponent(new Health((double) 100), true);
         Position pos = new Position(posX, posY);
         character.forceAddComponent(pos, true);
@@ -135,22 +101,18 @@ public class CollisionTestGame {
         character.forceAddComponent(new Velocity(0, 0), true);
         character.forceAddComponent(new Mass(100), true);
         character.addComponent(new Collision("")); // instantiated by string instead of collection
+        character.forceAddComponent(new RestitutionCoefficient(0.5), true);
         universe.addEntity(character);
         character.addComponent(new Sprite(imagePath));
-        //character.addComponent(new Gravity(5000));
-        //character.serialize(XMLName);
-        //}
-//        else {
-//            character = new XMLReader<IEntity>().readSingleFromFile("character.xml");
-//            universe.addEntity(character);
-//            eventSystem.readEventFromFile("eventtest.xml");
-//        }
-        //drawCharacter(character);
+        drawCharacter(character);
+        return character;
     }
 
-    public void registerEventSetup(String className, String scriptName, Object... args) {
-        Pair<Trigger, Action> event = eventFactory.createEvent(className, scriptName, args);
-        eventSystem.registerEvent(event._1(), event._2());
+    public void registerEventSetup(String className, String scriptName, Map<String, Object> params, Object... args) {
+        //Pair<Trigger, Action> event = eventFactory.createEvent(className, scriptName, args);
+        Trigger trigger = eventFactory.createTrigger(className, args);
+        Action action = new Action(scriptName, params);
+        eventSystem.registerEvent(trigger, action);
     }
 
     public void step(double dt) {
@@ -161,18 +123,10 @@ public class CollisionTestGame {
     public void drawCharacter(IEntity character) {
         Sprite imgPath = character.getComponent(Sprite.class);
         ImageView charSprite = imgPath.getImageView();
-        charSprite.setFitHeight(100.0);
+        charSprite.setLayoutX(character.getComponent(Position.class).getX());
+        charSprite.setLayoutY(character.getComponent(Position.class).getY());
         charSprite.setPreserveRatio(true);
         root.getChildren().add(charSprite);
     }
 
-    private Action getAction(String scriptPath) {
-        String script = null;
-        try {
-            script = Files.toString(new File(scriptPath), Charsets.UTF_8);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return new Action(script);
-    }
 }

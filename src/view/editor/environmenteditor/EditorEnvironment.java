@@ -55,6 +55,7 @@ public class EditorEnvironment extends Editor {
 				myLanguage, myScene, true);
 		myButtonsClass = new EnvironmentUtilites(view, environmentEntityButtonsBox, masterList, this, language);
 		addLayoutComponents();
+		System.setProperty("glass.accessible.force", "false");
 	}
 
 	private void addLayoutComponents() {
