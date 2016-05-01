@@ -5,19 +5,27 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 
 /**
- * Created by rhondusmithwick on 4/29/16.
+ * Methods for working with FilePaths.
  *
- * @author Rhondu Smithwick
+ * @author Rhondu Smithwick, Melissa Zhang
  */
-public class FilePathRelativizer {
-    private FilePathRelativizer () {
+public class FilePathUtility {
+    private FilePathUtility () {
     }
 
+    /**
+     * Get the base directory.
+     * @return the base directory
+     */
     public static String getBaseDirectory () {
         return System.getProperty("user.dir");
-
     }
 
+    /**
+     * Relativizes a file path to the base directory.
+     * @param otherDirectory the file path
+     * @return the relaitivized string
+     */
     public static String relativize (String otherDirectory) {
         Path base = Paths.get(getBaseDirectory());
         Path other = Paths.get(otherDirectory);
@@ -26,7 +34,6 @@ public class FilePathRelativizer {
         } catch (IllegalArgumentException e) {
             boolean inner = new File(base.toString(), other.toString()).exists();
             if (inner) {
-
                 return otherDirectory;
             }
             throw new IllegalArgumentException("Relativize problem");
@@ -40,19 +47,18 @@ public class FilePathRelativizer {
     }
 
     public static String extractFileName (String filePathName) {
-        if (filePathName == null)
+        if (filePathName == null) {
             return null;
-
+        }
         int dotPos = filePathName.lastIndexOf('.');
         int slashPos = filePathName.lastIndexOf('\\');
-        if (slashPos == -1)
+        if (slashPos == -1) {
             slashPos = filePathName.lastIndexOf('/');
-
+        }
         if (dotPos > slashPos) {
             return filePathName.substring(slashPos > 0 ? slashPos + 1 : 0,
                     dotPos);
         }
-
         return filePathName.substring(slashPos > 0 ? slashPos + 1 : 0);
     }
 

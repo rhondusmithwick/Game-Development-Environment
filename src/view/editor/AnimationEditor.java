@@ -10,7 +10,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 import javafx.stage.FileChooser;
 import model.component.visual.AnimatedSprite;
-import utility.FilePathRelativizer;
+import utility.FilePathUtility;
 import view.utilities.ButtonFactory;
 import view.utilities.FileUtilities;
 import view.utilities.TextFieldFactory;
@@ -49,13 +49,13 @@ public class AnimationEditor extends Editor {
     }
 
     private void getPropertiesFile () {
-        String spriteProperties = FilePathRelativizer.convertToResourceBase(FileUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("Properties Files", "*.properties"), "Choose Sprite Properties", DIR).getPath(), SPRITE_PROPERTIES);
+        String spriteProperties = FilePathUtility.convertToResourceBase(FileUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("Properties Files", "*.properties"), "Choose Sprite Properties", DIR).getPath(), SPRITE_PROPERTIES);
         animatedSpriteComponent.setBundlePath(spriteProperties);
         spritePropertiesField.setText(spriteProperties);
     }
 
     private void getSpriteSheet () {
-        String spriteSheet = FilePathRelativizer.relativize(FileUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("All Images", "*.*"), "Choose Sprite Sheet", DIR).getPath());
+        String spriteSheet = FilePathUtility.relativize(FileUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("All Images", "*.*"), "Choose Sprite Sheet", DIR).getPath());
         spriteSheetField.setText(spriteSheet);
     }
 
