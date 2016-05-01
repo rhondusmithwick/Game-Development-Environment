@@ -109,7 +109,6 @@
 ////                    new Action(addGravityScriptPath));
 package testing.games;
 
-import api.ICollisionVelocityCalculator;
 import api.IEntity;
 import api.IEventSystem;
 import api.ILevel;
@@ -133,7 +132,6 @@ import model.component.visual.Sprite;
 import model.entity.Entity;
 import model.entity.Level;
 import model.physics.PhysicsEngine;
-import model.physics.RealisticVelocityCalculator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -144,8 +142,8 @@ public class ACGame {
     public static final int KEY_INPUT_SPEED = 5;
     private static Group root;
     private final ILevel level = new Level();
-    private final ICollisionVelocityCalculator velocityCalculator = new RealisticVelocityCalculator();
-    private final PhysicsEngine physics = new PhysicsEngine(velocityCalculator);
+//    private final ICollisionVelocityCalculator velocityCalculator = new RealisticVelocityCalculator();
+    private final PhysicsEngine physics = new PhysicsEngine();
     private final String SPRITE_PATH = "resources/spriteSheets/ryuBlue.gif";
     private final String SPRITE_PROPERTIES = "spriteProperties/aniryu";
     private final String IMAGE_PATH = "resources/spriteSheets/aniryu.gif";

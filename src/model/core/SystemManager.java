@@ -1,10 +1,6 @@
 package model.core;
 
-import api.IEntity;
-import api.IEntitySystem;
-import api.IEventSystem;
-import api.ILevel;
-import api.ISystemManager;
+import api.*;
 import datamanagement.XMLReader;
 import groovy.lang.GroovyShell;
 import javafx.scene.Scene;
@@ -12,6 +8,7 @@ import model.component.movement.Position;
 import model.entity.Entity;
 import model.entity.Level;
 
+import java.util.ArrayList;
 import java.util.List;
 //import testing.demo.GroovyDemoTest;
 
@@ -22,81 +19,87 @@ import java.util.List;
  */
 public class SystemManager implements ISystemManager {
 
-    private final GroovyShell shell = new GroovyShell(); // CANNOT BE SCRIPT ENGINE
-    private ILevel level = new Level();
+    private GroovyShell shell = new GroovyShell(); // CANNOT BE SCRIPT ENGINE
+    private ILevel universe = new Level();
+    private List<ILevel> levelList = new ArrayList<>();
     private ILevel sharedUniverse = new Level();
     private boolean isRunning = false;
     private Scene scene; // TODO: remove
 
-    public SystemManager (Scene scene) {
+    public SystemManager(Scene scene) {
         this(scene, new Level());
     }
 
-    public SystemManager (Scene scene, ILevel level) {
+    public SystemManager(Scene scene, ILevel level) {
         this.scene = scene;
-        this.level = level;
+        this.universe = level;
+        levelList.add(level);
         initLevel();
     }
 
     @Deprecated
-    public SystemManager () {
+    public SystemManager() {
         this(new Level());
     }
 
     @Deprecated
-    public SystemManager (ILevel level) {
-        this.level = level;
+    public SystemManager(ILevel level) {
+        this.universe = level;
         initLevel();
     }
 
-    private void initLevel () {
+    private void initLevel() {
+        universe.init(shell, this);
+        scene.setOnKeyPressed(e -> universe.getEventSystem().takeInput(e)); // TODO: take in all inputs
         shell.setVariable("game", this);
-        shell.setVariable("level", this.getLevel());
-        shell.setVariable("level", this.getEntitySystem());
+        shell.setVariable("universe", universe);
+        //shell.setVariable("demo", new GroovyDemoTest()); // TODO: remove
     }
 
     @Override
-    public void pauseLoop () {
+    public void pauseLoop() {
         this.isRunning = false;
     }
 
     @Override
-    public void step (double dt) {
+    public void step(double dt) {
         if (this.isRunning) {
-            if (level.checkIfLevelOver()) {
-                loadLevel(level.getNextLevelPath());
+            universe.update(dt);
+            List<IEntity> entities = universe.getAllEntities();
+            for(IEntity e : entities) {
+                System.out.print(e.getComponent(Position.class).getY());
             }
-            level.update(dt);
+            System.out.println();
         }
     }
 
     @Override
-    public IEntitySystem getEntitySystem () {
-        return level.getEntitySystem();
+    public IEntitySystem getEntitySystem() {
+        return universe.getEntitySystem();
     }
 
     @Override
-    public ILevel getLevel () {
-        return this.level;
+    public ILevel getLevel() {
+        return this.universe;
     }
 
     @Override
-    public ILevel getSharedLevel () {
+    public ILevel getSharedLevel() {
         return this.sharedUniverse;
     }
 
     @Deprecated
     @Override
-    public IEventSystem getEventSystem () {
+    public IEventSystem getEventSystem() {
         System.out.println("Events deprecated in SystemManager.");
         System.exit(1);
         return null;
     }
 
     @Override
-    public void play () {
+    public void play() {
         this.isRunning = true;
-        level.getEventSystem().clearInputs();
+        universe.getEventSystem().clearInputs();
     }
 
     // private void readObject(ObjectInputStream in) throws IOException,
@@ -107,27 +110,27 @@ public class SystemManager implements ISystemManager {
     // }
 
     @Override
-    public void saveLevel (String filename) {
-        this.level.serialize(filename);
+    public void saveLevel(String filename) {
+        this.universe.serialize(filename);
     }
 
     @Override
-    public void saveSharedLevel (String filename) {
+    public void saveSharedLevel(String filename) {
         this.sharedUniverse.serialize(filename);
     }
 
     @Override
-    public void loadLevel (String filename) {
-        this.level = new XMLReader<ILevel>().readSingleFromFile(filename);
+    public void loadLevel(String filename) {
+        this.universe = new XMLReader<ILevel>().readSingleFromFile(filename);
         initLevel();
     }
 
     @Override
-    public void loadSharedLevel (String filename) {
+    public void loadSharedLevel(String filename) {
         this.sharedUniverse = new XMLReader<ILevel>().readSingleFromFile(filename);
     }
 
-    private IEntity[] idsToEntityArray (ILevel system, String... ids) {
+    private IEntity[] idsToEntityArray(ILevel system, String... ids) {
         IEntity[] entities = new Entity[ids.length];
         for (int i = 0; i < entities.length; i++) {
             entities[i] = system.getEntity(ids[i]);
@@ -136,33 +139,33 @@ public class SystemManager implements ISystemManager {
     }
 
     @Override
-    public void moveEntitiesToMainSystem (IEntity... entities) {
+    public void moveEntitiesToMainSystem(IEntity... entities) {
         for (IEntity e : entities) {
             this.sharedUniverse.removeEntity(e.getID());
-            this.level.addEntity(e);
+            this.universe.addEntity(e);
         }
     }
 
     @Override
-    public void moveEntitiesToMainSystem (String... ids) {
+    public void moveEntitiesToMainSystem(String... ids) {
         this.moveEntitiesToMainSystem(this.idsToEntityArray(this.sharedUniverse, ids));
     }
 
     @Override
-    public void moveEntitiesToSharedSystem (IEntity... entities) {
+    public void moveEntitiesToSharedSystem(IEntity... entities) {
         for (IEntity e : entities) {
-            this.level.removeEntity(e.getID());
+            this.universe.removeEntity(e.getID());
             this.sharedUniverse.addEntity(e);
         }
     }
 
     @Override
-    public void moveEntitiesToSharedSystem (String... ids) {
-        this.moveEntitiesToSharedSystem(this.idsToEntityArray(this.level, ids));
+    public void moveEntitiesToSharedSystem(String... ids) {
+        this.moveEntitiesToSharedSystem(this.idsToEntityArray(this.universe, ids));
     }
 
     @Override
-    public GroovyShell getShell () {
+    public GroovyShell getShell() {
         return this.shell;
     }
 
