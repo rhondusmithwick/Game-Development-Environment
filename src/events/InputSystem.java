@@ -16,10 +16,9 @@ import java.util.Queue;
 public class InputSystem implements IInputSystem {
     private final Queue<InputEvent> firstQueue = new LinkedList<>();
     private final Queue<InputEvent> secondQueue = new LinkedList<>();
+    private final SimpleObjectProperty<InputEvent> currentInput = new SimpleObjectProperty<>();
     private Queue<InputEvent> fillQ = firstQueue;
     private Queue<InputEvent> processQ = secondQueue;
-
-    private final SimpleObjectProperty<InputEvent> currentInput = new SimpleObjectProperty<>();
 
     @Override
     public void takeInput (InputEvent e) {

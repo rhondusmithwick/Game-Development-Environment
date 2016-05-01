@@ -5,7 +5,6 @@ import api.IView;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
@@ -21,6 +20,9 @@ import voogasalad.util.reflection.Reflection;
 
 import java.util.Collection;
 
+/**
+ * @author Bruna
+ */
 public class EnvironmentButtonUtilites {
 
     private final EditorEnvironment myEditor;

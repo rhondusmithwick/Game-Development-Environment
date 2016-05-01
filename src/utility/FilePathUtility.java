@@ -15,6 +15,7 @@ public class FilePathUtility {
 
     /**
      * Get the base directory.
+     *
      * @return the base directorya
      */
     public static String getBaseDirectory () {
@@ -23,6 +24,7 @@ public class FilePathUtility {
 
     /**
      * Relativizes a file path to the base directory.
+     *
      * @param otherDirectory the file path
      * @return the relaitivized string
      */

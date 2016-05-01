@@ -29,21 +29,17 @@ import java.util.ResourceBundle;
 
 // TODO put Action setting and file picker on abstract
 public class KeyBindingEditor extends EventEditorTab {
-    private boolean keyListenerIsActive;
     private final ScrollPane scrollPane;
-    private Text chosenEntityText;
     private final Text chosenEntityTitle;
-    private ComboBox<String> chooseKeyEventTypeBox;
-
     private final VBox pane;
-
-    private KeyCode currentKey;
-    private Text keyInputText;
     private final ResourceBundle myResources;
-
     private final KeyBindingTableManager tableManager;
     private final EventViewManager eventViewManager;
-
+    private boolean keyListenerIsActive;
+    private Text chosenEntityText;
+    private ComboBox<String> chooseKeyEventTypeBox;
+    private KeyCode currentKey;
+    private Text keyInputText;
     private List<IEntity> chosenEntities;
 
     public KeyBindingEditor (String language, ObservableList<ILevel> levelList) {
@@ -122,7 +118,7 @@ public class KeyBindingEditor extends EventEditorTab {
 
         Button createEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
 
-        innerContainer.getChildren().addAll(listenToKey, keyInputText, getActionPane(), createEventButton);
+        innerContainer.getChildren().addAll(listenToKey, chooseKeyEventTypeBox, keyInputText, getActionPane(), createEventButton);
 
         createEventButton.setOnAction(e -> createEvent());
 

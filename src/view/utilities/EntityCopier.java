@@ -1,6 +1,5 @@
 package view.utilities;
 
-import api.IComponent;
 import api.IEntity;
 import model.component.movement.Position;
 import model.component.visual.Sprite;
@@ -8,9 +7,7 @@ import model.entity.Entity;
 
 public class EntityCopier {
     private EntityCopier () {
-
     }
-
 
     /**
      * Creates an IEntity copy of the given IEntity with the same specs,
@@ -21,16 +18,18 @@ public class EntityCopier {
      */
 
     public static IEntity copyEntity (IEntity entity) {
-        IEntity newEntity = new Entity(entity.getName());
-        newEntity.setSpecs(entity.getSpecs());
-        for (IComponent component : entity.getAllComponents()) {
-            newEntity.addComponent(component.clone(component.getClass()));
-            componentInitialization(newEntity, entity);
-        }
+//        IEntity newEntity = new Entity(entity.getName());
+//        newEntity.setSpecs(entity.getSpecs());
+//        for (IComponent component : entity.getAllComponents()) {
+//            newEntity.addComponent(component.clone(component.getClass()));
+//            componentInitialization(newEntity, entity);
+//        }
+        IEntity newEntity = entity.clone(Entity.class);
+        newEntity.regenerateID();
         return newEntity;
     }
 
-    // TODO: account for animated sprite?
+    @Deprecated
     private static void componentInitialization (IEntity newEntity, IEntity oldEntity) {
         if (newEntity.hasComponent(Position.class)) {
             newEntity.removeComponent(Position.class);

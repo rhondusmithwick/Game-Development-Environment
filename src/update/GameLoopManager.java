@@ -25,7 +25,6 @@ import view.utilities.ComboFactory;
 import view.utilities.TextFieldFactory;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.Map;
 import java.util.ResourceBundle;
@@ -36,13 +35,13 @@ public class GameLoopManager {
     private final Stage stage = new Stage();
     private final VBox pane = new VBox(padding);
     private final ScrollPane scrollPane = new ScrollPane(pane);
-    private ComboBox<String> comboBox;
     private final TextField keyField;
     private final TextField valueField;
     private final ILevel level;
+    private final Map<String, String> valueMap;
+    private ComboBox<String> comboBox;
     private ObservableList<String> valueList = FXCollections.observableArrayList();
     private ListView<String> listView = new ListView<>(valueList);
-    private final Map<String, String> valueMap;
 
     public GameLoopManager (String language, ISystemManager game) {
         myResources = ResourceBundle.getBundle(language);

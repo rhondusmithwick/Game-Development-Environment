@@ -109,7 +109,6 @@
 ////                    new Action(addGravityScriptPath));
 package testing.games;
 
-import api.ICollisionVelocityCalculator;
 import api.IEntity;
 import api.IEventSystem;
 import api.ILevel;
@@ -133,7 +132,6 @@ import model.component.visual.Sprite;
 import model.entity.Entity;
 import model.entity.Level;
 import model.physics.PhysicsEngine;
-import model.physics.RealisticVelocityCalculator;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -144,8 +142,8 @@ public class ACGame {
     public static final int KEY_INPUT_SPEED = 5;
     private static Group root;
     private final ILevel level = new Level();
-    private final ICollisionVelocityCalculator velocityCalculator = new RealisticVelocityCalculator();
-    private final PhysicsEngine physics = new PhysicsEngine(velocityCalculator);
+    //    private final ICollisionVelocityCalculator velocityCalculator = new RealisticVelocityCalculator();
+    private final PhysicsEngine physics = new PhysicsEngine();
     private final String SPRITE_PATH = "resources/spriteSheets/ryuBlue.gif";
     private final String SPRITE_PROPERTIES = "spriteProperties/aniryu";
     private final String IMAGE_PATH = "resources/spriteSheets/aniryu.gif";
@@ -218,13 +216,14 @@ public class ACGame {
                     new PropertyTrigger(character.getID(), Position.class, "XPosition"),
                     new Action(healthScriptPath));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("D"), KeyEvent.KEY_PRESSED), new Action(moveRightScriptPath, map));
-            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("A"), KeyEvent.KEY_PRESSED), new Action(moveLeftScriptPath));
+            eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("A"), KeyEvent.KEY_PRESSED), new Action(moveLeftScriptPath, map));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("A"), KeyEvent.KEY_RELEASED), new Action(stopScriptPath, map));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.SPACE, KeyEvent.KEY_PRESSED), new Action(animationScriptPath, map));
+            eventSystem.registerEvent(new KeyTrigger(KeyCode.SPACE, KeyEvent.KEY_PRESSED), new Action(stopScriptPath, map));
             map.clear();
             map.put("entityName", character.getName());
             map.put("velocityX", character.getComponent(Velocity.class).getVX());
-            map.put("velocityY", -500.0);
+            map.put("velocityY", -700.0);
             eventSystem.registerEvent(new PropertyTrigger(character.getID(), Position.class, "YPosition"), new Action(deGravityScriptPath));
             eventSystem.registerEvent(new KeyTrigger(KeyCode.getKeyCode("W"), KeyEvent.KEY_PRESSED), new Action(jumpScriptPath, map));
             // eventSystem.registerEvent(new MouseTrigger(MouseButton.PRIMARY, MouseEvent.MOUSE_CLICKED), new Action(moveLeftScriptPath));

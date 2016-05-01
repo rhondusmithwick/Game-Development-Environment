@@ -73,8 +73,7 @@ public class Sprite implements IComponent {
 
     public void setImagePath (String imagePath) {
         imagePathProperty().set(imagePath);
-        System.out.println("image path " + imagePath);
-        imageView = this.createImageView(imagePath);
+        imageView = this.createImageView(imagePath); // TODO: refactor
         setImageHeight(getImageHeight());
         setImageWidth(getImageWidth());
     }
@@ -112,6 +111,8 @@ public class Sprite implements IComponent {
     private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         this.imageView = this.createImageView(getImagePath());
+        setImageHeight(getImageHeight());
+        setImageWidth(getImageWidth());
     }
 
     private ImageView createImageView (String imagePath) {

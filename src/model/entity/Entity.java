@@ -26,12 +26,12 @@ import java.util.stream.Collectors;
  */
 public class Entity implements IEntity {
 
-    @XStreamAsAttribute()
-    private final String ID;
     @XStreamAlias("components")
     private final Map<Class<? extends IComponent>, List<IComponent>> componentMap = Maps.newLinkedHashMap();
     @XStreamAlias("Specs")
     private final Map<Class<? extends IComponent>, Integer> specs = Maps.newLinkedHashMap();
+    @XStreamAsAttribute()
+    private String ID;
     @XStreamAsAttribute()
     private String name;
     private Set<String> groupIDs = new HashSet<>();
@@ -41,7 +41,7 @@ public class Entity implements IEntity {
     }
 
     public Entity (String name) {
-        ID = UUID.randomUUID().toString();
+        regenerateID();
         setName(name);
     }
 
@@ -128,6 +128,11 @@ public class Entity implements IEntity {
     @Override
     public Map<Class<? extends IComponent>, Integer> getSpecs () {
         return specs;
+    }
+
+    @Override
+    public void regenerateID () {
+        ID = UUID.randomUUID().toString();
     }
 
     @Override

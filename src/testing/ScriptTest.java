@@ -23,9 +23,8 @@ public class ScriptTest {
 
     private static final String TELEPORT_PATH = "resources/providedScripts/Teleport.groovy";
     private final ILevel universe = new Level();
-    private String ID;
-
     private final transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
+    private String ID;
 
     @Before
     public void setUp () {

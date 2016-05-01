@@ -1,6 +1,10 @@
 package view;
 
-import api.*;
+import api.IEntity;
+import api.IEntitySystem;
+import api.ILevel;
+import api.ISystemManager;
+import api.IView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
@@ -18,15 +22,17 @@ import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import main.Vooga;
 import model.component.character.Health;
 import model.component.character.Lives;
 import model.component.character.Score;
@@ -43,12 +49,19 @@ import view.utilities.SpriteUtilities;
 import view.utilities.ToMainMenu;
 import voogasalad.util.reflection.Reflection;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 /**
  * @author Tom
+ * @author Bruna
+ * @author Ben
  */
 
 public class View implements IView {
@@ -56,18 +69,18 @@ public class View implements IView {
     private final double MILLISECOND_DELAY = 10;
     private final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
     private final ConsoleTextArea console = new ConsoleTextArea();
-    private Group root = new Group();
     private final ISystemManager model;
     private final BorderPane pane;
     private final SubScene subScene;
     private final ViewUtilities viewUtils;
-    private DragAndResizeDynamic DandR;
     private final GameLoopManager manager;
     private final HBox buttonBox = new HBox();
     private final ResourceBundle myResources;
     private final boolean debug;
     private final Scene scene;
     private final List<PopUp> myPopUpList = new ArrayList<>();
+    private Group root = new Group();
+    private DragAndResizeDynamic DandR;
 
     public View (double viewWidth, double viewHeight, double sceneWidth, double sceneHeight, ILevel level, String language, boolean debug) {
         subScene = this.createSubScene(root, viewWidth, viewHeight);
@@ -190,7 +203,7 @@ public class View implements IView {
         root.getChildren().clear();
         List<IEntity> entities = model.getEntitySystem().getAllEntities();
         for (IEntity e : entities) {
-            if (SpriteUtilities.getSpriteComponent(e)!=null && e.hasComponent(Position.class)) {
+            if (SpriteUtilities.getSpriteComponent(e) != null && e.hasComponent(Position.class)) {
                 if (debug) {
                     root.getChildren().addAll(getCollisionShapes(e));
                 }
@@ -288,14 +301,6 @@ public class View implements IView {
         buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("mainMenu"), e -> ToMainMenu.toMainMenu(pane)));
         buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("startGameLoop"), e -> this.model.play()));
         buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("pauseGameLoop"), e -> this.model.pauseLoop()));
-    }
-
-    private void mainMenu () {
-        Stage myStage = (Stage) pane.getScene().getWindow();
-        myStage.setWidth(GUISize.MAIN_SIZE.getSize());
-        myStage.setHeight(GUISize.MAIN_SIZE.getSize());
-        Vooga vooga = new Vooga(myStage);
-        vooga.init();
     }
 
     private void initConsole () {

@@ -13,7 +13,6 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import model.component.visual.AnimatedSprite;
-import model.entity.Entity;
 import view.editor.Editor;
 import view.enums.DefaultStrings;
 import view.utilities.ButtonFactory;
@@ -35,11 +34,11 @@ public class EditorEntity extends Editor {
     private final GuiObjectFactory guiFactory = new GuiObjectFactory();
     private final IEntity myEntity;
     private final String myLanguage;
-    private ObservableList<IEntity> entityList = FXCollections.observableArrayList();
     private final ResourceBundle myResources;
     private final ResourceBundle myComponentNames;
-    private TextField name;
     private final ScrollPane scrollPane;
+    private ObservableList<IEntity> entityList = FXCollections.observableArrayList();
+    private TextField name;
     private List<String> myComponents;
     private VBox container;
 

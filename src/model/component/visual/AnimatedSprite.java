@@ -54,7 +54,7 @@ public class AnimatedSprite extends Sprite {
     public AnimatedSprite (String imagePath, double imageWidth, double imageHeight, String bundlePath, String defaultAnimation) {
         this(imagePath, imageWidth, imageHeight, bundlePath);
         setDefaultAnimation(defaultAnimation);
-        createAndPlayAnimation(currentAnimationName);
+        createAndPlayAnimation(getDefaultAnimation());
     }
 
 
@@ -128,6 +128,10 @@ public class AnimatedSprite extends Sprite {
         super.update();
         setBundlePath(getBundlePath());
         setDefaultAnimation(getDefaultAnimation());
+    }
+
+    public Animation getCurrentAnimation () {
+        return currentAnimation;
     }
 
     public static class CustomAnimationContainer extends AnimationContainer implements ISerializable {
