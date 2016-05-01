@@ -73,7 +73,6 @@ public class Sprite implements IComponent {
 
     public void setImagePath (String imagePath) {
         imagePathProperty().set(imagePath);
-        System.out.println("image path " + imagePath);
         imageView = this.createImageView(imagePath);
         setImageHeight(getImageHeight());
         setImageWidth(getImageWidth());

@@ -12,13 +12,13 @@ import model.component.movement.Velocity
  */
 
 
-@Field Double movedX = containsVariable("velocityX") ? getDouble("velocityX") : 0.0;
-@Field Double movedY = containsVariable("velocityY") ? getDouble("velocityY") : 0.0;
+@Field Double velocityX = containsVariable("velocityX") ? getDouble("velocityX") : 0.0;
+@Field Double velocityY = containsVariable("velocityY") ? getDouble("velocityY") : 0.0;
 
 def move = { entity ->
     if (entity.hasComponent(Velocity.class)) {
         Velocity velocity = entity.getComponent(Velocity.class);
-        velocity.setVXY(movedX, movedY);
+        velocity.setVXY(velocityX, velocityY);
     }
 }
 

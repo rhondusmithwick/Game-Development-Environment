@@ -50,7 +50,6 @@ public class SystemManager implements ISystemManager {
     }
 
     private void initLevel () {
-        System.out.println(level.init(shell, this, scene)); // TODO: remove
         shell.setVariable("game", this);
         shell.setVariable("level", this.getLevel());
         shell.setVariable("level", this.getEntitySystem());
@@ -68,8 +67,6 @@ public class SystemManager implements ISystemManager {
                 loadLevel(level.getNextLevelPath());
             }
             level.update(dt);
-            List<IEntity> entities = level.getAllEntities();
-            System.out.println();
         }
     }
 
