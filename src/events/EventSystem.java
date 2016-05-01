@@ -1,19 +1,24 @@
 package events;
 
 import api.IEventSystem;
+import api.IInputSystem;
 import api.ILevel;
+
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.ListMultimap;
+
 import datamanagement.XMLReader;
 import datamanagement.XMLWriter;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.value.ChangeListener;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.input.KeyEvent;
 import utility.Pair;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -36,7 +41,7 @@ import java.util.Observer;
  */
 
 public class EventSystem implements Observer, IEventSystem {
-    private transient InputSystem inputSystem = new InputSystem();
+    private transient IInputSystem inputSystem = new InputSystem();
     private final EventFactory eventFactory = new EventFactory();
     private transient ILevel level;
     //    private final MouseSystem mouseSystem = new MouseSystem();

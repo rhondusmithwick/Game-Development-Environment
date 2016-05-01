@@ -6,13 +6,17 @@ import api.IGameScript;
 import api.ILevel;
 import api.IPhysicsEngine;
 import api.ISystemManager;
+
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
+
 import events.EventSystem;
 import groovy.lang.GroovyShell;
+import javafx.scene.Node;
 import javafx.scene.Scene;
 import model.physics.PhysicsEngine;
 import view.enums.DefaultStrings;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.lang.reflect.InvocationTargetException;
