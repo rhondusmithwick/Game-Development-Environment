@@ -111,6 +111,8 @@ public class Sprite implements IComponent {
     private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         this.imageView = this.createImageView(getImagePath());
+        setImageHeight(getImageHeight());
+        setImageWidth(getImageWidth());
     }
 
     private ImageView createImageView (String imagePath) {

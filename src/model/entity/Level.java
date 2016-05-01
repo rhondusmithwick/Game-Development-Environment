@@ -162,6 +162,7 @@ public class Level implements ILevel {
         in.defaultReadObject();
         myResources = ResourceBundle.getBundle(DefaultStrings.LANG_LOC.getDefault() + DefaultStrings.DEFAULT_LANGUAGE.getDefault());
         eventSystem.setLevel(this);
+        gameScripts = Lists.newArrayList();
         levelOverBool = false;
         nextLevelPath = "";
     }

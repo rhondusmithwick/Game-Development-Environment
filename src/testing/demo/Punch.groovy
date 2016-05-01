@@ -5,8 +5,8 @@ import model.component.visual.AnimatedSprite
 ILevel level = universe;
 String keyStr = key;
 
-AnimatedSprite animatedSprite = level.getEntitiesWithName("ryu").get(0);
-SoundEffect soundfx = level.getEntitiesWithName("ryu").get(0);
+AnimatedSprite animatedSprite = level.getEntitiesWithName("ryu").get(0).getComponent(AnimatedSprite.class);
+SoundEffect soundfx = level.getEntitiesWithName("ryu").get(0).getComponent(SoundEffect.class);
 switch (keyStr) {
     case "W":
         animatedSprite.createAndPlayAnimation("LeftPunch");
@@ -19,5 +19,3 @@ switch (keyStr) {
         println("hi");
         break;
 }
-
-

@@ -24,9 +24,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import main.Vooga;
 import model.component.character.Health;
 import model.component.character.Lives;
 import model.component.character.Score;
@@ -288,14 +286,6 @@ public class View implements IView {
         buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("mainMenu"), e -> ToMainMenu.toMainMenu(pane)));
         buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("startGameLoop"), e -> this.model.play()));
         buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("pauseGameLoop"), e -> this.model.pauseLoop()));
-    }
-
-    private void mainMenu () {
-        Stage myStage = (Stage) pane.getScene().getWindow();
-        myStage.setWidth(GUISize.MAIN_SIZE.getSize());
-        myStage.setHeight(GUISize.MAIN_SIZE.getSize());
-        Vooga vooga = new Vooga(myStage);
-        vooga.init();
     }
 
     private void initConsole () {
