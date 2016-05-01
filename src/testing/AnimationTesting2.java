@@ -60,6 +60,8 @@ public class AnimationTesting2 extends Application {
                 action.activate(engine, level);
                 double oldX = imageView.getLayoutX();
                 imageView.setLayoutX(oldX + 5);
+                entity.getComponent(Velocity.class).setVXY(50, 50);
+                System.out.println(entity.getComponent(Velocity.class));
             }
             if (e.getCode().equals(KeyCode.ENTER)) {
                 action2.activate(engine, level);
