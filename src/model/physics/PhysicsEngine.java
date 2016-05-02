@@ -200,14 +200,16 @@ public class PhysicsEngine implements IPhysicsEngine {
         for (IEntity entity : collidableEntities) {
             entity.getComponent(Collision.class).clearCollidingIDs();
             entity.getComponent(Collision.class)
-                    .setMask(entity.getComponent(Sprite.class).getImageView().getBoundsInParent());
+                    .setMask(view.utilities.SpriteUtilities.getImageView(entity).getBoundsInParent());
+                    //.setMask(entity.getComponent(Sprite.class).getImageView().getBoundsInParent());
         }
     }
 
     private void resetCollisionMasks (Collection<IEntity> collidableEntities) {
         for (IEntity entity : collidableEntities) {
             entity.getComponent(Collision.class)
-                    .setMask(entity.getComponent(Sprite.class).getImageView().getBoundsInParent());
+                    .setMask(view.utilities.SpriteUtilities.getImageView(entity).getBoundsInParent());
+                //.setMask(entity.getComponent(Sprite.class).getImageView().getBoundsInParent());
         }
     }
 
