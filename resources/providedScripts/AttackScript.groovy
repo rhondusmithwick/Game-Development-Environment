@@ -1,16 +1,15 @@
 package providedScripts
 
 import api.IEntity
+import groovy.transform.BaseScript
+import groovy.transform.Field
+import model.component.character.Attack
 
 /**
  * Created by cyao42 on 5/1/2016.
  */
-import groovy.transform.BaseScript
-import groovy.transform.Field
-import model.component.character.Attack
 import model.component.character.Defense
 import model.component.character.Health
-import model.component.movement.Position
 import model.component.physics.Collision
 
 @BaseScript ScriptHelpers ScriptHelpers
@@ -27,14 +26,21 @@ import model.component.physics.Collision
 @Field Double defenseRatioField = containsVariable("defenseRatio") ? getDouble("defenseRatio") : 0.5;
 
 def damage = { entity ->
-    if (entity.hasComponent(Attack.class)) {
-        Collision collision = entity.getComponent(Collision.class);
-        String[] attacked = collision.getCollidingIDs().split("~");
-        for (String colliding: attacked) {
-            System.out.println("hhh");
-            String entID = colliding.split("_")[0];
-            IEntity collidingEntity = universe.getEntity(entID);
-            doDamage(entity, collidingEntity);
+    if (entity.hasComponent(Collision.class)) {
+        if (entity.hasComponent(Attack.class)) {
+            Collision collision = entity.getComponent(Collision.class);
+            String[] attacked = collision.getCollidingIDs().split("~");
+            if (attacked.length >= 2) {
+                System.out.println("This is the colliding ID: " + collision.getCollidingIDs());
+                for (String colliding : attacked) {
+                    if (!colliding.equals("")) {
+                        String entID = colliding.split("_")[0];
+                        System.out.println("this is the entity ID: " + entID);
+                        IEntity collidingEntity = universe.getEntity(entID);
+                        doDamage(entity, collidingEntity);
+                    }
+                }
+            }
         }
     }
 }
