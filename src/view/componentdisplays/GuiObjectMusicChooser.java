@@ -1,4 +1,4 @@
-package guiObjects;
+package view.componentdisplays;
 
 
 import javafx.beans.property.SimpleObjectProperty;

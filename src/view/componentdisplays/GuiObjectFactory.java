@@ -1,4 +1,4 @@
-package guiObjects;
+package view.componentdisplays;
 
 import view.enums.DefaultStrings;
 import voogasalad.util.reflection.Reflection;

@@ -1,4 +1,4 @@
-package guiObjects;
+package view.componentdisplays;
 
 import api.IEditor;
 import api.IEntity;
