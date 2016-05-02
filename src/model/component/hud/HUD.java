@@ -1,5 +1,8 @@
 package model.component.hud;
 
+import java.util.Arrays;
+import java.util.List;
+
 import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 import utility.SingleProperty;
@@ -26,6 +29,12 @@ public class HUD implements IComponent {
     public void setHUD (String hud) {
         HUDProperty().set(hud);
     }
+    
+    @Override
+    public List<SimpleObjectProperty<?>> getProperties () {
+        return Arrays.asList(singleProperty.property1());
+    }
+
 
     @Override
     public void update () {
