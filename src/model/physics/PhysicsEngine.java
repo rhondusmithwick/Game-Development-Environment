@@ -222,9 +222,6 @@ public class PhysicsEngine implements IPhysicsEngine {
     	}
         Mass mass1 = firstEntity.getComponent(Mass.class);
         Mass mass2 = secondEntity.getComponent(Mass.class);
-        if (mass1 == null || mass2 == null) {
-            return; // TODO: other cases?
-        }
 
         double restitution = getCollisionRestitution(firstEntity, secondEntity);
         double m1 = mass1.getMass();
