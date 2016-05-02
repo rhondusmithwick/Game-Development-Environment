@@ -8,6 +8,7 @@ import model.component.movement.Position
 import model.component.physics.Gravity
 import model.component.visual.Sprite
 import model.entity.Entity
+import model.component.physics.Collision
 
 @BaseScript ScriptHelpers ScriptHelpers
 
@@ -28,4 +29,5 @@ Sprite sprite = new Sprite("resources/images/blastoise.png");
 sprite.setImageHeight(50);
 sprite.setImageWidth(50);
 entity.addComponent(sprite);
+entity.addComponent(new Collision(fruitName));
 universe.getEntitySystem().addEntity(entity);
