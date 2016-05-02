@@ -39,11 +39,12 @@ public class LevelChangeTest {
     private ILevel level1;
     private ILevel level2;
     private Scene myScene;
-    private final String imagePath1 = "resources/images/blastoise.png";
+    private final String imagePath1 = "resources/images/marioplatform.jpeg";
     private final String imagePath2 = "resources/images/charizard.png";
     private final String changeLevelScript = "resources/providedScripts/ChangeLevelScript.groovy";
     private final String moveEntityScript = "resources/providedScripts/MoveEntity.groovy";
     private final String stopScript = "resources/providedScripts/StopPerson.groovy";
+    private final String stopOnCollisionScript = "resources/providedScripts/StopOnCollision.groovy";
 
     /**
      * Returns name of the game.
@@ -71,14 +72,16 @@ public class LevelChangeTest {
 
     private ILevel createLevel2() {
 		ILevel level = new Level();
-		level.addEntity(createEntity("Ani", imagePath2, 100, 200));
+		level.addEntity(createEntity("Ani", imagePath2, false, 100, 200));
 		return level;
 	}
 
 	private ILevel createLevel1() {
 		ILevel level = new Level();
-		level.addEntity(createEntity("Ani", imagePath1, 100, 200));
-		level.addEntity(createEntity("Carolyn", imagePath2, 300, 100));
+		IEntity platform = createEntity("Ani", imagePath1, false, 0, 300, 100, 1000);
+		level.addEntity(platform);
+		IEntity charizard = createEntity("Carolyn", imagePath2, true, 200, 100, 100, 100);
+		level.addEntity(charizard);
 		Map<String, Object> map = new HashMap<>();
 		
 		map.clear();
@@ -86,34 +89,48 @@ public class LevelChangeTest {
 		level.getEventSystem().registerEvent(new KeyTrigger("P"), new Action(changeLevelScript, map));
 		map.clear();
 		map.put("entityName", "Carolyn");
-		map.put("velocityX", -30);
+		map.put("velocityX", -60);
 		map.put("velocityY", 0);
 		level.getEventSystem().registerEvent(new KeyTrigger("A", KeyEvent.KEY_PRESSED), new Action(moveEntityScript, map));
 		map.clear();
 		map.put("entityName", "Carolyn");
-		map.put("velocityX", 30);
+		map.put("velocityX", 60);
 		map.put("velocityY", 0);
 		level.getEventSystem().registerEvent(new KeyTrigger("D", KeyEvent.KEY_PRESSED), new Action(moveEntityScript, map));
 		map.clear();
 		map.put("entityName", "Carolyn");
 		level.getEventSystem().registerEvent(new KeyTrigger("A", KeyEvent.KEY_RELEASED), new Action(stopScript, map));
+		map.clear();
+		map.put("entityName", "Carolyn");
+		map.put("stopID", platform.getID());
+		level.getEventSystem().registerEvent(new PropertyTrigger(charizard.getID(), Collision.class, "CollidingIDs"), new Action(stopOnCollisionScript, map));
 		return level;
 	}
 
-	private IEntity createEntity(String name, String imagePath, int x, int y) {
+	private IEntity createEntity(String name, String imagePath, boolean grav, int x, int y) {
 		IEntity entity = new Entity(name);
 		Sprite sprite = new Sprite(imagePath);
 		sprite.getImageView().setLayoutX(x);
 		sprite.getImageView().setLayoutX(y);
 		Position position = new Position(x,y);
 		Collision collision = new Collision("help");
-		//Mass mass = new Mass();
+		if(grav) {
+			Gravity gravity = new Gravity(20);
+			entity.addComponent(gravity);
+		}
 		Velocity velocity = new Velocity(0,0);
 		entity.addComponent(sprite);
 		entity.addComponent(position);
 		entity.addComponent(collision);
 		//entity.addComponent(mass);
 		entity.addComponent(velocity);
+		return entity;
+	}
+	
+	private IEntity createEntity(String name, String imagePath, boolean grav, int x, int y, int height, int width) {
+		IEntity entity = createEntity(name, imagePath, grav, x, y);
+		entity.getComponent(Sprite.class).setImageHeight(height);
+		entity.getComponent(Sprite.class).setImageWidth(width);
 		return entity;
 	}
 
