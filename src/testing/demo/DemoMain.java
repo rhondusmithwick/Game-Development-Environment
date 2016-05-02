@@ -1,66 +1,43 @@
-
 package testing.demo;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
-import model.component.audio.SoundEffect;
-import model.component.audio.ThemeMusic;
+import model.entity.Level;
 import view.View;
 import view.enums.GUISize;
 
 public class DemoMain extends Application {
 
-	private Stage myStage;
-	private ThemeMusic music;
+    private Stage myStage;
 
-	/**
-	 * Sets up a stage to launch our window and initializes the splash screen.
-	 * 
-	 * @param stage
-	 */
-	public void start(Stage stage) {
-		myStage = stage;
-		myStage.setTitle("VOOGA");
-		myStage.setWidth(GUISize.MAIN_SIZE.getSize());
-		myStage.setHeight(GUISize.MAIN_SIZE.getSize());
+    /**
+     * Launches our program.
+     *
+     * @param args
+     */
+    public static void main (String[] args) {
+        launch(args);
+    }
 
-		View view = new View("english"); // TODO: don't pass in ScrollPane
-		Pane pane = view.getPane();
-		Scene scene = new Scene(pane, 500, 500);
-		stage.setScene(scene);
-		stage.show();
+    /**
+     * Sets up a stage to launch our window and initializes the splash screen.
+     *
+     * @param stage
+     */
+    public void start (Stage stage) {
+        myStage = stage;
+        myStage.setTitle("VOOGA");
+        myStage.setWidth(GUISize.MAIN_SIZE.getSize());
+        myStage.setHeight(GUISize.MAIN_SIZE.getSize());
 
-		view.setScene(scene); // TODO: refactor out, required for input system
-
-//		music = new ThemeMusic("resources/music/finalCountdown.mp3");
-		// music.play();
-		// Button button = new Button("Mute");
-		// button.setOnAction(e -> shoot());
-		// root.getChildren().add(button);
-	}
-
-	/**
-	 * Launches our program.
-	 * 
-	 * @param args
-	 */
-	public static void main(String[] args) {
-		launch(args);
-	}
-
-	private void mute() {
-		if (music.isPlaying()) {
-			music.pause();
-		} else {
-			music.play();
-		}
-	}
-
-	private void shoot() {
-		SoundEffect effect = new SoundEffect("resources/soundfx/laser.mp3");
-		effect.play();
-	}
+        View view = new View(2000, 2000, 2000, 2000, new Level(), "english", true);
+        Pane pane = view.getPane();
+        Scene scene = new Scene(pane, 500, 500);
+        stage.setScene(scene);
+        stage.show();
+        view.setScene(scene);
+    }
 
 }

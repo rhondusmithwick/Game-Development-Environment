@@ -1,7 +1,6 @@
 package testing;
 
 import javafx.application.Application;
-import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import model.component.visual.Sprite;
 
@@ -12,16 +11,16 @@ import model.component.visual.Sprite;
  * @author Rhondu Smithwick
  */
 public class ImagePathWriteTest extends Application {
-    @Override
-    public void start(Stage primaryStage) throws Exception {
-        test();
-    }
-
-    public static void main(String[] args) {
+    public static void main (String[] args) {
         launch(args);
     }
 
-    public void test() {
+    @Override
+    public void start (Stage primaryStage) throws Exception {
+        test();
+    }
+
+    public void test () {
         Sprite path = new Sprite();
         Sprite path2 = path.clone(Sprite.class);
         System.out.println(path2.getImageView());

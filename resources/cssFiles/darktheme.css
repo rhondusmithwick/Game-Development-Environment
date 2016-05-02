@@ -8,8 +8,51 @@
     -fx-control-inner-background: rgb(50, 50, 50);
 }
 
+.vbox {
+    -fx-spacing: 20;
+    -fx-alignment: center;
+}
+
+.text-field, .list-view {
+    -fx-font-size: 12px;
+    -fx-font-family: "baskerville";
+    -fx-border-color: black;
+    -fx-font-weight: bold;
+    -fx-font-color: white;
+}
+
+.scroll-pane {
+    -fx-background: rgb(50, 50, 50);
+    -fx-background-insets: 10;
+    -fx-border-color: black;
+    -fx-alignment: center;
+
+}
+
+.text-field, .list-view {
+    -fx-font-size: 12px;
+    -fx-font-family: "baskerville";
+    -fx-border-color: black;
+    -fx-prompt-text-fill: white;
+}
+
+.hbox {
+    -fx-spacing: 10;
+    -fx-alignment: center;
+}
+
+.title-text {
+    -fx-font-size: 24px;
+    -fx-font-family: "baskerville";
+    -fx-font-weight: bold;
+    -fx-text-alignment: center;
+    -fx-fill: white;
+    -fx-stroke: black;
+}
+
 .tab {
     -fx-background-color: linear-gradient(to top, -fx-base, derive(-fx-base, 30%));
+    -fx-background-color: gray;
 }
 
 .menu-bar {
@@ -46,12 +89,34 @@
 
 .button {
     -fx-background-color: transparent;
-    -fx-padding: 4;
+    -fx-border-color: greenyellow;
+    -fx-font-weight: bold;
+    -fx-padding: 8;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
 }
 
 .button:hover {
     -fx-background-color: -fx-shadow-highlight-color, -fx-outer-border, -fx-inner-border, -fx-body-color;
     -fx-color: -fx-hover-base;
+}
+
+.label {
+    -fx-background-color: transparent;
+    -fx-font-weight: bold;
+    -fx-padding: 8;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
+}
+
+.combo-box {
+    -fx-background-color: transparent;
+    -fx-border-color: greenyellow;
+    -fx-font-weight: bold;
+    -fx-padding: 8;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.6), 5, 0.0, 0, 1);
 }
 
 .table-view {
@@ -80,6 +145,13 @@
 
 .separator-label {
     -fx-text-fill: orange;
+}
+
+.choice-box .context-menu .label {
+    -fx-base: #4f4d50;
+}
+.choice-box  .label {
+    -fx-base: #363736;
 }
 
 #decorationArea {

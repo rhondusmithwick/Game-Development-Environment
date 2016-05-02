@@ -1,47 +1,77 @@
 package view.editor.eventeditor;
 
-import model.component.visual.AnimatedSprite;
-import javafx.scene.Group;
-import javafx.scene.control.ScrollPane;
-
-
+import api.IEntity;
 import javafx.scene.control.Alert.AlertType;
+import model.component.visual.AnimatedSprite;
 import view.editor.AnimationEditor;
 import view.utilities.Alerts;
+import view.utilities.ChoiceDialogFactory;
 import view.utilities.PopUp;
-import api.IEntity;
 
-public class AnimationChooser{
-	private static final double WIDTH = 500;
-	private static final double HEIGHT = 500;
-	private Group sceneGroup = new Group();
-	private ScrollPane scrollPane = new ScrollPane(sceneGroup);
-	private IEntity myEntity;
-	public AnimationChooser(IEntity entity){
-		myEntity = entity;
-		PopUp popup = new PopUp(WIDTH, HEIGHT);
-		popup.show(scrollPane);
-		checkIfAnimatedSprite();
-		populateLayout();
-		
-	}
-	private void populateLayout() {
-		// TODO Auto-generated method stub
-		
-	}
-	private void checkIfAnimatedSprite() {
-		if (!myEntity.hasComponent(AnimatedSprite.class)){
-			if (Alerts.showAlert("Entity needs an animated sprite", "Add an Animated Sprite","Click OK to add a sprite", AlertType.CONFIRMATION));
-				initAnimationEditor();
-				
-		}
-		
-		
-	}
-	private void initAnimationEditor() {
-		AnimationEditor animationEditor = new AnimationEditor(myEntity);
-		animationEditor.populateLayout();
-		PopUp myPopUp = new PopUp(WIDTH,HEIGHT);
-		myPopUp.show(animationEditor.getPane());
-	}
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ResourceBundle;
+
+/**
+ * This class is for choosing an animation given an entity. Includes error handling if AnimatedSprite component doesn't exist
+ *
+ * @author Melissa Zhang
+ */
+public class AnimationChooser {
+    private static final double WIDTH = 400;
+    private static final double HEIGHT = 400;
+    private static final String DEFAULT_LANGUAGE = "languages.english";
+
+    private final IEntity myEntity;
+    private ResourceBundle myResources = ResourceBundle.getBundle(DEFAULT_LANGUAGE);
+
+
+    public AnimationChooser (IEntity entity) {
+        myEntity = entity;
+    }
+
+    public void setLanguage (String language) {
+        myResources = ResourceBundle.getBundle(DEFAULT_LANGUAGE);
+    }
+
+    private AnimatedSprite getAnimatedSpriteComponent () {
+        return myEntity.getComponent(AnimatedSprite.class); // TODO: move this one-liner to the location of use
+    }
+
+    /**
+     * Call this method to get the chosen animation. If an AnimatedSprite component doesn't exist, then it returns null and opens up an AnimationEditor.
+     *
+     * @return String
+     */
+    public String initChooser () {
+        if (checkIfAnimatedSprite()) {
+            AnimatedSprite animatedSprite = getAnimatedSpriteComponent();
+            List<String> animationNames = new ArrayList<>(animatedSprite.getAnimationNames());
+            return ChoiceDialogFactory.choiceBox(animationNames, myResources.getString("animationChooserTitle"), myResources.getString("animationChooserHeader"), myResources.getString("animationChooserContent"));
+
+        } else {
+            if (Alerts.showAlert(myResources.getString("noAnimatedSpriteTitle"), myResources.getString("noAnimatedSpriteHeader"), myResources.getString("noAnimatedSpriteMessage"), AlertType.CONFIRMATION)) {
+                initAnimationEditor();
+
+
+            }
+
+        }
+
+        return null;
+    }
+
+
+    private boolean checkIfAnimatedSprite () {
+        return myEntity.hasComponent(AnimatedSprite.class);
+
+        // TODO: move one-liner to if-statement
+    }
+
+    private void initAnimationEditor () {
+        AnimationEditor animationEditor = new AnimationEditor(myEntity, DEFAULT_LANGUAGE);
+        animationEditor.populateLayout();
+        PopUp myPopUp = new PopUp(WIDTH, HEIGHT);
+        myPopUp.show(animationEditor.getPane());
+    }
 }

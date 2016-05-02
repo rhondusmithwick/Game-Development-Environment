@@ -18,12 +18,11 @@ public class Visible implements IComponent {
      * Single Property.
      */
     private final SingleProperty<Boolean> singleProperty = new SingleProperty<>("Visible", true);
-    ;
 
     /**
      * Empty Constructor. Starts as true.
      */
-    public Visible() {
+    public Visible () {
     }
 
     /**
@@ -31,7 +30,7 @@ public class Visible implements IComponent {
      *
      * @param visible initial value
      */
-    public Visible(boolean visible) {
+    public Visible (boolean visible) {
         setVisible(visible);
     }
 
@@ -40,25 +39,25 @@ public class Visible implements IComponent {
      *
      * @return the visible property.
      */
-    public SimpleObjectProperty<Boolean> visibleProperty() {
+    public SimpleObjectProperty<Boolean> visibleProperty () {
         return singleProperty.property1();
     }
 
-    public boolean getVisible() {
+    public boolean getVisible () {
         return visibleProperty().get();
     }
 
-    public void setVisible(boolean visible) {
+    public void setVisible (boolean visible) {
         visibleProperty().set(visible);
     }
 
     @Override
-    public List<SimpleObjectProperty<?>> getProperties() {
+    public List<SimpleObjectProperty<?>> getProperties () {
         return Collections.singletonList(visibleProperty());
     }
 
     @Override
-    public void update() {
+    public void update () {
         setVisible(getVisible());
     }
 }

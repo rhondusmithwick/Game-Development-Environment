@@ -17,12 +17,12 @@ public class Score implements IComponent {
     /**
      * The singleProperty.
      */
-    private final SingleProperty<Double> singleProperty  = new SingleProperty<>("Score", 0.0);
+    private final SingleProperty<Double> singleProperty = new SingleProperty<>("Score", 0.0);
 
     /**
      * Empty constructor. Starts at 0.0.
      */
-    public Score() {
+    public Score () {
     }
 
     /**
@@ -30,7 +30,7 @@ public class Score implements IComponent {
      *
      * @param score the initial value
      */
-    public Score(double score) {
+    public Score (double score) {
         setScore(score);
     }
 
@@ -39,33 +39,33 @@ public class Score implements IComponent {
      *
      * @return the score property
      */
-    public SimpleObjectProperty<Double> scoreProperty() {
+    public SimpleObjectProperty<Double> scoreProperty () {
         return singleProperty.property1();
     }
 
-    public double getScore() {
+    public double getScore () {
         return scoreProperty().get();
     }
 
-    public void setScore(double score) {
+    public void setScore (double score) {
         scoreProperty().set(score);
     }
 
-    public void increment() {
-        setScore(getScore()+1);
+    public void increment () {
+        setScore(getScore() + 1);
     }
 
-    public void reset() {
+    public void reset () {
         setScore(0);
     }
 
     @Override
-    public List<SimpleObjectProperty<?>> getProperties() {
+    public List<SimpleObjectProperty<?>> getProperties () {
         return singleProperty.getProperties();
     }
 
     @Override
-    public void update() {
+    public void update () {
         setScore(getScore());
     }
 }

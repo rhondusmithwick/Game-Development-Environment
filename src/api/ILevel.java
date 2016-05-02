@@ -1,6 +1,7 @@
 package api;
 
 import com.google.common.collect.Collections2;
+
 import datamanagement.XMLReader;
 import groovy.lang.GroovyShell;
 import javafx.scene.Scene;
@@ -22,18 +23,18 @@ import java.util.stream.Collectors;
 public interface ILevel extends ISerializable {
 
     /**
-     * Names the entity System
-     *
-     * @param name with the name
-     */
-    void setName (String name);
-
-    /**
      * Gets the Entity Systems name
      *
      * @return string entity system name
      */
     String getName ();
+
+    /**
+     * Names the entity System
+     *
+     * @param name with the name
+     */
+    void setName (String name);
 
     /**
      * Gets the metadata about this level
@@ -43,19 +44,19 @@ public interface ILevel extends ISerializable {
     Map<String, String> getMetadata ();
 
     /**
+     * Sets the metadata
+     *
+     * @param metadata
+     */
+    void setMetadata (Map<String, String> metadata);
+
+    /**
      * Add a piece of metadata to this level
      *
      * @param key   the field name (e.g. "Description")
      * @param value the field value
      */
     void addMetadata (String key, String value);
-
-    /**
-     * Sets the metadata
-     *
-     * @param metadata
-     */
-    void setMetadata (Map<String, String> metadata);
 
     String init (GroovyShell shell, ISystemManager game);
 
@@ -338,4 +339,10 @@ public interface ILevel extends ISerializable {
     }
 
     void setOnInput (Scene scene);
+    
+	void setLevelOverAndLoadNextLevel(String nextLevelPath);
+
+	String getNextLevelPath();
+
+	boolean checkIfLevelOver();
 }

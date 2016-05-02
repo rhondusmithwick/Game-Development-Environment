@@ -1,17 +1,14 @@
 package view.editor.gameeditor.displays;
 
-import java.util.ResourceBundle;
-
 import api.IEntity;
 import api.ILevel;
 import api.ISerializable;
 import javafx.collections.ObservableList;
-import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
 import model.entity.Level;
 import view.Authoring;
@@ -19,58 +16,54 @@ import view.editor.environmenteditor.EditorEnvironment;
 import view.enums.DefaultStrings;
 import view.utilities.ButtonFactory;
 
-public class EnvironmentDisplay extends ObjectDisplay{
-	private ObservableList<ILevel> masterEnvList;
-	private ObservableList<IEntity> masterEntList;
-	private ResourceBundle myResources;
-	private String language;
-	
-	public EnvironmentDisplay(String language, ObservableList<ILevel> masterEnvList, ObservableList<IEntity> masterEntList, Authoring authEnv){
-		
-		super(authEnv);
-		this.masterEntList=masterEntList;
-		this.masterEnvList = masterEnvList;
-		this.myResources = ResourceBundle.getBundle(language);
-		this.language=language;
-		
+import java.util.ResourceBundle;
 
-	}
-	
-	@SuppressWarnings("unchecked")
-	@Override
-	public ScrollPane init(){
-		ScrollPane scroll = super.init();
-		addListeners( (ObservableList<ISerializable>) ((ObservableList<?>) masterEnvList));
-		return scroll;
-	}
+public class EnvironmentDisplay extends ObjectDisplay {
+    private final ObservableList<ILevel> masterEnvList;
+    private final ObservableList<IEntity> masterEntList;
+    private final ResourceBundle myResources;
+    private final String language;
+    private final Scene scene;
 
-	@Override
-	protected void addNewObjects(VBox container) {
-		masterEnvList.stream().forEach(e-> addEnvironmentToScroll(e, container));
-	}
+    public EnvironmentDisplay (String language, ObservableList<ILevel> masterEnvList, ObservableList<IEntity> masterEntList, Authoring authEnv, Scene myScene) {
+        super(authEnv);
+        this.masterEntList = masterEntList;
+        this.masterEnvList = masterEnvList;
+        this.myResources = ResourceBundle.getBundle(language);
+        this.language = language;
+        this.scene = myScene;
+    }
 
-	private void addEnvironmentToScroll(ILevel eSystem, VBox container) {
-		Button environment = ButtonFactory.makeButton(eSystem.getName(), null);
-		environment.setOnMouseClicked(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				MouseButton button = event.getButton();
-				if (button == MouseButton.PRIMARY) {
-					createEditor(EditorEnvironment.class.getName(), language, eSystem, masterEntList, masterEnvList );
-				} else if (button == MouseButton.SECONDARY) {
-					masterEnvList.remove(eSystem);
-				}
-			}
-		});
-		container.getChildren().add(environment);
-	}
-	
+    @SuppressWarnings("unchecked")
+    @Override
+    public ScrollPane init () {
+        ScrollPane scroll = super.init();
+        addListeners((ObservableList<ISerializable>) ((ObservableList<?>) masterEnvList));
+        return scroll;
+    }
 
-	@Override
-	public Node makeNewObject(){
-		return ButtonFactory.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()), 
-			e->createEditor(EditorEnvironment.class.getName(), language,  new Level(), masterEntList,  masterEnvList ));
-	}
+    @Override
+    protected void addNewObjects (VBox container) {
+        masterEnvList.stream().forEach(e -> addEnvironmentToScroll(e, container));
+    }
 
+    private void addEnvironmentToScroll (ILevel eSystem, VBox container) {
+        Button environment = ButtonFactory.makeButton(eSystem.getName(), null);
+        environment.setOnMouseClicked(event -> {
+            MouseButton button = event.getButton();
+            if (button == MouseButton.PRIMARY) {
+                createEditor(EditorEnvironment.class.getName(), language, eSystem, masterEntList, masterEnvList, scene);
+            } else if (button == MouseButton.SECONDARY) {
+                masterEnvList.remove(eSystem);
+            }
+        });
+        container.getChildren().add(environment);
+    }
+
+    @Override
+    public Node makeNewObject () {
+        return ButtonFactory.makeButton(myResources.getString(DefaultStrings.ENVIRONMENT_EDITOR_NAME.getDefault()),
+                e -> createEditor(EditorEnvironment.class.getName(), language, new Level(), masterEntList, masterEnvList, scene));
+    }
 
 }

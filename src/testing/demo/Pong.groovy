@@ -7,9 +7,9 @@ import model.component.character.Score
 import model.component.character.UserControl
 import model.component.movement.Position
 import model.component.physics.Collision
-import model.physics.PhysicsEngine
+
 /**
- * 
+ *
  * @author Tom
  *
  */
@@ -18,36 +18,37 @@ public class Pong implements IGameScript {
     private final String movePaddleScript = PATH + "MovePaddle.groovy";
     private final int winningScore = 3;
 
-	private ISystemManager game;
-	private ILevel universe;
-	private final IPhysicsEngine physics = new PhysicsEngine();
+    private ISystemManager game;
+    private ILevel universe;
+    private IPhysicsEngine physics;
     private IEventSystem events;
 
-	public void init(GroovyShell shell, ISystemManager game) {
-		this.game = game;
-		this.universe = game.getLevel();
+    public void init(GroovyShell shell, ISystemManager game) {
+        this.game = game;
+        this.universe = game.getLevel();
+        this.physics = game.getLevel().getPhysicsEngine();
         this.events = universe.getEventSystem();
 
-		// TODO: figure out why these don't work
-		//		this.engine.put("game", this.model);
-		//		this.engine.put("universe", this.model.getEntitySystem());
-		//		this.engine.put("demo", new GroovyDemoTest());
-		shell.setVariable("demo", new GroovyDemoTest());
+        // TODO: figure out why these don't work
+        //		this.engine.put("game", this.model);
+        //		this.engine.put("universe", this.model.getEntitySystem());
+        //		this.engine.put("demo", new GroovyDemoTest());
+        shell.setVariable("demo", new GroovyDemoTest());
 
         initKeyInputs();
         initSprites();
-	}
+    }
 
     private void initSprites() {
         // Ball
-        IEntity ball = SpriteLoader.createBall("Ball", new Position(50.0, 150.0));
+        IEntity ball = SpriteLoader.createBall("Ball", new Position(190.0, 190.0));
         //Paddles
         IEntity leftPaddle = SpriteLoader.createPaddle("LeftPaddle", new Position(100, 160));
         leftPaddle.addComponent(new UserControl());
         IEntity rightPaddle = SpriteLoader.createPaddle("RightPaddle", new Position(500, 160));
         // Walls
         IEntity leftWall = SpriteLoader.createPlatform("LeftWall", new Position(-578, 7));
-        IEntity rightWall = SpriteLoader.createPlatform("RightWall", new Position(600, 7));
+        IEntity rightWall = SpriteLoader.createPlatform("RightWall", new Position(560, 7));
         IEntity ceiling = SpriteLoader.createPlatform("Ceiling", new Position(7, -500));
         IEntity floor = SpriteLoader.createPlatform("Floor", new Position(7, 500));
 
@@ -76,18 +77,18 @@ public class Pong implements IGameScript {
 //        data.addComponent()
 //    }
 
-	public void update(double dt) {
-		physics.update(universe, dt);
+    public void update(double dt) {
+        physics.update(universe, dt);
         events.updateInputs(dt);
         updateGameLogic();
-	}
+    }
 
     private void updateGameLogic() {
         // Check for game over
-        for(IEntity e:universe.getEntitiesWithComponents(Score.class)) {
+        for (IEntity e : universe.getEntitiesWithComponents(Score.class)) {
             Score score = e.getComponent(Score.class);
-            if(score.getScore()==winningScore) {
-                System.out.println(e.getName()+" has won.");
+            if (score.getScore() == winningScore) {
+                System.out.println(e.getName() + " has won.");
             }
         }
 
@@ -97,20 +98,20 @@ public class Pong implements IGameScript {
 
         IEntity leftWall = universe.getEntitiesWithName("LeftWall").get(0);
         String leftColStr = leftWall.getComponent(Collision.class).getCollidingIDs();
-        if(leftColStr.contains(ballID)) {
+        if (leftColStr.contains(ballID)) {
             IEntity rightPaddle = universe.getEntitiesWithName("RightPaddle").get(0);
             Score s = rightPaddle.getComponent(Score.class);
             s.increment();
-            System.out.println("Right: "+s.getScore());
+            System.out.println("Right: " + s.getScore());
         }
 
         IEntity rightWall = universe.getEntitiesWithName("RightWall").get(0);
         String rightColStr = rightWall.getComponent(Collision.class).getCollidingIDs();
-        if(rightColStr.contains(ballID)) {
+        if (rightColStr.contains(ballID)) {
             IEntity leftPaddle = universe.getEntitiesWithName("LeftPaddle").get(0);
             Score s = leftPaddle.getComponent(Score.class);
             s.increment();
-            System.out.println("Left: "+s.getScore());
+            System.out.println("Left: " + s.getScore());
         }
     }
 

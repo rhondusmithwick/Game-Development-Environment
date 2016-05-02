@@ -19,7 +19,7 @@ class PongPhysics implements IGameScript {
     void init(GroovyShell shell, ISystemManager game) {
         universe = game.getLevel().getEntitySystem();
         List<IEntity> balls = universe.getEntitiesWithName("Ball");
-        if(!balls.isEmpty() && balls.get(0).hasComponent(Velocity.class)) {
+        if (!balls.isEmpty() && balls.get(0).hasComponent(Velocity.class)) {
             ballSpeed = balls.get(0).getComponent(Velocity.class).getSpeed();
         }
     }
@@ -27,13 +27,13 @@ class PongPhysics implements IGameScript {
     @Override
     void update(double dt) {
         List<IEntity> entities = universe.getEntitiesWithName("Ball");
-        for(IEntity e : entities) {
-            if(e.hasComponents(Collision.class, Velocity.class)) {
+        for (IEntity e : entities) {
+            if (e.hasComponents(Collision.class, Velocity.class)) {
                 Collision collision = e.getComponent(Collision.class);
-                String id = collision.getMaskID();
                 String collidingIDs = collision.getCollidingIDs();
-                if (id.equals("Ball") && !collidingIDs.isEmpty()) {
+                if (!collidingIDs.isEmpty()) {
                     changeVelocity(e.getComponent(Velocity.class));
+                    println("\n\nhit\n\n");
                 }
             }
         }
@@ -41,8 +41,8 @@ class PongPhysics implements IGameScript {
 
     void changeVelocity(Velocity v) {
         double r = Math.random() - 0.5;
-        v.setDirection(v.getDirection()+r);
-        v.setSpeed(1.05*ballSpeed);
+        v.setDirection(v.getDirection() + r * 0.2);
+        v.setSpeed(1.0 * ballSpeed);
     }
 
 }

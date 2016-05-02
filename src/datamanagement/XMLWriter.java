@@ -19,18 +19,18 @@ import java.util.List;
 public class XMLWriter<T> implements IDataWriter<T> {
     private final XStream xstream = new XStream(new StaxDriver());
 
-    public XMLWriter() {
+    public XMLWriter () {
         xstream.autodetectAnnotations(true);
     }
 
     @Override
-    public final String writeToString(List<T> objects) {
+    public final String writeToString (List<T> objects) {
         Writer writer = new StringWriter();
         doWrite(writer, objects);
         return writer.toString();
     }
 
-    private void doWrite(Writer writer, List<T> objects) {
+    private void doWrite (Writer writer, List<T> objects) {
         try {
             ObjectOutputStream out = xstream.createObjectOutputStream(writer);
             for (T obj : objects) {

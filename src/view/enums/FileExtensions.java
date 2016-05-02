@@ -13,7 +13,8 @@ public enum FileExtensions {
     GIF("GIF", "*.gif"),
     PNG("PNG", "*.png"),
     XML("XML", "*.xml"),
-    MP3("MP3", "*.mp3");
+    MP3("MP3", "*.mp3"),
+    PROPERTIES("PROPERTIES", "*.properties");
 
 
     private final ExtensionFilter filter;
@@ -24,7 +25,7 @@ public enum FileExtensions {
      * @param type file type of extension
      * @param ext  file extension
      */
-    FileExtensions(String type, String ext) {
+    FileExtensions (String type, String ext) {
         this.filter = new ExtensionFilter(type, ext);
     }
 
@@ -33,7 +34,7 @@ public enum FileExtensions {
      *
      * @return ExtensionFilter for a file type
      */
-    public ExtensionFilter getFilter() {
+    public ExtensionFilter getFilter () {
         return this.filter;
     }
 }

@@ -1,5 +1,5 @@
-
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
     <groupId>duke-compsci308-spring2016.voogasalad_MakeGamesGreatAgain</groupId>
     <artifactId>slogo_team08</artifactId>
@@ -37,7 +37,7 @@
             <version>8.0.31</version>
             <systemPath>${java.home}/lib/ext/jfxrt.jar</systemPath>
             <scope>system</scope>
-    	</dependency>
+        </dependency>
         <dependency>
             <groupId>voogasalad.util</groupId>
             <artifactId>vooga_salad</artifactId>
@@ -49,8 +49,8 @@
             <groupId>groovy</groupId>
             <artifactId>groovy</artifactId>
             <version>2.4.6</version>
-             <systemPath>${project.basedir}/lib/groovy-all-2.4.6-indy.jar</systemPath>
-             <scope>system</scope>
+            <systemPath>${project.basedir}/lib/groovy-all-2.4.6-indy.jar</systemPath>
+            <scope>system</scope>
         </dependency>
     </dependencies>
     <build>

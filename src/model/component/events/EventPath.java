@@ -14,7 +14,7 @@ public class EventPath implements IComponent {
     /**
      * Empty constructor. Starts at "".
      */
-    public EventPath() {
+    public EventPath () {
     }
 
     /**
@@ -22,7 +22,7 @@ public class EventPath implements IComponent {
      *
      * @param eventPath the default value
      */
-    public EventPath(String eventPath) {
+    public EventPath (String eventPath) {
         setEventPath(eventPath);
     }
 
@@ -31,25 +31,25 @@ public class EventPath implements IComponent {
      *
      * @return the eventPath property
      */
-    public SimpleObjectProperty<String> eventPathProperty() {
+    public SimpleObjectProperty<String> eventPathProperty () {
         return singleProperty.property1();
     }
 
-    public String getEventPath() {
+    public String getEventPath () {
         return eventPathProperty().get();
     }
 
-    public void setEventPath(String eventPath) {
+    public void setEventPath (String eventPath) {
         eventPathProperty().set(eventPath);
     }
 
     @Override
-    public List<SimpleObjectProperty<?>> getProperties() {
+    public List<SimpleObjectProperty<?>> getProperties () {
         return singleProperty.getProperties();
     }
 
     @Override
-    public void update() {
+    public void update () {
         setEventPath(getEventPath());
     }
 }

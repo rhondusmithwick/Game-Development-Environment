@@ -20,7 +20,7 @@ public interface ISerializable extends Serializable {
      *
      * @return File representing the serialized form of this object
      */
-    default File serialize(String fileName) {
+    default File serialize (String fileName) {
         return new XMLWriter<>().writeToFile(fileName, this);
     }
 
@@ -29,7 +29,7 @@ public interface ISerializable extends Serializable {
      *
      * @return String representing the serialized form of this object
      */
-    default String serializeToString() {
+    default String serializeToString () {
         return new XMLWriter<>().writeToString(this);
     }
 
@@ -41,7 +41,7 @@ public interface ISerializable extends Serializable {
      * @return a cloned object
      * @throws IllegalArgumentException if objectClass snot same class
      */
-    default <T extends ISerializable> T clone(Class<T> objectClass) {
+    default <T extends ISerializable> T clone (Class<T> objectClass) {
         boolean sameClass = getClass().isAssignableFrom(objectClass);
         Preconditions.checkArgument(sameClass, "Not the same class so cannot clone.");
         String clonedString = serializeToString();

@@ -24,7 +24,7 @@ public class TwoProperty<A, B> extends SingleProperty<A> {
      * @param name2  of the second property
      * @param value2 starting value of the second property
      */
-    public TwoProperty(String name1, A value1, String name2, B value2) {
+    public TwoProperty (String name1, A value1, String name2, B value2) {
         super(name1, value1);
         property2 = new SimpleObjectProperty<>(this, name2, value2);
     }
@@ -34,7 +34,7 @@ public class TwoProperty<A, B> extends SingleProperty<A> {
      *
      * @return the second property
      */
-    public SimpleObjectProperty<B> property2() {
+    public SimpleObjectProperty<B> property2 () {
         return property2;
     }
 
@@ -44,7 +44,7 @@ public class TwoProperty<A, B> extends SingleProperty<A> {
      * @return the properties as a list
      */
     @Override
-	public List<SimpleObjectProperty<?>> getProperties() {
+    public List<SimpleObjectProperty<?>> getProperties () {
         return Arrays.asList(property1(), property2());
     }
 }

@@ -23,13 +23,13 @@ import static org.junit.Assert.assertEquals;
  */
 public class MoveEntityTest {
     private static final String LOAD_FILE_NAME = "resources/savedEntities/player.xml";
-    private static final String GROOVY_SCRIPT = "resources/groovyScripts/MoveEntity.groovy";
+    private static final String GROOVY_SCRIPT = "resources/groovyScripts/TeleportEntitytity.groovy";
     private final ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
 
     private final IEntity entity = new XMLReader<IEntity>().readSingleFromFile(LOAD_FILE_NAME);
 
     @Test
-    public void moveTest() {
+    public void moveTest () {
         double oldX = entity.getComponent(Position.class).getX();
         engine.put("entity", entity);
         double moved = 100;
