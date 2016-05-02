@@ -27,7 +27,7 @@ public class LeftCollision implements ICollisionSide {
     }
 
     public boolean isCollision (Bounds first, Bounds second) {
-        System.out.println(first.getMinX() + " " + first.getMaxX() + " " + second.getMinX() + " " + second.getMaxX());
+      //  System.out.println(first.getMinX() + " " + first.getMaxX() + " " + second.getMinX() + " " + second.getMaxX());
         return first.getMaxX() >= second.getMinX() && first.getMinX() <= second.getMinX();
     }
 

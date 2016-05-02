@@ -155,7 +155,7 @@ public class PhysicsEngine implements IPhysicsEngine {
                 Velocity.class);
 
         entitiesSubjectToGravity.stream().forEach(entity -> {
-            System.out.println(entity.getComponent(Collision.class).getCollidingIDs());
+            //System.out.println(entity.getComponent(Collision.class).getCollidingIDs());
             // if
             // (!entity.getComponent(Collision.class).getCollidingIDs().contains(Collision.BOTTOM))
             // {
@@ -361,7 +361,9 @@ public class PhysicsEngine implements IPhysicsEngine {
                 collisionSide = collision;
             }
         }
-        collisionSide.addCollision(first, second);
+        if(collisionSide!=null) {
+        	collisionSide.addCollision(first, second);
+        }
     }
 
     public void setGravityActive (boolean gravityActive) {
