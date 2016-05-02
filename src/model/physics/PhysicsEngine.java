@@ -212,6 +212,9 @@ public class PhysicsEngine implements IPhysicsEngine {
     }
 
     public void changeVelocityAfterCollision (IEntity firstEntity, IEntity secondEntity) {
+    	if(!firstEntity.hasComponent(Mass.class) || !secondEntity.hasComponent(Mass.class)) {
+    		return;
+    	}
         Mass mass1 = firstEntity.getComponent(Mass.class);
         Mass mass2 = secondEntity.getComponent(Mass.class);
         if (mass1 == null || mass2 == null) {
