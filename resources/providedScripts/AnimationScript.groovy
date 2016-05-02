@@ -10,14 +10,15 @@ import model.component.visual.AnimatedSprite
  * Animates sprites.
  * @author Rhondu Smithwick
  */
+// Parameter: animationName is what the animation will be
 
-@Field String animationName = containsVariable("animationName") ? (String) getVariable("animationName") : "";
+@Field String animationNameField = containsVariable("animationName") ? (String) getVariable("animationName") : "";
 
 def animate = { entity ->
     if (entity.hasComponent(AnimatedSprite.class)) {
         AnimatedSprite animatedSprite = entity.getComponent(AnimatedSprite.class);
-        if (animatedSprite.hasAnimation(animationName)) {
-            animatedSprite.createAndPlayAnimation(animationName);
+        if (animatedSprite.hasAnimation(animationNameField)) {
+            animatedSprite.createAndPlayAnimation(animationNameField);
         }
     }
 }

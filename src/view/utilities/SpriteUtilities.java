@@ -28,6 +28,10 @@ public class SpriteUtilities {
         return entity.getComponent(spriteClass);
     }
 
+    public static boolean isSprite(IEntity entity) {
+        return entity.hasComponent(AnimatedSprite.class) || entity.hasComponent(Sprite.class);
+    }
+
     public static ImageView getImageView (IEntity entity) {
         return getSpriteComponent(entity).getImageView();
     }

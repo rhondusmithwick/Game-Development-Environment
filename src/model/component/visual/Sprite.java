@@ -133,7 +133,6 @@ public class Sprite implements IComponent {
     }
 
     public ImageView getImageView () {
-        //return createImageView(this.getImagePath());
         return imageView;
     }
 
