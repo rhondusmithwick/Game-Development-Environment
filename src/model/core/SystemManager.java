@@ -56,7 +56,6 @@ public class SystemManager implements ISystemManager {
 
     private void initLevel () {
         universe.init(shell, this);
-        scene.setOnKeyPressed(e -> universe.getEventSystem().takeInput(e)); // TODO: take in all inputs
         shell.setVariable("game", this);
         shell.setVariable("universe", universe);
         //shell.setVariable("demo", new GroovyDemoTest()); // TODO: remove
@@ -91,7 +90,7 @@ public class SystemManager implements ISystemManager {
     @Override
     public void step (double dt) {
         if (this.isRunning) {
-            if(universe.checkIfLevelOver()) {
+        	if(universe.checkIfLevelOver()) {
                 loadLevel(universe.getNextLevelPath());
             }
             universe.update(dt);
@@ -194,6 +193,11 @@ public class SystemManager implements ISystemManager {
     @Override
     public GroovyShell getShell () {
         return this.shell;
+    }
+    
+    @Override
+    public Scene getScene() {
+    	return scene;
     }
 
 }

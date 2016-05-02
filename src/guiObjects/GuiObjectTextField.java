@@ -15,6 +15,7 @@ public class GuiObjectTextField extends GuiObject {
 
     public GuiObjectTextField (String name, String resourceBundle, String language, SimpleObjectProperty<?> property) {
         super(name, resourceBundle);
+
         ResourceBundle myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
         textFieldLabel = new Label(myPropertiesNames.getString(getObjectName()));
         textField = new TextField();

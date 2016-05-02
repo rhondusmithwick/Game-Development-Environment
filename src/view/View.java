@@ -168,10 +168,10 @@ public class View implements IView {
         imageView.setId(e.getID());
         imageView.setTranslateX(pos.getX());
         imageView.setTranslateY(pos.getY());
-        if (e.hasComponent(Orientation.class)) {
+     /*   if (e.hasComponent(Orientation.class)) {
             Orientation o = e.getComponent(Orientation.class);
             imageView.setRotate(o.getOrientation());
-        }
+        }*/
         return imageView;
     }
 

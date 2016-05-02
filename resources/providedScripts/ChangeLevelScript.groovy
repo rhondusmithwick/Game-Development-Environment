@@ -9,6 +9,7 @@ import groovy.transform.Field
 @BaseScript ScriptHelpers ScriptHelpers
 
 /**
+<<<<<<< HEAD
  * Level changing generic script
  * @author Carolyn Yao
  */
@@ -18,8 +19,4 @@ import groovy.transform.Field
 if (!nextLevel.equals("")) {
     universe.setLevelOverAndLoadNextLevel(nextLevel);
 }
-
-
-
-
 
