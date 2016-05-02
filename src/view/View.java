@@ -8,6 +8,7 @@ import api.IView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
@@ -49,6 +50,7 @@ import view.utilities.SpriteUtilities;
 import view.utilities.ToMainMenu;
 import voogasalad.util.reflection.Reflection;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -82,7 +84,8 @@ public class View implements IView {
     private Group root = new Group();
     private DragAndResizeDynamic DandR;
 
-    public View (double viewWidth, double viewHeight, double sceneWidth, double sceneHeight, ILevel level, String language, boolean debug) {
+    public View (double viewWidth, double viewHeight, double sceneWidth, double sceneHeight, ILevel level,
+                 String language, boolean debug) {
         subScene = this.createSubScene(root, viewWidth, viewHeight);
         subScene.setOnMouseClicked(this::deletePopUps);
         this.debug = debug;
