@@ -25,14 +25,16 @@ import model.entity.Level;
 import model.physics.PhysicsEngine;
 import api.IEntity;
 import api.IEventSystem;
+import api.IGameScript;
 import api.ILevel;
 import api.ISystemManager;
 import datamanagement.XMLReader;
 import events.Action;
 import events.KeyTrigger;
 import events.PropertyTrigger;
+import groovy.lang.GroovyShell;
 
-public class LevelChangeTest {
+public class LevelChangeTest implements IGameScript {
     private static final String CHAR = "Carolyn";
 	private static final String BLASTOISE = "Ano";
 	private static final String PLATFORM = "Ani";
@@ -51,6 +53,7 @@ public class LevelChangeTest {
     private final String stopScript = "resources/providedScripts/StopPerson.groovy";
     private final String jumpScript = "resources/providedScripts/jumpScript.groovy";
     private final String stopOnCollisionScript = "resources/providedScripts/StopOnCollision.groovy";
+    
 
     /**
      * Returns name of the game.
@@ -67,8 +70,9 @@ public class LevelChangeTest {
         root = new Group();
         // Create a place to see the shapes
         myScene = new Scene(root, width, height, Color.WHITE);
-        level1 = createLevel1();
-        level1.serialize("level1.xml");
+        level1=new Level();
+        createLevel1();
+        
         level2 = createLevel2();
         level2.serialize("level2.xml");
         manager = new SystemManager(myScene, level1);
@@ -76,50 +80,60 @@ public class LevelChangeTest {
         return myScene;
     }
 
+    @Override
+    public void init(GroovyShell shell, ISystemManager game) {
+    	level1=game.getLevel();
+    	createLevel1();
+    }
+    
+    @Override
+    public void update(double dt) {
+    	level1.update(dt);
+    }
+    
     private ILevel createLevel2() {
 		ILevel level = new Level();
 		level.addEntity(createEntity(PLATFORM, imagePath2, false, 100, 200));
 		return level;
 	}
 
-	private ILevel createLevel1() {
-		ILevel level = new Level();
+	private void createLevel1() {
 		IEntity platform = createEntity(PLATFORM, imagePath1, false, 0, 300, 100, 1000);
 		//platform.removeComponent(Velocity.class);
-		level.addEntity(platform);
+		level1.addEntity(platform);
 		IEntity charizard = createEntity(CHAR, imagePath2, true, 200, 100, 100, 100);
-		level.addEntity(charizard);
+		level1.addEntity(charizard);
 		IEntity blastoise = createEntity(BLASTOISE, imagePath3, true, 70, 100, 100, 100);
-		level.addEntity(blastoise);
+		level1.addEntity(blastoise);
 		Map<String, Object> map = new HashMap<>();
 		
 		map.clear();
 		map.put("nextLevelPath", "level2.xml");
-		level.getEventSystem().registerEvent(new KeyTrigger("P"), new Action(changeLevelScript, map));
+		level1.getEventSystem().registerEvent(new KeyTrigger("P"), new Action(changeLevelScript, map));
 		
 		map.clear();
 		map.put("entityName", PLATFORM);
 		map.put("velocityX", 0);
 		map.put("velocityY", 0);
-		level.getEventSystem().registerEvent(new PropertyTrigger(platform.getID(), Velocity.class, "XVelocity"), new Action(moveEntityScript, map));
+		level1.getEventSystem().registerEvent(new PropertyTrigger(platform.getID(), Velocity.class, "XVelocity"), new Action(moveEntityScript, map));
 		
 		map.clear();
 		map.put("entityName", PLATFORM);
 		map.put("velocityX", 0);
 		map.put("velocityY", 0);
-		level.getEventSystem().registerEvent(new PropertyTrigger(platform.getID(), Velocity.class, "YVelocity"), new Action(moveEntityScript, map));
+		level1.getEventSystem().registerEvent(new PropertyTrigger(platform.getID(), Velocity.class, "YVelocity"), new Action(moveEntityScript, map));
 		
 		map.clear();
 		map.put("entityName", CHAR);
 		map.put("velocityX", -100);
 		map.put("velocityY", 0);
-		level.getEventSystem().registerEvent(new KeyTrigger("J", KeyEvent.KEY_RELEASED), new Action(moveEntityScript, map));
+		level1.getEventSystem().registerEvent(new KeyTrigger("J", KeyEvent.KEY_RELEASED), new Action(moveEntityScript, map));
 		
 		map.clear();
 		map.put("entityName", CHAR);
 		map.put("velocityX", 100);
 		map.put("velocityY", 0);
-		level.getEventSystem().registerEvent(new KeyTrigger("L", KeyEvent.KEY_RELEASED), new Action(moveEntityScript, map));
+		level1.getEventSystem().registerEvent(new KeyTrigger("L", KeyEvent.KEY_RELEASED), new Action(moveEntityScript, map));
 		
 		/*map.clear();
 		map.put("entityName", CHAR);
@@ -132,26 +146,26 @@ public class LevelChangeTest {
 		map.clear();
 		map.put("entityName", CHAR);
 		map.put("stopID", platform.getID());
-		level.getEventSystem().registerEvent(new PropertyTrigger(charizard.getID(), Collision.class, "CollidingIDs"), new Action(stopOnCollisionScript, map));
+		level1.getEventSystem().registerEvent(new PropertyTrigger(charizard.getID(), Collision.class, "CollidingIDs"), new Action(stopOnCollisionScript, map));
 		
 		map.clear();
 		map.put("entityName", CHAR);
 		map.put("velocityX", 0);
 		map.put("velocityY", -200);
-		level.getEventSystem().registerEvent(new KeyTrigger("I", KeyEvent.KEY_RELEASED), new Action(jumpScript, map));
+		level1.getEventSystem().registerEvent(new KeyTrigger("I", KeyEvent.KEY_RELEASED), new Action(jumpScript, map));
 		
 		
 		map.clear();
 		map.put("entityName", BLASTOISE);
 		map.put("velocityX", -100);
 		map.put("velocityY", 0);
-		level.getEventSystem().registerEvent(new KeyTrigger("A", KeyEvent.KEY_RELEASED), new Action(moveEntityScript, map));
+		level1.getEventSystem().registerEvent(new KeyTrigger("A", KeyEvent.KEY_RELEASED), new Action(moveEntityScript, map));
 		
 		map.clear();
 		map.put("entityName", BLASTOISE);
 		map.put("velocityX", 100);
 		map.put("velocityY", 0);
-		level.getEventSystem().registerEvent(new KeyTrigger("D", KeyEvent.KEY_RELEASED), new Action(moveEntityScript, map));
+		level1.getEventSystem().registerEvent(new KeyTrigger("D", KeyEvent.KEY_RELEASED), new Action(moveEntityScript, map));
 		
 		/*map.clear();
 		map.put("entityName", BLASTOISE);
@@ -164,15 +178,14 @@ public class LevelChangeTest {
 		map.clear();
 		map.put("entityName", BLASTOISE);
 		map.put("stopID", platform.getID());
-		level.getEventSystem().registerEvent(new PropertyTrigger(blastoise.getID(), Collision.class, "CollidingIDs"), new Action(stopOnCollisionScript, map));
+		level1.getEventSystem().registerEvent(new PropertyTrigger(blastoise.getID(), Collision.class, "CollidingIDs"), new Action(stopOnCollisionScript, map));
 		
 		map.clear();
 		map.put("entityName", BLASTOISE);
 		map.put("velocityX", 0);
 		map.put("velocityY", -200);
-		level.getEventSystem().registerEvent(new KeyTrigger("W", KeyEvent.KEY_RELEASED), new Action(jumpScript, map));
-		
-		return level;
+		level1.getEventSystem().registerEvent(new KeyTrigger("W", KeyEvent.KEY_RELEASED), new Action(jumpScript, map));
+
 	}
 
 	private IEntity createEntity(String name, String imagePath, boolean grav, int x, int y) {
@@ -185,10 +198,10 @@ public class LevelChangeTest {
 		Mass mass =new Mass();
 		RestitutionCoefficient rest = new RestitutionCoefficient();
 		if(name.equals(PLATFORM)) {
-			mass = new Mass(1500);
+			/*mass = new Mass(1500);
 			rest = new RestitutionCoefficient(1);
 			entity.addComponent(rest);
-			entity.addComponent(mass);
+			entity.addComponent(mass);*/
 		}
 		else {
 			mass = new Mass(15);
