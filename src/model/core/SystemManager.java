@@ -91,6 +91,9 @@ public class SystemManager implements ISystemManager {
     @Override
     public void step (double dt) {
         if (this.isRunning) {
+            if(universe.checkIfLevelOver()) {
+                loadLevel(universe.getNextLevelPath());
+            }
             universe.update(dt);
         }
     }

@@ -13,9 +13,11 @@ import groovy.transform.Field
  * @author Carolyn Yao
  */
 
-@Field String nextLevel = containsVariable("nextLevel") ? getVariable("nextLevel") : 0.0;
+@Field String nextLevel = containsVariable("nextLevel") ? getVariable("nextLevel") : "";
 
-universe.setLevelOverAndLoadNextLevel(nextLevel);
+if (!nextLevel.equals("")) {
+    universe.setLevelOverAndLoadNextLevel(nextLevel);
+}
 
 
 
