@@ -38,6 +38,8 @@ public class Level implements ILevel {
     private transient ResourceBundle myResources;
     //	private transient ResourceBundle scriptLocs = ResourceBundle.getBundle(DefaultStrings.SCRIPTS_LOC.getDefault());
     private transient List<IGameScript> gameScripts = Lists.newArrayList();
+    private transient boolean levelOverBool = false;
+    private transient String nextLevelPath = "";
 
     public Level () {
         this("");
@@ -75,6 +77,7 @@ public class Level implements ILevel {
 
     @Override
     public String init (GroovyShell shell, ISystemManager game) {
+    	setOnInput(game.getScene());
         gameScripts = new ArrayList<>();
         String returnMessage = "";
         String key = myResources.getString("script"); // TODO: don't hard-code
@@ -103,8 +106,8 @@ public class Level implements ILevel {
     @Override
     public void update (double dt) {
         getEventSystem().updateInputs(dt);
-        gameScripts.stream().forEach(gs -> gs.update(dt));
-//        getPhysicsEngine().update(this, dt);
+//        gameScripts.stream().forEach(gs -> gs.update(dt));
+        getPhysicsEngine().update(this, dt); // TODO: remove
     }
 
     @Override
@@ -135,11 +138,29 @@ public class Level implements ILevel {
     public void setOnInput (Scene scene) {
         getEventSystem().setOnInput(scene);
     }
+    
+    @Override
+    public void setLevelOverAndLoadNextLevel(String nextLevelPath) {
+    	levelOverBool = true;
+    	this.nextLevelPath = nextLevelPath;
+    }
+    
+    @Override
+    public boolean checkIfLevelOver () {
+        return levelOverBool;
+    }
+
+    @Override
+    public String getNextLevelPath () {
+        return nextLevelPath;
+    }
 
     private void readObject (ObjectInputStream in) throws IOException, ClassNotFoundException {
         in.defaultReadObject();
         myResources = ResourceBundle.getBundle(DefaultStrings.LANG_LOC.getDefault() + DefaultStrings.DEFAULT_LANGUAGE.getDefault());
         eventSystem.setLevel(this);
+        levelOverBool = false;
+        nextLevelPath = "";
     }
 
 }
