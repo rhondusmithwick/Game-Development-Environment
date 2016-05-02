@@ -8,6 +8,7 @@ import api.IEntity
 import groovy.transform.BaseScript
 import groovy.transform.Field
 import model.component.character.Attack
+import model.component.character.Defense
 import model.component.character.Health
 import model.component.movement.Position
 import model.component.physics.Collision
@@ -19,30 +20,35 @@ import model.component.physics.Collision
  * @author Carolyn Yao
  */
 
-@Field Double damageAmountField = containsVariable("damageAmount") ? getDouble("damageAmount") : 0.0;
+// Parameter: damageAmount ratio of the amount of attack used
+// Parameter: defenseRatio: ratio of the amount of defense used
 
+@Field Double damageAmountField = containsVariable("damageAmount") ? getDouble("damageAmount") : 0.5;
+@Field Double defenseRatioField = containsVariable("defenseRatio") ? getDouble("defenseRatio") : 0.5;
 
 def damage = { entity ->
     if (entity.hasComponent(Attack.class)) {
         Collision collision = entity.getComponent(Collision.class);
-//        for (String entID: collision.getCollidingIDs()) {
-//            IEntity collidingEntity = universe.getEntity(entID);
-//            if (collidingEntity.hasComponent(Health.class)) {
-//                Health health = collidingEntity.getComponent(Health.class);
-//                health.setHealth(health.getHealth() - damageAmount);
-//            }
-//        }
-        // collision component returns string on getCollidingIDs()
         String[] attacked = collision.getCollidingIDs().split("~");
         for (String colliding: attacked) {
             System.out.println("hhh");
             String entID = colliding.split("_")[0];
             IEntity collidingEntity = universe.getEntity(entID);
-            if (collidingEntity.hasComponent(Health.class)) {
-                Health health = collidingEntity.getComponent(Health.class);
-                health.setHealth(health.getHealth() - damageAmountField);
-            }
+            doDamage(entity, collidingEntity);
         }
+    }
+}
+
+void doDamage(IEntity attackingEntity, IEntity defendingEntity) {
+    if (defendingEntity.hasComponent(Health.class)) {
+        double defense = 0.0;
+        if (defendingEntity.hasComponent(Defense.class)) {
+            defense = defendingEntity.getComponent(Defense.class).getDefense();
+        }
+        double attack = attackingEntity.getComponent(Attack.class).getAttack();
+        double damageDone = (attack * damageAmountField) - (defenseRatioField * defense);
+        Health health = defendingEntity.getComponent(Health.class);
+        health.setHealth(health.getHealth() - damageDone);
     }
 }
 
