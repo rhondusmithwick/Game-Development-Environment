@@ -5,10 +5,15 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.geometry.Bounds;
 import utility.SingleProperty;
 
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
+ *
  * @author Roxanne and Tom
+ * Date: 4/28/2016
  */
 @SuppressWarnings("serial")
 public class Collision implements IComponent {
@@ -16,76 +21,88 @@ public class Collision implements IComponent {
     public static final String BOTTOM = "bottom";
     public static final String LEFT = "left";
     public static final String RIGHT = "right";
+    public static final String ID_SEPARATOR = "~";
+    public static final String SIDE_SEPARATOR = "_";
 
     private Bounds mask;
     private SingleProperty<String> maskIDProperty = new SingleProperty<>("MaskID", "");
     private SingleProperty<String> collidingIDsProperty = new SingleProperty<>("CollidingIDs", "");
 
-    public Collision () {
+    public Collision() {
     }
 
-    public Collision (Bounds mask, String ID) {
+    public Collision(Bounds mask, String ID) {
         this.mask = mask;
         this.setMaskID(ID);
     }
 
-    public Collision (String ID) {
+    public Collision(String ID) {
         this(null, ID); // TODO: needs to be null?
     }
 
-    public Bounds getMask () {
+    public Bounds getMask() {
         return this.mask;
     }
 
-    public void setMask (Bounds mask) {
+    public void setMask(Bounds mask) {
         this.mask = mask;
     }
 
-    public SimpleObjectProperty<String> maskIDProperty () {
+    public SimpleObjectProperty<String> maskIDProperty() {
         return maskIDProperty.property1();
     }
 
-    public String getMaskID () {
+    public String getMaskID() {
         return maskIDProperty().get();
     }
 
-    public void setMaskID (String ID) {
+    public void setMaskID(String ID) {
         this.maskIDProperty().set(ID);
     }
 
-    public SimpleObjectProperty<String> collidingIDsProperty () {
+    public SimpleObjectProperty<String> collidingIDsProperty() {
         return collidingIDsProperty.property1();
     }
 
-    public String getCollidingIDs () {
+    public Collection<String> getCollidingIDs() {
+        String[] collidingEntitiesWithSides = this.collidingIDsProperty().get().split(Collision.ID_SEPARATOR);
+        Collection<String> collidingIDs = Arrays.stream(collidingEntitiesWithSides)
+                .map(s -> s.split(Collision.SIDE_SEPARATOR))
+                .map(t -> t[0])
+                .collect(Collectors.toList());
+        System.out.println(collidingIDs);
+        return collidingIDs;
+    }
+
+    public String getCollidingIDsWithSides() {
         return this.collidingIDsProperty().get();
     }
 
-    public void setCollidingIDs (String collidingIDs) {
+    public void setCollidingIDs(String collidingIDs) {
         this.collidingIDsProperty().set(collidingIDs);
     }
 
-    public void addCollidingID (String collidingIDs) {
-        this.collidingIDsProperty().set(this.getCollidingIDs() + "~" + collidingIDs);
+    public void addCollidingID(String collidingIDs) {
+        this.collidingIDsProperty().set(this.getCollidingIDs() + Collision.ID_SEPARATOR + collidingIDs);
     }
 
-    public void addCollisionSide (String side) {
-        this.collidingIDsProperty().set(this.getCollidingIDs() + "_" + side);
+    public void addCollisionSide(String side) {
+        this.collidingIDsProperty().set(this.getCollidingIDs() + Collision.SIDE_SEPARATOR + side);
     }
 
-    public void clearCollidingIDs () {
+    public void clearCollidingIDs() {
         this.collidingIDsProperty().set("");
     }
 
     @Override
-    public List<SimpleObjectProperty<?>> getProperties () {
+    public List<SimpleObjectProperty<?>> getProperties() {
         // TODO: add maskID property
         return collidingIDsProperty.getProperties();
     }
 
     @Override
-    public void update () {
-        setCollidingIDs(getCollidingIDs());
+    public void update() {
+        setCollidingIDs(getCollidingIDsWithSides());
         setMask(getMask());
         setMaskID(getMaskID());
     }
