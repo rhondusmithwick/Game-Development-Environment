@@ -29,6 +29,11 @@ import java.util.Collections;
 import java.util.Map;
 import java.util.ResourceBundle;
 
+/**
+ * GUI for managing game loop updates.
+ * 
+ * @author Ben Zhang
+ */
 public class GameLoopManager {
     private final int padding = GUISize.LOOP_MANAGER_PADDING.getSize();
     private final ResourceBundle myResources;

@@ -8,6 +8,11 @@ import javafx.scene.input.DragEvent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 
+/**
+ * Create cell for drag-and-drop list.
+ * 
+ * @author Ben Zhang
+ */
 public class DragDropCell<T> extends ListCell<T> {
     public static final DataFormat dataFormat = new DataFormat("custom");
 
