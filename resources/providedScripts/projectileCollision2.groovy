@@ -3,6 +3,7 @@ package providedScripts
 import api.IEntity
 import groovy.transform.BaseScript
 import groovy.transform.Field
+import model.component.character.Score
 import model.component.movement.Velocity
 import model.component.movement.Position
 import model.component.physics.Collision
@@ -31,6 +32,9 @@ for (String colliding : attacked) {
         System.out.println(opposingProjectileNameField);
         if(collidingEntity!=null && collidingEntity.getName().equals(opposingProjectileNameField)) {
             universe.removeEntity(collidingEntity.getID());
+            if(player.hasComponent(Score.class)) {
+                player.getComponent(Score.class).setScore(player.getComponent(Score.class).getScore()-1)
+            }
         }
     }
 }
