@@ -38,8 +38,6 @@ public class Level implements ILevel {
     private transient ResourceBundle myResources;
     //	private transient ResourceBundle scriptLocs = ResourceBundle.getBundle(DefaultStrings.SCRIPTS_LOC.getDefault());
     private transient List<IGameScript> gameScripts = Lists.newArrayList();
-    private transient boolean levelOverBool = false;
-    private transient String nextLevelPath = "";
 
     private transient boolean levelOverBool = false;
     private transient String nextLevelPath = "";
@@ -148,22 +146,6 @@ public class Level implements ILevel {
     	this.nextLevelPath = nextLevelPath;
     }
     
-    @Override
-    public boolean checkIfLevelOver () {
-        return levelOverBool;
-    }
-
-    @Override
-    public String getNextLevelPath () {
-        return nextLevelPath;
-    }
-
-    @Override
-    public void setLevelOverAndLoadNextLevel (String nextLevelPath) {
-        levelOverBool = true;
-        this.nextLevelPath = nextLevelPath;
-    }
-
     @Override
     public boolean checkIfLevelOver () {
         return levelOverBool;
