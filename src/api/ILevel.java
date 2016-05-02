@@ -339,16 +339,10 @@ public interface ILevel extends ISerializable {
     }
 
     void setOnInput (Scene scene);
-
+    
 	void setLevelOverAndLoadNextLevel(String nextLevelPath);
 
 	String getNextLevelPath();
 
 	boolean checkIfLevelOver();
-
-//    void setLevelOverAndLoadNextLevel (String nextLevelPath);
-//
-//    boolean checkIfLevelOver ();
-//
-//    String getNextLevelPath ();
 }

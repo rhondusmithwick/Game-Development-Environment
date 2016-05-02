@@ -1,17 +1,21 @@
 package providedScripts
 
+/**
+ * Created by cyao42 on 5/1/2016.
+ */
 import groovy.transform.BaseScript
 import groovy.transform.Field
-import model.component.movement.Velocity
 
 @BaseScript ScriptHelpers ScriptHelpers
 
 /**
- * Changes the level
- * @author Anirudh Jonnavithula
+ * Level changing generic script
+ * @author Carolyn Yao
  */
 
-// Parameter: levelPath: path of next level
-@Field String levelPathField = containsVariable("levelPath") ? getString("levelPath") : "";
+@Field String nextLevelPath = containsVariable("nextLevelPath") ? getVariable("nextLevelPath") : "";
 
-universe.setLevelOverAndLoadNextLevel(levelPathField);
+if (!nextLevelPath.equals("")) {
+    universe.setLevelOverAndLoadNextLevel(nextLevelPath);
+}
+
