@@ -5,6 +5,8 @@ import groovy.lang.GroovyShell;
 
 import java.util.List;
 
+import javafx.scene.Scene;
+
 /**
  * Created by rhondusmithwick on 3/31/16.
  *
@@ -106,5 +108,7 @@ public interface ISystemManager {
      * @return the Groovy Shell
      */
     GroovyShell getShell ();
+
+	Scene getScene();
 
 }

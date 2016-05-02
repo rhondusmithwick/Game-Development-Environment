@@ -43,3 +43,7 @@ void workOnEntities(Closure closure) {
 Double getDouble(String variableName) {
     return getVariable(variableName) as double;
 }
+
+String getString(String variableName) {
+	return getVariable(variableName) as String;
+}
