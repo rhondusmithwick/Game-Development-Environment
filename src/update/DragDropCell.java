@@ -9,7 +9,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.TransferMode;
 
 /**
- * Create cell for drag-and-drop list.
+ * Create custom cell for drag-and-drop list.
  * 
  * @author Ben Zhang
  */
