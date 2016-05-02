@@ -71,7 +71,7 @@ public class Pong implements IGameScript {
     @Override
     public void update(double dt) {
         physics.update(universe, dt);
-        events.updateInputs(dt);
+//        events.updateInputs(dt);
         updateGameLogic();
     }
 

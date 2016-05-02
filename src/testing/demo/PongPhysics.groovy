@@ -1,8 +1,6 @@
 package testing.demo
 
 import api.*
-import events.Action
-import events.PropertyTrigger
 import model.component.movement.Velocity
 import model.component.physics.Collision
 /**
@@ -10,7 +8,7 @@ import model.component.physics.Collision
  */
 public class PongPhysics implements IGameScript {
 
-    private final String restrictPaddleXScript = Pong.PATH + "RestrictPaddleX.groovy";
+//    private final String restrictPaddleXScript = Pong.PATH + "RestrictPaddleX.groovy";
     private IEntitySystem universe;
     private IEventSystem eventSystem;
     private double ballSpeed;
@@ -23,21 +21,21 @@ public class PongPhysics implements IGameScript {
             ballSpeed = balls.get(0).getComponent(Velocity.class).getSpeed();
         }
 
-        eventSystem = game.getLevel().getEventSystem();
-        restrictPaddleX("LeftPaddle");
-        restrictPaddleX("RightPaddle");
+//        eventSystem = game.getLevel().getEventSystem();
+//        restrictPaddleX("LeftPaddle");
+//        restrictPaddleX("RightPaddle");
     }
 
-    private void restrictPaddleX(String name) {
-        IEntity paddle = universe.getEntitiesWithName(name).get(0);
-        String id = paddle.getID();
-        eventSystem.registerEvent(new PropertyTrigger(id, Velocity.class, "YVelocity"), new Action(restrictPaddleXScript));
-    }
+//    private void restrictPaddleX(String name) {
+//        IEntity paddle = universe.getEntitiesWithName(name).get(0);
+//        String id = paddle.getID();
+//        eventSystem.registerEvent(new PropertyTrigger(id, Velocity.class, "YVelocity"), new Action(restrictPaddleXScript));
+//    }
 
     @Override
     void update(double dt) {
-        List<IEntity> entities = universe.getEntitiesWithName("Ball");
-        for (IEntity e : entities) {
+        List<IEntity> balls = universe.getEntitiesWithName("Ball");
+        for (IEntity e : balls) {
             if (e.hasComponents(Collision.class, Velocity.class)) {
                 Collision collision = e.getComponent(Collision.class);
                 String collidingIDs = collision.getCollidingIDs();
@@ -45,6 +43,15 @@ public class PongPhysics implements IGameScript {
                     changeVelocity(e.getComponent(Velocity.class));
 //                    println("\n\nhit\n\n");
                 }
+            }
+        }
+
+        List<IEntity> entities = universe.getAllEntities();
+        for(IEntity e : entities) {
+            if(e.getName().contains("Paddle")) {
+                println(e.getName());
+                Velocity v = e.getComponent(Velocity.class);
+                v.setVX(0);
             }
         }
     }
