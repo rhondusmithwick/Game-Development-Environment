@@ -67,7 +67,7 @@ public abstract class EventEditorTab extends Editor {
         animationView = false;
         makeActionPane();
         parameters = new HashMap<>();
-        addedParametersText = new Text(myResources.getString("groovyParameterAdded"));
+        addedParametersText = new Text(myResources.getString("groovyParamAdded"));
     }
 
     public void flashText (Text text) {
