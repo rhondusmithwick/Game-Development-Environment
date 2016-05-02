@@ -1,4 +1,4 @@
-package guiObjects;
+package view.componentdisplays;
 
 import java.util.ResourceBundle;
 
