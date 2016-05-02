@@ -38,3 +38,12 @@ List<IEntity> getEntitiesWithNamesAndIDs() {
 void workOnEntities(Closure closure) {
     getEntitiesWithNamesAndIDs().each(closure);
 }
+
+
+Double getDouble(String variableName) {
+    return getVariable(variableName) as double;
+}
+
+String getString(String variableName) {
+	return getVariable(variableName) as String;
+}

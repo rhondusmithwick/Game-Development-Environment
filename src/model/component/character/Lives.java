@@ -21,7 +21,7 @@ public class Lives implements IComponent {
     /**
      * Empty constructor that default to 0.
      */
-    public Lives() {
+    public Lives () {
     }
 
     /**
@@ -29,7 +29,7 @@ public class Lives implements IComponent {
      *
      * @param lives the initial value
      */
-    public Lives(int lives) {
+    public Lives (int lives) {
         setLives(lives);
     }
 
@@ -38,43 +38,43 @@ public class Lives implements IComponent {
      *
      * @return the lives property
      */
-    public SimpleObjectProperty<Integer> livesProperty() {
+    public SimpleObjectProperty<Integer> livesProperty () {
         return singleProperty.property1();
     }
 
-    public int getLives() {
+    public int getLives () {
         return livesProperty().get();
     }
 
-    public void setLives(int lives) {
+    public void setLives (int lives) {
         livesProperty().set(lives);
     }
 
     /**
      * Decrease number of lives by 1.
      */
-    public void decrementLives() {
+    public void decrementLives () {
         changeHelp(-1);
     }
 
     /**
      * Increase number of lives by 1.
      */
-    public void incrementLives() {
+    public void incrementLives () {
         changeHelp(1);
     }
 
-    private void changeHelp(int num) {
+    private void changeHelp (int num) {
         setLives(getLives() + num);
     }
 
     @Override
-    public List<SimpleObjectProperty<?>> getProperties() {
+    public List<SimpleObjectProperty<?>> getProperties () {
         return singleProperty.getProperties();
     }
 
     @Override
-    public void update() {
+    public void update () {
         setLives(getLives());
     }
 }

@@ -5,6 +5,8 @@ import groovy.lang.GroovyShell;
 
 import java.util.List;
 
+import javafx.scene.Scene;
+
 /**
  * Created by rhondusmithwick on 3/31/16.
  *
@@ -12,99 +14,101 @@ import java.util.List;
  */
 public interface ISystemManager {
 
-	/**
-	 * This will play the game loop.
-	 */
-	void play();
+    @Deprecated
+    /**
+     * Reads objects from file with specified fileName. Must be of type T.
+     *
+     * @param fileName
+     *            the file
+     * @param <T>
+     *            the type of all the objects.
+     * @return list of objects of type T
+     */
+    static <T extends ISerializable> List<T> evaluate (String fileName) {
+        return new XMLReader<T>().readFromFile(fileName);
+    }
 
-	/**
-	 * This will pause the game loop.
-	 */
-	void pauseLoop();
+    @Deprecated
+    /**
+     * Reads objects from specified string. Must be of type T.
+     *
+     * @param stringToReadFrom
+     *            the string
+     * @param <T>
+     *            the type of all the objects.
+     * @return list of objects of type T
+     */
+    static <T extends ISerializable> List<T> evaluateString (String stringToReadFrom) {
+        return new XMLReader<T>().readFromString(stringToReadFrom);
+    }
 
-	/**
-	 * This will step the game's loop.
-	 */
-	void step(double dt);
+    /**
+     * This will play the game loop.
+     */
+    void play ();
 
-	/**
-	 * Get the main entity system
-	 *
-	 * @return IEntitySystem-type entity system
-	 */
-	IEntitySystem getEntitySystem();
+    /**
+     * This will pause the game loop.
+     */
+    void pauseLoop ();
 
-	/**
-	 * Get the main entity system
-	 *
-	 * @return IEntitySystem-type entity system
-	 */
-	ILevel getLevel();
+    /**
+     * This will step the game's loop.
+     */
+    void step (double dt);
 
-	/**
-	 * Get the shared entity system
-	 *
-	 * @return IEntitySystem-type entity system
-	 */
-	ILevel getSharedLevel();
+    /**
+     * Get the main entity system
+     *
+     * @return IEntitySystem-type entity system
+     */
+    IEntitySystem getEntitySystem ();
 
-	void saveLevel(String filename);
+    /**
+     * Get the main entity system
+     *
+     * @return IEntitySystem-type entity system
+     */
+    ILevel getLevel ();
 
-	void saveSharedLevel(String filename);
+    /**
+     * Get the shared entity system
+     *
+     * @return IEntitySystem-type entity system
+     */
+    ILevel getSharedLevel ();
 
-	void loadLevel(String filename);
+    void saveLevel (String filename);
 
-	void loadSharedLevel(String filename);
+    void saveSharedLevel (String filename);
 
-	void moveEntitiesToMainSystem(IEntity... entities);
+    void loadLevel (String filename);
 
-	void moveEntitiesToMainSystem(String... ids);
+    void loadSharedLevel (String filename);
 
-	void moveEntitiesToSharedSystem(IEntity... entities);
+    void moveEntitiesToMainSystem (IEntity... entities);
 
-	void moveEntitiesToSharedSystem(String... ids);
+    void moveEntitiesToMainSystem (String... ids);
 
-	@Deprecated
-	/**
-	 * Get the current event system
-	 *
-	 * @return IEventSystem-type event system
-	 */
-	IEventSystem getEventSystem();
+    void moveEntitiesToSharedSystem (IEntity... entities);
 
-	@Deprecated
-	/**
-	 * Reads objects from file with specified fileName. Must be of type T.
-	 *
-	 * @param fileName
-	 *            the file
-	 * @param <T>
-	 *            the type of all the objects.
-	 * @return list of objects of type T
-	 */
-	static <T extends ISerializable> List<T> evaluate(String fileName) {
-		return new XMLReader<T>().readFromFile(fileName);
-	}
+    void moveEntitiesToSharedSystem (String... ids);
 
-	@Deprecated
-	/**
-	 * Reads objects from specified string. Must be of type T.
-	 *
-	 * @param stringToReadFrom
-	 *            the string
-	 * @param <T>
-	 *            the type of all the objects.
-	 * @return list of objects of type T
-	 */
-	static <T extends ISerializable> List<T> evaluateString(String stringToReadFrom) {
-		return new XMLReader<T>().readFromString(stringToReadFrom);
-	}
+    @Deprecated
+    /**
+     * Get the current event system
+     *
+     * @return IEventSystem-type event system
+     */
+    IEventSystem getEventSystem ();
 
-	/**
-	 * Gets the Groovy Shell
-	 * 
-	 * @return the Groovy Shell
-	 */
-	GroovyShell getShell();
+    /**
+     * Gets the Groovy Shell
+     *
+     * @return the Groovy Shell
+     */
+    GroovyShell getShell ();
+
+	Scene getScene();
 
 }

@@ -12,26 +12,26 @@ import static org.junit.Assert.assertTrue;
 
 public class BrunaTesting {
 
-	private EditorEnvironment myEditorEnvironment;
-	private GameEditor myGameEditor;
+    private EditorEnvironment myEditorEnvironment;
+    private GameEditor myGameEditor;
 
 
-	@Before
+    @Before
 
-	public void setUp () {
+    public void setUp () {
 //		myGameEditor = new GameEditor(null, "propertyFiles/english");
-	}
+    }
 
 
-	@Test
-	public void listConnectionTest(){
-		//myEditorEnvironment = new EditorEnvironment("propertyFiles/english", null, myGameEditor.getMasterList(),
-		//myGameEditor.getAddToList());
-		//myEditorEnvironment.populateLayout();
-		IEntity checkEntity = new Entity("Check For");
-		//myGameEditor.addToMaster(checkEntity);
-		assertTrue(myEditorEnvironment.displayContains(checkEntity));
+    @Test
+    public void listConnectionTest () {
+        //myEditorEnvironment = new EditorEnvironment("propertyFiles/english", null, myGameEditor.getMasterList(),
+        //myGameEditor.getAddToList());
+        //myEditorEnvironment.populateLayout();
+        IEntity checkEntity = new Entity("Check For");
+        //myGameEditor.addToMaster(checkEntity);
+        assertTrue(myEditorEnvironment.displayContains(checkEntity));
 
-	}
+    }
 
 }

@@ -1,0 +1,102 @@
+<?xml version="1.0" ?><object-stream><model.entity.Level serialization="custom"><model.entity.Level><default><eventSystem class="events.EventSystem" serialization="custom"><events.EventSystem><default><actionMap class="com.google.common.collect.ArrayListMultimap" serialization="custom"><unserializable-parents></unserializable-parents><com.google.common.collect.ArrayListMultimap><default></default><int>3</int><events.KeyTrigger><changed>false</changed><obs></obs><eventType resolves-to="javafx.event.EventType$EventTypeSerialization"><path><string>INPUT</string><string>KEY</string><string>KEY_PRESSED</string></path></eventType><keyCode>L</keyCode></events.KeyTrigger><int>1</int><events.Action><script>package providedScripts
+
+import groovy.transform.BaseScript
+import groovy.transform.Field
+import model.component.movement.Position
+
+@BaseScript ScriptHelpers ScriptHelpers
+
+
+/**
+ * Move an Entity by the provided X and Y.
+ * @author Rhondu Smithwick
+ */
+// Parameter: movedX: how much to move in x direction
+// Parameter: movedY: how much to move in y direction
+
+@Field Double movedXField = containsVariable("movedX") ? getDouble("movedX") : 0.0;
+@Field Double movedYField = containsVariable("movedY") ? getDouble("movedY") : 0.0;
+
+
+def move = { entity -&gt;
+    if (entity.hasComponent(Position.class)) {
+        Position position = entity.getComponent(Position.class);
+        position.setX(position.getX() + movedXField);
+        position.setY(position.getY() + movedYField);
+    }
+}
+workOnEntities(move);</script><scriptPath>resources/providedScripts/TeleportEntity.groovy</scriptPath><parameters class="javax.script.SimpleBindings"><map><entry><string>movedY</string><string>0</string></entry><entry><string>level</string><model.entity.Level reference="../../../../../../../../../../../.."></model.entity.Level></entry><entry><string>movedX</string><string>-10</string></entry><entry><string>universe</string><model.entity.Level reference="../../../../../../../../../../../.."></model.entity.Level></entry><entry><string>entityID</string><string>eedccfb4-7839-451c-b451-fa93875910a3</string></entry></map></parameters></events.Action><events.KeyTrigger><changed>false</changed><obs></obs><eventType reference="../../events.KeyTrigger/eventType"></eventType><keyCode>A</keyCode></events.KeyTrigger><int>1</int><events.Action><script>package providedScripts
+
+import groovy.transform.BaseScript
+import groovy.transform.Field
+import model.component.movement.Position
+
+@BaseScript ScriptHelpers ScriptHelpers
+
+
+/**
+ * Move an Entity by the provided X and Y.
+ * @author Rhondu Smithwick
+ */
+// Parameter: movedX: how much to move in x direction
+// Parameter: movedY: how much to move in y direction
+
+@Field Double movedXField = containsVariable("movedX") ? getDouble("movedX") : 0.0;
+@Field Double movedYField = containsVariable("movedY") ? getDouble("movedY") : 0.0;
+
+
+def move = { entity -&gt;
+    if (entity.hasComponent(Position.class)) {
+        Position position = entity.getComponent(Position.class);
+        position.setX(position.getX() + movedXField);
+        position.setY(position.getY() + movedYField);
+    }
+}
+workOnEntities(move);</script><scriptPath>resources/providedScripts/TeleportEntity.groovy</scriptPath><parameters class="javax.script.SimpleBindings"><map><entry><string>movedY</string><string>0</string></entry><entry><string>level</string><model.entity.Level reference="../../../../../../../../../../../.."></model.entity.Level></entry><entry><string>movedX</string><string>10</string></entry><entry><string>universe</string><model.entity.Level reference="../../../../../../../../../../../.."></model.entity.Level></entry><entry><string>entityID</string><string>51f523ef-5ad1-4a18-9da2-2f514295c655</string></entry></map></parameters></events.Action><events.KeyTrigger><changed>false</changed><obs></obs><eventType reference="../../events.KeyTrigger/eventType"></eventType><keyCode>A</keyCode></events.KeyTrigger><int>1</int><events.Action><script>package providedScripts
+
+import api.IEntity
+
+/**
+ * Created by cyao42 on 5/1/2016.
+ */
+import groovy.transform.BaseScript
+import groovy.transform.Field
+import model.component.character.Attack
+import model.component.character.Health
+import model.component.movement.Position
+import model.component.physics.Collision
+
+@BaseScript ScriptHelpers ScriptHelpers
+
+/**
+ * Kill an Entity when its health reaches 0.
+ * @author Carolyn Yao
+ */
+
+@Field Double damageAmountField = containsVariable("damageAmount") ? getDouble("damageAmount") : 0.0;
+
+
+def damage = { entity -&gt;
+    System.out.println("running damage script");
+    Collision collision = entity.getComponent(Collision.class);
+    String[] attacked = collision.getCollidingIDs().split("~");
+    if (attacked.length &gt;= 2) {
+        System.out.println("This is the colliding ID: " + collision.getCollidingIDs());
+        for (String colliding : attacked) {
+            if (!colliding.equals("")) {
+                String entID = colliding.split("_")[0];
+
+                System.out.println("this is the entity ID: " + entID);
+                //System.out.println("this is the entity ID: " + entID);
+                IEntity collidingEntity = universe.getEntity(entID);
+                if (collidingEntity.hasComponent(Health.class)) {
+                    Health health = collidingEntity.getComponent(Health.class);
+                    health.setHealth(health.getHealth() - damageAmountField);                    
+                    System.out.println(health.getHealth());
+                }
+            }
+        }
+    }
+}
+
+workOnEntities(damage);</script><scriptPath>resources/providedScripts/DamageEntity.groovy</scriptPath><parameters class="javax.script.SimpleBindings"><map><entry><string>level</string><model.entity.Level reference="../../../../../../../../../../../.."></model.entity.Level></entry><entry><string>universe</string><model.entity.Level reference="../../../../../../../../../../../.."></model.entity.Level></entry><entry><string>damageAmount</string><string>10</string></entry><entry><string>entityID</string><string>51f523ef-5ad1-4a18-9da2-2f514295c655</string></entry></map></parameters></events.Action></com.google.common.collect.ArrayListMultimap></actionMap><timer><value>104.46000000001654</value><valid>false</valid><bean class="events.EventSystem" reference="../../../.."></bean><name>timer</name></timer></default></events.EventSystem></eventSystem><metadata class="linked-hash-map"></metadata><physics class="model.physics.PhysicsEngine"><gravityActive>true</gravityActive><collisionDetectionActive>true</collisionDetectionActive><frictionActive>true</frictionActive></physics><universe class="model.entity.EntitySystem"><entities><model.entity.Entity ID="eedccfb4-7839-451c-b451-fa93875910a3" name="tangl"><components class="linked-hash-map"><entry><java-class>model.component.character.Health</java-class><list><model.component.character.Health><singleProperty><property1><value class="double">31.11111111111111</value><valid>false</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>Health</name></property1></singleProperty></model.component.character.Health></list></entry><entry><java-class>model.component.visual.Sprite</java-class><list><model.component.visual.Sprite serialization="custom"><model.component.visual.Sprite><default><imagePathProperty><property1><value class="string">resources\images\tangles.png</value><valid>true</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>ImagePath</name></property1></imagePathProperty><imageSizeProperty><property1><value class="double">0.0</value><valid>true</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>ImageWidth</name></property1><property2><value class="double">0.0</value><valid>true</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>ImageHeight</name></property2></imageSizeProperty></default></model.component.visual.Sprite></model.component.visual.Sprite></list></entry><entry><java-class>model.component.character.Defense</java-class><list><model.component.character.Defense><singleProperty><property1><value class="double">0.0</value><valid>false</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>Defense</name></property1></singleProperty></model.component.character.Defense></list></entry><entry><java-class>model.component.physics.Mass</java-class><list><model.component.physics.Mass><singleProperty><property1><value class="double">1.0</value><valid>true</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>Mass</name></property1></singleProperty></model.component.physics.Mass></list></entry><entry><java-class>model.component.character.Attack</java-class><list><model.component.character.Attack><singleProperty><property1><value class="double">0.0</value><valid>false</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>Attack</name></property1></singleProperty></model.component.character.Attack></list></entry><entry><java-class>model.component.physics.Drag</java-class><list><model.component.physics.Drag><singleProperty><property1><value class="double">0.0</value><valid>false</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>Beta</name></property1></singleProperty></model.component.physics.Drag></list></entry><entry><java-class>model.component.character.Score</java-class><list><model.component.character.Score><singleProperty><property1><value class="double">0.0</value><valid>false</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>Score</name></property1></singleProperty></model.component.character.Score></list></entry><entry><java-class>model.component.movement.Position</java-class><list><model.component.movement.Position><twoProperty><property1><value class="double">365.0</value><valid>true</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>XPosition</name></property1><property2><value class="double">440.0</value><valid>true</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>YPosition</name></property2></twoProperty></model.component.movement.Position></list></entry><entry><java-class>model.component.movement.Velocity</java-class><list><model.component.movement.Velocity><twoProperty><property1><value class="double">0.0</value><valid>true</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>XVelocity</name></property1><property2><value class="double">-0.0</value><valid>true</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>YVelocity</name></property2></twoProperty></model.component.movement.Velocity></list></entry><entry><java-class>model.component.physics.Collision</java-class><list><model.component.physics.Collision><mask class="javafx.geometry.BoundingBox"><minX>365.0</minX><minY>440.0</minY><minZ>0.0</minZ><width>115.0</width><height>102.0</height><depth>0.0</depth><maxX>480.0</maxX><maxY>542.0</maxY><maxZ>0.0</maxZ><hash>0</hash></mask><maskIDProperty><property1><value class="string">ba5060d6-1b91-452e-bf08-676b2e3bb19f</value><valid>true</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>MaskID</name></property1></maskIDProperty><collidingIDsProperty><property1><value class="string"></value><valid>true</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>CollidingIDs</name></property1></collidingIDsProperty></model.component.physics.Collision></list></entry></components><Specs class="linked-hash-map"></Specs><groupIDs></groupIDs></model.entity.Entity><model.entity.Entity ID="51f523ef-5ad1-4a18-9da2-2f514295c655" name="jasmine"><components class="linked-hash-map"><entry><java-class>model.component.physics.Drag</java-class><list><model.component.physics.Drag><singleProperty><property1><value class="double">0.0</value><valid>false</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>Beta</name></property1></singleProperty></model.component.physics.Drag></list></entry><entry><java-class>model.component.movement.Position</java-class><list><model.component.movement.Position><twoProperty><property1><value class="double">108.0</value><valid>true</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>XPosition</name></property1><property2><value class="double">384.0</value><valid>true</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>YPosition</name></property2></twoProperty></model.component.movement.Position></list></entry><entry><java-class>model.component.character.Attack</java-class><list><model.component.character.Attack><singleProperty><property1><value class="double">0.0</value><valid>false</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>Attack</name></property1></singleProperty></model.component.character.Attack></list></entry><entry><java-class>model.component.character.Defense</java-class><list><model.component.character.Defense><singleProperty><property1><value class="double">0.0</value><valid>false</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>Defense</name></property1></singleProperty></model.component.character.Defense></list></entry><entry><java-class>model.component.character.Health</java-class><list><model.component.character.Health><singleProperty><property1><value class="double">0.0</value><valid>false</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>Health</name></property1></singleProperty></model.component.character.Health></list></entry><entry><java-class>model.component.character.Score</java-class><list><model.component.character.Score><singleProperty><property1><value class="double">0.0</value><valid>false</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>Score</name></property1></singleProperty></model.component.character.Score></list></entry><entry><java-class>model.component.movement.Velocity</java-class><list><model.component.movement.Velocity><twoProperty><property1><value class="double">0.0</value><valid>true</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>XVelocity</name></property1><property2><value class="double">-0.0</value><valid>true</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>YVelocity</name></property2></twoProperty></model.component.movement.Velocity></list></entry><entry><java-class>model.component.physics.Mass</java-class><list><model.component.physics.Mass><singleProperty><property1><value class="double">1.0</value><valid>true</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>Mass</name></property1></singleProperty></model.component.physics.Mass></list></entry><entry><java-class>model.component.visual.Sprite</java-class><list><model.component.visual.Sprite serialization="custom"><model.component.visual.Sprite><default><imagePathProperty><property1><value class="string">resources\images\jasmine.png</value><valid>true</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>ImagePath</name></property1></imagePathProperty><imageSizeProperty><property1><value class="double">0.0</value><valid>true</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>ImageWidth</name></property1><property2><value class="double">0.0</value><valid>true</valid><bean class="utility.TwoProperty" reference="../.."></bean><name>ImageHeight</name></property2></imageSizeProperty></default></model.component.visual.Sprite></model.component.visual.Sprite></list></entry><entry><java-class>model.component.physics.Collision</java-class><list><model.component.physics.Collision><mask class="javafx.geometry.BoundingBox"><minX>108.0</minX><minY>384.0</minY><minZ>0.0</minZ><width>128.0</width><height>153.0</height><depth>0.0</depth><maxX>236.0</maxX><maxY>537.0</maxY><maxZ>0.0</maxZ><hash>0</hash></mask><maskIDProperty><property1><value class="string">b3075e36-d1a7-4abc-b5b0-c4210052b875</value><valid>true</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>MaskID</name></property1></maskIDProperty><collidingIDsProperty><property1><value class="string"></value><valid>true</valid><bean class="utility.SingleProperty" reference="../.."></bean><name>CollidingIDs</name></property1></collidingIDsProperty></model.component.physics.Collision></list></entry></components><Specs class="linked-hash-map"></Specs><groupIDs></groupIDs></model.entity.Entity></entities><name>lev1</name></universe></default></model.entity.Level></model.entity.Level></object-stream>

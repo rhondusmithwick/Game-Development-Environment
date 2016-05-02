@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 public class CloneTest {
 
     @Test
-    public void testClone() {
+    public void testClone () {
         Position position = new Position(30, 40);
         Position position2 = position.clone(position.getClass());
         position2.setX(80);

@@ -17,7 +17,7 @@ import java.util.List;
 public class SerializableReader<T> implements IDataReader<T> {
 
     @Override
-    public List<T> readFromFile(String fileName) {
+    public List<T> readFromFile (String fileName) {
         List<T> objects = new ArrayList<>();
         try {
             FileInputStream fileIn = new FileInputStream(fileName);
@@ -32,12 +32,12 @@ public class SerializableReader<T> implements IDataReader<T> {
     }
 
     @Override
-    public List<T> readFromString(String stringInput) {
+    public List<T> readFromString (String stringInput) {
         return null;
     }
 
     @SuppressWarnings("unchecked")
-    private void addAll(ObjectInputStream in, List<T> objects) {
+    private void addAll (ObjectInputStream in, List<T> objects) {
         while (true) {
             try {
                 T obj = (T) in.readObject();

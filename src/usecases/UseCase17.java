@@ -5,7 +5,7 @@ package usecases;
 public class UseCase17 {
 
     // game creator adds power up
-    void doUseCase() {
+    void doUseCase () {
         //EditorEntity myEditor = new EntityEditor();
         //myEditor.show();
         //waiting for user to enter data and press create button

@@ -11,7 +11,7 @@ import voogasalad.util.reflection.Reflection;
 
 public class EditorFactory {
 
-	public IEditor createEditor(String name, Object... args) {
-		return (IEditor) Reflection.createInstance(name, args);
-	}
+    public IEditor createEditor (String name, Object... args) {
+        return (IEditor) Reflection.createInstance(name, args);
+    }
 }

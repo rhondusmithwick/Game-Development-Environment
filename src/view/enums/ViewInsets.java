@@ -20,7 +20,7 @@ public enum ViewInsets {
      *
      * @param i insets object to use for enum
      */
-    ViewInsets(Insets i) {
+    ViewInsets (Insets i) {
         this.inset = i;
 
     }
@@ -30,7 +30,7 @@ public enum ViewInsets {
      *
      * @return insets object
      */
-    public Insets getInset() {
+    public Insets getInset () {
         return this.inset;
     }
 

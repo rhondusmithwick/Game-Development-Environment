@@ -19,7 +19,7 @@ public class Friction implements IComponent {
     /**
      * Empty constructor. Defaults to 9.81.
      */
-    public Friction() {
+    public Friction () {
     }
 
     /**
@@ -27,7 +27,7 @@ public class Friction implements IComponent {
      *
      * @param friction the initial value
      */
-    public Friction(double friction) {
+    public Friction (double friction) {
         setFriction(friction);
     }
 
@@ -36,25 +36,25 @@ public class Friction implements IComponent {
      *
      * @return the friction property
      */
-    public SimpleObjectProperty<Double> frictionProperty() {
+    public SimpleObjectProperty<Double> frictionProperty () {
         return singleProperty.property1();
     }
 
-    public double getFriction() {
+    public double getFriction () {
         return frictionProperty().get();
     }
 
-    public void setFriction(double friction) {
+    public void setFriction (double friction) {
         frictionProperty().set(friction);
     }
 
     @Override
-    public List<SimpleObjectProperty<?>> getProperties() {
+    public List<SimpleObjectProperty<?>> getProperties () {
         return singleProperty.getProperties();
     }
 
     @Override
-    public void update() {
+    public void update () {
         setFriction(getFriction());
     }
 }

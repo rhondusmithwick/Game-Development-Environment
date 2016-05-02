@@ -22,18 +22,18 @@ public class XMLReader<T> implements IDataReader<T> {
 
     private final XStream xstream = new XStream(new StaxDriver());
 
-    public XMLReader() {
+    public XMLReader () {
         xstream.autodetectAnnotations(true);
     }
 
     @Override
-    public List<T> readFromString(String stringInput) {
+    public List<T> readFromString (String stringInput) {
         Reader reader = new StringReader(stringInput);
         doRead(reader);
         return objects;
     }
 
-    private void doRead(Reader reader) {
+    private void doRead (Reader reader) {
         try {
             ObjectInputStream in = xstream.createObjectInputStream(reader);
             continueReading(in);
@@ -46,7 +46,7 @@ public class XMLReader<T> implements IDataReader<T> {
     }
 
     @SuppressWarnings("unchecked")
-    private void continueReading(ObjectInputStream in) throws ClassNotFoundException {
+    private void continueReading (ObjectInputStream in) throws ClassNotFoundException {
         while (true) {
             try {
                 T obj = (T) in.readObject();

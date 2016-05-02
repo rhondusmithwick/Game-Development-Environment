@@ -5,20 +5,20 @@ import javafx.scene.SubScene;
 import javafx.scene.layout.Pane;
 
 public interface IView {
-	Pane getPane();
+    Pane getPane ();
 
-	SubScene getSubScene();
-	
-	void highlight(IEntity entity);
+    SubScene getSubScene ();
 
-	void toggleHighlight(IEntity entity);
+    void highlight (IEntity entity);
 
-	IEntitySystem getEntitySystem();
+    void toggleHighlight (IEntity entity);
 
-	ILevel getLevel();
-	
-	void setScene(Scene scene);
+    IEntitySystem getEntitySystem ();
 
-	void dehighlight(IEntity entity);
+    ILevel getLevel ();
+
+    void setScene (Scene scene);
+
+    void dehighlight (IEntity entity);
 
 }

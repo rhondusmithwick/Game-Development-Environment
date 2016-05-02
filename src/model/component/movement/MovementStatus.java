@@ -1,19 +1,19 @@
 package model.component.movement;
 
-import java.util.List;
-
+import api.IComponent;
 import javafx.beans.property.SimpleObjectProperty;
 import utility.SingleProperty;
-import api.IComponent;
 
-public class MovementStatus implements IComponent{
+import java.util.List;
 
-	private final SingleProperty<String> singleProperty = new SingleProperty<>("MovementStatus", "");
+public class MovementStatus implements IComponent {
+
+    private final SingleProperty<String> singleProperty = new SingleProperty<>("MovementStatus", "");
 
     /**
      * Empty constructor. Has movementStatus at empty string.
      */
-    public MovementStatus() {
+    public MovementStatus () {
     }
 
     /**
@@ -21,7 +21,7 @@ public class MovementStatus implements IComponent{
      *
      * @param attack the initial value
      */
-    public MovementStatus(String movementStatus) {
+    public MovementStatus (String movementStatus) {
         setMovementStatus(movementStatus);
     }
 
@@ -30,30 +30,30 @@ public class MovementStatus implements IComponent{
      *
      * @return the attack property
      */
-    public SimpleObjectProperty<String> movementStatusProperty() {
+    public SimpleObjectProperty<String> movementStatusProperty () {
         return singleProperty.property1();
     }
 
-    public String getMovementStatus() {
+    public String getMovementStatus () {
         return movementStatusProperty().get();
     }
 
-    public void setMovementStatus(String movementStatus) {
-    	movementStatusProperty().set(movementStatus);
+    public void setMovementStatus (String movementStatus) {
+        movementStatusProperty().set(movementStatus);
     }
 
     @Override
-    public String toString() {
+    public String toString () {
         return String.format("Movement Status: %s", getMovementStatus());
     }
 
     @Override
-    public List<SimpleObjectProperty<?>> getProperties() {
+    public List<SimpleObjectProperty<?>> getProperties () {
         return singleProperty.getProperties();
     }
 
     @Override
-    public void update() {
+    public void update () {
         setMovementStatus(getMovementStatus());
     }
 }

@@ -11,8 +11,7 @@ collision = charEntity.getComponent(Collision.class);
 if (!collision.getCollidingIDs().equals("")) {
     health = charEntity.getComponent(Health.class);
     health.setHealth(0);
-}
-else {
+} else {
     health = charEntity.getComponent(Health.class);
     health.setHealth(100);
 }

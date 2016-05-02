@@ -1,7 +1,5 @@
 package view.editor.eventeditor;
 
-import java.util.ResourceBundle;
-
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableColumn;
@@ -11,49 +9,44 @@ import view.editor.eventeditor.tables.Entry;
 import view.editor.eventeditor.tables.TableManager;
 import view.enums.GUISize;
 
-public abstract class Table 
-{
-	private TableView<Entry> table;
-	private TableColumn<Entry, String> column;
-	private ObservableList<Entry> entries;
-	private TableManager manager;
-	
-	public Table(TableManager manager, String name)
-	{
-		this.manager = manager;
-		table = new TableView<Entry>();
-		table.setEditable(true);
-		table.setPrefWidth(GUISize.EVENT_EDITOR_TABLE_WIDTH.getSize());
-		table.setMaxHeight(250);	// TODO magic value
-		column = new TableColumn<Entry, String>(name);
-		column.setCellValueFactory( new PropertyValueFactory<Entry,String>("name") );
-		column.minWidthProperty().bind(table.prefWidthProperty());
-		column.maxWidthProperty().bind(table.prefWidthProperty());
-		
-		entries = FXCollections.observableArrayList();
-		table.getColumns().add(column);
-		table.setItems(entries);
-	}
-	
-	public abstract void fillEntries(Object dataHolder);
-	
-	public TableManager getManager()
-	{
-		return manager;
-	}
-	
-	public TableView<Entry> getTable()
-	{
-		return table;
-	}
-	
-	public ObservableList<Entry> getEntries()
-	{
-		return entries;
-	}
-	
-	public void refreshTable() {
-		entries.clear();
-		table.refresh();
-	}
+public abstract class Table {
+    private static final int TABLE_SIZE = 250;
+	private final TableView<Entry> table;
+    private final ObservableList<Entry> entries;
+    private final TableManager manager;
+
+    public Table (TableManager manager, String name) {
+        this.manager = manager;
+        table = new TableView<>();
+        table.setEditable(true);
+        table.setPrefWidth(GUISize.EVENT_EDITOR_TABLE_WIDTH.getSize());
+        table.setMaxHeight(TABLE_SIZE);  
+        TableColumn<Entry, String> column = new TableColumn<>(name);
+        column.setCellValueFactory(new PropertyValueFactory<>("name"));
+        column.minWidthProperty().bind(table.prefWidthProperty());
+        column.maxWidthProperty().bind(table.prefWidthProperty());
+
+        entries = FXCollections.observableArrayList();
+        table.getColumns().add(column);
+        table.setItems(entries);
+    }
+
+    public abstract void fillEntries (Object dataHolder);
+
+    public TableManager getManager () {
+        return manager;
+    }
+
+    public TableView<Entry> getTable () {
+        return table;
+    }
+
+    public ObservableList<Entry> getEntries () {
+        return entries;
+    }
+
+    public void refreshTable () {
+        entries.clear();
+        table.refresh();
+    }
 }

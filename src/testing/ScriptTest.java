@@ -23,19 +23,18 @@ public class ScriptTest {
 
     private static final String TELEPORT_PATH = "resources/providedScripts/Teleport.groovy";
     private final ILevel universe = new Level();
+    private final transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
     private String ID;
 
-    private transient ScriptEngine engine = new ScriptEngineManager().getEngineByName("groovy");
-
     @Before
-    public void setUp() {
+    public void setUp () {
         final IEntity entity = new Entity();
         ID = entity.getID();
         universe.addEntity(entity);
     }
 
     @Test
-    public void teleportTest() {
+    public void teleportTest () {
         IEntity entity = universe.getEntity(ID);
         entity.addComponent(new Position());
         Action action = new Action(TELEPORT_PATH);

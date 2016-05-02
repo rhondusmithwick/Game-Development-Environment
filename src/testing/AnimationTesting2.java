@@ -5,7 +5,6 @@ package testing;/**
  */
 
 import api.IEntity;
-import api.IEntitySystem;
 import api.ILevel;
 import events.Action;
 import javafx.application.Application;
@@ -17,7 +16,6 @@ import javafx.stage.Stage;
 import model.component.movement.Velocity;
 import model.component.visual.AnimatedSprite;
 import model.entity.Entity;
-import model.entity.EntitySystem;
 import model.entity.Level;
 
 import javax.script.ScriptEngine;
