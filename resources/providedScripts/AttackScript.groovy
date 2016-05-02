@@ -28,8 +28,7 @@ import model.component.physics.Collision
 
 def damage = { entity ->
     System.out.println("running damage script");
-    if (entity.hasComponent(Collision.class)) {
-        if (entity.hasComponent(Attack.class)) {
+    if (entity.hasComponents(Collision.class, Attack.class)) {
             Collision collision = entity.getComponent(Collision.class);
             String[] attacked = collision.getCollidingIDs().split("~");
             System.out.println("This is the colliding ID: " + collision.getCollidingIDs());
@@ -42,7 +41,6 @@ def damage = { entity ->
                         IEntity collidingEntity = universe.getEntity(entID);
                         doDamage(entity, collidingEntity);
                     }
-                }
             }
         }
     }

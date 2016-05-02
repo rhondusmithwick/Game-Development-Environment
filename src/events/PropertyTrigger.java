@@ -48,7 +48,7 @@ public class PropertyTrigger extends Trigger {
     @SuppressWarnings("unchecked")
     @Override
     public void clearListener (ILevel universe) {
-        property.removeListener(this);
+        getProperty(universe).removeListener(this);
     }
 
     @SuppressWarnings("unchecked")
@@ -73,7 +73,7 @@ public class PropertyTrigger extends Trigger {
     @Override
     public String toString () {
         return String.format("%s; %s; %s; %s", getClass().getSimpleName(), entityID, componentClass.getSimpleName(),
-                property.toString());
+                propertyName);
     }
 
 }
