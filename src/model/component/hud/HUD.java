@@ -6,7 +6,11 @@ import utility.SingleProperty;
 
 import java.util.Arrays;
 import java.util.List;
-
+/**
+ * Class to create a heads-up display component.
+ * 
+ * @author Ben Zhang
+ */
 public class HUD implements IComponent {
     private static final String DEFAULT = "Shape:Rectangle;Width:80;Height:40;Color:10,10,10,1";
     private final SingleProperty<String> singleProperty = new SingleProperty<>("HUD", DEFAULT);
