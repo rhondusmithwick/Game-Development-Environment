@@ -29,24 +29,22 @@ import model.component.physics.Collision
 def damage = { entity ->
     System.out.println("running damage script");
     if (entity.hasComponents(Collision.class, Attack.class)) {
-            Collision collision = entity.getComponent(Collision.class);
-            String[] attacked = collision.getCollidingIDs().split("~");
-            System.out.println("This is the colliding ID: " + collision.getCollidingIDs());
-            if (attacked.length >= 2) {
-                //System.out.println("This is the colliding ID: " + collision.getCollidingIDs());
-                for (String colliding : attacked) {
-                    if (!colliding.equals("")) {
-                        String entID = colliding.split("_")[0];
-                        System.out.println("this is the entity ID: " + entID);
-                        IEntity collidingEntity = universe.getEntity(entID);
-                        doDamage(entity, collidingEntity);
-                    }
+        Collision collision = entity.getComponent(Collision.class);
+        String[] attacked = collision.getCollidingIDs().split("~");
+        System.out.println("This is the colliding ID: " + collision.getCollidingIDs());
+        for (String colliding : attacked) {
+            if (!colliding.equals("")) {
+                String entID = colliding.split("_")[0];
+                System.out.println("this is the entity ID: " + entID);
+                IEntity collidingEntity = universe.getEntity(entID);
+                doDamage(entity, collidingEntity);
             }
         }
     }
 }
 
 void doDamage(IEntity attackingEntity, IEntity defendingEntity) {
+    System.out.println("doing damage now");
     if (defendingEntity.hasComponent(Health.class)) {
         double defense = 0.0;
         if (defendingEntity.hasComponent(Defense.class)) {
