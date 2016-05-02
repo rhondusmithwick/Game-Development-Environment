@@ -11,7 +11,7 @@ public class PongPhysics implements IGameScript {
 //    private final String restrictPaddleXScript = Pong.PATH + "RestrictPaddleX.groovy";
     private IEntitySystem universe;
     private IEventSystem eventSystem;
-    private double ballSpeed;
+    private double ballSpeed, ballVX;
 
     @Override
     void init(GroovyShell shell, ISystemManager game) {
@@ -19,6 +19,7 @@ public class PongPhysics implements IGameScript {
         List<IEntity> balls = universe.getEntitiesWithName("Ball");
         if (!balls.isEmpty() && balls.get(0).hasComponent(Velocity.class)) {
             ballSpeed = balls.get(0).getComponent(Velocity.class).getSpeed();
+            ballVX = balls.get(0).getComponent(Velocity.class).getVX();
         }
 
 //        eventSystem = game.getLevel().getEventSystem();
@@ -40,6 +41,7 @@ public class PongPhysics implements IGameScript {
                 Collision collision = e.getComponent(Collision.class);
                 String collidingIDs = collision.getCollidingIDs();
                 if (!collidingIDs.isEmpty()) {
+//                    println(collidingIDs);
                     changeVelocity(e.getComponent(Velocity.class));
 //                    println("\n\nhit\n\n");
                 }
@@ -49,7 +51,7 @@ public class PongPhysics implements IGameScript {
         List<IEntity> entities = universe.getAllEntities();
         for(IEntity e : entities) {
             if(e.getName().contains("Paddle")) {
-                println(e.getName());
+//                println(e.getName());
                 Velocity v = e.getComponent(Velocity.class);
                 v.setVX(0);
             }
@@ -59,7 +61,12 @@ public class PongPhysics implements IGameScript {
     void changeVelocity(Velocity v) {
         double r = Math.random() - 0.5;
         v.setDirection(v.getDirection() + r * 0.2);
-        v.setSpeed(1.2 * ballSpeed);
+        v.setSpeed(1.5 * ballSpeed);
+        if(v.getVX()>=0) {
+            v.setVX(4*ballVX);
+        } else {
+            v.setVX(-4*ballVX);
+        }
     }
 
 }

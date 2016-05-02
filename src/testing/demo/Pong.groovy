@@ -47,11 +47,12 @@ public class Pong implements IGameScript {
         IEntity leftPaddle = SpriteLoader.createPaddle("LeftPaddle", new Position(100, 160));
         leftPaddle.addComponent(new UserControl());
         IEntity rightPaddle = SpriteLoader.createPaddle("RightPaddle", new Position(500, 160));
+        rightPaddle.addComponent(new UserControl());
         // Walls
-        IEntity leftWall = SpriteLoader.createPlatform("LeftWall", new Position(-578, 7));
-        IEntity rightWall = SpriteLoader.createPlatform("RightWall", new Position(560, 7));
-        IEntity ceiling = SpriteLoader.createPlatform("Ceiling", new Position(7, -500));
-        IEntity floor = SpriteLoader.createPlatform("Floor", new Position(7, 500));
+        IEntity leftWall = SpriteLoader.createPlatform("LeftWall", new Position(-500, 7));
+        IEntity rightWall = SpriteLoader.createPlatform("RightWall", new Position(800, 7));
+        IEntity ceiling = SpriteLoader.createPlatform("Ceiling", new Position(160, -500));
+        IEntity floor = SpriteLoader.createPlatform("Floor", new Position(160, 500));
 
         universe.addEntities(ball, leftPaddle, rightPaddle, leftWall, rightWall, ceiling, floor);
     }
@@ -59,13 +60,29 @@ public class Pong implements IGameScript {
     private void initKeyInputs() {
         Map<String, Object> wKey = new HashMap<>();
         wKey.put("key", "W");
+        wKey.put("player", "LeftPaddle");
         Map<String, Object> sKey = new HashMap<>();
         sKey.put("key", "S");
-        Map<String, Object> mKey = new HashMap<>();
-        mKey.put("key", "M");
+        sKey.put("player", "LeftPaddle");
+        Map<String, Object> dKey = new HashMap<>();
+        dKey.put("key", "D");
+        dKey.put("player", "LeftPaddle");
         events.registerEvent(new KeyTrigger("W"), new Action(movePaddleScript, wKey));
         events.registerEvent(new KeyTrigger("S"), new Action(movePaddleScript, sKey));
-        events.registerEvent(new KeyTrigger("M"), new Action(movePaddleScript, mKey));
+        events.registerEvent(new KeyTrigger("D"), new Action(movePaddleScript, dKey));
+
+        Map<String, Object> iKey = new HashMap<>();
+        iKey.put("key", "I");
+        iKey.put("player", "RightPaddle");
+        Map<String, Object> kKey = new HashMap<>();
+        kKey.put("key", "K");
+        kKey.put("player", "RightPaddle");
+        Map<String, Object> lKey = new HashMap<>();
+        lKey.put("key", "L");
+        lKey.put("player", "RightPaddle");
+        events.registerEvent(new KeyTrigger("I"), new Action(movePaddleScript, iKey));
+        events.registerEvent(new KeyTrigger("K"), new Action(movePaddleScript, kKey));
+        events.registerEvent(new KeyTrigger("L"), new Action(movePaddleScript, lKey));
     }
 
     @Override
@@ -79,7 +96,7 @@ public class Pong implements IGameScript {
         // Check for game over
         for (IEntity e : universe.getEntitiesWithComponents(Score.class)) {
             Score score = e.getComponent(Score.class);
-            if (score.getScore() == winningScore) {
+            if (score.getScore() >= winningScore) {
                 System.out.println(e.getName() + " has won.");
             }
         }
@@ -90,6 +107,7 @@ public class Pong implements IGameScript {
 
         IEntity leftWall = universe.getEntitiesWithName("LeftWall").get(0);
         String leftColStr = leftWall.getComponent(Collision.class).getCollidingIDs();
+//        print(leftColStr);
         if (leftColStr.contains(ballID)) {
             IEntity rightPaddle = universe.getEntitiesWithName("RightPaddle").get(0);
             Score s = rightPaddle.getComponent(Score.class);
@@ -99,6 +117,7 @@ public class Pong implements IGameScript {
 
         IEntity rightWall = universe.getEntitiesWithName("RightWall").get(0);
         String rightColStr = rightWall.getComponent(Collision.class).getCollidingIDs();
+//        print(rightColStr);
         if (rightColStr.contains(ballID)) {
             IEntity leftPaddle = universe.getEntitiesWithName("LeftPaddle").get(0);
             Score s = leftPaddle.getComponent(Score.class);

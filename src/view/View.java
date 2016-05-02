@@ -1,14 +1,9 @@
 package view;
 
-import api.IEntity;
-import api.IEntitySystem;
-import api.ILevel;
-import api.ISystemManager;
-import api.IView;
+import api.*;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
-import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
@@ -23,11 +18,7 @@ import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
@@ -48,16 +39,9 @@ import view.utilities.ButtonFactory;
 import view.utilities.PopUp;
 import view.utilities.SpriteUtilities;
 import view.utilities.ToMainMenu;
-import voogasalad.util.reflection.Reflection;
 
-import java.awt.*;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 /**
@@ -123,6 +107,7 @@ public class View implements IView {
         return this.subScene;
     }
 
+    @Deprecated
     public void startTimeline () {
         KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> this.step(SECOND_DELAY));
         Timeline timeline = new Timeline();

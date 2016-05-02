@@ -11,15 +11,22 @@ import model.component.movement.Velocity
 
 ILevel level = universe;
 String keyStr = key;
+String playerStr = player
 Set<IEntity> paddles = level.getEntitiesWithComponents(UserControl.class, Velocity.class);
-//print(keyStr); // TODO: remove
 
 for (IEntity paddle : paddles) {
-    Velocity v = paddle.getComponent(Velocity.class);
-    switch (keyStr) {
-        case "W": moveUp(v); break;
-        case "S": moveDown(v); break;
-        case "M": stop(v); break;
+    if (paddle.getName().equals(playerStr)) {
+        Velocity v = paddle.getComponent(Velocity.class);
+        switch (keyStr) {
+            case "W": moveUp(v); break;
+            case "S": moveDown(v); break;
+            case "D": stop(v); break;
+        }
+        switch (keyStr) {
+            case "I": moveUp(v); break;
+            case "K": moveDown(v); break;
+            case "L": stop(v); break;
+        }
     }
 }
 
