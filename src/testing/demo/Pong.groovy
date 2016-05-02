@@ -23,6 +23,7 @@ public class Pong implements IGameScript {
     private IPhysicsEngine physics;
     private IEventSystem events;
 
+    @Override
     public void init(GroovyShell shell, ISystemManager game) {
         this.game = game;
         this.universe = game.getLevel();
@@ -65,18 +66,9 @@ public class Pong implements IGameScript {
         events.registerEvent(new KeyTrigger("W"), new Action(movePaddleScript, wKey));
         events.registerEvent(new KeyTrigger("S"), new Action(movePaddleScript, sKey));
         events.registerEvent(new KeyTrigger("M"), new Action(movePaddleScript, mKey));
-//        String tempScriptPath = "src/testing/AniPong/";
-//        events.registerEvent(new KeyTrigger("W"), new Action(tempScriptPath+"movePaddleUp.groovy"));
-//        events.registerEvent(new KeyTrigger("S"), new Action(tempScriptPath+"movePaddleDown.groovy"));
-//        events.registerEvent(new KeyTrigger("M"), new Action(tempScriptPath+"stopPaddle.groovy"));
-//        println("Inputs triggers activated.");
     }
 
-//    private initGlobalVariables() {
-//        IEntity data = new Entity("data");
-//        data.addComponent()
-//    }
-
+    @Override
     public void update(double dt) {
         physics.update(universe, dt);
         events.updateInputs(dt);

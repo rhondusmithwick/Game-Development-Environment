@@ -1,18 +1,18 @@
 package testing.demo
 
-import api.IEntity
-import api.IEntitySystem
-import api.IGameScript
-import api.ISystemManager
+import api.*
+import events.Action
+import events.PropertyTrigger
 import model.component.movement.Velocity
 import model.component.physics.Collision
-
 /**
  * Created by Tom on 4/29/2016.
  */
-class PongPhysics implements IGameScript {
+public class PongPhysics implements IGameScript {
 
+    private final String restrictPaddleXScript = Pong.PATH + "RestrictPaddleX.groovy";
     private IEntitySystem universe;
+    private IEventSystem eventSystem;
     private double ballSpeed;
 
     @Override
@@ -22,6 +22,16 @@ class PongPhysics implements IGameScript {
         if (!balls.isEmpty() && balls.get(0).hasComponent(Velocity.class)) {
             ballSpeed = balls.get(0).getComponent(Velocity.class).getSpeed();
         }
+
+        eventSystem = game.getLevel().getEventSystem();
+        restrictPaddleX("LeftPaddle");
+        restrictPaddleX("RightPaddle");
+    }
+
+    private void restrictPaddleX(String name) {
+        IEntity paddle = universe.getEntitiesWithName(name).get(0);
+        String id = paddle.getID();
+        eventSystem.registerEvent(new PropertyTrigger(id, Collision.class, "CollidingIDs"), new Action(restrictPaddleXScript));
     }
 
     @Override
@@ -33,7 +43,7 @@ class PongPhysics implements IGameScript {
                 String collidingIDs = collision.getCollidingIDs();
                 if (!collidingIDs.isEmpty()) {
                     changeVelocity(e.getComponent(Velocity.class));
-                    println("\n\nhit\n\n");
+//                    println("\n\nhit\n\n");
                 }
             }
         }
@@ -42,7 +52,7 @@ class PongPhysics implements IGameScript {
     void changeVelocity(Velocity v) {
         double r = Math.random() - 0.5;
         v.setDirection(v.getDirection() + r * 0.2);
-        v.setSpeed(1.0 * ballSpeed);
+        v.setSpeed(1.2 * ballSpeed);
     }
 
 }

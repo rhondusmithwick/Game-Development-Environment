@@ -12,7 +12,7 @@ import model.component.movement.Velocity
 ILevel level = universe;
 String keyStr = key;
 Set<IEntity> paddles = level.getEntitiesWithComponents(UserControl.class, Velocity.class);
-print(keyStr); // TODO: remove
+//print(keyStr); // TODO: remove
 
 for (IEntity paddle : paddles) {
     Velocity v = paddle.getComponent(Velocity.class);
