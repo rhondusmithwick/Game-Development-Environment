@@ -25,15 +25,22 @@ import model.component.physics.Collision
 def damage = { entity ->
     if (entity.hasComponent(Attack.class)) {
         Collision collision = entity.getComponent(Collision.class);
-        String[] attacked = collision.getCollidingIDs().split("~");
-        for (String colliding: attacked) {
-            String entID = colliding.split("_")[0];
+        for (String entID: collision.getCollidingIDs()) {
             IEntity collidingEntity = universe.getEntity(entID);
             if (collidingEntity.hasComponent(Health.class)) {
                 Health health = collidingEntity.getComponent(Health.class);
                 health.setHealth(health.getHealth() - damageAmount);
             }
         }
+//        String[] attacked = collision.getCollidingIDs().split("~");
+//        for (String colliding: attacked) {
+//            String entID = colliding.split("_")[0];
+//            IEntity collidingEntity = universe.getEntity(entID);
+//            if (collidingEntity.hasComponent(Health.class)) {
+//                Health health = collidingEntity.getComponent(Health.class);
+//                health.setHealth(health.getHealth() - damageAmount);
+//            }
+//        }
     }
 }
 
