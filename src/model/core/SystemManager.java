@@ -147,6 +147,7 @@ public class SystemManager implements ISystemManager {
 
     @Override
     public void loadLevel (String filename) {
+        System.out.println("tried to load");
         this.universe = new XMLReader<ILevel>().readSingleFromFile(filename);
         initLevel();
     }
