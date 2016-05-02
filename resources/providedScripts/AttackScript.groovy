@@ -26,8 +26,7 @@ import model.component.physics.Collision
 @Field Double defenseRatioField = containsVariable("defenseRatio") ? getDouble("defenseRatio") : 0.5;
 
 def damage = { entity ->
-    if (entity.hasComponent(Collision.class)) {
-        if (entity.hasComponent(Attack.class)) {
+    if (entity.hasComponents(Collision.class, Attack.class)) {
             Collision collision = entity.getComponent(Collision.class);
             String[] attacked = collision.getCollidingIDs().split("~");
             if (attacked.length >= 2) {
@@ -39,7 +38,6 @@ def damage = { entity ->
                         IEntity collidingEntity = universe.getEntity(entID);
                         doDamage(entity, collidingEntity);
                     }
-                }
             }
         }
     }
