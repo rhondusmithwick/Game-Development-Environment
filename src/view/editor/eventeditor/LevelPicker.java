@@ -80,7 +80,7 @@ public class LevelPicker {
      * @param boolean isSelected
      */
     private void allBoxCheck (boolean isSelected) {
-        System.out.println("hm.");
+        // System.out.println("hm.");
         for (CheckBox checkbox : checkBoxMap.keySet()) {
             checkbox.setSelected(isSelected);
         }
