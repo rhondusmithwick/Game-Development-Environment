@@ -15,6 +15,7 @@ import model.component.visual.AnimatedSprite
 @Field String animationNameField = containsVariable("animationName") ? (String) getVariable("animationName") : "";
 
 def animate = { entity ->
+    System.out.println("here");
     if (entity.hasComponent(AnimatedSprite.class)) {
         AnimatedSprite animatedSprite = entity.getComponent(AnimatedSprite.class);
         if (animatedSprite.hasAnimation(animationNameField)) {

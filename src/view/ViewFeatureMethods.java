@@ -13,7 +13,6 @@ import javafx.util.Duration;
  */
 public class ViewFeatureMethods {
 
-
     public static void startTimeline (double delay, EventHandler<ActionEvent> step) {
         KeyFrame frame = new KeyFrame(Duration.millis(delay), step);
         Timeline timeline = new Timeline();
