@@ -67,7 +67,7 @@ public abstract class EventEditorTab extends Editor {
         animationView = false;
         makeActionPane();
         parameters = new HashMap<>();
-        addedParametersText = new Text("Groovy parameter added!");
+        addedParametersText = new Text(myResources.getString("groovyParameterAdded"));
     }
 
     public void flashText (Text text) {
@@ -178,7 +178,7 @@ public abstract class EventEditorTab extends Editor {
             if (entityForAnimation == null)
                 getActionButton.setText(myResources.getString("chooseAnimation"));
             else
-                getActionButton.setText("Get Animation for\n" + entityForAnimation.getName());    // TODO resource
+                getActionButton.setText(myResources.getString("getAnimation") + entityForAnimation.getName());    
 
             getActionButton.setOnAction(e -> getAnimation());
             getActionButton.setDisable(false);
@@ -202,9 +202,9 @@ public abstract class EventEditorTab extends Editor {
         TextField valueField = new TextField();
         parametersPane.getChildren().add(keyField);
         parametersPane.getChildren().add(valueField);
-        parametersPane.getChildren().add(ButtonFactory.makeButton("Add Groovy Parameter",
+        parametersPane.getChildren().add(ButtonFactory.makeButton(myResources.getString("addGroovyParameter"),
                 e -> addToParameters(keyField.getText(), valueField.getText())));
-        parametersPane.getChildren().add(ButtonFactory.makeButton("Restart Groovy Parameters",
+        parametersPane.getChildren().add(ButtonFactory.makeButton(myResources.getString("restartGroovyParameters"),
                 e -> clearParameters()));
         pane.getChildren().add(parametersPane);
         addedParametersText = new Text(myResources.getString("eventMade"));
@@ -234,7 +234,7 @@ public abstract class EventEditorTab extends Editor {
     public void setEntityForAnimation (Entity entity) {
         this.entityForAnimation = entity;
         if (animationView) {
-            getActionButton.setText("Get Animation for\n" + entity.getName());    // TODO resource
+            getActionButton.setText(myResources.getString("getAnimation") + entity.getName());   
         }
     }
 
