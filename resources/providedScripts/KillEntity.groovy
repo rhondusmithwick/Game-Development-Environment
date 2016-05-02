@@ -9,7 +9,6 @@ import events.Action
 import groovy.transform.BaseScript
 import groovy.transform.Field
 import model.component.character.Health
-import model.component.visual.AnimatedSprite
 
 @BaseScript ScriptHelpers ScriptHelpers
 

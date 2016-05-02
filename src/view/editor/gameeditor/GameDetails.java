@@ -20,6 +20,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.ResourceBundle;
 
+import static utility.FilePathUtility.relativize;
+
 /**
  * @author calinelson
  */
@@ -70,8 +72,9 @@ public class GameDetails {
     }
 
     private void setIconPicture (File file) {
-        iconPath = file.toURI().toString();
-        setImage();
+        //iconPath = relativize(file.toURI().toString());
+    	//iconPath = file.getPath();
+        //setImage();
     }
 
     private void setImage () {
@@ -84,7 +87,7 @@ public class GameDetails {
         File file = FileUtilities.promptAndGetFile(FileUtilities.getImageFilters(),
                 myResources.getString("chooseIcon"), DefaultStrings.GUI_IMAGES.getDefault());
         if (file != null) {
-            setIconPicture(new File(FilePathUtility.relativize(file.getPath())));
+            setIconPicture(new File(relativize(file.getPath())));
         }
     }
 
