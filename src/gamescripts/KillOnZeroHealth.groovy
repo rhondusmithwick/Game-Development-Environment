@@ -29,7 +29,7 @@ public class KillOnZeroHealth implements IGameScript {
                     if(animatedSprite.hasAnimation("Death")) {
                         animatedSprite.createAndPlayAnimation("Death");
                         if(entity.hasComponent(Mass.class)) {
-                            
+                            entity.removeComponent(Mass.class);
                         }
                     }
                 }
