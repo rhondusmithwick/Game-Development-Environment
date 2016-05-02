@@ -61,6 +61,7 @@ public class LevelChangeTest {
         level2 = createLevel2();
         level2.serialize("level2.xml");
         manager = new SystemManager(myScene, level1);
+        manager.play();
         return myScene;
     }
 
@@ -84,7 +85,9 @@ public class LevelChangeTest {
 		Sprite sprite = new Sprite(imagePath);
 		sprite.getImageView().setLayoutX(x);
 		sprite.getImageView().setLayoutX(y);
+		Position position = new Position(x,y);
 		entity.addComponent(sprite);
+		entity.addComponent(position);
 		return entity;
 	}
 
@@ -97,10 +100,10 @@ public class LevelChangeTest {
 	private void drawCharacter(IEntity character) {
 		Sprite imgPath = character.getComponent(Sprite.class);
 		ImageView charSprite = imgPath.getImageView();
-//		charSprite.setLayoutX(character.getComponent(Position.class).getX());
-//		charSprite.setLayoutY(character.getComponent(Position.class).getY());
-//		charSprite.setPreserveRatio(true);
-//		charSprite.setPreserveRatio(true);
+		charSprite.setLayoutX(character.getComponent(Position.class).getX());
+		charSprite.setLayoutY(character.getComponent(Position.class).getY());
+		charSprite.setPreserveRatio(true);
+		charSprite.setPreserveRatio(true);
 		root.getChildren().add(charSprite);
 	}
 
