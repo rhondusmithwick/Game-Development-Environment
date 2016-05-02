@@ -46,7 +46,7 @@ public class PropertyEventEditor extends EventEditorTab {
         pane.setAlignment(Pos.TOP_LEFT);
         addParametersPane(pane);
         this.language = language;
-        eventViewManager = new EventViewManager();
+        eventViewManager = new EventViewManager(language);
         myResources = ResourceBundle.getBundle(language);
         triggerOK = false;
         actionOK = false;

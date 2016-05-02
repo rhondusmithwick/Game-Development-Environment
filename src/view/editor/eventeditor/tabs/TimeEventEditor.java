@@ -43,7 +43,7 @@ public class TimeEventEditor extends EventEditorTab {
         super(language, levelList);
         String language1 = language;
         myResources = ResourceBundle.getBundle(language);
-        eventViewManager = new EventViewManager();
+        eventViewManager = new EventViewManager(language);
 
         chosenEntityTitle = new Text(myResources.getString("pickedEntities"));    
         chosenEntityTitle.setFont(new Font(FONT_SIZE));    
