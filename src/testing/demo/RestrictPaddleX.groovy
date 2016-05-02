@@ -16,5 +16,5 @@ for (IEntity paddle : paddles) {
     Velocity v = paddle.getComponent(Velocity.class);
     v.setVX(0);
     println("restricting X"); // TODO: remove
-    println();
 }
+println();

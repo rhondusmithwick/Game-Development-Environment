@@ -31,7 +31,7 @@ public class PongPhysics implements IGameScript {
     private void restrictPaddleX(String name) {
         IEntity paddle = universe.getEntitiesWithName(name).get(0);
         String id = paddle.getID();
-        eventSystem.registerEvent(new PropertyTrigger(id, Collision.class, "CollidingIDs"), new Action(restrictPaddleXScript));
+        eventSystem.registerEvent(new PropertyTrigger(id, Velocity.class, "YVelocity"), new Action(restrictPaddleXScript));
     }
 
     @Override
