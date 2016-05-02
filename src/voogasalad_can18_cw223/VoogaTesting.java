@@ -26,7 +26,7 @@ public class VoogaTesting {
         ILevel universe = new Level();
         universe.addEntity(e);
         p.update(universe, 2);
-        System.out.println(pos.getX() + " " + pos.getY());
+       // System.out.println(pos.getX() + " " + pos.getY());
         assertEquals(Math.abs(pos.getX() - 2.0) < 0.0001, true);
         assertEquals(Math.abs(pos.getY() - 2.0) < 0.0001, true);
     }

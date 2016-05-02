@@ -13,6 +13,7 @@ import model.component.physics.Friction;
 import model.component.physics.Gravity;
 import model.component.physics.Mass;
 import model.component.physics.RestitutionCoefficient;
+import model.component.visual.AnimatedSprite;
 import model.component.visual.Sprite;
 import voogasalad.util.reflection.Reflection;
 
@@ -171,8 +172,10 @@ public class PhysicsEngine implements IPhysicsEngine {
     @Override
     public void applyCollisions (ILevel universe, boolean movingInXDirection) {
         List<IEntity> collidableEntities = new ArrayList<IEntity>(
-                universe.getEntitiesWithComponents(Collision.class, Sprite.class));// ,
-        // Mass.class));
+                universe.getEntitiesWithComponents(Collision.class, Sprite.class));
+        List<IEntity> collidableAnimatedEntities = new ArrayList<IEntity>(
+                universe.getEntitiesWithComponents(Collision.class, AnimatedSprite.class));
+        collidableEntities.addAll(collidableAnimatedEntities);
         clearCollisionComponents(collidableEntities);
         for (int i = 0; i < collidableEntities.size(); i++) {
             for (int j = i + 1; j < collidableEntities.size(); j++) {
@@ -200,14 +203,16 @@ public class PhysicsEngine implements IPhysicsEngine {
         for (IEntity entity : collidableEntities) {
             entity.getComponent(Collision.class).clearCollidingIDs();
             entity.getComponent(Collision.class)
-                    .setMask(entity.getComponent(Sprite.class).getImageView().getBoundsInParent());
+                    .setMask(view.utilities.SpriteUtilities.getImageView(entity).getBoundsInParent());
+                    //.setMask(entity.getComponent(Sprite.class).getImageView().getBoundsInParent());
         }
     }
 
     private void resetCollisionMasks (Collection<IEntity> collidableEntities) {
         for (IEntity entity : collidableEntities) {
             entity.getComponent(Collision.class)
-                    .setMask(entity.getComponent(Sprite.class).getImageView().getBoundsInParent());
+                    .setMask(view.utilities.SpriteUtilities.getImageView(entity).getBoundsInParent());
+                //.setMask(entity.getComponent(Sprite.class).getImageView().getBoundsInParent());
         }
     }
 
