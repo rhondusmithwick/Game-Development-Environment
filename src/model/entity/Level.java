@@ -30,13 +30,15 @@ import java.util.ResourceBundle;
  */
 public class Level implements ILevel {
 
+    private static final boolean DEBUG = true;
+
     private IEntitySystem universe = new EntitySystem();
     private Map<String, String> metadata = Maps.newLinkedHashMap();
     private IEventSystem eventSystem = new EventSystem(this);
     private IPhysicsEngine physics = new PhysicsEngine();
     private String eventSystemPath;
     private transient ResourceBundle myResources;
-    //	private transient ResourceBundle scriptLocs = ResourceBundle.getBundle(DefaultStrings.SCRIPTS_LOC.getDefault());
+    // private transient ResourceBundle scriptLocs = ResourceBundle.getBundle(DefaultStrings.SCRIPTS_LOC.getDefault());
     private transient List<IGameScript> gameScripts = Lists.newArrayList();
 
     private transient boolean levelOverBool = false;
@@ -106,10 +108,11 @@ public class Level implements ILevel {
 
     @Override
     public void update (double dt) {
-    	getPhysicsEngine().update(this, dt); // TODO: remove
         getEventSystem().updateInputs(dt);
-//        gameScripts.stream().forEach(gs -> gs.update(dt));
-        
+        gameScripts.stream().forEach(gs -> gs.update(dt));
+        if(DEBUG) {
+            getPhysicsEngine().update(this, dt);
+        }
     }
 
     @Override

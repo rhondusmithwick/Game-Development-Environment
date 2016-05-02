@@ -168,10 +168,12 @@ public class View implements IView {
         imageView.setId(e.getID());
         imageView.setTranslateX(pos.getX());
         imageView.setTranslateY(pos.getY());
-     /*   if (e.hasComponent(Orientation.class)) {
+        if (e.hasComponent(Orientation.class)) {
             Orientation o = e.getComponent(Orientation.class);
-            imageView.setRotate(o.getOrientation());
-        }*/
+            if(o.getOrientationString().equals("west")) {
+                imageView.setScaleX(-1);
+            }
+        }
         return imageView;
     }
 
@@ -217,7 +219,6 @@ public class View implements IView {
                     root.getChildren().add(imageView);
                 }
             }
-
             if (e.hasComponents(HUD.class, Position.class)) {
                 String hud = e.getComponent(HUD.class).getHUD();
                 String shape = "", color = "";
@@ -239,15 +240,14 @@ public class View implements IView {
                         color = val;
                     }
                 }
-                Shape s = (Shape) Reflection.createInstance(shape, width, height);
+                Rectangle s = new Rectangle(width,height);
+                //Shape shape = (Shape) Reflection.createInstance(shape, width, height);
                 String[] strip = color.split(",");
                 s.setFill(Color.rgb(Integer.parseInt(strip[0]), Integer.parseInt(strip[1]), Integer.parseInt(strip[2])));
                 s.setOpacity(Double.parseDouble(strip[3]));
                 double x = e.getComponent(Position.class).getX();
                 double y = e.getComponent(Position.class).getY();
                 double padding = GUISize.HUD_PADDING.getSize();
-                s.setTranslateX(x + padding);
-                s.setTranslateY(y + padding);
                 String text = "";
                 if (e.hasComponent(Score.class)) {
                     double score = e.getComponent(Score.class).getScore();
@@ -262,7 +262,10 @@ public class View implements IView {
                     text += Health.class.getSimpleName() + ": " + Double.toString(health) + "\n";
                 }
                 StackPane stack = new StackPane();
+                stack.setLayoutX(x);
+                stack.setLayoutY(y - padding);
                 Text t = new Text(text);
+                t.setFill(Color.WHITE);
                 t.setBoundsType(TextBoundsType.VISUAL);
                 stack.getChildren().addAll(s, t);
                 root.getChildren().add(stack);
