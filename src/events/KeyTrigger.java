@@ -40,8 +40,7 @@ public class KeyTrigger extends InputTrigger {
 
     @Override
     public String toString () {
-        //return getKeyCode().toString()+":"+getEventType().toString();
-        return getKeyCode().toString();
+        return getKeyCode().toString()+":"+getEventType().toString();
     }
 
     protected KeyCode getKeyCode () {
