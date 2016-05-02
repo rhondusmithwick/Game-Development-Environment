@@ -20,8 +20,6 @@ import model.core.SystemManager;
 import model.entity.Entity;
 import model.entity.Level;
 import model.physics.PhysicsEngine;
-import model.physics.RealisticVelocityCalculator;
-import api.ICollisionVelocityCalculator;
 import api.IEntity;
 import api.IEventSystem;
 import api.ILevel;

@@ -12,10 +12,10 @@ import java.io.IOException;
  * @author Rhondu Smithwick
  */
 public final class ReadFile {
-    private ReadFile() {
+    private ReadFile () {
     }
 
-    public static String readFile(String fileName) {
+    public static String readFile (String fileName) {
         String fileString = "";
         try {
             fileString = Files.toString(new File(fileName), Charsets.UTF_8);

@@ -8,6 +8,9 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
 
+/**
+ * @author Bruna
+ */
 public class ViewFeatureMethods {
 
 

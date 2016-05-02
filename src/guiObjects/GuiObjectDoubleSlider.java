@@ -1,8 +1,6 @@
 package guiObjects;
 
 import javafx.beans.property.SimpleObjectProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.scene.control.Slider;
 
 /**

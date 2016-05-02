@@ -73,7 +73,7 @@ public class Sprite implements IComponent {
 
     public void setImagePath (String imagePath) {
         imagePathProperty().set(imagePath);
-        imageView = this.createImageView(imagePath);
+        imageView = this.createImageView(imagePath); // TODO: refactor
         setImageHeight(getImageHeight());
         setImageWidth(getImageWidth());
     }
@@ -133,7 +133,6 @@ public class Sprite implements IComponent {
     }
 
     public ImageView getImageView () {
-        //return createImageView(this.getImagePath());
         return imageView;
     }
 

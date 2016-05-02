@@ -7,6 +7,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
+import utility.FilePathUtility;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.enums.Indexes;
@@ -83,7 +84,7 @@ public class GameDetails {
         File file = FileUtilities.promptAndGetFile(FileUtilities.getImageFilters(),
                 myResources.getString("chooseIcon"), DefaultStrings.GUI_IMAGES.getDefault());
         if (file != null) {
-            setIconPicture(file);
+            setIconPicture(new File(FilePathUtility.relativize(file.getPath())));
         }
     }
 

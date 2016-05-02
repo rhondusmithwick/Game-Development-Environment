@@ -29,22 +29,19 @@ import java.util.ResourceBundle;
 
 // TODO put Action setting and file picker on abstract
 public class KeyBindingEditor extends EventEditorTab {
-    private boolean keyListenerIsActive;
     private final ScrollPane scrollPane;
-    private Text chosenEntityText;
     private final Text chosenEntityTitle;
-    private ComboBox<String> chooseKeyEventTypeBox;
-
     private final VBox pane;
-
-    private KeyCode currentKey;
-    private Text keyInputText;
     private final ResourceBundle myResources;
-
     private final KeyBindingTableManager tableManager;
     private final EventViewManager eventViewManager;
-
+    private boolean keyListenerIsActive;
+    private Text chosenEntityText;
+    private ComboBox<String> chooseKeyEventTypeBox;
+    private KeyCode currentKey;
+    private Text keyInputText;
     private List<IEntity> chosenEntities;
+    private EventType keyEventType;
 
     public KeyBindingEditor (String language, ObservableList<ILevel> levelList) {
         super(language, levelList);
@@ -90,7 +87,7 @@ public class KeyBindingEditor extends EventEditorTab {
     }
 
     private void createEvent () {
-        addEventToLevels(getChosenLevels(), getChosenEntities(), "KeyTrigger", currentKey.getName());
+        addEventToLevels(getChosenLevels(), getChosenEntities(), "KeyTrigger", currentKey.getName(), keyEventType);
         flashText(getEventCreatedText());
         eventViewManager.updateTable();
     }
@@ -153,12 +150,11 @@ public class KeyBindingEditor extends EventEditorTab {
     }
 
     private void setEventType (String eventType) {
-        EventType<KeyEvent> keyEventType;
         if (eventType.equals(myResources.getString("keyPress"))) {
-            keyEventType = KeyEvent.KEY_PRESSED;
+            this.keyEventType = KeyEvent.KEY_PRESSED;
         }
         if (eventType.equals(myResources.getString("keyRelease"))) {
-            keyEventType = KeyEvent.KEY_RELEASED;
+            this.keyEventType = KeyEvent.KEY_RELEASED;
         }
     }
 
