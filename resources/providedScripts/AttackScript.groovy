@@ -4,13 +4,14 @@ import api.IEntity
 import groovy.transform.BaseScript
 import groovy.transform.Field
 import model.component.character.Attack
+import model.component.character.Defense
+import model.component.character.Health
+import model.component.physics.Collision
+
 
 /**
  * Created by cyao42 on 5/1/2016.
  */
-import model.component.character.Defense
-import model.component.character.Health
-import model.component.physics.Collision
 
 @BaseScript ScriptHelpers ScriptHelpers
 
@@ -26,24 +27,24 @@ import model.component.physics.Collision
 @Field Double defenseRatioField = containsVariable("defenseRatio") ? getDouble("defenseRatio") : 0.5;
 
 def damage = { entity ->
+    System.out.println("running damage script");
     if (entity.hasComponents(Collision.class, Attack.class)) {
-            Collision collision = entity.getComponent(Collision.class);
-            String[] attacked = collision.getCollidingIDs().split("~");
-            if (attacked.length >= 2) {
-                System.out.println("This is the colliding ID: " + collision.getCollidingIDs());
-                for (String colliding : attacked) {
-                    if (!colliding.equals("")) {
-                        String entID = colliding.split("_")[0];
-                        System.out.println("this is the entity ID: " + entID);
-                        IEntity collidingEntity = universe.getEntity(entID);
-                        doDamage(entity, collidingEntity);
-                    }
+        Collision collision = entity.getComponent(Collision.class);
+        String[] attacked = collision.getCollidingIDs().split("~");
+        System.out.println("This is the colliding ID: " + collision.getCollidingIDs());
+        for (String colliding : attacked) {
+            if (!colliding.equals("")) {
+                String entID = colliding.split("_")[0];
+                System.out.println("this is the entity ID: " + entID);
+                IEntity collidingEntity = universe.getEntity(entID);
+                doDamage(entity, collidingEntity);
             }
         }
     }
 }
 
 void doDamage(IEntity attackingEntity, IEntity defendingEntity) {
+    System.out.println("doing damage now");
     if (defendingEntity.hasComponent(Health.class)) {
         double defense = 0.0;
         if (defendingEntity.hasComponent(Defense.class)) {
@@ -53,6 +54,7 @@ void doDamage(IEntity attackingEntity, IEntity defendingEntity) {
         double damageDone = (attack * attackRatioField) - (defense * defenseRatioField);
         Health health = defendingEntity.getComponent(Health.class);
         health.setHealth(health.getHealth() - damageDone);
+        System.out.println(health.getHealth());
     }
 }
 

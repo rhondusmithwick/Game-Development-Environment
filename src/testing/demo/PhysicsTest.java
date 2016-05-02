@@ -55,7 +55,7 @@ public class PhysicsTest extends Application {
         IPhysicsEngine p = new PhysicsEngine();
         for (int i = 0; i < 20; i++) {
             p.update(universe, 1);
-            System.out.println(pos1 + " -- " + pos2);
+            //System.out.println(pos1 + " -- " + pos2);
         }
 
         System.out.println(v1);
