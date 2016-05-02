@@ -9,7 +9,6 @@ import groovy.transform.BaseScript
 import groovy.transform.Field
 import model.component.character.Attack
 import model.component.character.Health
-import model.component.movement.Position
 import model.component.physics.Collision
 
 @BaseScript ScriptHelpers ScriptHelpers
@@ -23,24 +22,22 @@ import model.component.physics.Collision
 
 
 def damage = { entity ->
-    if (entity.hasComponent(Attack.class)) {
-        Collision collision = entity.getComponent(Collision.class);
-//        for (String entID: collision.getCollidingIDs()) {
-//            IEntity collidingEntity = universe.getEntity(entID);
-//            if (collidingEntity.hasComponent(Health.class)) {
-//                Health health = collidingEntity.getComponent(Health.class);
-//                health.setHealth(health.getHealth() - damageAmount);
-//            }
-//        }
-        // collision component returns string on getCollidingIDs()
-        String[] attacked = collision.getCollidingIDs().split("~");
-        for (String colliding: attacked) {
-            System.out.println("hhh");
-            String entID = colliding.split("_")[0];
-            IEntity collidingEntity = universe.getEntity(entID);
-            if (collidingEntity.hasComponent(Health.class)) {
-                Health health = collidingEntity.getComponent(Health.class);
-                health.setHealth(health.getHealth() - damageAmountField);
+    System.out.println("running damage script");
+    Collision collision = entity.getComponent(Collision.class);
+    Attack attack = entity.getComponent(Attack.class);
+    String[] attacked = collision.getCollidingIDs().split("~");
+    if (attacked.length >= 2) {
+        System.out.println("This is the colliding ID: " + collision.getCollidingIDs());
+        for (String colliding : attacked) {
+            System.out.println("this is the entity ID: " + colliding.split("_")[0]);
+            if (!colliding.equals("")) {
+                String entID = colliding.split("_")[0];
+                IEntity collidingEntity = universe.getEntity(entID);
+                if (collidingEntity.hasComponent(Health.class)) {
+                    Health health = collidingEntity.getComponent(Health.class);
+                    health.setHealth(health.getHealth() - attack.getAttack());
+                    System.out.println(health.getHealth());
+                }
             }
         }
     }
