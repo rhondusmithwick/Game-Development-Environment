@@ -26,10 +26,10 @@ public class LevelPicker {
     private final ObservableList<ILevel> levelList;
     private final ScrollPane pane;
     private final VBox vbox;
-    private String language;
-    private CheckBox allBox;
     private final ArrayList<ILevel> selectedLevels;
     private final ResourceBundle myResources;
+    private String language;
+    private CheckBox allBox;
 
     /**
      * Constructor. Takes in any EventAuthoringTab as the authoring Pane that contains this Level Picker.

@@ -19,13 +19,12 @@ import java.util.List;
  */
 public class KeyBindingTableManager extends TableManager {
     private final HBox container;
-    private EntityTable entityTable;
-
-    private Entity entity;
-    private IComponent component;
     private final EventEditorTab editor;
     private final ArrayList<IEntity> pickedEntitiesForEvent;
     private final ObservableList<IEntity> selectedEntitiesFromLevel;
+    private EntityTable entityTable;
+    private Entity entity;
+    private IComponent component;
 
     public KeyBindingTableManager (String language, EventEditorTab editor) {
         container = new HBox();

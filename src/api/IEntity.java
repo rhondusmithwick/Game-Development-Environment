@@ -315,6 +315,6 @@ public interface IEntity extends ISerializable {
     /**
      * Regenerate the unique id.
      */
-    void regenerateID();
+    void regenerateID ();
 
 }

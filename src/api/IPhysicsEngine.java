@@ -1,6 +1,6 @@
 package api;
 
-import javafx.geometry.Point2D;
+import model.physics.Vector;
 
 /**
  * Interface for the physics engine
@@ -23,7 +23,7 @@ public interface IPhysicsEngine {
      * @param dynamicsOn if true, then impulses are subsequently applied to applicable IEntities
      *                   (with Mass, Position, Velocity, and of course, Collision)
      */
-    void applyCollisions (ILevel universe);
+    void applyCollisions (ILevel universe, boolean dynamicsOn);
 
     /**
      * Useful for debugging but will be deprecated!
@@ -34,5 +34,5 @@ public interface IPhysicsEngine {
      * @return whether J is successfully applied to body
      * (false if body does not have Mass, Position, and Velocity)
      */
-    boolean applyImpulse (IEntity body, Point2D impulse);
+    boolean applyImpulse (IEntity body, Vector J);
 }

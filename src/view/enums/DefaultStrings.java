@@ -19,7 +19,7 @@ public enum DefaultStrings {
     XML(".xml"),
     CSS_LOCATION("resources/cssFiles/"),
     MAIN_CSS("darktheme.css"),
-    RHONDU("resources/testing/RhonduSmithwick.JPG"),
+    RHONDU("resources/testing/RhonduSmithwick2.JPG"),
     THEME("finalCountdown.mp3"),
     MUSIC("resources/music/"),
     SOUNDFX("resources/soundfx/"),

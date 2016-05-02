@@ -18,18 +18,16 @@ import static utility.ReadFile.readFile;
  * @author Rhondu Smithwick
  */
 public class Action implements ISerializable {
-    private final String script;
     private final String scriptPath;
     private final Bindings parameters = new SimpleBindings();
 
     public Action (String scriptPath) {
-        script = readFile(scriptPath);
         this.scriptPath = scriptPath;
     }
 
     public Action (String scriptPath, Map<String, Object> parameters) {
         this(scriptPath);
-        System.out.println(parameters);
+        //System.out.println(parameters);
         this.parameters.putAll(parameters);
     }
 
@@ -41,12 +39,11 @@ public class Action implements ISerializable {
         } catch (ScriptException e) {
             //e.printStackTrace();
             e.printStackTrace();
-            System.out.println("Error with script:" + scriptPath);
         }
     }
 
     public String getScript () {
-        return script;
+        return readFile(scriptPath);
     }
 
     public Bindings getParameters () {
@@ -63,7 +60,7 @@ public class Action implements ISerializable {
 
     @Override
     public String toString () {
-        return String.format("Script: %s \n\n, Parameters: %s", script, parameters.toString());
+        return String.format("Script: %s \n\n, Parameters: %s", scriptPath, parameters.entrySet());
     }
 
 }

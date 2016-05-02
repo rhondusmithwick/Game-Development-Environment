@@ -3,6 +3,7 @@ package testing.demo
 import api.IEntity
 import model.component.audio.SoundEffect
 import model.component.character.Score
+import model.component.movement.Orientation
 import model.component.movement.Position
 import model.component.movement.Velocity
 import model.component.physics.Collision
@@ -11,6 +12,7 @@ import model.component.physics.RestitutionCoefficient
 import model.component.visual.AnimatedSprite
 import model.component.visual.Sprite
 import model.entity.Entity
+
 /**
  * Created by Tom on 4/25/2016.
  */
@@ -47,10 +49,10 @@ public class SpriteLoader {
 //        Sprite sprite = new Sprite();
 //        ImageView img = sprite.getImageView();
         AnimatedSprite animated = new AnimatedSprite();
-//        animated.createAnimation("LeftPunch");
+        Orientation orientation = new Orientation(90);
 
         SoundEffect soundfx = new SoundEffect();
-        e.addComponents(pos, animated, soundfx);
+        e.addComponents(pos, animated, orientation, soundfx);
         return e;
     }
 

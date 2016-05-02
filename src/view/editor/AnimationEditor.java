@@ -50,13 +50,14 @@ public class AnimationEditor extends Editor {
 
     private void getPropertiesFile () {
         String spriteProperties = FilePathUtility.convertToResourceBase(FileUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("Properties Files", "*.properties"), "Choose Sprite Properties", DIR).getPath(), SPRITE_PROPERTIES);
-        animatedSpriteComponent.setBundlePath(spriteProperties);
         spritePropertiesField.setText(spriteProperties);
+        animatedSpriteComponent.setBundlePath(spriteProperties);
     }
 
     private void getSpriteSheet () {
         String spriteSheet = FilePathUtility.relativize(FileUtilities.promptAndGetFile(new FileChooser.ExtensionFilter("All Images", "*.*"), "Choose Sprite Sheet", DIR).getPath());
         spriteSheetField.setText(spriteSheet);
+        animatedSpriteComponent.setImagePath(spriteSheet);
     }
 
     @Override

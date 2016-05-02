@@ -1,6 +1,5 @@
 package model.entity;
 
-import api.ICollisionVelocityCalculator;
 import api.IEntitySystem;
 import api.IEventSystem;
 import api.IGameScript;
@@ -13,7 +12,6 @@ import events.EventSystem;
 import groovy.lang.GroovyShell;
 import javafx.scene.Scene;
 import model.physics.PhysicsEngine;
-import model.physics.RealisticVelocityCalculator;
 import view.enums.DefaultStrings;
 
 import java.io.IOException;
@@ -28,19 +26,21 @@ import java.util.ResourceBundle;
  * Implementation of a Level. This implementation is focused on the IDs. It
  * spawns entities based on the next available ID and adds them to the system.
  *
- * @author Tom Wu
+ * @author Rhondu Smithwick
  */
 public class Level implements ILevel {
 
-    private final IEntitySystem universe = new EntitySystem();
+    private static final boolean DEBUG = true;
+
+    private IEntitySystem universe = new EntitySystem();
     private Map<String, String> metadata = Maps.newLinkedHashMap();
-    private final IEventSystem eventSystem = new EventSystem(this);
-    private final ICollisionVelocityCalculator velocityCalculator = new RealisticVelocityCalculator();
-    private final IPhysicsEngine physics = new PhysicsEngine(velocityCalculator);
+    private IEventSystem eventSystem = new EventSystem(this);
+    private IPhysicsEngine physics = new PhysicsEngine();
     private String eventSystemPath;
     private transient ResourceBundle myResources;
-    //	private transient ResourceBundle scriptLocs = ResourceBundle.getBundle(DefaultStrings.SCRIPTS_LOC.getDefault());
+    // private transient ResourceBundle scriptLocs = ResourceBundle.getBundle(DefaultStrings.SCRIPTS_LOC.getDefault());
     private transient List<IGameScript> gameScripts = Lists.newArrayList();
+
     private transient boolean levelOverBool = false;
     private transient String nextLevelPath = "";
 
@@ -79,10 +79,10 @@ public class Level implements ILevel {
     }
 
     @Override
-    public String init (GroovyShell shell, ISystemManager game, Scene scene) {
-        setOnInput(scene);
+    public String init (GroovyShell shell, ISystemManager game) {
+    	setOnInput(game.getScene());
         gameScripts = new ArrayList<>();
-        String returnMessage = "Level initializing...\n";
+        String returnMessage = "";
         String key = myResources.getString("script"); // TODO: don't hard-code
         //System.out.println(this.metadata.keySet());
         if (this.metadata.containsKey(key)) {
@@ -97,20 +97,22 @@ public class Level implements ILevel {
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                         | InvocationTargetException | NoSuchMethodException | SecurityException
                         | ClassNotFoundException e) {
-                    e.printStackTrace();
+                    returnMessage += (e.getMessage() + "\n");
                 }
             }
         } else {
-            returnMessage += "No scripts\n";
+            returnMessage = "No scripts";
         }
-        return (returnMessage+"Level initialized.\n");
+        return returnMessage;
     }
 
     @Override
     public void update (double dt) {
         getEventSystem().updateInputs(dt);
-        gameScripts.stream().forEach(gs -> gs.update(dt));
-//        getPhysicsEngine().update(this, dt); // TODO: remove
+     //   gameScripts.stream().forEach(gs -> gs.update(dt));
+        if(DEBUG) {
+            getPhysicsEngine().update(this, dt);
+        }
     }
 
     @Override
@@ -141,13 +143,13 @@ public class Level implements ILevel {
     public void setOnInput (Scene scene) {
         getEventSystem().setOnInput(scene);
     }
-
+    
     @Override
-    public void setLevelOverAndLoadNextLevel (String nextLevelPath) {
-        levelOverBool = true;
-        this.nextLevelPath = nextLevelPath;
+    public void setLevelOverAndLoadNextLevel(String nextLevelPath) {
+    	levelOverBool = true;
+    	this.nextLevelPath = nextLevelPath;
     }
-
+    
     @Override
     public boolean checkIfLevelOver () {
         return levelOverBool;
@@ -162,7 +164,6 @@ public class Level implements ILevel {
         in.defaultReadObject();
         myResources = ResourceBundle.getBundle(DefaultStrings.LANG_LOC.getDefault() + DefaultStrings.DEFAULT_LANGUAGE.getDefault());
         eventSystem.setLevel(this);
-        gameScripts = Lists.newArrayList();
         levelOverBool = false;
         nextLevelPath = "";
     }

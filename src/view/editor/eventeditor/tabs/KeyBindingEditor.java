@@ -29,35 +29,33 @@ import java.util.ResourceBundle;
 
 // TODO put Action setting and file picker on abstract
 public class KeyBindingEditor extends EventEditorTab {
-    private boolean keyListenerIsActive;
-    private final ScrollPane scrollPane;
-    private Text chosenEntityText;
+    private static final int FONT_SIZE = 20;
+	private final ScrollPane scrollPane;
     private final Text chosenEntityTitle;
-    private ComboBox<String> chooseKeyEventTypeBox;
-
     private final VBox pane;
-
-    private KeyCode currentKey;
-    private Text keyInputText;
     private final ResourceBundle myResources;
-
     private final KeyBindingTableManager tableManager;
     private final EventViewManager eventViewManager;
-
+    private boolean keyListenerIsActive;
+    private Text chosenEntityText;
+    private ComboBox<String> chooseKeyEventTypeBox;
+    private KeyCode currentKey;
+    private Text keyInputText;
     private List<IEntity> chosenEntities;
+    private EventType keyEventType;
 
     public KeyBindingEditor (String language, ObservableList<ILevel> levelList) {
         super(language, levelList);
         String language1 = language;
+        myResources = ResourceBundle.getBundle(language);
+        eventViewManager = new EventViewManager(language);
 
-        eventViewManager = new EventViewManager();
-
-        chosenEntityTitle = new Text("== PICKED ENTITIES ==\n");    // TODO resource
-        chosenEntityTitle.setFont(new Font(20));    // TODO enum...?
+        chosenEntityTitle = new Text(myResources.getString("pickedEntities"));   
+        chosenEntityTitle.setFont(new Font(FONT_SIZE));    
 
         chosenEntities = new ArrayList<>();
         scrollPane = new ScrollPane();
-        myResources = ResourceBundle.getBundle(language);
+
         keyListenerIsActive = false;
         pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
         pane.setPadding(ViewInsets.GAME_EDIT.getInset());
@@ -91,14 +89,14 @@ public class KeyBindingEditor extends EventEditorTab {
     }
 
     private void createEvent () {
-        addEventToLevels(getChosenLevels(), getChosenEntities(), "KeyTrigger", currentKey.getName());
+        addEventToLevels(getChosenLevels(), getChosenEntities(), "KeyTrigger", currentKey.getName(), keyEventType);
         flashText(getEventCreatedText());
         eventViewManager.updateTable();
     }
 
     private void listenButtonPress () {
         keyListenerIsActive = true;
-        keyInputText.setText("Listening....");    // TODO resource
+        keyInputText.setText(myResources.getString("listening"));   
     }
 
     @Override
@@ -123,7 +121,7 @@ public class KeyBindingEditor extends EventEditorTab {
 
         Button createEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
 
-        innerContainer.getChildren().addAll(listenToKey, keyInputText, getActionPane(), createEventButton);
+        innerContainer.getChildren().addAll(listenToKey, chooseKeyEventTypeBox, keyInputText, getActionPane(), createEventButton);
 
         createEventButton.setOnAction(e -> createEvent());
 
@@ -154,19 +152,18 @@ public class KeyBindingEditor extends EventEditorTab {
     }
 
     private void setEventType (String eventType) {
-        EventType<KeyEvent> keyEventType;
         if (eventType.equals(myResources.getString("keyPress"))) {
-            keyEventType = KeyEvent.KEY_PRESSED;
+            this.keyEventType = KeyEvent.KEY_PRESSED;
         }
         if (eventType.equals(myResources.getString("keyRelease"))) {
-            keyEventType = KeyEvent.KEY_RELEASED;
+            this.keyEventType = KeyEvent.KEY_RELEASED;
         }
     }
 
 
     private void fillChosenEntityBox () {
         if (chosenEntities.isEmpty()) {
-            chosenEntityText.setText("No Entities Selected!");    // TODO resource
+            chosenEntityText.setText(myResources.getString("noEntities"));    
         } else {
             String entityString = "";
             for (IEntity entity : chosenEntities) {

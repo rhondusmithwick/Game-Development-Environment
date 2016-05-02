@@ -1,6 +1,7 @@
 package api;
 
 import com.google.common.collect.Collections2;
+
 import datamanagement.XMLReader;
 import groovy.lang.GroovyShell;
 import javafx.scene.Scene;
@@ -57,7 +58,7 @@ public interface ILevel extends ISerializable {
      */
     void addMetadata (String key, String value);
 
-    String init (GroovyShell shell, ISystemManager game, Scene scene);
+    String init (GroovyShell shell, ISystemManager game);
 
     void update (double dt);
 
@@ -338,10 +339,10 @@ public interface ILevel extends ISerializable {
     }
 
     void setOnInput (Scene scene);
+    
+	void setLevelOverAndLoadNextLevel(String nextLevelPath);
 
-    void setLevelOverAndLoadNextLevel (String nextLevelPath);
+	String getNextLevelPath();
 
-    boolean checkIfLevelOver ();
-
-    String getNextLevelPath ();
+	boolean checkIfLevelOver();
 }

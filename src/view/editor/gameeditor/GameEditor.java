@@ -32,7 +32,6 @@ import java.util.ResourceBundle;
  */
 public class GameEditor extends Editor {
 
-    private VBox pane;
     private final ResourceBundle myResources;
     private final ObservableList<IEntity> masterEntityList;
     private final ObservableList<ILevel> masterEnvironmentList;
@@ -40,6 +39,7 @@ public class GameEditor extends Editor {
     private final ObjectDisplay entDisp;
     private final ObjectDisplay envDisp;
     private final ObjectDisplay eventDisplay;
+    private VBox pane;
     private ScrollPane scrollPane;
 
     public GameEditor (Authoring authEnv, String language, String fileName, Scene myScene) {

@@ -27,11 +27,11 @@ public class PropertyEventEditor extends EventEditorTab {
     private final VBox pane;
     private final ResourceBundle myResources;
     private final String language;
-    EditorEvent masterEditor;
     private final EventViewManager eventViewManager;
     private final Text triggerText;
-    private Button makeEventButton;
     private final PropertyTableManager tableManager;
+    EditorEvent masterEditor;
+    private Button makeEventButton;
     private List<IEntity> chosenEntities;
     private String chosenEntityName;
     private IComponent chosenComponent;
@@ -46,7 +46,7 @@ public class PropertyEventEditor extends EventEditorTab {
         pane.setAlignment(Pos.TOP_LEFT);
         addParametersPane(pane);
         this.language = language;
-        eventViewManager = new EventViewManager();
+        eventViewManager = new EventViewManager(language);
         myResources = ResourceBundle.getBundle(language);
         triggerOK = false;
         actionOK = false;

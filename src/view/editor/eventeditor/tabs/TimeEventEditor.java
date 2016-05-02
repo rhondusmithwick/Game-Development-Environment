@@ -24,33 +24,33 @@ import java.util.ResourceBundle;
 
 
 public class TimeEventEditor extends EventEditorTab {
-    Text addedParametersText;
-    private final ScrollPane scrollPane;
-    private Text chosenEntityText;
+    private static final int FONT_SIZE = 20;
+	private final ScrollPane scrollPane;
     private final Text chosenEntityTitle;
     private final VBox pane;
     private final ResourceBundle myResources;
     private final KeyBindingTableManager tableManager;
     private final EventViewManager eventViewManager;
+    private final TextField textField;
+    Text addedParametersText;
+    private Text chosenEntityText;
     private HBox parametersPane;
     // TODO test
     private Button getEventsString;
-
     private List<IEntity> chosenEntities;
-    private final TextField textField;
 
     public TimeEventEditor (String language, ObservableList<ILevel> levelList) {
         super(language, levelList);
         String language1 = language;
+        myResources = ResourceBundle.getBundle(language);
+        eventViewManager = new EventViewManager(language);
 
-        eventViewManager = new EventViewManager();
-
-        chosenEntityTitle = new Text("== PICKED ENTITIES ==\n");    // TODO resource
-        chosenEntityTitle.setFont(new Font(20));    // TODO enum...?
+        chosenEntityTitle = new Text(myResources.getString("pickedEntities"));    
+        chosenEntityTitle.setFont(new Font(FONT_SIZE));    
 
         chosenEntities = new ArrayList<>();
         scrollPane = new ScrollPane();
-        myResources = ResourceBundle.getBundle(language);
+
 
         pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
         pane.setPadding(ViewInsets.GAME_EDIT.getInset());
@@ -61,7 +61,7 @@ public class TimeEventEditor extends EventEditorTab {
 
         choseLevels(new ArrayList<>(levelList));
         eventViewManager.levelWasPicked(new ArrayList<>(levelList));
-        textField = TextFieldFactory.makeTextArea("INPUT TIME!");
+        textField = TextFieldFactory.makeTextArea(myResources.getString("inputTime"));
 
         populateLayout();
     }
@@ -137,7 +137,7 @@ public class TimeEventEditor extends EventEditorTab {
 
     private void fillChosenEntityBox () {
         if (chosenEntities.isEmpty()) {
-            chosenEntityText.setText("No Entities Selected!");    // TODO resource
+            chosenEntityText.setText(myResources.getString("noEntities"));
         } else {
             String entityString = "";
             for (IEntity entity : chosenEntities) {

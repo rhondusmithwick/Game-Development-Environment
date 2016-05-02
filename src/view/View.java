@@ -1,9 +1,14 @@
 package view;
 
-import api.*;
+import api.IEntity;
+import api.IEntitySystem;
+import api.ILevel;
+import api.ISystemManager;
+import api.IView;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
 import javafx.geometry.Insets;
@@ -18,15 +23,17 @@ import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextBoundsType;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import main.Vooga;
 import model.component.character.Health;
 import model.component.character.Lives;
 import model.component.character.Score;
@@ -43,12 +50,20 @@ import view.utilities.SpriteUtilities;
 import view.utilities.ToMainMenu;
 import voogasalad.util.reflection.Reflection;
 
-import java.util.*;
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
 /**
  * @author Tom
+ * @author Bruna
+ * @author Ben
  */
 
 public class View implements IView {
@@ -56,20 +71,21 @@ public class View implements IView {
     private final double MILLISECOND_DELAY = 10;
     private final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
     private final ConsoleTextArea console = new ConsoleTextArea();
-    private Group root = new Group();
     private final ISystemManager model;
     private final BorderPane pane;
     private final SubScene subScene;
     private final ViewUtilities viewUtils;
-    private DragAndResizeDynamic DandR;
     private final GameLoopManager manager;
     private final HBox buttonBox = new HBox();
     private final ResourceBundle myResources;
     private final boolean debug;
     private final Scene scene;
     private final List<PopUp> myPopUpList = new ArrayList<>();
+    private Group root = new Group();
+    private DragAndResizeDynamic DandR;
 
-    public View (double viewWidth, double viewHeight, double sceneWidth, double sceneHeight, ILevel level, String language, boolean debug) {
+    public View (double viewWidth, double viewHeight, double sceneWidth, double sceneHeight, ILevel level,
+                 String language, boolean debug) {
         subScene = this.createSubScene(root, viewWidth, viewHeight);
         subScene.setOnMouseClicked(this::deletePopUps);
         this.debug = debug;
@@ -157,7 +173,9 @@ public class View implements IView {
         imageView.setTranslateY(pos.getY());
         if (e.hasComponent(Orientation.class)) {
             Orientation o = e.getComponent(Orientation.class);
-            imageView.setRotate(o.getOrientation());
+            if(o.getOrientationString().equals("west")) {
+                imageView.setScaleX(-1);
+            }
         }
         return imageView;
     }
@@ -190,7 +208,7 @@ public class View implements IView {
         root.getChildren().clear();
         List<IEntity> entities = model.getEntitySystem().getAllEntities();
         for (IEntity e : entities) {
-            if (SpriteUtilities.getSpriteComponent(e)!=null && e.hasComponent(Position.class)) {
+            if (SpriteUtilities.getSpriteComponent(e) != null && e.hasComponent(Position.class)) {
                 if (debug) {
                     root.getChildren().addAll(getCollisionShapes(e));
                 }
@@ -204,7 +222,6 @@ public class View implements IView {
                     root.getChildren().add(imageView);
                 }
             }
-
             if (e.hasComponents(HUD.class, Position.class)) {
                 String hud = e.getComponent(HUD.class).getHUD();
                 String shape = "", color = "";
@@ -226,15 +243,14 @@ public class View implements IView {
                         color = val;
                     }
                 }
-                Shape s = (Shape) Reflection.createInstance(shape, width, height);
+                Rectangle s = new Rectangle(width,height);
+                //Shape shape = (Shape) Reflection.createInstance(shape, width, height);
                 String[] strip = color.split(",");
                 s.setFill(Color.rgb(Integer.parseInt(strip[0]), Integer.parseInt(strip[1]), Integer.parseInt(strip[2])));
                 s.setOpacity(Double.parseDouble(strip[3]));
                 double x = e.getComponent(Position.class).getX();
                 double y = e.getComponent(Position.class).getY();
                 double padding = GUISize.HUD_PADDING.getSize();
-                s.setTranslateX(x + padding);
-                s.setTranslateY(y + padding);
                 String text = "";
                 if (e.hasComponent(Score.class)) {
                     double score = e.getComponent(Score.class).getScore();
@@ -249,7 +265,10 @@ public class View implements IView {
                     text += Health.class.getSimpleName() + ": " + Double.toString(health) + "\n";
                 }
                 StackPane stack = new StackPane();
+                stack.setLayoutX(x);
+                stack.setLayoutY(y - padding);
                 Text t = new Text(text);
+                t.setFill(Color.WHITE);
                 t.setBoundsType(TextBoundsType.VISUAL);
                 stack.getChildren().addAll(s, t);
                 root.getChildren().add(stack);
@@ -284,18 +303,12 @@ public class View implements IView {
         if (debug) {
             buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("evaluate"), e -> this.evaluate()));
             buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("loopManager"), e -> this.createLoopManager()));
+        }else{
+        	buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("mainMenu"), e -> ToMainMenu.toMainMenu(pane)));
         }
-        buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("mainMenu"), e -> ToMainMenu.toMainMenu(pane)));
+        
         buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("startGameLoop"), e -> this.model.play()));
         buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("pauseGameLoop"), e -> this.model.pauseLoop()));
-    }
-
-    private void mainMenu () {
-        Stage myStage = (Stage) pane.getScene().getWindow();
-        myStage.setWidth(GUISize.MAIN_SIZE.getSize());
-        myStage.setHeight(GUISize.MAIN_SIZE.getSize());
-        Vooga vooga = new Vooga(myStage);
-        vooga.init();
     }
 
     private void initConsole () {

@@ -17,14 +17,13 @@ public class KeyTrigger extends InputTrigger {
 
     private KeyCode keyCode;
 
-    public KeyTrigger (KeyCode key, EventType eventType) {
+    public KeyTrigger (String key, EventType eventType) {
         super(eventType);
-        setKeyCode(key);
+        setKeyCode(KeyCode.getKeyCode(key));
     }
 
     public KeyTrigger (String key) {
-        super(KeyEvent.KEY_PRESSED);
-        setKeyCode(KeyCode.getKeyCode(key));
+        this(key, KeyEvent.KEY_PRESSED);
     }
 
     @Override
@@ -41,8 +40,7 @@ public class KeyTrigger extends InputTrigger {
 
     @Override
     public String toString () {
-        //return getKeyCode().toString()+":"+getEventType().toString();
-        return getKeyCode().toString();
+        return getKeyCode().toString()+":"+getEventType().toString();
     }
 
     protected KeyCode getKeyCode () {

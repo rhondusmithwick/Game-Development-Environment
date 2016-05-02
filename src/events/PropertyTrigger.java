@@ -17,8 +17,8 @@ import javafx.beans.value.ObservableValue;
 public class PropertyTrigger extends Trigger {
     private final String entityID;
     private final Class<? extends IComponent> componentClass;
-    private SimpleObjectProperty<Double> property;
     private final String propertyName;
+    private SimpleObjectProperty<Double> property;
 
     public PropertyTrigger (String entityID, Class<? extends IComponent> componentClass, SimpleObjectProperty<Double> property) {
         this.entityID = entityID;
@@ -48,7 +48,7 @@ public class PropertyTrigger extends Trigger {
     @SuppressWarnings("unchecked")
     @Override
     public void clearListener (ILevel universe) {
-        property.removeListener(this);
+        getProperty(universe).removeListener(this);
     }
 
     @SuppressWarnings("unchecked")
@@ -73,7 +73,7 @@ public class PropertyTrigger extends Trigger {
     @Override
     public String toString () {
         return String.format("%s; %s; %s; %s", getClass().getSimpleName(), entityID, componentClass.getSimpleName(),
-                property.toString());
+                propertyName);
     }
 
 }

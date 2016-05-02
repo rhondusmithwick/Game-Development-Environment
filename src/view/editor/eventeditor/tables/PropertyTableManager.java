@@ -20,16 +20,14 @@ import java.util.List;
  */
 public class PropertyTableManager extends TableManager {
     private final HBox container;
+    private final PropertyEventEditor editor;
+    private final ObservableList<IEntity> selectedEntities;
+    private final List<IEntity> chosenEntities = new ArrayList<>();
     private EntityTable entityTable;
     private ComponentTable componentTable;
     private PropertyTable propertyTable;
-
     private Entity entity;
     private IComponent component;
-    private final PropertyEventEditor editor;
-
-    private final ObservableList<IEntity> selectedEntities;
-    private final List<IEntity> chosenEntities = new ArrayList<>();
 
     public PropertyTableManager (String language, PropertyEventEditor editor) {
         container = new HBox();

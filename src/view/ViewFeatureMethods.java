@@ -8,8 +8,10 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.util.Duration;
 
+/**
+ * @author Bruna
+ */
 public class ViewFeatureMethods {
-
 
     public static void startTimeline (double delay, EventHandler<ActionEvent> step) {
         KeyFrame frame = new KeyFrame(Duration.millis(delay), step);

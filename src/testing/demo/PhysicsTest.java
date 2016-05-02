@@ -1,6 +1,5 @@
 package testing.demo;
 
-import api.ICollisionVelocityCalculator;
 import api.IEntity;
 import api.ILevel;
 import api.IPhysicsEngine;
@@ -15,7 +14,6 @@ import model.component.visual.Sprite;
 import model.entity.Entity;
 import model.entity.Level;
 import model.physics.PhysicsEngine;
-import model.physics.RealisticVelocityCalculator;
 
 public class PhysicsTest extends Application {
 
@@ -53,11 +51,11 @@ public class PhysicsTest extends Application {
 
         ILevel universe = new Level();
         universe.addEntities(e1, e2);
-        ICollisionVelocityCalculator velocityCalculator = new RealisticVelocityCalculator();
-        IPhysicsEngine p = new PhysicsEngine(velocityCalculator);
+//        ICollisionVelocityCalculator velocityCalculator = new RealisticVelocityCalculator();
+        IPhysicsEngine p = new PhysicsEngine();
         for (int i = 0; i < 20; i++) {
             p.update(universe, 1);
-            System.out.println(pos1 + " -- " + pos2);
+            //System.out.println(pos1 + " -- " + pos2);
         }
 
         System.out.println(v1);
