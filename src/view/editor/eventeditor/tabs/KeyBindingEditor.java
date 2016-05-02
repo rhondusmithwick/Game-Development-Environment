@@ -29,7 +29,8 @@ import java.util.ResourceBundle;
 
 // TODO put Action setting and file picker on abstract
 public class KeyBindingEditor extends EventEditorTab {
-    private final ScrollPane scrollPane;
+    private static final int FONT_SIZE = 20;
+	private final ScrollPane scrollPane;
     private final Text chosenEntityTitle;
     private final VBox pane;
     private final ResourceBundle myResources;
@@ -46,15 +47,15 @@ public class KeyBindingEditor extends EventEditorTab {
     public KeyBindingEditor (String language, ObservableList<ILevel> levelList) {
         super(language, levelList);
         String language1 = language;
-
+        myResources = ResourceBundle.getBundle(language);
         eventViewManager = new EventViewManager();
 
-        chosenEntityTitle = new Text("== PICKED ENTITIES ==\n");    // TODO resource
-        chosenEntityTitle.setFont(new Font(20));    // TODO enum...?
+        chosenEntityTitle = new Text(myResources.getString("pickedEntities"));   
+        chosenEntityTitle.setFont(new Font(FONT_SIZE));    
 
         chosenEntities = new ArrayList<>();
         scrollPane = new ScrollPane();
-        myResources = ResourceBundle.getBundle(language);
+
         keyListenerIsActive = false;
         pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
         pane.setPadding(ViewInsets.GAME_EDIT.getInset());
@@ -94,7 +95,7 @@ public class KeyBindingEditor extends EventEditorTab {
 
     private void listenButtonPress () {
         keyListenerIsActive = true;
-        keyInputText.setText("Listening....");    // TODO resource
+        keyInputText.setText(myResources.getString("listening"));   
     }
 
     @Override
@@ -161,7 +162,7 @@ public class KeyBindingEditor extends EventEditorTab {
 
     private void fillChosenEntityBox () {
         if (chosenEntities.isEmpty()) {
-            chosenEntityText.setText("No Entities Selected!");    // TODO resource
+            chosenEntityText.setText(myResources.getString("noEntities"));    
         } else {
             String entityString = "";
             for (IEntity entity : chosenEntities) {
