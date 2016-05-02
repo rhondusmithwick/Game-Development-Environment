@@ -12,6 +12,6 @@ import model.component.movement.Velocity
  */
 
 // Parameter: levelPath: path of next level
-@Field Double levelPathField = containsVariable("levelPath") ? getVariable("levelPath") : "";
+@Field String levelPathField = containsVariable("levelPath") ? getString("levelPath") : "";
 
 universe.setLevelOverAndLoadNextLevel(levelPathField);
