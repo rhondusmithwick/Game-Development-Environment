@@ -2,6 +2,7 @@ package testing.games
 
 import events.Action
 import events.KeyTrigger
+import events.TimeTrigger
 import groovy.lang.GroovyShell;
 import model.component.movement.Position
 import model.component.movement.Velocity
@@ -21,6 +22,7 @@ public class CollectGame implements IGameScript {
 	private final String playerImage = "resources/images/blastoise.png";
 	private final String moveEntityScript = "resources/providedScripts/MoveEntity.groovy";
 	private final String stopEntityScript = "resources/providedScripts/StopPerson.groovy";
+	private final String spawnFruit = "resources/providedScripts/spawnFruitScript.groovy";
 	private ISystemManager game;
 	private ILevel universe;
 	private IPhysicsEngine physics;
@@ -34,6 +36,7 @@ public class CollectGame implements IGameScript {
         this.events = universe.getEventSystem();
 		setBackground();
 		setPlayer();
+		setFruits(100);
 	}
 
 	@Override
@@ -85,5 +88,16 @@ public class CollectGame implements IGameScript {
 		map.put("velocityX", 50);
 		map.put("velocityY", 0);
 		events.registerEvent(new KeyTrigger("D", KeyEvent.KEY_RELEASED), new Action(stopEntityScript, map));
+	}
+	
+	private void setFruits(int numFruits) {
+		for(int i =0;i<numFruits;i++) {
+			double time = Math.random()*50+1;
+			int x = (int )(Math.random() * 650);
+			Map<String, Object> map = new HashMap<>();
+			map.put("positionX", x);
+			map.put("fruitName", "fruit");
+			events.registerEvent(new TimeTrigger(time), new Action(spawnFruit, map));
+		}
 	}
 }

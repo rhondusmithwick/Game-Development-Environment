@@ -72,8 +72,9 @@ public class GameDetails {
     }
 
     private void setIconPicture (File file) {
-        iconPath = relativize(file.toURI().toString());
-        setImage();
+        //iconPath = relativize(file.toURI().toString());
+    	//iconPath = file.getPath();
+        //setImage();
     }
 
     private void setImage () {
