@@ -2,8 +2,6 @@ package view.editor.entityeditor;
 
 import api.IComponent;
 import api.IEntity;
-import guiObjects.GuiObject;
-import guiObjects.GuiObjectFactory;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +11,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import model.component.visual.AnimatedSprite;
+import view.componentdisplays.GuiObject;
+import view.componentdisplays.GuiObjectFactory;
 import view.editor.Editor;
 import view.enums.DefaultStrings;
 import view.utilities.ButtonFactory;
