@@ -13,9 +13,9 @@ import groovy.transform.Field
  * @author Carolyn Yao
  */
 
-@Field String nextLevelPath = containsVariable("nextLevelPath") ? getVariable("nextLevelPath") : "";
+@Field String nextLevelPathField = containsVariable("nextLevelPath") ? getVariable("nextLevelPath") : "";
 
-if (!nextLevelPath.equals("")) {
-    universe.setLevelOverAndLoadNextLevel(nextLevelPath);
+if (!nextLevelPathField.equals("")) {
+    universe.setLevelOverAndLoadNextLevel(nextLevelPathField);
 }
 
