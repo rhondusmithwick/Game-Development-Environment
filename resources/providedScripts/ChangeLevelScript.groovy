@@ -9,14 +9,13 @@ import groovy.transform.Field
 @BaseScript ScriptHelpers ScriptHelpers
 
 /**
-<<<<<<< HEAD
  * Level changing generic script
  * @author Carolyn Yao
  */
 
-@Field String nextLevel = containsVariable("nextLevel") ? getVariable("nextLevel") : "";
+@Field String nextLevelPath = containsVariable("nextLevelPath") ? getVariable("nextLevelPath") : "";
 
-if (!nextLevel.equals("")) {
-    universe.setLevelOverAndLoadNextLevel(nextLevel);
+if (!nextLevelPath.equals("")) {
+    universe.setLevelOverAndLoadNextLevel(nextLevelPath);
 }
 
