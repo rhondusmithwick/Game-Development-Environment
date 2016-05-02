@@ -179,7 +179,7 @@ public class View implements IView {
 =======
             imageView.setRotate(o.getOrientation());
         }*/
->>>>>>> 0754409d91774bf5ddf94700f5ba500315b2c956
+
         return imageView;
     }
 
