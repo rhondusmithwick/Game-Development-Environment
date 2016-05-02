@@ -10,7 +10,6 @@ import javafx.util.Duration;
 
 /**
  * @author Bruna
- *
  */
 public class ViewFeatureMethods {
 

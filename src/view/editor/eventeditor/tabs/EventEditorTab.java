@@ -40,12 +40,13 @@ import java.util.TimerTask;
 public abstract class EventEditorTab extends Editor {
     private static final String SCRIPT_PATH = "resources/providedScripts/";
     private final String language;
-    private ArrayList<ILevel> chosenLevels;
     private final LevelPicker levelPicker;
+    private final ResourceBundle myResources;
+    private final Map<String, Object> parameters;
+    private ArrayList<ILevel> chosenLevels;
     private Text createdEventText;
     private Text addedParametersText;
     private Timer timer;
-    private final ResourceBundle myResources;
     private Text actionText;
     private VBox actionPane;
     private ComboBox<String> actionTypes;
@@ -54,7 +55,6 @@ public abstract class EventEditorTab extends Editor {
     private boolean actionReady;
     private Entity entityForAnimation;
     private boolean animationView;
-    private final Map<String, Object> parameters;
 
     public EventEditorTab (String language, ObservableList<ILevel> levelList) {
         myResources = ResourceBundle.getBundle(language);

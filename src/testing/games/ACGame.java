@@ -142,7 +142,7 @@ public class ACGame {
     public static final int KEY_INPUT_SPEED = 5;
     private static Group root;
     private final ILevel level = new Level();
-//    private final ICollisionVelocityCalculator velocityCalculator = new RealisticVelocityCalculator();
+    //    private final ICollisionVelocityCalculator velocityCalculator = new RealisticVelocityCalculator();
     private final PhysicsEngine physics = new PhysicsEngine();
     private final String SPRITE_PATH = "resources/spriteSheets/ryuBlue.gif";
     private final String SPRITE_PROPERTIES = "spriteProperties/aniryu";

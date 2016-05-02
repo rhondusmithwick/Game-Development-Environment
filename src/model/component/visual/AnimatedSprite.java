@@ -19,7 +19,7 @@ import java.util.List;
 public class AnimatedSprite extends Sprite {
     private static final String DEFAULT_IMAGE = "resources/spriteSheets/ryuBlue.gif";
     private static final String DEFAULT_BUNDLE = "spriteProperties/aniryu";
-    private final TwoProperty<String, String> twoProperty = new TwoProperty<>("BundlePath", DEFAULT_BUNDLE, "DefaultAnimation", "RightDefault");
+    private final TwoProperty<String, String> twoProperty = new TwoProperty<>("BundlePath", DEFAULT_BUNDLE, "DefaultAnimation", "westDefault");
     private CustomAnimationContainer container = new CustomAnimationContainer(DEFAULT_BUNDLE);
     private String currentAnimationName = "";
     private transient Animation currentAnimation;
@@ -54,7 +54,7 @@ public class AnimatedSprite extends Sprite {
     public AnimatedSprite (String imagePath, double imageWidth, double imageHeight, String bundlePath, String defaultAnimation) {
         this(imagePath, imageWidth, imageHeight, bundlePath);
         setDefaultAnimation(defaultAnimation);
-        createAndPlayAnimation(currentAnimationName);
+        createAndPlayAnimation(getDefaultAnimation());
     }
 
 
@@ -128,6 +128,10 @@ public class AnimatedSprite extends Sprite {
         super.update();
         setBundlePath(getBundlePath());
         setDefaultAnimation(getDefaultAnimation());
+    }
+
+    public Animation getCurrentAnimation () {
+        return currentAnimation;
     }
 
     public static class CustomAnimationContainer extends AnimationContainer implements ISerializable {

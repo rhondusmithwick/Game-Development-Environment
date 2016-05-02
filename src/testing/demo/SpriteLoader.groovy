@@ -12,6 +12,7 @@ import model.component.physics.RestitutionCoefficient
 import model.component.visual.AnimatedSprite
 import model.component.visual.Sprite
 import model.entity.Entity
+
 /**
  * Created by Tom on 4/25/2016.
  */

@@ -41,8 +41,7 @@ public class EntityTable extends Table {
     public void fillEntries (Object dataHolder) {
         for (ISerializable entity : (ObservableList<ISerializable>) dataHolder) {
             if (entityNames.contains(((Entity) entity).getName())) {
-            }
-            else {
+            } else {
                 entityNames.add(((Entity) entity).getName());
                 getEntries().add(new Entry(entity, ((Entity) entity).getName()));
             }
