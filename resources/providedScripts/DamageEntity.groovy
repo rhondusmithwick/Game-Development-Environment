@@ -20,10 +20,10 @@ import model.component.physics.Collision
  * @author Carolyn Yao
  */
 
-// Parameter: damageAmount ratio of the amount of attack used
+// Parameter: attackRatio ratio of the amount of attack used
 // Parameter: defenseRatio: ratio of the amount of defense used
 
-@Field Double damageAmountField = containsVariable("damageAmount") ? getDouble("damageAmount") : 0.5;
+@Field Double attackRatioField = containsVariable("attackRatio") ? getDouble("attackRatio") : 0.5;
 @Field Double defenseRatioField = containsVariable("defenseRatio") ? getDouble("defenseRatio") : 0.5;
 
 def damage = { entity ->
@@ -46,7 +46,7 @@ void doDamage(IEntity attackingEntity, IEntity defendingEntity) {
             defense = defendingEntity.getComponent(Defense.class).getDefense();
         }
         double attack = attackingEntity.getComponent(Attack.class).getAttack();
-        double damageDone = (attack * damageAmountField) - (defenseRatioField * defense);
+        double damageDone = (attack * attackRatioField) - (defense * defenseRatioField);
         Health health = defendingEntity.getComponent(Health.class);
         health.setHealth(health.getHealth() - damageDone);
     }
