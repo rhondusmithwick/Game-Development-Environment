@@ -13,7 +13,7 @@ public class GuiObjectTextField extends GuiObject {
     private final TextField textField;
     private final Label textFieldLabel;
 
-    public GuiObjectTextField (String name, String resourceBundle, String language, SimpleObjectProperty<?> property) {
+    public GuiObjectTextField(String name, String resourceBundle, String language, SimpleObjectProperty<?> property) {
         super(name, resourceBundle);
 
         ResourceBundle myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
@@ -23,17 +23,19 @@ public class GuiObjectTextField extends GuiObject {
     }
 
     @SuppressWarnings("unchecked")
-    private void bindProperty (SimpleObjectProperty<?> property, TextField textField2) {
-        textField.textProperty().bind((ObservableValue<? extends String>) property);
+    private void bindProperty(SimpleObjectProperty property, TextField textField2) {
+        textField2.textProperty().addListener((ov, old_val, new_val) -> {
+            property.setValue(new_val);
+        });
     }
 
     @Override
-    public Object getCurrentValue () {
+    public Object getCurrentValue() {
         return textField.getText();
     }
 
     @Override
-    public Object getGuiNode () {
+    public Object getGuiNode() {
         VBox vbox = new VBox();
         vbox.getChildren().addAll(textFieldLabel, textField);
         return vbox;
