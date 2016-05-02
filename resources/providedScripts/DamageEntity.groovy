@@ -19,7 +19,7 @@ import model.component.physics.Collision
  * @author Carolyn Yao
  */
 
-@Field Double damageAmount = containsVariable("damageAmount") ? (Double) getVariable("damageAmount") : 0.0;
+@Field Double damageAmountField = containsVariable("damageAmount") ? getDouble("damageAmount") : 0.0;
 
 
 def damage = { entity ->
@@ -35,11 +35,12 @@ def damage = { entity ->
         // collision component returns string on getCollidingIDs()
         String[] attacked = collision.getCollidingIDs().split("~");
         for (String colliding: attacked) {
+            System.out.println("hhh");
             String entID = colliding.split("_")[0];
             IEntity collidingEntity = universe.getEntity(entID);
             if (collidingEntity.hasComponent(Health.class)) {
                 Health health = collidingEntity.getComponent(Health.class);
-                health.setHealth(health.getHealth() - damageAmount);
+                health.setHealth(health.getHealth() - damageAmountField);
             }
         }
     }
