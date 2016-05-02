@@ -9,6 +9,7 @@ import view.editor.eventeditor.EventParser;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.ResourceBundle;
 
 /**
  * Table manager that updates the table that contains the madeEvents.
@@ -26,13 +27,15 @@ public class EventViewManager extends TableManager {
     private final ArrayList<String> keyStrings;
     private final ArrayList<String> actionStrings;
     private List<ILevel> levels;
+	private ResourceBundle myResources;
 
 
-    public EventViewManager () {
+    public EventViewManager (String language) {
+    	myResources = ResourceBundle.getBundle(language);
         levels = new ArrayList<>();
-        levelTable = new SimpleStringTable(this, "Levels");    // TODO resource
-        keyTable = new SimpleStringTable(this, "Trigger");    // TODO resource
-        actionTable = new SimpleStringTable(this, "Action");    // TODO resource
+        levelTable = new SimpleStringTable(this, myResources.getString("levels"));    
+        keyTable = new SimpleStringTable(this, myResources.getString("triggers"));    
+        actionTable = new SimpleStringTable(this, myResources.getString("actions"));    
 
         levelStrings = new ArrayList<>();
         keyStrings = new ArrayList<>();

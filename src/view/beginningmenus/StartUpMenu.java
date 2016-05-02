@@ -38,8 +38,7 @@ public abstract class StartUpMenu {
     protected ScrollPane createDisplay () {
         root = new Group();
         createVBox();
-        ScrollPane scrollPane = new ScrollPane(root);
-        return scrollPane;
+        return  new ScrollPane(root);
     }
 
     private void setMusic (String file) {
