@@ -4,6 +4,8 @@ import events.Action;
 import events.KeyTrigger;
 import events.PropertyTrigger;
 import groovy.lang.GroovyShell;
+import model.component.character.Score;
+import model.component.hud.HUD;
 import model.component.movement.Position;
 import model.component.movement.Velocity;
 import model.component.visual.Sprite;
@@ -73,6 +75,8 @@ public class ShootingGame implements IGameScript {
         player1.addComponent(new Position(0,500));
         player1.addComponent(new Velocity(0,0));
         player1.addComponent(new Collision(player1.getName()));
+        player1.addComponent(new Score(0));
+        player1.addComponent(new HUD());
         universe.addEntity(player1);
         Map<String, Object> map = new HashMap<>();
 
@@ -98,7 +102,7 @@ public class ShootingGame implements IGameScript {
         map.clear();
         map.put("playerName", player1.getName());
         map.put("opposingProjectileName", player2ProjectileName);
-        events.registerEvent(new PropertyTrigger(player1.getID(), Collision.class, "CollidingIDs"), new Action(projectileCollisionScript, map));
+        events.registerEvent(new PropertyTrigger(player1.getID(), Collision.class, "CollidingIDs"), new Action(projectileCollisionScript2, map));
     }
 
     private void setPlayer2() {
@@ -110,6 +114,8 @@ public class ShootingGame implements IGameScript {
         player.addComponent(new Position(750,500));
         player.addComponent(new Velocity(0,0));
         player.addComponent(new Collision(player.getName()));
+        player.addComponent(new Score(0));
+        player.addComponent(new HUD());
         universe.addEntity(player);
         Map<String, Object> map = new HashMap<>();
 
