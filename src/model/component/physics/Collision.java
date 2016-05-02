@@ -66,7 +66,12 @@ public class Collision implements IComponent {
     }
 
     public void addCollidingID (String collidingIDs) {
-        this.collidingIDsProperty().set(this.getCollidingIDs() + "~" + collidingIDs);
+    	if(!collidingIDsProperty().get().contains("~")) {
+    		this.collidingIDsProperty().set(collidingIDs);
+    	}
+    	else {
+    		this.collidingIDsProperty().set(this.getCollidingIDs() + "~" + collidingIDs);
+    	}
     }
 
     public void addCollisionSide (String side) {
