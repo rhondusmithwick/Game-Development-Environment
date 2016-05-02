@@ -16,7 +16,7 @@ import view.utilities.SpriteUtilities;
 
 public class DragAndResizeDynamic {
 
-    private static final double MARGIN = 8;
+    private static final double MARGIN = 20;
 
     private boolean resizing = false;
     private boolean resizingRight = false;
