@@ -44,7 +44,7 @@ public enum GUISize {
     SCENE_SIZE(500),
     POP_UP_WIDTH(120),
     POP_UP_HIEGHT(180),
-    HUD_PADDING(100);
+    HUD_PADDING(40);
 
     private final int size;
 

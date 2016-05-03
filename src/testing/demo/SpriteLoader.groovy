@@ -3,6 +3,7 @@ package testing.demo
 import api.IEntity
 import model.component.audio.SoundEffect
 import model.component.character.Score
+import model.component.hud.HUD
 import model.component.movement.Orientation
 import model.component.movement.Position
 import model.component.movement.Velocity
@@ -33,7 +34,7 @@ public class SpriteLoader {
         IEntity e = new Entity(name);
         e.addComponents(pos, new Sprite(Pong.PATH + "sprites/red_paddle.png"),
                 new Collision("paddle"), new RestitutionCoefficient(1.0), new Mass(20),
-                new Score(0), new Velocity(0, 0));
+                new Score(0), new Velocity(0, 0), new HUD());
         return e;
     }
 

@@ -5,6 +5,7 @@ import groovy.transform.BaseScript
 import groovy.transform.Field
 import model.component.movement.Velocity
 import model.component.movement.Position
+import model.component.physics.Collision
 import model.component.physics.Gravity
 import model.component.visual.Sprite
 import model.entity.Entity
@@ -35,4 +36,5 @@ Sprite sprite = new Sprite(spritePathField);
 sprite.setImageHeight(20);
 sprite.setImageWidth(20);
 entity.addComponent(sprite);
+entity.addComponent(new Collision(playerNameField));
 universe.getEntitySystem().addEntity(entity);
