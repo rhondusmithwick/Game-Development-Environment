@@ -10,12 +10,13 @@ import view.enums.DefaultStrings;
 import java.util.ResourceBundle;
 
 /**
- * abstract framework for gui slider objects
+ * abstract framework for gui slider objects. These objects are used to represent and change the value
+ * of integer and double properties contained by the entity.
  *
  * @author calinelson
  */
 
-public abstract class GuiObjectSlider extends GuiObject {
+public abstract class ComponentDisplaySlider extends GuiObject {
     private final Slider slider;
     private final Label textLabel;
     private final Label numLabel;
@@ -29,7 +30,7 @@ public abstract class GuiObjectSlider extends GuiObject {
      * @param property       property to set value for
      * @param object
      */
-    public GuiObjectSlider (String name, String resourceBundle, String language, SimpleObjectProperty<?> property) {
+    public ComponentDisplaySlider (String name, String resourceBundle, String language, SimpleObjectProperty<?> property) {
         super(name, resourceBundle);
         ResourceBundle myPropertiesNames = ResourceBundle.getBundle(language + DefaultStrings.PROPERTIES.getDefault());
         this.slider = createSlider(name, property);
@@ -57,11 +58,27 @@ public abstract class GuiObjectSlider extends GuiObject {
      * @param property property whose value to bind
      * @param slider   slider to bind property's value to
      */
-    @SuppressWarnings("rawtypes")
-    protected abstract void bindProperty (SimpleObjectProperty property, Slider slider);
+    @SuppressWarnings({ "rawtypes", "unchecked" })
+    protected void bindProperty (SimpleObjectProperty property, Slider slider){
+    	slider.valueProperty().addListener((ov, old_val, new_val) -> {
+            property.setValue(getSliderValue());
 
+        });
+    	
+    }
 
-    @Override
+    /**
+     * gets the sliders value based on what type of slider it is
+     * @param slider slider to get value from
+     * @return double value of slider
+     */
+    protected abstract double getSliderValue();
+
+	/**
+	 * returns the current value of the slider as an object
+	 * @return sliders value as object
+	 */
+	@Override
     public Object getCurrentValue () {
         return slider.getValue();
     }
