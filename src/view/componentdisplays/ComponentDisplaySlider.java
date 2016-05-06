@@ -1,20 +1,3 @@
-// This entire file is part of my masterpiece.
-// Cali Nelson
-/**
- * This class is part of my masterpiece as its design makes it very easy to add new types of sliders to the project. 
- * These sliders are used to allow the user to set the value of certain properties of an entity they are creating or editing.
- * This slider abstract class made it very simple to add sliders that set the values of different types of properties such
- * as double properties or integer properties without having to rewrite a lot of code everytime.  Also all strings
- * displayed to the user are contained in resource bundles, so that they support our multilanguages feature. I also renamed
- * this class and its subclasses so that their names were more indicative of their purposes than they were before, and I made
- * sure that all public and protected methods had javadocs written.  As you can see from the example subclasses in the masterpiece
- * included with this class, adding a new type of slider for a new object type takes only about 20 - 30 lines of code, and the
- * writing of two simple abstract methods. It also prevents a lot of repeated or similar code from being written. So if you had
- * a long or short property that you wanted to display to the user and allow them to modify, adding such as slider would be
- * very quick and easy using this abstract class and could probably be done in about 30 lines, which is fewer lines than it would
- * take if this abstract class were not present.
- */
-
 package view.componentdisplays;
 
 import javafx.beans.binding.Bindings;
@@ -59,7 +42,7 @@ public abstract class ComponentDisplaySlider extends GuiObject {
 
 
     /**
-     * creates a new slider for the given property
+     * create slider
      *
      * @param name     name of property
      * @param property property to bind
@@ -100,9 +83,7 @@ public abstract class ComponentDisplaySlider extends GuiObject {
         return slider.getValue();
     }
 
-	/** 
-	 * returns the slider and its labels inside of a vbox
-	 */
+
     @Override
     public Object getGuiNode () {
         VBox vbox = new VBox();
