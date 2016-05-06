@@ -35,11 +35,7 @@ public enum DefaultStrings {
     RESOURCES("resources/"),
     COMPONENTS("-components"),
     PROPERTIES("-properties"),
-    ANIMATION_LOC("resources/spriteProperties/"),
-    SLIDER_MIN("Min"),
-    SLIDER_MAX("Max"),
-    SLIDER_MAJOR_INC("MajorIncrement"),
-    SLIDER_MINOR_INC("MinorIncrement");
+    ANIMATION_LOC("resources/spriteProperties/");
 
 
     private final String content;
