@@ -249,7 +249,7 @@ public class LevelChangeTest implements IGameScript {
 	
 	private void printCollidingIDs(IEntity character) {
 		Collision collision = character.getComponent(Collision.class);
-		System.out.print(character.getName()+":"+collision.getCollidingIDs()+";");
+		System.out.print(character.getName()+":"+collision.getCollidingIDsWithSides()+";");
 	}
 
 }

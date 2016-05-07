@@ -16,7 +16,9 @@ public class Collision implements IComponent {
     public static final String BOTTOM = "bottom";
     public static final String LEFT = "left";
     public static final String RIGHT = "right";
-
+    public static final String COLLISION_SEPARATOR = "~";
+    public static final String ENTITY_SIDE_SEPARATOR = "_";
+    
     private Bounds mask;
     private SingleProperty<String> maskIDProperty = new SingleProperty<>("MaskID", "");
     private SingleProperty<String> collidingIDsProperty = new SingleProperty<>("CollidingIDs", "");
@@ -30,7 +32,7 @@ public class Collision implements IComponent {
     }
 
     public Collision (String ID) {
-        this(null, ID); // TODO: needs to be null?
+        this(null, ID);
     }
 
     public Bounds getMask () {
@@ -57,8 +59,8 @@ public class Collision implements IComponent {
         return collidingIDsProperty.property1();
     }
 
-    public String getCollidingIDs () {
-        return this.collidingIDsProperty().get();
+    public String getCollidingIDsWithSides () {
+        return this.collidingIDsProperty().get().substring(1);
     }
 
     public void setCollidingIDs (String collidingIDs) {
@@ -66,16 +68,16 @@ public class Collision implements IComponent {
     }
 
     public void addCollidingID (String collidingIDs) {
-    	if(!collidingIDsProperty().get().contains("~")) {
+    	if(!collidingIDsProperty().get().contains(Collision.COLLISION_SEPARATOR)) {
     		this.collidingIDsProperty().set(collidingIDs);
     	}
     	else {
-    		this.collidingIDsProperty().set(this.getCollidingIDs() + "~" + collidingIDs);
+    		this.collidingIDsProperty().set(this.getCollidingIDsWithSides() + Collision.COLLISION_SEPARATOR + collidingIDs);
     	}
     }
 
     public void addCollisionSide (String side) {
-        this.collidingIDsProperty().set(this.getCollidingIDs() + "_" + side);
+        this.collidingIDsProperty().set(this.getCollidingIDsWithSides() + Collision.ENTITY_SIDE_SEPARATOR + side);
     }
 
     public void clearCollidingIDs () {
@@ -90,7 +92,7 @@ public class Collision implements IComponent {
 
     @Override
     public void update () {
-        setCollidingIDs(getCollidingIDs());
+        setCollidingIDs(getCollidingIDsWithSides());
         setMask(getMask());
         setMaskID(getMaskID());
     }
