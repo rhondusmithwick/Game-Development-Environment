@@ -32,24 +32,7 @@ public class VoogaTesting {
         assertEquals(Math.abs(pos.getY() - 2.0) < 0.0001, true);
     }
 
-<<<<<<< HEAD
-	@Test
-	public void testImpulse() {
-		Position pos = new Position(0.0, 0.0);
-		Velocity v = new Velocity(1.0, 1.0);
-		IEntity e = new Entity();
-		e.forceAddComponent(new Mass(1), true);
-		e.forceAddComponent(pos, true);
-		e.forceAddComponent(v, true);
-		IPhysicsEngine p = new PhysicsEngine(new RealisticVelocityCalculator());
-		ILevel universe = new Level();
-		universe.addEntity(e);
-		p.applyImpulse(e, new Point2D(10, 20));
-		System.out.println(v.getVX() + " " + v.getVY());
-		assertEquals(Math.abs(v.getVX() - 11.0) < 0.0001, true);
-		assertEquals(Math.abs(v.getVY() - 21.0) < 0.0001, true);
-	}
-=======
+
     @Test
     public void testImpulse () {
         Position pos = new Position(0.0, 0.0);
@@ -66,6 +49,5 @@ public class VoogaTesting {
         assertEquals(Math.abs(v.getVX() - 11.0) < 0.0001, true);
         assertEquals(Math.abs(v.getVY() - 21.0) < 0.0001, true);
     }
->>>>>>> de3d6a453d1ef89127c3c55d5c38b2326bb361f7
 
 }
