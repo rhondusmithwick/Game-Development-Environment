@@ -1,3 +1,5 @@
+// This entire file is part of my masterpiece.
+// Anirudh Jonnavithula
 package events;
 
 import api.IEventSystem;
@@ -109,35 +111,6 @@ public class EventSystem implements Observer, IEventSystem {
         }
         this.level = level;
         this.bindEvents();
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public File saveEventsToFile (String filepath) {
-        this.unbindEvents();
-        File file = new XMLWriter<ListMultimap<Trigger, Action>>().writeToFile(filepath, actionMap);
-        this.bindEvents();
-        return file;
-    }
-
-    @Override
-    public void readEventFromFile (String filepath) {
-        this.unbindEvents();
-        ListMultimap<Trigger, Action> eventMap = new XMLReader<ListMultimap<Trigger, Action>>()
-                .readSingleFromFile(filepath);
-        actionMap.putAll(eventMap);
-        this.bindEvents();
-    }
-
-    @Override
-    public void readEventsFromFile (File file) {
-        readEventFromFile(file.getPath());
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public String returnEventsAsString () {
-        return new XMLWriter<ListMultimap<Trigger, Action>>().writeToString(actionMap);
     }
 
     @Override

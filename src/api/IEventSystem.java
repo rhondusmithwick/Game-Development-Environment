@@ -33,27 +33,13 @@ public interface IEventSystem extends Observer, ISerializable {
      */
     void registerEvent (Trigger trigger, Action action);
 
-    void registerEvent (Pair<Trigger, Action> eventPair);
-
-    void readEventFromFile (String filepath);
-
-    File saveEventsToFile (String filepath);
-
-    void readEventsFromFile (File file);
-
-    String returnEventsAsString ();
+    void registerEvent (Pair<Trigger, Action> eventPair);   
 
     void setLevel (ILevel level);
 
     void updateInputs (double dt);
 
     void takeInput (KeyEvent k);
-
-//	void takeMousePress(MouseEvent m);
-//	
-//	void unListenToMousePress(ChangeListener listener);
-//
-//	void listenToMousePress(ChangeListener listener);
 
     void unListenToInput (ChangeListener listener);
 
