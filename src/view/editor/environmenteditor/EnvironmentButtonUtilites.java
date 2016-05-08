@@ -69,8 +69,8 @@ public class EnvironmentButtonUtilites {
                 entityRightClicked(entity, entityInButton, event);
             }
         });
-        entityInButton.setOnMouseEntered(e -> ViewFeatureMethods.highlight(entity));
-        entityInButton.setOnMouseExited(e -> ViewFeatureMethods.dehighlight(entity));
+        entityInButton.setOnMouseEntered(e -> EnvironmentHelperMethods.highlight(entity));
+        entityInButton.setOnMouseExited(e -> EnvironmentHelperMethods.dehighlight(entity));
         return entityInButton;
     }
 

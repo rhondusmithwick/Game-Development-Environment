@@ -34,7 +34,8 @@ import model.component.movement.Position;
 import model.component.physics.Collision;
 import model.core.SystemManager;
 import update.GameLoopManager;
-import view.editor.environmenteditor.ViewFeatureMethods;
+import view.editor.environmenteditor.DragAndResize;
+import view.editor.environmenteditor.EnvironmentHelperMethods;
 import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.PopUp;
@@ -66,7 +67,7 @@ public class View implements IView {
     private final Scene scene;
     private final List<PopUp> myPopUpList = new ArrayList<>();
     private Group root = new Group();
-    private DragAndResizeDynamic DandR;
+    private DragAndResize DandR;
 
     public View (double viewWidth, double viewHeight, double sceneWidth, double sceneHeight, ILevel level,
                  String language, boolean debug) {
@@ -81,10 +82,10 @@ public class View implements IView {
         model = new SystemManager(scene, level);
         manager = new GameLoopManager(language, model);
         if (this.debug) {
-            DandR = new DragAndResizeDynamic();
+            DandR = new DragAndResize();
             DandR.makeRootDragAndResize(root);
         }
-        ViewFeatureMethods.startTimeline(MILLISECOND_DELAY, e -> step(SECOND_DELAY));
+        EnvironmentHelperMethods.startTimeline(MILLISECOND_DELAY, e -> step(SECOND_DELAY));
     }
 
     private void deletePopUps (MouseEvent e) {
@@ -123,7 +124,7 @@ public class View implements IView {
     }
 
     public void toggleHighlight (IEntity entity) {
-        ViewFeatureMethods.toggleHighlight(entity);
+        EnvironmentHelperMethods.toggleHighlight(entity);
     }
 
     @Override
@@ -137,7 +138,7 @@ public class View implements IView {
     }
 
     public void highlight (IEntity entity) {
-        ViewFeatureMethods.highlight(entity);
+        EnvironmentHelperMethods.highlight(entity);
     }
 
     public Scene getScene () {
@@ -311,11 +312,11 @@ public class View implements IView {
     public void showPopUp (IEntity entity, ContextMenuEvent event) {
 
         Map<String, EventHandler<ActionEvent>> menuMap = new LinkedHashMap<>();
-        menuMap.put(myResources.getString("remove"), e -> ViewFeatureMethods.removeFromDisplay(entity, getEntitySystem()));
-        menuMap.put(myResources.getString("sendBack"), e -> ViewFeatureMethods.sendToBack(entity, getEntitySystem()));
-        menuMap.put(myResources.getString("sendFront"), e -> ViewFeatureMethods.sendToFront(entity, getEntitySystem()));
-        menuMap.put(myResources.getString("sendBackOne"), e -> ViewFeatureMethods.sendBackward(entity, getEntitySystem()));
-        menuMap.put(myResources.getString("sendForwardOne"), e -> ViewFeatureMethods.sendForward(entity, getEntitySystem()));
+        menuMap.put(myResources.getString("remove"), e -> EnvironmentHelperMethods.removeFromDisplay(entity, getEntitySystem()));
+        menuMap.put(myResources.getString("sendBack"), e -> EnvironmentHelperMethods.sendToBack(entity, getEntitySystem()));
+        menuMap.put(myResources.getString("sendFront"), e -> EnvironmentHelperMethods.sendToFront(entity, getEntitySystem()));
+        menuMap.put(myResources.getString("sendBackOne"), e -> EnvironmentHelperMethods.sendBackward(entity, getEntitySystem()));
+        menuMap.put(myResources.getString("sendForwardOne"), e -> EnvironmentHelperMethods.sendForward(entity, getEntitySystem()));
 
         PopUp myPopUp = new PopUp(GUISize.POP_UP_WIDTH.getSize(), GUISize.POP_UP_HIEGHT.getSize());
         myPopUp.show(setPopUp(menuMap), event.getScreenX(), event.getScreenY());
@@ -348,7 +349,7 @@ public class View implements IView {
     }
 
     public void dehighlight (IEntity entity) {
-        ViewFeatureMethods.dehighlight(entity);
+        EnvironmentHelperMethods.dehighlight(entity);
     }
 
 }

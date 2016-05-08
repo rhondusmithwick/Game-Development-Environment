@@ -1,3 +1,17 @@
+// This entire file is part of my masterpiece.
+// Bruna Liborio
+
+// My chosen masterpiece was a complete refactoring of the View class and Environment Editor class pair. The two are now connected
+// through an explicit MVC triad, with methods from both scattered across the view, model, and controller. This view class contains most of
+// the original and refactored code and thus was chosen as the representation of the refactor and the masterpiece. 
+
+// The refactoring created a more conventional connection between the view and environment. It cut down on the lengths of these two classes
+// by dividing the functionality and adding helper classer which previously did not exist. The new setup allows the buttons and canvas to 
+// be updating whenever required rather than at every predetermined cycle. 
+
+// The code demonstrates a use of MVC, an appreciation of alternate design, and the ability to take two classes that were originally very 
+// unfocused and outsource methods to make them more focused to achieving and implementing a very specific goal. 
+
 package view.editor.environmenteditor;
 
 import static view.utilities.SpriteUtilities.isSprite;
@@ -20,83 +34,88 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import model.component.movement.Position;
 import view.ConsoleTextArea;
-import view.DragAndResizeDynamic;
 import view.enums.DefaultEntities;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.utilities.Alerts;
-import view.utilities.SpriteUtilities;
 import view.utilities.TitledPaneFactory;
 import view.utilities.UserInputBoxFactory;
 
+/**
+ * @author Bruna Liborio
+ *
+ */
 public class EnvironmentEditorView {
 
 	private ResourceBundle myResources;
-	private EnvironmentButtonUtilites myButtonsClass;
+	private EnvironmentButtonUtilites myButtonsUtility;
 	private PopUpUtility myPopUpUtility;
-	
-	private BorderPane environmentPane = new BorderPane();
-	private ScrollPane scrollPane = new ScrollPane(environmentPane);
-	
-	private VBox leftPane = new VBox();
-	private VBox rightPane = new VBox();
-	private BorderPane centerPane = new BorderPane();
+
+	private BorderPane borderPane = new BorderPane();
+	private ScrollPane scrollPane = new ScrollPane(borderPane);
+
+	private VBox leftBox = new VBox();
+	private VBox rightBox = new VBox();
+	private VBox centerBox = new VBox();
+	private VBox bottomBox = new VBox();
 	private HBox buttonBox = new HBox();
-	
-	private VBox masterEntityButtonsBox = new VBox();
-	private VBox environmentEntityButtonsBox = new VBox();
-	
+
+	private VBox masterEntitiesBox = new VBox();
+	private VBox levelEntitiesBox = new VBox();
+
 	private TextField nameField = new TextField();
 	private ConsoleTextArea console = new ConsoleTextArea();
-	
+
 	private Group myRoot = new Group();
-	private DragAndResizeDynamic DandR = new DragAndResizeDynamic();
-	
+	private DragAndResize DandR = new DragAndResize();
+
 	public EnvironmentEditorView(String language, EnvironmentButtonUtilites myButtons, PopUpUtility myPopUps) {
 		myResources = ResourceBundle.getBundle(language);
-		myButtonsClass = myButtons; 
+		myButtonsUtility = myButtons;
 		myPopUpUtility = myPopUps;
 	}
-	
+
+	/**
+	 * Populates the pane with the necessary view elements.
+	 * 
+	 * @param name:
+	 *            name of the level
+	 * @param entities:
+	 *            master list of available entities
+	 */
 	public void populateLayout(String name, List<IEntity> entities) {
-		setLeftPane(name, entities);
-		setRightPane();
-		setMiddlePane();
-		environmentPane.setRight(rightPane);
-		environmentPane.setLeft(leftPane);
-		environmentPane.setCenter(centerPane);
-	}
-	
-	private void setMiddlePane() {
-		myRoot.setManaged(false);
-		centerPane.setCenter(createSubScene(myRoot, GUISize.THREE_FOURTHS_OF_SCREEN.getSize(),
-				GUISize.HEIGHT_MINUS_TAB.getSize()));
-		centerPane.setBottom(setUpInputPane());		
+		setLeftView(name, entities);
+		setRightView();
+		setCenterView();
+		setBottomView();
+		borderPane.setLeft(leftBox);
+		borderPane.setRight(rightBox);
+		borderPane.setCenter(centerBox);
+		borderPane.setBottom(bottomBox);
 	}
 
-	private SubScene createSubScene(Group root, double width, double height) {
-		DandR.makeRootDragAndResize(myRoot);
-		root.setManaged(false);
-		SubScene subScene = new SubScene(root, width, height);
-		subScene.setFill(Color.WHITE);
-		subScene.setOnMouseClicked(myPopUpUtility::deletePopUps);
-		return subScene;
+	/**
+	 * Sets up the left view of the border pane
+	 * 
+	 * @param name:
+	 *            name of the level
+	 * @param entities:
+	 *            master list of available entities
+	 */
+	private void setLeftView(String name, List<IEntity> entities) {
+		leftBox.getChildren().add(setNameDisplay(name));
+		leftBox.getChildren().add(setMasterEntitiesDisplay(entities));
 	}
 
-	private VBox setUpInputPane() {
-		VBox box = new VBox();
-		myButtonsClass.makeMainButtons(buttonBox);
-		initConsole();
-		box.getChildren().add(buttonBox);
-		box.getChildren().add(console);
-		return box;
-	}
-
-	private void setLeftPane(String name, List<IEntity> entities) {
-		leftPane.getChildren().add(setNameDisplay(name));
-		leftPane.getChildren().add(setEntityOptionsDisplay(entities));
-	}
-
+	/**
+	 * Sets up the name display with the level name if there is one or a
+	 * prompting message if there isn't
+	 * 
+	 * @param name:
+	 *            name of the level
+	 * @return nameField: text field with added text according to name
+	 *         availability
+	 */
 	private TextField setNameDisplay(String name) {
 		if (name.equals("")) {
 			nameField.setText(myResources.getString("environmentName"));
@@ -106,21 +125,31 @@ public class EnvironmentEditorView {
 		return nameField;
 	}
 
-	private ScrollPane setEntityOptionsDisplay(List<IEntity> entities) {
+	/**
+	 * Sets up the master entities display with functional buttons to add
+	 * entities
+	 * 
+	 * @param entities:
+	 *            master list of available entities
+	 * @return ScrollPane: a new scroll pane with a titled box containing newly
+	 *         created buttons based of the entities in the master list
+	 */
+	private ScrollPane setMasterEntitiesDisplay(List<IEntity> entities) {
 		if (entities.isEmpty()) {
 			loadDefaults(entities);
 		}
-		myButtonsClass.populateVbox(masterEntityButtonsBox, entities,
+		myButtonsUtility.populateVbox(masterEntitiesBox, entities,
 				DefaultStrings.CREATE_ADD_ENTITY_BUTTON_METHOD.getDefault());
-		return (new ScrollPane(TitledPaneFactory.makeTitledPane(myResources.getString("masterTemplates"),
-				masterEntityButtonsBox, true)));
+		return (new ScrollPane(
+				TitledPaneFactory.makeTitledPane(myResources.getString("masterTemplates"), masterEntitiesBox, true)));
 	}
 
-	private void setRightPane() {
-		rightPane.getChildren().add(new ScrollPane(TitledPaneFactory
-				.makeTitledPane(myResources.getString("environmentInstances"), environmentEntityButtonsBox, true)));
-	}
-
+	/**
+	 * Loads some default entities that are predefined for the user's use
+	 * 
+	 * @param entities:
+	 *            master list of available entities
+	 */
 	private void loadDefaults(List<IEntity> entities) {
 		if (Alerts.showAlert(myResources.getString("addDefaults"), myResources.getString("addDefaultsQuestion"),
 				myResources.getString("defaultsMessage"), AlertType.CONFIRMATION)) {
@@ -130,34 +159,119 @@ public class EnvironmentEditorView {
 		}
 	}
 
-	public void addToView(IEntity entity) { // add to view
+	/**
+	 * Sets up the right view of the border pane
+	 * 
+	 */
+	private void setRightView() {
+		rightBox.getChildren().add(new ScrollPane(TitledPaneFactory
+				.makeTitledPane(myResources.getString("environmentInstances"), levelEntitiesBox, true)));
+	}
+
+	/**
+	 * Sets up the center view of the border pane
+	 * 
+	 */
+	private void setCenterView() {
+		myRoot.setManaged(false);
+		centerBox.getChildren().add(
+				createSubScene(myRoot, GUISize.THREE_FOURTHS_OF_SCREEN.getSize(), GUISize.HEIGHT_MINUS_TAB.getSize()));
+	}
+
+	/**
+	 * Creates the new subscene and manipulates/sets up the root for future use
+	 * 
+	 * @param root:
+	 *            main group to use for the subscene
+	 * @param width:
+	 *            width for the subscene
+	 * @param height:
+	 *            height for the subscene
+	 * @return subScene: the newly created and configure subScene
+	 */
+	private SubScene createSubScene(Group root, double width, double height) {
+		DandR.makeRootDragAndResize(myRoot);
+		root.setManaged(false);
+		SubScene subScene = new SubScene(root, width, height);
+		subScene.setFill(Color.WHITE);
+		subScene.setOnMouseClicked(myPopUpUtility::deletePopUps);
+		return subScene;
+	}
+
+	/**
+	 * Sets up the bottom view of the border pane
+	 * 
+	 */
+	private void setBottomView() {
+		myButtonsUtility.makeMainButtons(buttonBox);
+		initConsole();
+		bottomBox.getChildren().add(buttonBox);
+		bottomBox.getChildren().add(console);
+	}
+
+	/**
+	 * Initializes the console for user input by adding prompting text
+	 * 
+	 */
+	private void initConsole() {
+		console.setText(myResources.getString("enterCommands"));
+		console.appendText("\n\n");
+	}
+
+	/**
+	 * Adds a specified entity to the root of the subscene so it will appear and
+	 * to the level entity box so that it can be manipulated
+	 * 
+	 * @param entity:
+	 *            entity to add to the root and level entity box
+	 */
+	public void addToView(IEntity entity) {
 		String newName = UserInputBoxFactory.userInputBox(myResources.getString("noName"),
 				myResources.getString("addEntityName"));
 		if (newName != null) {
 			entity.setName(newName);
 		}
-		try {
-			if (!entity.hasComponent(Position.class) || !isSprite(entity)) {
-				ComponentAdderUtility.addViewComponents(entity, myResources);
-			}
-			DandR.makeEntityDragAndResize(entity);
-			ImageView imageView = ViewFeatureMethods.getUpdatedImageView(entity);
-			imageView.setOnContextMenuRequested(event -> myPopUpUtility.showPopUp(entity, event));
-			myRoot.getChildren().add(imageView);
-			environmentEntityButtonsBox.getChildren().add(myButtonsClass.createEntityButton(entity));
-		} catch (Exception e) {
-			Alerts.showAlert(myResources.getString("error"), null, myResources.getString("unableToAddEntity"),
-					AlertType.ERROR);
+		if (configureAndAdd(entity)) {
+			levelEntitiesBox.getChildren().add(myButtonsUtility.createEntityButton(entity));
+		}
+
+	}
+
+	/**
+	 * Updates the root by clearing and redrawing the image view attached to the
+	 * entities
+	 * 
+	 * @param passedEntities:
+	 *            level entities to be updated by displaying the new image views
+	 */
+	public void update(List<IEntity> passedEntities) {
+		myRoot.getChildren().clear();
+		for (IEntity e : passedEntities) {
+			configureAndAdd(e);
 		}
 	}
 
+	/**
+	 * Updates the buttons for the master entity box and the level entity box to
+	 * reflect changes in the lists
+	 * 
+	 * @param master:
+	 *            master list of available entities
+	 * @param instances:
+	 *            entity instances currently in the level
+	 */
 	public void updateView(List<IEntity> master, List<IEntity> instances) {
-		myButtonsClass.populateVbox(masterEntityButtonsBox, master,
+		myButtonsUtility.populateVbox(masterEntitiesBox, master,
 				DefaultStrings.CREATE_ADD_ENTITY_BUTTON_METHOD.getDefault());
-		myButtonsClass.populateVbox(environmentEntityButtonsBox, instances,
-				DefaultStrings.CREATE_ENTITY_BUTTON.getDefault());
+		myButtonsUtility.populateVbox(levelEntitiesBox, instances, DefaultStrings.CREATE_ENTITY_BUTTON.getDefault());
 	}
 
+	/**
+	 * Returns the level name specified by the user; if a name was not given,
+	 * the user is prompted to input one
+	 * 
+	 * @return returnName: level name
+	 */
 	public String getName() {
 		String returnName = null;
 		if (nameField.getText().equals(myResources.getString("environmentName"))) {
@@ -169,38 +283,83 @@ public class EnvironmentEditorView {
 		return returnName;
 	}
 
-	public void update(List<IEntity> passedEntities) {
-		myRoot.getChildren().clear();
-		List<IEntity> entities = passedEntities;
-		for (IEntity e : entities) {
-			if (SpriteUtilities.getSpriteComponent(e) != null && e.hasComponent(Position.class)) {
-				myRoot.getChildren().addAll(ViewFeatureMethods.getCollisionShapes(e));
-				DandR.makeEntityDragAndResize(e);
-				ImageView imageView = ViewFeatureMethods.getUpdatedImageView(e);
-				imageView.setOnContextMenuRequested(event -> myPopUpUtility.showPopUp(e, event));
-				if (!myRoot.getChildren().contains(imageView)) {
-					myRoot.getChildren().add(imageView);
-				}
+	/**
+	 * Reconfigures the specified entity for view's use and adds the entity to
+	 * the root of the subscene to be displayed
+	 * 
+	 * @param entity:
+	 *            entity to be reconfigured for use and to be added to the root
+	 * @return bool: boolean indicating if the entity was successfully
+	 *         configured and added (true) or not (false)
+	 */
+	private boolean configureAndAdd(IEntity entity) {
+		Boolean bool = true;
+		try {
+			if (!entity.hasComponent(Position.class) || !isSprite(entity)) {
+				ComponentAdderUtility.addViewComponents(entity, myResources);
 			}
+			DandR.makeEntityDragAndResize(entity);
+			ImageView imageView = EnvironmentHelperMethods.getUpdatedImageView(entity);
+			imageView.setOnContextMenuRequested(event -> myPopUpUtility.showPopUp(entity, event));
+			myRoot.getChildren().add(imageView);
+		} catch (Exception e) {
+			Alerts.showAlert(myResources.getString("error"), null, myResources.getString("unableToAddEntity"),
+					AlertType.ERROR);
+			bool = false;
 		}
+		return bool;
 	}
 
-	private void initConsole() {
-		console.setText(myResources.getString("enterCommands"));
-		console.appendText("\n\n");
+	/**
+	 * Clears the border pane and displays the given text
+	 * 
+	 * @param text:
+	 *            message to be displayed upon clearing the pane
+	 */
+	public void clearPane(Text text) {
+		borderPane.getChildren().clear();
+		borderPane.setCenter(text);
 	}
 
-	public void resetPane(Text text) {
-		environmentPane.getChildren().clear();
-		environmentPane.setCenter(text);
-	}
-	
+	/**
+	 * Return the scrollPane containing all essential views; necessary for
+	 * display
+	 * 
+	 * @return scrollPane: the scrollPane containing all the essential views
+	 */
 	public ScrollPane getPane() {
 		return scrollPane;
 	}
 
+	/**
+	 * Return the borderPane containing all essential views; necessary for
+	 * display, but not scrollable
+	 * 
+	 * @return borderPane: the borderPane containing all the essential views
+	 */
 	public Pane getBorderPane() {
-		return environmentPane;
+		return borderPane;
 	}
-	
+
+	/**
+	 * Prints the given string to the console
+	 * 
+	 * @param toPrint:
+	 *            sting to print to the console
+	 */
+	public void printToConsole(String toPrint) {
+		console.println("\n----------------");
+		console.println(toPrint);
+		console.println();
+	}
+
+	/**
+	 * Returns the current text present in the console as a string
+	 * 
+	 * @return String: string with current console text
+	 */
+	public String getConsoleText() {
+		return console.getText();
+	}
+
 }

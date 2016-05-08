@@ -1,4 +1,4 @@
-package view;
+package view.editor.environmenteditor;
 
 import api.IEntity;
 import javafx.scene.Cursor;
@@ -14,7 +14,7 @@ import view.utilities.SpriteUtilities;
  * @author Bruna
  */
 
-public class DragAndResizeDynamic {
+public class DragAndResize {
 
     private static final double MARGIN = 8;
 
@@ -24,7 +24,7 @@ public class DragAndResizeDynamic {
     private IEntity heldDownSprite;
     private double initialMouseX, initialMouseY;
 
-    public DragAndResizeDynamic () {
+    public DragAndResize () {
 
     }
 

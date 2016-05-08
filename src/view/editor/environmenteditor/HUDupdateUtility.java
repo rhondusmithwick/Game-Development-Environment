@@ -12,7 +12,7 @@ import model.component.hud.HUD;
 import model.component.movement.Position;
 import view.enums.GUISize;
 
-public class HUDupdate {
+public class HUDupdateUtility {
 	
 /*    if (e.hasComponents(HUD.class, Position.class)) {
         String hud = e.getComponent(HUD.class).getHUD();

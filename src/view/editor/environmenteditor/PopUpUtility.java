@@ -34,13 +34,13 @@ public class PopUpUtility {
 	public void showPopUp(IEntity entity, ContextMenuEvent event) {
 		Map<String, EventHandler<ActionEvent>> menuMap = new LinkedHashMap<>();
 		menuMap.put(myResources.getString("remove"),
-				e -> ViewFeatureMethods.removeFromDisplay(entity, myControl.getEntitySystem()));
-		menuMap.put(myResources.getString("sendBack"), e -> ViewFeatureMethods.sendToBack(entity, myControl.getEntitySystem()));
-		menuMap.put(myResources.getString("sendFront"), e -> ViewFeatureMethods.sendToFront(entity, myControl.getEntitySystem()));
+				e -> EnvironmentHelperMethods.removeFromDisplay(entity, myControl.getEntitySystem()));
+		menuMap.put(myResources.getString("sendBack"), e -> EnvironmentHelperMethods.sendToBack(entity, myControl.getEntitySystem()));
+		menuMap.put(myResources.getString("sendFront"), e -> EnvironmentHelperMethods.sendToFront(entity, myControl.getEntitySystem()));
 		menuMap.put(myResources.getString("sendBackOne"),
-				e -> ViewFeatureMethods.sendBackward(entity, myControl.getEntitySystem()));
+				e -> EnvironmentHelperMethods.sendBackward(entity, myControl.getEntitySystem()));
 		menuMap.put(myResources.getString("sendForwardOne"),
-				e -> ViewFeatureMethods.sendForward(entity, myControl.getEntitySystem()));
+				e -> EnvironmentHelperMethods.sendForward(entity, myControl.getEntitySystem()));
 		PopUp myPopUp = new PopUp(GUISize.POP_UP_WIDTH.getSize(), GUISize.POP_UP_HIEGHT.getSize());
 		myPopUp.show(setPopUp(menuMap), event.getScreenX(), event.getScreenY());
 		myPopUpList.add(myPopUp);

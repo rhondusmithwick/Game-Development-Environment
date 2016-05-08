@@ -27,7 +27,7 @@ import view.utilities.SpriteUtilities;
 /**
  * @author Bruna
  */
-public class ViewFeatureMethods {
+public class EnvironmentHelperMethods {
 	
     private static final String SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(22, 0, 255, 0.8), 10, 0, 0, 0)",
             NO_SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0, 0, 0)";
