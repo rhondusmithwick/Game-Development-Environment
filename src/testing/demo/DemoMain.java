@@ -32,12 +32,12 @@ public class DemoMain extends Application {
         myStage.setWidth(GUISize.MAIN_SIZE.getSize());
         myStage.setHeight(GUISize.MAIN_SIZE.getSize());
 
-        View view = new View(2000, 2000, 2000, 2000, new Level(), "english", true);
-        Pane pane = view.getPane();
-        Scene scene = new Scene(pane, 500, 500);
-        stage.setScene(scene);
-        stage.show();
-        view.setScene(scene);
+       // View view = new View(2000, 2000, 2000, 2000, new Level(), "english", true);
+       // Pane pane = view.getPane();
+       // Scene scene = new Scene(pane, 500, 500);
+      //  stage.setScene(scene);
+        //stage.show();
+        //view.setScene(scene);
     }
 
 }

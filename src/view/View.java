@@ -34,6 +34,7 @@ import model.component.movement.Position;
 import model.component.physics.Collision;
 import model.core.SystemManager;
 import update.GameLoopManager;
+import view.editor.environmenteditor.ViewFeatureMethods;
 import view.enums.GUISize;
 import view.utilities.ButtonFactory;
 import view.utilities.PopUp;
@@ -58,7 +59,6 @@ public class View implements IView {
     private final ISystemManager model;
     private final BorderPane pane;
     private final SubScene subScene;
-    private final ViewUtilities viewUtils;
     private final GameLoopManager manager;
     private final HBox buttonBox = new HBox();
     private final ResourceBundle myResources;
@@ -80,7 +80,6 @@ public class View implements IView {
         scene = new Scene(pane, sceneWidth, sceneHeight);
         model = new SystemManager(scene, level);
         manager = new GameLoopManager(language, model);
-        viewUtils = new ViewUtilities();
         if (this.debug) {
             DandR = new DragAndResizeDynamic();
             DandR.makeRootDragAndResize(root);
@@ -124,7 +123,7 @@ public class View implements IView {
     }
 
     public void toggleHighlight (IEntity entity) {
-        viewUtils.toggleHighlight(entity);
+        ViewFeatureMethods.toggleHighlight(entity);
     }
 
     @Override
@@ -138,7 +137,7 @@ public class View implements IView {
     }
 
     public void highlight (IEntity entity) {
-        viewUtils.highlight(entity);
+        ViewFeatureMethods.highlight(entity);
     }
 
     public Scene getScene () {
@@ -348,9 +347,8 @@ public class View implements IView {
         console.println();
     }
 
-    @Override
     public void dehighlight (IEntity entity) {
-        viewUtils.dehighlight(entity);
+        ViewFeatureMethods.dehighlight(entity);
     }
 
 }

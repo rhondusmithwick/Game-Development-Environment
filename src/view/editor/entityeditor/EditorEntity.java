@@ -141,6 +141,5 @@ public class EditorEntity extends Editor {
 
     private void removeBindings (IComponent e) {
         e.removeBindings();
-
     }
 }

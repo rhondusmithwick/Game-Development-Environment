@@ -1,13 +1,15 @@
 package view.editor.environmenteditor;
 
 import api.IEntity;
-import api.IView;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import view.editor.EditorFactory;
 import view.editor.entityeditor.EditorEntity;
@@ -19,18 +21,28 @@ import view.utilities.PopUp;
 import voogasalad.util.reflection.Reflection;
 
 import java.util.Collection;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * @author Bruna
  */
 public class EnvironmentButtonUtilites {
 
-    private final EditorEnvironment myEditor;
+    private final EditorEnvironment myControl;
     private final String myLanguage;
 
-    EnvironmentButtonUtilites (IView view, VBox box, ObservableList<IEntity> masterList, EditorEnvironment editor, String language) {
+    EnvironmentButtonUtilites (EditorEnvironment control, String language) {
         myLanguage = language;
-        myEditor = editor;
+        myControl = control;
+    }
+    
+    public HBox makeMainButtons(HBox box){
+    	Map<String, EventHandler<ActionEvent>> buttonMap  = myControl.makeButtonMap();
+        for (Entry<String, EventHandler<ActionEvent>> entry : buttonMap.entrySet()) {
+            box.getChildren().add(ButtonFactory.makeButton(entry.getKey(), entry.getValue()));
+        }
+    		return box;
     }
 
     public void populateVbox (VBox vbox, Collection<IEntity> collection, String methodName) {
@@ -43,7 +55,7 @@ public class EnvironmentButtonUtilites {
     }
 
     public Button createAddEntityButton (IEntity entity) {
-        return ButtonFactory.makeButton((entity).getName(), e -> myEditor.addToSystem(EntityCopier.copyEntity(entity)));
+        return ButtonFactory.makeButton((entity).getName(), e -> myControl.addEntityToBoth(EntityCopier.copyEntity(entity)));
     }
 
     public Button createEntityButton (IEntity entity) {
@@ -57,8 +69,8 @@ public class EnvironmentButtonUtilites {
                 entityRightClicked(entity, entityInButton, event);
             }
         });
-        entityInButton.setOnMouseEntered(e -> myEditor.highlight(entity));
-        entityInButton.setOnMouseExited(e -> myEditor.dehighlight(entity));
+        entityInButton.setOnMouseEntered(e -> ViewFeatureMethods.highlight(entity));
+        entityInButton.setOnMouseExited(e -> ViewFeatureMethods.dehighlight(entity));
         return entityInButton;
     }
 
@@ -67,13 +79,13 @@ public class EnvironmentButtonUtilites {
         EditorEntity entityEditor = (EditorEntity) new EditorFactory().createEditor(EditorEntity.class.getName(),
                 myLanguage, entity, entityList);
         entityEditor.populateLayout();
-        entityList.addListener((ListChangeListener<IEntity>) c -> myEditor.updateEditor());
+        entityList.addListener((ListChangeListener<IEntity>) c -> myControl.updateEditor());
         PopUp myPopUp = new PopUp(GUISize.ENTITY_EDITOR_WIDTH.getSize(), GUISize.ENTITY_EDITOR_HEIGHT.getSize());
         myPopUp.show(entityEditor.getPane());
     }
 
     private void entityRightClicked (IEntity entity, Button entityButton, MouseEvent event) {
-        entityButton.setContextMenu(ContextMenuFactory.createContextMenu(myEditor.makeMenuMap(entity, entityButton, event)));
+        entityButton.setContextMenu(ContextMenuFactory.createContextMenu(myControl.makeMenuMap(entity, entityButton, event)));
     }
 
 }

@@ -28,13 +28,6 @@ public class DragAndResizeDynamic {
 
     }
 
-//    private ImageView getImageView (IEntity e) {
-//        if (e.hasComponent(AnimatedSprite.class)) {
-//            return e.getComponent(AnimatedSprite.class).getImageView();
-//        }
-//        return e.getComponent(Sprite.class).getImageView();
-//    }
-
     private boolean isInRightResizeRegion (Node node, double x) {
         double width = node.getBoundsInParent().getWidth();
         double innerRightSide = width - MARGIN;
@@ -58,8 +51,6 @@ public class DragAndResizeDynamic {
     }
 
     public void makeEntityDragAndResize (IEntity e) {
-//        Sprite sprite = e.getComponent(Sprite.class);
-//        ImageView imageView = sprite.getImageView();
         ImageView imageView = SpriteUtilities.getImageView(e);
         imageView.setOnMouseEntered(event -> updateCursor(imageView, event.getY(), event.getX()));
         imageView.setOnMousePressed(event -> mousePressed(e, event.getX(),

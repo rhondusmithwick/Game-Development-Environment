@@ -41,6 +41,7 @@ import java.util.Observer;
  */
 
 public class EventSystem implements Observer, IEventSystem {
+	
     private final SimpleDoubleProperty timer = new SimpleDoubleProperty(this, "timer", 0.0);
     private transient IInputSystem inputSystem = new InputSystem();
     private transient ILevel level;

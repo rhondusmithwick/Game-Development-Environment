@@ -35,7 +35,9 @@ public enum DefaultStrings {
     RESOURCES("resources/"),
     COMPONENTS("-components"),
     PROPERTIES("-properties"),
-    ANIMATION_LOC("resources/spriteProperties/");
+    ANIMATION_LOC("resources/spriteProperties/"),
+    CREATE_ADD_ENTITY_BUTTON_METHOD("createAddEntityButton"), 
+    CREATE_ENTITY_BUTTON("createEntityButton");
 
 
     private final String content;
