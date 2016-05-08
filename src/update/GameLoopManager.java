@@ -23,7 +23,6 @@ import view.enums.ViewInsets;
 import view.utilities.ButtonFactory;
 import view.utilities.ComboFactory;
 import view.utilities.TextFieldFactory;
-
 import java.io.File;
 import java.util.Collections;
 import java.util.Map;
@@ -45,8 +44,8 @@ public class GameLoopManager {
     private final ILevel level;
     private final Map<String, String> valueMap;
     private ComboBox<String> comboBox;
-    private ObservableList<String> valueList = FXCollections.observableArrayList();
-    private ListView<String> listView = new ListView<>(valueList);
+    private ObservableList<Integer> valueList = FXCollections.observableArrayList();
+    private ListView<Integer> listView = new ListView<>(valueList);
 
     public GameLoopManager (String language, ISystemManager game) {
         myResources = ResourceBundle.getBundle(language);
@@ -57,7 +56,7 @@ public class GameLoopManager {
         pane.setPadding(ViewInsets.LOOP_EDIT.getInset());
         level = game.getLevel();
         valueMap = level.getMetadata();
-        keyField = TextFieldFactory.makeTextArea(myResources.getString("addKey"));
+        keyField = TextFieldFactory.makeTextArea(myResources.getString("keyText"));
         valueField = TextFieldFactory.makeTextArea(myResources.getString("valueText"));
         setupList();
         populateStage();
@@ -112,8 +111,8 @@ public class GameLoopManager {
         String key = comboBox.getValue();
         if (key != null && valueList.size() > 0) {
             String commaList = "";
-            for (String str : valueList) {
-                commaList += str + ",";
+            for (Integer i : valueList) {
+                commaList += i + ",";
             }
             commaList = commaList.substring(0, commaList.length() - 1);
             valueMap.put(key, commaList);
@@ -139,7 +138,10 @@ public class GameLoopManager {
     private void populateList (String key) {
         String val = valueMap.get(key);
         if (val != null) {
-            valueList = FXCollections.observableArrayList(val.split(","));
+        	ObservableList<String> temp = FXCollections.observableArrayList(val.split(","));
+        	for(String str: temp) {
+        		valueList.add(Integer.parseInt(str));
+        	}
             listView = new ListView<>(valueList);
             setupList();
         }
@@ -148,7 +150,7 @@ public class GameLoopManager {
     private void addValue () {
         String value = valueField.getText();
         if (!value.isEmpty()) {
-            valueList.add(value);
+            valueList.add(Integer.parseInt(value));
             valueField.clear();
         }
     }
