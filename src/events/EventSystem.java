@@ -1,5 +1,12 @@
-package events;
+// This entire class is part of my masterpiece. Carolyn Yao cy88
+// It is class that I pair-programmed with Ani throughout
+// the project. Besides the clarity of the methods, it also listens to a lot of different types of Triggers.
+// See: the Event Factory class to see how triggers are easily produced by reflection.
+// This one class does handle a good amount - reading and writing files, listening, keep track of maps,
+// etc. But this is the most centralized event system that we could have made, and it has proven to be
+// an effective outward looking API for the frontend event editor.
 
+package events;
 import api.IEventSystem;
 import api.IInputSystem;
 import api.ILevel;
@@ -22,7 +29,6 @@ import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.Observable;
 import java.util.Observer;
-
 /***
  * Implementation of an EventSystem.
  * <p>
@@ -39,7 +45,6 @@ import java.util.Observer;
  *
  * @author Anirudh Jonnavithula, Carolyn Yao, Rhondu Smithwick, Tom Wu
  */
-
 public class EventSystem implements Observer, IEventSystem {
     private final SimpleDoubleProperty timer = new SimpleDoubleProperty(this, "timer", 0.0);
     private transient IInputSystem inputSystem = new InputSystem();
@@ -201,5 +206,4 @@ public class EventSystem implements Observer, IEventSystem {
         engine = new ScriptEngineManager().getEngineByName("groovy");
         inputSystem = new InputSystem();
     }
-
 }
