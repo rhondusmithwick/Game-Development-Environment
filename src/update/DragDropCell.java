@@ -10,9 +10,9 @@
  * by a ListView of ANY data type, not just the String type. Thus, it can be implemented in any
  * project that includes instances of ListViews, meaning that it has excellent flexibility.
  * To improve this class, I refactored it to use constants instead of magic numbers and extracted
- * some code to separate methods for additional readability and flexibility. All methods contain ten
- * or fewer lines of code, and the class as a whole contains under 100 lines of code, both of which
- * are desirable outcomes.
+ * some code to separate methods for additional readability and flexibility. All methods contain
+ * twenty or fewer lines of code, and the class as a whole contains under 200 lines of code, both of
+ * which are desirable outcomes.
  * To demonstrate that this class can be extended by ListViews of different types, I have modified
  * the Game Loop Manager class to use ListViews of type Integer, as opposed to String. You can see 
  * for yourself that it still functions as before: After running the Main class, go to Make Game -> 
