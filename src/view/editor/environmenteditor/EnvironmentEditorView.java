@@ -32,6 +32,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
+import model.component.hud.HUD;
 import model.component.movement.Position;
 import view.ConsoleTextArea;
 import view.enums.DefaultEntities;
@@ -248,6 +249,9 @@ public class EnvironmentEditorView {
 		myRoot.getChildren().clear();
 		for (IEntity e : passedEntities) {
 			configureAndAdd(e);
+			if (e.hasComponent(HUD.class) && e.hasComponent(Position.class)){
+				myRoot.getChildren().add(HUDupdateUtility.updateHUD(e, myResources));
+			}
 		}
 	}
 

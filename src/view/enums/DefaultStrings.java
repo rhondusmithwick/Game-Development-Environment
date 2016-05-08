@@ -37,7 +37,9 @@ public enum DefaultStrings {
     PROPERTIES("-properties"),
     ANIMATION_LOC("resources/spriteProperties/"),
     CREATE_ADD_ENTITY_BUTTON_METHOD("createAddEntityButton"), 
-    CREATE_ENTITY_BUTTON("createEntityButton");
+    CREATE_ENTITY_BUTTON("createEntityButton"),
+	SELECT_EFFECT ("-fx-effect: dropshadow(three-pass-box, rgba(22, 0, 255, 0.8), 10, 0, 0, 0)"),
+    NO_SELECT_EFFECT( "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0, 0, 0)");
 
 
     private final String content;

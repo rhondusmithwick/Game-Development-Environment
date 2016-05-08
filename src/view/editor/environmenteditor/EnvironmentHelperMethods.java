@@ -22,6 +22,7 @@ import javafx.util.Duration;
 import model.component.movement.Orientation;
 import model.component.movement.Position;
 import model.component.physics.Collision;
+import view.enums.DefaultStrings;
 import view.utilities.SpriteUtilities;
 
 /**
@@ -29,8 +30,6 @@ import view.utilities.SpriteUtilities;
  */
 public class EnvironmentHelperMethods {
 	
-    private static final String SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(22, 0, 255, 0.8), 10, 0, 0, 0)",
-            NO_SELECT_EFFECT = "-fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0), 0, 0, 0, 0)";
     private static Set<IEntity> selectedSprites = new HashSet<>();
 	
     public Set<IEntity> getSelected () {
@@ -39,20 +38,18 @@ public class EnvironmentHelperMethods {
 
     public static void dehighlight (IEntity e) {
         selectedSprites.remove(e);
-        SpriteUtilities.getImageView(e).setStyle(NO_SELECT_EFFECT);
+        SpriteUtilities.getImageView(e).setStyle(DefaultStrings.NO_SELECT_EFFECT.toString());
     }
 
     public static void highlight (IEntity e) {
         selectedSprites.add(e);
-        SpriteUtilities.getImageView(e).setStyle(SELECT_EFFECT);
+        SpriteUtilities.getImageView(e).setStyle(DefaultStrings.SELECT_EFFECT.toString());
     }
 
     public static void toggleHighlight (IEntity entity) {
         if (!selectedSprites.contains(entity)) {
-            System.out.println("highlight");
             highlight(entity);
         } else {
-            System.out.println("dehighlight");
             dehighlight(entity);
         }
     }

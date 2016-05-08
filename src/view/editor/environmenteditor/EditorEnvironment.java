@@ -7,18 +7,12 @@ import api.IEntitySystem;
 import api.ILevel;
 import javafx.collections.ListChangeListener;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.Pane;
 import view.editor.Editor;
 import view.enums.NecessaryIntegers;
-import view.utilities.ToMainMenu;
 
-import java.util.LinkedHashMap;
-import java.util.Map;
 import java.util.ResourceBundle;
 
 /**
@@ -69,18 +63,18 @@ public class EditorEnvironment extends Editor {
 		return environmentView.getPane();
 	}
 
-	private void saveEnvironment() {
+	void saveEnvironment() {
 		environmentModel.getLevel().getEntitySystem().setName(environmentView.getName());
 		allLevelsList.remove(environmentModel.getLevel());
 		allLevelsList.add(environmentModel.getLevel());
 		environmentView.clearPane(saveMessage(myResources.getString("saveMessage")));
 	}
 
-	private void saveToMasterList(IEntity entity) {
+	public void saveToMasterList(IEntity entity) {
 		masterEntityList.add(entity);
 	}
 
-	private void evaluateConsole() {
+	void evaluateConsole() {
 		String toPrint = environmentModel.evaluate(environmentView.getConsoleText());
 		environmentView.printToConsole(toPrint);
 	}
@@ -94,32 +88,20 @@ public class EditorEnvironment extends Editor {
 		return environmentModel.getEntitySystem();
 	}
 
-	public Map<String, EventHandler<ActionEvent>> makeButtonMap() {
-		Map<String, EventHandler<ActionEvent>> buttonMap = new LinkedHashMap<>();
-		buttonMap.put(myResources.getString("evaluate"), e -> this.evaluateConsole());
-		buttonMap.put(myResources.getString("loopManager"), e -> environmentModel.createLoopManager());
-		buttonMap.put(myResources.getString("startGameLoop"), e -> environmentModel.play());
-		buttonMap.put(myResources.getString("pauseGameLoop"), e -> environmentModel.pauseLoop());
-		buttonMap.put(myResources.getString("mainMenu"), e -> ToMainMenu.toMainMenu(environmentView.getBorderPane()));
-		buttonMap.put(myResources.getString("saveEnvironment"), e -> saveEnvironment());
-		return buttonMap;
+	public Pane getBorderPane() {
+		return environmentView.getBorderPane();
 	}
 
-	public Map<String, EventHandler<ActionEvent>> makeMenuMap(IEntity entity, Button entityButton, MouseEvent event) {
-		Map<String, EventHandler<ActionEvent>> menuMap = new LinkedHashMap<>();
-		menuMap.put(myResources.getString("remove"),
-				e -> EnvironmentHelperMethods.removeFromDisplay(entity, getEntitySystem()));
-		menuMap.put(myResources.getString("sendBack"),
-				e -> EnvironmentHelperMethods.sendToBack(entity, getEntitySystem()));
-		menuMap.put(myResources.getString("sendFront"),
-				e -> EnvironmentHelperMethods.sendToFront(entity, getEntitySystem()));
-		menuMap.put(myResources.getString("sendBackOne"),
-				e -> EnvironmentHelperMethods.sendBackward(entity, getEntitySystem()));
-		menuMap.put(myResources.getString("sendForwardOne"),
-				e -> EnvironmentHelperMethods.sendForward(entity, getEntitySystem()));
-		menuMap.put(myResources.getString("saveAsMasterTemplate"), e -> this.saveToMasterList(entity));
-		menuMap.put(myResources.getString("toggleHighlight"), e -> EnvironmentHelperMethods.toggleHighlight(entity));
-		return menuMap;
+	public void createLoopManager() {
+		environmentModel.createLoopManager();
+	}
+
+	public void play() {
+		environmentModel.play();
+	}
+
+	public void pauseLoop() {
+		environmentModel.pauseLoop();
 	}
 
 }
