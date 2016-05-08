@@ -38,6 +38,7 @@ public class PropertyEventEditor extends EventEditorTab {
     private SimpleObjectProperty<?> chosenProperty;
     private boolean triggerOK, actionOK;
 
+
     public PropertyEventEditor (String language, ObservableList<ILevel> levelList) {
         super(language, levelList);
         pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());

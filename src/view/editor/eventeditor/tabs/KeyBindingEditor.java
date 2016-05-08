@@ -1,3 +1,6 @@
+// This entire file is part of my masterpiece.
+// Alan Cavalcanti
+
 package view.editor.eventeditor.tabs;
 
 import api.IEntity;
@@ -17,7 +20,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import view.editor.eventeditor.tables.EventViewManager;
-import view.editor.eventeditor.tables.KeyBindingTableManager;
+import view.editor.eventeditor.tables.TabWithViewerManager;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
 import view.utilities.ButtonFactory;
@@ -27,51 +30,49 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
-// TODO put Action setting and file picker on abstract
-public class KeyBindingEditor extends EventEditorTab {
-    private static final int FONT_SIZE = 20;
+/**
+ * Event Editor pane that contains an Entity navigator, and a key listener.
+ * Extends the EventEditorWithViewer for it contains the navigator, and a very simple
+ * trigger input (Key)
+ * @author Alankmc
+ *
+ */
+public class KeyBindingEditor extends EventEditorWithViewer{
+    
 	private final ScrollPane scrollPane;
-    private final Text chosenEntityTitle;
     private final VBox pane;
     private final ResourceBundle myResources;
-    private final KeyBindingTableManager tableManager;
-    private final EventViewManager eventViewManager;
     private boolean keyListenerIsActive;
-    private Text chosenEntityText;
     private ComboBox<String> chooseKeyEventTypeBox;
     private KeyCode currentKey;
     private Text keyInputText;
-    private List<IEntity> chosenEntities;
     private EventType keyEventType;
-
+    private static final String TRIGGER_TYPE = "KeyTrigger";
+    
     public KeyBindingEditor (String language, ObservableList<ILevel> levelList) {
-        super(language, levelList);
-        String language1 = language;
+        super(language, levelList, TRIGGER_TYPE);
+        
         myResources = ResourceBundle.getBundle(language);
-        eventViewManager = new EventViewManager(language);
-
-        chosenEntityTitle = new Text(myResources.getString("pickedEntities"));   
-        chosenEntityTitle.setFont(new Font(FONT_SIZE));    
-
-        chosenEntities = new ArrayList<>();
         scrollPane = new ScrollPane();
-
         keyListenerIsActive = false;
         pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
         pane.setPadding(ViewInsets.GAME_EDIT.getInset());
         pane.setAlignment(Pos.TOP_LEFT);
-        tableManager = new KeyBindingTableManager(language, this);
-        Action action = null;
+        
         currentKey = null;
 
         pane.setOnKeyPressed(e -> keyWasPressed(e.getCode()));
         addParametersPane(pane);
 
         choseLevels(new ArrayList<>(levelList));
-        eventViewManager.levelWasPicked(new ArrayList<>(levelList));
+        getCreateEventButton().setOnAction(e -> createEvent(currentKey.getName(), keyEventType));
         populateLayout();
     }
 
+    /**
+     * When key is pressed while key listener is active, set the pressed key.
+     * @param KeyCode code
+     */
     private void keyWasPressed (KeyCode code) {
         if (!keyListenerIsActive)
             return;
@@ -81,76 +82,44 @@ public class KeyBindingEditor extends EventEditorTab {
         keyListenerIsActive = false;
     }
 
-    private void printEvents () {
-        for (ILevel level : getChosenLevels()) {
-            System.out.println(level.getName());
-            System.out.println(level.getEventSystem().getEventsAsString());
-        }
-    }
-
-    private void createEvent () {
-        addEventToLevels(getChosenLevels(), getChosenEntities(), "KeyTrigger", currentKey.getName(), keyEventType);
-        flashText(getEventCreatedText());
-        eventViewManager.updateTable();
-    }
-
+    /**
+     * Button handler, that activates the key listener.
+     */
     private void listenButtonPress () {
         keyListenerIsActive = true;
         keyInputText.setText(myResources.getString("listening"));   
     }
-
-    @Override
-    public ScrollPane getPane () {
-        return scrollPane;
-    }
-
-
+    
+    /**
+     * Populates the upper side of the layout. Contains the input keys, and the 
+     * Entity navigator.
+     */
     public void makeUpperSide () {
         HBox container = new HBox(GUISize.EVENT_EDITOR_PADDING.getSize());
         VBox innerContainer = new VBox(GUISize.EVENT_EDITOR_SUBPADDING.getSize());
 
         Button listenToKey = ButtonFactory.makeButton(myResources.getString("pressKey"), e -> listenButtonPress());
-
         keyInputText = new Text(myResources.getString("noKeyPressed"));
-
-        // chooseFileButton = ButtonFactory.makeButton(myResources.getString("chooseGroovy"), e -> getFile());
-
         ObservableList<String> keyEventTypes = FXCollections.observableArrayList(myResources.getString("keyPress"), myResources.getString("keyRelease"));
-
         chooseKeyEventTypeBox = ComboFactory.makeComboBox(myResources.getString("chooseKeyEventType"), keyEventTypes, e -> setEventType(chooseKeyEventTypeBox.getValue()));
 
-        Button createEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
-
-        innerContainer.getChildren().addAll(listenToKey, chooseKeyEventTypeBox, keyInputText, getActionPane(), createEventButton);
-
-        createEventButton.setOnAction(e -> createEvent());
-
-        chosenEntityText = new Text();
-
-        ScrollPane chosenEntityBox = new ScrollPane(new VBox(chosenEntityTitle, chosenEntityText));
-
-        fillChosenEntityBox();
-        container.getChildren().addAll(getLevelPickerPane(), tableManager.getContainer(), chosenEntityBox, innerContainer);
+        innerContainer.getChildren().addAll(listenToKey, chooseKeyEventTypeBox, keyInputText, getActionPane(), getCreateEventButton());
+        container.getChildren().addAll(getLevelPickerPane(), getTable(), getEntityPickerPane(), innerContainer);
 
         pane.getChildren().add(container);
     }
 
-
+    /**
+     * Make bottom side of the UI. Contains the Event Viewer.
+     */
     public void makeBottomSide () {
-        HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
-
-        container.getChildren().add(eventViewManager.getPane());
-        pane.getChildren().add(container);
+        pane.getChildren().add(getEventViewer());
     }
 
-    @Override
-    public void populateLayout () {
-        makeUpperSide();
-        makeBottomSide();
-
-        scrollPane.setContent(pane);
-    }
-
+    /**
+     * ComboBox Handler. Will change the type of the keyEvent.
+     * @param String eventType
+     */
     private void setEventType (String eventType) {
         if (eventType.equals(myResources.getString("keyPress"))) {
             this.keyEventType = KeyEvent.KEY_PRESSED;
@@ -159,40 +128,22 @@ public class KeyBindingEditor extends EventEditorTab {
             this.keyEventType = KeyEvent.KEY_RELEASED;
         }
     }
+    
+    @Override
+    public void populateLayout () {
+        makeUpperSide();
+        makeBottomSide();
 
-
-    private void fillChosenEntityBox () {
-        if (chosenEntities.isEmpty()) {
-            chosenEntityText.setText(myResources.getString("noEntities"));    
-        } else {
-            String entityString = "";
-            for (IEntity entity : chosenEntities) {
-                entityString += entity.getName() + "\n";
-            }
-
-            chosenEntityText.setText(entityString);
-        }
+        scrollPane.setContent(pane);
     }
-
-    public void choseEntity (List<IEntity> entities) {
-        this.chosenEntities = entities;
-
-        fillChosenEntityBox();
+    
+    @Override
+    public ScrollPane getPane () {
+        return scrollPane;
     }
-
-    public List<IEntity> getChosenEntities () {
-        return chosenEntities;
-    }
-
+   
     @Override
     public void updateEditor () {
     }
-
-    @Override
-    public void actionOnChosenLevels (List<ILevel> levels) {
-        tableManager.levelWasPicked(levels);
-        eventViewManager.levelWasPicked(levels);
-    }
-
 
 }

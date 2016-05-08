@@ -1,3 +1,5 @@
+// This entire file is part of my masterpiece.
+// Alan Cavalcanti
 package view.editor.eventeditor.tabs;
 
 import api.IEntity;
@@ -12,7 +14,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import view.editor.eventeditor.tables.EventViewManager;
-import view.editor.eventeditor.tables.KeyBindingTableManager;
+import view.editor.eventeditor.tables.TabWithViewerManager;
 import view.enums.GUISize;
 import view.enums.ViewInsets;
 import view.utilities.ButtonFactory;
@@ -22,62 +24,47 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 
+/**
+ * Event Editor pane that contains an Entity navigator, and text field to input time.
+ * Extends the EventEditorWithViewer for it contains the navigator, and a very simple
+ * trigger input (Time String)
+ * @author Alankmc
+ *
+ */
 
-public class TimeEventEditor extends EventEditorTab {
+public class TimeEventEditor extends EventEditorWithViewer {
     private static final int FONT_SIZE = 20;
 	private final ScrollPane scrollPane;
-    private final Text chosenEntityTitle;
     private final VBox pane;
     private final ResourceBundle myResources;
-    private final KeyBindingTableManager tableManager;
-    private final EventViewManager eventViewManager;
     private final TextField textField;
-    Text addedParametersText;
     private Text chosenEntityText;
-    private HBox parametersPane;
-    // TODO test
-    private Button getEventsString;
-    private List<IEntity> chosenEntities;
+    private static final String TRIGGER_TYPE = "TimeTrigger";
 
     public TimeEventEditor (String language, ObservableList<ILevel> levelList) {
-        super(language, levelList);
-        String language1 = language;
+        super(language, levelList, TRIGGER_TYPE);
+        
         myResources = ResourceBundle.getBundle(language);
-        eventViewManager = new EventViewManager(language);
-
-        chosenEntityTitle = new Text(myResources.getString("pickedEntities"));    
-        chosenEntityTitle.setFont(new Font(FONT_SIZE));    
-
-        chosenEntities = new ArrayList<>();
         scrollPane = new ScrollPane();
-
 
         pane = new VBox(GUISize.EVENT_EDITOR_PADDING.getSize());
         pane.setPadding(ViewInsets.GAME_EDIT.getInset());
         pane.setAlignment(Pos.TOP_LEFT);
-        tableManager = new KeyBindingTableManager(language, this);
 
         addParametersPane(pane);
 
         choseLevels(new ArrayList<>(levelList));
-        eventViewManager.levelWasPicked(new ArrayList<>(levelList));
         textField = TextFieldFactory.makeTextArea(myResources.getString("inputTime"));
-
+        getCreateEventButton().setOnAction(e -> getTime());
         populateLayout();
     }
 
-    // TODO test
-    private void printEvents () {
-        for (ILevel level : getChosenLevels()) {
-            System.out.println(level.getName());
-            System.out.println(level.getEventSystem().getEventsAsString());
-        }
-    }
-
-    private void createEvent () {
-        if (getChosenLevels().isEmpty())
-            return;
-
+    /** 
+     * Create Event button handler. Will take in the Time String from the textField
+     * and call the create Event method from super.
+     */
+    private void getTime()
+    {
         double time;
 
         try {
@@ -85,45 +72,37 @@ public class TimeEventEditor extends EventEditorTab {
         } catch (Exception e) {
             return;
         }
-        addEventToLevels(getChosenLevels(), getChosenEntities(), "TimeTrigger", time);
-        flashText(getEventCreatedText());
-        eventViewManager.updateTable();
+        createEvent(time);
     }
 
-
-    @Override
-    public ScrollPane getPane () {
-        return scrollPane;
-    }
-
-
+    /**
+     * Populates the upper side of the layout. Contains the input keys, and the 
+     * Entity navigator.
+     */
     public void makeUpperSide () {
         HBox container = new HBox(GUISize.EVENT_EDITOR_PADDING.getSize());
         VBox innerContainer = new VBox(GUISize.EVENT_EDITOR_SUBPADDING.getSize());
 
-
-        // chooseFileButton = ButtonFactory.makeButton(myResources.getString("chooseGroovy"), e -> getFile());
-
-        Button createEventButton = ButtonFactory.makeButton(myResources.getString("makeEvent"), e -> createEvent());
-
-        innerContainer.getChildren().addAll(textField, getActionPane(), createEventButton);
+        innerContainer.getChildren().addAll(textField, getActionPane(), getCreateEventButton());
 
         chosenEntityText = new Text();
 
-        ScrollPane chosenEntityBox = new ScrollPane(new VBox(chosenEntityTitle, chosenEntityText));
-
-        fillChosenEntityBox();
-        container.getChildren().addAll(getLevelPickerPane(), tableManager.getContainer(), chosenEntityBox, innerContainer);
+        container.getChildren().addAll(getLevelPickerPane(), getTable(), getEntityPickerPane(), innerContainer);
 
         pane.getChildren().add(container);
     }
 
 
     public void makeBottomSide () {
-        HBox container = new HBox(GUISize.EVENT_EDITOR_HBOX_PADDING.getSize());
-
-        container.getChildren().add(eventViewManager.getPane());
-        pane.getChildren().add(container);
+        pane.getChildren().add(getEventViewer());
+    }
+    
+    /**
+     * Make bottom side of the UI. Contains the Event Viewer.
+     */
+    @Override
+    public ScrollPane getPane () {
+        return scrollPane;
     }
 
     @Override
@@ -133,38 +112,9 @@ public class TimeEventEditor extends EventEditorTab {
 
         scrollPane.setContent(pane);
     }
-
-
-    private void fillChosenEntityBox () {
-        if (chosenEntities.isEmpty()) {
-            chosenEntityText.setText(myResources.getString("noEntities"));
-        } else {
-            String entityString = "";
-            for (IEntity entity : chosenEntities) {
-                entityString += entity.getName() + "\n";
-            }
-
-            chosenEntityText.setText(entityString);
-        }
-    }
-
-    public void choseEntity (List<IEntity> entities) {
-        this.chosenEntities = entities;
-
-        fillChosenEntityBox();
-    }
-
-    public List<IEntity> getChosenEntities () {
-        return chosenEntities;
-    }
-
     @Override
     public void updateEditor () {
     }
 
-    @Override
-    public void actionOnChosenLevels (List<ILevel> levels) {
-        tableManager.levelWasPicked(levels);
-        eventViewManager.levelWasPicked(levels);
-    }
+    
 }

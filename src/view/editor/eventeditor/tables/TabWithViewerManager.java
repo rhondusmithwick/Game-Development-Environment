@@ -17,7 +17,7 @@ import java.util.List;
  *
  * @author Alankmc
  */
-public class KeyBindingTableManager extends TableManager {
+public class TabWithViewerManager extends TableManager {
     private final HBox container;
     private final EventEditorTab editor;
     private final ArrayList<IEntity> pickedEntitiesForEvent;
@@ -26,7 +26,7 @@ public class KeyBindingTableManager extends TableManager {
     private Entity entity;
     private IComponent component;
 
-    public KeyBindingTableManager (String language, EventEditorTab editor) {
+    public TabWithViewerManager (String language, EventEditorTab editor) {
         container = new HBox();
         String language1 = language;
         selectedEntitiesFromLevel = FXCollections.observableArrayList();
