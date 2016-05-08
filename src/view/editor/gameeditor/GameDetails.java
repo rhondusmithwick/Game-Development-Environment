@@ -4,10 +4,8 @@ import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
-import utility.FilePathUtility;
 import view.enums.DefaultStrings;
 import view.enums.GUISize;
 import view.enums.Indexes;
@@ -78,9 +76,9 @@ public class GameDetails {
     }
 
     private void setImage () {
-        icon.setImage(new Image(iconPath));
+/*        icon.setImage(new Image(iconPath));
         icon.setFitHeight(GUISize.ICON_SIZE.getSize());
-        icon.setFitWidth(GUISize.ICON_SIZE.getSize());
+        icon.setFitWidth(GUISize.ICON_SIZE.getSize());*/
     }
 
     private void updateIcon () {
