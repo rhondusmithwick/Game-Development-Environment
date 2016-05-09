@@ -1,47 +1,42 @@
+// This entire file is part of my masterpiece.
+// TOM WU
+
+// I co-authored and refactored this class with Bruna and Ben, and now, I improved it by delegating
+// many methods to other classes (HUDRenderer and ViewCreator). The length of this class was over 300 lines
+// before this latest refactor. I have learned about the importance of single responsibility principle,
+// and this class adheres more closely to this principle now. The main reason I have refactored View is
+// that it serves as the primary interface between the frontend and backend.
+
 package view;
 
 import api.*;
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Bounds;
-import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.SubScene;
-import javafx.scene.control.Button;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.ScrollPane.ScrollBarPolicy;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.ContextMenuEvent;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.MouseButton;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.*;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.shape.Shape;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextBoundsType;
-import javafx.util.Duration;
-import model.component.character.Health;
-import model.component.character.Lives;
-import model.component.character.Score;
-import model.component.hud.HUD;
 import model.component.movement.Orientation;
 import model.component.movement.Position;
 import model.component.physics.Collision;
+import model.component.visual.AnimatedSprite;
+import model.component.visual.Sprite;
 import model.core.SystemManager;
 import update.GameLoopManager;
-import view.enums.GUISize;
-import view.utilities.ButtonFactory;
-import view.utilities.PopUp;
+import view.utilities.HUDRenderer;
 import view.utilities.SpriteUtilities;
 import view.utilities.ToMainMenu;
+import view.utilities.ViewCreator;
 
 import java.util.*;
-import java.util.Map.Entry;
 import java.util.stream.Collectors;
 
 /**
@@ -52,79 +47,82 @@ import java.util.stream.Collectors;
 
 public class View implements IView {
 
-    private final double MILLISECOND_DELAY = 10;
-    private final double SECOND_DELAY = MILLISECOND_DELAY / 1000;
-    private final ConsoleTextArea console = new ConsoleTextArea();
-    private final ISystemManager model;
-    private final BorderPane pane;
-    private final SubScene subScene;
-    private final ViewUtilities viewUtils;
-    private final GameLoopManager manager;
-    private final HBox buttonBox = new HBox();
-    private final ResourceBundle myResources;
-    private final boolean debug;
-    private final Scene scene;
-    private final List<PopUp> myPopUpList = new ArrayList<>();
+//    private ConsoleTextArea console;
+    private BorderPane pane;
+    private ConsoleTextArea console;
+    private HBox buttonBox;
+    private GameLoopManager manager;
+    private ResourceBundle myResources;
+    private final ResourceBundle viewProperties = ResourceBundle.getBundle("propertyFiles/view");
+    private final boolean editingOn;
+    private final PopUpUtilities popUps = new PopUpUtilities();
+    private final ViewUtilities viewUtils = new ViewUtilities();
+    private ISystemManager model;
     private Group root = new Group();
-    private DragAndResizeDynamic DandR;
+    private Scene scene;
+    private DragAndResizeDynamic dragAndResizeDynamic;
 
     public View (double viewWidth, double viewHeight, double sceneWidth, double sceneHeight, ILevel level,
-                 String language, boolean debug) {
-        subScene = this.createSubScene(root, viewWidth, viewHeight);
-        subScene.setOnMouseClicked(this::deletePopUps);
-        this.debug = debug;
-        myResources = ResourceBundle.getBundle(language);
-        initConsole();
-        initButtons();
-        pane = createMainBorderPane(root, this.subScene);
+                 String language, boolean editingOn) {
+        // init GUI
+        init(viewWidth, viewHeight, sceneWidth, sceneHeight, level, language);
         scene = new Scene(pane, sceneWidth, sceneHeight);
         model = new SystemManager(scene, level);
         manager = new GameLoopManager(language, model);
-        viewUtils = new ViewUtilities();
-        if (this.debug) {
-            DandR = new DragAndResizeDynamic();
-            DandR.makeRootDragAndResize(root);
+
+        this.editingOn = editingOn;
+        if (this.editingOn) {
+            dragAndResizeDynamic = new DragAndResizeDynamic();
+            dragAndResizeDynamic.makeRootDragAndResize(root);
         }
-        ViewFeatureMethods.startTimeline(MILLISECOND_DELAY, e -> step(SECOND_DELAY));
+
+        // start game loop
+        double secondDelay = 1.0/getFramerate();
+        ViewFeatureMethods.startTimeline(secondDelay*1000, e -> step(secondDelay));
     }
 
-    private void deletePopUps (MouseEvent e) {
-        if (e.getButton() == MouseButton.PRIMARY) {
-            myPopUpList.stream().forEach(PopUp::closeScene);
-            myPopUpList.clear();
-        }
+    private void init(double viewWidth, double viewHeight, double sceneWidth, double sceneHeight, ILevel level, String language) {
+        SubScene subScene = createSubScene(root, viewWidth, viewHeight);
+        root.setManaged(false); // IMPORTANT
+
+        myResources = ResourceBundle.getBundle(language);
+        console = ViewCreator.initConsole(myResources, e -> {
+            KeyCode keyCode = e.getCode();
+            if (keyCode == KeyCode.ENTER) {
+                evaluate();
+                e.consume();
+            }
+        });
+        buttonBox = ViewCreator.initButtons(myResources, new HashMap<String, EventHandler<ActionEvent>>() {{
+//            put("evaluate", e -> evaluate());
+            put("loopManager", e -> manager.show());
+            put("mainMenu", e -> ToMainMenu.toMainMenu(pane));
+            put("startGameLoop", e -> model.play());
+            put("pauseGameLoop", e -> model.pauseLoop());
+        }});
+        pane = ViewCreator.createMainBorderPane(subScene, viewProperties, editingOn, console, buttonBox);
     }
 
-    private void createLoopManager () {
-        manager.show();
+    private double getFramerate() {
+        double framerate;
+        try {
+            framerate = Double.parseDouble(viewProperties.getString("FramesPerSecond"));
+        } catch (NumberFormatException e) {
+            framerate = 60; // DEFAULT
+        }
+        return framerate;
     }
 
     public Pane getPane () {
         return this.pane;
     }
 
-    public SubScene getSubScene () {
-        return this.subScene;
-    }
-
-    @Deprecated
-    public void startTimeline () {
-        KeyFrame frame = new KeyFrame(Duration.millis(MILLISECOND_DELAY), e -> this.step(SECOND_DELAY));
-        Timeline timeline = new Timeline();
-        timeline.setCycleCount(Timeline.INDEFINITE);
-        timeline.getKeyFrames().add(frame);
-        timeline.play();
-    }
-
     private SubScene createSubScene (Group root, double width, double height) {
         this.root = root;
         SubScene subScene = new SubScene(root, width, height);
         subScene.setFill(Color.WHITE);
+        subScene.setOnMouseClicked(popUps::deletePopUps);
         return subScene;
-    }
-
-    public void toggleHighlight (IEntity entity) {
-        viewUtils.toggleHighlight(entity);
     }
 
     @Override
@@ -137,17 +135,15 @@ public class View implements IView {
         return model.getLevel();
     }
 
-    public void highlight (IEntity entity) {
-        viewUtils.highlight(entity);
-    }
-
-    public Scene getScene () {
-        return scene;
+    @Override
+    public void setScene (Scene scene) {
+        this.scene = scene;
+        model.getLevel().setOnInput(scene);
     }
 
     @Override
-    public void setScene (Scene scene) {
-        model.getLevel().setOnInput(scene);
+    public Scene getScene() {
+        return this.scene;
     }
 
     private ImageView getUpdatedImageView (IEntity e) {
@@ -168,19 +164,15 @@ public class View implements IView {
     private Collection<Shape> getCollisionShapes (IEntity e) {
         List<Collision> collisions = e.getComponentList(Collision.class);
         Collection<Shape> shapes = new ArrayList<>();
-        if (collisions.isEmpty()) {
-            return shapes;
-        }
-        Collection<Bounds> bounds = collisions.stream().map(c -> c.getMask()).collect(Collectors.toCollection(ArrayList::new));
-        for (Bounds b : bounds) {
-            if (b == null) {
-                continue;
-            }
-            Shape r = new Rectangle(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
-            r.setFill(Color.TRANSPARENT);
-            r.setStroke(Color.RED);
-            r.setStrokeWidth(2);
-            shapes.add(r);
+        if (!collisions.isEmpty()) {
+            Collection<Bounds> bounds = collisions.stream().map(c -> c.getMask()).collect(Collectors.toCollection(ArrayList::new));
+            bounds.stream().filter(b -> b != null).forEach(b -> {
+                Shape r = new Rectangle(b.getMinX(), b.getMinY(), b.getWidth(), b.getHeight());
+                r.setFill(Color.TRANSPARENT);
+                r.setStroke(Color.RED);
+                r.setStrokeWidth(2);
+                shapes.add(r);
+            });
         }
         return shapes;
     }
@@ -193,159 +185,46 @@ public class View implements IView {
         root.getChildren().clear();
         List<IEntity> entities = model.getEntitySystem().getAllEntities();
         for (IEntity e : entities) {
-            if (SpriteUtilities.getSpriteComponent(e) != null && e.hasComponent(Position.class)) {
-                if (debug) {
+            if ((e.hasComponent(Sprite.class)||e.hasComponent(AnimatedSprite.class)) && e.hasComponent(Position.class)) {
+                if (editingOn) {
                     root.getChildren().addAll(getCollisionShapes(e));
-                }
-                if (debug) {
-                    DandR.makeEntityDragAndResize(e);
+                    dragAndResizeDynamic.makeEntityDragAndResize(e);
                 }
                 ImageView imageView = getUpdatedImageView(e);
-                imageView.setOnContextMenuRequested(event -> showPopUp(e, event));
-                root.getChildren().add(imageView);
+                imageView.setOnContextMenuRequested(event -> popUps.showPopUp(e, event, myResources, getEntitySystem()));
                 if (!root.getChildren().contains(imageView)) {
                     root.getChildren().add(imageView);
                 }
             }
-            if (e.hasComponents(HUD.class, Position.class)) {
-                String hud = e.getComponent(HUD.class).getHUD();
-                String shape = "", color = "";
-                double width = 0, height = 0;
-                for (String str : hud.split(";")) {
-                    String[] strip = str.split(":");
-                    String key = strip[0];
-                    String val = strip[1];
-                    if (key.equals(myResources.getString("shape"))) {
-                        shape = val;
-                    }
-                    if (key.equals(myResources.getString("width"))) {
-                        width = Double.parseDouble(val);
-                    }
-                    if (key.equals(myResources.getString("height"))) {
-                        height = Double.parseDouble(val);
-                    }
-                    if (key.equals(myResources.getString("color"))) {
-                        color = val;
-                    }
-                }
-                Rectangle s = new Rectangle(width,height);
-                //Shape shape = (Shape) Reflection.createInstance(shape, width, height);
-                String[] strip = color.split(",");
-                s.setFill(Color.rgb(Integer.parseInt(strip[0]), Integer.parseInt(strip[1]), Integer.parseInt(strip[2])));
-                s.setOpacity(Double.parseDouble(strip[3]));
-                double x = e.getComponent(Position.class).getX();
-                double y = e.getComponent(Position.class).getY();
-                double padding = GUISize.HUD_PADDING.getSize();
-                String text = "";
-                if (e.hasComponent(Score.class)) {
-                    double score = e.getComponent(Score.class).getScore();
-                    text += Score.class.getSimpleName() + ": " + Double.toString(score) + "\n";
-                }
-                if (e.hasComponent(Lives.class)) {
-                    int lives = e.getComponent(Lives.class).getLives();
-                    text += Lives.class.getSimpleName() + ": " + Integer.toString(lives) + "\n";
-                }
-                if (e.hasComponent(Health.class)) {
-                    double health = e.getComponent(Health.class).getHealth();
-                    text += Health.class.getSimpleName() + ": " + Double.toString(health) + "\n";
-                }
-                StackPane stack = new StackPane();
-                stack.setLayoutX(x);
-                stack.setLayoutY(y - padding);
-                Text t = new Text(text);
-                t.setFill(Color.WHITE);
-                t.setBoundsType(TextBoundsType.VISUAL);
-                stack.getChildren().addAll(s, t);
-                root.getChildren().add(stack);
-            }
         }
-    }
-
-    private BorderPane createMainBorderPane (Group root, SubScene subScene) {
-        BorderPane pane = new BorderPane();
-        ScrollPane center = new ScrollPane();
-        root.setManaged(false);
-        double gapSize = 1;
-        pane.setPadding(new Insets(gapSize, gapSize, gapSize, gapSize));
-        pane.setCenter(center);
-        center.setContent(subScene);
-        center.setVbarPolicy(ScrollBarPolicy.NEVER);
-        center.setHbarPolicy(ScrollBarPolicy.NEVER);
-        pane.setBottom(setUpInputPane());
-        return pane;
-    }
-
-    private BorderPane setUpInputPane () {
-        BorderPane pane = new BorderPane();
-        if (debug) {
-            pane.setTop(console);
-        }
-        pane.setBottom(buttonBox);
-        return pane;
-    }
-
-    private void initButtons () {
-        if (debug) {
-            buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("evaluate"), e -> this.evaluate()));
-            buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("loopManager"), e -> this.createLoopManager()));
-        }else{
-        	buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("mainMenu"), e -> ToMainMenu.toMainMenu(pane)));
-        }
-        
-        buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("startGameLoop"), e -> this.model.play()));
-        buttonBox.getChildren().add(ButtonFactory.makeButton(myResources.getString("pauseGameLoop"), e -> this.model.pauseLoop()));
-    }
-
-    private void initConsole () {
-        console.setText(myResources.getString("enterCommands"));
-        console.appendText("\n\n");
-
-        console.setOnKeyPressed(e -> {
-            KeyCode keyCode = e.getCode();
-            if (keyCode == KeyCode.ENTER) {
-                this.evaluate();
-                e.consume();
-            }
-        });
-    }
-
-    public void showPopUp (IEntity entity, ContextMenuEvent event) {
-
-        Map<String, EventHandler<ActionEvent>> menuMap = new LinkedHashMap<>();
-        menuMap.put(myResources.getString("remove"), e -> ViewFeatureMethods.removeFromDisplay(entity, getEntitySystem()));
-        menuMap.put(myResources.getString("sendBack"), e -> ViewFeatureMethods.sendToBack(entity, getEntitySystem()));
-        menuMap.put(myResources.getString("sendFront"), e -> ViewFeatureMethods.sendToFront(entity, getEntitySystem()));
-        menuMap.put(myResources.getString("sendBackOne"), e -> ViewFeatureMethods.sendBackward(entity, getEntitySystem()));
-        menuMap.put(myResources.getString("sendForwardOne"), e -> ViewFeatureMethods.sendForward(entity, getEntitySystem()));
-
-        PopUp myPopUp = new PopUp(GUISize.POP_UP_WIDTH.getSize(), GUISize.POP_UP_HIEGHT.getSize());
-        myPopUp.show(setPopUp(menuMap), event.getScreenX(), event.getScreenY());
-        myPopUpList.add(myPopUp);
-    }
-
-    public ScrollPane setPopUp (Map<String, EventHandler<ActionEvent>> map) {
-        VBox box = new VBox();
-        for (Entry<String, EventHandler<ActionEvent>> entry : map.entrySet()) {
-            Button button = ButtonFactory.makeButton(entry.getKey(), entry.getValue());
-            button.setMaxWidth(Double.MAX_VALUE);
-            box.getChildren().add(button);
-        }
-        return new ScrollPane(box);
+        HUDRenderer.renderHUD(entities, myResources, root);
     }
 
     private void evaluate () {
         String text = console.getText();
         String command = text.substring(text.lastIndexOf("\n")).trim();
-        console.println("\n----------------");
+        console.println("\n"+viewProperties.getString("ConsoleCommandSeparator"));
         try {
             Object result = model.getShell().evaluate(command);
             if (result != null) {
                 console.println(result.toString());
+            } else {
+                console.println(viewProperties.getString("ConsoleOutputNull"));
             }
         } catch (Exception e) {
             console.println(e.getMessage());
         }
         console.println();
+    }
+
+    @Override
+    public void toggleHighlight (IEntity entity) {
+        viewUtils.toggleHighlight(entity);
+    }
+
+    @Override
+    public void highlight (IEntity entity) {
+        viewUtils.highlight(entity);
     }
 
     @Override
